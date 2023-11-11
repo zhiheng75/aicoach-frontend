@@ -1,0 +1,6 @@
+package com.shenmo.spokid
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
