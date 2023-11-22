@@ -13,6 +13,7 @@ class WebViewPage extends StatefulWidget {
     required this.title,
 
     required this.url,
+    
   });
 
   final String title;
