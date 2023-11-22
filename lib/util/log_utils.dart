@@ -7,7 +7,7 @@ import '../res/constant.dart';
 /// 输出Log工具类
 class Log {
 
-  static const String tag = 'DEER-LOG';
+  static const String tag = 'SPOKID-LOG';
 
   static void init() {
     LogUtil.init(isDebug: !Constant.inProduction, maxLen: 512);

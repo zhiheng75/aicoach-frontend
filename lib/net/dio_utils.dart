@@ -33,7 +33,6 @@ typedef NetSuccessCallback<T> = Function(T data);
 typedef NetSuccessListCallback<T> = Function(List<T> data);
 typedef NetErrorCallback = Function(int code, String msg);
 
-/// @weilu https://github.com/simplezhli
 class DioUtils {
 
   factory DioUtils() => _singleton;

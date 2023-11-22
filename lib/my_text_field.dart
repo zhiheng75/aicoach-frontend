@@ -128,7 +128,7 @@ class _MyTextFieldState extends State<MyTextField> {
       ),
     );
 
-    /// 个别Android机型（华为、vivo）的密码安全键盘不弹出问题（已知小米正常），临时修复方法：https://github.com/flutter/flutter/issues/68571 (issues/61446)
+    /// 个别Android机型（华为、vivo）的密码安全键盘不弹出问题（已知小米正常），
     /// 怀疑是安全键盘与三方输入法之间的切换冲突问题。
     if (Device.isAndroid) {
       textField = Listener(
@@ -144,7 +144,7 @@ class _MyTextFieldState extends State<MyTextField> {
         label: '清空',
         hint: '清空输入框',
         child: GestureDetector(
-          child: LoadAssetImage('login/qyg_shop_icon_delete',
+          child: LoadAssetImage('delete_img',
             key: Key('${widget.keyName}_delete'),
             width: 18.0,
             height: 40.0,
@@ -161,7 +161,7 @@ class _MyTextFieldState extends State<MyTextField> {
         hint: '密码是否可见',
         child: GestureDetector(
           child: LoadAssetImage(
-            _isShowPwd ? 'login/qyg_shop_icon_display' : 'login/qyg_shop_icon_hide',
+            _isShowPwd ? 'open_eye_img' : 'close_eye_img',
             key: Key('${widget.keyName}_showPwd'),
             width: 18.0,
             height: 40.0,
@@ -181,7 +181,7 @@ class _MyTextFieldState extends State<MyTextField> {
         key: const Key('getVerificationCode'),
         onPressed: _clickable ? _getVCode : null,
         fontSize: Dimens.font_sp12,
-        text: "_clickable" ,
+        text: _clickable ? "获取验证码" : '（$_currentSecond s）',
         textColor: themeData.primaryColor,
         disabledTextColor: isDark ? Colours.dark_text : Colors.white,
         backgroundColor: Colors.transparent,

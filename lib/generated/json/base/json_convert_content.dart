@@ -42,7 +42,7 @@ class JsonConvert {
     if (value is T) {
       return value;
     }
-		final String type = T.toString();
+    final String type = T.toString();
     try {
       final String valueS = value.toString();
       if (type == "String") {
@@ -69,41 +69,41 @@ class JsonConvert {
       print('asT<$T> $e $stackTrace');
       return null;
     }
-  } 
-	//Go back to a single instance by type
-	static M? _fromJsonSingle<M>(Map<String, dynamic> json) {
-		final String type = M.toString();
-		// if(type == (BankEntity).toString()){
-		// 	return BankEntity.fromJson(json) as M;
-		// }
+  }
+  //Go back to a single instance by type
+  static M? _fromJsonSingle<M>(Map<String, dynamic> json) {
+    final String type = M.toString();
+    // if(type == (BankEntity).toString()){
+    // 	return BankEntity.fromJson(json) as M;
+    // }
 
 
 
-		print("$type not found");
-	
-		return null;
-}
+    print("$type not found");
+
+    return null;
+  }
 
   //list is returned by type
-	static M? _getListChildType<M>(List<dynamic> data) {
-		// if(<BankEntity>[] is M){
-		// 	return data.map<BankEntity>((e) => BankEntity.fromJson(e)).toList() as M;
-		// }
+  static M? _getListChildType<M>(List<dynamic> data) {
+    // if(<BankEntity>[] is M){
+    // 	return data.map<BankEntity>((e) => BankEntity.fromJson(e)).toList() as M;
+    // }
 
 
-		print("${M.toString()} not found");
-	
-		return null;
-}
+    print("${M.toString()} not found");
+
+    return null;
+  }
 
   static M? fromJsonAsT<M>(dynamic json) {
-		if(json == null){
-			return null;
-		}
-		if (json is List) {
-			return _getListChildType<M>(json);
-		} else {
-			return _fromJsonSingle<M>(json as Map<String, dynamic>);
-		}
-	}
+    if(json == null){
+      return null;
+    }
+    if (json is List) {
+      return _getListChildType<M>(json);
+    } else {
+      return _fromJsonSingle<M>(json as Map<String, dynamic>);
+    }
+  }
 }

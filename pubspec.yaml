@@ -63,16 +63,7 @@ dependencies:
   vibration_web: 1.6.5
   # 获取当前设备信息 https://github.com/fluttercommunity/plus_plugins/tree/main/packages/device_info_plus
   device_info_plus: 9.0.2
-  # 桌面应用调整窗口的大小和位置 https://github.com/leanflutter/window_manager
-  window_manager: 0.3.6
-  # 高德2D地图插件（支持Web） https://github.com/simplezhli/flutter_2d_amap
-  flutter_2d_amap:
-    git:
-      ref: '3850a4dc'
-      url: 'https://github.com/simplezhli/flutter_2d_amap.git'
-  # demo 用到的库
-  # 刮刮卡 https://github.com/vintage/scratcher
-  scratcher: ^2.4.0
+
   # 动画效果 https://github.com/xvrh/lottie-flutter
   lottie: ^2.6.0
 

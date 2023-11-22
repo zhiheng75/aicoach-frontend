@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../common/webview_page.dart';
 import '../home/home.dart';
+import '../home/home_router.dart';
+import '../login/login_router.dart';
 import '../setting/setting_router.dart';
 import 'i_router.dart';
 import 'not_found_page.dart';
@@ -36,6 +38,8 @@ class Routes {
     _listRouter.clear();
     /// 各自路由由各自模块管理，统一在此添加初始化
 
+    _listRouter.add(LoginRouter());
+    _listRouter.add(HomeRouter());
     _listRouter.add(SettingRouter());
 
     /// 初始化路由
