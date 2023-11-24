@@ -2,6 +2,7 @@ buildscript {
     ext.kotlin_version = '1.7.10'
     repositories {
         google()
+        jcenter()       // 原有 jCenter 引用可继续保留
         mavenCentral()
     }
 
@@ -14,6 +15,7 @@ buildscript {
 allprojects {
     repositories {
         google()
+        jcenter()       // 原有 jCenter 引用可继续保留
         mavenCentral()
     }
 }

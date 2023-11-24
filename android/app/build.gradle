@@ -27,7 +27,7 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
     namespace "com.shenmo.spokid"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 33
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -44,14 +44,22 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.shenmo.spokid"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 21
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        ndk {
+            // 选择要添加的对应 cpu 类型的 .so 库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            // 还可以添加 'x86', 'x86_64'
+        }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "0846276bad587d5808701213", //Portal 上注册的包名对应的 appKey.
+                JPUSH_CHANNEL : "developer-default", // 暂时填写默认值即可.
+        ]
     }
     signingConfigs {
         release {
@@ -65,10 +73,10 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.release
+            buildConfigField("String", "WXID", '"wxfb033d09d2eecaf0"')
         }
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            buildConfigField("String", "WXID", '"wxfb033d09d2eecaf0"')
             signingConfig signingConfigs.release
             shrinkResources false
             zipAlignEnabled false
@@ -82,4 +90,12 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.0.0'
+    api 'com.tencent.mm.opensdk:wechat-sdk-android:+'
+    implementation "com.squareup.okhttp3:okhttp:4.9.2"
+    implementation 'org.greenrobot:eventbus:3.2.0'
+    implementation 'cn.jiguang.sdk:jverification:3.0.0'
+}

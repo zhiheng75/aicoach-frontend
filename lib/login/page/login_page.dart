@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:spokid/login/presenter/login_presenter.dart';
 import 'package:spokid/login/view/login_view.dart';
+import 'package:spokid/util/log_utils.dart';
 import 'package:spokid/util/toast_utils.dart';
+import '../../method/fluter_native.dart';
 import '../../mvp/base_page.dart';
 import '../../my_text_field.dart';
 import '../../res/constant.dart';
@@ -42,6 +44,7 @@ class _LoginPageState extends State<LoginPage>
   final FocusNode _nodeText1 = FocusNode();
   final FocusNode _nodeText2 = FocusNode();
   bool _clickable = false;
+  String _wechatCode = "";
 
   @override
   Map<ChangeNotifier, List<VoidCallback>?>? changeNotifier() {
@@ -172,7 +175,13 @@ class _LoginPageState extends State<LoginPage>
       children: [
         GestureDetector(
           onTap: (){
-            Toast.show("微信登录");
+            // Toast.show("微信登录");
+            FlutterToNative.jumpToWechatLogin().then((value) => {
+              _wechatCode = value,
+              Log.e("===========>$_wechatCode"),
+            NavigatorUtils.push(context, LoginRouter.bindPhonePage,arguments: {"wechatCode",_wechatCode}),
+              // _loginPresenter.wechatLogin(value)
+            });
           },
           child: const Text("微信登录"),
         ),
@@ -182,8 +191,15 @@ class _LoginPageState extends State<LoginPage>
             Toast.show("QQ登录");
           },
           child: const Text("QQ登录"),
+        ),
+        GestureDetector(
+          onTap: (){
+            FlutterToNative.jumpToKeyLogin().then((value)=>{
+
+            });
+          },
+          child: const Text("一键登录"),
         )
-        ,
       ],
     )
   ];
@@ -196,4 +212,14 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void wechatFail() {
+    NavigatorUtils.push(context, LoginRouter.bindPhonePage,arguments: {"wechatCode",_wechatCode});
+  }
+
+  @override
+  void wechatSuccess(String token) {
+
+  }
 }
