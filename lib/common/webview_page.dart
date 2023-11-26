@@ -64,7 +64,7 @@ class _WebViewPageState extends State<WebViewPage> {
       child: Scaffold(
         appBar: MyAppBar(
           centerTitle: widget.title,
-            backImgColor:Colors.white
+            backImgColor:Colors.black
         ),
         body: Stack(
           children: [

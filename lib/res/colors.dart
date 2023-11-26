@@ -43,4 +43,25 @@ class Colours {
   static const Color gradient_blue = Color(0xFF5793FA);
   static const Color shadow_blue = Color(0x805793FA);
   static const Color orange = Color(0xFFFF8547);
+  static const Color color_c979ff = Color(0xFFC979FF);
+  static const Color color_925DFF = Color(0xFF925DFF);
+  static const Color color_546092 = Color(0xFF546092);
+
+  static const Color color_00FFB4 = Color(0xb300FFB4);
+  static const Color color_0E90FF = Color(0xb30E90FF);
+  static const Color color_DA2FFF = Color(0xb3DA2FFF);
+  static const Color transflate = Color(0x00000000);
+  static const Color color_00DBAF = Color(0xff00DBAF);
+
+  static const Color color_0EF4D1 = Color(0xff0EF4D1);
+  static const Color color_53C5FF = Color(0xff53C5FF);
+  static const Color color_E0AEFF = Color(0xffE0AEFF);
+
+  static const Color color_111B44 = Color(0xff111B44);
+
+  static const Color color_5B8BD2 = Color(0xff5B8BD2);
+  static const Color color_00E6D0 = Color(0xff00E6D0);
+
+  static const Color color_30white = Color(0x4Dffffff);
+  static const Color color_70white = Color(0x66ffffff);
 }

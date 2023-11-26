@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import '../res/constant.dart';
+import '../constant/constant.dart';
 import '../util/log_utils.dart';
 import 'base_entity.dart';
 import 'error_handle.dart';

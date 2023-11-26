@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
-import 'package:spokid/res/constant.dart';
+import 'package:spokid/constant/constant.dart';
 import 'package:spokid/routers/not_found_page.dart';
 import 'package:spokid/routers/routers.dart';
 import 'package:spokid/setting/provider/locale_provider.dart';
@@ -30,7 +30,7 @@ Future<void> main() async{
     runApp(MyApp());
   });
 
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
 }
 class MyApp extends StatelessWidget {
   MyApp({super.key, this.home, this.theme}) {

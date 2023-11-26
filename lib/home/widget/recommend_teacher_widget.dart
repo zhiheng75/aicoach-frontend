@@ -36,35 +36,42 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
             onTap: () {
               widget.callBack();
             },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                LoadAssetImage(
-                  widget.entity.teacherHeader,
-                  height: 50,
-                  fit: BoxFit.cover,
+            child:
+            Container(
+              height: 100,
+              padding:const EdgeInsets.only(left: 10,right: 10,top: 15,bottom: 10),
+              decoration: BoxDecoration(
+                borderRadius:const BorderRadius.all(Radius.circular(10)),
+                border: Border.all(
+                  width: widget.entity.index == provider.index? 3:1,
+                  color:  widget.entity.index == provider.index? Colours.color_00E6D0:Colours.color_5B8BD2
                 ),
-                Gaps.vGap10,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.entity.teacherName,
-                      style: const TextStyle(
-                          fontSize: 12, color: Colours.dark_bg_color),
+                color: widget.entity.index == provider.index?Colours.color_70white:Colors.transparent
+              ),
+              child:
+
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ClipOval(
+                    child: LoadAssetImage(
+                      widget.entity.teacherHeader,
+                      height: 40,
+                      width: 40,
+                      fit: BoxFit.cover,
                     ),
-                    LoadAssetImage(
-                      widget.entity.index == provider.index
-                          ? "select_img"
-                          : "unselect_img",
-                      width: 12,
-                      height: 12,
-                    )
-                  ],
-                )
-              ],
+                  ),
+                  Gaps.vGap10,
+                  Text(
+                    widget.entity.teacherName,
+                    style: const TextStyle(
+                        fontSize: 16, color: Colours.color_111B44,fontWeight: FontWeight.bold),
+                  ),
+                  Text(widget.entity.school,style: const TextStyle(color: Colours.color_546092,fontSize: 12),),
+                  Text(widget.entity.category,style: const TextStyle(color: Colours.color_546092,fontSize: 12),)
+                ],
+              ),
             ),
           );
         }));

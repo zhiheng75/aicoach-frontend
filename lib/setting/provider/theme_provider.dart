@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:sp_util/sp_util.dart';
 
 import '../../res/colors.dart';
-import '../../res/constant.dart';
+import '../../constant/constant.dart';
 import '../../res/styles.dart';
 
 extension ThemeModeExtension on ThemeMode {

@@ -5,6 +5,7 @@ import '../common/webview_page.dart';
 import '../home/home.dart';
 import '../home/home_router.dart';
 import '../login/login_router.dart';
+import '../report/report_router.dart';
 import '../setting/setting_router.dart';
 import 'i_router.dart';
 import 'not_found_page.dart';
@@ -41,6 +42,7 @@ class Routes {
     _listRouter.add(LoginRouter());
     _listRouter.add(HomeRouter());
     _listRouter.add(SettingRouter());
+    _listRouter.add(MyReportRouter());
 
     /// 初始化路由
     void initRouter(IRouterProvider routerProvider) {

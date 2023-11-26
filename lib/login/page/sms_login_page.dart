@@ -48,7 +48,7 @@ class _SMSLoginPageState extends State<SMSLoginPage> with ChangeNotifierMixin<SM
     if (name.isEmpty || name.length < 11) {
       clickable = false;
     }
-    if (vCode.isEmpty || vCode.length < 6) {
+    if (vCode.isEmpty || vCode.length !=4) {
       clickable = false;
     }
     if (clickable != _clickable) {
@@ -76,7 +76,7 @@ class _SMSLoginPageState extends State<SMSLoginPage> with ChangeNotifierMixin<SM
 
   List<Widget> _buildBody() {
     return <Widget>[
-      Text(
+      const Text(
         "验证码登录",
         style: TextStyles.textBold26,
       ),
@@ -92,7 +92,7 @@ class _SMSLoginPageState extends State<SMSLoginPage> with ChangeNotifierMixin<SM
       MyTextField(
         focusNode: _nodeText2,
         controller: _vCodeController,
-        maxLength: 6,
+        maxLength: 4,
         keyboardType: TextInputType.number,
         hintText: "请输入验证码",
         getVCode: () {

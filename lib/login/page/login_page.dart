@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sp_util/sp_util.dart';
+import 'package:spokid/home/home_router.dart';
 import 'package:spokid/login/presenter/login_presenter.dart';
 import 'package:spokid/login/view/login_view.dart';
 import 'package:spokid/util/log_utils.dart';
@@ -8,7 +9,7 @@ import 'package:spokid/util/toast_utils.dart';
 import '../../method/fluter_native.dart';
 import '../../mvp/base_page.dart';
 import '../../my_text_field.dart';
-import '../../res/constant.dart';
+import '../../constant/constant.dart';
 import '../../res/gaps.dart';
 import '../../res/styles.dart';
 import '../../routers/fluro_navigator.dart';
@@ -17,6 +18,7 @@ import '../../util/other_utils.dart';
 import '../../widgets/my_app_bar.dart';
 import '../../widgets/my_button.dart';
 import '../../widgets/my_scroll_view.dart';
+import '../entity/wx_info_entity.dart';
 import '../login_router.dart';
 
 
@@ -178,9 +180,9 @@ class _LoginPageState extends State<LoginPage>
             // Toast.show("微信登录");
             FlutterToNative.jumpToWechatLogin().then((value) => {
               _wechatCode = value,
-              Log.e("===========>$_wechatCode"),
-            NavigatorUtils.push(context, LoginRouter.bindPhonePage,arguments: {"wechatCode",_wechatCode}),
-              // _loginPresenter.wechatLogin(value)
+              // Log.e("===========>$_wechatCode"),
+
+              _loginPresenter.getWxInfo(value)
             });
           },
           child: const Text("微信登录"),
@@ -194,9 +196,9 @@ class _LoginPageState extends State<LoginPage>
         ),
         GestureDetector(
           onTap: (){
-            FlutterToNative.jumpToKeyLogin().then((value)=>{
-
-            });
+            // FlutterToNative.jumpToKeyLogin().then((value)=>{
+            //
+            // });
           },
           child: const Text("一键登录"),
         )
@@ -215,11 +217,21 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   void wechatFail() {
-    NavigatorUtils.push(context, LoginRouter.bindPhonePage,arguments: {"wechatCode",_wechatCode});
+    // NavigatorUtils.push(context, LoginRouter.bindPhonePage,arguments: {"wechatCode",_wechatCode});
   }
 
   @override
-  void wechatSuccess(String token) {
+  void wechatSuccess(WxInfoDataData entity) {
+    NavigatorUtils.push(context, LoginRouter.bindPhonePage,arguments:entity);
+  }
 
+  @override
+  void hadBindWechat(WxInfoDataData data) {
+    Toast.show("登录成功");
+    // SpUtil.putObject(Constant.userInfoKey, data);
+    // SpUtil.getObj(Constant.userInfoKey, (v) => {
+    //   print(v),
+    // });
+    NavigatorUtils.push(context, HomeRouter.homePage,clearStack: true);
   }
 }

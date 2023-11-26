@@ -182,7 +182,7 @@ class _MyTextFieldState extends State<MyTextField> {
         onPressed: _clickable ? _getVCode : null,
         fontSize: Dimens.font_sp12,
         text: _clickable ? "获取验证码" : '（$_currentSecond s）',
-        textColor: themeData.primaryColor,
+        textColor: Colors.white,
         disabledTextColor: isDark ? Colours.dark_text : Colors.white,
         backgroundColor: Colors.transparent,
         disabledBackgroundColor: isDark ? Colours.dark_text_gray : Colours.text_gray_c,
@@ -191,7 +191,7 @@ class _MyTextFieldState extends State<MyTextField> {
         minWidth: 76.0,
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         side: BorderSide(
-          color: _clickable ? themeData.primaryColor : Colors.transparent,
+          color: _clickable ? Colors.white : Colors.transparent,
           width: 0.8,
         ),
       );

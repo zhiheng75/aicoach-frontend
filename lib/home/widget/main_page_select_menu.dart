@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spokid/login/login_router.dart';
+import 'package:spokid/report/report_router.dart';
 import 'package:spokid/routers/fluro_navigator.dart';
 
 import '../../res/colors.dart';
@@ -82,7 +83,8 @@ class _MainPageSelectMenuState extends State<MainPageSelectMenu> with SingleTick
           height: 40.0,
           child: TextButton.icon(
             onPressed: () {
-              widget._press();
+              // widget._press();
+              NavigatorUtils.push(context, MyReportRouter.myReportPage);
             },
             icon: LoadAssetImage('unselect_img', width: 16.0, height: 16.0, color: iconColor,),
             label: const Text('评分页面'),

@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:spokid/home/home_router.dart';
 import 'package:sp_util/sp_util.dart';
+import 'package:spokid/widgets/my_app_bar.dart';
+import '../dialog/agreement_dialog.dart';
 import '../login/login_router.dart';
 import '../util/theme_utils.dart';
-import '../res/constant.dart';
+import '../constant/constant.dart';
 import '../routers/fluro_navigator.dart';
 import '../util/device_utils.dart';
 import '../util/image_utils.dart';
@@ -45,9 +48,28 @@ class _SplashPageState extends State<SplashPage> {
 
   void _initSplash() {
     _subscription = Stream.value(1).delay(const Duration(milliseconds: 1000)).listen((_) {
-      _gotoHome();
+      bool hasAgree = SpUtil.getBool(Constant.agreement, defValue: false)??false;
+      if(hasAgree){
+        _gotoHome();
+      }else{
+        _showAgreement();
+      }
+
     });
   }
+
+
+  void _showAgreement() {
+    showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => AgreementDialog((){
+          _gotoHome();
+        })
+    );
+  }
+
+
 
 
   void _gotoHome(){
@@ -56,16 +78,17 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        color: context.backgroundColor,
-        child:
-        const FractionallyAlignedSizedBox(
-            heightFactor: 0.3,
-            widthFactor: 0.33,
-            leftFactor: 0.33,
-            bottomFactor: 0,
-            child: LoadAssetImage('test_banner_img')
+    return const AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: Scaffold(
+
+          body: FractionallyAlignedSizedBox(
+              heightFactor: 0.3,
+              widthFactor: 0.33,
+              leftFactor: 0.33,
+              bottomFactor: 0,
+              child: LoadAssetImage('test_banner_img')),
         )
-    );
+        );
   }
 }

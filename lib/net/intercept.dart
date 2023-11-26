@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:sprintf/sprintf.dart';
 
-import '../res/constant.dart';
+import '../constant/constant.dart';
 import '../util/log_utils.dart';
 import 'dio_utils.dart';
 import 'error_handle.dart';

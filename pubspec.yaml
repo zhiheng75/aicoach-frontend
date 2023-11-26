@@ -66,6 +66,8 @@ dependencies:
 
   # 动画效果 https://github.com/xvrh/lottie-flutter
   lottie: ^2.6.0
+  #进度条
+  percent_indicator: ^4.0.1
 
 dev_dependencies:
   flutter_test:

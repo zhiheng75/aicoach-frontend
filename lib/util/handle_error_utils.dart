@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 
-import '../res/constant.dart';
+import '../constant/constant.dart';
 
 /// 捕获全局异常，进行统一处理。
 void handleError(void Function() body) {

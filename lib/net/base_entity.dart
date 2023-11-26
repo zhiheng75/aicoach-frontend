@@ -1,6 +1,6 @@
 
 import '../generated/json/base/json_convert_content.dart';
-import '../res/constant.dart';
+import '../constant/constant.dart';
 
 class BaseEntity<T> {
 

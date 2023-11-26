@@ -9,7 +9,7 @@ import 'package:spokid/util/theme_utils.dart';
 import 'package:spokid/util/toast_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../res/constant.dart';
+import '../constant/constant.dart';
 
 class Utils {
 

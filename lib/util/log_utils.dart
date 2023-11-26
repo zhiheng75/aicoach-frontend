@@ -2,7 +2,7 @@
 import 'dart:convert' as convert;
 import 'package:common_utils/common_utils.dart';
 
-import '../res/constant.dart';
+import '../constant/constant.dart';
 
 /// 输出Log工具类
 class Log {
