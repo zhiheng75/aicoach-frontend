@@ -1,4 +1,5 @@
 import 'package:fluro/fluro.dart';
+import 'package:spokid/setting/setting_page.dart';
 import 'package:spokid/setting/theme_page.dart';
 
 import '../routers/i_router.dart';
@@ -11,7 +12,7 @@ class SettingRouter implements IRouterProvider{
   
   @override
   void initRouter(FluroRouter router) {
-    // router.define(settingPage, handler: Handler(handlerFunc: (_, __) => const SettingPage()));
+    router.define(settingPage, handler: Handler(handlerFunc: (_, __) => const SettingPage()));
 
     router.define(themePage, handler: Handler(handlerFunc: (_, __) => const ThemePage()));
 

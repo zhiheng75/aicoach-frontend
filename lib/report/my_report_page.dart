@@ -1,14 +1,19 @@
+import 'dart:async';
+
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:spokid/report/widget/radar_map.dart';
+import 'package:spokid/res/dimens.dart';
 import 'package:spokid/widgets/my_app_bar.dart';
 import 'package:spokid/widgets/my_scroll_view.dart';
 
 import '../res/colors.dart';
 import '../res/gaps.dart';
 import '../routers/fluro_navigator.dart';
+import '../util/image_utils.dart';
+import '../util/time_utils.dart';
 import '../widgets/load_image.dart';
 
 class MyReportPage extends StatefulWidget {
@@ -24,67 +29,102 @@ class _MyReportPageState extends State<MyReportPage> {
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        // appBar: MyAppBar(),
         body:
             Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
                   colors: [
                     Colours.color_00FFB4,
                     Colours.color_0E90FF,
                     Colours.color_DA2FFF,
                   ],
-                )
-              ),
-              child: Column(
-                children: [
-                         const MyAppBar(
-                            title: "口语学习日报",
-                           backgroundColor: Colours.transflate,
-                          ),
-                  Expanded(
-                      child:
+                )),
+        child: Column(
+          children: [
+            const MyAppBar(
+              centerTitle: "口语学习日报",
+              backgroundColor: Colours.transflate,
+            ),
+            Expanded(
+                child:
                       MyScrollView(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        padding: EdgeInsets.only(left: 16,right: 16,top: 60),
+                        padding:const EdgeInsets.only(left: 16,right: 16,top: 0),
                         children:[
-                          one(),
-                          CircularPercentIndicator(
-                            radius: 90.0,
-                            lineWidth: 5.0,
-                            percent: 0.7,
-                            center:const  Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                          Container(
+                            padding:const EdgeInsets.only(left: 16,right: 16,top: 20,bottom: 30),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: ImageUtils.getAssetImage("report_white_board_img",),
+                                fit: BoxFit.fill
+                              ),
+                            ),
+                            child: Column(
                               children: [
-                                Text(
-                                  "176",
-                                  style: TextStyle(fontSize: 50,color: Colours.color_00DBAF),
+                                talkAmount(30,TimeUtils.formatDateTime(1630399935000)),
+                                Gaps.vGap50,
+                                CircularPercentIndicator(
+                                  radius: 90.0,
+                                  lineWidth: 5.0,
+                                  percent: 0.7,
+                                  center:const  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "176",
+                                        style: TextStyle(fontSize: 50,color: Colours.color_00DBAF),
+                                      ),
+                                      Text("超过94%该年龄段用户"),
+                                      Text("满分为200分"),
+                                    ],
+                                  ),
+                                  progressColor: Colours.color_00DBAF,
                                 ),
-                                Text("超过94%该年龄段用户"),
-                                Text("满分为200分"),
+                                RadarMap(xx()),
+
                               ],
                             ),
-                            progressColor: Colours.color_00DBAF,
                           ),
-                          RadarMap(xx()),
-                          
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              LoadAssetImage("select_img",width: 20,height: 20,),
-                              Text("对话内容解析",style: TextStyle(fontSize: 10,color: Colors.white),),
-                              LoadAssetImage("select_img",width: 20,height: 20,),
-                            ],
+                          Gaps.vGap32,
+                Stack(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 8),
+                      child: const Center(
+                        child: LoadAssetImage(
+                          "divder_img",
+                          width: 200,
+                        ),
+                      ),
+                    ),
+                    const Center(
+                      child: Text(
+                        "对话内容解析",
+                        style: TextStyle(
+                            fontSize: Dimens.font_sp15, color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                          Container(
+                            padding: const EdgeInsets.only(
+                                left: 16, right: 16, top: 20, bottom: 30),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: ImageUtils.getAssetImage(
+                                    "report_white_board_img",),
+                                  fit: BoxFit.fill
+                              ),
+                            ),
+                            child:Text("sad"),
                           )
-                          
-                        ],
-                      )
-                  )
 
-                ],
+              ],
+            ))
+          ],
               ),
             )
         // Column(
@@ -190,16 +230,28 @@ class _MyReportPageState extends State<MyReportPage> {
      return list;
   }
 
-  Widget one(){
-    return Row(
+  Widget talkAmount(int amount,String time){
+    return  Row(
       children: [
-        LoadAssetImage("select_img",width: 20,height: 20,),
-        Text("本次对话30"),
-        Expanded(child: Gaps.empty),
-        LoadAssetImage("select_img",width: 20,height: 20,),
-        Text("2023-09-09"),
+        const LoadAssetImage("talk_amount_img",width: 18,height: 18,),
+        Gaps.hGap6,
+        RichText(
+            text: TextSpan(text: '本次对话',style: const TextStyle(color: Colours.color_111B44,fontSize: 13),
+                children: <TextSpan>[
+                  TextSpan(text: "$amount",style: const TextStyle(color: Colours.color_00DFB3,fontSize: 13,fontWeight: FontWeight.bold)),
+                  const  TextSpan(text: "个",style:  TextStyle(color: Colours.color_111B44,fontSize: 13)),
+                ]
+            )
+
+        ),
+        // Text("本次对话$amount"),
+        const Expanded(child: Gaps.empty),
+        const LoadAssetImage("talk_time_img",width: 18,height: 18,),
+        Gaps.hGap6,
+        Text(time),
       ],
     );
   }
+
 }
 

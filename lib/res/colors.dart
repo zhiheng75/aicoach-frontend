@@ -57,6 +57,11 @@ class Colours {
   static const Color color_53C5FF = Color(0xff53C5FF);
   static const Color color_E0AEFF = Color(0xffE0AEFF);
 
+
+  static const Color color_700EF4D1 = Color(0x660EF4D1);
+  static const Color color_7053C5FF = Color(0x6653C5FF);
+  static const Color color_70E0AEFF = Color(0x66E0AEFF);
+
   static const Color color_111B44 = Color(0xff111B44);
 
   static const Color color_5B8BD2 = Color(0xff5B8BD2);
@@ -64,4 +69,8 @@ class Colours {
 
   static const Color color_30white = Color(0x4Dffffff);
   static const Color color_70white = Color(0x66ffffff);
+  static const Color color_00DFB3 = Color(0xFF00DFB3);
+  static const Color color_006CFF = Color(0xFF006CFF);
+  static const Color color_D74DFF = Color(0xFFD74DFF);
+  static const Color color_3389FF = Color(0xFF3389FF);
 }
