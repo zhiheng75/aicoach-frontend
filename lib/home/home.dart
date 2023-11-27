@@ -9,6 +9,7 @@ import 'package:spokid/home/provider/selecter_teacher_provider.dart';
 import 'package:spokid/home/view/home_view.dart';
 import 'package:spokid/home/widget/main_page_select_menu.dart';
 import 'package:spokid/home/widget/recommend_teacher_widget.dart';
+import 'package:spokid/person/person_router.dart';
 import 'package:spokid/res/dimens.dart';
 import 'package:spokid/routers/fluro_navigator.dart';
 import 'package:spokid/setting/setting_router.dart';
@@ -37,28 +38,31 @@ class _HomePageState extends State<HomePage>
     implements HomeView {
   List<SelectTeacherEntity> allTeacher = [];
   final GlobalKey _buttonKey = GlobalKey();
+
   /// 倒计时秒数
   final int _second = 180;
+
   /// 当前秒数
-  String _currentSecond="";
+  String _currentSecond = "";
 
   ///试用时间
   bool experienceTimeFinish = false;
 
   StreamSubscription<dynamic>? _subscription;
 
-  Future<dynamic> _countDown() async{
-    _subscription = Stream.periodic(const Duration(seconds: 1), (int i) => i).take(_second).listen((int i) {
+  Future<dynamic> _countDown() async {
+    _subscription = Stream.periodic(const Duration(seconds: 1), (int i) => i)
+        .take(_second)
+        .listen((int i) {
       setState(() {
-        experienceTimeFinish = (_second-i-1) == 0;
-        _currentSecond = TimeUtils.formatedTime(_second-i-1);
-        if(experienceTimeFinish){
+        experienceTimeFinish = (_second - i - 1) == 0;
+        _currentSecond = TimeUtils.formatedTime(_second - i - 1);
+        if (experienceTimeFinish) {
           // _showTimeOutBottomSheet();
         }
       });
     });
   }
-
 
   @override
   void initState() {
@@ -78,16 +82,20 @@ class _HomePageState extends State<HomePage>
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
           body: Container(
-        decoration:const BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colours.color_00FFB4,
-              Colours.color_0E90FF,
-              Colours.color_DA2FFF,
-            ],
-          ),
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Colours.color_00F3BD,
+                Colours.color_00BAFF,
+                Colours.color_AD4DFF,
+              ],
+              stops: [
+                0.0,
+                0.5,
+                1.0
+              ]),
         ),
         child: Stack(
           children: [
@@ -108,7 +116,9 @@ class _HomePageState extends State<HomePage>
               child: GestureDetector(
                   onTap: () {
                     // _showSelectMenu();
-                    NavigatorUtils.push(context, SettingRouter.settingPage);
+                    // NavigatorUtils.push(context, SettingRouter.settingPage);
+                    NavigatorUtils.push(
+                        context, PersonalRouter.personalPurchase);
                   },
                   child: LoadAssetImage(
                     "home_more_img",
@@ -119,23 +129,30 @@ class _HomePageState extends State<HomePage>
             ),
 
             Positioned(
-                right:20,
+                right: 20,
                 top: 68,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                   const LoadAssetImage("timer_img",width: 17,height: 17,),
+                    const LoadAssetImage(
+                      "timer_img",
+                      width: 17,
+                      height: 17,
+                    ),
                     Gaps.hGap6,
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         _showTimeOutBottomSheet();
                       },
                       child: SizedBox(
                         width: 100,
-                        child: Text(experienceTimeFinish?"试用期结束" : _currentSecond,style:const TextStyle(fontSize: Dimens.font_sp17,color: Colors.white),),
+                        child: Text(
+                          experienceTimeFinish ? "试用期结束" : _currentSecond,
+                          style: const TextStyle(
+                              fontSize: Dimens.font_sp17, color: Colors.white),
+                        ),
                       ),
                     )
-
                   ],
                 )),
 
@@ -145,32 +162,24 @@ class _HomePageState extends State<HomePage>
                   width: ScreenUtil.getScreenW(context),
                   alignment: Alignment.center,
                   child: GestureDetector(
-                    onTap: () {
-                      _showBottomSheet();
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: 300,
-                      height: 40,
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(100)),
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Colours.color_DA2FFF,
-                              Colours.color_0E90FF,
-                              Colours.color_00FFB4,
-                            ],
-                          )),
-                      // child: Center(
-                      child:const Text(
-                        "和Andy对话",
-                        style: TextStyle(color: Colors.white,fontSize: Dimens.font_sp18),
-                      ),
-                      // ),
-                    ),
-                  ),
+                      onTap: () {
+                        _showBottomSheet();
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 28, right: 28),
+                        height: 46,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: ImageUtils.getAssetImage(
+                                    "purchase_btn_img"),
+                                fit: BoxFit.fill)),
+                        child: const Center(
+                          child: Text(
+                            "与Andy对话",
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ),
+                      )),
                 ))
           ],
         ),
@@ -182,7 +191,7 @@ class _HomePageState extends State<HomePage>
   void _showBottomSheet() {
     HomeTeacherProvider provider = HomeTeacherProvider();
     showModalBottomSheet<void>(
-      backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
         context: context,
         enableDrag: false,
         isScrollControlled: true,
@@ -194,34 +203,42 @@ class _HomePageState extends State<HomePage>
             builder: (_, scrollController) {
               return Container(
                 decoration: const BoxDecoration(
-                    borderRadius:BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30)),
                     gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colours.color_0EF4D1,
-                        Colours.color_53C5FF,
-                        Colours.color_E0AEFF,
-                      ],
-                    )),
-                child:Column(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          Colours.color_0EF4D1,
+                          Colours.color_53C5FF,
+                          Colours.color_E0AEFF,
+                        ],
+                        stops: [
+                          0.0,
+                          0.7,
+                          1.0
+                        ])),
+                child: Column(
                   children: [
                     Padding(
-                      padding:const EdgeInsets.only(left: 20, right: 20,top: 20),
+                      padding:
+                          const EdgeInsets.only(left: 20, right: 20, top: 20),
                       child: Row(
                         children: [
-                        const  Text(
+                          const Text(
                             "选择自己喜欢的老师",
                             style: TextStyle(
                                 color: Colours.color_111B44,
-                                fontSize: Dimens.font_sp15),
+                                fontSize: Dimens.font_sp15,
+                                fontWeight: FontWeight.bold),
                           ),
-                         const Expanded(child: Gaps.empty),
+                          const Expanded(child: Gaps.empty),
                           GestureDetector(
-                            onTap: (){
+                            onTap: () {
                               NavigatorUtils.goBack(context);
                             },
-                            child:const LoadAssetImage(
+                            child: const LoadAssetImage(
                               "close_img",
                               width: 15,
                               height: 15,
@@ -232,8 +249,8 @@ class _HomePageState extends State<HomePage>
                     ),
                     Expanded(
                         child: Container(
-                      padding:
-                          const EdgeInsets.only(left: 20, right: 20, top: 20,bottom: 10),
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 20, bottom: 10),
                       child: GridView.builder(
                           itemCount: allTeacher.length,
                           gridDelegate:
@@ -247,54 +264,44 @@ class _HomePageState extends State<HomePage>
                             mainAxisExtent: 150,
                           ),
                           itemBuilder: (BuildContext ctx, int index) {
-                    return RecommendTeacherWidget(allTeacher[index],
-                            () {
-                          provider.setSelectIndex(index);
-                        }, provider);
-                  }),
-                    )
-                        ),
-
+                            return RecommendTeacherWidget(allTeacher[index],
+                                () {
+                              provider.setSelectIndex(index);
+                            }, provider);
+                          }),
+                    )),
                     Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: GestureDetector(
-                          onTap: (){
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: GestureDetector(
+                          onTap: () {
                             NavigatorUtils.goBack(context);
                           },
                           child: Container(
-                            alignment: Alignment.center,
-                            width: 300,
-                            height: 40,
-                            decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(100)),
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Colours.color_DA2FFF,
-                                    Colours.color_0E90FF,
-                                    Colours.color_00FFB4,
-                                  ],
-                                )),
-                            // child: Center(
-                            child: const Text(
-                              "确定",
-                              style: TextStyle(color: Colors.white,fontSize: Dimens.font_sp18),
+                            margin: const EdgeInsets.only(left: 28, right: 28),
+                            height: 46,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: ImageUtils.getAssetImage(
+                                        "purchase_btn_img"),
+                                    fit: BoxFit.fill)),
+                            child: const Center(
+                              child: Text(
+                                "确定",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
                             ),
-                            // ),
-                          ),
-                        )),
+                          )),
+                    ),
                     Gaps.vGap24,
                   ],
-                ) ,
-              )
-                ;
+                ),
+              );
             }));
   }
 
   //体验期结束的弹窗
-  void _showTimeOutBottomSheet(){
+  void _showTimeOutBottomSheet() {
     showModalBottomSheet<void>(
         backgroundColor: Colors.transparent,
         context: context,
@@ -307,9 +314,10 @@ class _HomePageState extends State<HomePage>
             expand: false,
             builder: (_, scrollController) {
               return Container(
-
                 decoration: const BoxDecoration(
-                    borderRadius:BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30)),
                     gradient: LinearGradient(
                       begin: Alignment.topRight,
                       end: Alignment.bottomLeft,
@@ -320,12 +328,12 @@ class _HomePageState extends State<HomePage>
                       ],
                       stops: [0.0, 0.4, 1.0],
                     )),
-                child:Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Padding(
-                      padding: EdgeInsets.only(left: 20, right: 20,top: 50),
+                      padding: EdgeInsets.only(left: 20, right: 20, top: 50),
                       child: Text(
                         "体验到期, 与你的专属AI外教开启学习之旅",
                         style: TextStyle(
@@ -334,7 +342,7 @@ class _HomePageState extends State<HomePage>
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.only(left: 20, right: 20,top: 16),
+                      padding: EdgeInsets.only(left: 20, right: 20, top: 16),
                       child: Text(
                         "赠送的体验时长已经使用完成，\n升级会员后,可查看完整的个性化学习报告。",
                         style: TextStyle(
@@ -342,16 +350,16 @@ class _HomePageState extends State<HomePage>
                             fontSize: Dimens.font_sp13),
                       ),
                     ),
-
                     Container(
-                      margin:const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 20),
-                      padding: const EdgeInsets.only(left: 16,right: 16),
+                      margin: const EdgeInsets.only(
+                          left: 20, right: 20, top: 20, bottom: 20),
+                      padding: const EdgeInsets.only(left: 16, right: 16),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: ImageUtils.getAssetImage(
-                              "experience_board_img",),
-                            fit: BoxFit.fill
-                        ),
+                              "experience_board_img",
+                            ),
+                            fit: BoxFit.fill),
                       ),
                       child: Column(
                         children: [
@@ -373,7 +381,7 @@ class _HomePageState extends State<HomePage>
                     Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20),
                         child: GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             NavigatorUtils.goBack(context);
                           },
                           child: Container(
@@ -382,7 +390,7 @@ class _HomePageState extends State<HomePage>
                             height: 40,
                             decoration: const BoxDecoration(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(100)),
+                                    BorderRadius.all(Radius.circular(100)),
                                 gradient: LinearGradient(
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
@@ -395,16 +403,17 @@ class _HomePageState extends State<HomePage>
                             // child: Center(
                             child: const Text(
                               "查看会员升级方案",
-                              style: TextStyle(color: Colors.white,fontSize: Dimens.font_sp18),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: Dimens.font_sp18),
                             ),
                             // ),
                           ),
                         )),
                     Gaps.vGap24,
                   ],
-                ) ,
-              )
-              ;
+                ),
+              );
             }));
   }
 
@@ -423,17 +432,24 @@ class _HomePageState extends State<HomePage>
       anchor: button,
       child: MainPageSelectMenu(() {
         NavigatorUtils.goBack(context);
-
       }),
     );
   }
 
-  Widget categoryWidget(String content){
+  Widget categoryWidget(String content) {
     return Row(
       children: [
-        const LoadAssetImage("experience_check_img",width: 12,height: 12,),
+        const LoadAssetImage(
+          "experience_check_img",
+          width: 12,
+          height: 12,
+        ),
         Gaps.hGap6,
-        Text(content,style:const TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_111B44),)
+        Text(
+          content,
+          style: const TextStyle(
+              fontSize: Dimens.font_sp14, color: Colours.color_111B44),
+        )
       ],
     );
   }
@@ -448,7 +464,6 @@ class _HomePageState extends State<HomePage>
 
   @override
   bool get wantKeepAlive => true;
-
 
   @override
   void dispose() {

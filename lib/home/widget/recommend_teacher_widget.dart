@@ -4,6 +4,7 @@ import 'package:spokid/res/colors.dart';
 import 'package:spokid/res/gaps.dart';
 import 'package:spokid/widgets/load_image.dart';
 
+import '../../util/image_utils.dart';
 import '../model/select_teacher_entity.dart';
 import '../provider/selecter_teacher_provider.dart';
 

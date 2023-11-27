@@ -47,7 +47,7 @@ class _AgreementDialogState extends State<AgreementDialog> {
               Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("请阅读并同意", style: TextStyle(fontSize: 12),),
+                const Text("请阅读并同意", style: TextStyle(fontSize: 12, color: Colours.color_546092,),),
                 GestureDetector(
                   onTap: () {
                     NavigatorUtils.goWebViewPage(context, "隐私政策",
@@ -56,13 +56,14 @@ class _AgreementDialogState extends State<AgreementDialog> {
                   child: const Text("隐私政策", style: TextStyle(
                       fontSize: 12, decoration: TextDecoration.underline)),
                 ),
-                Text("和", style: TextStyle(fontSize: 12),),
+                const Text("和", style: TextStyle(fontSize: 12, color: Colours.color_546092,),),
                 GestureDetector(
                   onTap: () {
                     NavigatorUtils.goWebViewPage(
                         context, "服务协议", "http://www.shenmo-ai.com/tos/");
                   },
                   child: const Text("服务协议", style: TextStyle(
+                      color: Colours.color_546092,
                       fontSize: 12, decoration: TextDecoration.underline),),
                 ),
               ],
