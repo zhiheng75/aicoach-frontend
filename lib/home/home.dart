@@ -12,6 +12,8 @@ import 'package:Bubble/home/widget/recommend_teacher_widget.dart';
 import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import '../conversation/conversation_router.dart';
+import '../conversation/model/character_entity.dart';
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
 import '../res/gaps.dart';

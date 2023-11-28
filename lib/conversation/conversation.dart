@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:spokid/conversation/presenter/conversation_page_presenter.dart';
-import 'package:spokid/conversation/view/conversation_view.dart';
-import 'package:spokid/mvp/base_page.dart';
+import 'package:Bubble/conversation/presenter/conversation_page_presenter.dart';
+import 'package:Bubble/conversation/view/conversation_view.dart';
+import 'package:Bubble/mvp/base_page.dart';
 import 'model/character_entity.dart';
 import 'provider/conversation_provider.dart';
 import 'widget/chat.dart';

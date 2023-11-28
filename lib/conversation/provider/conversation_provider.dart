@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:spokid/net/dio_utils.dart';
+import 'package:Bubble/net/dio_utils.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:xml2json/xml2json.dart';
 import 'package:path_provider/path_provider.dart';

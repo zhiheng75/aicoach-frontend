@@ -27,7 +27,7 @@
         tools:ignore="QueryAllPackagesPermission" />
 
     <application
-        android:label="spokid"
+        android:label="Bubble"
         android:name="com.shenmo.spokid.SpokidApp"
         android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:icon,android:theme"

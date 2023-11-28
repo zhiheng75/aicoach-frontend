@@ -19,8 +19,10 @@ class StudyReportWidget extends StatefulWidget {
 class _StudyReportWidgetState extends State<StudyReportWidget> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: widget._press(),
+    return InkWell(
+      onTap: (){
+        widget._press();
+      },
       child: Container(
         margin:const EdgeInsets.only(bottom: 20),
         height: 100,
