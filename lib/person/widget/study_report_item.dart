@@ -25,7 +25,6 @@ class _StudyReportWidgetState extends State<StudyReportWidget> {
       },
       child: Container(
         margin:const EdgeInsets.only(bottom: 20),
-        height: 100,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(20.0)),
           border: Border.all(

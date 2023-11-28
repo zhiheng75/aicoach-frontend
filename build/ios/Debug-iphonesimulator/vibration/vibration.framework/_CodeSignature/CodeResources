@@ -18,7 +18,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		txuylLR2EkVxPvlk5wL8qiLOsqc=
+		IHC/soXHOq8reqoFFz2vgF98e8g=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -26,11 +26,11 @@
 		</data>
 		<key>Modules/vibration.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		SDMD7HZbDP6jjpTXKkXJundierI=
+		uUaVR5b6AhMyKUF7m5mpmjaIRMI=
 		</data>
 		<key>Modules/vibration.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		LU0Tadfi4gZiTGtYw5JmWWY22xE=
+		dYjdFrNZ82VvfadISfjpPRhOwqU=
 		</data>
 		<key>Modules/vibration.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -42,7 +42,7 @@
 		</data>
 		<key>Modules/vibration.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		v4yPOJ1QHtvVn7/wRw05SzY3R64=
+		Y/5OgaNcPEE3Z4CtB0wDYoaCeqo=
 		</data>
 		<key>Modules/vibration.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -54,7 +54,7 @@
 		</data>
 		<key>Modules/vibration.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		V7Zgq/lCRb6C14/i/pSv7rGsujg=
+		LlNmGgAnprs4nIMJsxQGYZkmdKw=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -91,14 +91,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Pl04q7LNTKlJAu96WjDFH+m5WzIryIsgUglNfyatrbs=
+			6kdDd412xzvrblNtpiZP4OFjVGIi3rJPNX2qwH2lTx4=
 			</data>
 		</dict>
 		<key>Modules/vibration.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			K2zI2QTkp76k8qcG6XXjfGR3eMan4jiDloMTUglNhGE=
+			3ChvdXw9gNOS3DPYMG7PzO6dF6s+GWD48oRoHLK/+cs=
 			</data>
 		</dict>
 		<key>Modules/vibration.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
@@ -119,7 +119,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			YVRLKzSoD88AzJOpR+Tl4vO+Mg9qni/60n61LuFaUSo=
+			dcQdfIUp6p/rIE0BjLtjViq5PuSisa1X8blCyk+GLMc=
 			</data>
 		</dict>
 		<key>Modules/vibration.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
@@ -140,7 +140,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			bxau8wK1Kn9D4JtUutYN+wyRGDP+r14nK2bkkeyci5w=
+			5+nxV0emwyauQg0zL3OgyiffvmcBLXccZrj9EFDy+6c=
 			</data>
 		</dict>
 	</dict>
