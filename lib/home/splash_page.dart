@@ -1,12 +1,13 @@
 import 'dart:async';
 
+import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:spokid/home/home_router.dart';
+import 'package:Bubble/home/home_router.dart';
 import 'package:sp_util/sp_util.dart';
-import 'package:spokid/widgets/my_app_bar.dart';
+import 'package:Bubble/widgets/my_app_bar.dart';
 import '../dialog/agreement_dialog.dart';
 import '../login/login_router.dart';
 import '../util/theme_utils.dart';
@@ -35,7 +36,6 @@ class _SplashPageState extends State<SplashPage> {
       await Device.initDeviceInfo();
       _initSplash();
     });
-
   }
 
   @override
@@ -44,51 +44,68 @@ class _SplashPageState extends State<SplashPage> {
     super.dispose();
   }
 
-
-
   void _initSplash() {
-    _subscription = Stream.value(1).delay(const Duration(milliseconds: 1000)).listen((_) {
-      bool hasAgree = SpUtil.getBool(Constant.agreement, defValue: false)??false;
-      if(hasAgree){
+    _subscription =
+        Stream.value(1).delay(const Duration(milliseconds: 1000)).listen((_) {
+      bool hasAgree =
+          SpUtil.getBool(Constant.agreement, defValue: false) ?? false;
+      if (hasAgree) {
         _gotoHome();
-      }else{
+      } else {
         _showAgreement();
       }
-
     });
   }
-
 
   void _showAgreement() {
     showDialog<void>(
         context: context,
         barrierDismissible: false,
-        builder: (_) => AgreementDialog((){
-          _gotoHome();
-        })
-    );
+        builder: (_) => AgreementDialog(() {
+          SpUtil.putBool(Constant.agreement,true);
+              _gotoHome();
+            }));
   }
 
-
-
-
-  void _gotoHome(){
-    NavigatorUtils.push(context, HomeRouter.homePage,replace: true);
+  void _gotoHome() {
+    NavigatorUtils.push(context, HomeRouter.homePage, replace: true);
   }
 
   @override
   Widget build(BuildContext context) {
-    return const AnnotatedRegion<SystemUiOverlayStyle>(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.dark,
         child: Scaffold(
-
-          body: FractionallyAlignedSizedBox(
-              heightFactor: 0.3,
-              widthFactor: 0.33,
-              leftFactor: 0.33,
-              bottomFactor: 0,
-              child: LoadAssetImage('test_banner_img')),
-        )
-        );
+            body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: ImageUtils.getAssetImage("splash_bg"),
+                  fit: BoxFit.fill)),
+          child: const FractionallyAlignedSizedBox(
+            heightFactor: 0.3,
+            widthFactor: 0.6,
+            leftFactor: 0.2,
+            bottomFactor: 0.5,
+            child: Column(
+              children: [
+                LoadAssetImage(
+                  "splash_icon",
+                  width: 300,
+                ),
+                Text(
+                  "欢迎加入BuBBle AI语伴",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                )
+              ],
+            ),
+          ),
+        )));
   }
+
+//FractionallyAlignedSizedBox(
+//                 heightFactor: 0.3,
+//                 widthFactor: 0.33,
+//                 leftFactor: 0.33,
+//                 bottomFactor: 0,
+//                 child: LoadAssetImage('test_banner_img'))
 }

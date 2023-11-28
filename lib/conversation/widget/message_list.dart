@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spokid/conversation/provider/conversation_provider.dart';
-import 'package:spokid/res/colors.dart';
+import 'package:Bubble/conversation/provider/conversation_provider.dart';
+import 'package:Bubble/res/colors.dart';
 
 class MessageList extends StatefulWidget {
   const MessageList({Key? key}) : super(key: key);

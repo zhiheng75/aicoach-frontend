@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:spokid/routers/fluro_navigator.dart';
-import 'package:spokid/widgets/load_image.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/widgets/load_image.dart';
 
 import '../../res/colors.dart';
 

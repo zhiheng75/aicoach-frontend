@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:spokid/res/gaps.dart';
-import 'package:spokid/routers/fluro_navigator.dart';
+import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 
 import '../res/colors.dart';
+import '../util/image_utils.dart';
 
 class AgreementDialog extends StatefulWidget {
 
@@ -26,73 +26,74 @@ class _AgreementDialogState extends State<AgreementDialog> {
         body: Center(
           child:
           Container(
-            padding: EdgeInsets.only(top: 30, bottom: 15, left: 20, right: 20),
-            width: 300,
-            height: 120,
+            padding:const EdgeInsets.only(top: 30, bottom: 15, left: 20, right: 20),
+            width: 330,
+            height: 180,
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(30)),
                 gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
                   colors: [
-                    Colours.color_5B8BD2,
-                    Colours.color_00E6D0,
+                    Colours.color_0EF4D1,
+                    Colours.color_53C5FF,
+                    Colours.color_E0AEFF,
                   ],
+                  stops: [0.0,0.7,1.0]
                 )
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
+                Gaps.vGap30,
               Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("请阅读并同意", style: TextStyle(fontSize: 12, color: Colours.color_546092,),),
+                const Text("请阅读并同意", style: TextStyle(fontSize: 17, color: Colours.color_111B44,),),
                 GestureDetector(
                   onTap: () {
                     NavigatorUtils.goWebViewPage(context, "隐私政策",
                         "http://www.shenmo-ai.com/privacy_policy/");
                   },
                   child: const Text("隐私政策", style: TextStyle(
-                      fontSize: 12, decoration: TextDecoration.underline)),
+                      color: Colours.color_111B44,
+                      fontSize: 17, decoration: TextDecoration.underline)),
                 ),
-                const Text("和", style: TextStyle(fontSize: 12, color: Colours.color_546092,),),
+                const Text("和", style: TextStyle(fontSize: 17, color: Colours.color_111B44,),),
                 GestureDetector(
                   onTap: () {
                     NavigatorUtils.goWebViewPage(
                         context, "服务协议", "http://www.shenmo-ai.com/tos/");
                   },
                   child: const Text("服务协议", style: TextStyle(
-                      color: Colours.color_546092,
-                      fontSize: 12, decoration: TextDecoration.underline),),
+                      color: Colours.color_111B44,
+                      fontSize: 17, decoration: TextDecoration.underline),),
                 ),
               ],
             ),
-            Gaps.vGap24,
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                GestureDetector(
-                onTap: ()
-            {
-            NavigatorUtils.goBack(context);
-            widget._confirmPress();
-            },
+                Gaps.vGap24,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        NavigatorUtils.goBack(context);
+                        widget._confirmPress();
+                      },
             child: Container(
-              width: 80,
-              height: 30,
+              width: 125,
+              height: 40,
               decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(50),
-                      bottomLeft: Radius.circular(50)),
-                  border: Border.all(
-                    width: 1,
-                    color: Colours.bg_color,
-                  )
+                image: DecorationImage(
+                    image: ImageUtils.getAssetImage(
+                      "confirm_bg1",),
+                    fit: BoxFit.fill
+                ),
               ),
 
               child:const Center(
-                child:Text("确定", style: TextStyle(fontSize: 10),) ,
+                child:Text("确定", style: TextStyle(fontSize: 13,color: Colours.color_3389FF),) ,
               ) ,
             ),
           ),
@@ -103,28 +104,17 @@ class _AgreementDialogState extends State<AgreementDialog> {
               await SystemNavigator.pop();
             },
             child: Container(
-              width: 80,
-              height: 30,
+              width: 125,
+              height:40,
                 decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(50),
-                        bottomRight: Radius.circular(50)),
-                    gradient: const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colours.color_0EF4D1,
-                        Colours.color_53C5FF,
-                        Colours.color_E0AEFF,
-                      ],
-                    ),
-                    border: Border.all(
-                      width: 1,
-                      color: Colours.bg_color,
-                    )
+                  image: DecorationImage(
+                      image: ImageUtils.getAssetImage(
+                        "cancel_bg1",),
+                      fit: BoxFit.fill
+                  ),
                 ),
                 child:const Center(
-                  child: Text("再想一想",style: TextStyle(fontSize: 10),),
+                  child: Text("再想一想",style: TextStyle(fontSize: 13,color: Colors.white),),
                 ),
         ),
       ),

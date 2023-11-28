@@ -1,5 +1,6 @@
 class Dimens {
   static const double font_sp10 = 10.0;
+  static const double font_sp11 = 11.0;
   static const double font_sp12 = 12.0;
   static const double font_sp13 = 13.0;
   static const double font_sp14 = 14.0;
@@ -29,5 +30,6 @@ class Dimens {
   static const double gap_dp32 = 32;
   static const double gap_dp40 = 40;
   static const double gap_dp50 = 50;
+  static const double gap_dp60 = 60;
   static const double gap_dp100 = 100;
 }

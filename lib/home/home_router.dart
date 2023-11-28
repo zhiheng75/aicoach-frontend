@@ -1,5 +1,5 @@
 import 'package:fluro/fluro.dart';
-import 'package:spokid/home/home.dart';
+import 'package:Bubble/home/home.dart';
 
 import '../routers/i_router.dart';
 

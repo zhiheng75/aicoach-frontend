@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spokid/res/colors.dart';
-import 'package:spokid/res/gaps.dart';
-import 'package:spokid/widgets/load_image.dart';
+import 'package:Bubble/res/colors.dart';
+import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/widgets/load_image.dart';
 
 import '../../util/image_utils.dart';
 import '../model/select_teacher_entity.dart';

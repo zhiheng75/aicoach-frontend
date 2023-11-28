@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:spokid/login/login_router.dart';
-import 'package:spokid/report/report_router.dart';
-import 'package:spokid/routers/fluro_navigator.dart';
+import 'package:Bubble/login/login_router.dart';
+import 'package:Bubble/report/report_router.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 
 import '../../res/colors.dart';
 import '../../setting/widgets/update_dialog.dart';

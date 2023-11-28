@@ -4,14 +4,13 @@ import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:spokid/report/widget/radar_map.dart';
-import 'package:spokid/res/dimens.dart';
-import 'package:spokid/widgets/my_app_bar.dart';
-import 'package:spokid/widgets/my_scroll_view.dart';
+import 'package:Bubble/report/widget/radar_map.dart';
+import 'package:Bubble/res/dimens.dart';
+import 'package:Bubble/widgets/my_app_bar.dart';
+import 'package:Bubble/widgets/my_scroll_view.dart';
 
 import '../res/colors.dart';
 import '../res/gaps.dart';
-import '../routers/fluro_navigator.dart';
 import '../util/image_utils.dart';
 import '../util/time_utils.dart';
 import '../widgets/load_image.dart';

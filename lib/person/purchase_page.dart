@@ -1,10 +1,10 @@
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:spokid/res/gaps.dart';
-import 'package:spokid/util/toast_utils.dart';
-import 'package:spokid/widgets/my_scroll_view.dart';
+import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/widgets/my_scroll_view.dart';
 
+import '../method/fluter_native.dart';
 import '../res/colors.dart';
 import '../res/dimens.dart';
 import '../routers/fluro_navigator.dart';
@@ -126,7 +126,7 @@ class _PurchasePageState extends State<PurchasePage> {
                   Gaps.vGap32,
                   GestureDetector(
                     onTap: (){
-                      Toast.show("开通");
+                      FlutterToNative.jumpToWechatPay();
                     },
                     child: Container(
                       height: 46,

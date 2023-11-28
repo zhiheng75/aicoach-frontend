@@ -4,17 +4,16 @@ import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:spokid/conversation/conversation_router.dart';
-import 'package:spokid/conversation/model/character_entity.dart';
-import 'package:spokid/home/presenter/home_page_presenter.dart';
-import 'package:spokid/home/provider/selecter_teacher_provider.dart';
-import 'package:spokid/home/view/home_view.dart';
-import 'package:spokid/home/widget/main_page_select_menu.dart';
-import 'package:spokid/home/widget/recommend_teacher_widget.dart';
-import 'package:spokid/person/person_router.dart';
-import 'package:spokid/res/dimens.dart';
-import 'package:spokid/routers/fluro_navigator.dart';
-import 'package:spokid/setting/setting_router.dart';
+import 'package:Bubble/home/presenter/home_page_presenter.dart';
+import 'package:Bubble/home/provider/selecter_teacher_provider.dart';
+import 'package:Bubble/home/view/home_view.dart';
+import 'package:Bubble/home/widget/main_page_select_menu.dart';
+import 'package:Bubble/home/widget/recommend_teacher_widget.dart';
+import 'package:Bubble/person/person_router.dart';
+import 'package:Bubble/res/dimens.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
+import '../conversation/conversation_router.dart';
+import '../conversation/model/character_entity.dart';
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
 import '../res/gaps.dart';
@@ -50,6 +49,8 @@ class _HomePageState extends State<HomePage>
   ///试用时间
   bool experienceTimeFinish = false;
 
+  bool startCountDown = false;
+
   StreamSubscription<dynamic>? _subscription;
 
   Future<dynamic> _countDown() async {
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomePage>
         experienceTimeFinish = (_second - i - 1) == 0;
         _currentSecond = TimeUtils.formatedTime(_second - i - 1);
         if (experienceTimeFinish) {
-          // _showTimeOutBottomSheet();
+          _showTimeOutBottomSheet();
         }
       });
     });
@@ -73,7 +74,7 @@ class _HomePageState extends State<HomePage>
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
           overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
     });
-    _countDown();
+
   }
 
   @override
@@ -120,7 +121,7 @@ class _HomePageState extends State<HomePage>
                     // _showSelectMenu();
                     // NavigatorUtils.push(context, SettingRouter.settingPage);
                     NavigatorUtils.push(
-                        context, PersonalRouter.personalPurchase);
+                        context, PersonalRouter.personalCenter);
                   },
                   child: LoadAssetImage(
                     "home_more_img",
@@ -294,6 +295,8 @@ class _HomePageState extends State<HomePage>
                                 arguments: entity,
                               );
                             });
+                            startCountDown = true;
+                            _countDown();
                           },
                           child: Container(
                             margin: const EdgeInsets.only(left: 28, right: 28),
@@ -402,6 +405,7 @@ class _HomePageState extends State<HomePage>
                         child: GestureDetector(
                           onTap: () {
                             NavigatorUtils.goBack(context);
+                            NavigatorUtils.push(context, PersonalRouter.personalPurchase);
                           },
                           child: Container(
                             alignment: Alignment.center,

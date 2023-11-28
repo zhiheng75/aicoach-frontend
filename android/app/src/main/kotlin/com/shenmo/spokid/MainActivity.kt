@@ -4,17 +4,18 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.NonNull
+import cn.com.chinatelecom.account.api.CtAuth.mContext
 import cn.jiguang.verifysdk.api.JVerificationInterface
 import cn.jiguang.verifysdk.api.JVerifyUIConfig
 import com.shenmo.spokid.entity.WechatBean
 import com.tencent.mm.opensdk.modelmsg.SendAuth
+import com.tencent.mm.opensdk.modelpay.PayReq
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -23,6 +24,7 @@ import io.flutter.plugin.common.MethodChannel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+
 
 class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
 
@@ -58,7 +60,48 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
             req.scope = "snsapi_userinfo"
             req.state = "wx_login"
             sWxApi.sendReq(req)
-        }else if(call.method == "keyLogin"){
+        }else if(call.method == "jumpToWechatPay"){
+
+            /**
+             * 微信支付
+             *
+             * @param partnerId               商户号
+             * @param prepayId                预支付交易会话ID
+             * @param nonceStr                随机字符串
+             * @param timeStamp               时间戳
+             * @param sign                    签名
+             */
+            call.arguments?.apply {
+                val partnerId: String
+                val prepayId: String
+                val nonceStr: String
+                val timeStamp: String
+                val sign: String
+                if (this is Map<*,*>&&this.isNotEmpty()){
+                    partnerId =  this["partnerId"]?.toString()?:""
+                    prepayId =  this["prepayId"]?.toString()?:""
+                    nonceStr =  this["nonceStr"]?.toString()?:""
+                    timeStamp =  this["timeStamp"]?.toString()?:""
+                    sign =  this["sign"]?.toString()?:""
+
+                    val sWxApi = WXAPIFactory.createWXAPI(this@MainActivity, BuildConfig.WXID, false)
+                    sWxApi.registerApp(BuildConfig.WXID)
+                    val req = PayReq()
+                    req.appId = BuildConfig.WXID
+                    req.partnerId = partnerId
+                    req.prepayId = prepayId
+                    req.nonceStr = nonceStr
+                    req.timeStamp = timeStamp
+                    req.packageValue = "Sign=WXPay"
+                    req.sign = sign
+                    sWxApi.sendReq(req) //发起调用微信支付了
+
+                }
+            }
+
+        }
+
+        else if(call.method == "keyLogin"){
             JVerificationInterface.setCustomUIWithConfig(
                 getDialogPortraitConfig(),
             )

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spokid/conversation/provider/conversation_provider.dart';
-import 'package:spokid/conversation/widget/chat_input.dart';
-import 'package:spokid/conversation/widget/create_scene.dart';
-import 'package:spokid/conversation/widget/message_list.dart';
-import 'package:spokid/conversation/widget/scene.dart';
-import 'package:spokid/routers/fluro_navigator.dart';
-import 'package:spokid/widgets/load_image.dart';
+import 'package:Bubble/conversation/provider/conversation_provider.dart';
+import 'package:Bubble/conversation/widget/chat_input.dart';
+import 'package:Bubble/conversation/widget/create_scene.dart';
+import 'package:Bubble/conversation/widget/message_list.dart';
+import 'package:Bubble/conversation/widget/scene.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/widgets/load_image.dart';
 
 class Chat extends StatefulWidget {
   const Chat({Key? key}) : super(key: key);

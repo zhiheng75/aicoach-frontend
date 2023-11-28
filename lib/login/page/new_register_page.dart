@@ -1,10 +1,10 @@
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:spokid/login/entity/wx_info_entity.dart';
-import 'package:spokid/login/presenter/register_presenter.dart';
-import 'package:spokid/login/view/register_view.dart';
-import 'package:spokid/widgets/load_image.dart';
+import 'package:Bubble/login/entity/wx_info_entity.dart';
+import 'package:Bubble/login/presenter/register_presenter.dart';
+import 'package:Bubble/login/view/register_view.dart';
+import 'package:Bubble/widgets/load_image.dart';
 
 import '../../home/home_router.dart';
 import '../../method/fluter_native.dart';
