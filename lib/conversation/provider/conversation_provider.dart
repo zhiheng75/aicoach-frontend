@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, unnecessary_getters_setters
+// ignore_for_file: prefer_final_fields, unnecessary_getters_setters, slash_for_doc_comments, argument_type_not_assignable_to_error_handler
 
 import 'dart:convert';
 import 'dart:io';
@@ -6,11 +6,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:spokid/net/dio_utils.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:xml2json/xml2json.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../utils/xunfei_util.dart';
 
+/** 讯飞评测 start */
 List<Map<String, dynamic>> getTaskList(Message message) {
   List<Map<String, dynamic>> taskList = [];
   taskList.add(XunfeiUtil.createFrameDataForEvaluation(0, text: message.text));
@@ -41,24 +41,9 @@ void onData(dynamic event, Function(Map<String, dynamic>) callback) {
   if (result['status'] != 2) {
     return;
   }
-  // 获取评测结果（base64解密->xml转json->json转map）
-  String xmlString = utf8.decode(base64.decode(result['data']));
-  Xml2Json xml2json = Xml2Json();
-  xml2json.parse(xmlString);
-  String json = xml2json.toOpenRally();
-  Map<String, dynamic> evaluation = jsonDecode(json);
-
-  if (evaluation['xml_result'] != null) {
-    Map<String, dynamic> xmlResult = evaluation['xml_result'];
-    if (xmlResult['read_sentence'] != null) {
-      Map<String, dynamic> readSentence = xmlResult['read_sentence'];
-      if (readSentence['rec_paper'] != null) {
-        Map<String, dynamic> recPaper = readSentence['rec_paper'];
-        if (recPaper['read_chapter'] != null) {
-          callback(recPaper['read_chapter']);
-        }
-      }
-    }
+  Map<String, dynamic>? evaluation = XunfeiUtil.getEvaluateResult(response);
+  if (evaluation != null) {
+    callback(evaluation);
   }
 }
 
@@ -190,23 +175,38 @@ void saveAsWav(List<int> data) async {
   recordedFile.writeAsBytesSync(header, flush: true);
   txtdFile.writeAsString(base64.encode(data));
 }
+/** 讯飞评测 end */
 
 class ConversationProvider extends ChangeNotifier {
 
   String _sessionId = '';
   List<Message> _messageList = [];
+  bool _showTranslation = false;
 
   String get sessionId => _sessionId;
   set sessionId(String sessionId) => _sessionId = sessionId;
   List<Message> get messageList => _messageList;
   set messageList(List<Message> messageList) => _messageList = messageList;
+  bool get showTranslation => _showTranslation;
 
   void appendMessage(Message message) {
+    _messageList.add(message);
+    notifyListeners();
     // 评测
     if (message.speaker == 'user') {
       evaluate(_sessionId, message);
     }
-    _messageList.add(message);
+    // 翻译
+    message.translate();
+  }
+
+  void openTranslation() {
+    _showTranslation = true;
+    notifyListeners();
+  }
+
+  void closeTranslation() {
+    _showTranslation = false;
     notifyListeners();
   }
 
@@ -224,10 +224,12 @@ class Message {
   String _text = '';
   String _translation = '';
   List<Uint8List> _audio = [];
+  bool _isTranslate = false;
 
   String get speaker => _speaker;
   String get text => _text;
   String get translation => _translation;
+  bool get isTranslate => _isTranslate;
   List<Uint8List> get audio => _audio;
 
   set speaker(String speaker) => _speaker = speaker;
@@ -240,5 +242,57 @@ class Message {
     _audio.addAll(audio);
   }
 
-  void translate() {}
+  void translate() async {
+    if (_isTranslate) {
+      return;
+    }
+    _isTranslate = true;
+    Map<String, dynamic> body = XunfeiUtil.createBodyForTranslation(_text);
+    String bodySignature = XunfeiUtil.getBodySignatureForTranslation(body);
+    String date = HttpDate.format(DateTime.now());
+    String authorization = XunfeiUtil.getTranslateAuthorization(date, bodySignature);
+    try {
+      Response response = await Dio().post(
+        'https://itrans.xfyun.cn/v2/its',
+        data: body,
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json,version=1.0',
+              'Host': 'itrans.xfyun.cn',
+              'Date': date,
+              'Digest': 'SHA-256=$bodySignature',
+              'Authorization': authorization,
+            }
+        ),
+      );
+      if (response.statusCode == 200) {
+        dynamic result = response.data;
+        if (result['code'] == 0) {
+          Map<String, dynamic> data = (result['data'] ?? {}) as Map<String, dynamic>;
+          if (data.containsKey('result')) {
+            Map<String, dynamic> translation = (data['result'] ?? {}) as Map<String, dynamic>;
+            if (translation.containsKey('trans_result')) {
+              Map<String, dynamic> transResult = (translation['trans_result'] ?? {}) as Map<String, dynamic>;
+              if (transResult['dst'] != null && transResult['dst'] != '') {
+                _translation = transResult['dst'];
+                return;
+              }
+              throw Exception('翻译失败');
+            }
+            throw Exception('翻译失败');
+          }
+          throw Exception('翻译失败');
+        }
+        throw Exception(result['message']);
+      }
+      throw Exception(response.statusMessage);
+    } catch (e) {
+      if (kDebugMode) {
+        print('调用讯飞翻译失败，原因：${e.toString()}');
+      }
+    } finally {
+      _isTranslate = false;
+    }
+  }
 }

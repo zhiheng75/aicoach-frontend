@@ -68,13 +68,13 @@ class _MessageListState extends State<MessageList> {
                               height: 1,
                             ),
                           ),
-                          if (message.translation != '')
+                          if (provider.showTranslation)
                             Padding(
                               padding: const EdgeInsets.only(
                                 top: 10.0,
                               ),
                               child: Text(
-                                message.translation,
+                                message.isTranslate ? '翻译中...' : (message.translation != '' ? message.translation : '翻译失败，请重新翻译'),
                                 style: TextStyle(
                                   fontSize: 12.0,
                                   color: Colours.hex2color('#111B44'),

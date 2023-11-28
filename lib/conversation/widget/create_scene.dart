@@ -19,6 +19,7 @@ class CreateScene extends StatefulWidget {
 
 class _CreateScenState extends State<CreateScene> {
   final TextEditingController controller = TextEditingController();
+  final ValueNotifier<int> canCreate = ValueNotifier(0);
 
   void createScene() {
     // if (controller.text == '') {
@@ -68,7 +69,7 @@ class _CreateScenState extends State<CreateScene> {
     bottomButton({
       required String text,
       Widget? icon,
-      Gradient? gradient,
+      required ImageProvider bgImage,
       required Function() onPress
     }) {
       return GestureDetector(
@@ -77,7 +78,10 @@ class _CreateScenState extends State<CreateScene> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14.0),
-            gradient: gradient,
+            image: DecorationImage(
+              image: bgImage,
+              fit: BoxFit.fill,
+            ),
           ),
           padding: const EdgeInsets.symmetric(
             horizontal: 20.0,
@@ -195,12 +199,19 @@ class _CreateScenState extends State<CreateScene> {
                             height: 14.0,
                             fit: BoxFit.fill,
                           ),
+                          bgImage: const AssetImage('assets/images/suijihuati_bt.png'),
                           onPress: createRandomScene,
                         ),
-                        bottomButton(
-                          text: '确定',
-                          onPress: createScene,
-                        ),
+                        ValueListenableBuilder(
+                          valueListenable: canCreate,
+                          builder: (_, canCreate, __) {
+                            return bottomButton(
+                              text: '确定',
+                              bgImage: const AssetImage('assets/images/queding_bt.png'),
+                              onPress: createScene,
+                            );
+                          },
+                        )
                       ],
                     ),
                   ),

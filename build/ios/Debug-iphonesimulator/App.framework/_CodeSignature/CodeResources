@@ -10,11 +10,11 @@
 		</data>
 		<key>flutter_assets/AssetManifest.bin</key>
 		<data>
-		b16rS6cXjVLFTN/Gl8HEOxfY00Q=
+		bnPcsfwnO+BhjyABne5J9Xop1Jk=
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		FqXAVA7AFFbuBdpuL9rdWODpwM8=
+		bBXCXrLroguaLhtb27aTW7GnZlw=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -172,6 +172,10 @@
 		<data>
 		bXCyfTLtK/BpvdqaP7bjKFzYrkE=
 		</data>
+		<key>flutter_assets/assets/images/queding_bt.png</key>
+		<data>
+		W9jw0Bk6nkVwj5WcXVIh72PYsCk=
+		</data>
 		<key>flutter_assets/assets/images/report_white_board_img.png</key>
 		<data>
 		KKfLfW2uIc2Fco++wi3zSWTWv8U=
@@ -211,6 +215,10 @@
 		<key>flutter_assets/assets/images/suijihuati.png</key>
 		<data>
 		Aocu+MCFYHTVGswqWM/Wmh75bO4=
+		</data>
+		<key>flutter_assets/assets/images/suijihuati_bt.png</key>
+		<data>
+		u5qDz9R2pfxQnDSx/CX7i1NtRuc=
 		</data>
 		<key>flutter_assets/assets/images/talk_amount_img.png</key>
 		<data>
@@ -266,7 +274,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		JRESnpE0p758/U2kvpM6RATIQkY=
+		PF1eh9ODaN9DNBk8WeQ9qExXr54=
 		</data>
 		<key>flutter_assets/packages/flutter_sound_web/howler/howler.js</key>
 		<data>
@@ -315,14 +323,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			rSkDakFz5kNjC2iKAQuU287QTsQlkJAt+bMlsQnAVbg=
+			NG6gcUfF156rPNTpmBIKHge+lj9zWZ7ziYx/d7HTH/A=
 			</data>
 		</dict>
 		<key>flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			v98pDV11ZpX31RgRpy94v7TTHiJVfv1ZwYVUJdAXiac=
+			ZvEftrhVHcyHY5pyxQ84QCu6uR5WPB7+lyTmUBQLiNc=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -598,6 +606,13 @@
 			U/sg9JJ872POtlFC9C+QRQ80U0IIK0cF52ArkPQ16eA=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/queding_bt.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			QdnzRhEWHanATPz0clIwRotgNl5EgXhUIIDAkLTTB3E=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/report_white_board_img.png</key>
 		<dict>
 			<key>hash2</key>
@@ -666,6 +681,13 @@
 			<key>hash2</key>
 			<data>
 			pahjho3zmsQ5ijfe5NbLLp8LGTpm5xUG1U9IlfxLcnE=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/suijihuati_bt.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ufFFdexeCxfS3o/TjdXQHHyCZmf0aZ6kwhlIw0KTUOQ=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/talk_amount_img.png</key>
@@ -763,7 +785,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			WI7dur/EV4UygDg86GipsqCouSk16rEHP+QGbmDOh20=
+			gPBqrGBXdBxGMiwlVUpatoBxhgeqPOvAKj2J0jHeglI=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/flutter_sound_web/howler/howler.js</key>

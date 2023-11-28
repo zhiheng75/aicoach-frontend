@@ -130,7 +130,7 @@
 		</data>
 		<key>Frameworks/App.framework/App</key>
 		<data>
-		djPzkuEdh6AbLrRuI9gcqzgJFY8=
+		SzmUZN2Vzc+cEc++/P7B9vW9NeQ=
 		</data>
 		<key>Frameworks/App.framework/Info.plist</key>
 		<data>
@@ -138,15 +138,15 @@
 		</data>
 		<key>Frameworks/App.framework/_CodeSignature/CodeResources</key>
 		<data>
-		buwEJ6BUt3YY/XDg4nxBXdWRrXY=
+		U5Hmyf8BfodoBE7ckncpuGcxjhA=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
 		<data>
-		b16rS6cXjVLFTN/Gl8HEOxfY00Q=
+		bnPcsfwnO+BhjyABne5J9Xop1Jk=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<data>
-		FqXAVA7AFFbuBdpuL9rdWODpwM8=
+		bBXCXrLroguaLhtb27aTW7GnZlw=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/FontManifest.json</key>
 		<data>
@@ -304,6 +304,10 @@
 		<data>
 		bXCyfTLtK/BpvdqaP7bjKFzYrkE=
 		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/images/queding_bt.png</key>
+		<data>
+		W9jw0Bk6nkVwj5WcXVIh72PYsCk=
+		</data>
 		<key>Frameworks/App.framework/flutter_assets/assets/images/report_white_board_img.png</key>
 		<data>
 		KKfLfW2uIc2Fco++wi3zSWTWv8U=
@@ -343,6 +347,10 @@
 		<key>Frameworks/App.framework/flutter_assets/assets/images/suijihuati.png</key>
 		<data>
 		Aocu+MCFYHTVGswqWM/Wmh75bO4=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/images/suijihuati_bt.png</key>
+		<data>
+		u5qDz9R2pfxQnDSx/CX7i1NtRuc=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/assets/images/talk_amount_img.png</key>
 		<data>
@@ -398,7 +406,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/kernel_blob.bin</key>
 		<data>
-		JRESnpE0p758/U2kvpM6RATIQkY=
+		PF1eh9ODaN9DNBk8WeQ9qExXr54=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/packages/flutter_sound_web/howler/howler.js</key>
 		<data>
@@ -618,7 +626,7 @@
 		</data>
 		<key>Frameworks/qr_code_scanner.framework/qr_code_scanner</key>
 		<data>
-		1DgPnXKwWvmI886YL61Bo7+oUew=
+		v8fDwF9POcBuVvkG14Nk8yV+nWo=
 		</data>
 		<key>Frameworks/quick_actions_ios.framework/Info.plist</key>
 		<data>
@@ -924,7 +932,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			jVRCNKH+9rs9fVqJV2bCYEUiuQyHVWaSXNsZEXUOm9U=
+			edXZ+h5T0RKom2kGgQ4S4jWjkXh65JqRsZi2GqqzIiI=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/Info.plist</key>
@@ -938,21 +946,21 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			lig+s4KvuWvwkVZVPJaRB0ww115B95tkivexfV9YBDE=
+			Xj3smany7B1ByV2fmc6u/OJpNrtExwSiqdAjzd4nFdU=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			rSkDakFz5kNjC2iKAQuU287QTsQlkJAt+bMlsQnAVbg=
+			NG6gcUfF156rPNTpmBIKHge+lj9zWZ7ziYx/d7HTH/A=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			v98pDV11ZpX31RgRpy94v7TTHiJVfv1ZwYVUJdAXiac=
+			ZvEftrhVHcyHY5pyxQ84QCu6uR5WPB7+lyTmUBQLiNc=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/FontManifest.json</key>
@@ -1228,6 +1236,13 @@
 			U/sg9JJ872POtlFC9C+QRQ80U0IIK0cF52ArkPQ16eA=
 			</data>
 		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/images/queding_bt.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			QdnzRhEWHanATPz0clIwRotgNl5EgXhUIIDAkLTTB3E=
+			</data>
+		</dict>
 		<key>Frameworks/App.framework/flutter_assets/assets/images/report_white_board_img.png</key>
 		<dict>
 			<key>hash2</key>
@@ -1296,6 +1311,13 @@
 			<key>hash2</key>
 			<data>
 			pahjho3zmsQ5ijfe5NbLLp8LGTpm5xUG1U9IlfxLcnE=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/images/suijihuati_bt.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ufFFdexeCxfS3o/TjdXQHHyCZmf0aZ6kwhlIw0KTUOQ=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/assets/images/talk_amount_img.png</key>
@@ -1393,7 +1415,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			WI7dur/EV4UygDg86GipsqCouSk16rEHP+QGbmDOh20=
+			gPBqrGBXdBxGMiwlVUpatoBxhgeqPOvAKj2J0jHeglI=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/packages/flutter_sound_web/howler/howler.js</key>
@@ -1778,7 +1800,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			w8z+PzxvpFdzw4a6XLAqhW4bUHhfra1cTGooBQ1NyDY=
+			JhgFybAzDyWUShP5GtpRMbBX2NcMIeZio9CYPBTyLzg=
 			</data>
 		</dict>
 		<key>Frameworks/quick_actions_ios.framework/Info.plist</key>

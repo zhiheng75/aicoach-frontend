@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
+import 'package:xml2json/xml2json.dart';
 
 // 语音识别
 String RECOGNIZATION_APP_ID = '8d275e28';
@@ -16,6 +17,11 @@ String RECOGNIZATION_API_KEY = 'a6d70098ffbc7b7857454f5cf412f0b3';
 String EVALUATION_APP_ID = '8d275e28';
 String EVALUATION_API_SECRET = 'MTNkOWJiZmFlMGMxOTM0NmZhMDliMGMw';
 String EVALUATION_API_KEY = 'a6d70098ffbc7b7857454f5cf412f0b3';
+
+// 翻译
+String TRANSLATION_APP_ID = '8d275e28';
+String TRANSLATION_API_SECRET = 'MTNkOWJiZmFlMGMxOTM0NmZhMDliMGMw';
+String TRANSLATION_API_KEY = 'a6d70098ffbc7b7857454f5cf412f0b3';
 
 class XunfeiUtil {
 
@@ -33,6 +39,17 @@ class XunfeiUtil {
     String signature = base64.encode(digest.bytes);
     String stringNeedAuthed = 'api_key="$RECOGNIZATION_API_KEY", algorithm="hmac-sha256", headers="host date request-line", signature="$signature"';
     return base64.encode(stringNeedAuthed.codeUnits);
+  }
+  static String getBodySignatureForTranslation(Map<String, dynamic> body) {
+    String bodyJson = jsonEncode(body);
+    Digest digest = sha256.convert(utf8.encode(bodyJson));
+    return base64.encode(digest.bytes);
+  }
+  static String getTranslateAuthorization(String date, String bodySignature) {
+    String stringNeedSigned = 'host: itrans.xfyun.cn\ndate: $date\nPOST /v2/its HTTP/1.1\ndigest: SHA-256=$bodySignature';
+    Digest signatureDigest = Hmac(sha256, utf8.encode(TRANSLATION_API_SECRET)).convert(utf8.encode(stringNeedSigned));
+    String signature = base64.encode(signatureDigest.bytes);
+    return 'api_key="$TRANSLATION_API_KEY", algorithm="hmac-sha256", headers="host date request-line digest", signature="$signature"';
   }
 
   /**
@@ -95,6 +112,20 @@ class XunfeiUtil {
 
     return frameData;
   }
+  static Map<String, dynamic> createBodyForTranslation(String text) {
+    return {
+      'common': {
+        'app_id': TRANSLATION_APP_ID,
+      },
+      'business': {
+        'from': 'en',
+        'to': 'cn',
+      },
+      'data': {
+        'text': base64.encode(utf8.encode(text)),
+      }
+    };
+  }
 
   // 格式化结果
   static Map<String, dynamic> getRecognizeResult(Map<String, dynamic> response) {
@@ -133,9 +164,28 @@ class XunfeiUtil {
     }
     return result;
   }
-  static Map<String, dynamic> getEvaluateResult(Map<String, dynamic> response) {
-    Map<String, dynamic> result = {};
-    return result;
+  // 获取评测结果（base64解密->xml转json->json转map）
+  static Map<String, dynamic>? getEvaluateResult(Map<String, dynamic> response) {
+    Map<String, dynamic> result = response['data'];
+    String xmlString = utf8.decode(base64.decode(result['data']));
+    Xml2Json xml2json = Xml2Json();
+    xml2json.parse(xmlString);
+    String json = xml2json.toOpenRally();
+    Map<String, dynamic> evaluation = jsonDecode(json);
+
+    if (evaluation['xml_result'] != null) {
+      Map<String, dynamic> xmlResult = evaluation['xml_result'];
+      if (xmlResult['read_sentence'] != null) {
+        Map<String, dynamic> readSentence = xmlResult['read_sentence'];
+        if (readSentence['rec_paper'] != null) {
+          Map<String, dynamic> recPaper = readSentence['rec_paper'];
+          if (recPaper['read_chapter'] != null) {
+            return recPaper['read_chapter'];
+          }
+        }
+      }
+    }
+    return null;
   }
 
 }

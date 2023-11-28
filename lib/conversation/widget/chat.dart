@@ -42,6 +42,15 @@ class _ChatState extends State<Chat> {
     );
   }
 
+  void openOrCloseTranslation(bool showTranslation) {
+    ConversationProvider provider = Provider.of<ConversationProvider>(context, listen: false);
+    if (showTranslation) {
+      provider.closeTranslation();
+    } else {
+      provider.openTranslation();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -54,6 +63,9 @@ class _ChatState extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    bool showTranslation = Provider.of<ConversationProvider>(context).showTranslation;
+
     iconButton({
       required String icon,
       double? width,
@@ -87,25 +99,27 @@ class _ChatState extends State<Chat> {
                 icon: 'fanyi',
                 width: 20.0,
                 height: 20.0,
-                onPress: () {},
+                onPress: () {
+                  openOrCloseTranslation(showTranslation);
+                },
               ),
-              const SizedBox(
-                width: 23.0,
-              ),
-              iconButton(
-                icon: 'tishi',
-                width: 16.0,
-                height: 20.0,
-                onPress: () {},
-              ),
+              // const SizedBox(
+              //   width: 23.0,
+              // ),
+              // iconButton(
+              //   icon: 'tishi',
+              //   width: 16.0,
+              //   height: 20.0,
+              //   onPress: () {},
+              // ),
             ],
           ),
-          iconButton(
-            icon: 'changjing',
-            width: 21.0,
-            height: 19.0,
-            onPress: createScene,
-          ),
+          // iconButton(
+          //   icon: 'changjing',
+          //   width: 21.0,
+          //   height: 19.0,
+          //   onPress: createScene,
+          // ),
         ],
       ),
     );
@@ -158,7 +172,6 @@ class _ChatState extends State<Chat> {
       ),
     );
 
-    final Size size = MediaQuery.of(context).size;
     return Container(
       width: size.width - 28.0,
       height: 343,
