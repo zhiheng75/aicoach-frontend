@@ -69,6 +69,18 @@ dependencies:
   lottie: ^2.6.0
   #进度条
   percent_indicator: ^4.0.1
+  # websocket https://github.com/dart-lang/web_socket_channel
+  web_socket_channel: ^2.4.0
+  # flutter_sound https://github.com/canardoux/flutter_sound
+  flutter_sound: ^9.2.13
+  # uuid https://github.com/Daegalus/dart-uuid
+  uuid: ^3.0.7
+  # permission_handler https://github.com/baseflow/flutter-permission-handler
+  permission_handler: ^11.0.1
+  #crypto: ^3.0.3 https://github.com/dart-lang/crypto
+  crypto: ^3.0.3
+  #xml2json: ^6.2.1 https://github.com/shamblett/xml2json
+  xml2json: ^6.2.1
 
 dev_dependencies:
   flutter_test:

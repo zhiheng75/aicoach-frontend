@@ -2,6 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 import '../common/webview_page.dart';
+import '../conversation/conversation_router.dart';
 import '../home/home.dart';
 import '../home/home_router.dart';
 import '../login/login_router.dart';
@@ -45,6 +46,7 @@ class Routes {
     _listRouter.add(SettingRouter());
     _listRouter.add(MyReportRouter());
     _listRouter.add(PersonalRouter());
+    _listRouter.add(ConversationRouter());
 
     /// 初始化路由
     void initRouter(IRouterProvider routerProvider) {

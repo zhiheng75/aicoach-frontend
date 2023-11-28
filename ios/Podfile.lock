@@ -2,15 +2,23 @@ PODS:
   - device_info_plus (0.0.1):
     - Flutter
   - Flutter (1.0.0)
+  - flutter_sound (9.2.13):
+    - Flutter
+    - flutter_sound_core (= 9.2.13)
+  - flutter_sound_core (9.2.13)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
   - image_picker_ios (0.0.1):
     - Flutter
   - MTBBarcodeScanner (5.0.11)
+  - package_info (0.0.1):
+    - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - permission_handler_apple (9.1.1):
+    - Flutter
   - qr_code_scanner (0.2.0):
     - Flutter
     - MTBBarcodeScanner
@@ -32,8 +40,11 @@ PODS:
 DEPENDENCIES:
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
+  - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - qr_code_scanner (from `.symlinks/plugins/qr_code_scanner/ios`)
   - quick_actions_ios (from `.symlinks/plugins/quick_actions_ios/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
@@ -44,6 +55,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - flutter_sound_core
     - FMDB
     - MTBBarcodeScanner
 
@@ -52,10 +64,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/device_info_plus/ios"
   Flutter:
     :path: Flutter
+  flutter_sound:
+    :path: ".symlinks/plugins/flutter_sound/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  package_info:
+    :path: ".symlinks/plugins/package_info/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   qr_code_scanner:
     :path: ".symlinks/plugins/qr_code_scanner/ios"
   quick_actions_ios:
@@ -74,10 +92,14 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   device_info_plus: 7545d84d8d1b896cb16a4ff98c19f07ec4b298ea
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_sound: c60effa2a350fb977885f0db2fbc4c1ad5160900
+  flutter_sound_core: 26c10e5832e76aaacfae252d8925232281c486ae
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
+  package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
+  permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
   qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
   quick_actions_ios: 9e80dcfadfbc5d47d9cf8f47bcf428b11cf383d4
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
@@ -86,6 +108,6 @@ SPEC CHECKSUMS:
   vibration: 7d883d141656a1c1a6d8d238616b2042a51a1241
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
 
-PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
+PODFILE CHECKSUM: 4090be87ef3353b7d49432b8f3a5c66e8cea7f68
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.13.0

@@ -14,7 +14,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		iQoDmHxG0kWZVr8qj0craTB1UV4=
+		U+x4FKWV5M8cQax8p4aRKLQhPC4=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -22,11 +22,11 @@
 		</data>
 		<key>Modules/quick_actions_ios.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		RzURnqtJHsHMNVK9qrRHk4DWUdY=
+		Doc/UCg9Uv3PZxU5fHZjGTRLSS8=
 		</data>
 		<key>Modules/quick_actions_ios.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		1AGB1ak2CIC+C1DXiJXPNE8nOMs=
+		0K4eiCnUQv0sMgu6GJvpwjaWlzU=
 		</data>
 		<key>Modules/quick_actions_ios.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -38,7 +38,7 @@
 		</data>
 		<key>Modules/quick_actions_ios.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		7EYESvQTIpATpuYlrq6NECTeOkM=
+		mQDI+DYEaMok4i5NjTSCuCQJvro=
 		</data>
 		<key>Modules/quick_actions_ios.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -50,7 +50,7 @@
 		</data>
 		<key>Modules/quick_actions_ios.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		2vfN6SV2kLan0m8J0PiyWZ6ATkw=
+		Ns4FpPgsC5IW12PWUBJTXz8fiBI=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -80,14 +80,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			WxUVo0ZfxlC4qF5QVuFAd8wOccr0v2flZjCnUmmPl98=
+			zHg8iQXf/yts5qhMoZLeH7bOwoFq6Ci612Hrj12JQFQ=
 			</data>
 		</dict>
 		<key>Modules/quick_actions_ios.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			U8Lczry6Mu+mOHGUwmrUnoXKO2rdiVwpnE8wdAxUYq0=
+			qNFukImgJRiTQlCIM6jSwz+tUmY3XLQTGjkgZaiNbuo=
 			</data>
 		</dict>
 		<key>Modules/quick_actions_ios.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
@@ -108,7 +108,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			sTTfspZaIEHZ47vpEZNYI2J1wAlLdm9qoIavVEHHQGw=
+			RGWSJIpGhNXqCCk8f1CS8M5X8p1VLfO7lO3ePJi7qxU=
 			</data>
 		</dict>
 		<key>Modules/quick_actions_ios.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
@@ -129,7 +129,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			KC9B9cTO+WpL8hBulMdWMpviqY2Z5ZpMrL6m/uoZPkk=
+			d53SvbktAhM3Two8IPrB/UwrbrntFlIHjXGPRrmABUw=
 			</data>
 		</dict>
 	</dict>

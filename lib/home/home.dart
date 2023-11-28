@@ -4,6 +4,8 @@ import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:spokid/conversation/conversation_router.dart';
+import 'package:spokid/conversation/model/character_entity.dart';
 import 'package:spokid/home/presenter/home_page_presenter.dart';
 import 'package:spokid/home/provider/selecter_teacher_provider.dart';
 import 'package:spokid/home/view/home_view.dart';
@@ -275,6 +277,23 @@ class _HomePageState extends State<HomePage>
                       child: GestureDetector(
                           onTap: () {
                             NavigatorUtils.goBack(context);
+                            // 跳转到对话
+                            String characterId = 'loki';
+                            String name = 'Loki';
+                            String source = 'default';
+                            String voiceId = 'ErXwobaYiN019PkySvjV';
+                            String authorName = '';
+                            String imageUrl = '';
+                            String tts = 'ELEVEN_LABS';
+                            bool isAuthor = false;
+                            CharacterEntity entity = CharacterEntity(characterId, name, source, voiceId, authorName, imageUrl, tts, isAuthor);
+                            Future.delayed(const Duration(milliseconds: 300), () {
+                              NavigatorUtils.push(
+                                context,
+                                ConversationRouter.connectPage,
+                                arguments: entity,
+                              );
+                            });
                           },
                           child: Container(
                             margin: const EdgeInsets.only(left: 28, right: 28),
