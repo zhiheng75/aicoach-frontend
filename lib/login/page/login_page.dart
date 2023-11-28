@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sp_util/sp_util.dart';
-import 'package:spokid/home/home_router.dart';
-import 'package:spokid/login/presenter/login_presenter.dart';
-import 'package:spokid/login/view/login_view.dart';
-import 'package:spokid/util/log_utils.dart';
-import 'package:spokid/util/toast_utils.dart';
+import 'package:Bubble/home/home_router.dart';
+import 'package:Bubble/login/presenter/login_presenter.dart';
+import 'package:Bubble/login/view/login_view.dart';
+import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import '../../method/fluter_native.dart';
 import '../../mvp/base_page.dart';
 import '../../my_text_field.dart';

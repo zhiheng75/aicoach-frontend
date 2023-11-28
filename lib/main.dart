@@ -4,15 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
-import 'package:spokid/constant/constant.dart';
-import 'package:spokid/routers/not_found_page.dart';
-import 'package:spokid/routers/routers.dart';
-import 'package:spokid/setting/provider/locale_provider.dart';
-import 'package:spokid/setting/provider/theme_provider.dart';
-import 'package:spokid/util/device_utils.dart';
-import 'package:spokid/util/handle_error_utils.dart';
-import 'package:spokid/util/log_utils.dart';
-import 'package:spokid/util/theme_utils.dart';
+import 'package:Bubble/constant/constant.dart';
+import 'package:Bubble/routers/not_found_page.dart';
+import 'package:Bubble/routers/routers.dart';
+import 'package:Bubble/setting/provider/locale_provider.dart';
+import 'package:Bubble/setting/provider/theme_provider.dart';
+import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/util/handle_error_utils.dart';
+import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/theme_utils.dart';
 
 import 'home/splash_page.dart';
 import 'net/dio_utils.dart';
@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
 
   Widget _buildMaterialApp(ThemeProvider provider, LocaleProvider localeProvider) {
     return MaterialApp(
-      title: 'Spokid',
+      title: 'Bubble',
       // showPerformanceOverlay: true, //显示性能标签
       // debugShowCheckedModeBanner: false, // 去除右上角debug的标签
       // checkerboardRasterCacheImages: true,

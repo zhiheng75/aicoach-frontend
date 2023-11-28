@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:spokid/util/theme_utils.dart';
+import 'package:Bubble/util/theme_utils.dart';
 
 import '../res/colors.dart';
 import '../res/dimens.dart';

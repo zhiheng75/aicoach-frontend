@@ -78,6 +78,14 @@
             android:launchMode="singleTask">
         </activity>
 
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="true"
+            android:taskAffinity="com.shenmo.spokid"
+            android:launchMode="singleTop"/>
+
         <provider
             android:exported="false"
             android:authorities="com.shenmo.spokid.jiguang.InitProvider"

@@ -1,5 +1,5 @@
-import 'package:spokid/generated/json/base/json_convert_content.dart';
-import 'package:spokid/login/entity/wx_info_entity.dart';
+import 'package:Bubble/generated/json/base/json_convert_content.dart';
+import 'package:Bubble/login/entity/wx_info_entity.dart';
 
 WxInfoEntity $WxInfoEntityFromJson(Map<String, dynamic> json) {
   final WxInfoEntity wxInfoEntity = WxInfoEntity();

@@ -1,6 +1,5 @@
 import 'package:fluro/fluro.dart';
-import 'package:spokid/report/my_report_page.dart';
-import 'package:spokid/setting/theme_page.dart';
+import 'package:Bubble/report/my_report_page.dart';
 
 import '../routers/i_router.dart';
 

@@ -1,5 +1,5 @@
-import 'package:spokid/generated/json/base/json_convert_content.dart';
-import 'package:spokid/entity/empty_response_entity.dart';
+import 'package:Bubble/generated/json/base/json_convert_content.dart';
+import 'package:Bubble/entity/empty_response_entity.dart';
 
 EmptyResponseEntity $EmptyResponseEntityFromJson(Map<String, dynamic> json) {
   final EmptyResponseEntity emptyResponseEntity = EmptyResponseEntity();

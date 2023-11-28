@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:spokid/home/home_router.dart';
-import 'package:spokid/login/view/bind_phone_view.dart';
-import 'package:spokid/routers/fluro_navigator.dart';
+import 'package:Bubble/home/home_router.dart';
+import 'package:Bubble/login/view/bind_phone_view.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 
 import '../../mvp/base_page.dart';
 import '../../my_text_field.dart';

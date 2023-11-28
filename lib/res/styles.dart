@@ -73,4 +73,14 @@ class TextStyles {
     fontSize: Dimens.font_sp14,
     color: Colours.dark_unselected_item_color
   );
+
+  static const TextStyle text12_11B44 = TextStyle(
+    fontSize: Dimens.font_sp12,
+    color: Colours.color_111B44
+  );
+
+  static const TextStyle text12_546092 = TextStyle(
+      fontSize: Dimens.font_sp12,
+      color: Colours.color_546092
+  );
 }

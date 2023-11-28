@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:spokid/res/gaps.dart';
-import 'package:spokid/routers/fluro_navigator.dart';
+import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 
 import '../res/colors.dart';
 

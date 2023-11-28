@@ -1,13 +1,13 @@
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:spokid/res/dimens.dart';
-import 'package:spokid/res/gaps.dart';
-import 'package:spokid/setting/presenter/setting_presenter.dart';
-import 'package:spokid/setting/view/setting_view.dart';
-import 'package:spokid/util/toast_utils.dart';
-import 'package:spokid/util/version_utils.dart';
-import 'package:spokid/widgets/load_image.dart';
+import 'package:Bubble/res/dimens.dart';
+import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/setting/presenter/setting_presenter.dart';
+import 'package:Bubble/setting/view/setting_view.dart';
+import 'package:Bubble/util/toast_utils.dart';
+import 'package:Bubble/util/version_utils.dart';
+import 'package:Bubble/widgets/load_image.dart';
 
 import '../mvp/base_page.dart';
 import '../res/colors.dart';

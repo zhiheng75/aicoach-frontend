@@ -1,4 +1,4 @@
-import 'package:spokid/mvp/base_presenter.dart';
+import 'package:Bubble/mvp/base_presenter.dart';
 
 import '../model/select_teacher_entity.dart';
 import '../view/home_view.dart';

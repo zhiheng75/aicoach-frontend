@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
-import 'package:spokid/constant/constant.dart';
-import 'package:spokid/setting/provider/theme_provider.dart';
+import 'package:Bubble/constant/constant.dart';
+import 'package:Bubble/setting/provider/theme_provider.dart';
 
 import '../widgets/my_app_bar.dart';
 

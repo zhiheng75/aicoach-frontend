@@ -1,7 +1,7 @@
-import 'package:spokid/generated/json/base/json_field.dart';
-import 'package:spokid/generated/json/wx_info_entity.g.dart';
+import 'package:Bubble/generated/json/base/json_field.dart';
+import 'package:Bubble/generated/json/wx_info_entity.g.dart';
 import 'dart:convert';
-export 'package:spokid/generated/json/wx_info_entity.g.dart';
+export 'package:Bubble/generated/json/wx_info_entity.g.dart';
 
 @JsonSerializable()
 class WxInfoEntity {

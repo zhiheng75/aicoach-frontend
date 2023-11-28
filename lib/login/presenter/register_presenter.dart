@@ -1,4 +1,4 @@
-import 'package:spokid/util/toast_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 
 import '../../entity/empty_response_entity.dart';
 import '../../mvp/base_page_presenter.dart';

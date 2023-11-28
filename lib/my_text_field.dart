@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:spokid/res/colors.dart';
-import 'package:spokid/res/dimens.dart';
-import 'package:spokid/res/gaps.dart';
-import 'package:spokid/util/device_utils.dart';
-import 'package:spokid/widgets/load_image.dart';
-import 'package:spokid/widgets/my_button.dart';
+import 'package:Bubble/res/colors.dart';
+import 'package:Bubble/res/dimens.dart';
+import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/widgets/load_image.dart';
+import 'package:Bubble/widgets/my_button.dart';
 
 
 /// 登录模块的输入框封装

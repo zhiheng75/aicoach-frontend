@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:spokid/util/theme_utils.dart';
+import 'package:Bubble/util/theme_utils.dart';
 
 import '../res/dimens.dart';
 import '../res/gaps.dart';

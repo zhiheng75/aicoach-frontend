@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spokid/util/change_notifier_manage.dart';
+import 'package:Bubble/util/change_notifier_manage.dart';
 
 import '../../my_text_field.dart';
 import '../../res/gaps.dart';

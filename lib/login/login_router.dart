@@ -1,11 +1,11 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:spokid/login/page/new_register_page.dart';
-import 'package:spokid/login/page/bind_phone_page.dart';
-import 'package:spokid/login/page/login_page.dart';
-import 'package:spokid/login/page/only_sms_page.dart';
-import 'package:spokid/login/page/register_page.dart';
-import 'package:spokid/login/page/sms_login_page.dart';
+import 'package:Bubble/login/page/new_register_page.dart';
+import 'package:Bubble/login/page/bind_phone_page.dart';
+import 'package:Bubble/login/page/login_page.dart';
+import 'package:Bubble/login/page/only_sms_page.dart';
+import 'package:Bubble/login/page/register_page.dart';
+import 'package:Bubble/login/page/sms_login_page.dart';
 
 import '../routers/i_router.dart';
 import 'entity/wx_info_entity.dart';
