@@ -77,7 +77,7 @@ void evaluate(String sessionId, Message message) {
           }
           DioUtils.instance.requestNetwork(
             Method.post,
-            '/add_score',
+            'add_score',
             params: {
               'session_id': sessionId,
               'message': message.text,
@@ -91,7 +91,7 @@ void evaluate(String sessionId, Message message) {
             options: Options(
               headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer vQ==*WxyykOe/tzuaTsTi4d7LQA==*T5VxynRnfFEDcmPGpKfRnA==*mj5r1YELnX7dZLbubNdLXA==',
+                'Authorization': 'Bearer IA==*u02jq0h6TdUgA6CJ2UB6aA==*rfIUDa60d92+DKqMZtkG+A==*URKndg3tPT/xab35fJArTg==',
               }
             ),
             onError: (code, msg) {

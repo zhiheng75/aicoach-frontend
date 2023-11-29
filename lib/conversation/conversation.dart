@@ -6,18 +6,18 @@ import 'package:provider/provider.dart';
 import 'package:Bubble/conversation/presenter/conversation_page_presenter.dart';
 import 'package:Bubble/conversation/view/conversation_view.dart';
 import 'package:Bubble/mvp/base_page.dart';
-import 'model/character_entity.dart';
+import '../home/entity/teach_list_entity.dart';
 import 'provider/conversation_provider.dart';
 import 'widget/chat.dart';
 
 class ConversationPage extends StatefulWidget {
   ConversationPage({
     Key? key,
-    required this.character,
+    required this.teacher,
     required this.sessionId,
   }) : super(key: key);
 
-  CharacterEntity character;
+  TeachListEntity teacher;
   String sessionId;
 
   @override

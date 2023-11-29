@@ -1,8 +1,8 @@
 import 'package:fluro/fluro.dart';
+import '../home/entity/teach_list_entity.dart';
 import '../routers/i_router.dart';
 import 'connect.dart';
 import 'conversation.dart';
-import 'model/character_entity.dart';
 
 class ConversationRouter implements IRouterProvider{
 
@@ -14,7 +14,7 @@ class ConversationRouter implements IRouterProvider{
     router.define(
       connectPage,
       handler: Handler(
-          handlerFunc: (context, __) => ConnectPage(character: context!.settings!.arguments! as CharacterEntity)
+          handlerFunc: (context, __) => ConnectPage(teacher: context!.settings!.arguments! as TeachListEntity)
       ),
     );
     router.define(
@@ -23,7 +23,7 @@ class ConversationRouter implements IRouterProvider{
           handlerFunc: (context, __) {
             Map<String, dynamic> arguments = context!.settings!.arguments! as Map<String, dynamic>;
             return ConversationPage(
-              character: arguments['character'] as CharacterEntity,
+              teacher: arguments['teacher'] as TeachListEntity,
               sessionId: arguments['sessionId'],
             );
           }

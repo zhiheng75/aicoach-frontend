@@ -316,6 +316,9 @@ class _ChatInputState extends State<ChatInput> {
         }
         userMessage.appendAudio(audio);
         provider!.appendMessage(userMessage);
+        if (kDebugMode) {
+          print('发送文本：$text');
+        }
         manage.send(text);
         setState(() {
           isAnswering = true;

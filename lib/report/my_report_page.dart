@@ -1,6 +1,4 @@
-import 'dart:async';
-
-import 'package:flustars_flutter3/flustars_flutter3.dart';
+import 'package:Bubble/report/widget/conversation_analysis.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -111,14 +109,17 @@ class _MyReportPageState extends State<MyReportPage> {
                           Container(
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, top: 20, bottom: 30),
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: ImageUtils.getAssetImage(
-                                    "report_white_board_img",),
-                                  fit: BoxFit.fill
-                              ),
+                            margin: const EdgeInsets.symmetric(
+                              vertical: 25.0,
                             ),
-                            child:Text("sad"),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(26.0),
+                              color: Colors.white,
+                            ),
+                            // child:Text("sad"),
+                            child: const ConversationAnalysis(
+                              sessionId: '567710cca1474b53bda63b0d2c5eb44d',
+                            ),
                           )
 
               ],

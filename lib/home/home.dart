@@ -12,7 +12,6 @@ import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import '../conversation/conversation_router.dart';
-import '../conversation/model/character_entity.dart';
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
 import '../res/gaps.dart';
@@ -22,7 +21,6 @@ import '../util/time_utils.dart';
 import '../widgets/double_tap_back_exit_app.dart';
 import '../widgets/load_image.dart';
 import '../widgets/popup_window.dart';
-import 'entity/select_teacher_entity.dart';
 import 'entity/teach_list_entity.dart';
 
 class HomePage extends StatefulWidget {
@@ -290,20 +288,13 @@ class _HomePageState extends State<HomePage>
                           onTap: () {
                             NavigatorUtils.goBack(context);
                             // 跳转到对话
-                            String characterId = 'loki';
-                            String name = 'Loki';
-                            String source = 'default';
-                            String voiceId = 'ErXwobaYiN019PkySvjV';
-                            String authorName = '';
-                            String imageUrl = '';
-                            String tts = 'ELEVEN_LABS';
-                            bool isAuthor = false;
-                            CharacterEntity entity = CharacterEntity(characterId, name, source, voiceId, authorName, imageUrl, tts, isAuthor);
+                            int index = provider.index;
+                            TeachListEntity teacher = allTeacher.elementAt(index);
                             Future.delayed(const Duration(milliseconds: 300), () {
                               NavigatorUtils.push(
                                 context,
                                 ConversationRouter.connectPage,
-                                arguments: entity,
+                                arguments: teacher,
                               );
                             });
                             startCountDown = true;

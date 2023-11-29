@@ -3,19 +3,19 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
+import '../home/entity/teach_list_entity.dart';
 import '../routers/fluro_navigator.dart';
 import '../util/websocket_utils.dart';
 import '../widgets/load_image.dart';
 import 'conversation_router.dart';
-import 'model/character_entity.dart';
 
 class ConnectPage extends StatefulWidget {
   ConnectPage({
     Key? key,
-    required this.character,
+    required this.teacher,
   }) : super(key: key);
 
-  CharacterEntity character;
+  TeachListEntity teacher;
 
   @override
   State<ConnectPage> createState() => _ConnectState();
@@ -33,8 +33,8 @@ class _ConnectState extends State<ConnectPage> {
     String sessionId = const Uuid().v4().replaceAll('-', '');
     String model = 'shenmo-llm01';
     String language = 'en-US';
-    String token = '';
-    String url = 'wss://api.demo.shenmo-ai.net/ws/$sessionId?llm_model=$model&platform=web&use_search=false&use_quivr=false&use_multion=false&character_id=${widget.character.characterId}&language=$language&token=$token';
+    String token = 'IA==*u02jq0h6TdUgA6CJ2UB6aA==*rfIUDa60d92+DKqMZtkG+A==*URKndg3tPT/xab35fJArTg==';
+    String url = 'wss://api.demo.shenmo-ai.net/ws/$sessionId?llm_model=$model&platform=app&use_search=false&use_quivr=false&use_multion=false&character_id=${widget.teacher.characterId}&language=$language&token=$token';
     WebsocketUtils.createWebsocket(
       'CONVERSATION',
       Uri.parse(url),
@@ -45,7 +45,7 @@ class _ConnectState extends State<ConnectPage> {
             ConversationRouter.conversationPage,
             replace: true,
             arguments: {
-              'character': widget.character,
+              'teacher': widget.teacher,
               'sessionId': sessionId,
             },
           );
@@ -101,7 +101,7 @@ class _ConnectState extends State<ConnectPage> {
                     height: 28.0,
                   ),
                   Text(
-                    '正在呼叫${widget.character.name}...',
+                    '正在呼叫${widget.teacher.name}...',
                     style: const TextStyle(
                       fontSize: 16.0,
                       color: Colors.white,
@@ -121,7 +121,12 @@ class _ConnectState extends State<ConnectPage> {
                 height: 63.0,
               ),
               padding: const EdgeInsets.all(0),
-              onPressed: () {},
+              onPressed: () {
+                WebsocketManage? manage = WebsocketUtils.getWebsocket('CONVERSATION');
+                if (manage != null) {
+                  WebsocketUtils.closeWebsocket('CONVERSATION');
+                }
+              },
             ),
           ),
         ],
