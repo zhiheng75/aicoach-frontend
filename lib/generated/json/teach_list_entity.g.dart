@@ -36,6 +36,14 @@ TeachListEntity $TeachListEntityFromJson(Map<String, dynamic> json) {
   if (tts != null) {
     teachListEntity.tts = tts;
   }
+  final String? slogan = jsonConvert.convert<String>(json['slogan']);
+  if (slogan != null) {
+    teachListEntity.slogan = slogan;
+  }
+  final String? character = jsonConvert.convert<String>(json['character']);
+  if (character != null) {
+    teachListEntity.character = character;
+  }
   final bool? isAuthor = jsonConvert.convert<bool>(json['is_author']);
   if (isAuthor != null) {
     teachListEntity.isAuthor = isAuthor;
@@ -54,6 +62,8 @@ Map<String, dynamic> $TeachListEntityToJson(TeachListEntity entity) {
   data['avatar_id'] = entity.avatarId;
   data['tts'] = entity.tts;
   data['is_author'] = entity.isAuthor;
+  data['slogan'] = entity.slogan;
+  data['character'] = entity.character;
   return data;
 }
 
@@ -67,6 +77,8 @@ extension TeachListEntityExtension on TeachListEntity {
     String? imageUrl,
     String? avatarId,
     String? tts,
+    String? slogan,
+    String? character,
     bool? isAuthor,
   }) {
     return TeachListEntity()
@@ -78,6 +90,8 @@ extension TeachListEntityExtension on TeachListEntity {
       ..imageUrl = imageUrl ?? this.imageUrl
       ..avatarId = avatarId ?? this.avatarId
       ..tts = tts ?? this.tts
-      ..isAuthor = isAuthor ?? this.isAuthor;
+      ..isAuthor = isAuthor ?? this.isAuthor
+      ..slogan = slogan ?? this.slogan
+      ..character = character ?? this.character;
   }
 }

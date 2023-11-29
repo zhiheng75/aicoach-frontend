@@ -46,7 +46,7 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
               decoration: BoxDecoration(
                 borderRadius:const BorderRadius.all(Radius.circular(10)),
                 border: Border.all(
-                  width: widget.entity.index == provider.index? 3:1,
+                  width: widget.entity.index == provider.index? 2:1,
                   color:  widget.entity.index == provider.index? Colours.color_00E6D0:Colours.color_5B8BD2
                 ),
                 color: widget.entity.index == provider.index?Colours.color_70white:Colors.transparent
@@ -73,8 +73,8 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
                     style: const TextStyle(
                         fontSize: 16, color: Colours.color_111B44,fontWeight: FontWeight.bold),
                   ),
-                  Text("widget.entity",style: const TextStyle(color: Colours.color_546092,fontSize: 12),),
-                  Text("widget.entity",style: const TextStyle(color: Colours.color_546092,fontSize: 12),)
+                  Text(widget.entity.slogan??"",    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 12),),
+                  Text(widget.entity.character.replaceAll(",", " "),    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 12),)
                 ],
               ),
             ),

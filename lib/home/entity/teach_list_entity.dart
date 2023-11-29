@@ -23,6 +23,8 @@ class TeachListEntity {
 
 	late bool isSelect;
 	late int index;
+	late String slogan;
+	late String character;
 
 	TeachListEntity();
 
