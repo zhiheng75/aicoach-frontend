@@ -42,7 +42,7 @@ class LoadImage extends StatelessWidget {
         memCacheHeight: cacheHeight,
       );
     } else {
-      return LoadAssetImage(image,
+      return LoadAssetImage(holderImg,
         height: height,
         width: width,
         fit: fit,
