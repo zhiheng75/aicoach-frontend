@@ -49,7 +49,6 @@ class TextStyles {
   static const TextStyle text = TextStyle(
     fontSize: Dimens.font_sp14,
     color: Colours.text,
-    // https://github.com/flutter/flutter/issues/40248
     textBaseline: TextBaseline.alphabetic
   );
   static const TextStyle textDark = TextStyle(
@@ -82,5 +81,11 @@ class TextStyles {
   static const TextStyle text12_546092 = TextStyle(
       fontSize: Dimens.font_sp12,
       color: Colours.color_546092
+  );
+
+
+  static const TextStyle text18_white = TextStyle(
+      fontSize: Dimens.font_sp18,
+      color: Colors.white
   );
 }

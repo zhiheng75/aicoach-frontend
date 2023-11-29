@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:Bubble/util/change_notifier_manage.dart';
 
-import '../../my_text_field.dart';
+import '../../widgets/my_text_field.dart';
 import '../../res/gaps.dart';
 import '../../res/styles.dart';
 import '../../util/other_utils.dart';

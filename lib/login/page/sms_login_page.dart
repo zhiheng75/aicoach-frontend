@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../my_text_field.dart';
+import '../../widgets/my_text_field.dart';
 import '../../res/dimens.dart';
 import '../../res/gaps.dart';
 import '../../res/styles.dart';

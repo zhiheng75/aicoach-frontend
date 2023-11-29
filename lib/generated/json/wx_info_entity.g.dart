@@ -125,12 +125,10 @@ WxInfoDataData $WxInfoDataDataFromJson(Map<String, dynamic> json) {
   if (school != null) {
     wxInfoDataData.school = school;
   }
-
   final String? token = jsonConvert.convert<String>(json['token']);
   if (token != null) {
     wxInfoDataData.token = token;
   }
-
   return wxInfoDataData;
 }
 
@@ -178,6 +176,6 @@ extension WxInfoDataDataExtension on WxInfoDataData {
       ..privilege = privilege ?? this.privilege
       ..unionid = unionid ?? this.unionid
       ..school = school ?? this.school
-      ..token = unionid ?? this.token;
+      ..token = token ?? this.token;
   }
 }

@@ -4,6 +4,7 @@ import '../../entity/empty_response_entity.dart';
 import '../../mvp/base_page_presenter.dart';
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
+import '../entity/user_info_entity.dart';
 import '../entity/wx_info_entity.dart';
 import '../view/login_view.dart';
 import '../view/register_view.dart';
@@ -33,14 +34,14 @@ class RegisterPresenter extends BasePagePresenter<RegisterView>{
     params['phone'] = phoneNum;
     params['code'] = code;
 
-    return requestNetwork<EmptyResponseData>(Method.post,
-        url: HttpApi.smsLogin,
+    return requestNetwork<UserInfoData>(Method.post,
+        url: HttpApi.phoneLogin,
         queryParameters: params,
         isShow: isShowLoading, onSuccess: (data) {
       if (data != null) {
         if (data.code == 200) {
           Toast.show("登录成功");
-          view.loginSuccess();
+          view.loginSuccess(data.data);
         } else {
           Toast.show(data.msg);
         }

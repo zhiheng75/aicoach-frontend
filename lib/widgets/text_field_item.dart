@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../res/gaps.dart';
+import '../res/styles.dart';
 import '../util/input_formatter/number_text_input_formatter.dart';
 
 /// 封装输入框
@@ -36,11 +37,11 @@ class TextFieldItem extends StatelessWidget {
               keyboardType: keyboardType,
               inputFormatters: _getInputFormatters(),
               controller: controller,
-              //style: TextStyles.textDark14,
+              style: TextStyles.text18_white,
               decoration: InputDecoration(
                 hintText: hintText,
                 border: InputBorder.none, //去掉下划线
-                //hintStyle: TextStyles.textGrayC14
+                hintStyle: TextStyles.text18_white
               ),
             ),
           ),

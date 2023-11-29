@@ -8,7 +8,7 @@ import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import '../../method/fluter_native.dart';
 import '../../mvp/base_page.dart';
-import '../../my_text_field.dart';
+import '../../widgets/my_text_field.dart';
 import '../../constant/constant.dart';
 import '../../res/gaps.dart';
 import '../../res/styles.dart';

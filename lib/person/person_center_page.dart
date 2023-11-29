@@ -1,4 +1,6 @@
 import 'package:Bubble/person/person_router.dart';
+import 'package:Bubble/person/presneter/person_center_presenter.dart';
+import 'package:Bubble/person/view/person_center_view.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/setting/setting_router.dart';
 import 'package:Bubble/util/toast_utils.dart';
@@ -8,6 +10,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../constant/constant.dart';
+import '../login/entity/user_info_entity.dart';
+import '../mvp/base_page.dart';
 import '../res/colors.dart';
 import '../res/dimens.dart';
 import '../res/styles.dart';
@@ -21,9 +26,19 @@ class PersonalCenterPage extends StatefulWidget {
   State<PersonalCenterPage> createState() => _PersonalCenterPageState();
 }
 
-class _PersonalCenterPageState extends State<PersonalCenterPage> {
+class _PersonalCenterPageState extends State<PersonalCenterPage>
+    with
+        BasePageMixin<PersonalCenterPage, PersonalCenterPresenter>,
+        AutomaticKeepAliveClientMixin<PersonalCenterPage>
+    implements PersonCenterView {
+
+  String _headerImg = "";
+  String _userName = "";
+  late PersonalCenterPresenter _presenter;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return AnnotatedRegion(
         value: SystemUiOverlayStyle.light,
         child:Scaffold(
@@ -60,7 +75,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage> {
                           ],
                         ),
                       Container(
-                        margin: EdgeInsets.only(left: 18,right: 18,top: 15),
+                        margin:const EdgeInsets.only(left: 18,right: 18,top: 15),
                         child: headerItem(),
                       ),
                     ],
@@ -162,8 +177,8 @@ class _PersonalCenterPageState extends State<PersonalCenterPage> {
       children: [
         Center(
           child: ClipOval(
-            child: LoadAssetImage(
-              "test_banner_img",
+            child: LoadImage(
+              _headerImg,
               height: 74,
               width: 74,
               fit: BoxFit.cover,
@@ -181,9 +196,9 @@ class _PersonalCenterPageState extends State<PersonalCenterPage> {
                   child: Row(
                     mainAxisAlignment:MainAxisAlignment.start,
                     children: [
-                      Text("Aran同学",style: TextStyle(fontSize: 17,color: Colors.white),),
+                      Text(_userName,style: TextStyle(fontSize: 17,color: Colors.white),),
                       Gaps.hGap4,
-                      LoadAssetImage("edit_img",width: 14,height: 14,)
+                      const LoadAssetImage("edit_img",width: 14,height: 14,)
                     ],
                   ),
                 ),
@@ -250,5 +265,23 @@ class _PersonalCenterPageState extends State<PersonalCenterPage> {
       default:
         return Gaps.empty;
     }
+  }
+
+  @override
+  PersonalCenterPresenter createPresenter() {
+    _presenter = PersonalCenterPresenter();
+    return _presenter;
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void getUserInfo(UserInfoDataData data) {
+    _headerImg = data.headimgurl;
+    _userName = data.nickname;
+    setState(() {
+
+    });
   }
 }

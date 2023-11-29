@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Bubble/res/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:Bubble/res/colors.dart';
@@ -99,6 +100,7 @@ class _MyTextFieldState extends State<MyTextField> {
     final bool isDark = themeData.brightness == Brightness.dark;
 
     Widget textField = TextField(
+      style: TextStyles.text18_white,
       focusNode: widget.focusNode,
       maxLength: widget.maxLength,
       obscureText: widget.isInputPwd && !_isShowPwd,
@@ -112,6 +114,7 @@ class _MyTextFieldState extends State<MyTextField> {
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(vertical: 16.0),
         hintText: widget.hintText,
+        hintStyle: TextStyles.text18_white,
         counterText: '',
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
@@ -145,6 +148,7 @@ class _MyTextFieldState extends State<MyTextField> {
         hint: '清空输入框',
         child: GestureDetector(
           child: LoadAssetImage('delete_img',
+            color: Colors.white,
             key: Key('${widget.keyName}_delete'),
             width: 18.0,
             height: 40.0,

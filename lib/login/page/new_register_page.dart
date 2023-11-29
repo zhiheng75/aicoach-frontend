@@ -1,22 +1,25 @@
-import 'package:flustars_flutter3/flustars_flutter3.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:Bubble/login/entity/wx_info_entity.dart';
 import 'package:Bubble/login/presenter/register_presenter.dart';
 import 'package:Bubble/login/view/register_view.dart';
 import 'package:Bubble/widgets/load_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:sp_util/sp_util.dart';
 
+import '../../constant/constant.dart';
 import '../../home/home_router.dart';
 import '../../method/fluter_native.dart';
 import '../../mvp/base_page.dart';
-import '../../my_text_field.dart';
+import '../../widgets/my_text_field.dart';
+import '../../person/person_router.dart';
 import '../../res/colors.dart';
 import '../../res/gaps.dart';
 import '../../res/styles.dart';
 import '../../routers/fluro_navigator.dart';
 import '../../util/change_notifier_manage.dart';
 import '../../util/toast_utils.dart';
-import '../../widgets/my_app_bar.dart';
+import '../../widgets/my_only_img_bar.dart';
+import '../entity/user_info_entity.dart';
 import '../login_router.dart';
 
 class NewRegisterPage extends StatefulWidget {
@@ -98,11 +101,12 @@ class _NewRegisterPageState extends State<NewRegisterPage>
           ),
           child: Column(
             children: [
-
-              const MyAppBar(
+              MyOnlyImgBar(
                 backgroundColor: Colours.transflate,
-              ),
-
+                  actionUrl: "white_close_img",
+                  onActionPress: () {
+                    NavigatorUtils.goBack(context);
+                  }),
               Expanded(
                   child: Container(
                     padding:const EdgeInsets.only(left: 20,right: 20),
@@ -158,7 +162,8 @@ class _NewRegisterPageState extends State<NewRegisterPage>
 
       Row(
         children: [
-          const Text("+86>"),
+          const Text("+86>",style: TextStyles.text18_white,),
+          Gaps.hGap10,
           Expanded(child:MyTextField(
             key: const Key('phone'),
             focusNode: _nodeText1,
@@ -197,7 +202,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
       GestureDetector(
         onTap: (){
           if(_isSelect&&_clickable){
-            _registerPresenter.register(_phoneController.text, _phoneController.text,true);
+            _registerPresenter.register(_phoneController.text, _vCodeController.text,true);
 
           }else if(!_clickable){
             if(_phoneController.text.isEmpty){
@@ -331,8 +336,11 @@ class _NewRegisterPageState extends State<NewRegisterPage>
   }
 
   @override
-  void loginSuccess() {
-    NavigatorUtils.push(context, HomeRouter.homePage,clearStack: true);
+  void loginSuccess(UserInfoDataData data) {
+    SpUtil.putObject(Constant.userInfoKey, data);
+    SpUtil.putString(Constant.accessToken, data.token);
+    // NavigatorUtils.push(context, HomeRouter.homePage,clearStack: true);
+    NavigatorUtils.push(context, PersonalRouter.personalCenter);
   }
 
 }

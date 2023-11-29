@@ -1,4 +1,5 @@
 import '../../mvp/mvps.dart';
+import '../entity/user_info_entity.dart';
 import '../entity/wx_info_entity.dart';
 
 abstract class RegisterView implements IMvpView{
@@ -9,5 +10,5 @@ abstract class RegisterView implements IMvpView{
 
   void sendSmsSuccess();
 
-  void loginSuccess();
+  void loginSuccess(UserInfoDataData date);
 }

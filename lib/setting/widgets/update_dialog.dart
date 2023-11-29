@@ -23,7 +23,7 @@ class UpdateDialog extends StatefulWidget {
   const UpdateDialog({super.key});
 
   @override
-  _UpdateDialogState createState() => _UpdateDialogState();
+  State<UpdateDialog> createState() => _UpdateDialogState();
 }
 
 class _UpdateDialogState extends State<UpdateDialog> {
@@ -51,53 +51,102 @@ class _UpdateDialogState extends State<UpdateDialog> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
-        body: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+          body: Center(
+              child: Stack(
+            children: [
               Container(
-                height: 120.0,
-                width: 280.0,
+                height: 220.0,
+                width: 350.0,
                 decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0)),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(8.0),
+                      topRight: Radius.circular(8.0)),
                   image: DecorationImage(
-                    image: ImageUtils.getAssetImage('update_head', format: ImageFormat.jpg),
+                    image: ImageUtils.getAssetImage(
+                      'update_bg',
+                    ),
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
-              Container(
-                width: 280.0,
-                decoration: BoxDecoration(
-                  color: context.dialogBackgroundColor,
-                  borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(8.0), bottomRight: Radius.circular(8.0))
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const Text('新版本更新', style: TextStyles.textSize16),
-                    Gaps.vGap10,
-                    const Text('1.又双叒修复了一大堆bug。\n\n2.祭天了多名程序猿。'),
-                    Gaps.vGap15,
-                    if (_isDownload)
-                      LinearProgressIndicator(
-                        backgroundColor: Colours.line,
-                        valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
-                        value: _value,
-                      )
-                    else
-                      _buildButton(context),
-                  ],
-                ),
-              ),
+
+                            Container(
+                              margin:const EdgeInsets.only(top: 130,left: 4.7),
+                              width: 340.2,
+                              height: 250,
+                              decoration: BoxDecoration(
+                                color: context.dialogBackgroundColor,
+                                borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20.0), bottomRight: Radius.circular(20.0))
+                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  const Text('新版本更新', style: TextStyles.textSize16),
+                                  Gaps.vGap10,
+                                  const Text('1.又双叒修复了一大堆bug。\n\n2.祭天了多名程序猿。'),
+                                  Gaps.vGap15,
+                                  if (_isDownload)
+                                    LinearProgressIndicator(
+                                      backgroundColor: Colours.line,
+                                      valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+                                      value: _value,
+                                    )
+                                  else
+                                    _buildButton(context),
+                                ],
+                              ),
+                            ),
+
             ],
-          ),
-        )
-      ),
+          ))),
     );
   }
+
+
+  //    Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: <Widget>[
+  //               Container(
+  //                 height: 220.0,
+  //                 width: 350.0,
+  //                 decoration: BoxDecoration(
+  //                   color: Colors.red,
+  //                   borderRadius: const BorderRadius.only(topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0)),
+  //                   image: DecorationImage(
+  //                     image: ImageUtils.getAssetImage('update_bg', ),
+  //                     fit: BoxFit.cover,
+  //                   ),
+  //                 ),
+  //               ),
+  //               Container(
+  //                 width: 350.0,
+  //                 decoration: BoxDecoration(
+  //                   color: context.dialogBackgroundColor,
+  //                   borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(8.0), bottomRight: Radius.circular(8.0))
+  //                 ),
+  //                 padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+  //                 child: Column(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: <Widget>[
+  //                     const Text('新版本更新', style: TextStyles.textSize16),
+  //                     Gaps.vGap10,
+  //                     const Text('1.又双叒修复了一大堆bug。\n\n2.祭天了多名程序猿。'),
+  //                     Gaps.vGap15,
+  //                     if (_isDownload)
+  //                       LinearProgressIndicator(
+  //                         backgroundColor: Colours.line,
+  //                         valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+  //                         value: _value,
+  //                       )
+  //                     else
+  //                       _buildButton(context),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
 
   Widget _buildButton(BuildContext context) {
     final Color primaryColor = Theme.of(context).primaryColor;

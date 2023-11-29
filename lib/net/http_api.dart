@@ -5,6 +5,10 @@ class HttpApi{
 
   //发送验证码
   static const String smsLogin = "send_sms_code";
+
+  //老师集合(人物列表)
+  static const String teacherList = "app/characters";
+
   //获取微信信息
   static const String wechatInfo = "wxinfo";
   //微信登录

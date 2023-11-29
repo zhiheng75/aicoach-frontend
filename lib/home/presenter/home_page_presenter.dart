@@ -1,23 +1,47 @@
 import 'package:Bubble/mvp/base_presenter.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 
-import '../model/select_teacher_entity.dart';
+import '../../mvp/base_page_presenter.dart';
+import '../../net/http_api.dart';
+import '../entity/select_teacher_entity.dart';
+import '../entity/teach_list_entity.dart';
 import '../view/home_view.dart';
 
-class HomePagePresenter extends BasePresenter<HomeView>{
+class HomePagePresenter extends BasePagePresenter<HomeView>{
 
   @override
   void initState() {
     super.initState();
-    requestNetwork();
-
+    getTeacherList(false);
   }
 
 
+  Future getTeacherList(bool showLoading){
+    return requestNetwork<List<TeachListEntity>>(
+      Method.get,
+      url: HttpApi.teacherList,
+      isShow: showLoading,
+      onSuccess: (data){
+        if(data!=null&&data.isNotEmpty) {
 
-  // 网络请求
-  Future<void> requestNetwork(){
+          for(int i = 0;i<data.length;i++){
+            data[i].index = i;
+            data[i].isSelect = i==0;
+          }
+
+          view.setTeachList(data);
+        }else{
+          Toast.show("获取老师数据失败");
+        }
+      }
+    );
+  }
+
+  //网络请求
+  Future<void> requestNetwork2(){
     return Future.delayed(const Duration(seconds: 1), (){
-      view.setTeachList(_initTeacherData());
+      // view.setTeachList(_initTeacherData());
     });
   }
 

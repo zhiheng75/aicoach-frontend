@@ -5,11 +5,13 @@ import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/load_image.dart';
 
 import '../../util/image_utils.dart';
-import '../model/select_teacher_entity.dart';
+import '../entity/select_teacher_entity.dart';
+import '../entity/teach_list_entity.dart';
 import '../provider/selecter_teacher_provider.dart';
 
 class RecommendTeacherWidget extends StatefulWidget {
-  final SelectTeacherEntity entity;
+  // final SelectTeacherEntity entity;
+  final TeachListEntity entity;
   final Function callBack;
   final HomeTeacherProvider homeTeacherProvider;
 
@@ -56,8 +58,8 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ClipOval(
-                    child: LoadAssetImage(
-                      widget.entity.teacherHeader,
+                    child: LoadImage(
+                      widget.entity.imageUrl,
                       height: 40,
                       width: 40,
                       fit: BoxFit.cover,
@@ -65,12 +67,14 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
                   ),
                   Gaps.vGap10,
                   Text(
-                    widget.entity.teacherName,
+                    widget.entity.name??"",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                     style: const TextStyle(
                         fontSize: 16, color: Colours.color_111B44,fontWeight: FontWeight.bold),
                   ),
-                  Text(widget.entity.school,style: const TextStyle(color: Colours.color_546092,fontSize: 12),),
-                  Text(widget.entity.category,style: const TextStyle(color: Colours.color_546092,fontSize: 12),)
+                  Text("widget.entity",style: const TextStyle(color: Colours.color_546092,fontSize: 12),),
+                  Text("widget.entity",style: const TextStyle(color: Colours.color_546092,fontSize: 12),)
                 ],
               ),
             ),

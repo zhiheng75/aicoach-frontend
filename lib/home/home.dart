@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Bubble/order/order_router.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +18,14 @@ import '../conversation/model/character_entity.dart';
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
 import '../res/gaps.dart';
+import '../setting/widgets/update_dialog.dart';
 import '../util/image_utils.dart';
 import '../util/time_utils.dart';
 import '../widgets/double_tap_back_exit_app.dart';
 import '../widgets/load_image.dart';
-import '../widgets/my_button.dart';
 import '../widgets/popup_window.dart';
-import 'model/select_teacher_entity.dart';
+import 'entity/select_teacher_entity.dart';
+import 'entity/teach_list_entity.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -37,11 +39,13 @@ class _HomePageState extends State<HomePage>
         BasePageMixin<HomePage, HomePagePresenter>,
         AutomaticKeepAliveClientMixin<HomePage>
     implements HomeView {
-  List<SelectTeacherEntity> allTeacher = [];
+  // List<SelectTeacherEntity> allTeacher = [];
+  List<TeachListEntity> allTeacher = [];
   final GlobalKey _buttonKey = GlobalKey();
+  bool needRefresh = false;
 
   /// 倒计时秒数
-  final int _second = 180;
+  final int _second = 360;
 
   /// 当前秒数
   String _currentSecond = "";
@@ -52,6 +56,8 @@ class _HomePageState extends State<HomePage>
   bool startCountDown = false;
 
   StreamSubscription<dynamic>? _subscription;
+
+  late HomePagePresenter _homePagePresenter;
 
   Future<dynamic> _countDown() async {
     _subscription = Stream.periodic(const Duration(seconds: 1), (int i) => i)
@@ -118,10 +124,11 @@ class _HomePageState extends State<HomePage>
               top: 70,
               child: GestureDetector(
                   onTap: () {
-                    // _showSelectMenu();
-                    // NavigatorUtils.push(context, SettingRouter.settingPage);
-                    NavigatorUtils.push(
-                        context, PersonalRouter.personalCenter);
+                    _showSelectMenu();
+
+                    // _showUpdateDialog();
+                    // NavigatorUtils.push(context, MyOrderRouter.myOrder);
+
                   },
                   child: LoadAssetImage(
                     "home_more_img",
@@ -166,7 +173,13 @@ class _HomePageState extends State<HomePage>
                   alignment: Alignment.center,
                   child: GestureDetector(
                       onTap: () {
-                        _showBottomSheet();
+                        if(allTeacher.isNotEmpty){
+                          _showBottomSheet();
+                        }else{
+                          needRefresh = true;
+                          _homePagePresenter.getTeacherList(true);
+                        }
+
                       },
                       child: Container(
                         margin: const EdgeInsets.only(left: 28, right: 28),
@@ -442,7 +455,8 @@ class _HomePageState extends State<HomePage>
 
   @override
   HomePagePresenter createPresenter() {
-    return HomePagePresenter();
+    _homePagePresenter = HomePagePresenter();
+    return _homePagePresenter;
   }
 
   void _showSelectMenu() {
@@ -451,7 +465,7 @@ class _HomePageState extends State<HomePage>
     showPopupWindow<void>(
       context: context,
       isShowBg: false,
-      offset: Offset(button.size.width - 100, 0.0),
+      offset: Offset(button.size.width-25 , -28.0),
       anchor: button,
       child: MainPageSelectMenu(() {
         NavigatorUtils.goBack(context);
@@ -478,11 +492,13 @@ class _HomePageState extends State<HomePage>
   }
 
   @override
-  void setTeachList(List<SelectTeacherEntity> list) {
+  void setTeachList(/*List<SelectTeacherEntity> list  ,*/List<TeachListEntity> list) {
     allTeacher.clear();
     allTeacher.addAll(list);
     // _showBottomSheet();
-    // setState(() {});
+    if(needRefresh) {
+      setState(() {});
+    }
   }
 
   @override
@@ -492,5 +508,13 @@ class _HomePageState extends State<HomePage>
   void dispose() {
     _subscription?.cancel();
     super.dispose();
+  }
+
+  void _showUpdateDialog() {
+    showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => const UpdateDialog()
+    );
   }
 }

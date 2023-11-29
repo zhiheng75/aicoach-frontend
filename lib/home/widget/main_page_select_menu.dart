@@ -1,3 +1,5 @@
+import 'package:Bubble/person/person_router.dart';
+import 'package:Bubble/res/gaps.dart';
 import 'package:flutter/material.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/report/report_router.dart';
@@ -5,6 +7,7 @@ import 'package:Bubble/routers/fluro_navigator.dart';
 
 import '../../res/colors.dart';
 import '../../setting/widgets/update_dialog.dart';
+import '../../util/image_utils.dart';
 import '../../util/theme_utils.dart';
 import '../../widgets/load_image.dart';
 
@@ -30,7 +33,7 @@ class _MainPageSelectMenuState extends State<MainPageSelectMenu> with SingleTick
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 100),
       vsync: this,
     );
 
@@ -46,81 +49,6 @@ class _MainPageSelectMenuState extends State<MainPageSelectMenu> with SingleTick
 
   @override
   Widget build(BuildContext context) {
-    final Color backgroundColor = context.backgroundColor;
-    final Color? iconColor = ThemeUtils.getIconColor(context);
-
-    final Widget body = Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(right: 50.0),
-          child: LoadAssetImage('jt', width: 8.0, height: 4.0,
-            color: ThemeUtils.getDarkColor(context, Colours.dark_bg_color),
-          ),
-        ),
-        SizedBox(
-          width: 120.0,
-          height: 40.0,
-          child: TextButton.icon(
-            onPressed: () {
-              NavigatorUtils.push(context, LoginRouter.loginPage,replace: true);
-            },
-            icon: LoadAssetImage('unselect_img', width: 16.0, height: 16.0, color: iconColor,),
-            label: const Text('设置页面'),
-            style: TextButton.styleFrom(
-              foregroundColor: Theme.of(context).textTheme.bodyMedium?.color,
-              disabledForegroundColor: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.12),
-              backgroundColor: backgroundColor,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0)),
-              ),
-            ),
-          ),
-        ),
-        Container(width: 120.0, height: 0.6, color: Colours.line),
-        SizedBox(
-          width: 120.0,
-          height: 40.0,
-          child: TextButton.icon(
-            onPressed: () {
-              // widget._press();
-              NavigatorUtils.push(context, MyReportRouter.myReportPage);
-            },
-            icon: LoadAssetImage('unselect_img', width: 16.0, height: 16.0, color: iconColor,),
-            label: const Text('评分页面'),
-            style: TextButton.styleFrom(
-              foregroundColor: Theme.of(context).textTheme.bodyMedium?.color,
-              disabledForegroundColor: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.12),
-              backgroundColor: backgroundColor,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8.0), bottomRight: Radius.circular(8.0)),
-              ),
-            ),
-          ),
-        ),
-        Container(width: 120.0, height: 0.6, color: Colours.line),
-        SizedBox(
-          width: 120.0,
-          height: 40.0,
-          child: TextButton.icon(
-            onPressed: () {
-              NavigatorUtils.goBack(context);
-              _showUpdateDialog();
-            },
-            icon: LoadAssetImage('unselect_img', width: 16.0, height: 16.0, color: iconColor,),
-            label: const Text('版本更新'),
-            style: TextButton.styleFrom(
-              foregroundColor: Theme.of(context).textTheme.bodyMedium?.color,
-              disabledForegroundColor: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.12),
-              backgroundColor: backgroundColor,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8.0), bottomRight: Radius.circular(8.0)),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
 
     return AnimatedBuilder(
       animation: _scaleAnimation,
@@ -131,9 +59,56 @@ class _MainPageSelectMenuState extends State<MainPageSelectMenu> with SingleTick
           child: child,
         );
       },
-      child: body,
+      child: moreBtnWidget(),
     );
   }
+
+  Widget moreBtnWidget(){
+    return Container(
+      padding: const EdgeInsets.only(left: 6,right: 6,top: 6,bottom: 6),
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: ImageUtils.getAssetImage(
+                  "more_btn_bg"),
+              fit: BoxFit.fill)
+      ),
+      child:Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: (){
+              NavigatorUtils.goBack(context);
+            },
+            child:const LoadAssetImage("up_more_img",width: 26,height: 26,),
+          ),
+          Gaps.vGap10,
+          GestureDetector(
+            onTap: (){
+              NavigatorUtils.push(context, LoginRouter.loginPage);
+            },
+            child:const LoadAssetImage("change_role_img",width: 20,height: 20,),
+          ),
+          Gaps.vGap10,
+          GestureDetector(
+            onTap: (){
+              // NavigatorUtils.push(context, path)
+            },
+            child:const LoadAssetImage("study_center_img",width: 20,height: 20,),
+          ),
+          Gaps.vGap10,
+          GestureDetector(
+            onTap: (){
+              NavigatorUtils.goBack(context);
+              NavigatorUtils.push(context, PersonalRouter.personalCenter);
+            },
+            child:const LoadAssetImage("personal_info_more_img",width: 20,height: 20,),
+          ),
+        ],
+      ),
+    );
+  }
+
+
 
 
   void _showUpdateDialog() {

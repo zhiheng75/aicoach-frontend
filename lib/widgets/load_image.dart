@@ -12,7 +12,7 @@ class LoadImage extends StatelessWidget {
     this.height,
     this.fit = BoxFit.cover, 
     this.format = ImageFormat.png,
-    this.holderImg = 'none',
+    this.holderImg = 'test_banner_img',
     this.cacheWidth,
     this.cacheHeight,
   });
@@ -29,7 +29,7 @@ class LoadImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    if (image.isEmpty || image.startsWith('http')) {
+    if (image.isNotEmpty) {
       final Widget holder = LoadAssetImage(holderImg, height: height, width: width, fit: fit);
       return CachedNetworkImage(
         imageUrl: image,

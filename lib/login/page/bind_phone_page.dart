@@ -5,7 +5,7 @@ import 'package:Bubble/login/view/bind_phone_view.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 
 import '../../mvp/base_page.dart';
-import '../../my_text_field.dart';
+import '../../widgets/my_text_field.dart';
 import '../../res/gaps.dart';
 import '../../res/styles.dart';
 import '../../util/change_notifier_manage.dart';
