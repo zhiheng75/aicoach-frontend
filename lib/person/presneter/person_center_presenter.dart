@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 
 import '../../constant/constant.dart';
@@ -11,11 +13,12 @@ class PersonalCenterPresenter extends BasePagePresenter<PersonCenterView>{
   @override
   void initState() {
     super.initState();
-    SpUtil.getObj(Constant.userInfoKey, (v){
-      if(v.isNotEmpty&& v is UserInfoDataData){
-            view.getUserInfo(v as UserInfoDataData);
-      }
-    });
+    var v = SpUtil.getDynamic(Constant.userInfoKey);
+    SpUtil.getObj(Constant.userInfoKey, (v) => {
+    if (v.isNotEmpty) {
+        view.getUserInfo(UserInfoDataData.fromJson(v))
   }
+    });
 
+  }
 }

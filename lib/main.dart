@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
     interceptors.add(AuthInterceptor());
 
     /// 刷新Token
-    interceptors.add(TokenInterceptor());
+    // interceptors.add(TokenInterceptor());
 
     /// 打印Log(生产模式去除)
     if (!Constant.inProduction) {

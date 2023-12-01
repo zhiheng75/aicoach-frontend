@@ -38,8 +38,8 @@ class _MyOrderItemState extends State<MyOrderItem> {
         child: Row(
           children: [
             Container(
-              padding: EdgeInsets.only(top: 22),
-              height: 100,
+              padding:const EdgeInsets.only(top: 22),
+              height: 105,
               width: 133,
               decoration: BoxDecoration(
                 image: DecorationImage(

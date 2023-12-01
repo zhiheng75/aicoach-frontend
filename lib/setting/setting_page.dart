@@ -1,3 +1,5 @@
+import 'package:Bubble/home/home_router.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +11,7 @@ import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/util/version_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 
+import '../loginManager/login_manager.dart';
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
 import '../util/image_utils.dart';
@@ -159,7 +162,8 @@ class _SettingPageState extends State<SettingPage>
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              Toast.show("退出登录");
+                              LoginManager.toLoginOut();
+                              NavigatorUtils.push(context, HomeRouter.homePage);
                             },
                             child: const Center(
                               child: Text("退出登录", style: TextStyle(

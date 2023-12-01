@@ -1,3 +1,4 @@
+import 'package:Bubble/order/order_router.dart';
 import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/person/presneter/person_center_presenter.dart';
 import 'package:Bubble/person/view/person_center_view.dart';
@@ -150,7 +151,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                       Gaps.vGap30,
                       GestureDetector(
                         onTap: (){
-
+                          NavigatorUtils.push(context, MyOrderRouter.myOrder);
                         },
                         child: personItem(1,"购买记录"),
                       ),

@@ -63,9 +63,9 @@ class UserInfoDataData {
 
 	UserInfoDataData();
 
-	factory UserInfoDataData.fromJson(Map<String, dynamic> json) => $UserInfoDataDataFromJson(json);
+	factory UserInfoDataData.fromJson(Map<dynamic, dynamic> json) => $UserInfoDataDataFromJson(json);
 
-	Map<String, dynamic> toJson() => $UserInfoDataDataToJson(this);
+	Map<dynamic, dynamic> toJson() => $UserInfoDataDataToJson(this);
 
 	@override
 	String toString() {

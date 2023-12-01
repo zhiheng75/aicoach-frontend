@@ -5,6 +5,7 @@ import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/report/report_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 
+import '../../loginManager/login_manager.dart';
 import '../../res/colors.dart';
 import '../../setting/widgets/update_dialog.dart';
 import '../../util/image_utils.dart';
@@ -97,9 +98,12 @@ class _MainPageSelectMenuState extends State<MainPageSelectMenu> with SingleTick
           ),
           Gaps.vGap10,
           GestureDetector(
-            onTap: (){
+            onTap: () {
               NavigatorUtils.goBack(context);
-              NavigatorUtils.push(context, PersonalRouter.personalCenter);
+              LoginManager.checkLogin(context, (){
+                NavigatorUtils.push(context, PersonalRouter.personalCenter);
+              });
+
             },
             child:const LoadAssetImage("personal_info_more_img",width: 20,height: 20,),
           ),
