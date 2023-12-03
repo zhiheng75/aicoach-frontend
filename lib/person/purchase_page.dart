@@ -1,3 +1,9 @@
+import 'dart:convert';
+
+import 'package:Bubble/person/entity/wx_pay_entity.dart';
+import 'package:Bubble/person/presneter/purchase_presenter.dart';
+import 'package:Bubble/person/presneter/purchase_view.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,12 +11,15 @@ import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 
 import '../method/fluter_native.dart';
+import '../mvp/base_page.dart';
 import '../res/colors.dart';
 import '../res/dimens.dart';
 import '../routers/fluro_navigator.dart';
 import '../util/image_utils.dart';
 import '../widgets/load_image.dart';
 import '../widgets/my_app_bar.dart';
+import 'entity/good_list_entity.dart';
+import 'entity/my_good_list_entity.dart';
 
 ///购买
 class PurchasePage extends StatefulWidget {
@@ -20,7 +29,8 @@ class PurchasePage extends StatefulWidget {
   State<PurchasePage> createState() => _PurchasePageState();
 }
 
-class _PurchasePageState extends State<PurchasePage> {
+class _PurchasePageState extends State<PurchasePage> with BasePageMixin<PurchasePage,PurchasePresenter>,
+    AutomaticKeepAliveClientMixin<PurchasePage> implements PurchaseView {
 
   bool itemOne = true;
   bool itemTwo = false;
@@ -30,9 +40,20 @@ class _PurchasePageState extends State<PurchasePage> {
   bool aliPay = false;
 
   bool agreeAgreement = false;
+  late PurchasePresenter _purchasePresenter;
+  int selectIndex = 0;
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    _purchasePresenter.getGoodsList(false);
+  }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
@@ -63,97 +84,79 @@ class _PurchasePageState extends State<PurchasePage> {
                       topRight: Radius.circular(20)),
                   color: Colors.white
               ),
-              child:MyScrollView(
-                children: [
-                  GestureDetector(
-                    onTap: (){
-                      itemOne = true;
-                      itemTwo = false;
-                      itemThree = false;
-                      setState(() {
+              child: _purchasePresenter.goodList.isNotEmpty
+                  ? MyScrollView(
+                      children: [
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: _purchasePresenter.goodList.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: (){
+                                  selectIndex = index;
+                                  for(int i = 0;i<_purchasePresenter.goodList.length;i++){
+                                    _purchasePresenter.goodList[i].isSelect = false;
+                                  }
+                                  _purchasePresenter.goodList[index].isSelect = true;
+                                  setState(() {
 
-                      });
-                    },
-                    child: purchaseItem(0,itemOne),
-                  ),
-                  Gaps.vGap20,
-                  GestureDetector(
-                    onTap: (){
-                      itemOne = false;
-                      itemTwo = true;
-                      itemThree = false;
-                      setState(() {
+                                  });
+                                },
+                                child: purchaseItem(_purchasePresenter.goodList[index]),
+                              )
+                                ;
+                            }),
+                        Gaps.vGap30,
+                        GestureDetector(
+                          onTap: () {
+                            wxPay = true;
+                            aliPay = false;
+                            setState(() {});
+                          },
+                          child: purchaseType(0, wxPay),
+                        ),
+                        Gaps.vGap30,
+                        GestureDetector(
+                          onTap: () {
+                            wxPay = false;
+                            aliPay = true;
+                            setState(() {});
+                          },
+                          child: purchaseType(1, aliPay),
+                        ),
+                        Gaps.vGap32,
+                        GestureDetector(
+                          onTap: () {
+                            _purchasePresenter.wxChatPay(_purchasePresenter.goodList[selectIndex].id,_purchasePresenter.goodList[selectIndex].price,true);
 
-                      });
-                    },
-                    child: purchaseItem(1,itemTwo),
-                  ),
-                  Gaps.vGap20,
-                  GestureDetector(
-                    onTap: (){
-                      itemOne = false;
-                      itemTwo = false;
-                      itemThree = true;
-                      setState(() {
-
-                      });
-                    },
-                    child: purchaseItem(2,itemThree),
-                  ),
-
-                  Gaps.vGap30,
-                  GestureDetector(
-                    onTap: (){
-                      wxPay = true;
-                      aliPay = false;
-                      setState(() {
-
-                      });
-                    },
-                    child: purchaseType(0,wxPay),
-                  ),
-                  Gaps.vGap30,
-                  GestureDetector(
-                    onTap: (){
-                      wxPay = false;
-                      aliPay = true;
-                      setState(() {
-                      });
-                    },
-                    child: purchaseType(1,aliPay),
-                  ),
-
-                  Gaps.vGap32,
-                  GestureDetector(
-                    onTap: (){
-                      FlutterToNative.jumpToWechatPay();
-                    },
-                    child: Container(
-                      height: 46,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: ImageUtils.getAssetImage("purchase_btn_img"),
-                              fit: BoxFit.fill
-                          )
-                      ),
-                      child:const Center(
-                        child: Text("立即开通",style: TextStyle(color: Colors.white,fontSize: 16),),
-                      ),
-                    ),
-                  ),
-                  Gaps.vGap16,
-                  GestureDetector(
-                    onTap: (){
-                      agreeAgreement=!agreeAgreement;
-                      setState(() {
-
-                      });
-                    },
-                    child: agreement(agreeAgreement),
-                  ),
-
-                ],
-              ),
+                          },
+                          child: Container(
+                            height: 46,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: ImageUtils.getAssetImage(
+                                        "purchase_btn_img"),
+                                    fit: BoxFit.fill)),
+                            child: const Center(
+                              child: Text(
+                                "立即开通",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Gaps.vGap16,
+                        GestureDetector(
+                          onTap: () {
+                            agreeAgreement = !agreeAgreement;
+                            setState(() {});
+                          },
+                          child: agreement(agreeAgreement),
+                        ),
+                      ],
+                    )
+                  : Gaps.empty,
             )
           ],
         ),
@@ -162,15 +165,16 @@ class _PurchasePageState extends State<PurchasePage> {
   }
 
   ///0包年，1包月，2年度会员
-  Widget purchaseItem(int type,bool isSelect){
+  Widget purchaseItem(MyGoodListEntity bean){
   return Stack(
       children: [
         Container(
+          margin:const EdgeInsets.only(bottom: 15),
           padding:const EdgeInsets.only(left: 26,right: 26,top: 10,bottom: 30),
           decoration: BoxDecoration(
             image: DecorationImage(
                 image: ImageUtils.getAssetImage(
-                  isSelect==true ?"purchase_select_img":"purchase_unselect_img",),
+                  bean.isSelect==true ?"purchase_select_img":"purchase_unselect_img",),
                 fit: BoxFit.fill
             ),
           ),
@@ -179,14 +183,14 @@ class _PurchasePageState extends State<PurchasePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Gaps.vGap15,
-              purchaseItemTxt(type),
+              purchaseItemTxt2(bean),
               Gaps.vGap13,
               const Text("24小时随时可学习，不限场景。",style: TextStyle(fontSize: Dimens.font_sp13,color:Colours.color_546092),),
             ],
           ),
         ),
         Visibility(
-            visible: type == 0,
+            visible: bean.recommend,
             child: const LoadAssetImage(
               "preferenti_img", width: 83, height: 20,))
         ,
@@ -238,6 +242,39 @@ class _PurchasePageState extends State<PurchasePage> {
       default :
         return  Gaps.empty;
     }
+  }
+
+  Widget purchaseItemTxt2(MyGoodListEntity bean){
+    return Row(
+      children: [
+         Text(
+          bean.name,
+          style: const TextStyle(
+              fontSize: 16,
+              color: Colours.color_111B44,
+              fontWeight: FontWeight.bold),
+        ),
+        Expanded(
+            child: bean.recommend==true?
+            Container(
+              margin: const EdgeInsets.only(left: 5, right: 20),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: ImageUtils.getAssetImage("auto_purchase_bg"),
+                      fit: BoxFit.cover)),
+              child: const Center(
+                child: Text(
+                  "自动续费，可随时取消",
+                  style: TextStyle(
+                      fontSize: Dimens.font_sp10, color: Colors.white),
+                ),
+              ),
+            ):Gaps.empty),
+         Text(
+          "${bean.price}${bean.unit}",
+          style: const TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
+      ],
+    );
   }
 
   ///支付方式
@@ -296,6 +333,44 @@ class _PurchasePageState extends State<PurchasePage> {
         ),
       ],
     );
+  }
+
+  @override
+  PurchasePresenter createPresenter() {
+    _purchasePresenter = PurchasePresenter();
+    return _purchasePresenter;
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void goodListData(List<MyGoodListEntity> bean) {
+
+    setState(() {
+
+    });
+  }
+
+
+  // int ERR_OK = 0;
+  //        int ERR_COMM = -1;
+  //        int ERR_USER_CANCEL = -2;
+  //        int ERR_SENT_FAILED = -3;
+  //        int ERR_AUTH_DENIED = -4;
+  //        int ERR_UNSUPPORT = -5;
+  //        int ERR_BAN = -6;
+
+  @override
+  void getWXPayMsg(WxPayDataData bean) {
+
+   FlutterToNative.jumpToWechatPay(json.encode(bean)).then((value){
+     if(value==0){
+       Toast.show("支付成功");
+     }else {
+       Toast.show("支付失败");
+     }
+   });
   }
 
 }

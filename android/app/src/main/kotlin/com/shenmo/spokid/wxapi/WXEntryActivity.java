@@ -40,7 +40,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         super.onCreate(savedInstanceState);
          mWxApi = WXAPIFactory.createWXAPI(this, BuildConfig.WXID, false);
         mWxApi.handleIntent(getIntent(),this);
-
+        LogUtil.INSTANCE.d("WechatEntryActivity ", BuildConfig.WXID );
     }
 
     @Override

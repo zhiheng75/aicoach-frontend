@@ -41,18 +41,27 @@ class WxInfoData {
 
 @JsonSerializable()
 class WxInfoDataData {
+	late dynamic name="";
 	late String openid;
 	late String nickname;
 	late int sex;
-	late String language;
+	// late String language;
 	late String city;
 	late String province;
 	late String country;
 	late String headimgurl;
-	late List<dynamic> privilege;
+	// late List<dynamic> privilege;
 	late String unionid;
-	late String school;
+	late String school="";
 	late String token;
+	late String phone;
+	late dynamic description;
+	late dynamic membership_type;
+	@JSONField(name: "created_at")
+	late String createdAt;
+	@JSONField(name: "updated_at")
+	late String updatedAt;
+	late int id;
 
 	WxInfoDataData();
 

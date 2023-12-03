@@ -2,8 +2,6 @@ import 'package:Bubble/res/resources.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../res/colors.dart';
-import '../../res/styles.dart';
 import '../../widgets/round_picture_widget.dart';
 
 class StudyReportWidget extends StatefulWidget {

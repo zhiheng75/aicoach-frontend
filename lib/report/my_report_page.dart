@@ -1,3 +1,6 @@
+import 'package:Bubble/mvp/base_page.dart';
+import 'package:Bubble/report/presenter/my_report_presenter.dart';
+import 'package:Bubble/report/view/my_report_view.dart';
 import 'package:Bubble/report/widget/conversation_analysis.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,9 +23,16 @@ class MyReportPage extends StatefulWidget {
   State<MyReportPage> createState() => _MyReportPageState();
 }
 
-class _MyReportPageState extends State<MyReportPage> {
+class _MyReportPageState extends State<MyReportPage>
+    with BasePageMixin<MyReportPage,MyReportPresenter>,
+        AutomaticKeepAliveClientMixin<MyReportPage>
+implements MyReportView{
+
+  late MyReportPresenter _myReportPresenter;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
@@ -252,6 +262,15 @@ class _MyReportPageState extends State<MyReportPage> {
       ],
     );
   }
+
+  @override
+  MyReportPresenter createPresenter() {
+    _myReportPresenter = MyReportPresenter();
+    return _myReportPresenter;
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 
 }
 

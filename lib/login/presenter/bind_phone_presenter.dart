@@ -5,12 +5,13 @@ import '../../mvp/base_page_presenter.dart';
 import '../../net/base_entity.dart';
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
+import '../entity/login_info_entity.dart';
 import '../entity/wx_info_entity.dart';
 import '../view/bind_phone_view.dart';
 
 class BindPhonePresenter extends BasePagePresenter<BindPhoneView> {
 
-  late WxInfoDataData data;
+  late LoginInfoDataData data;
 
   Future sendSms(String phoneNum) {
     final Map<String, dynamic> params = <String, dynamic>{};

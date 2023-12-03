@@ -19,6 +19,7 @@ import '../../routers/fluro_navigator.dart';
 import '../../util/change_notifier_manage.dart';
 import '../../util/toast_utils.dart';
 import '../../widgets/my_only_img_bar.dart';
+import '../entity/login_info_entity.dart';
 import '../entity/user_info_entity.dart';
 import '../login_router.dart';
 
@@ -308,7 +309,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
   }
 
   @override
-  void hadBindWechat(WxInfoDataData data) {
+  void hadBindWechat() {
     Toast.show("登录成功");
     // SpUtil.putObject(Constant.userInfoKey, data);
     // SpUtil.getObj(Constant.userInfoKey, (v) => {
@@ -326,8 +327,10 @@ class _NewRegisterPageState extends State<NewRegisterPage>
   }
 
   @override
-  void wechatSuccess(WxInfoDataData entity) {
-    NavigatorUtils.push(context, LoginRouter.bindPhonePage,arguments:entity);
+  void wechatSuccess(LoginInfoDataData data) {
+    // SpUtil.putObject(Constant.userInfoKey, data);
+    // SpUtil.putString(Constant.accessToken, data.token);
+    NavigatorUtils.push(context, LoginRouter.bindPhonePage,arguments:data);
   }
 
   @override
@@ -336,9 +339,9 @@ class _NewRegisterPageState extends State<NewRegisterPage>
   }
 
   @override
-  void loginSuccess(UserInfoDataData data) {
-    SpUtil.putObject(Constant.userInfoKey, data);
-    SpUtil.putString(Constant.accessToken, data.token);
+  void loginSuccess() {
+    // SpUtil.putObject(Constant.userInfoKey, data);
+    // SpUtil.putString(Constant.accessToken, data.token);
     // NavigatorUtils.push(context, HomeRouter.homePage,clearStack: true);
     NavigatorUtils.push(context, PersonalRouter.personalCenter);
   }

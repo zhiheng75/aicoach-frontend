@@ -92,7 +92,7 @@ class _MainPageSelectMenuState extends State<MainPageSelectMenu> with SingleTick
           Gaps.vGap10,
           GestureDetector(
             onTap: (){
-              // NavigatorUtils.push(context, path)
+              NavigatorUtils.push(context, PersonalRouter.personalPurchase);
             },
             child:const LoadAssetImage("study_center_img",width: 20,height: 20,),
           ),

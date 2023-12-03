@@ -1,12 +1,13 @@
 import 'package:Bubble/util/toast_utils.dart';
+import 'package:sp_util/sp_util.dart';
 
+import '../../constant/constant.dart';
 import '../../entity/empty_response_entity.dart';
 import '../../mvp/base_page_presenter.dart';
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
-import '../entity/user_info_entity.dart';
-import '../entity/wx_info_entity.dart';
-import '../view/login_view.dart';
+import '../entity/login_info_entity.dart';
+import '../entity/my_user_info_entity.dart';
 import '../view/register_view.dart';
 
 
@@ -34,14 +35,36 @@ class RegisterPresenter extends BasePagePresenter<RegisterView>{
     params['phone'] = phoneNum;
     params['code'] = code;
 
-    return requestNetwork<UserInfoData>(Method.post,
+    return requestNetwork<LoginInfoData>(Method.post,
         url: HttpApi.phoneLogin,
         queryParameters: params,
         isShow: isShowLoading, onSuccess: (data) {
       if (data != null) {
         if (data.code == 200) {
           Toast.show("登录成功");
-          view.loginSuccess(data.data);
+          // MyUserInfoData myUserInfo = MyUserInfoData();
+          // myUserInfo.id = data.data.id;
+          // myUserInfo.email = data.data.email??"";
+          // myUserInfo.openid = data.data.openid;
+          // myUserInfo.nickname = data.data.nickname??"";
+          // myUserInfo.sex = data.data.sex;
+          // myUserInfo.province = data.data.province??"";
+          // myUserInfo.country = data.data.country??"";
+          // myUserInfo.headimgurl = data.data.headimgurl??"";
+          // myUserInfo.unionid = data.data.unionid;
+          // myUserInfo.school = data.data.school??"";
+          // myUserInfo.token = data.data.token;
+          // myUserInfo.createdAt = data.data.createdAt??"";
+          // myUserInfo.name = data.data.name??"";
+          // myUserInfo.phone = data.data.phone??"";
+          // myUserInfo.city = data.data.city??"";
+          // myUserInfo.description = data.data.description??"";
+          // myUserInfo.updatedAt = data.data.updatedAt??"";
+
+          SpUtil.putObject(Constant.userInfoKey, data.data);
+          SpUtil.putString(Constant.accessToken, data.data.token);
+
+          view.loginSuccess();
         } else {
           Toast.show(data.msg);
         }
@@ -60,7 +83,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView>{
     params["code"] = wechatCode;
     params["platform"] = "app";
 
-    return requestNetwork<WxInfoData>(Method.get,
+    return requestNetwork<LoginInfoData>(Method.get,
         url: HttpApi.wechatInfo,
         queryParameters: params,
         isShow: true,
@@ -68,9 +91,27 @@ class RegisterPresenter extends BasePagePresenter<RegisterView>{
       if(data!=null){
 
         if(data.data.token!=null&&data.data.token.isNotEmpty){
-          view.hadBindWechat(data.data);
+          // MyUserInfoData myUserInfo = MyUserInfoData();
+          // myUserInfo.openid = data.data.openid??"";
+          // myUserInfo.nickname = data.data.nickname??"";
+          // myUserInfo.sex = data.data.sex??0;
+          // // myUserInfo.language = data.data.language;
+          // myUserInfo.city = data.data.city??"";
+          // myUserInfo.country = data.data.country??"";
+          // myUserInfo.headimgurl = data.data.headimgurl??"";
+          // // myUserInfo.privilege = data.data.privilege;
+          // myUserInfo.unionid = data.data.unionid??"";
+          // myUserInfo.school = data.data.school??"";
+          // myUserInfo.token = data.data.token;
+
+            SpUtil.putObject(Constant.userInfoKey, data.data);
+            SpUtil.putString(Constant.accessToken, data.data.token);
+          view.hadBindWechat();
         }else{
+          //没绑定
           view.wechatSuccess(data.data);
+
+          // view.loginSuccess(myUserInfo);
         }
 
 

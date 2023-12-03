@@ -1,5 +1,9 @@
 
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
+
+import '../person/entity/wx_pay_entity.dart';
 
 ///和原生通讯
  class FlutterToNative{
@@ -20,8 +24,10 @@ import 'package:flutter/services.dart';
   }
 
   //微信支付
-  static Future<void> jumpToWechatPay() async{
-    final String result = await methodChannelPlatform.invokeMethod("jumpToWechatPay",{"key":"value","key1":"value1"});
+  static Future<int> jumpToWechatPay(String bean) async{
+    // final String result = await methodChannelPlatform.invokeMethod("jumpToWechatPay",{"key":"value","key1":"value1"});
+    final int result = await methodChannelPlatform.invokeMethod("jumpToWechatPay",bean);
+    return result;
   }
 
   //一键登录

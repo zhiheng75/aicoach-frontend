@@ -5,15 +5,14 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.NonNull
-import cn.com.chinatelecom.account.api.CtAuth.mContext
 import cn.jiguang.verifysdk.api.JVerificationInterface
 import cn.jiguang.verifysdk.api.JVerifyUIConfig
 import com.shenmo.spokid.entity.WechatBean
+import com.shenmo.spokid.entity.WxPayBean
+import com.shenmo.spokid.entity.WxPayResultBean
+import com.shenmo.spokid.utils.JsonUtils
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.modelpay.PayReq
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
@@ -34,7 +33,6 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         EventBus.getDefault().register(this)
-
     }
 
 
@@ -55,7 +53,7 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
 
             val sWxApi = WXAPIFactory.createWXAPI(this, BuildConfig.WXID, false)
             sWxApi.registerApp(BuildConfig.WXID)
-
+            Toast.makeText(context,BuildConfig.WXID,Toast.LENGTH_SHORT).show()
             val req = SendAuth.Req()
             req.scope = "snsapi_userinfo"
             req.state = "wx_login"
@@ -71,32 +69,44 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
              * @param timeStamp               时间戳
              * @param sign                    签名
              */
+
+
             call.arguments?.apply {
                 val partnerId: String
                 val prepayId: String
                 val nonceStr: String
                 val timeStamp: String
                 val sign: String
-                if (this is Map<*,*>&&this.isNotEmpty()){
-                    partnerId =  this["partnerId"]?.toString()?:""
-                    prepayId =  this["prepayId"]?.toString()?:""
-                    nonceStr =  this["nonceStr"]?.toString()?:""
-                    timeStamp =  this["timeStamp"]?.toString()?:""
-                    sign =  this["sign"]?.toString()?:""
 
-                    val sWxApi = WXAPIFactory.createWXAPI(this@MainActivity, BuildConfig.WXID, false)
-                    sWxApi.registerApp(BuildConfig.WXID)
-                    val req = PayReq()
-                    req.appId = BuildConfig.WXID
-                    req.partnerId = partnerId
-                    req.prepayId = prepayId
-                    req.nonceStr = nonceStr
-                    req.timeStamp = timeStamp
-                    req.packageValue = "Sign=WXPay"
-                    req.sign = sign
-                    sWxApi.sendReq(req) //发起调用微信支付了
+                if (this is String && this.isNotEmpty()){
+                     JsonUtils.fromJson<WxPayBean>(this.toString())?.apply {
+
+//                    if (this is Map<*,*>&&this.isNotEmpty()){
+                         partnerId = this.partnerid// this["partnerId"]?.toString()?:""
+                         prepayId = this.prepay_id// this["prepayId"]?.toString()?:""
+                         nonceStr = this.noncestr// this["nonceStr"]?.toString()?:""
+                         timeStamp = this.timestamp// this["timeStamp"]?.toString()?:""
+                         sign =this.sign//  this["sign"]?.toString()?:""
+
+                         val sWxApi = WXAPIFactory.createWXAPI(this@MainActivity, BuildConfig.WXID, false)
+                         sWxApi.registerApp(BuildConfig.WXID)
+                         val req = PayReq()
+                         req.appId = BuildConfig.WXID
+                         req.partnerId = partnerId
+                         req.prepayId = prepayId
+                         req.nonceStr = nonceStr
+                         req.timeStamp = timeStamp
+                         req.packageValue = "Sign=WXPay"
+                         req.sign = sign
+                         sWxApi.sendReq(req) //发起调用微信支付了
+
+//                    }
+                     }
+
 
                 }
+
+
             }
 
         }
@@ -136,6 +146,23 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun wechatResult(bean : WechatBean){
         mResult.success(bean.resultCode)
+    }
+
+
+    // int ERR_OK = 0;
+    //        int ERR_COMM = -1;
+    //        int ERR_USER_CANCEL = -2;
+    //        int ERR_SENT_FAILED = -3;
+    //        int ERR_AUTH_DENIED = -4;
+    //        int ERR_UNSUPPORT = -5;
+    //        int ERR_BAN = -6;
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun  wechatPayResult(bean: WxPayResultBean){
+//        when(bean){
+//            0->{
+                mResult.success(bean.code)
+//            }
+//        }
     }
 
     override fun onDestroy() {

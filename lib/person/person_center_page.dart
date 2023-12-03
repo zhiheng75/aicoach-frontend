@@ -7,11 +7,11 @@ import 'package:Bubble/setting/setting_router.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../constant/constant.dart';
+import '../login/entity/login_info_entity.dart';
+import '../login/entity/my_user_info_entity.dart';
 import '../login/entity/user_info_entity.dart';
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
@@ -278,7 +278,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
   bool get wantKeepAlive => true;
 
   @override
-  void getUserInfo(UserInfoDataData data) {
+  void getUserInfo(LoginInfoDataData data) {
     _headerImg = data.headimgurl;
     _userName = data.nickname;
     setState(() {

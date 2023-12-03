@@ -14,12 +14,13 @@ import '../../util/toast_utils.dart';
 import '../../widgets/my_app_bar.dart';
 import '../../widgets/my_button.dart';
 import '../../widgets/my_scroll_view.dart';
+import '../entity/login_info_entity.dart';
 import '../entity/wx_info_entity.dart';
 import '../presenter/bind_phone_presenter.dart';
 
 class BindPhonePage extends StatefulWidget {
 
-  final WxInfoDataData wechatData;
+  final LoginInfoDataData wechatData;
 
   const BindPhonePage(this.wechatData,{Key? key}) : super(key: key);
 

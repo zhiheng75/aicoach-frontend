@@ -80,6 +80,10 @@ extension WxInfoDataExtension on WxInfoData {
 
 WxInfoDataData $WxInfoDataDataFromJson(Map<String, dynamic> json) {
   final WxInfoDataData wxInfoDataData = WxInfoDataData();
+  final dynamic name = json['name'];
+  if (name != null) {
+    wxInfoDataData.name = name;
+  }
   final String? openid = jsonConvert.convert<String>(json['openid']);
   if (openid != null) {
     wxInfoDataData.openid = openid;
@@ -91,10 +95,6 @@ WxInfoDataData $WxInfoDataDataFromJson(Map<String, dynamic> json) {
   final int? sex = jsonConvert.convert<int>(json['sex']);
   if (sex != null) {
     wxInfoDataData.sex = sex;
-  }
-  final String? language = jsonConvert.convert<String>(json['language']);
-  if (language != null) {
-    wxInfoDataData.language = language;
   }
   final String? city = jsonConvert.convert<String>(json['city']);
   if (city != null) {
@@ -112,11 +112,6 @@ WxInfoDataData $WxInfoDataDataFromJson(Map<String, dynamic> json) {
   if (headimgurl != null) {
     wxInfoDataData.headimgurl = headimgurl;
   }
-  final List<dynamic>? privilege = (json['privilege'] as List<dynamic>?)?.map(
-          (e) => e).toList();
-  if (privilege != null) {
-    wxInfoDataData.privilege = privilege;
-  }
   final String? unionid = jsonConvert.convert<String>(json['unionid']);
   if (unionid != null) {
     wxInfoDataData.unionid = unionid;
@@ -129,53 +124,92 @@ WxInfoDataData $WxInfoDataDataFromJson(Map<String, dynamic> json) {
   if (token != null) {
     wxInfoDataData.token = token;
   }
+  final String? phone = jsonConvert.convert<String>(json['phone']);
+  if (phone != null) {
+    wxInfoDataData.phone = phone;
+  }
+  final dynamic description = json['description'];
+  if (description != null) {
+    wxInfoDataData.description = description;
+  }
+  final dynamic membership_type = json['membership_type'];
+  if (membership_type != null) {
+    wxInfoDataData.membership_type = membership_type;
+  }
+  final String? createdAt = jsonConvert.convert<String>(json['created_at']);
+  if (createdAt != null) {
+    wxInfoDataData.createdAt = createdAt;
+  }
+  final String? updatedAt = jsonConvert.convert<String>(json['updated_at']);
+  if (updatedAt != null) {
+    wxInfoDataData.updatedAt = updatedAt;
+  }
+  final int? id = jsonConvert.convert<int>(json['id']);
+  if (id != null) {
+    wxInfoDataData.id = id;
+  }
   return wxInfoDataData;
 }
 
 Map<String, dynamic> $WxInfoDataDataToJson(WxInfoDataData entity) {
   final Map<String, dynamic> data = <String, dynamic>{};
+  data['name'] = entity.name;
   data['openid'] = entity.openid;
   data['nickname'] = entity.nickname;
   data['sex'] = entity.sex;
-  data['language'] = entity.language;
   data['city'] = entity.city;
   data['province'] = entity.province;
   data['country'] = entity.country;
   data['headimgurl'] = entity.headimgurl;
-  data['privilege'] = entity.privilege;
   data['unionid'] = entity.unionid;
   data['school'] = entity.school;
   data['token'] = entity.token;
+  data['phone'] = entity.phone;
+  data['description'] = entity.description;
+  data['membership_type'] = entity.membership_type;
+  data['created_at'] = entity.createdAt;
+  data['updated_at'] = entity.updatedAt;
+  data['id'] = entity.id;
   return data;
 }
 
 extension WxInfoDataDataExtension on WxInfoDataData {
   WxInfoDataData copyWith({
+    dynamic name,
     String? openid,
     String? nickname,
     int? sex,
-    String? language,
     String? city,
     String? province,
     String? country,
     String? headimgurl,
-    List<dynamic>? privilege,
     String? unionid,
     String? school,
     String? token,
+    String? phone,
+    dynamic description,
+    dynamic membership_type,
+    String? createdAt,
+    String? updatedAt,
+    int? id,
   }) {
     return WxInfoDataData()
+      ..name = name ?? this.name
       ..openid = openid ?? this.openid
       ..nickname = nickname ?? this.nickname
       ..sex = sex ?? this.sex
-      ..language = language ?? this.language
       ..city = city ?? this.city
       ..province = province ?? this.province
       ..country = country ?? this.country
       ..headimgurl = headimgurl ?? this.headimgurl
-      ..privilege = privilege ?? this.privilege
       ..unionid = unionid ?? this.unionid
       ..school = school ?? this.school
-      ..token = token ?? this.token;
+      ..token = token ?? this.token
+      ..phone = phone ?? this.phone
+      ..description = description ?? this.description
+      ..membership_type = membership_type ?? this.membership_type
+      ..createdAt = createdAt ?? this.createdAt
+      ..updatedAt = updatedAt ?? this.updatedAt
+      ..id = id ?? this.id;
   }
 }

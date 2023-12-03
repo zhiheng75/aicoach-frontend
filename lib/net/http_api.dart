@@ -17,5 +17,17 @@ class HttpApi{
   //获取版本号
   static const String updateApp = "version";
 
+  //微信支付获取商户信息
+  static const String wxOrder = "order";
+
+  //购买记录
+  static const String orderRecords = "orders";
+
+  //获取商品列表
+  static const String goodList = "goods_list";
+
+  //获取评分报告
+  static const String coinReport = "localhost:8000/score_detail";
+
   static const String upload = 'uuc/upload-inco';
 }

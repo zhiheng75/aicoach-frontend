@@ -8,6 +8,7 @@ import 'package:Bubble/login/page/register_page.dart';
 import 'package:Bubble/login/page/sms_login_page.dart';
 
 import '../routers/i_router.dart';
+import 'entity/login_info_entity.dart';
 import 'entity/wx_info_entity.dart';
 
 
@@ -30,9 +31,9 @@ class LoginRouter implements IRouterProvider{
     router.define(smsLoginPage, handler: Handler(handlerFunc: (_, __) => const SMSLoginPage()));
     router.define(onlySmsPage, handler: Handler(handlerFunc: (_, __) => const OnlySmsPage()));
     router.define(bindPhonePage, handler: Handler(handlerFunc: (context, params) {
-      WxInfoDataData entity = WxInfoDataData();
+      LoginInfoDataData entity = LoginInfoDataData();
       if(context!=null){
-        entity = ModalRoute.of(context)?.settings.arguments as WxInfoDataData;
+        entity = ModalRoute.of(context)?.settings.arguments as LoginInfoDataData;
       }
       return  BindPhonePage(entity);
     }));

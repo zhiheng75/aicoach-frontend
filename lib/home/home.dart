@@ -121,7 +121,6 @@ class _HomePageState extends State<HomePage>
               child: GestureDetector(
                   onTap: () {
                     _showSelectMenu();
-
                     // _showUpdateDialog();
                     // NavigatorUtils.push(context, MyOrderRouter.myOrder);
 
@@ -298,7 +297,7 @@ class _HomePageState extends State<HomePage>
                               );
                             });
                             startCountDown = true;
-                            _countDown();
+                            // _countDown();
                           },
                           child: Container(
                             margin: const EdgeInsets.only(left: 28, right: 28),
