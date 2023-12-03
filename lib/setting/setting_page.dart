@@ -11,6 +11,7 @@ import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/util/version_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 
+import '../login/entity/login_info_entity.dart';
 import '../loginManager/login_manager.dart';
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
@@ -33,6 +34,8 @@ class _SettingPageState extends State<SettingPage>
   late SettingPresenter _settingPresenter;
 
   late String _appVersion = "";
+
+
   
   @override
   void initState() {
@@ -97,14 +100,26 @@ class _SettingPageState extends State<SettingPage>
                           color: Colours.color_5B8BD2,
                         ),
                         Gaps.vGap20,
-                        bindState(0,"手机号",false),
+                        GestureDetector(
+                          onTap: (){
+
+                          },
+                          child:  bindState(0,"手机号",_settingPresenter.hasBindPhone),
+                        ),
+
                         Gaps.vGap20,
                         const Divider(
                           height: Dimens.gap_dp1,
                           color: Colours.color_5B8BD2,
                         ),
                         Gaps.vGap20,
-                        bindState(1,"微信",false),
+
+                        GestureDetector(
+                          onTap: (){
+                            _settingPresenter.unbindWx();
+                          },
+                          child: bindState(1,"微信",_settingPresenter.hasBindWX),
+                        ),
                         Gaps.vGap20,
                         const Divider(
                           height: Dimens.gap_dp1,
@@ -150,21 +165,21 @@ class _SettingPageState extends State<SettingPage>
                         Gaps.vGap20,
                         const Expanded(child: Gaps.empty),
 
-                        Container(
-                          width: 400,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: ImageUtils.getAssetImage(
-                                  "login_out_bg_img",),
-                                fit: BoxFit.fill
+                        GestureDetector(
+                          onTap: (){
+                            LoginManager.toLoginOut();
+                            NavigatorUtils.push(context, HomeRouter.homePage);
+                          },
+                          child: Container(
+                            width: 400,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: ImageUtils.getAssetImage(
+                                    "login_out_bg_img",),
+                                  fit: BoxFit.fill
+                              ),
                             ),
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              LoginManager.toLoginOut();
-                              NavigatorUtils.push(context, HomeRouter.homePage);
-                            },
                             child: const Center(
                               child: Text("退出登录", style: TextStyle(
                                   fontSize: Dimens.font_sp17,
@@ -224,6 +239,14 @@ class _SettingPageState extends State<SettingPage>
       default:
         return const LoadAssetImage("bind_phone_img",width: 20,height: 20,);
     }
+  }
+
+
+  @override
+  void getUserInfo(LoginInfoDataData data) {
+    setState(() {
+
+    });
   }
 
   @override

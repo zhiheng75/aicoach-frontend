@@ -27,7 +27,10 @@ class HttpApi{
   static const String goodList = "goods_list";
 
   //获取评分报告
-  static const String coinReport = "localhost:8000/score_detail";
+  static const String coinReport = "score_detail";
+
+  //解绑微信
+  static const String unbindWX = "unbind_wx";
 
   static const String upload = 'uuc/upload-inco';
 }

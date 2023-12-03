@@ -80,7 +80,8 @@ class RadarMap extends StatefulWidget {
         /*this.zeroToPointPaint,
         this.pentagonPaint,
         this.contentPaint*/}) {
-    assert(scoreList.length == 5);
+    // assert(scoreList.length == 5);
+    assert(scoreList.length == 4);
 
     ///原点到5个定点的连线
     // zeroToPointPaint = Paint()
@@ -103,10 +104,10 @@ class RadarMap extends StatefulWidget {
 
     points = [
       Offset(0, -r),
-      Offset(r * cos(angleToRadian(18)), -r * sin(angleToRadian(18))),
-      Offset(r * cos(angleToRadian(54)), r * sin(angleToRadian(54))),
-      Offset(-r * cos(angleToRadian(54)), r * sin(angleToRadian(54))),
-      Offset(-r * cos(angleToRadian(18)), r * -sin(angleToRadian(18))),
+      Offset(r , 0),
+      Offset(0, r ),
+      Offset(-r , 0),
+      // Offset(-r * cos(angleToRadian(18)), r * -sin(angleToRadian(18))),
     ];
   }
 
@@ -214,11 +215,15 @@ class RadarmapPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final List<Offset> points = [
+      // Offset(0, -r),
+      // Offset(r * cos(angleToRadian(18)), -r * sin(angleToRadian(18))),
+      // Offset(r * cos(angleToRadian(54)), r * sin(angleToRadian(54))),
+      // Offset(-r * cos(angleToRadian(54)), r * sin(angleToRadian(54))),
+      // Offset(-r * cos(angleToRadian(18)), r * -sin(angleToRadian(18))),
       Offset(0, -r),
-      Offset(r * cos(angleToRadian(18)), -r * sin(angleToRadian(18))),
-      Offset(r * cos(angleToRadian(54)), r * sin(angleToRadian(54))),
-      Offset(-r * cos(angleToRadian(54)), r * sin(angleToRadian(54))),
-      Offset(-r * cos(angleToRadian(18)), r * -sin(angleToRadian(18))),
+      Offset(r , 0),
+      Offset(0, r ),
+      Offset(-r , 0),
     ];
 
     canvas.save();
@@ -233,15 +238,19 @@ class RadarmapPainter extends CustomPainter {
     ///画n个五边形
     for (int i = 0; i < n; i++) {
       List<Offset> points = [
-        Offset(0, -r * (i + 1) / n),
-        Offset(r * (i + 1) / n * cos(angleToRadian(18)),
-            -r * (i + 1) / n * sin(angleToRadian(18))),
-        Offset(r * (i + 1) / n * cos(angleToRadian(54)),
-            r * (i + 1) / n * sin(angleToRadian(54))),
-        Offset(-r * (i + 1) / n * cos(angleToRadian(54)),
-            r * (i + 1) / n * sin(angleToRadian(54))),
-        Offset(-r * (i + 1) / n * cos(angleToRadian(18)),
-            r * (i + 1) / n * -sin(angleToRadian(18))),
+        // Offset(0, -r * (i + 1) / n),
+        // Offset(r * (i + 1) / n * cos(angleToRadian(18)),
+        //     -r * (i + 1) / n * sin(angleToRadian(18))),
+        // Offset(r * (i + 1) / n * cos(angleToRadian(54)),
+        //     r * (i + 1) / n * sin(angleToRadian(54))),
+        // Offset(-r * (i + 1) / n * cos(angleToRadian(54)),
+        //     r * (i + 1) / n * sin(angleToRadian(54))),
+        // Offset(-r * (i + 1) / n * cos(angleToRadian(18)),
+        //     r * (i + 1) / n * -sin(angleToRadian(18))),
+        Offset(0, -r* (i + 1) / n),
+        Offset(r* (i + 1) / n , 0),
+        Offset(0, r* (i + 1) / n ),
+        Offset(-r* (i + 1) / n , 0),
       ];
       drawPentagon(points, canvas, pentagonPaint);
     }
@@ -375,16 +384,21 @@ class RadarmapPainter extends CustomPainter {
     Offset offsetResultCircle;
     switch (type) {
       case MoveType2.oneMove:
-        offsetResult = Offset(offset.dx - size.width / 2, offset.dy);
+        // offsetResult = Offset(offset.dx - size.width / 2, offset.dy);
+        offsetResult = Offset(offset.dx - size.width / 2, offset.dy+2);
         break;
       case MoveType2.twoMove:
-        offsetResult = Offset(offset.dx - size.width/2+5, offset.dy+5);
+        // offsetResult = Offset(offset.dx - size.width/2+5, offset.dy+5);
+        offsetResult = Offset(offset.dx - size.width/2+5, offset.dy+12);
+
         break;
       case MoveType2.threeMove:
-        offsetResult = Offset(offset.dx - size.width / 2-5, offset.dy-10);
+        // offsetResult = Offset(offset.dx - size.width / 2-5, offset.dy-10);
+        offsetResult = Offset(offset.dx - size.width / 2-20, offset.dy-8);
         break;
       case MoveType2.fourMove:
-        offsetResult = Offset(offset.dx - size.width+15, offset.dy-5);
+        // offsetResult = Offset(offset.dx - size.width+15, offset.dy-5);
+        offsetResult = Offset(offset.dx - size.width+6, offset.dy-26);
         break;
       case MoveType2.fiveMove:
         offsetResult = Offset(offset.dx - size.width / 2-5, offset.dy+5);
@@ -398,13 +412,16 @@ class RadarmapPainter extends CustomPainter {
         offsetResultCircle = Offset(offset.dx , offset.dy+15);
         break;
       case MoveType2.twoMove:
-        offsetResultCircle = Offset(offset.dx+5, offset.dy+10);
+        // offsetResultCircle = Offset(offset.dx+5, offset.dy+10);
+        offsetResultCircle = Offset(offset.dx+5, offset.dy+18);
         break;
       case MoveType2.threeMove:
-        offsetResultCircle = Offset(offset.dx-5 , offset.dy);
+        // offsetResultCircle = Offset(offset.dx-5 , offset.dy);
+        offsetResultCircle = Offset(offset.dx-20 , offset.dy+5);
         break;
       case MoveType2.fourMove:
-        offsetResultCircle = Offset(offset.dx+5, offset.dy);
+        // offsetResultCircle = Offset(offset.dx+5, offset.dy);
+        offsetResultCircle = Offset(offset.dx-5, offset.dy-20);
         break;
       case MoveType2.fiveMove:
         offsetResultCircle = Offset(offset.dx-5, offset.dy+10);

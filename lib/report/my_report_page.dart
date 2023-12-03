@@ -51,6 +51,7 @@ implements MyReportView{
         child: Column(
           children: [
             const MyAppBar(
+              backImgColor: Colors.white,
               centerTitle: "口语学习日报",
               backgroundColor: Colours.transflate,
             ),
@@ -90,7 +91,7 @@ implements MyReportView{
                                   ),
                                   progressColor: Colours.color_00DBAF,
                                 ),
-                                RadarMap(xx()),
+                                RadarMap(_myReportPresenter.list),
 
                               ],
                             ),
@@ -231,12 +232,12 @@ implements MyReportView{
      var b = RadarBean(99, "语法");
      var c = RadarBean(55, "用词\n标准度");
      var d = RadarBean(60, "完整度");
-     var e = RadarBean(80, "流畅度");
+     // var e = RadarBean(80, "流畅度");
      list.add(a);
      list.add(b);
      list.add(c);
      list.add(d);
-     list.add(e);
+     // list.add(e);
      return list;
   }
 
@@ -271,6 +272,13 @@ implements MyReportView{
 
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void getScore(List<RadarBean> list) {
+    setState(() {
+
+    });
+  }
 
 }
 

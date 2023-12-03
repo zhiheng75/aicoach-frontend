@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/person/presneter/purchase_presenter.dart';
 import 'package:Bubble/person/presneter/purchase_view.dart';
+import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/toast_utils.dart';
+import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:Bubble/res/gaps.dart';
-import 'package:Bubble/widgets/my_scroll_view.dart';
 
 import '../method/fluter_native.dart';
 import '../mvp/base_page.dart';
@@ -17,8 +17,6 @@ import '../res/dimens.dart';
 import '../routers/fluro_navigator.dart';
 import '../util/image_utils.dart';
 import '../widgets/load_image.dart';
-import '../widgets/my_app_bar.dart';
-import 'entity/good_list_entity.dart';
 import 'entity/my_good_list_entity.dart';
 
 ///购买

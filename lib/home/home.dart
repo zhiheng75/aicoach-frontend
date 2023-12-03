@@ -13,6 +13,7 @@ import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import '../conversation/conversation_router.dart';
 import '../mvp/base_page.dart';
+import '../report/report_router.dart';
 import '../res/colors.dart';
 import '../res/gaps.dart';
 import '../setting/widgets/update_dialog.dart';
@@ -123,7 +124,6 @@ class _HomePageState extends State<HomePage>
                     _showSelectMenu();
                     // _showUpdateDialog();
                     // NavigatorUtils.push(context, MyOrderRouter.myOrder);
-
                   },
                   child: LoadAssetImage(
                     "home_more_img",

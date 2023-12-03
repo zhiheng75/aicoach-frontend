@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
+import '../changeRole/change_role_router.dart';
 import '../common/webview_page.dart';
 import '../conversation/conversation_router.dart';
 import '../home/home.dart';
@@ -46,6 +47,7 @@ class Routes {
     _listRouter.add(HomeRouter());
     _listRouter.add(SettingRouter());
     _listRouter.add(MyReportRouter());
+    _listRouter.add(ChangeRoleRouter());
     _listRouter.add(PersonalRouter());
     _listRouter.add(ConversationRouter());
     _listRouter.add(MyOrderRouter());

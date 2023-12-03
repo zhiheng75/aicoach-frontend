@@ -1,3 +1,5 @@
+import 'package:Bubble/changeRole/change_role_page.dart';
+import 'package:Bubble/changeRole/change_role_router.dart';
 import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +87,7 @@ class _MainPageSelectMenuState extends State<MainPageSelectMenu> with SingleTick
           Gaps.vGap10,
           GestureDetector(
             onTap: (){
-              NavigatorUtils.push(context, LoginRouter.loginPage);
+              NavigatorUtils.push(context, ChangeRoleRouter.changeRole);
             },
             child:const LoadAssetImage("change_role_img",width: 20,height: 20,),
           ),

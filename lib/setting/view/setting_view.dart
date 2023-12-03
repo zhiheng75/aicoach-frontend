@@ -1,5 +1,8 @@
 import 'package:Bubble/mvp/mvps.dart';
 
+import '../../login/entity/login_info_entity.dart';
+
 abstract class SettingView implements IMvpView{
 
+  void getUserInfo(LoginInfoDataData data);
 }
