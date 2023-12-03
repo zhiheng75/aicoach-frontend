@@ -1,3 +1,4 @@
+import 'package:Bubble/entity/empty_response_entity.dart';
 import 'package:sp_util/sp_util.dart';
 
 import '../../constant/constant.dart';
@@ -31,10 +32,18 @@ class SettingPresenter extends BasePagePresenter<SettingView>{
   Future unbindWx(){
     // final Map<String, dynamic> params = <String, dynamic>{};
     // params['platform'] = "android";
-    return requestNetwork(Method.post,
+    return requestNetwork<EmptyResponseData>(Method.post,
         url: HttpApi.unbindWX,
         isShow: true, onSuccess: (data) {
-
+          if (data != null) {
+            if (data.code == 200) {
+              view.sendSuccess("解绑成功");
+            } else {
+              view.sendFail(data.msg);
+            }
+          } else {
+            view.sendFail("响应异常");
+          }
         });
   }
 

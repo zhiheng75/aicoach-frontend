@@ -7,6 +7,7 @@ import '../view/my_order_view.dart';
 
 class MyOrderPresenter extends BasePagePresenter<MyOrderView>{
 
+  List<String> mList = [];
 
   @override
   void initState() {

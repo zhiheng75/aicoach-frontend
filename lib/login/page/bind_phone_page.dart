@@ -1,10 +1,13 @@
-import 'package:flutter/cupertino.dart';
+import 'package:Bubble/main.dart';
+import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/login/view/bind_phone_view.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:flutter/services.dart';
 
 import '../../mvp/base_page.dart';
+import '../../res/colors.dart';
 import '../../widgets/my_text_field.dart';
 import '../../res/gaps.dart';
 import '../../res/styles.dart';
@@ -84,19 +87,44 @@ class _BindPhonePageState extends State<BindPhonePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      appBar: const MyAppBar(),
-      body: MyScrollView(
-        keyboardConfig: Utils.getKeyboardActionsConfig(context, <FocusNode>[_nodeText1, _nodeText2]),
-        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0),
-        children: _buildBody(),
-      ),
+    return AnnotatedRegion(
+      value: SystemUiOverlayStyle.light,
+        child:Scaffold(
+          resizeToAvoidBottomInset:false,
+          body: Container(
+            height: ScreenUtil.getScreenH(context),
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colours.color_00FFB4,
+                    Colours.color_0E90FF,
+                    Colours.color_DA2FFF,
+                  ],
+                )
+            ),
+            child: MyScrollView(
+              keyboardConfig: Utils.getKeyboardActionsConfig(context, <FocusNode>[_nodeText1, _nodeText2]),
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0,),
+              children: _buildBody(),
+            ),
+          )
+
+
+          ,
+        )
     );
   }
 
 
   List<Widget> _buildBody() {
     return <Widget>[
+      const MyAppBar(
+        backImgColor: Colors.white,
+        backgroundColor: Colours.transflate,
+      ),
+
       const Text(
         "绑定手机号",
         style: TextStyles.textBold26,
@@ -127,6 +155,7 @@ class _BindPhonePageState extends State<BindPhonePage>
         },
       ),
       Gaps.vGap24,
+
       MyButton(
         onPressed: _clickable ? _bind : null,
         text: "绑定",

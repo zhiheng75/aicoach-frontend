@@ -63,7 +63,7 @@ class LoginInfoDataData {
 	dynamic school;
 	@JSONField(name: "membership_expiry_date")
 	dynamic membershipExpiryDate;
-	late String token;
+	late String token = "";
 
 	LoginInfoDataData();
 

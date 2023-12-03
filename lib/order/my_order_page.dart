@@ -11,6 +11,7 @@ import '../res/colors.dart';
 import '../res/dimens.dart';
 import '../util/clip_board_tool.dart';
 import '../widgets/my_app_bar.dart';
+import '../widgets/state_layout.dart';
 
 class MyOrderPage extends StatefulWidget {
   const MyOrderPage({Key? key}) : super(key: key);
@@ -27,10 +28,7 @@ class _MyOrderPageState extends State<MyOrderPage>
   late MyOrderPresenter _myOrderPresenter;
 
 
-  @override
-  void initState() {
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +59,9 @@ class _MyOrderPageState extends State<MyOrderPage>
                 backgroundColor: Colours.transflate,
               ),
               Expanded(
-                  child:Container(
+                  child: _myOrderPresenter.mList.isNotEmpty?
+
+                  Container(
                     width: ScreenUtil.getScreenW(context),
                     padding:const EdgeInsets.only(left: Dimens.gap_dp28,right:Dimens.gap_dp28),
                     decoration:const BoxDecoration(
@@ -83,7 +83,11 @@ class _MyOrderPageState extends State<MyOrderPage>
                           });
 
                         }),
-                  ) ),
+                  ) :const StateLayout(
+                    type: StateType.empty,
+                    hintText: "   你还没有购买记录\n现在开始升级体验吧~",
+                  ))
+              ,
             ],
           ),
         )));

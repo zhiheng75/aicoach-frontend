@@ -258,5 +258,16 @@ class _SettingPageState extends State<SettingPage>
   @override
   bool get wantKeepAlive => true;
 
+  @override
+  void sendFail(String msg) {
+
+    Toast.show(msg);
+  }
+
+  @override
+  void sendSuccess(String s) {
+    Toast.show(s);
+  }
+
 
 }

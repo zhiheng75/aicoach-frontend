@@ -158,7 +158,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                       Gaps.vGap30,
                       GestureDetector(
                         onTap: (){
-
+                          NavigatorUtils.push(context, PersonalRouter.personalSuggestion);
                         },
                         child: personItem(2,"意见反馈"),
                       ),
