@@ -1,6 +1,7 @@
 import 'package:Bubble/changeRole/change_role_page.dart';
 import 'package:Bubble/changeRole/change_role_router.dart';
 import 'package:Bubble/person/person_router.dart';
+import 'package:Bubble/person/study_report.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:flutter/material.dart';
 import 'package:Bubble/login/login_router.dart';
@@ -94,16 +95,19 @@ class _MainPageSelectMenuState extends State<MainPageSelectMenu> with SingleTick
           Gaps.vGap10,
           GestureDetector(
             onTap: (){
-              NavigatorUtils.push(context, PersonalRouter.personalPurchase);
+              // NavigatorUtils.push(context, PersonalRouter.personalPurchase);
+              LoginManager.checkLogin(context, (){
+                NavigatorUtils.push(context, PersonalRouter.personalStudyReport,replace: true);
+              });
             },
             child:const LoadAssetImage("study_center_img",width: 20,height: 20,),
           ),
           Gaps.vGap10,
           GestureDetector(
             onTap: () {
-              NavigatorUtils.goBack(context);
+
               LoginManager.checkLogin(context, (){
-                NavigatorUtils.push(context, PersonalRouter.personalCenter);
+                NavigatorUtils.push(context, PersonalRouter.personalCenter,replace: true);
               });
 
             },

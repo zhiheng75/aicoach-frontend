@@ -3,13 +3,14 @@ import 'package:Bubble/changeRole/view/change_role_view.dart';
 import 'package:Bubble/changeRole/widget/recommend_teacher2_widget.dart';
 import 'package:Bubble/home/entity/teach_list_entity.dart';
 import 'package:Bubble/mvp/base_page.dart';
+import 'package:Bubble/res/gaps.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../home/widget/recommend_teacher_widget.dart';
 import '../res/dimens.dart';
 import '../routers/fluro_navigator.dart';
+import '../util/image_utils.dart';
 import '../widgets/load_image.dart';
 
 class ChangeRolePage extends StatefulWidget {
@@ -52,7 +53,7 @@ implements
               ),
               Container(
                 width: ScreenUtil.getScreenW(context),
-                margin: const EdgeInsets.only(top: 220),
+                margin: const EdgeInsets.only(top: 240),
                 padding: const EdgeInsets.only(
                   left: Dimens.gap_dp20,
                   right: Dimens.gap_dp20,
@@ -62,29 +63,62 @@ implements
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20)),
                     color: Colors.white),
-                child: GridView.builder(
-                    itemCount: _presenter.allTeacher.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      //设置列数
-                      crossAxisCount: 3,
-                      //设置横向间距
-                      crossAxisSpacing: 10,
-                      //设置主轴间距
-                      mainAxisSpacing: 20,
-                      mainAxisExtent: 180,
-                    ),
-                    itemBuilder: (BuildContext ctx, int index) {
-                      return RecommendTeacherWidget2(_presenter.allTeacher[index], () {
-                        for(int i = 0;i<_presenter.allTeacher.length;i++){
-                          _presenter.allTeacher[i].isSelect = false;
-                        }
-                        _presenter.allTeacher[index].isSelect = true;
-                        setState(() {
+                child:
+                Column(
+                  children: [
+                    Expanded(
+                        child: GridView.builder(
+                            itemCount: _presenter.allTeacher.length,
+                            gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              //设置列数
+                              crossAxisCount: 3,
+                              //设置横向间距
+                              crossAxisSpacing: 10,
+                              //设置主轴间距
+                              mainAxisSpacing: 20,
+                              mainAxisExtent: 180,
+                            ),
+                            itemBuilder: (BuildContext ctx, int index) {
+                              return RecommendTeacherWidget2(_presenter.allTeacher[index], () {
+                                for(int i = 0;i<_presenter.allTeacher.length;i++){
+                                  _presenter.allTeacher[i].isSelect = false;
+                                }
+                                _presenter.allTeacher[index].isSelect = true;
+                                setState(() {
 
-                        });
-                      });
-                    }),
+                                });
+                              });
+                            })
+                    ),
+                    Gaps.vGap15,
+                    GestureDetector(
+                      onTap: (){
+                        NavigatorUtils.goBack(context);
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 28, right: 28),
+                        height: 46,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: ImageUtils.getAssetImage(
+                                    "purchase_btn_img"),
+                                fit: BoxFit.fill)),
+                        child: const Center(
+                          child: Text(
+                            "确定",
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    )
+                    ,
+                    Gaps.vGap15,
+                  ],
+                )
+
+
               )
             ],
           ),

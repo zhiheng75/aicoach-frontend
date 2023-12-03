@@ -243,57 +243,66 @@ class _NewRegisterPageState extends State<NewRegisterPage>
         ),
       ),
       Gaps.vGap15,
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          GestureDetector(
-            onTap: (){
-              _isSelect = !_isSelect;
-              setState(() {
+      GestureDetector(
+        onTap: (){
+          _isSelect = !_isSelect;
+          setState(() {
 
-              });
-            },
-            child: Container(
+          });
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
               alignment: Alignment.center,
               child: LoadAssetImage(
                 _isSelect ? "select_img" : "unselect_img",
-                width: 10,
-                height: 10,
+                width: 11,
+                height: 11,
               ),
             ),
-          ),
-          Gaps.hGap10,
-          const Text("请阅读并同意", style: TextStyle(fontSize: 12),),
-          GestureDetector(
-            onTap: () {
-              NavigatorUtils.goWebViewPage(context, "隐私政策",
-                  "http://www.shenmo-ai.com/privacy_policy/");
-            },
-            child: const Text("隐私政策", style: TextStyle(
-                fontSize: 12, decoration: TextDecoration.underline)),
-          ),
-          const Text(" 和 ", style: TextStyle(fontSize: 12),),
-          GestureDetector(
-            onTap: () {
-              NavigatorUtils.goWebViewPage(
-                  context, "服务协议", "http://www.shenmo-ai.com/tos/");
-            },
-            child: const Text("服务协议", style: TextStyle(
-                fontSize: 12, decoration: TextDecoration.underline),),
-          ),
-        ],
-      ),
+            Gaps.hGap10,
+            const Text("请阅读并同意", style: TextStyle(fontSize: 12),),
+            GestureDetector(
+              onTap: () {
+                NavigatorUtils.goWebViewPage(context, "隐私政策",
+                    "http://www.shenmo-ai.com/privacy_policy/");
+              },
+              child: const Text("隐私政策", style: TextStyle(
+                  fontSize: 12, decoration: TextDecoration.underline)),
+            ),
+            const Text(" 和 ", style: TextStyle(fontSize: 12),),
+            GestureDetector(
+              onTap: () {
+                NavigatorUtils.goWebViewPage(
+                    context, "服务协议", "http://www.shenmo-ai.com/tos/");
+              },
+              child: const Text("服务协议", style: TextStyle(
+                  fontSize: 12, decoration: TextDecoration.underline),),
+            ),
+          ],
+        ) ,
+      )
+     ,
       Gaps.vGap24,
       const Text("其他登录方式"),
       Gaps.vGap15,
       GestureDetector(
         onTap: () {
-          FlutterToNative.jumpToWechatLogin().then((value) => {
-            // _wechatCode = value,
-            // Log.e("===========>$_wechatCode"),
 
-            _registerPresenter.getWxInfo(value)
-          });
+          if(_isSelect){
+            FlutterToNative.jumpToWechatLogin().then((value) => {
+              // _wechatCode = value,
+              // Log.e("===========>$_wechatCode"),
+
+              _registerPresenter.getWxInfo(value)
+            });
+          }else{
+            Toast.show("请同意服务协议");
+          }
+
+
               },
         child: const LoadAssetImage("wechat_login_img",width: 30,height: 30,),
       ),

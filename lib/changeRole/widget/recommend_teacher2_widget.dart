@@ -65,7 +65,7 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget2> {
                   fontSize: 16, color: Colours.color_111B44,fontWeight: FontWeight.bold),
             ),
             Text(widget.entity.slogan??"",    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 12),),
-            Text(widget.entity.character.replaceAll(",", " "),    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 12),)
+            Text(widget.entity.character??widget.entity.character.replaceAll(",", " "),    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 12),)
           ],
         ),
       ),

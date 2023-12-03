@@ -21,7 +21,7 @@ class HttpApi{
   static const String wxOrder = "order";
 
   //购买记录
-  static const String orderRecords = "orders";
+  static const String orderRecords = "order_list";
 
   //获取商品列表
   static const String goodList = "goods_list";
