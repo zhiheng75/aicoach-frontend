@@ -23,6 +23,9 @@ class HttpApi{
   //购买记录
   static const String orderRecords = "order_list";
 
+  //查询订单支付状态
+  static const String queryOrderStatus = "query_order";
+
   //获取商品列表
   static const String goodList = "goods_list";
 

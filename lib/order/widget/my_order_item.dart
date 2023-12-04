@@ -7,13 +7,14 @@ import '../../res/gaps.dart';
 import '../../res/styles.dart';
 import '../../util/image_utils.dart';
 import '../../widgets/round_picture_widget.dart';
+import '../entity/order_list_entity.dart';
 
 class MyOrderItem extends StatefulWidget {
 
   final Function _press;
+  final OrderListDataData data;
 
-
-  const MyOrderItem(this._press,{Key? key, }) : super(key: key);
+  const MyOrderItem(this.data,this._press,{Key? key, }) : super(key: key);
 
   @override
   State<MyOrderItem> createState() => _MyOrderItemState();
@@ -51,20 +52,17 @@ class _MyOrderItemState extends State<MyOrderItem> {
               // child: Center(
                 child: Column(
                   children: [
-                    Text("连续包年",style: TextStyle(fontSize: Dimens.font_sp22,color: Colors.white),),
-                    Text("¥ 365元/年",style: TextStyle(fontSize: Dimens.font_sp13,color: Colors.white),)
+                    Text(widget.data.name,style:const TextStyle(fontSize: Dimens.font_sp22,color: Colors.white),),
+                    Text("¥ ${widget.data.goodsPrice}/${widget.data.unit}",style:const TextStyle(fontSize: Dimens.font_sp13,color: Colors.white),)
                   ],
                 ),
               // ),
             ),
 
-
-
-
             Expanded(
                 flex: 2,
                 child: Container(
-                  padding: EdgeInsets.only(left: 17,top: 10,bottom: 10),
+                  padding:const EdgeInsets.only(left: 10,top: 10,bottom: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -72,28 +70,30 @@ class _MyOrderItemState extends State<MyOrderItem> {
                         children: [
                           Expanded(
                               child: Text(
-                                "订 单 号：123 ",
+                                "订 单 号：${widget.data.orderNo}",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
                                 style: TextStyles.text12_11B44,
                               )),
-                          LoadAssetImage("copy_img",width: 9,height: 10,)
+                          const LoadAssetImage("copy_img",width: 9,height: 10,)
                           
                         ],
                       ),
                       Gaps.vGap5,
                       Text(
-                        "交易金额：123",
+                        "交易金额：${widget.data.orderPrice}",
                         style: TextStyles.text12_546092,
                       ),
                       Gaps.vGap5,
                       Text(
-                        "交易时间：",
+                        "交易时间：${widget.data.createdAt}",
                         style: TextStyles.text12_546092,
                       ),
                       Gaps.vGap5,
                       Row(
                         children: [
                           Text(
-                            "支付方式：  ",
+                            "支付方式：${widget.data.paymentMethod}",
                             style: TextStyles.text12_546092,
                           ),
                         ],

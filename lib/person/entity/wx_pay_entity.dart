@@ -49,6 +49,7 @@ class WxPayDataData {
 	late String prepayId;
 	late String package;
 	late String sign;
+	late String order_no;
 
 	WxPayDataData();
 

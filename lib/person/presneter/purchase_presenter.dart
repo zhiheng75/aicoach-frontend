@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:Bubble/mvp/base_page_presenter.dart';
 import 'package:Bubble/person/presneter/purchase_view.dart';
 
+import '../../method/fluter_native.dart';
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
+import '../../util/toast_utils.dart';
 import '../entity/good_list_entity.dart';
 import '../entity/my_good_list_entity.dart';
 import '../entity/wx_pay_entity.dart';
@@ -27,13 +31,37 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView>{
         params: params,
         onSuccess: (data){
           if(data!=null&&data.data!=null){
-            view.getWXPayMsg(data.data);
+
+            FlutterToNative.jumpToWechatPay(json.encode(data.data)).then((value){
+              if(value==0){
+                Toast.show("支付成功");
+                getOrderStatus(data.data.order_no,"WXPAY");
+              }else {
+                Toast.show("支付失败");
+              }
+            });
+
+            // view.getWXPayMsg(data.data);
           }
         }
     );
   }
 
 
+   Future getOrderStatus(goodId,payment_method){
+
+     Map<String,dynamic> map = Map();
+     map["order_no"] = goodId;
+     map["payment_method"] = payment_method;
+
+     return requestNetwork(Method.get,
+         url: HttpApi.queryOrderStatus,
+         queryParameters: map,
+         isShow: false,
+         onSuccess: (data) {
+
+         });
+   }
 
   Future getGoodsList(bool showLoading){
     return requestNetwork<GoodListData>(

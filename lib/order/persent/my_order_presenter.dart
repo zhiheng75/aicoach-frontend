@@ -3,11 +3,12 @@ import 'package:Bubble/mvp/base_page_presenter.dart';
 
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
+import '../entity/order_list_entity.dart';
 import '../view/my_order_view.dart';
 
 class MyOrderPresenter extends BasePagePresenter<MyOrderView>{
 
-  List<String> mList = [];
+  List<OrderListDataData> mList = [];
 
   @override
   void initState() {
@@ -16,12 +17,12 @@ class MyOrderPresenter extends BasePagePresenter<MyOrderView>{
   }
 
   Future getOrderList(bool showLoading){
-    return requestNetwork(
+    return requestNetwork<OrderListData>(
         Method.get,
         url: HttpApi.orderRecords,
         isShow: showLoading,
         onSuccess: (data){
-          // if(data!=null&&data.data!=null&&data.data.isNotEmpty){
+          if(data!=null&&data.data!=null&&data.data.isNotEmpty){
           //   goodList.clear();
           //   for(int i = 0;i<data.data.length;i++){
           //     MyGoodListEntity entity = MyGoodListEntity();
@@ -38,8 +39,10 @@ class MyOrderPresenter extends BasePagePresenter<MyOrderView>{
           //     entity.recommend = i ==0;
           //     goodList.add(entity);
           //   }
-          //   view.goodListData(goodList);
-          // }
+
+            mList.addAll(data.data);
+            view.goodListData(data.data);
+          }
 
         }
     );

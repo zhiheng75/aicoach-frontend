@@ -107,6 +107,10 @@ WxPayDataData $WxPayDataDataFromJson(Map<String, dynamic> json) {
   if (sign != null) {
     wxPayDataData.sign = sign;
   }
+  final String? order_no = jsonConvert.convert<String>(json['order_no']);
+  if (order_no != null) {
+    wxPayDataData.order_no = order_no;
+  }
   return wxPayDataData;
 }
 
@@ -119,6 +123,7 @@ Map<String, dynamic> $WxPayDataDataToJson(WxPayDataData entity) {
   data['prepay_id'] = entity.prepayId;
   data['package'] = entity.package;
   data['sign'] = entity.sign;
+  data['order_no'] = entity.order_no;
   return data;
 }
 
@@ -131,6 +136,7 @@ extension WxPayDataDataExtension on WxPayDataData {
     String? prepayId,
     String? package,
     String? sign,
+    String? order_no,
   }) {
     return WxPayDataData()
       ..appid = appid ?? this.appid
@@ -139,6 +145,7 @@ extension WxPayDataDataExtension on WxPayDataData {
       ..noncestr = noncestr ?? this.noncestr
       ..prepayId = prepayId ?? this.prepayId
       ..package = package ?? this.package
-      ..sign = sign ?? this.sign;
+      ..sign = sign ?? this.sign
+      ..order_no = order_no ?? this.order_no;
   }
 }

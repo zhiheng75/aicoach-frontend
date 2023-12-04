@@ -10,6 +10,7 @@ import 'package:Bubble/login/entity/login_info_entity.dart';
 import 'package:Bubble/login/entity/my_user_info_entity.dart';
 import 'package:Bubble/login/entity/user_info_entity.dart';
 import 'package:Bubble/login/entity/wx_info_entity.dart';
+import 'package:Bubble/order/entity/order_list_entity.dart';
 import 'package:Bubble/person/entity/good_list_entity.dart';
 import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/report/entity/study_report_entity.dart';
@@ -196,6 +197,18 @@ class JsonConvert {
       return data.map<WxInfoDataData>((Map<String, dynamic> e) =>
           WxInfoDataData.fromJson(e)).toList() as M;
     }
+    if (<OrderListEntity>[] is M) {
+      return data.map<OrderListEntity>((Map<String, dynamic> e) =>
+          OrderListEntity.fromJson(e)).toList() as M;
+    }
+    if (<OrderListData>[] is M) {
+      return data.map<OrderListData>((Map<String, dynamic> e) =>
+          OrderListData.fromJson(e)).toList() as M;
+    }
+    if (<OrderListDataData>[] is M) {
+      return data.map<OrderListDataData>((Map<String, dynamic> e) =>
+          OrderListDataData.fromJson(e)).toList() as M;
+    }
     if (<GoodListEntity>[] is M) {
       return data.map<GoodListEntity>((Map<String, dynamic> e) =>
           GoodListEntity.fromJson(e)).toList() as M;
@@ -268,6 +281,9 @@ class JsonConvertClassCollection {
     (WxInfoEntity).toString(): WxInfoEntity.fromJson,
     (WxInfoData).toString(): WxInfoData.fromJson,
     (WxInfoDataData).toString(): WxInfoDataData.fromJson,
+    (OrderListEntity).toString(): OrderListEntity.fromJson,
+    (OrderListData).toString(): OrderListData.fromJson,
+    (OrderListDataData).toString(): OrderListDataData.fromJson,
     (GoodListEntity).toString(): GoodListEntity.fromJson,
     (GoodListData).toString(): GoodListData.fromJson,
     (GoodListDataData).toString(): GoodListDataData.fromJson,

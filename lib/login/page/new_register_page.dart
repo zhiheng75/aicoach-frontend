@@ -339,7 +339,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
   void wechatSuccess(LoginInfoDataData data) {
     // SpUtil.putObject(Constant.userInfoKey, data);
     // SpUtil.putString(Constant.accessToken, data.token);
-    NavigatorUtils.push(context, LoginRouter.bindPhonePage,arguments:data);
+    NavigatorUtils.push(context, LoginRouter.bindPhonePage,arguments:data,replace: true);
   }
 
   @override
@@ -349,10 +349,10 @@ class _NewRegisterPageState extends State<NewRegisterPage>
 
   @override
   void loginSuccess() {
-    // SpUtil.putObject(Constant.userInfoKey, data);
-    // SpUtil.putString(Constant.accessToken, data.token);
+
+
     // NavigatorUtils.push(context, HomeRouter.homePage,clearStack: true);
-    NavigatorUtils.push(context, PersonalRouter.personalCenter);
+    NavigatorUtils.push(context, PersonalRouter.personalCenter,replace: true);
   }
 
 }

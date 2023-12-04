@@ -1,24 +1,23 @@
-import 'package:Bubble/main.dart';
+import 'package:Bubble/home/home_router.dart';
+import 'package:Bubble/login/login_router.dart';
+import 'package:Bubble/login/view/bind_phone_view.dart';
+import 'package:Bubble/person/person_router.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
-import 'package:Bubble/home/home_router.dart';
-import 'package:Bubble/login/view/bind_phone_view.dart';
-import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:flutter/services.dart';
 
 import '../../mvp/base_page.dart';
 import '../../res/colors.dart';
-import '../../widgets/my_text_field.dart';
 import '../../res/gaps.dart';
 import '../../res/styles.dart';
 import '../../util/change_notifier_manage.dart';
 import '../../util/other_utils.dart';
 import '../../util/toast_utils.dart';
 import '../../widgets/my_app_bar.dart';
-import '../../widgets/my_button.dart';
 import '../../widgets/my_scroll_view.dart';
+import '../../widgets/my_text_field.dart';
 import '../entity/login_info_entity.dart';
-import '../entity/wx_info_entity.dart';
 import '../presenter/bind_phone_presenter.dart';
 
 class BindPhonePage extends StatefulWidget {
@@ -156,10 +155,41 @@ class _BindPhonePageState extends State<BindPhonePage>
       ),
       Gaps.vGap24,
 
-      MyButton(
-        onPressed: _clickable ? _bind : null,
-        text: "绑定",
+      GestureDetector(
+        onTap: (){
+          if(_clickable){
+            _bind();
+          }
+        },
+        child: Container(
+          alignment: Alignment.center,
+          width: ScreenUtil.getScreenW(context),
+          height: 40,
+          decoration: const BoxDecoration(
+              borderRadius:
+              BorderRadius.all(Radius.circular(100)),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Colours.color_DA2FFF,
+                  Colours.color_0E90FF,
+                  Colours.color_00FFB4,
+                ],
+              )),
+          // child: Center(
+          child: const Text(
+            "绑定",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
       ),
+
+
+      // MyButton(
+      //   onPressed: _clickable ? _bind : null,
+      //   text: "绑定",
+      // ),
     ];
   }
 
@@ -190,7 +220,7 @@ class _BindPhonePageState extends State<BindPhonePage>
   @override
   void wechatLoginSuccess(String msg) {
     Toast.show(msg);
-    NavigatorUtils.push(context, HomeRouter.homePage,clearStack: true);
+    NavigatorUtils.push(context, PersonalRouter.personalCenter,replace: true);
   }
 
 

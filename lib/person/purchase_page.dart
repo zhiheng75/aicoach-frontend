@@ -362,13 +362,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
   @override
   void getWXPayMsg(WxPayDataData bean) {
 
-   FlutterToNative.jumpToWechatPay(json.encode(bean)).then((value){
-     if(value==0){
-       Toast.show("支付成功");
-     }else {
-       Toast.show("支付失败");
-     }
-   });
+
   }
 
 }

@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:sp_util/sp_util.dart';
 
+import '../../constant/constant.dart';
 import '../../entity/empty_response_entity.dart';
 import '../../mvp/base_page_presenter.dart';
 import '../../net/base_entity.dart';
@@ -48,7 +50,7 @@ class BindPhonePresenter extends BasePagePresenter<BindPhoneView> {
     params['unionid'] = data.unionid;
 
 
-    return requestNetwork<EmptyResponseData>(Method.post,
+    return requestNetwork<LoginInfoData>(Method.post,
         url: HttpApi.wechatLogin,
         params: params,
         options: op,
@@ -56,6 +58,8 @@ class BindPhonePresenter extends BasePagePresenter<BindPhoneView> {
         onSuccess: (data) {
           if (data != null) {
             if (data.code == 200) {
+
+              SpUtil.putObject(Constant.userInfoKey, data.data);
               view.wechatLoginSuccess("登录成功");
             } else {
               view.wechatLoginFail(data.msg);

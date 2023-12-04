@@ -1,3 +1,4 @@
+import 'package:Bubble/order/entity/order_list_entity.dart';
 import 'package:Bubble/order/persent/my_order_presenter.dart';
 import 'package:Bubble/order/view/my_order_view.dart';
 import 'package:Bubble/order/widget/my_order_item.dart';
@@ -70,9 +71,9 @@ class _MyOrderPageState extends State<MyOrderPage>
                     ),
                     child: ListView.builder(
                         shrinkWrap:true,
-                        itemCount: 20,
+                        itemCount: _myOrderPresenter.mList.length,
                         itemBuilder: (context,index){
-                          return MyOrderItem( (){
+                          return MyOrderItem( _myOrderPresenter.mList[index],(){
                             // ClipboardTool.getData().then((value) => {
                             //
                             // }).catchError((e){
@@ -101,4 +102,11 @@ class _MyOrderPageState extends State<MyOrderPage>
 
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void goodListData(List<OrderListDataData> data) {
+    setState(() {
+
+    });
+  }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Bubble/util/log_utils.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,7 @@ import '../res/gaps.dart';
 import '../setting/widgets/update_dialog.dart';
 import '../util/image_utils.dart';
 import '../util/time_utils.dart';
+import '../util/version_utils.dart';
 import '../widgets/double_tap_back_exit_app.dart';
 import '../widgets/load_image.dart';
 import '../widgets/popup_window.dart';
@@ -77,6 +79,11 @@ class _HomePageState extends State<HomePage>
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
           overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
     });
+
+    VersionUtils.getpkgName().then((value){
+      Log.e("========================>$value");
+    }
+    );
 
   }
 
