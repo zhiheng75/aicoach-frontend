@@ -8,6 +8,13 @@ class TimeUtils {
     return formatter.format(date);
   }
 
+
+  static String formatDateYMDTime(int timestamp) {
+    var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    var formatter = DateFormat('yyyy-MM-dd');
+    return formatter.format(date);
+  }
+
   static String formatedTime(int secTime) {
     String getParsedTime(String time) {
       if (time.length <= 1) return "0$time";

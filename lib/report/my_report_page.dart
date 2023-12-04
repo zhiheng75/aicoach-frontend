@@ -71,7 +71,7 @@ implements MyReportView{
                             ),
                             child: Column(
                               children: [
-                                talkAmount(30,TimeUtils.formatDateTime(1630399935000)),
+                                talkAmount(30,TimeUtils.formatDateYMDTime(1630399935000)),
                                 Gaps.vGap50,
                                 CircularPercentIndicator(
                                   radius: 90.0,
@@ -256,10 +256,9 @@ implements MyReportView{
 
         ),
         // Text("本次对话$amount"),
-        const Expanded(child: Gaps.empty),
         const LoadAssetImage("talk_time_img",width: 18,height: 18,),
         Gaps.hGap6,
-        Text(time),
+        Text(time,overflow:TextOverflow.ellipsis,maxLines:1,style: const TextStyle(color: Colours.color_111B44,fontSize: 13,)),
       ],
     );
   }

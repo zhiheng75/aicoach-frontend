@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage>
             // ),
 
             Positioned(
-              left: 50,
+              left: 40,
               top: 70,
               child: GestureDetector(
                   onTap: () {
