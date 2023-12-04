@@ -394,11 +394,11 @@ class RadarmapPainter extends CustomPainter {
         break;
       case MoveType2.threeMove:
         // offsetResult = Offset(offset.dx - size.width / 2-5, offset.dy-10);
-        offsetResult = Offset(offset.dx - size.width / 2-20, offset.dy-8);
+        offsetResult = Offset(offset.dx - size.width / 2-20, offset.dy-1);
         break;
       case MoveType2.fourMove:
         // offsetResult = Offset(offset.dx - size.width+15, offset.dy-5);
-        offsetResult = Offset(offset.dx - size.width+6, offset.dy-26);
+        offsetResult = Offset(offset.dx - size.width+3, offset.dy-26);
         break;
       case MoveType2.fiveMove:
         offsetResult = Offset(offset.dx - size.width / 2-5, offset.dy+5);

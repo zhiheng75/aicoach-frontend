@@ -60,6 +60,7 @@ class BindPhonePresenter extends BasePagePresenter<BindPhoneView> {
             if (data.code == 200) {
 
               SpUtil.putObject(Constant.userInfoKey, data.data);
+              SpUtil.putString(Constant.accessToken, data.data.token);
               view.wechatLoginSuccess("登录成功");
             } else {
               view.wechatLoginFail(data.msg);

@@ -1,3 +1,7 @@
+import 'package:Bubble/mvp/base_page.dart';
+import 'package:Bubble/person/entity/study_list_entity.dart';
+import 'package:Bubble/person/presneter/study_report_presenter.dart';
+import 'package:Bubble/person/view/study_report_view.dart';
 import 'package:Bubble/person/widget/study_report_item.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
@@ -9,6 +13,7 @@ import '../res/colors.dart';
 import '../res/dimens.dart';
 import '../routers/fluro_navigator.dart';
 import '../widgets/my_app_bar.dart';
+import '../widgets/state_layout.dart';
 
 class StudyReportPage extends StatefulWidget {
   const StudyReportPage({Key? key}) : super(key: key);
@@ -17,15 +22,17 @@ class StudyReportPage extends StatefulWidget {
   State<StudyReportPage> createState() => _StudyReportPageState();
 }
 
-class _StudyReportPageState extends State<StudyReportPage> {
+class _StudyReportPageState extends State<StudyReportPage> with BasePageMixin<StudyReportPage,StudyReportPresenter>,
+    AutomaticKeepAliveClientMixin<StudyReportPage>
+    implements StudyReportView
+{
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  late StudyReportPresenter _presenter;
+
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.light,
         child: Scaffold(
@@ -57,14 +64,18 @@ class _StudyReportPageState extends State<StudyReportPage> {
                           borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight:  Radius.circular(20)),
                           color: Colors.white
                       ),
-                      child: ListView.builder(
+                      child: _presenter.mList.isNotEmpty?
+                      ListView.builder(
                           shrinkWrap:true,
-                          itemCount: 20,
+                          itemCount: 1,
                           itemBuilder: (context,index){
-                            return StudyReportWidget((){
+                            return StudyReportWidget(_presenter.mList[index],(){
                               NavigatorUtils.push(context, MyReportRouter.myReportPage);
                             });
-                          }),
+                          }):const StateLayout(
+                      type: StateType.empty,
+                      hintText: "暂无记录",
+                    ),
                     ) ),
 
               ],
@@ -72,5 +83,21 @@ class _StudyReportPageState extends State<StudyReportPage> {
           ),
         )
     );
+  }
+
+  @override
+  StudyReportPresenter createPresenter() {
+    _presenter = StudyReportPresenter();
+    return _presenter;
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void studyListInfo(List<StudyListDataData> list) {
+    setState(() {
+
+    });
   }
 }

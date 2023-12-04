@@ -82,11 +82,11 @@ implements MyReportView{
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "176",
+                                        "76",
                                         style: TextStyle(fontSize: 50,color: Colours.color_00DBAF),
                                       ),
                                       Text("超过94%该年龄段用户"),
-                                      Text("满分为200分"),
+                                      Text("满分为100分"),
                                     ],
                                   ),
                                   progressColor: Colours.color_00DBAF,

@@ -79,7 +79,7 @@ class _MyOrderPageState extends State<MyOrderPage>
                             // }).catchError((e){
                             //   Toast.show(e.toString());
                             // });
-                            ClipboardTool.setDataToastMsg("detasd");
+                            ClipboardTool.setDataToastMsg(_myOrderPresenter.mList[index].orderNo);
 
                           });
 

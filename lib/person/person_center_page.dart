@@ -1,4 +1,5 @@
 import 'package:Bubble/order/order_router.dart';
+import 'package:Bubble/person/entity/study_info_entity.dart';
 import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/person/presneter/person_center_presenter.dart';
 import 'package:Bubble/person/view/person_center_view.dart';
@@ -11,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../login/entity/login_info_entity.dart';
-import '../login/entity/my_user_info_entity.dart';
-import '../login/entity/user_info_entity.dart';
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
 import '../res/dimens.dart';
@@ -35,6 +34,10 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
 
   String _headerImg = "";
   String _userName = "";
+  String studyTime="--";
+  String studyAmount = "--";
+  String studyRank="--";
+
   late PersonalCenterPresenter _presenter;
 
   @override
@@ -116,8 +119,8 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                           ),
                         child: Row(
                           children: [
-                            Expanded(child:studyItem("学习时长","29","min") ),
-                            Expanded(child: studyItem("完成对话","3000","个")),
+                            Expanded(child:studyItem("学习时长",studyTime,"min") ),
+                            Expanded(child: studyItem("完成对话",studyAmount,"个")),
                             Expanded(child:Column(
                               children: [
                                 const Text("学习排行", style: TextStyles.text12_546092,),
@@ -126,7 +129,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                                 TextSpan(
                                     children: <TextSpan>[
                                       const TextSpan(text: "优胜",style:  TextStyle(fontSize: 10,color: Colours.color_546092)),
-                                      TextSpan(text: "96%",style: const TextStyle(fontSize: 17,color: Colours.color_00DBAF)),
+                                      TextSpan(text: studyRank,style: const TextStyle(fontSize: 17,color: Colours.color_00DBAF)),
                                     ]
                                 ))
                               ],
@@ -205,11 +208,11 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                 ),
                 RichText(text: TextSpan(
                     children: <TextSpan>[
-                      TextSpan(text: "你的周学习活跃指数为",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
-                      TextSpan(text: "95%",style: TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
-                      TextSpan(text: ",前边还有",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
-                      TextSpan(text: "49213",style: TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
-                      TextSpan(text: "位保持每天学习，加油赶超~",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
+                      const TextSpan(text: "你的周学习活跃指数为",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
+                      const TextSpan(text: "--%",style: TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
+                      const TextSpan(text: ",前边还有",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
+                      const TextSpan(text: "--",style: TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
+                      const TextSpan(text: "位保持每天学习，加油赶超~",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
                     ]
                 ))
 
@@ -281,6 +284,16 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
   void getUserInfo(LoginInfoDataData data) {
     _headerImg = data.headimgurl;
     _userName = data.nickname;
+    setState(() {
+
+    });
+  }
+
+  @override
+  void getStudyReport(StudyInfoDataData data) {
+    studyTime = data.duration.toString();
+    studyAmount = data.sessionCount.toString();
+    studyRank = data.rank;
     setState(() {
 
     });

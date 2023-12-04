@@ -81,6 +81,8 @@ dependencies:
   crypto: ^3.0.3
   #xml2json: ^6.2.1 https://github.com/shamblett/xml2json
   xml2json: ^6.2.1
+  #start
+  flutter_rating_bar: ^4.0.1
 
 dev_dependencies:
   flutter_test:

@@ -38,5 +38,11 @@ class HttpApi{
   //解绑微信
   static const String unbindWX = "unbind_wx";
 
+  //会话时常
+  static const String studyInfo = "conversation_record";
+
+  //学习报告的集合
+  static const String studyReportList = "app/conversations";
+
   static const String upload = 'uuc/upload-inco';
 }

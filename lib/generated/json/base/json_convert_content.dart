@@ -12,7 +12,9 @@ import 'package:Bubble/login/entity/user_info_entity.dart';
 import 'package:Bubble/login/entity/wx_info_entity.dart';
 import 'package:Bubble/order/entity/order_list_entity.dart';
 import 'package:Bubble/person/entity/good_list_entity.dart';
+import 'package:Bubble/person/entity/study_info_entity.dart';
 import 'package:Bubble/person/entity/wx_pay_entity.dart';
+import 'package:Bubble/person/entity/study_list_entity.dart';
 import 'package:Bubble/report/entity/study_report_entity.dart';
 
 JsonConvert jsonConvert = JsonConvert();
@@ -221,6 +223,18 @@ class JsonConvert {
       return data.map<GoodListDataData>((Map<String, dynamic> e) =>
           GoodListDataData.fromJson(e)).toList() as M;
     }
+    if (<StudyInfoEntity>[] is M) {
+      return data.map<StudyInfoEntity>((Map<String, dynamic> e) =>
+          StudyInfoEntity.fromJson(e)).toList() as M;
+    }
+    if (<StudyInfoData>[] is M) {
+      return data.map<StudyInfoData>((Map<String, dynamic> e) =>
+          StudyInfoData.fromJson(e)).toList() as M;
+    }
+    if (<StudyInfoDataData>[] is M) {
+      return data.map<StudyInfoDataData>((Map<String, dynamic> e) =>
+          StudyInfoDataData.fromJson(e)).toList() as M;
+    }
     if (<WxPayEntity>[] is M) {
       return data.map<WxPayEntity>((Map<String, dynamic> e) =>
           WxPayEntity.fromJson(e)).toList() as M;
@@ -232,6 +246,18 @@ class JsonConvert {
     if (<WxPayDataData>[] is M) {
       return data.map<WxPayDataData>((Map<String, dynamic> e) =>
           WxPayDataData.fromJson(e)).toList() as M;
+    }
+    if (<StudyListEntity>[] is M) {
+      return data.map<StudyListEntity>((Map<String, dynamic> e) =>
+          StudyListEntity.fromJson(e)).toList() as M;
+    }
+    if (<StudyListData>[] is M) {
+      return data.map<StudyListData>((Map<String, dynamic> e) =>
+          StudyListData.fromJson(e)).toList() as M;
+    }
+    if (<StudyListDataData>[] is M) {
+      return data.map<StudyListDataData>((Map<String, dynamic> e) =>
+          StudyListDataData.fromJson(e)).toList() as M;
     }
     if (<StudyReportEntity>[] is M) {
       return data.map<StudyReportEntity>((Map<String, dynamic> e) =>
@@ -287,9 +313,15 @@ class JsonConvertClassCollection {
     (GoodListEntity).toString(): GoodListEntity.fromJson,
     (GoodListData).toString(): GoodListData.fromJson,
     (GoodListDataData).toString(): GoodListDataData.fromJson,
+    (StudyInfoEntity).toString(): StudyInfoEntity.fromJson,
+    (StudyInfoData).toString(): StudyInfoData.fromJson,
+    (StudyInfoDataData).toString(): StudyInfoDataData.fromJson,
     (WxPayEntity).toString(): WxPayEntity.fromJson,
     (WxPayData).toString(): WxPayData.fromJson,
     (WxPayDataData).toString(): WxPayDataData.fromJson,
+    (StudyListEntity).toString(): StudyListEntity.fromJson,
+    (StudyListData).toString(): StudyListData.fromJson,
+    (StudyListDataData).toString(): StudyListDataData.fromJson,
     (StudyReportEntity).toString(): StudyReportEntity.fromJson,
     (StudyReportData).toString(): StudyReportData.fromJson,
     (StudyReportDataData).toString(): StudyReportDataData.fromJson,

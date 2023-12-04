@@ -87,6 +87,8 @@ class _MyOrderItemState extends State<MyOrderItem> {
                       Gaps.vGap5,
                       Text(
                         "交易时间：${widget.data.createdAt}",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                         style: TextStyles.text12_546092,
                       ),
                       Gaps.vGap5,
