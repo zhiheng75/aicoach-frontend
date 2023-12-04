@@ -9,4 +9,7 @@ abstract class SettingView implements IMvpView{
   void sendSuccess(String s);
 
   void sendFail(String msg);
+
+  void wechatSuccess();
+  void wechatFail(String msg);
 }

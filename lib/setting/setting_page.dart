@@ -13,6 +13,7 @@ import 'package:Bubble/widgets/load_image.dart';
 
 import '../login/entity/login_info_entity.dart';
 import '../loginManager/login_manager.dart';
+import '../method/fluter_native.dart';
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
 import '../util/image_utils.dart';
@@ -116,7 +117,17 @@ class _SettingPageState extends State<SettingPage>
 
                         GestureDetector(
                           onTap: (){
-                            _settingPresenter.unbindWx();
+                            if(_settingPresenter.hasBindWX) {
+                              _settingPresenter.unbindWx();
+                            }else{
+                              // _settingPresenter.bindWx();
+                              FlutterToNative.jumpToWechatLogin().then((value) => {
+                                // _wechatCode = value,
+                                // Log.e("===========>$_wechatCode"),
+
+                                _settingPresenter.getWxInfo(value)
+                              });
+                            }
                           },
                           child: bindState(1,"微信",_settingPresenter.hasBindWX),
                         ),
@@ -267,6 +278,19 @@ class _SettingPageState extends State<SettingPage>
   @override
   void sendSuccess(String s) {
     Toast.show(s);
+    setState(() {
+
+    });
+  }
+
+  @override
+  void wechatFail(String msg) {
+    Toast.show(msg);
+  }
+
+  @override
+  void wechatSuccess() {
+
   }
 
 

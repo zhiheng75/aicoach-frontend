@@ -42,7 +42,7 @@ class LoginInfoData {
 @JsonSerializable()
 class LoginInfoDataData {
 	dynamic name;
-	late String openid;
+	late String openid = "";
 	late String phone;
 	late int sex;
 	late String city;
@@ -54,7 +54,7 @@ class LoginInfoDataData {
 	late String createdAt;
 	@JSONField(name: "updated_at")
 	late String updatedAt;
-	late int id;
+	late int id = 0;
 	dynamic email;
 	late String nickname;
 	late String province;

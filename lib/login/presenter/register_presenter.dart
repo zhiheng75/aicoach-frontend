@@ -91,19 +91,6 @@ class RegisterPresenter extends BasePagePresenter<RegisterView>{
       if(data!=null){
 
         if(data.data.token!=null&&data.data.token.isNotEmpty){
-          // MyUserInfoData myUserInfo = MyUserInfoData();
-          // myUserInfo.openid = data.data.openid??"";
-          // myUserInfo.nickname = data.data.nickname??"";
-          // myUserInfo.sex = data.data.sex??0;
-          // // myUserInfo.language = data.data.language;
-          // myUserInfo.city = data.data.city??"";
-          // myUserInfo.country = data.data.country??"";
-          // myUserInfo.headimgurl = data.data.headimgurl??"";
-          // // myUserInfo.privilege = data.data.privilege;
-          // myUserInfo.unionid = data.data.unionid??"";
-          // myUserInfo.school = data.data.school??"";
-          // myUserInfo.token = data.data.token;
-
             SpUtil.putObject(Constant.userInfoKey, data.data);
             SpUtil.putString(Constant.accessToken, data.data.token);
           view.hadBindWechat();
