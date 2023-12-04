@@ -1,4 +1,5 @@
 import 'package:Bubble/res/resources.dart';
+import 'package:Bubble/util/time_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -60,6 +61,7 @@ class _StudyReportWidgetState extends State<StudyReportWidget> {
           children: [
             const RoundPictureWidget(
               url: "study_list_img",
+              holderImg: "study_list_img",
               topLeft: 20,
               topRight: 0,
               bottomLeft: 20,
@@ -80,7 +82,7 @@ class _StudyReportWidgetState extends State<StudyReportWidget> {
                       ),
                       Gaps.vGap5,
                       Text(
-                        "时长：--min",
+                        "时长：${TimeUtils.formatedMinute(widget._entity.duration)}min",
                         style: TextStyles.text12_546092,
                       ),
                       Gaps.vGap5,

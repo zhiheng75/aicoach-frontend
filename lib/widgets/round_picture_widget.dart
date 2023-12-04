@@ -11,6 +11,7 @@ class RoundPictureWidget extends StatelessWidget {
   final double topRight;
   final double bottomLeft;
   final double bottomRight;
+  final String holderImg;
 
   const RoundPictureWidget({
     Key? key,
@@ -22,7 +23,7 @@ class RoundPictureWidget extends StatelessWidget {
     this.topLeft = 10,
     this.topRight = 10,
     this.bottomRight = 10,
-    this.bottomLeft = 10,
+    this.bottomLeft = 10, required this.holderImg,
   }) : super(key: key);
 
   @override
@@ -36,6 +37,7 @@ class RoundPictureWidget extends StatelessWidget {
                 bottomRight: Radius.circular(bottomRight)),
             child: LoadImage(
               url,
+              holderImg: holderImg,
               width: width,
               height: height,
             ))
@@ -43,6 +45,7 @@ class RoundPictureWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(radiu),
             child: LoadImage(
               url,
+              holderImg: holderImg,
               width: width,
               height: height,
             ));

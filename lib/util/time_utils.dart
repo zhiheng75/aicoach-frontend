@@ -29,4 +29,22 @@ class TimeUtils {
 
     return parsedTime;
   }
+
+  static String formatedMinute(int secTime) {
+    String getParsedTime(String time) {
+      if (time.length <= 1) return "0$time";
+      return time;
+    }
+
+    int min = secTime ~/ 60;
+    int sec = secTime % 60;
+    if(sec>0){
+      min = min+1;
+    }
+
+    String parsedTime =
+        getParsedTime(min.toString());
+
+    return parsedTime;
+  }
 }

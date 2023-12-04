@@ -94,6 +94,13 @@ StudyListDataData $StudyListDataDataFromJson(Map<String, dynamic> json) {
   if (score != null) {
     studyListDataData.score = score;
   }
+
+  final int? duration = jsonConvert.convert<int>(json['duration']);
+  if (duration != null) {
+    studyListDataData.duration = duration;
+  }
+
+
   final String? createdAt = jsonConvert.convert<String>(json['created_at']);
   if (createdAt != null) {
     studyListDataData.createdAt = createdAt;
@@ -107,6 +114,7 @@ Map<String, dynamic> $StudyListDataDataToJson(StudyListDataData entity) {
   data['message'] = entity.message;
   data['score'] = entity.score;
   data['created_at'] = entity.createdAt;
+  data['duration'] = entity.duration;
   return data;
 }
 
@@ -116,11 +124,13 @@ extension StudyListDataDataExtension on StudyListDataData {
     String? message,
     double? score,
     String? createdAt,
+    int? duration,
   }) {
     return StudyListDataData()
       ..sessionId = sessionId ?? this.sessionId
       ..message = message ?? this.message
       ..score = score ?? this.score
+      ..duration = duration ?? this.duration
       ..createdAt = createdAt ?? this.createdAt;
   }
 }

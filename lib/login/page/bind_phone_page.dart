@@ -1,5 +1,3 @@
-import 'package:Bubble/home/home_router.dart';
-import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/login/view/bind_phone_view.dart';
 import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';

@@ -12,16 +12,15 @@ class MyReportPresenter extends BasePagePresenter<MyReportView>{
 
   List<RadarBean> list =[];
 
+
   @override
   void initState() {
     super.initState();
-
       list.add(RadarBean(0,"语法\n与用词"));
       list.add(RadarBean(0,"流畅度"));
       list.add(RadarBean(0,"完整度"));
       list.add(RadarBean(0,"发音"));
 
-    getReport("567710cca1474b53bda63b0d2c5eb44d");
   }
 
 

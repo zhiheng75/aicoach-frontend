@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:Bubble/generated/json/base/json_field.dart';
 import 'package:Bubble/generated/json/study_list_entity.g.dart';
 import 'dart:convert';
@@ -47,6 +49,7 @@ class StudyListDataData {
 	late double score;
 	@JSONField(name: "created_at")
 	late String createdAt;
+	late int duration;
 
 	StudyListDataData();
 

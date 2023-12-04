@@ -4,11 +4,9 @@ import 'package:sp_util/sp_util.dart';
 import '../../constant/constant.dart';
 import '../../entity/empty_response_entity.dart';
 import '../../mvp/base_page_presenter.dart';
-import '../../net/base_entity.dart';
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
 import '../entity/login_info_entity.dart';
-import '../entity/wx_info_entity.dart';
 import '../view/bind_phone_view.dart';
 
 class BindPhonePresenter extends BasePagePresenter<BindPhoneView> {

@@ -28,9 +28,8 @@ class LoadImage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-
+    final Widget holder = LoadAssetImage(holderImg, height: height, width: width, fit: fit);
     if (image.isNotEmpty) {
-      final Widget holder = LoadAssetImage(holderImg, height: height, width: width, fit: fit);
       return CachedNetworkImage(
         imageUrl: image,
         placeholder: (_, __) => holder,

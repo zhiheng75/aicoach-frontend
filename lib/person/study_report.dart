@@ -67,10 +67,10 @@ class _StudyReportPageState extends State<StudyReportPage> with BasePageMixin<St
                       child: _presenter.mList.isNotEmpty?
                       ListView.builder(
                           shrinkWrap:true,
-                          itemCount: 1,
+                          itemCount: _presenter.mList.length,
                           itemBuilder: (context,index){
                             return StudyReportWidget(_presenter.mList[index],(){
-                              NavigatorUtils.push(context, MyReportRouter.myReportPage);
+                              NavigatorUtils.push(context, MyReportRouter.myReportPage,arguments:_presenter.mList[index],);
                             });
                           }):const StateLayout(
                       type: StateType.empty,

@@ -174,18 +174,16 @@ class RadarMapState extends State<RadarMap>
   Widget build(BuildContext context) {
 
 
-    return Container(
-      child: CustomPaint(
-        size:const Size.fromRadius(200),
-        painter: RadarmapPainter(widget.scoreList, ctrl, values,
-            r: widget.r,
-            n: widget.n,
-            padding: widget.padding,
-            bottomPadding: widget.bottomPadding,
-            zeroToPointPaint: widget.zeroToPointPaint,
-            pentagonPaint: widget.pentagonPaint,
-            contentPaint: contentPaint),
-      ),
+    return CustomPaint(
+      size:const Size.fromRadius(200),
+      painter: RadarmapPainter(widget.scoreList, ctrl, values,
+          r: widget.r,
+          n: widget.n,
+          padding: widget.padding,
+          bottomPadding: widget.bottomPadding,
+          zeroToPointPaint: widget.zeroToPointPaint,
+          pentagonPaint: widget.pentagonPaint,
+          contentPaint: contentPaint),
     );
   }
 }
