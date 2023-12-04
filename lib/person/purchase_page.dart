@@ -88,6 +88,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                         ListView.builder(
                             shrinkWrap: true,
                             itemCount: _purchasePresenter.goodList.length,
+                            physics:const ClampingScrollPhysics(),
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: (){
@@ -152,6 +153,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                           },
                           child: agreement(agreeAgreement),
                         ),
+                        Gaps.vGap15,
                       ],
                     )
                   : Gaps.empty,
@@ -283,8 +285,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
           children: [
             const LoadAssetImage("wechat_pay_img",width: 27,height: 27,),
             Gaps.hGap8,
-            const Text("微信支付",style: TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_111B44),),
-            const Expanded(child: Gaps.empty),
+            const  Expanded(child: Text("微信支付",style: TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_111B44),)),
             LoadAssetImage(isCheck==true?"select_img":"unselect_img",width: 17,height: 17,),
           ],
         );
@@ -293,8 +294,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
           children: [
             const LoadAssetImage("alipay_img",width: 27,height: 27,),
             Gaps.hGap8,
-            const Text("支付宝支付",style: TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_111B44),),
-            const Expanded(child: Gaps.empty),
+            const Expanded(child:  Text("支付宝支付",style: TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_111B44),)),
             LoadAssetImage(isCheck==true?"select_img":"unselect_img",width: 17,height: 17,),
           ],
         );

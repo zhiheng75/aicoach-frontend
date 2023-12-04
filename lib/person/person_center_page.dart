@@ -87,6 +87,17 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                 ),
 
                 Container(
+                  margin: const EdgeInsets.only(top: 220),
+                  width: ScreenUtil.getScreenW(context),
+                  height: ScreenUtil.getScreenH(context),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20)),
+                    color: Colors.white,
+                  ),
+
+                ),
+                Container(
                   width: ScreenUtil.getScreenW(context),
                   height: ScreenUtil.getScreenH(context),
                   margin: const EdgeInsets.only(top: 220),
@@ -98,15 +109,14 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: [
-                            Colours.color_0EF4D1,
-                            Colours.color_53C5FF,
-                            Colours.color_E0AEFF,
+                            Colours.color_300EF4D1,
+                            Colours.color_3053C5FF,
+                            Colours.color_30E0AEFF,
                           ],
                           stops: [0.0,0.2,1]
                       ),
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(20),
                           topRight: Radius.circular(20)),
-                      color: Colors.white
                   ),
                   child: MyScrollView(
                     children: [
@@ -246,8 +256,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
       children: [
         imageWidget(type),
         Gaps.hGap7,
-        Text(name,style:const TextStyle(fontSize: 15,color: Colours.color_111B44),),
-        const Expanded(child: Gaps.empty),
+        Expanded(child: Text(name,style:const TextStyle(fontSize: 15,color: Colours.color_111B44),),),
         Gaps.hGap6,
         const LoadAssetImage(
           "to_next_img",

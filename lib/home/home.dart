@@ -140,33 +140,33 @@ class _HomePageState extends State<HomePage>
                   )),
             ),
 
-            Positioned(
-                right: 20,
-                top: 68,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const LoadAssetImage(
-                      "timer_img",
-                      width: 17,
-                      height: 17,
-                    ),
-                    Gaps.hGap6,
-                    GestureDetector(
-                      onTap: () {
-                        _showTimeOutBottomSheet();
-                      },
-                      child: SizedBox(
-                        width: 100,
-                        child: Text(
-                          experienceTimeFinish ? "试用期结束" : _currentSecond,
-                          style: const TextStyle(
-                              fontSize: Dimens.font_sp17, color: Colors.white),
-                        ),
-                      ),
-                    )
-                  ],
-                )),
+            // Positioned(
+            //     right: 20,
+            //     top: 68,
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [
+            //         const LoadAssetImage(
+            //           "timer_img",
+            //           width: 17,
+            //           height: 17,
+            //         ),
+            //         Gaps.hGap6,
+            //         GestureDetector(
+            //           onTap: () {
+            //             _showTimeOutBottomSheet();
+            //           },
+            //           child: SizedBox(
+            //             width: 100,
+            //             child: Text(
+            //               experienceTimeFinish ? "试用期结束" : _currentSecond,
+            //               style: const TextStyle(
+            //                   fontSize: Dimens.font_sp17, color: Colors.white),
+            //             ),
+            //           ),
+            //         )
+            //       ],
+            //     )),
 
             Positioned(
                 bottom: 50,
@@ -219,114 +219,128 @@ class _HomePageState extends State<HomePage>
             minChildSize: 0.65,
             expand: false,
             builder: (_, scrollController) {
-              return Container(
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30)),
-                    gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [
-                          Colours.color_0EF4D1,
-                          Colours.color_53C5FF,
-                          Colours.color_E0AEFF,
-                        ],
-                        stops: [
-                          0.0,
-                          0.7,
-                          1.0
-                        ])),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding:
+              return Stack(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30)),
+                      color: Colors.white
+                        ),
+                  ),
+                  Container(
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30)),
+                        gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [
+                              Colours.color_300EF4D1,
+                              Colours.color_3053C5FF,
+                              Colours.color_30E0AEFF,
+                            ],
+                            stops: [
+                              0.0,
+                              0.7,
+                              1.0
+                            ])),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding:
                           const EdgeInsets.only(left: 20, right: 20, top: 20),
-                      child: Row(
-                        children: [
-                          const Text(
-                            "选择自己喜欢的老师",
-                            style: TextStyle(
-                                color: Colours.color_111B44,
-                                fontSize: Dimens.font_sp15,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          const Expanded(child: Gaps.empty),
-                          GestureDetector(
-                            onTap: () {
-                              NavigatorUtils.goBack(context);
-                            },
-                            child: const LoadAssetImage(
-                              "close_img",
-                              width: 15,
-                              height: 15,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                        child: Container(
-                      padding: const EdgeInsets.only(
-                          left: 20, right: 20, top: 20, bottom: 10),
-                      child: GridView.builder(
-                          itemCount: allTeacher.length,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            //设置列数
-                            crossAxisCount: 3,
-                            //设置横向间距
-                            crossAxisSpacing: 10,
-                            //设置主轴间距
-                            mainAxisSpacing: 20,
-                            mainAxisExtent: 150,
-                          ),
-                          itemBuilder: (BuildContext ctx, int index) {
-                            return RecommendTeacherWidget(allTeacher[index],
-                                () {
-                              provider.setSelectIndex(index);
-                            }, provider);
-                          }),
-                    )),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: GestureDetector(
-                          onTap: () {
-                            NavigatorUtils.goBack(context);
-                            // 跳转到对话
-                            int index = provider.index;
-                            TeachListEntity teacher = allTeacher.elementAt(index);
-                            Future.delayed(const Duration(milliseconds: 300), () {
-                              NavigatorUtils.push(
-                                context,
-                                ConversationRouter.connectPage,
-                                arguments: teacher,
-                              );
-                            });
-                            startCountDown = true;
-                            // _countDown();
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(left: 28, right: 28),
-                            height: 46,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: ImageUtils.getAssetImage(
-                                        "purchase_btn_img"),
-                                    fit: BoxFit.fill)),
-                            child: const Center(
-                              child: Text(
-                                "确定",
+                          child: Row(
+                            children: [
+                              const Text(
+                                "选择自己喜欢的老师",
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
+                                    color: Colours.color_111B44,
+                                    fontSize: Dimens.font_sp15,
+                                    fontWeight: FontWeight.bold),
                               ),
-                            ),
-                          )),
+                              const Expanded(child: Gaps.empty),
+                              GestureDetector(
+                                onTap: () {
+                                  NavigatorUtils.goBack(context);
+                                },
+                                child: const LoadAssetImage(
+                                  "close_img",
+                                  width: 15,
+                                  height: 15,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 20, bottom: 10),
+                              child: GridView.builder(
+                                  itemCount: allTeacher.length,
+                                  gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    //设置列数
+                                    crossAxisCount: 3,
+                                    //设置横向间距
+                                    crossAxisSpacing: 10,
+                                    //设置主轴间距
+                                    mainAxisSpacing: 20,
+                                    mainAxisExtent: 150,
+                                  ),
+                                  itemBuilder: (BuildContext ctx, int index) {
+                                    return RecommendTeacherWidget(allTeacher[index],
+                                            () {
+                                          provider.setSelectIndex(index);
+                                        }, provider);
+                                  }),
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: GestureDetector(
+                              onTap: () {
+                                NavigatorUtils.goBack(context);
+                                // 跳转到对话
+                                int index = provider.index;
+                                TeachListEntity teacher = allTeacher.elementAt(index);
+                                Future.delayed(const Duration(milliseconds: 300), () {
+                                  NavigatorUtils.push(
+                                    context,
+                                    ConversationRouter.connectPage,
+                                    arguments: teacher,
+                                  );
+                                });
+                                startCountDown = true;
+                                // _countDown();
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(left: 28, right: 28),
+                                height: 46,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: ImageUtils.getAssetImage(
+                                            "purchase_btn_img"),
+                                        fit: BoxFit.fill)),
+                                child: const Center(
+                                  child: Text(
+                                    "确定",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16),
+                                  ),
+                                ),
+                              )),
+                        ),
+                        Gaps.vGap24,
+                      ],
                     ),
-                    Gaps.vGap24,
-                  ],
-                ),
-              );
+                  )
+                ],
+              )
+
+                ;
             }));
   }
 
@@ -343,108 +357,123 @@ class _HomePageState extends State<HomePage>
             minChildSize: 0.45,
             expand: false,
             builder: (_, scrollController) {
-              return Container(
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30)),
-                    gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [
-                        Colours.color_0EF4D1,
-                        Colours.color_53C5FF,
-                        Colours.color_E0AEFF,
-                      ],
-                      stops: [0.0, 0.4, 1.0],
-                    )),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 20, right: 20, top: 50),
-                      child: Text(
-                        "体验到期, 与你的专属AI外教开启学习之旅",
-                        style: TextStyle(
-                            color: Colours.color_111B44,
-                            fontSize: Dimens.font_sp22),
-                      ),
+              return Stack(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30)),
+                        color: Colors.white
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 20, right: 20, top: 16),
-                      child: Text(
-                        "赠送的体验时长已经使用完成，\n升级会员后,可查看完整的个性化学习报告。",
-                        style: TextStyle(
-                            color: Colours.color_546092,
-                            fontSize: Dimens.font_sp13),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(
-                          left: 20, right: 20, top: 20, bottom: 20),
-                      padding: const EdgeInsets.only(left: 16, right: 16),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: ImageUtils.getAssetImage(
-                              "experience_board_img",
-                            ),
-                            fit: BoxFit.fill),
-                      ),
-                      child: Column(
-                        children: [
-                          Gaps.vGap15,
-                          categoryWidget("自由选择喜欢的虚拟外教老师"),
-                          Gaps.vGap15,
-                          categoryWidget("自定义话题场景练习"),
-                          Gaps.vGap15,
-                          categoryWidget("24小时，随时随地开始练习"),
-                          Gaps.vGap15,
-                          categoryWidget("地道英语口语，纯真发音，引导式对话 "),
-                          Gaps.vGap15,
-                          categoryWidget("全方位测评报告"),
-                          Gaps.vGap15,
-                        ],
-                      ),
-                    ),
-                    Gaps.vGap15,
-                    Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: GestureDetector(
-                          onTap: () {
-                            NavigatorUtils.goBack(context);
-                            NavigatorUtils.push(context, PersonalRouter.personalPurchase);
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: 400,
-                            height: 40,
-                            decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(100)),
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Colours.color_DA2FFF,
-                                    Colours.color_0E90FF,
-                                    Colours.color_00FFB4,
-                                  ],
-                                )),
-                            // child: Center(
-                            child: const Text(
-                              "查看会员升级方案",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: Dimens.font_sp18),
-                            ),
-                            // ),
-                          ),
+                  ),
+                  Container(
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30)),
+                        gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            Colours.color_300EF4D1,
+                            Colours.color_3053C5FF,
+                            Colours.color_30E0AEFF,
+                          ],
+                          stops: [0.0, 0.4, 1.0],
                         )),
-                    Gaps.vGap24,
-                  ],
-                ),
-              );
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 20, right: 20, top: 50),
+                          child: Text(
+                            "体验到期, 与你的专属AI外教开启学习之旅",
+                            style: TextStyle(
+                                color: Colours.color_111B44,
+                                fontSize: Dimens.font_sp22),
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 20, right: 20, top: 16),
+                          child: Text(
+                            "赠送的体验时长已经使用完成，\n升级会员后,可查看完整的个性化学习报告。",
+                            style: TextStyle(
+                                color: Colours.color_546092,
+                                fontSize: Dimens.font_sp13),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(
+                              left: 20, right: 20, top: 20, bottom: 20),
+                          padding: const EdgeInsets.only(left: 16, right: 16),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: ImageUtils.getAssetImage(
+                                  "experience_board_img",
+                                ),
+                                fit: BoxFit.fill),
+                          ),
+                          child: Column(
+                            children: [
+                              Gaps.vGap15,
+                              categoryWidget("自由选择喜欢的虚拟外教老师"),
+                              Gaps.vGap15,
+                              categoryWidget("自定义话题场景练习"),
+                              Gaps.vGap15,
+                              categoryWidget("24小时，随时随地开始练习"),
+                              Gaps.vGap15,
+                              categoryWidget("地道英语口语，纯真发音，引导式对话 "),
+                              Gaps.vGap15,
+                              categoryWidget("全方位测评报告"),
+                              Gaps.vGap15,
+                            ],
+                          ),
+                        ),
+                        Gaps.vGap15,
+                        Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                NavigatorUtils.goBack(context);
+                                NavigatorUtils.push(context, PersonalRouter.personalPurchase);
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 400,
+                                height: 40,
+                                decoration: const BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(100)),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Colours.color_DA2FFF,
+                                        Colours.color_0E90FF,
+                                        Colours.color_00FFB4,
+                                      ],
+                                    )),
+                                // child: Center(
+                                child: const Text(
+                                  "查看会员升级方案",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: Dimens.font_sp18),
+                                ),
+                                // ),
+                              ),
+                            )),
+                        Gaps.vGap24,
+                      ],
+                    ),
+                  )
+                ],
+              )
+
+
+                ;
             }));
   }
 
