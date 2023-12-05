@@ -1,5 +1,10 @@
+
+import 'package:Bubble/mvp/base_page.dart';
+import 'package:Bubble/person/presneter/suggestion_presenter.dart';
+import 'package:Bubble/person/view/suggestion_view.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,8 +20,17 @@ class SuggestionPage extends StatefulWidget {
   State<SuggestionPage> createState() => _SuggestionPageState();
 }
 
-class _SuggestionPageState extends State<SuggestionPage> {
+class _SuggestionPageState extends State<SuggestionPage>
+    with
+        BasePageMixin<SuggestionPage, SuggestionPresenter>,
+        AutomaticKeepAliveClientMixin<SuggestionPage>
+    implements SuggestionView {
+
+
+  late SuggestionPresenter _presenter;
+
   final TextEditingController _controller = TextEditingController();
+  final TextEditingController _contactController = TextEditingController();
   List<TextInputFormatter>? _inputFormatters;
   late int _maxLength;
 
@@ -24,6 +38,7 @@ class _SuggestionPageState extends State<SuggestionPage> {
   void initState() {
     super.initState();
     _controller.text = '';
+    _contactController.text = '';
     _maxLength = 500;
     _inputFormatters = null;
   }
@@ -33,7 +48,7 @@ class _SuggestionPageState extends State<SuggestionPage> {
     return AnnotatedRegion(
         value: SystemUiOverlayStyle.light,
         child: Scaffold(
-          resizeToAvoidBottomInset:false,
+          resizeToAvoidBottomInset: false,
           body: Container(
             alignment: Alignment.centerLeft,
             decoration: const BoxDecoration(
@@ -61,7 +76,6 @@ class _SuggestionPageState extends State<SuggestionPage> {
                 ),
                 Expanded(
                   child: Container(
-
                     width: ScreenUtil.getScreenW(context),
                     padding: const EdgeInsets.only(
                         top: Dimens.gap_dp23,
@@ -79,7 +93,9 @@ class _SuggestionPageState extends State<SuggestionPage> {
                         const Text(
                           "遇到的问题和建议写这里吧",
                           style: TextStyle(
-                              color: Colours.color_111B44, fontSize: 15,fontWeight: FontWeight.bold),
+                              color: Colours.color_111B44,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
                         ),
                         Gaps.vGap20,
                         Container(
@@ -87,14 +103,14 @@ class _SuggestionPageState extends State<SuggestionPage> {
                           decoration: const BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(13)),
-                              color: Colours.color_5B8BD2),
+                              color: Color(0x4D5B8BD2)),
                           child: Semantics(
                             multiline: true,
                             maxValueLength: _maxLength,
                             child: TextField(
                               cursorColor: Colors.white,
-                              style:
-                                  const TextStyle(color: Colours.color_546092),
+                              style: const TextStyle(
+                                  color: Colours.color_546092, fontSize: 13),
                               maxLength: _maxLength,
                               maxLines: 10,
                               autofocus: true,
@@ -103,7 +119,8 @@ class _SuggestionPageState extends State<SuggestionPage> {
                               decoration: const InputDecoration(
                                 hintText:
                                     "和智能语音老师用英语交流真是非常不错的体验！希望开发出更好用的英语学习APP。",
-                                hintStyle: TextStyle(color: Colors.white),
+                                hintStyle:
+                                    TextStyle(color: Colours.color_B7BFD9),
                                 border: InputBorder.none,
                               ),
                             ),
@@ -113,31 +130,43 @@ class _SuggestionPageState extends State<SuggestionPage> {
                         const Text(
                           "方便联系您的方式",
                           style: TextStyle(
-                              color: Colours.color_111B44, fontSize: 15,fontWeight: FontWeight.bold),
+                              color: Colours.color_111B44,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
                         ),
                         Gaps.vGap20,
                         Container(
                           width: ScreenUtil.getScreenW(context),
-                          padding: const EdgeInsets.all(13),
+                          padding: const EdgeInsets.only(
+                            left: 13,
+                          ),
                           decoration: const BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(13)),
-                              color: Colours.color_5B8BD2),
-                          child: const Text(
-                            "aran@blue3.cn",
-                            style: TextStyle(
+                              color: Color(0x4D5B8BD2)),
+                          child: TextField(
+                            cursorColor: Colors.white,
+                            style: const TextStyle(
                                 color: Colours.color_546092, fontSize: 13),
+                            maxLines: 1,
+                            controller: _contactController,
+                            inputFormatters: _inputFormatters,
+                            decoration: const InputDecoration(
+                              hintText: "可输入电话或邮箱",
+                              hintStyle: TextStyle(color: Colours.color_B7BFD9),
+                              border: InputBorder.none,
+                            ),
                           ),
                         ),
                         const Expanded(child: Gaps.empty),
-                       Container(
-                         alignment: Alignment.center,
-                         child: const  Text(
-                           "客服邮箱：help@shenmo-ai.com ",
-                           style: TextStyle(
-                               fontSize: 10, color: Colours.color_546092),
-                         ),
-                       ),
+                        Container(
+                          alignment: Alignment.center,
+                          child: const Text(
+                            "客服邮箱：help@shenmo-ai.com ",
+                            style: TextStyle(
+                                fontSize: 10, color: Colours.color_546092),
+                          ),
+                        ),
                         Container(
                           alignment: Alignment.center,
                           child: const Text(
@@ -146,18 +175,19 @@ class _SuggestionPageState extends State<SuggestionPage> {
                                 fontSize: 10, color: Colours.color_546092),
                           ),
                         ),
-
                         Gaps.vGap20,
                         GestureDetector(
-                          onTap: (){
-                            NavigatorUtils.goBack(context);
+                          onTap: () {
+                            _presenter.pushSuggest(_controller.text,_contactController.text);
+
+                            // Toast.show(msg)
                           },
                           child: Container(
                             alignment: Alignment.center,
-                            height: 40,
+                            height: 45,
                             decoration: const BoxDecoration(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(100)),
+                                    BorderRadius.all(Radius.circular(100)),
                                 gradient: LinearGradient(
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
@@ -173,8 +203,7 @@ class _SuggestionPageState extends State<SuggestionPage> {
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
-                        )
-                        ,
+                        ),
                       ],
                     ),
                   ),
@@ -183,5 +212,25 @@ class _SuggestionPageState extends State<SuggestionPage> {
             ),
           ),
         ));
+  }
+
+  @override
+  SuggestionPresenter createPresenter() {
+    _presenter = SuggestionPresenter();
+    return _presenter;
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void sendFail(String msg) {
+    Toast.show(msg);
+  }
+
+  @override
+  void sendSuccess() {
+    Toast.show("反馈成功");
+    NavigatorUtils.goBack(context);
   }
 }

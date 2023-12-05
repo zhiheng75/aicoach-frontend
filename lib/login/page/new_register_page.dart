@@ -319,7 +319,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
 
   @override
   void hadBindWechat() {
-    Toast.show("登录成功");
+    // Toast.show("登录成功");
     // SpUtil.putObject(Constant.userInfoKey, data);
     // SpUtil.getObj(Constant.userInfoKey, (v) => {
     //   print(v),

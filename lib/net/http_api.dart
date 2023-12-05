@@ -44,5 +44,8 @@ class HttpApi{
   //学习报告的集合
   static const String studyReportList = "app/conversations";
 
+  //意见反馈
+  static const String suggestion = "reviews";
+
   static const String upload = 'uuc/upload-inco';
 }

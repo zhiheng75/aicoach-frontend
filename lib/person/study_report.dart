@@ -3,7 +3,6 @@ import 'package:Bubble/person/entity/study_list_entity.dart';
 import 'package:Bubble/person/presneter/study_report_presenter.dart';
 import 'package:Bubble/person/view/study_report_view.dart';
 import 'package:Bubble/person/widget/study_report_item.dart';
-import 'package:Bubble/res/gaps.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
