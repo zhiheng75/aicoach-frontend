@@ -41,28 +41,28 @@ class LoginInfoData {
 
 @JsonSerializable()
 class LoginInfoDataData {
-	dynamic name;
+	dynamic name="";
 	late String openid = "";
-	late String phone;
-	late int sex;
-	late String city;
-	late String headimgurl;
-	dynamic description;
+	late String phone="";
+	late int sex=-1;
+	late String city="";
+	late String headimgurl="";
+	dynamic description="";
 	@JSONField(name: "membership_type")
 	dynamic membershipType;
 	@JSONField(name: "created_at")
 	late String createdAt;
 	@JSONField(name: "updated_at")
-	late String updatedAt;
+	late String updatedAt="";
 	late int id = 0;
-	dynamic email;
-	late String nickname;
-	late String province;
-	late String country;
-	late String unionid;
+	dynamic email="";
+	late String nickname="";
+	late String province="";
+	late String country="";
+	late String unionid="";
 	dynamic school;
 	@JSONField(name: "membership_expiry_date")
-	dynamic membershipExpiryDate;
+	dynamic membershipExpiryDate="";
 	late String token = "";
 
 	LoginInfoDataData();

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:sp_util/sp_util.dart';
 
@@ -61,7 +63,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView>{
           // myUserInfo.description = data.data.description??"";
           // myUserInfo.updatedAt = data.data.updatedAt??"";
 
-          SpUtil.putObject(Constant.userInfoKey, data.data);
+          SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
 
           view.loginSuccess();
@@ -91,7 +93,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView>{
       if(data!=null){
 
         if(data.data.token!=null&&data.data.token.isNotEmpty){
-            SpUtil.putObject(Constant.userInfoKey, data.data);
+            SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
             SpUtil.putString(Constant.accessToken, data.data.token);
           view.hadBindWechat();
         }else{

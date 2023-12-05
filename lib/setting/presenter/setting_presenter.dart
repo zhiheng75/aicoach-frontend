@@ -40,7 +40,7 @@ class SettingPresenter extends BasePagePresenter<SettingView>{
           if (data != null) {
             if (data.code == 200) {
               userInfo.openid="";
-              SpUtil.putObject(Constant.userInfoKey, userInfo);
+              SpUtil.putObject(Constant.userInfoKey, userInfo.toJson());
               hasBindWX = false;
               view.sendSuccess("解绑成功");
             } else {
@@ -97,7 +97,7 @@ class SettingPresenter extends BasePagePresenter<SettingView>{
           userInfo.openid = data.openid;
           if (mData != null) {
             if (mData.code == 200) {
-              SpUtil.putObject(Constant.userInfoKey, userInfo);
+              SpUtil.putObject(Constant.userInfoKey, userInfo.toJson());
               hasBindWX = true;
               view.sendSuccess("绑定成功");
             } else {
