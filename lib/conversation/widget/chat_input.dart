@@ -111,7 +111,10 @@ class _ChatInputState extends State<ChatInput> {
           provider!.setAvailableTime(leftTime);
           provider!.setCutdownState(1);
           canConversate = true;
-          startRecord();
+          // 避免刚好在接受欢迎语期间请求成功
+          if (isTextReturnComplete && aiSpeechList.isEmpty && playerState == 0 && inputType == 'audio' && !isInputting) {
+            startRecord();
+          }
         }
       },
       onError: (code, msg) {
@@ -371,6 +374,7 @@ class _ChatInputState extends State<ChatInput> {
         }
         userMessage.appendAudio(audio);
         provider!.appendMessage(userMessage);
+        userMessage.translate();
         if (kDebugMode) {
           print('发送文本：$text');
         }
