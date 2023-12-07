@@ -22,4 +22,6 @@ class Constant {
 
   static const String userInfoKey = "user_info_key";
 
+  static const String deviceId = 'device_id';
+
 }

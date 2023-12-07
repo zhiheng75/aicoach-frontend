@@ -4,8 +4,6 @@ import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/load_image.dart';
 
-import '../../util/image_utils.dart';
-import '../entity/select_teacher_entity.dart';
 import '../entity/teach_list_entity.dart';
 import '../provider/selecter_teacher_provider.dart';
 
@@ -67,13 +65,13 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
                   ),
                   Gaps.vGap10,
                   Text(
-                    widget.entity.name??"",
+                    widget.entity.name,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: const TextStyle(
                         fontSize: 16, color: Colours.color_111B44,fontWeight: FontWeight.bold),
                   ),
-                  Text(widget.entity.slogan??"",    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 12),),
+                  Text(widget.entity.slogan,    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 12),),
                   Text(widget.entity.character.replaceAll(",", " "),    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 12),)
                 ],
               ),
@@ -83,7 +81,7 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
   }
   @override
   void dispose() {
-    super.dispose();
     widget.homeTeacherProvider.dispose();
+    super.dispose();
   }
 }

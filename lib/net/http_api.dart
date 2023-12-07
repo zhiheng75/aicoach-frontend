@@ -47,5 +47,11 @@ class HttpApi{
   //意见反馈
   static const String suggestion = "reviews";
 
+  //新增会话时长
+  static const String addConversationRecord = 'add_conversation_record';
+
+  //获取会话时长
+  static const String permission = 'permission';
+
   static const String upload = 'uuc/upload-inco';
 }

@@ -164,6 +164,25 @@ class _ConversationAnalysisState extends State<ConversationAnalysis> {
       );
     }
 
+    if (messageList.isEmpty) {
+      return SizedBox(
+        width: MediaQuery.of(context).size.width - 54,
+        child: Column(
+          children: <Widget>[
+            Text(
+              '暂无对话内容',
+              style: TextStyle(
+                fontSize: 15.0,
+                color: Colours.hex2color('#546092'),
+                letterSpacing: 16.0 / 15.0,
+                height: 24.0 / 16.0,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Column(
       children: messageList.map((item) {
         return message(item);

@@ -83,6 +83,10 @@ dependencies:
   xml2json: ^6.2.1
   #start
   flutter_rating_bar: ^4.0.1
+  #app_tracking_transparency https://github.com/deniza/app_tracking_transparency
+  app_tracking_transparency: ^2.0.4
+  #device_identity
+  device_identity: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -109,6 +113,12 @@ flutter:
   assets:
     - assets/images/
     - assets/images/state/
+    - assets/avatar/
+    - assets/avatar/resource/
+    - assets/avatar/resource/Haru/
+    - assets/avatar/resource/Haru/expressions/
+    - assets/avatar/resource/Haru/motions/
+    - assets/avatar/resource/Haru/Haru.2048/
 
   fonts:
     - family: RobotoThin

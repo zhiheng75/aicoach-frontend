@@ -68,6 +68,7 @@ class XunfeiUtil {
       frameData['business'] = {
         'language': 'en_us',
         'domain': 'iat',
+        // 'vad_eos': 1000,
         'vinfo': 1,
       };
     }

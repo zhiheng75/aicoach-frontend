@@ -182,12 +182,37 @@ class ConversationProvider extends ChangeNotifier {
   String _sessionId = '';
   List<Message> _messageList = [];
   bool _showTranslation = false;
+  // 剩余时间
+  int _availableTime = 0;
+  // 单次会话使用时间
+  int _usageTime = 0;
+  // 倒计时状态 -1-未开始 0-已结束 1-进行中
+  int _cutdownState = -1;
 
   String get sessionId => _sessionId;
   set sessionId(String sessionId) => _sessionId = sessionId;
   List<Message> get messageList => _messageList;
   set messageList(List<Message> messageList) => _messageList = messageList;
   bool get showTranslation => _showTranslation;
+  int get availableTime => _availableTime;
+  int get usageTime => _usageTime;
+  int get cutdownState => _cutdownState;
+
+  void setAvailableTime(int time) {
+    _availableTime = time;
+    notifyListeners();
+  }
+
+  void decreaseTime() {
+    _availableTime -= 1;
+    _usageTime += 1;
+    notifyListeners();
+  }
+
+  void setCutdownState(int state) {
+    _cutdownState = state;
+    notifyListeners();
+  }
 
   void appendMessage(Message message) {
     _messageList.add(message);
@@ -196,8 +221,10 @@ class ConversationProvider extends ChangeNotifier {
     if (message.speaker == 'user') {
       evaluate(_sessionId, message);
     }
-    // 翻译
-    message.translate();
+  }
+
+  void updateMessageList() {
+    notifyListeners();
   }
 
   void openTranslation() {
@@ -213,6 +240,10 @@ class ConversationProvider extends ChangeNotifier {
   void clear() {
     _sessionId = '';
     _messageList = [];
+    _showTranslation = false;
+    _availableTime = 0;
+    _usageTime = 0;
+    _cutdownState = -1;
   }
 
 }

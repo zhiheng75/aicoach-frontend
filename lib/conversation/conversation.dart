@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:Bubble/conversation/widget/avatar.dart';
+import 'package:Bubble/conversation/widget/cutdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -46,6 +48,7 @@ class _ConversationPageState extends State<ConversationPage> with BasePageMixin<
             provider.sessionId = widget.sessionId;
           }
           final Size size = MediaQuery.of(context).size;
+          final EdgeInsets padding = MediaQuery.of(context).padding;
           return Scaffold(
             body: Container(
               width: size.width,
@@ -58,30 +61,34 @@ class _ConversationPageState extends State<ConversationPage> with BasePageMixin<
                   fit: BoxFit.fill,
                 ),
               ),
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+              child: Stack(
                 children: <Widget>[
-                  Chat(),
-                  SizedBox(
-                    height: 16.0,
+                  Avatar(
+                    avatarId: 'Haru',
+                    width: size.width,
+                    height: size.height,
+                  ),
+                  Positioned(
+                    top: padding.top + 19.0,
+                    left: 0,
+                    child: Cutdown(),
+                  ),
+                  const Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Chat(),
+                        SizedBox(
+                          height: 16.0,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-            // body: Stack(
-            //   children: [
-            //     LoadAssetImage(
-            //       'huihua_bg',
-            //       width: size.width,
-            //       height: size.height,
-            //       fit: BoxFit.fill,
-            //     ),
-            //     Positioned(
-            //       bottom: viewInsets.bottom + 16.0,
-            //       child: const Chat(),
-            //     ),
-            //   ],
-            // ),
           );
         },
       ),

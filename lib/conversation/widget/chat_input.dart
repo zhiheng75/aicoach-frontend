@@ -1,9 +1,12 @@
-// ignore_for_file: non_constant_identifier_names, unnecessary_getters_setters
+// ignore_for_file: non_constant_identifier_names, unnecessary_getters_setters, slash_for_doc_comments
 
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,20 +33,24 @@ class ChatInput extends StatefulWidget {
 }
 
 class _ChatInputState extends State<ChatInput> {
+  // 是否可对话
+  bool canConversate = false;
+
+  /** 输入相关参数 */
   // 输入方式：audio-语音 text-文字
   String inputType = 'audio';
   // 是否输入中
   bool isInputting = false;
   final TextEditingController textEditingController = TextEditingController();
-  // 是否回答中
-  bool isAnswering = false;
-  // 录音
+
+  /** 录音相关参数 */
   FlutterSoundRecorder? recorder;
   // 录音状态 0-未录音 1-录音中
   int recordState = 0;
   StreamController<Food> streamController = StreamController<Food>();
   StreamSubscription? streamSubscription;
-  // 语音识别
+
+  /** 语音识别相关参数 */
   WebsocketManage? recognizer;
   // 语音识别状态 UNCONNECT-未连接状态 CONNECT-连接中状态 CONNECTED-已连接状态 FAIL-连接失败状态 STOP-停止中状态 DESTROYED-已销毁状态
   String recognizerState = 'UNCONNECT';
@@ -51,16 +58,27 @@ class _ChatInputState extends State<ChatInput> {
   List<Uint8List> bufferListNeedSend = [];
   bool isRunning = false;
   List<int> offset = [];
-  // 对话
-  ConversationProvider? provider;
-  Message? message;
   String? text;
-  // 播放器
+
+  //** AI语音相关参数 */
   FlutterSoundPlayer? player;
   // 播放状态 0-未播放 1-播放中
   int playerState = 0;
+  // AI返回的语音列表
+  List<Uint8List> aiSpeechList = [];
 
-  void init() async {
+  // 是否文字返回完毕
+  bool isTextReturnComplete = false;
+  // 是否回答中
+  bool isAnswering = false;
+
+
+  // 对话
+  ConversationProvider? provider;
+  Message? message;
+
+
+  void init() {
     provider = Provider.of<ConversationProvider>(context, listen: false);
     // 初始化录音
     initRecorder();
@@ -68,6 +86,40 @@ class _ChatInputState extends State<ChatInput> {
     initPlayer();
     // 初始化AI
     initAI();
+    // 初始化倒计时
+    intCutdown();
+  }
+
+  Future<void> intCutdown() async {
+    String deviceId = await Device.getDeviceId();
+    DioUtils.instance.requestNetwork(
+      Method.get,
+      HttpApi.permission,
+      queryParameters: {
+        'device_id': deviceId,
+      },
+      onSuccess: (result) {
+        if (result == null) {
+          return;
+        }
+        result = result as Map<String, dynamic>;
+        if (result['data'] == null) {
+          return;
+        }
+        int leftTime = result['data']['left_time'] ?? 0;
+        if (leftTime > 0) {
+          provider!.setAvailableTime(leftTime);
+          provider!.setCutdownState(1);
+          canConversate = true;
+          startRecord();
+        }
+      },
+      onError: (code, msg) {
+        if (kDebugMode) {
+          print('获取倒计时：code=$code msg=$msg');
+        }
+      },
+    );
   }
 
   void initRecorder() async {
@@ -120,6 +172,9 @@ class _ChatInputState extends State<ChatInput> {
   }
 
   void startRecord() async {
+    if (!canConversate) {
+      return;
+    }
     if (recorder == null) {
       return;
     }
@@ -333,36 +388,95 @@ class _ChatInputState extends State<ChatInput> {
     WebsocketUtils.closeWebsocket('RECOGNIZE');
   }
 
+  void playSpeech() {
+    if (aiSpeechList.isEmpty) {
+      if (playerState == 0 && isTextReturnComplete && inputType == 'audio' && !isInputting) {
+        startRecord();
+      }
+      return;
+    }
+
+    if (player == null) {
+      aiSpeechList.removeAt(0);
+      playSpeech();
+      return;
+    }
+
+    if (playerState == 1) {
+      return;
+    }
+
+    playerState = 1;
+    Uint8List speech = aiSpeechList.removeAt(0);
+    player!.startPlayer(
+      fromDataBuffer: speech,
+      whenFinished: () {
+        playerState = 0;
+        playSpeech();
+      }
+    );
+  }
+
   void initAI() {
     WebsocketManage? manage = WebsocketUtils.getWebsocket('CONVERSATION');
     if (manage != null) {
       manage.setOnMessage((data) {
-        message ??= Message();
+        if (kDebugMode) {
+          print('AI返回:$data');
+        }
+        if (message == null) {
+          message = Message();
+          isTextReturnComplete = false;
+          provider!.appendMessage(message!);
+        }
         bool isString = data is String;
         if (isString) {
           bool isEnd = data.startsWith('[end');
-          if (!isEnd) {
-            message!.appendText(data);
+          if (isEnd) {
+            isTextReturnComplete = true;
+            message!.translate();
+            message = null;
+            // 避免语音播放结束无法进行下一步
+            if (aiSpeechList.isEmpty && playerState == 0 && inputType == 'audio' && !isInputting) {
+              startRecord();
+            }
             return;
           }
-          Message temp = message!;
-          provider!.appendMessage(temp);
-          return;
-        }
-        // 语音流
-        if (playerState == 0 && player != null) {
-          player!.startPlayer(
-            fromDataBuffer: data as Uint8List,
-            whenFinished: () {
-              playerState = 0;
-              if (inputType == 'audio' && !isInputting) {
-                startRecord();
-              }
-            },
-          );
-          playerState = 1;
+          message!.appendText(data);
+          provider!.updateMessageList();
+        } else {
+          aiSpeechList.add(data as Uint8List);
+          playSpeech();
         }
       });
+      // manage.setOnMessage((data) {
+      //   print('setOnMessage:data=$data');
+      //   message ??= Message();
+      //   bool isString = data is String;
+      //   if (isString) {
+      //     bool isEnd = data.startsWith('[end');
+      //     if (!isEnd) {
+      //       message!.appendText(data);
+      //       return;
+      //     }
+      //     Message temp = message!;
+      //     provider!.appendMessage(temp);
+      //     return;
+      //   }
+      //   // 语音流
+      //   if (playerState == 0 && player != null) {
+      //     player!.startPlayer(
+      //       fromDataBuffer: data as Uint8List,
+      //       whenFinished: () {
+      //         playerState = 0;
+      //         if (inputType == 'audio' && !isInputting) {
+      //           startRecord();
+      //         }
+      //       },
+      //     );
+      //     playerState = 1;
+      //   }
+      // });
     }
   }
 
@@ -377,6 +491,29 @@ class _ChatInputState extends State<ChatInput> {
     await removeRecordStream();
     streamController.close();
     WebsocketUtils.closeWebsocket('CONVERSATION');
+    await addConversationRecord();
+  }
+
+  Future<void> addConversationRecord() async {
+    await DioUtils.instance.requestNetwork(
+      Method.post,
+      HttpApi.addConversationRecord,
+      params: {
+        'session_id': provider!.sessionId,
+        'device_id': await Device.getDeviceId(),
+        'duration': provider!.usageTime,
+      },
+      onSuccess: (_) {
+        if (kDebugMode) {
+          print('addConversationRecord: $_');
+        }
+      },
+      onError: (code, msg) {
+        if (kDebugMode) {
+          print('addConversationRecord: code=$code msg=$msg');
+        }
+      }
+    );
   }
 
   @override

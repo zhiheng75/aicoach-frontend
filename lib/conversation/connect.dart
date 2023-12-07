@@ -1,5 +1,7 @@
 // ignore_for_file: argument_type_not_assignable_to_error_handler, must_be_immutable
 
+import 'package:Bubble/constant/constant.dart';
+import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -31,9 +33,10 @@ class _ConnectState extends State<ConnectPage> {
 
   void connectWebsocket() {
     String sessionId = const Uuid().v4().replaceAll('-', '');
-    String model = 'shenmo-llm01';
+    // String model = '';
+    String model = 'gpt-3.5-turbo-16k';
     String language = 'en-US';
-    String token = 'IA==*u02jq0h6TdUgA6CJ2UB6aA==*rfIUDa60d92+DKqMZtkG+A==*URKndg3tPT/xab35fJArTg==';
+    String token = SpUtil.getString(Constant.accessToken) ?? '';
     String url = 'wss://api.demo.shenmo-ai.net/ws/$sessionId?llm_model=$model&platform=app&use_search=false&use_quivr=false&use_multion=false&character_id=${widget.teacher.characterId}&language=$language&token=$token';
     WebsocketUtils.createWebsocket(
       'CONVERSATION',

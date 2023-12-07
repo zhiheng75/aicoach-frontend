@@ -1,11 +1,10 @@
+import 'package:device_identity/device_identity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:Bubble/constant/constant.dart';
-import 'package:Bubble/routers/not_found_page.dart';
 import 'package:Bubble/routers/routers.dart';
 import 'package:Bubble/setting/provider/locale_provider.dart';
 import 'package:Bubble/setting/provider/theme_provider.dart';
@@ -26,6 +25,9 @@ Future<void> main() async{
 
     /// sp初始化
     await SpUtil.getInstance();
+
+    /// device_identity初始化
+    await DeviceIdentity.register();
 
     runApp(MyApp());
   });

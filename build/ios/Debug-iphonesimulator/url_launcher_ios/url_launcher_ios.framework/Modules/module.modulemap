@@ -4,3 +4,8 @@ framework module url_launcher_ios {
   export *
   module * { export * }
 }
+
+module url_launcher_ios.Swift {
+  header "url_launcher_ios-Swift.h"
+  requires objc
+}

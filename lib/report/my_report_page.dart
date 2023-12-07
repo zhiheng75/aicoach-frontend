@@ -162,8 +162,8 @@ class _MyReportPageState extends State<MyReportPage>
                     color: Colors.white,
                   ),
                   // child:Text("sad"),
-                  child: const ConversationAnalysis(
-                    sessionId: '567710cca1474b53bda63b0d2c5eb44d',
+                  child: ConversationAnalysis(
+                    sessionId: widget.entity.sessionId,
                   ),
                 )
               ],
