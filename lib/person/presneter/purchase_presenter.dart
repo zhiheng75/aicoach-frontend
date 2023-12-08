@@ -22,8 +22,7 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView>{
     params["goods_id"] = goodId.toString();
     // params["goods_price"] = goodPrice.toString();
     params["goods_price"] = "0.01";
-    params["payment_method"] = "WXPAY";
-
+    params["payment_method"] = "WXPAY";//0=WXPAY 1=ALIPAY
     return requestNetwork<WxPayData>(
         Method.post,
         url: HttpApi.wxOrder,
@@ -31,7 +30,6 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView>{
         params: params,
         onSuccess: (data){
           if(data!=null&&data.data!=null){
-
             FlutterToNative.jumpToWechatPay(json.encode(data.data)).then((value){
               if(value==0){
                 Toast.show("支付成功");
@@ -48,11 +46,39 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView>{
   }
 
 
-   Future getOrderStatus(goodId,payment_method){
+   Future aliPay(goodId,goodPrice,bool showLoading){
+     final Map<String, dynamic> params = <String, String>{};
+     params["goods_id"] = goodId.toString();
+     // params["goods_price"] = goodPrice.toString();
+     params["goods_price"] = "0.01";
+     params["payment_method"] = "ALIPAY";//0=WXPAY 1=ALIPAY
 
-     Map<String,dynamic> map = Map();
+     return requestNetwork<WxPayData>(
+         Method.post,
+         url: HttpApi.wxOrder,
+         isShow: showLoading,
+         params: params,
+         onSuccess: (data){
+           if(data!=null&&data.data!=null){
+
+             FlutterToNative.jumpToALiPay(json.encode(data.data)).then((value){
+               if(value==0){
+                 Toast.show("支付成功");
+                 getOrderStatus(data.data.order_no,"ALIPAY");
+               }else {
+                 Toast.show("支付失败");
+               }
+             });
+           }
+         }
+     );
+   }
+
+   Future getOrderStatus(goodId,paymentMethod){
+
+     Map<String,dynamic> map = {};
      map["order_no"] = goodId;
-     map["payment_method"] = payment_method;
+     map["payment_method"] = paymentMethod;
 
      return requestNetwork(Method.get,
          url: HttpApi.queryOrderStatus,

@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/person/presneter/purchase_presenter.dart';
@@ -10,7 +9,6 @@ import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../method/fluter_native.dart';
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
 import '../res/dimens.dart';
@@ -126,7 +124,14 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                         Gaps.vGap32,
                         GestureDetector(
                           onTap: () {
-                            _purchasePresenter.wxChatPay(_purchasePresenter.goodList[selectIndex].id,_purchasePresenter.goodList[selectIndex].price,true);
+
+                            if(wxPay){
+                              _purchasePresenter.wxChatPay(_purchasePresenter.goodList[selectIndex].id,
+                                  _purchasePresenter.goodList[selectIndex].price,true);
+                            }else{
+                              _purchasePresenter.aliPay(_purchasePresenter.goodList[selectIndex].id,
+                                  _purchasePresenter.goodList[selectIndex].price,true);
+                            }
 
                           },
                           child: Container(

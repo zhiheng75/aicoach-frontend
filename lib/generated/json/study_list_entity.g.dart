@@ -1,6 +1,7 @@
 import 'package:Bubble/generated/json/base/json_convert_content.dart';
 import 'package:Bubble/person/entity/study_list_entity.dart';
 
+
 StudyListEntity $StudyListEntityFromJson(Map<String, dynamic> json) {
   final StudyListEntity studyListEntity = StudyListEntity();
   final int? code = jsonConvert.convert<int>(json['code']);
@@ -94,16 +95,13 @@ StudyListDataData $StudyListDataDataFromJson(Map<String, dynamic> json) {
   if (score != null) {
     studyListDataData.score = score;
   }
-
-  final int? duration = jsonConvert.convert<int>(json['duration']);
-  if (duration != null) {
-    studyListDataData.duration = duration;
-  }
-
-
   final String? createdAt = jsonConvert.convert<String>(json['created_at']);
   if (createdAt != null) {
     studyListDataData.createdAt = createdAt;
+  }
+  final int? duration = jsonConvert.convert<int>(json['duration']);
+  if (duration != null) {
+    studyListDataData.duration = duration;
   }
   return studyListDataData;
 }
@@ -130,7 +128,7 @@ extension StudyListDataDataExtension on StudyListDataData {
       ..sessionId = sessionId ?? this.sessionId
       ..message = message ?? this.message
       ..score = score ?? this.score
-      ..duration = duration ?? this.duration
-      ..createdAt = createdAt ?? this.createdAt;
+      ..createdAt = createdAt ?? this.createdAt
+      ..duration = duration ?? this.duration;
   }
 }

@@ -12,6 +12,11 @@ class MyReportPresenter extends BasePagePresenter<MyReportView>{
 
   List<RadarBean> list =[];
 
+  num sessionAmount = 0;
+  String sessionTime = "";
+  String rank = "";
+  int score = 0;
+
 
   @override
   void initState() {
@@ -34,10 +39,21 @@ class MyReportPresenter extends BasePagePresenter<MyReportView>{
          onSuccess: (data) {
       if(data!=null){
         if(data.code==200){
-          list[0].score = data.data.accuracyScore??0;
-          list[1].score = data.data.fluencyScore??0;
-          list[2].score = data.data.integrityScore??0;
-          list[3].score = data.data.standardScore??0;
+          var mData = data.data;
+          list[0].score = mData.accuracyScore??0;
+          list[1].score = mData.fluencyScore??0;
+          list[2].score = mData.integrityScore??0;
+          list[3].score = mData.standardScore??0;
+
+          if(mData.totalScore!=null){
+            score =  (mData.totalScore as double).round();
+          }
+
+          sessionAmount = mData.sessionCount;
+          sessionTime = mData.sessionTime;
+          rank = mData.rank;
+
+
           view.getScore(list);
         }
       }

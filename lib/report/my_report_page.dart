@@ -61,7 +61,7 @@ class _MyReportPageState extends State<MyReportPage>
           children: [
             const MyAppBar(
               backImgColor: Colors.white,
-              centerTitle: "口语学习日报",
+              centerTitle: "口语学习报告",
               backgroundColor: Colours.transflate,
             ),
             Expanded(
@@ -82,7 +82,7 @@ class _MyReportPageState extends State<MyReportPage>
                   child: Column(
                     children: [
                       talkAmount(
-                          "---", TimeUtils.formatDateYMDTime(1630399935000)),
+                         _myReportPresenter.sessionAmount , _myReportPresenter.sessionTime/*TimeUtils.formatDateYMDTime(1630399935000)*/),
                       Gaps.vGap50,
                       CircularPercentIndicator(
                         radius: 95.0,
@@ -93,19 +93,19 @@ class _MyReportPageState extends State<MyReportPage>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "76",
-                              style: TextStyle(
+                              "${_myReportPresenter.score}",
+                              style:const TextStyle(
                                   fontSize: 60, color: Colours.color_00DBAF,fontWeight: FontWeight.bold),
                             ),
 
                             RichText(
                                 text: TextSpan(
                                     text: '超过',
-                                    style:  TextStyle(
+                                    style: const TextStyle(
                                         color: Colours.color_00DBAF, fontSize: 15),
                                     children: <TextSpan>[
                                       TextSpan(
-                                          text: "--%",
+                                          text: _myReportPresenter.rank.isEmpty?"--%":"${_myReportPresenter.rank}",
                                           style: const TextStyle(
                                               color: Colours.color_925DFF,
                                               fontSize: 15,
@@ -259,20 +259,20 @@ class _MyReportPageState extends State<MyReportPage>
     );
   }
 
-  List<RadarBean> xx() {
-    List<RadarBean> list = [];
-    var a = RadarBean(70, "发音\n精准度");
-    var b = RadarBean(99, "语法");
-    var c = RadarBean(55, "用词\n标准度");
-    var d = RadarBean(60, "完整度");
-    // var e = RadarBean(80, "流畅度");
-    list.add(a);
-    list.add(b);
-    list.add(c);
-    list.add(d);
-    // list.add(e);
-    return list;
-  }
+  // List<RadarBean> xx() {
+  //   List<RadarBean> list = [];
+  //   var a = RadarBean(70, "发音\n精准度");
+  //   var b = RadarBean(99, "语法");
+  //   var c = RadarBean(55, "用词\n标准度");
+  //   var d = RadarBean(60, "完整度");
+  //   // var e = RadarBean(80, "流畅度");
+  //   list.add(a);
+  //   list.add(b);
+  //   list.add(c);
+  //   list.add(d);
+  //   // list.add(e);
+  //   return list;
+  // }
 
   Widget talkAmount( amount, String time) {
     return Row(

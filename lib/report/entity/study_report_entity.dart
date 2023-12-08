@@ -52,6 +52,10 @@ class StudyReportDataData {
 	@JSONField(name: "total_score")
 	dynamic totalScore;
 
+	late String sessionTime;
+	late num  sessionCount;
+	late String rank;
+
 	StudyReportDataData();
 
 	factory StudyReportDataData.fromJson(Map<String, dynamic> json) => $StudyReportDataDataFromJson(json);

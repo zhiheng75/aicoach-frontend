@@ -203,16 +203,20 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
         Expanded(
             child:Column(
               children: [
+
                 GestureDetector(
                   onTap: (){
-                    Toast.show("编辑");
+                    // Toast.show("编辑");
                   },
                   child: Row(
                     mainAxisAlignment:MainAxisAlignment.start,
                     children: [
                       Text(_userName,style: TextStyle(fontSize: 17,color: Colors.white),),
                       Gaps.hGap4,
-                      const LoadAssetImage("edit_img",width: 14,height: 14,)
+                      const Visibility(
+                        visible: false,
+                          child:   LoadAssetImage("edit_img",width: 14,height: 14,)
+                      ),
                     ],
                   ),
                 ),

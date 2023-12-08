@@ -11,10 +11,11 @@ import 'package:Bubble/login/entity/my_user_info_entity.dart';
 import 'package:Bubble/login/entity/user_info_entity.dart';
 import 'package:Bubble/login/entity/wx_info_entity.dart';
 import 'package:Bubble/order/entity/order_list_entity.dart';
+import 'package:Bubble/person/entity/ali_pay_entity.dart';
 import 'package:Bubble/person/entity/good_list_entity.dart';
 import 'package:Bubble/person/entity/study_info_entity.dart';
-import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/person/entity/study_list_entity.dart';
+import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/report/entity/study_report_entity.dart';
 
 JsonConvert jsonConvert = JsonConvert();
@@ -211,6 +212,18 @@ class JsonConvert {
       return data.map<OrderListDataData>((Map<String, dynamic> e) =>
           OrderListDataData.fromJson(e)).toList() as M;
     }
+    if (<AliPayEntity>[] is M) {
+      return data.map<AliPayEntity>((Map<String, dynamic> e) =>
+          AliPayEntity.fromJson(e)).toList() as M;
+    }
+    if (<AliPayData>[] is M) {
+      return data.map<AliPayData>((Map<String, dynamic> e) =>
+          AliPayData.fromJson(e)).toList() as M;
+    }
+    if (<AliPayDataData>[] is M) {
+      return data.map<AliPayDataData>((Map<String, dynamic> e) =>
+          AliPayDataData.fromJson(e)).toList() as M;
+    }
     if (<GoodListEntity>[] is M) {
       return data.map<GoodListEntity>((Map<String, dynamic> e) =>
           GoodListEntity.fromJson(e)).toList() as M;
@@ -235,18 +248,6 @@ class JsonConvert {
       return data.map<StudyInfoDataData>((Map<String, dynamic> e) =>
           StudyInfoDataData.fromJson(e)).toList() as M;
     }
-    if (<WxPayEntity>[] is M) {
-      return data.map<WxPayEntity>((Map<String, dynamic> e) =>
-          WxPayEntity.fromJson(e)).toList() as M;
-    }
-    if (<WxPayData>[] is M) {
-      return data.map<WxPayData>((Map<String, dynamic> e) =>
-          WxPayData.fromJson(e)).toList() as M;
-    }
-    if (<WxPayDataData>[] is M) {
-      return data.map<WxPayDataData>((Map<String, dynamic> e) =>
-          WxPayDataData.fromJson(e)).toList() as M;
-    }
     if (<StudyListEntity>[] is M) {
       return data.map<StudyListEntity>((Map<String, dynamic> e) =>
           StudyListEntity.fromJson(e)).toList() as M;
@@ -258,6 +259,18 @@ class JsonConvert {
     if (<StudyListDataData>[] is M) {
       return data.map<StudyListDataData>((Map<String, dynamic> e) =>
           StudyListDataData.fromJson(e)).toList() as M;
+    }
+    if (<WxPayEntity>[] is M) {
+      return data.map<WxPayEntity>((Map<String, dynamic> e) =>
+          WxPayEntity.fromJson(e)).toList() as M;
+    }
+    if (<WxPayData>[] is M) {
+      return data.map<WxPayData>((Map<String, dynamic> e) =>
+          WxPayData.fromJson(e)).toList() as M;
+    }
+    if (<WxPayDataData>[] is M) {
+      return data.map<WxPayDataData>((Map<String, dynamic> e) =>
+          WxPayDataData.fromJson(e)).toList() as M;
     }
     if (<StudyReportEntity>[] is M) {
       return data.map<StudyReportEntity>((Map<String, dynamic> e) =>
@@ -310,18 +323,21 @@ class JsonConvertClassCollection {
     (OrderListEntity).toString(): OrderListEntity.fromJson,
     (OrderListData).toString(): OrderListData.fromJson,
     (OrderListDataData).toString(): OrderListDataData.fromJson,
+    (AliPayEntity).toString(): AliPayEntity.fromJson,
+    (AliPayData).toString(): AliPayData.fromJson,
+    (AliPayDataData).toString(): AliPayDataData.fromJson,
     (GoodListEntity).toString(): GoodListEntity.fromJson,
     (GoodListData).toString(): GoodListData.fromJson,
     (GoodListDataData).toString(): GoodListDataData.fromJson,
     (StudyInfoEntity).toString(): StudyInfoEntity.fromJson,
     (StudyInfoData).toString(): StudyInfoData.fromJson,
     (StudyInfoDataData).toString(): StudyInfoDataData.fromJson,
-    (WxPayEntity).toString(): WxPayEntity.fromJson,
-    (WxPayData).toString(): WxPayData.fromJson,
-    (WxPayDataData).toString(): WxPayDataData.fromJson,
     (StudyListEntity).toString(): StudyListEntity.fromJson,
     (StudyListData).toString(): StudyListData.fromJson,
     (StudyListDataData).toString(): StudyListDataData.fromJson,
+    (WxPayEntity).toString(): WxPayEntity.fromJson,
+    (WxPayData).toString(): WxPayData.fromJson,
+    (WxPayDataData).toString(): WxPayDataData.fromJson,
     (StudyReportEntity).toString(): StudyReportEntity.fromJson,
     (StudyReportData).toString(): StudyReportData.fromJson,
     (StudyReportDataData).toString(): StudyReportDataData.fromJson,

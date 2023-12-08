@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/load_image.dart';
 
 import '../../home/entity/teach_list_entity.dart';
-import '../../util/image_utils.dart';
 
 class RecommendTeacherWidget2 extends StatefulWidget {
   final TeachListEntity entity;

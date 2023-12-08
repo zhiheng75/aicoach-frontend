@@ -113,7 +113,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                                   color: Colours.color_546092, fontSize: 13),
                               maxLength: _maxLength,
                               maxLines: 10,
-                              autofocus: true,
+                              autofocus: false,
                               controller: _controller,
                               inputFormatters: _inputFormatters,
                               decoration: const InputDecoration(

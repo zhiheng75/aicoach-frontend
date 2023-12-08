@@ -60,7 +60,7 @@ class _StudyReportWidgetState extends State<StudyReportWidget> {
         child: Row(
           children: [
             const RoundPictureWidget(
-              url: "study_list_img",
+              url: "",
               holderImg: "study_list_img",
               topLeft: 20,
               topRight: 0,

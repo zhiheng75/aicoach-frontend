@@ -1,14 +1,22 @@
 package com.shenmo.spokid
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
+import android.text.TextUtils
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.NonNull
 import cn.jiguang.verifysdk.api.JVerificationInterface
 import cn.jiguang.verifysdk.api.JVerifyUIConfig
+import com.shenmo.spokid.entity.PayResult
 import com.shenmo.spokid.entity.WechatBean
 import com.shenmo.spokid.entity.WxPayBean
 import com.shenmo.spokid.entity.WxPayResultBean
@@ -29,6 +37,9 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
 
     private val batteryChannelName = "flutter.jumpto.android"
     private lateinit var mResult: MethodChannel.Result
+
+    private val SDK_PAY_FLAG = 1
+    private val SDK_AUTH_FLAG = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,8 +80,6 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
              * @param timeStamp               时间戳
              * @param sign                    签名
              */
-
-
             call.arguments?.apply {
                 val partnerId: String
                 val prepayId: String
@@ -109,6 +118,52 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
 
             }
 
+        }else if(call.method == "jumpToALiPay"){
+
+//params.put("app_id", "您的APPID");
+//params.put("biz_content", "{" +
+//        "\"out_trade_no\":\"" + outTradeNo + "\"," +
+//        "\"total_amount\":\"" + totalAmount + "\"," +
+//        "\"subject\":\"" + subject + "\"," +
+//        "\"timeout_express\":\"" + timeoutExpress + "\"}");
+
+            call.arguments?.apply {
+                val partnerId: String
+                val prepayId: String
+                val nonceStr: String
+                val timeStamp: String
+                val sign: String
+
+                if (this is String && this.isNotEmpty()){
+                    JsonUtils.fromJson<WxPayBean>(this.toString())?.apply {
+
+//                    if (this is Map<*,*>&&this.isNotEmpty()){
+                        partnerId = this.partnerid// this["partnerId"]?.toString()?:""
+                        prepayId = this.prepay_id// this["prepayId"]?.toString()?:""
+                        nonceStr = this.noncestr// this["nonceStr"]?.toString()?:""
+                        timeStamp = this.timestamp// this["timeStamp"]?.toString()?:""
+                        sign =this.sign//  this["sign"]?.toString()?:""
+
+                        val sWxApi = WXAPIFactory.createWXAPI(this@MainActivity, BuildConfig.WXID, false)
+                        sWxApi.registerApp(BuildConfig.WXID)
+                        val req = PayReq()
+                        req.appId = BuildConfig.WXID
+                        req.partnerId = partnerId
+                        req.prepayId = prepayId
+                        req.nonceStr = nonceStr
+                        req.timeStamp = timeStamp
+                        req.packageValue = "Sign=WXPay"
+                        req.sign = sign
+                        sWxApi.sendReq(req) //发起调用微信支付了
+
+//                    }
+                    }
+
+
+                }
+
+
+            }
         }
 
         else if(call.method == "keyLogin"){
@@ -248,5 +303,79 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
         closeButton.setImageResource(R.drawable.btn_close)
         uiConfigBuilder.addCustomView(closeButton, true, null)
         return uiConfigBuilder.build()
+    }
+
+
+    @SuppressLint("HandlerLeak")
+    private val mHandler: Handler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            when (msg.what) {
+                SDK_PAY_FLAG -> {
+                    val payResult = PayResult(msg.obj as Map<String?, String?>)
+
+                    /**
+                     * 对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                     */
+                    val resultInfo: String = payResult.result // 同步返回需要验证的信息
+                    val resultStatus: String = payResult.resultStatus
+                    // 判断resultStatus 为9000则代表支付成功
+                    if (TextUtils.equals(resultStatus, "9000")) {
+                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                        showAlert(
+                            this@MainActivity,
+                            "支付成功:$payResult"
+                        )
+                    } else {
+                        // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                        showAlert(
+                            this@MainActivity,
+                            "支付失败$payResult"
+                        )
+                    }
+                }
+                SDK_AUTH_FLAG -> {
+//                    val authResult = AuthResult(msg.obj as Map<String?, String?>, true)
+//                    val resultStatus: String = authResult.getResultStatus()
+//
+//                    // 判断resultStatus 为“9000”且result_code
+//                    // 为“200”则代表授权成功，具体状态码代表含义可参考授权接口文档
+//                    if (TextUtils.equals(
+//                            resultStatus,
+//                            "9000"
+//                        ) && TextUtils.equals(authResult.getResultCode(), "200")
+//                    ) {
+//                        // 获取alipay_open_id，调支付时作为参数extern_token 的value
+//                        // 传入，则支付账户为该授权账户
+//                        com.alipay.sdk.pay.demo.PayDemoActivity.showAlert(
+//                            this@PayDemoActivity,
+//                            getString(R.string.auth_success) + authResult
+//                        )
+//                    } else {
+//                        // 其他状态值则为授权失败
+//                        com.alipay.sdk.pay.demo.PayDemoActivity.showAlert(
+//                            this@PayDemoActivity,
+//                            getString(R.string.auth_failed) + authResult
+//                        )
+//                    }
+                }
+                else -> {}
+            }
+        }
+    }
+
+    private fun showAlert(ctx: Context, info: String) {
+        showAlert(ctx, info, null)
+    }
+
+    private fun showAlert(
+        ctx: Context,
+        info: String,
+        onDismiss: DialogInterface.OnDismissListener?
+    ) {
+        AlertDialog.Builder(ctx)
+            .setMessage(info)
+            .setPositiveButton("确定", null)
+            .setOnDismissListener(onDismiss)
+            .show()
     }
 }

@@ -30,6 +30,12 @@ import '../person/entity/wx_pay_entity.dart';
     return result;
   }
 
+  //支付宝支付
+  static Future<int> jumpToALiPay(String bean) async{
+    final int result = await methodChannelPlatform.invokeMethod("jumpToALiPay",bean);
+    return result;
+  }
+
   //一键登录
   static Future<String> jumpToKeyLogin() async {
     final String result = await methodChannelPlatform.invokeMethod("keyLogin");
