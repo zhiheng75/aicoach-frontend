@@ -22,10 +22,10 @@ class ChangeRolePresenter extends BasePagePresenter<ChangeRoleView>{
         onSuccess: (data){
           if(data!=null&&data.isNotEmpty) {
 
-            for(int i = 0;i<data.length;i++){
-              data[i].index = i;
-              data[i].isSelect = i==0;
-            }
+            // for(int i = 0;i<data.length;i++){
+            //   data[i].index = i;
+            //   data[i].isSelect = i==0;
+            // }
             allTeacher.clear();
             allTeacher.addAll(data);
             view.setTeachList(data);

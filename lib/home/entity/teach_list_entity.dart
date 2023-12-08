@@ -21,8 +21,6 @@ class TeachListEntity {
 	@JSONField(name: "is_author")
 	late bool isAuthor;
 
-	late bool isSelect;
-	late int index;
 	late String slogan;
 	late String character;
 

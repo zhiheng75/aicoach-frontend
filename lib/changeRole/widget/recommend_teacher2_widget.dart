@@ -36,11 +36,11 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget2> {
       Container(
         decoration: BoxDecoration(
             borderRadius:const BorderRadius.all(Radius.circular(10)),
-            border: Border.all(
-                width: widget.entity.isSelect? 2:1,
-                color:  widget.entity.isSelect ? Colours.color_00E6D0:Colours.color_5B8BD2
-            ),
-            color: widget.entity.isSelect ?Colours.color_70white:Colors.transparent
+            // border: Border.all(
+            //     width: widget.entity.isSelect? 2:1,
+            //     color:  widget.entity.isSelect ? Colours.color_00E6D0:Colours.color_5B8BD2
+            // ),
+            // color: widget.entity.isSelect ?Colours.color_70white:Colors.transparent
         ),
         child:
 

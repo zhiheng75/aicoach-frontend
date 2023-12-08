@@ -24,4 +24,6 @@ class Constant {
 
   static const String deviceId = 'device_id';
 
+  static const String teacher = 'teacher';
+
 }

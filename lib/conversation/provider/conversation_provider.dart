@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:Bubble/net/dio_utils.dart';
+import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -80,6 +81,7 @@ void evaluate(String sessionId, Message message) {
             'add_score',
             params: {
               'session_id': sessionId,
+              'message_id': message.id,
               'message': message.text,
               'speech': base64.encode(Uint8List.fromList(speech)),
               'accuracy_score': evaluation['accuracy_score'],
@@ -249,14 +251,18 @@ class ConversationProvider extends ChangeNotifier {
 }
 
 class Message {
-  Message();
+  Message() {
+    _id = const Uuid().v1().replaceAll('-', '').substring(0, 16);
+  }
 
+  String _id = '';
   String _speaker = '';
   String _text = '';
   String _translation = '';
   List<Uint8List> _audio = [];
   bool _isTranslate = false;
 
+  String get id => _id;
   String get speaker => _speaker;
   String get text => _text;
   String get translation => _translation;

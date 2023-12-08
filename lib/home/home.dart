@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:Bubble/util/log_utils.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,15 +11,13 @@ import 'package:Bubble/home/widget/recommend_teacher_widget.dart';
 import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:provider/provider.dart';
 import '../conversation/conversation_router.dart';
 import '../mvp/base_page.dart';
-import '../report/report_router.dart';
 import '../res/colors.dart';
 import '../res/gaps.dart';
 import '../setting/widgets/update_dialog.dart';
 import '../util/image_utils.dart';
-import '../util/time_utils.dart';
-import '../util/version_utils.dart';
 import '../widgets/double_tap_back_exit_app.dart';
 import '../widgets/load_image.dart';
 import '../widgets/popup_window.dart';
@@ -38,53 +35,35 @@ class _HomePageState extends State<HomePage>
         BasePageMixin<HomePage, HomePagePresenter>,
         AutomaticKeepAliveClientMixin<HomePage>
     implements HomeView {
-  // List<SelectTeacherEntity> allTeacher = [];
-  List<TeachListEntity> allTeacher = [];
+
   final GlobalKey _buttonKey = GlobalKey();
   bool needRefresh = false;
-
-  /// 倒计时秒数
-  final int _second = 360;
-
-  /// 当前秒数
-  String _currentSecond = "";
-
-  ///试用时间
-  bool experienceTimeFinish = false;
-
-  bool startCountDown = false;
 
   StreamSubscription<dynamic>? _subscription;
 
   late HomePagePresenter _homePagePresenter;
 
-  Future<dynamic> _countDown() async {
-    _subscription = Stream.periodic(const Duration(seconds: 1), (int i) => i)
-        .take(_second)
-        .listen((int i) {
-      setState(() {
-        experienceTimeFinish = (_second - i - 1) == 0;
-        _currentSecond = TimeUtils.formatedTime(_second - i - 1);
-        if (experienceTimeFinish) {
-          _showTimeOutBottomSheet();
-        }
-      });
+  void conversationWithTeacher(TeachListEntity? teacher) {
+    if (teacher == null) {
+      return;
+    }
+    Future.delayed(const Duration(milliseconds: 300), () {
+      NavigatorUtils.push(
+        context,
+        ConversationRouter.connectPage,
+        arguments: teacher,
+      );
     });
   }
 
   @override
   void initState() {
     super.initState();
+    Provider.of<HomeTeacherProvider>(context, listen: false).getCachedTeacherForUser();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
           overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
     });
-
-    VersionUtils.getpkgName().then((value){
-      Log.e("========================>$value");
-    }
-    );
-
   }
 
   @override
@@ -93,228 +72,56 @@ class _HomePageState extends State<HomePage>
     return DoubleTapBackExitApp(
         child: AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
-      child: Scaffold(
-          body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Colours.color_00F3BD,
-                Colours.color_00BAFF,
-                Colours.color_AD4DFF,
-              ],
-              stops: [
-                0.0,
-                0.5,
-                1.0
-              ]),
-        ),
-        child: Stack(
-          children: [
-            // GestureDetector(
-            //   onTap: () {
-            //     NavigatorUtils.push(context, SettingRouter.themePage);
-            //   },
-            //   child: LoadAssetImage(
-            //     "test_banner_img",
-            //     height: ScreenUtil.getScreenH(context),
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
+      child: Consumer<HomeTeacherProvider>(
+        builder: (_, provider, __) {
+          TeachListEntity? teacher = provider.teacher;
+          return Scaffold(
+              body: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        Colours.color_00F3BD,
+                        Colours.color_00BAFF,
+                        Colours.color_AD4DFF,
+                      ],
+                      stops: [
+                        0.0,
+                        0.5,
+                        1.0
+                      ]),
+                ),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: 40,
+                      top: 70,
+                      child: GestureDetector(
+                          onTap: () {
+                            _showSelectMenu();
+                          },
+                          child: LoadAssetImage(
+                            "home_more_img",
+                            key: _buttonKey,
+                            width: 17,
+                            height: 17,
+                          )),
+                    ),
 
-            Positioned(
-              left: 40,
-              top: 70,
-              child: GestureDetector(
-                  onTap: () {
-                    _showSelectMenu();
-                    // _showUpdateDialog();
-                    // NavigatorUtils.push(context, MyOrderRouter.myOrder);
-                  },
-                  child: LoadAssetImage(
-                    "home_more_img",
-                    key: _buttonKey,
-                    width: 17,
-                    height: 17,
-                  )),
-            ),
-
-            // Positioned(
-            //     right: 20,
-            //     top: 68,
-            //     child: Row(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       children: [
-            //         const LoadAssetImage(
-            //           "timer_img",
-            //           width: 17,
-            //           height: 17,
-            //         ),
-            //         Gaps.hGap6,
-            //         GestureDetector(
-            //           onTap: () {
-            //             _showTimeOutBottomSheet();
-            //           },
-            //           child: SizedBox(
-            //             width: 100,
-            //             child: Text(
-            //               experienceTimeFinish ? "试用期结束" : _currentSecond,
-            //               style: const TextStyle(
-            //                   fontSize: Dimens.font_sp17, color: Colors.white),
-            //             ),
-            //           ),
-            //         )
-            //       ],
-            //     )),
-
-            Positioned(
-                bottom: 50,
-                child: Container(
-                  width: ScreenUtil.getScreenW(context),
-                  alignment: Alignment.center,
-                  child: GestureDetector(
-                      onTap: () {
-                        if(allTeacher.isNotEmpty){
-                          _showBottomSheet();
-                        }else{
-                          needRefresh = true;
-                          _homePagePresenter.getTeacherList(true);
-                        }
-
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 28, right: 28),
-                        height: 46,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: ImageUtils.getAssetImage(
-                                    "purchase_btn_img"),
-                                fit: BoxFit.fill)),
-                        child: const Center(
-                          child: Text(
-                            "与Andy对话",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                        ),
-                      )),
-                ))
-          ],
-        ),
-      )),
-    ));
-  }
-
-  //选择老师的弹窗
-  void _showBottomSheet() {
-    HomeTeacherProvider provider = HomeTeacherProvider();
-    showModalBottomSheet<void>(
-        backgroundColor: Colors.transparent,
-        context: context,
-        enableDrag: false,
-        isScrollControlled: true,
-        isDismissible: false,
-        builder: (_) => DraggableScrollableSheet(
-            initialChildSize: 0.7,
-            minChildSize: 0.65,
-            expand: false,
-            builder: (_, scrollController) {
-              return Stack(
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)),
-                      color: Colors.white
-                        ),
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)),
-                        gradient: LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft,
-                            colors: [
-                              Colours.color_300EF4D1,
-                              Colours.color_3053C5FF,
-                              Colours.color_30E0AEFF,
-                            ],
-                            stops: [
-                              0.0,
-                              0.7,
-                              1.0
-                            ])),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding:
-                          const EdgeInsets.only(left: 20, right: 20, top: 20),
-                          child: Row(
-                            children: [
-                              const Text(
-                                "选择自己喜欢的老师",
-                                style: TextStyle(
-                                    color: Colours.color_111B44,
-                                    fontSize: Dimens.font_sp15,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const Expanded(child: Gaps.empty),
-                              GestureDetector(
-                                onTap: () {
-                                  NavigatorUtils.goBack(context);
-                                },
-                                child: const LoadAssetImage(
-                                  "close_img",
-                                  width: 15,
-                                  height: 15,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.only(
-                                  left: 20, right: 20, top: 20, bottom: 10),
-                              child: GridView.builder(
-                                  itemCount: allTeacher.length,
-                                  gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                    //设置列数
-                                    crossAxisCount: 3,
-                                    //设置横向间距
-                                    crossAxisSpacing: 10,
-                                    //设置主轴间距
-                                    mainAxisSpacing: 20,
-                                    mainAxisExtent: 150,
-                                  ),
-                                  itemBuilder: (BuildContext ctx, int index) {
-                                    return RecommendTeacherWidget(allTeacher[index],
-                                            () {
-                                          provider.setSelectIndex(index);
-                                        }, provider);
-                                  }),
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
+                    Positioned(
+                        bottom: 50,
+                        child: Container(
+                          width: ScreenUtil.getScreenW(context),
+                          alignment: Alignment.center,
                           child: GestureDetector(
                               onTap: () {
-                                NavigatorUtils.goBack(context);
-                                // 跳转到对话
-                                int index = provider.index;
-                                TeachListEntity teacher = allTeacher.elementAt(index);
-                                Future.delayed(const Duration(milliseconds: 300), () {
-                                  NavigatorUtils.push(
-                                    context,
-                                    ConversationRouter.connectPage,
-                                    arguments: teacher,
-                                  );
-                                });
-                                startCountDown = true;
-                                // _countDown();
+                                if (teacher == null) {
+                                  provider.chooseTeacher(null);
+                                  _showBottomSheet();
+                                  return;
+                                }
+                                conversationWithTeacher(teacher);
                               },
                               child: Container(
                                 margin: const EdgeInsets.only(left: 28, right: 28),
@@ -324,24 +131,32 @@ class _HomePageState extends State<HomePage>
                                         image: ImageUtils.getAssetImage(
                                             "purchase_btn_img"),
                                         fit: BoxFit.fill)),
-                                child: const Center(
+                                child: Center(
                                   child: Text(
-                                    "确定",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 16),
+                                    teacher != null ? '与${teacher.name}对话' : '请选择老师',
+                                    style: const TextStyle(color: Colors.white, fontSize: 16),
                                   ),
                                 ),
                               )),
-                        ),
-                        Gaps.vGap24,
-                      ],
-                    ),
-                  )
-                ],
-              )
+                        ))
+                  ],
+                ),
+              ));
+        },
+      ),
+    ));
+  }
 
-                ;
-            }));
+  //选择老师的弹窗
+  void _showBottomSheet() {
+    showModalBottomSheet<void>(
+        backgroundColor: Colors.transparent,
+        context: context,
+        enableDrag: false,
+        isScrollControlled: true,
+        isDismissible: false,
+        builder: (_) => const RecommendTeacherWidget(),
+    );
   }
 
   //体验期结束的弹窗
@@ -516,13 +331,7 @@ class _HomePageState extends State<HomePage>
   }
 
   @override
-  void setTeachList(/*List<SelectTeacherEntity> list  ,*/List<TeachListEntity> list) {
-    allTeacher.clear();
-    allTeacher.addAll(list);
-    // _showBottomSheet();
-    if(needRefresh) {
-      setState(() {});
-    }
+  void setTeachList(List<TeachListEntity> list) {
   }
 
   @override

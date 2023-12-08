@@ -87,6 +87,8 @@ dependencies:
   app_tracking_transparency: ^2.0.4
   #device_identity
   device_identity: ^1.0.0
+  #loading_animation_widget https://github.com/watery-desert/loading_animation_widget
+  loading_animation_widget: ^1.2.0+4
 
 dev_dependencies:
   flutter_test:

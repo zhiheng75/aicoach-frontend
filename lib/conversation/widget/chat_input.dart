@@ -378,7 +378,7 @@ class _ChatInputState extends State<ChatInput> {
         if (kDebugMode) {
           print('发送文本：$text');
         }
-        manage.send(text);
+        manage.send('[message_id=${userMessage.id}]$text');
         setState(() {
           isAnswering = true;
         });
