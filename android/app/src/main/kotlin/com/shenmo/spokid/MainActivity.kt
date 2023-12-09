@@ -16,11 +16,13 @@ import android.widget.*
 import androidx.annotation.NonNull
 import cn.jiguang.verifysdk.api.JVerificationInterface
 import cn.jiguang.verifysdk.api.JVerifyUIConfig
+import com.alipay.sdk.app.PayTask
 import com.shenmo.spokid.entity.PayResult
 import com.shenmo.spokid.entity.WechatBean
 import com.shenmo.spokid.entity.WxPayBean
 import com.shenmo.spokid.entity.WxPayResultBean
 import com.shenmo.spokid.utils.JsonUtils
+import com.shenmo.spokid.utils.OrderInfoUtil2_0
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.modelpay.PayReq
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
@@ -128,40 +130,41 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
 //        "\"timeout_express\":\"" + timeoutExpress + "\"}");
 
             call.arguments?.apply {
-                val partnerId: String
-                val prepayId: String
-                val nonceStr: String
-                val timeStamp: String
-                val sign: String
-
-                if (this is String && this.isNotEmpty()){
-                    JsonUtils.fromJson<WxPayBean>(this.toString())?.apply {
-
-//                    if (this is Map<*,*>&&this.isNotEmpty()){
-                        partnerId = this.partnerid// this["partnerId"]?.toString()?:""
-                        prepayId = this.prepay_id// this["prepayId"]?.toString()?:""
-                        nonceStr = this.noncestr// this["nonceStr"]?.toString()?:""
-                        timeStamp = this.timestamp// this["timeStamp"]?.toString()?:""
-                        sign =this.sign//  this["sign"]?.toString()?:""
-
-                        val sWxApi = WXAPIFactory.createWXAPI(this@MainActivity, BuildConfig.WXID, false)
-                        sWxApi.registerApp(BuildConfig.WXID)
-                        val req = PayReq()
-                        req.appId = BuildConfig.WXID
-                        req.partnerId = partnerId
-                        req.prepayId = prepayId
-                        req.nonceStr = nonceStr
-                        req.timeStamp = timeStamp
-                        req.packageValue = "Sign=WXPay"
-                        req.sign = sign
-                        sWxApi.sendReq(req) //发起调用微信支付了
-
-//                    }
-                    }
 
 
-                }
-
+                /*
+		 * 这里只是为了方便直接向商户展示支付宝的整个支付流程；所以Demo中加签过程直接放在客户端完成；
+		 * 真实App里，privateKey等数据严禁放在客户端，加签过程务必要放在服务端完成；
+		 * 防止商户私密数据泄露，造成不必要的资金损失，及面临各种安全风险；
+		 *
+		 * orderInfo 的获取必须来自服务端；
+		 */
+//                val rsa2: Boolean = RSA2_PRIVATE.length > 0 //RSA2_PRIVATE传过来的私钥
+//                val params: Map<String, String> = OrderInfoUtil2_0.buildOrderParamMap(
+//                    BuildConfig.ALI,
+//                    rsa2
+//                )
+//                val orderParam: String = OrderInfoUtil2_0.buildOrderParam(params)
+//
+//                val privateKey: String =
+//                    if (rsa2) RSA2_PRIVATE else RSA_PRIVATE
+//                val sign: String = OrderInfoUtil2_0.getSign(params, privateKey, rsa2)
+//                val orderInfo = "$orderParam&$sign"
+//
+//                val payRunnable = Runnable {
+//                    val alipay = PayTask(this@MainActivity)
+//                    val result = alipay.payV2(orderInfo, true)
+//                    Log.i("msp", result.toString())
+//                    val msg = Message()
+//                    msg.what = SDK_PAY_FLAG
+//                    msg.obj = result
+//                    mHandler.sendMessage(msg)
+//                }
+//
+//
+//                // 必须异步调用
+//                val payThread = Thread(payRunnable)
+//                payThread.start()
 
             }
         }

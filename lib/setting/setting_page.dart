@@ -11,6 +11,7 @@ import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/util/version_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 
+import '../dialog/common_dialog.dart';
 import '../login/entity/login_info_entity.dart';
 import '../loginManager/login_manager.dart';
 import '../method/fluter_native.dart';
@@ -118,7 +119,8 @@ class _SettingPageState extends State<SettingPage>
                         GestureDetector(
                           onTap: (){
                             if(_settingPresenter.hasBindWX) {
-                              _settingPresenter.unbindWx();
+                              _showAboutWXDialog();
+
                             }else{
                               // _settingPresenter.bindWx();
                               FlutterToNative.jumpToWechatLogin().then((value) => {
@@ -293,5 +295,16 @@ class _SettingPageState extends State<SettingPage>
 
   }
 
-
+  void _showAboutWXDialog() {
+    showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => CommonDialog(
+              contentStr: "要解除与微信的绑定吗？",
+              confirmPress: () {
+                _settingPresenter.unbindWx();
+              },
+              cancelPress: () {},
+            ));
+  }
 }

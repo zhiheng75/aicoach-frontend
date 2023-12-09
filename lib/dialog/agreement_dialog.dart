@@ -94,7 +94,7 @@ class _AgreementDialogState extends State<AgreementDialog> {
                               },
                               child: Container(
                                 width: 125,
-                                height: 35,
+                                height: 40,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                       image: ImageUtils.getAssetImage(
@@ -116,7 +116,7 @@ class _AgreementDialogState extends State<AgreementDialog> {
                               },
                               child: Container(
                                 width: 125,
-                                height:35,
+                                height:40,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                       image: ImageUtils.getAssetImage(
