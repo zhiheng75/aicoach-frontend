@@ -124,6 +124,8 @@ class RadarMapState extends State<RadarMap>
   late Animation animation;
   Paint contentPaint = Paint();
 
+  List<Offset> socreList = [];
+
   @override
   void initState() {
 
@@ -145,7 +147,6 @@ class RadarMapState extends State<RadarMap>
 
     contentPaint.style = PaintingStyle.fill;
     contentPaint.shader = shader;
-
 
     ctrl = AnimationController(vsync: this, duration:const Duration(seconds: 1))
       ..addListener(() {
@@ -183,7 +184,7 @@ class RadarMapState extends State<RadarMap>
           bottomPadding: widget.bottomPadding,
           zeroToPointPaint: widget.zeroToPointPaint,
           pentagonPaint: widget.pentagonPaint,
-          contentPaint: contentPaint),
+          contentPaint: contentPaint,socreList: socreList),
     );
   }
 }
@@ -199,6 +200,7 @@ class RadarmapPainter extends CustomPainter {
   List<RadarBean> score;
   AnimationController ctrl;
   ValueNotifier<List<Offset>> values;
+  List<Offset> socreList;
 
   RadarmapPainter(this.score, this.ctrl, this.values,
       {required this.r,
@@ -207,7 +209,7 @@ class RadarmapPainter extends CustomPainter {
         required this.bottomPadding,
         required this.zeroToPointPaint,
         required this.pentagonPaint,
-        required this.contentPaint})
+        required this.contentPaint,required this.socreList})
       : super(repaint: values);
 
   @override
@@ -262,6 +264,9 @@ class RadarmapPainter extends CustomPainter {
     ///根据位置绘制文字
     // drawTextByPosition(points, canvas);
     drawTextByPosition2(points, canvas);
+
+    drawTextByPosition3(points, canvas);
+
     canvas.restore();
   }
 
@@ -304,8 +309,6 @@ class RadarmapPainter extends CustomPainter {
   }
 
   void drawTextByPosition2(List<Offset> points, Canvas canvas) {
-
-
     for (int i = 0; i < points.length; i++) {
       MoveType2 type = MoveType2.oneMove;
       switch (i) {
@@ -335,6 +338,40 @@ class RadarmapPainter extends CustomPainter {
 
       drawText2(canvas, points[i], score[i].name,
          const TextStyle(fontSize: 8, color: Colors.white), type);
+    }
+  }
+
+
+  void drawTextByPosition3(List<Offset> points, Canvas canvas) {
+    for (int i = 0; i < points.length; i++) {
+      MoveType2 type = MoveType2.oneMove;
+      switch (i) {
+        case 0:
+          type = MoveType2.oneMove;
+          points[i] -= Offset(0, padding * 2);
+          break;
+        case 1:
+          type = MoveType2.twoMove;
+          points[i] += Offset(padding, -padding);
+          break;
+        case 2:
+          type = MoveType2.threeMove;
+          points[i] += Offset(bottomPadding, padding);
+          break;
+        case 3:
+          type = MoveType2.fourMove;
+          points[i] += Offset(-bottomPadding, padding);
+          break;
+        case 4:
+          type = MoveType2.fiveMove;
+          points[i] -= Offset(padding, padding);
+          break;
+        default:
+      }
+
+
+      drawText3(canvas, points[i], score[i].score.round()==0?"": score[i].score.round().toString(),
+          const TextStyle(fontSize: 8, color: Colors.white), type);
     }
   }
 
@@ -383,20 +420,20 @@ class RadarmapPainter extends CustomPainter {
     switch (type) {
       case MoveType2.oneMove:
         // offsetResult = Offset(offset.dx - size.width / 2, offset.dy);
-        offsetResult = Offset(offset.dx - size.width / 2, offset.dy+2);
+        offsetResult = Offset(offset.dx - size.width / 2, offset.dy-size.height/2);
         break;
       case MoveType2.twoMove:
         // offsetResult = Offset(offset.dx - size.width/2+5, offset.dy+5);
-        offsetResult = Offset(offset.dx - size.width/2+5, offset.dy+12);
+        offsetResult = Offset(offset.dx + size.width/2, offset.dy+size.height);
 
         break;
       case MoveType2.threeMove:
         // offsetResult = Offset(offset.dx - size.width / 2-5, offset.dy-10);
-        offsetResult = Offset(offset.dx - size.width / 2-20, offset.dy-1);
+        offsetResult = Offset(offset.dx - size.width *1.3, offset.dy+size.height/2);
         break;
       case MoveType2.fourMove:
         // offsetResult = Offset(offset.dx - size.width+15, offset.dy-5);
-        offsetResult = Offset(offset.dx - size.width+3, offset.dy-26);
+        offsetResult = Offset(offset.dx - size.width*1.5, offset.dy-size.height*2.5);
         break;
       case MoveType2.fiveMove:
         offsetResult = Offset(offset.dx - size.width / 2-5, offset.dy+5);
@@ -407,19 +444,19 @@ class RadarmapPainter extends CustomPainter {
 
     switch (type) {
       case MoveType2.oneMove:
-        offsetResultCircle = Offset(offset.dx , offset.dy+15);
+        offsetResultCircle = Offset(offset.dx , offset.dy);
         break;
       case MoveType2.twoMove:
         // offsetResultCircle = Offset(offset.dx+5, offset.dy+10);
-        offsetResultCircle = Offset(offset.dx+5, offset.dy+18);
+        offsetResultCircle = Offset(offset.dx+size.width, offset.dy+18);
         break;
       case MoveType2.threeMove:
         // offsetResultCircle = Offset(offset.dx-5 , offset.dy);
-        offsetResultCircle = Offset(offset.dx-20 , offset.dy+5);
+        offsetResultCircle = Offset(offset.dx-20 , offset.dy+size.height);
         break;
       case MoveType2.fourMove:
         // offsetResultCircle = Offset(offset.dx+5, offset.dy);
-        offsetResultCircle = Offset(offset.dx-5, offset.dy-20);
+        offsetResultCircle = Offset(offset.dx-size.width, offset.dy-size.height*2);
         break;
       case MoveType2.fiveMove:
         offsetResultCircle = Offset(offset.dx-5, offset.dy+10);
@@ -432,6 +469,37 @@ class RadarmapPainter extends CustomPainter {
     canvas.drawCircle(offsetResultCircle, 18, _paintCircle);
 
     textPainter.paint(canvas, offsetResult);
+  }
+
+
+  void drawText3(Canvas canvas, Offset offset, String text, TextStyle style,
+      MoveType2 type) {
+    var textPainter = TextPainter(
+        text: TextSpan(text: text, style:const TextStyle(color: Colours.color_2F468A,fontSize: 10,fontWeight: FontWeight.bold),),
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.rtl);
+    textPainter.layout();
+    Size size = textPainter.size;
+    Offset scoreTxt;
+    switch (type) {
+      case MoveType2.oneMove:
+        scoreTxt = Offset(offset.dx-size.width/2 , -r*(score[0].score.round()/100)-size.height);
+        break;
+      case MoveType2.twoMove:
+        scoreTxt = Offset(r*(score[1].score.round()/100), offset.dy+size.height*2.2);
+        break;
+      case MoveType2.threeMove:
+        scoreTxt = Offset(offset.dx-size.width*3 , r*(score[2].score.round()/100));
+        break;
+      case MoveType2.fourMove:
+        scoreTxt = Offset(-r*(score[3].score.round()/100)-size.width, offset.dy-size.height*3.5);
+        break;
+      default:
+        scoreTxt = offset;
+    }
+
+
+    textPainter.paint(canvas, scoreTxt);
   }
 
 
