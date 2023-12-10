@@ -16,6 +16,7 @@ class MyReportPresenter extends BasePagePresenter<MyReportView>{
   String sessionTime = "";
   String rank = "";
   int score = 0;
+  double rankScore = 0;
 
 
   @override
@@ -47,12 +48,12 @@ class MyReportPresenter extends BasePagePresenter<MyReportView>{
 
           if(mData.totalScore!=null){
             score =  (mData.totalScore as double).round();
+            rankScore = score/100;
           }
 
           sessionAmount = mData.sessionCount;
           sessionTime = mData.sessionTime;
           rank = mData.rank;
-
 
           view.getScore(list);
         }

@@ -14,7 +14,6 @@ import '../person/entity/study_list_entity.dart';
 import '../res/colors.dart';
 import '../res/gaps.dart';
 import '../util/image_utils.dart';
-import '../util/time_utils.dart';
 import '../widgets/load_image.dart';
 
 class MyReportPage extends StatefulWidget {
@@ -87,7 +86,7 @@ class _MyReportPageState extends State<MyReportPage>
                       CircularPercentIndicator(
                         radius: 95.0,
                         lineWidth: 5.0,
-                        percent: 0.7,
+                        percent: _myReportPresenter.rankScore,
                         center:  Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
