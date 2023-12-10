@@ -7,6 +7,7 @@ import '../../login/entity/login_info_entity.dart';
 import '../../mvp/base_page_presenter.dart';
 import '../../mvp/base_presenter.dart';
 import '../../net/http_api.dart';
+import '../entity/updata_info_entity.dart';
 import '../view/setting_view.dart';
 import '../../net/dio_utils.dart';
 
@@ -14,11 +15,13 @@ class SettingPresenter extends BasePagePresenter<SettingView>{
 
   bool hasBindWX = false;
   bool hasBindPhone = false;
+  bool hadNewVersion = false;
   late LoginInfoDataData userInfo;
 
   @override
   void initState() {
     super.initState();
+    getUpdate(false);
     SpUtil.getObj(Constant.userInfoKey, (v) => {
               if (v.isNotEmpty)
                 {
@@ -109,13 +112,13 @@ class SettingPresenter extends BasePagePresenter<SettingView>{
         });
   }
 
-  Future getUpdate() {
+  Future getUpdate(show) {
     final Map<String, dynamic> params = <String, dynamic>{};
     params['platform'] = "android";
-    return requestNetwork(Method.get,
+    return requestNetwork<UpdataInfoData>(Method.get,
         url: HttpApi.updateApp,
         queryParameters: params,
-        isShow: true, onSuccess: (data) {
+        isShow: show, onSuccess: (data) {
 
         });
 

@@ -101,19 +101,15 @@ StudyReportDataData $StudyReportDataDataFromJson(Map<String, dynamic> json) {
   if (totalScore != null) {
     studyReportDataData.totalScore = totalScore;
   }
-
-  final String  sessionTime = json['session_time'];
-  if (totalScore != null) {
+  final String? sessionTime = jsonConvert.convert<String>(json['sessionTime']);
+  if (sessionTime != null) {
     studyReportDataData.sessionTime = sessionTime;
   }
-
-
-  final dynamic sessionCount = json['session_count'];
+  final num? sessionCount = jsonConvert.convert<num>(json['sessionCount']);
   if (sessionCount != null) {
     studyReportDataData.sessionCount = sessionCount;
   }
-
-  final dynamic rank = json['rank'];
+  final String? rank = jsonConvert.convert<String>(json['rank']);
   if (rank != null) {
     studyReportDataData.rank = rank;
   }
@@ -127,8 +123,8 @@ Map<String, dynamic> $StudyReportDataDataToJson(StudyReportDataData entity) {
   data['integrity_score'] = entity.integrityScore;
   data['standard_score'] = entity.standardScore;
   data['total_score'] = entity.totalScore;
-  data['session_time'] = entity.sessionTime;
-  data['session_count'] = entity.sessionCount;
+  data['sessionTime'] = entity.sessionTime;
+  data['sessionCount'] = entity.sessionCount;
   data['rank'] = entity.rank;
   return data;
 }
@@ -140,18 +136,18 @@ extension StudyReportDataDataExtension on StudyReportDataData {
     dynamic integrityScore,
     dynamic standardScore,
     dynamic totalScore,
-    dynamic sessionTime,
-    dynamic sessionCount,
-    dynamic rank,
+    String? sessionTime,
+    num? sessionCount,
+    String? rank,
   }) {
     return StudyReportDataData()
       ..accuracyScore = accuracyScore ?? this.accuracyScore
       ..fluencyScore = fluencyScore ?? this.fluencyScore
       ..integrityScore = integrityScore ?? this.integrityScore
       ..standardScore = standardScore ?? this.standardScore
-      ..sessionTime = standardScore ?? this.sessionTime
-      ..sessionCount = standardScore ?? this.sessionCount
-      ..rank = standardScore ?? this.rank
-      ..totalScore = totalScore ?? this.totalScore;
+      ..totalScore = totalScore ?? this.totalScore
+      ..sessionTime = sessionTime ?? this.sessionTime
+      ..sessionCount = sessionCount ?? this.sessionCount
+      ..rank = rank ?? this.rank;
   }
 }

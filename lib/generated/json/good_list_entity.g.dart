@@ -102,7 +102,7 @@ GoodListDataData $GoodListDataDataFromJson(Map<String, dynamic> json) {
   if (updatedAt != null) {
     goodListDataData.updatedAt = updatedAt;
   }
-  final int? price = jsonConvert.convert<int>(json['price']);
+  final double? price = jsonConvert.convert<double>(json['price']);
   if (price != null) {
     goodListDataData.price = price;
   }
@@ -142,7 +142,7 @@ extension GoodListDataDataExtension on GoodListDataData {
     int? status,
     int? sort,
     String? updatedAt,
-    int? price,
+    double? price,
     int? id,
     String? unit,
     String? createdAt,

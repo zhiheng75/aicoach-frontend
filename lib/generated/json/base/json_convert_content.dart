@@ -17,6 +17,7 @@ import 'package:Bubble/person/entity/study_info_entity.dart';
 import 'package:Bubble/person/entity/study_list_entity.dart';
 import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/report/entity/study_report_entity.dart';
+import 'package:Bubble/setting/entity/updata_info_entity.dart';
 
 JsonConvert jsonConvert = JsonConvert();
 
@@ -284,6 +285,18 @@ class JsonConvert {
       return data.map<StudyReportDataData>((Map<String, dynamic> e) =>
           StudyReportDataData.fromJson(e)).toList() as M;
     }
+    if (<UpdataInfoEntity>[] is M) {
+      return data.map<UpdataInfoEntity>((Map<String, dynamic> e) =>
+          UpdataInfoEntity.fromJson(e)).toList() as M;
+    }
+    if (<UpdataInfoData>[] is M) {
+      return data.map<UpdataInfoData>((Map<String, dynamic> e) =>
+          UpdataInfoData.fromJson(e)).toList() as M;
+    }
+    if (<UpdataInfoDataData>[] is M) {
+      return data.map<UpdataInfoDataData>((Map<String, dynamic> e) =>
+          UpdataInfoDataData.fromJson(e)).toList() as M;
+    }
 
     debugPrint("${M.toString()} not found");
 
@@ -341,6 +354,9 @@ class JsonConvertClassCollection {
     (StudyReportEntity).toString(): StudyReportEntity.fromJson,
     (StudyReportData).toString(): StudyReportData.fromJson,
     (StudyReportDataData).toString(): StudyReportDataData.fromJson,
+    (UpdataInfoEntity).toString(): UpdataInfoEntity.fromJson,
+    (UpdataInfoData).toString(): UpdataInfoData.fromJson,
+    (UpdataInfoDataData).toString(): UpdataInfoDataData.fromJson,
   };
 
   bool containsKey(String type) {

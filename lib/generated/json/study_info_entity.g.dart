@@ -92,6 +92,14 @@ StudyInfoDataData $StudyInfoDataDataFromJson(Map<String, dynamic> json) {
   if (rank != null) {
     studyInfoDataData.rank = rank;
   }
+  final String? activeRank = jsonConvert.convert<String>(json['active_rank']);
+  if (activeRank != null) {
+    studyInfoDataData.activeRank = activeRank;
+  }
+  final num? activeRankCount = jsonConvert.convert<num>(json['active_rank_count']);
+  if (activeRankCount != null) {
+    studyInfoDataData.activeRankCount = activeRankCount;
+  }
   return studyInfoDataData;
 }
 
@@ -100,6 +108,8 @@ Map<String, dynamic> $StudyInfoDataDataToJson(StudyInfoDataData entity) {
   data['session_count'] = entity.sessionCount;
   data['duration'] = entity.duration;
   data['rank'] = entity.rank;
+  data['active_rank'] = entity.activeRank;
+  data['active_rank_count'] = entity.activeRankCount;
   return data;
 }
 
@@ -108,10 +118,14 @@ extension StudyInfoDataDataExtension on StudyInfoDataData {
     int? sessionCount,
     int? duration,
     String? rank,
+    String? activeRank,
+    num? activeRankCount,
   }) {
     return StudyInfoDataData()
       ..sessionCount = sessionCount ?? this.sessionCount
       ..duration = duration ?? this.duration
+      ..activeRank = activeRank ?? this.activeRank
+      ..activeRankCount = activeRankCount ?? this.activeRankCount
       ..rank = rank ?? this.rank;
   }
 }

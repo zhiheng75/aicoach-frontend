@@ -124,14 +124,18 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                         Gaps.vGap32,
                         GestureDetector(
                           onTap: () {
-
-                            if(wxPay){
-                              _purchasePresenter.wxChatPay(_purchasePresenter.goodList[selectIndex].id,
-                                  _purchasePresenter.goodList[selectIndex].price,true);
+                            if(agreeAgreement){
+                              if(wxPay){
+                                _purchasePresenter.wxChatPay(_purchasePresenter.goodList[selectIndex].id,
+                                    _purchasePresenter.goodList[selectIndex].price,true);
+                              }else{
+                                _purchasePresenter.aliPay(_purchasePresenter.goodList[selectIndex].id,
+                                    _purchasePresenter.goodList[selectIndex].price,true);
+                              }
                             }else{
-                              _purchasePresenter.aliPay(_purchasePresenter.goodList[selectIndex].id,
-                                  _purchasePresenter.goodList[selectIndex].price,true);
+                              Toast.show("请同意会员协议和续费规则");
                             }
+
 
                           },
                           child: Container(
@@ -161,7 +165,10 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                         Gaps.vGap15,
                       ],
                     )
-                  : Gaps.empty,
+                  : Container(
+                color: Colors.white,
+                height: 50,
+              ),
             )
           ],
         ),
@@ -276,10 +283,19 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
               ),
             ):Gaps.empty),
          Text(
-          "${bean.price}${bean.unit}",
+          "${viewPrice(bean.price)}/${bean.unit}",
           style: const TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
       ],
     );
+  }
+
+
+  String viewPrice(double price){
+    if(price == price.toInt()){
+      return price.toInt().toString();
+    }else{
+      return price.toString();
+    }
   }
 
   ///支付方式

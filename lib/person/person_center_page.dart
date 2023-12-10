@@ -37,6 +37,8 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
   String studyTime="--";
   String studyAmount = "--";
   String studyRank="--";
+  String activePercent="--%";//活跃指数
+  String activeRank="--";//前面还有多少人
 
   late PersonalCenterPresenter _presenter;
 
@@ -223,9 +225,9 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                 RichText(text: TextSpan(
                     children: <TextSpan>[
                       const TextSpan(text: "你的周学习活跃指数为",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
-                      const TextSpan(text: "--%",style: TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
+                       TextSpan(text: activePercent,style:const  TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
                       const TextSpan(text: ",前边还有",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
-                      const TextSpan(text: "--",style: TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
+                       TextSpan(text: activeRank,style:const TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
                       const TextSpan(text: "位保持每天学习，加油赶超~",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
                     ]
                 ))
@@ -307,6 +309,8 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
     studyTime = data.duration.toString();
     studyAmount = data.sessionCount.toString();
     studyRank = data.rank;
+    activePercent = data.activeRank;
+    activeRank = data.activeRankCount.toString();
     setState(() {
 
     });

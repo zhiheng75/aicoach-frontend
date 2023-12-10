@@ -45,6 +45,8 @@ class StudyInfoDataData {
 	late int sessionCount;
 	late int duration;
 	late String rank;
+	late String activeRank;
+	late num activeRankCount;
 
 	StudyInfoDataData();
 

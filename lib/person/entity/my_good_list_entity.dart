@@ -4,7 +4,7 @@ class MyGoodListEntity {
   late int status;
   late int sort;
   late String updatedAt;
-  late int price;
+  late dynamic price;
   late int id;
   late String unit;
   late String createdAt;

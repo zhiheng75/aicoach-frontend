@@ -47,7 +47,7 @@ class GoodListDataData {
 	late int sort;
 	@JSONField(name: "updated_at")
 	late String updatedAt;
-	late int price;
+	late dynamic price;
 	late int id;
 	late String unit;
 	@JSONField(name: "created_at")

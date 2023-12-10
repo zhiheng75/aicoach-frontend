@@ -148,7 +148,7 @@ class _SettingPageState extends State<SettingPage>
                         Gaps.vGap20,
                         GestureDetector(
                           onTap: (){
-                            _settingPresenter.getUpdate();
+                            _settingPresenter.getUpdate(true);
                           },
                           child: Container(
                             alignment: Alignment.centerLeft,
@@ -162,7 +162,7 @@ class _SettingPageState extends State<SettingPage>
                                 ),
                                 Gaps.hGap6,
                                 Visibility(
-                                  child: LoadAssetImage("had_new_version_img",width: 33,height: 13,),),
+                                  child:  LoadAssetImage("had_new_version_img",width: 33,height: 13,),),
                                 const Expanded(child: Gaps.empty),
                                 Text("$_appVersion版本",style:const TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_546092),),
                                 Gaps.hGap6,
@@ -306,5 +306,9 @@ class _SettingPageState extends State<SettingPage>
               },
               cancelPress: () {},
             ));
+  }
+
+  @override
+  void getAppInfo() {
   }
 }

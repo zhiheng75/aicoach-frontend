@@ -7,6 +7,7 @@ import '../../method/fluter_native.dart';
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
 import '../../util/toast_utils.dart';
+import '../entity/ali_pay_entity.dart';
 import '../entity/good_list_entity.dart';
 import '../entity/my_good_list_entity.dart';
 import '../entity/wx_pay_entity.dart';
@@ -49,11 +50,10 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView>{
    Future aliPay(goodId,goodPrice,bool showLoading){
      final Map<String, dynamic> params = <String, String>{};
      params["goods_id"] = goodId.toString();
-     // params["goods_price"] = goodPrice.toString();
-     params["goods_price"] = "0.01";
+     params["goods_price"] = goodPrice.toString();
      params["payment_method"] = "ALIPAY";//0=WXPAY 1=ALIPAY
 
-     return requestNetwork<WxPayData>(
+     return requestNetwork<AliPayData>(
          Method.post,
          url: HttpApi.wxOrder,
          isShow: showLoading,
@@ -64,7 +64,7 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView>{
              FlutterToNative.jumpToALiPay(json.encode(data.data)).then((value){
                if(value==0){
                  Toast.show("支付成功");
-                 getOrderStatus(data.data.order_no,"ALIPAY");
+                 getOrderStatus(data.data.orderNo,"ALIPAY");
                }else {
                  Toast.show("支付失败");
                }
