@@ -61,9 +61,10 @@ class _ChangeRolePageState extends State<ChangeRolePage>
                         NavigatorUtils.goBack(context);
                       },
                       child: const LoadAssetImage(
-                        'back_bai',
-                        width: 10.0,
-                        height: 16.0,
+                        'ic_back_black',
+                        color: Colors.white,
+                        width: 22.0,
+                        height: 22.0,
                         fit: BoxFit.fill,
                       ),
                     ),
