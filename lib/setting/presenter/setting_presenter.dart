@@ -1,4 +1,5 @@
 import 'package:Bubble/entity/empty_response_entity.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:sp_util/sp_util.dart';
 
@@ -7,6 +8,7 @@ import '../../login/entity/login_info_entity.dart';
 import '../../mvp/base_page_presenter.dart';
 import '../../mvp/base_presenter.dart';
 import '../../net/http_api.dart';
+import '../../util/version_utils.dart';
 import '../entity/updata_info_entity.dart';
 import '../view/setting_view.dart';
 import '../../net/dio_utils.dart';
@@ -16,21 +18,35 @@ class SettingPresenter extends BasePagePresenter<SettingView>{
   bool hasBindWX = false;
   bool hasBindPhone = false;
   bool hadNewVersion = false;
+  String phoneNum = "";
   late LoginInfoDataData userInfo;
+
+  String appVersion = "";
+  int localAppCode = 0;
+  int netAppCode = 0;
 
   @override
   void initState() {
     super.initState();
-    getUpdate(false);
+
+    VersionUtils.getAppVersion().then((value) {
+      appVersion = value;
+      localAppCode = int.parse(appVersion.replaceAll(".", "")) ;
+      view.viewLocalAppName(appVersion);
+    } );
+
     SpUtil.getObj(Constant.userInfoKey, (v) => {
               if (v.isNotEmpty)
                 {
                   userInfo = LoginInfoDataData.fromJson(v),
                   hasBindPhone = userInfo.phone.isNotEmpty,
+                  phoneNum = userInfo.phone,
                   hasBindWX = userInfo.openid.isNotEmpty,
                   view.getUserInfo(userInfo),
                 }
             });
+
+    getUpdate(false);
   }
 
 
@@ -119,9 +135,26 @@ class SettingPresenter extends BasePagePresenter<SettingView>{
         url: HttpApi.updateApp,
         queryParameters: params,
         isShow: show, onSuccess: (data) {
+      if (data != null && data.code == 200) {
+        if(data.data.version.isNotEmpty){
+          netAppCode =  int.parse(data.data.version.replaceAll(".", ""));
+          if(show){
+            if(netAppCode>localAppCode){
+              view.getAppInfo();
+            }else{
+              Toast.show("已是最新版本");
+            }
+          }else{
+            if(netAppCode>localAppCode){
 
-        });
-
+              view.hasNewVersion(true);
+            }else{
+              view.hasNewVersion(false);
+            }
+          }
+        }
+      }
+    });
   }
 
 

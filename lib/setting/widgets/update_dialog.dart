@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Bubble/widgets/load_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/foundation.dart';
@@ -27,11 +28,11 @@ class UpdateDialog extends StatefulWidget {
 }
 
 class _UpdateDialogState extends State<UpdateDialog> {
-  
+
   final CancelToken _cancelToken = CancelToken();
   bool _isDownload = false;
   double _value = 0;
-  
+
   @override
   void dispose() {
     if (!_cancelToken.isCancelled && _value != 1) {
@@ -39,7 +40,7 @@ class _UpdateDialogState extends State<UpdateDialog> {
     }
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final Color primaryColor = Theme.of(context).primaryColor;
@@ -52,151 +53,119 @@ class _UpdateDialogState extends State<UpdateDialog> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
           body: Center(
-              child: Stack(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: 220.0,
-                width: 350.0,
+                width: 400,
+                height: 400,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(8.0),
                       topRight: Radius.circular(8.0)),
                   image: DecorationImage(
                     image: ImageUtils.getAssetImage(
-                      'update_bg',
+                      'update_bg2',
                     ),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                child:Container(
+                  padding:const EdgeInsets.only(top: 150,left: 50,right: 50),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const Text('新版本更新', style: TextStyles.textSize16),
+                      Gaps.vGap10,
+
+                      SizedBox(
+                        height: 130,
+                        child: ListView.builder(
+                          itemCount: 2,
+                            shrinkWrap: true,
+                            itemBuilder: (context,index){
+                              return Text('1.又双叒修复了一大堆bug。\n\n2.祭天了多名程序猿。');
+                            }),
+                      )
+                      ,
+
+
+                      Gaps.vGap10,
+                      if (_isDownload)
+                        LinearProgressIndicator(
+                          backgroundColor: Colours.line,
+                          valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+                          value: _value,
+                        )
+                      else
+                        _buildButton(context),
+                    ],
                   ),
                 ),
               ),
-
-                            Container(
-                              margin:const EdgeInsets.only(top: 130,left: 4.7),
-                              width: 340.2,
-                              height: 250,
-                              decoration: BoxDecoration(
-                                color: context.dialogBackgroundColor,
-                                borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20.0), bottomRight: Radius.circular(20.0))
-                              ),
-                              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  const Text('新版本更新', style: TextStyles.textSize16),
-                                  Gaps.vGap10,
-                                  const Text('1.又双叒修复了一大堆bug。\n\n2.祭天了多名程序猿。'),
-                                  Gaps.vGap15,
-                                  if (_isDownload)
-                                    LinearProgressIndicator(
-                                      backgroundColor: Colours.line,
-                                      valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
-                                      value: _value,
-                                    )
-                                  else
-                                    _buildButton(context),
-                                ],
-                              ),
-                            ),
-
             ],
           ))),
     );
   }
 
 
-  //    Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: <Widget>[
-  //               Container(
-  //                 height: 220.0,
-  //                 width: 350.0,
-  //                 decoration: BoxDecoration(
-  //                   color: Colors.red,
-  //                   borderRadius: const BorderRadius.only(topLeft: Radius.circular(8.0), topRight: Radius.circular(8.0)),
-  //                   image: DecorationImage(
-  //                     image: ImageUtils.getAssetImage('update_bg', ),
-  //                     fit: BoxFit.cover,
-  //                   ),
-  //                 ),
-  //               ),
-  //               Container(
-  //                 width: 350.0,
-  //                 decoration: BoxDecoration(
-  //                   color: context.dialogBackgroundColor,
-  //                   borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(8.0), bottomRight: Radius.circular(8.0))
-  //                 ),
-  //                 padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-  //                 child: Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: <Widget>[
-  //                     const Text('新版本更新', style: TextStyles.textSize16),
-  //                     Gaps.vGap10,
-  //                     const Text('1.又双叒修复了一大堆bug。\n\n2.祭天了多名程序猿。'),
-  //                     Gaps.vGap15,
-  //                     if (_isDownload)
-  //                       LinearProgressIndicator(
-  //                         backgroundColor: Colours.line,
-  //                         valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
-  //                         value: _value,
-  //                       )
-  //                     else
-  //                       _buildButton(context),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-
   Widget _buildButton(BuildContext context) {
     final Color primaryColor = Theme.of(context).primaryColor;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        SizedBox(
-          width: 110.0,
-          height: 36.0,
-          child: MyButton(
-            text: '残忍拒绝',
-            fontSize: Dimens.font_sp16,
-            textColor: primaryColor,
-            disabledTextColor: Colors.white,
-            disabledBackgroundColor: Colours.text_gray_c,
-            radius: 18.0,
-            side: BorderSide(
-              color: primaryColor,
-              width: 0.8,
+
+        GestureDetector(
+          onTap: () {
+            NavigatorUtils.goBack(context);
+          },
+          child: Container(
+            width: 140,
+            height: 40,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: ImageUtils.getAssetImage(
+                    "confirm_bg1",),
+                  fit: BoxFit.fill
+              ),
             ),
-            backgroundColor: Colors.transparent,
-            onPressed: () {
-              NavigatorUtils.goBack(context);
-            },
+
+            child:const Center(
+              child:Text("取消", style:const TextStyle(fontSize: 13,color: Colours.color_3389FF),) ,
+            ) ,
           ),
         ),
-        SizedBox(
-          width: 110.0,
-          height: 36.0,
-          child: MyButton(
-            text: '立即更新',
-            fontSize: Dimens.font_sp16,
-            onPressed: () {
-              if (defaultTargetPlatform == TargetPlatform.iOS) {
-                NavigatorUtils.goBack(context);
-                VersionUtils.jumpAppStore();
-              } else {
-                setState(() {
-                  _isDownload = true;
-                });
-                _download();
-              }
-            },
-            textColor: Colors.white,
-            backgroundColor: primaryColor,
-            disabledTextColor: Colors.white,
-            disabledBackgroundColor: Colours.text_gray_c,
-            radius: 18.0,
+
+        GestureDetector(
+          onTap: () async {
+            if (defaultTargetPlatform == TargetPlatform.iOS) {
+              NavigatorUtils.goBack(context);
+              VersionUtils.jumpAppStore();
+            } else {
+              setState(() {
+                _isDownload = true;
+              });
+              _download();
+            }
+          },
+          child: Container(
+            width: 140,
+            height:40,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: ImageUtils.getAssetImage(
+                    "cancel_bg1",),
+                  fit: BoxFit.fill
+              ),
+            ),
+            child:const Center(
+              child: Text("立即升级",style: const TextStyle(fontSize: 13,color: Colors.white),),
+            ),
           ),
-        )
+        ),
+
+
       ],
     );
   }

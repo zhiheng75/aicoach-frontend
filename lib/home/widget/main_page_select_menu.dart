@@ -118,15 +118,4 @@ class _MainPageSelectMenuState extends State<MainPageSelectMenu> with SingleTick
     );
   }
 
-
-
-
-  void _showUpdateDialog() {
-    showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) => const UpdateDialog()
-    );
-  }
-
 }

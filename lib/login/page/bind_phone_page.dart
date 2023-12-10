@@ -106,10 +106,7 @@ class _BindPhonePageState extends State<BindPhonePage>
               padding: const EdgeInsets.only(left: 16.0, right: 16.0,),
               children: _buildBody(),
             ),
-          )
-
-
-          ,
+          ),
         )
     );
   }
@@ -142,13 +139,19 @@ class _BindPhonePageState extends State<BindPhonePage>
         keyboardType: TextInputType.number,
         hintText: "请输入验证码",
         getVCode: () async {
-          if (_phoneController.text.length == 11) {
-            _bindPhonePresenter.sendSms(_phoneController.text.trim());
-            return true;
-          } else {
-            Toast.show("手机号无效");
-            return false;
+
+          if(_bindPhonePresenter.data.phone.isEmpty){
+           return judgementPhone();
+          }else{
+            if(_bindPhonePresenter.data.phone!=_phoneController.text){
+              Toast.show("请输入新手机号");
+              return false;
+            }else{
+              return judgementPhone();
+            }
           }
+
+
         },
       ),
       Gaps.vGap24,
@@ -189,6 +192,16 @@ class _BindPhonePageState extends State<BindPhonePage>
       //   text: "绑定",
       // ),
     ];
+  }
+
+  bool judgementPhone(){
+    if (_phoneController.text.length == 11) {
+      _bindPhonePresenter.sendSms(_phoneController.text.trim());
+      return true;
+    } else {
+      Toast.show("手机号无效");
+      return false;
+    }
   }
 
   @override

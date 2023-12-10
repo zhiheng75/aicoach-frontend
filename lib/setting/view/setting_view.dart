@@ -14,4 +14,8 @@ abstract class SettingView implements IMvpView{
   void wechatFail(String msg);
 
   void getAppInfo();
+
+  void hasNewVersion(bool hasNew);
+
+  void viewLocalAppName(String appName);
 }

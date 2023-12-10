@@ -1,5 +1,7 @@
 import 'package:Bubble/home/home_router.dart';
+import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/setting/widgets/update_dialog.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +10,6 @@ import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/setting/presenter/setting_presenter.dart';
 import 'package:Bubble/setting/view/setting_view.dart';
 import 'package:Bubble/util/toast_utils.dart';
-import 'package:Bubble/util/version_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 
 import '../dialog/common_dialog.dart';
@@ -34,21 +35,8 @@ class _SettingPageState extends State<SettingPage>
     implements SettingView {
 
   late SettingPresenter _settingPresenter;
+  bool mHasNewVersion = false;
 
-  late String _appVersion = "";
-
-
-  
-  @override
-  void initState() {
-    super.initState();
-    VersionUtils.getAppVersion().then((value) {
-      _appVersion = value;
-          setState(() {
-
-          });
-    } );
-  }
   
   @override
   Widget build(BuildContext context) {
@@ -104,9 +92,12 @@ class _SettingPageState extends State<SettingPage>
                         Gaps.vGap20,
                         GestureDetector(
                           onTap: (){
-
+                            NavigatorUtils.pushResult(context, LoginRouter.changeBindPhonePage,
+                                arguments: _settingPresenter.userInfo, (result) {
+                                  setState(() {});
+                                });
                           },
-                          child:  bindState(0,"手机号",_settingPresenter.hasBindPhone),
+                          child:  phoneBindState(0,"手机号",_settingPresenter.hasBindPhone),
                         ),
 
                         Gaps.vGap20,
@@ -162,9 +153,10 @@ class _SettingPageState extends State<SettingPage>
                                 ),
                                 Gaps.hGap6,
                                 Visibility(
-                                  child:  LoadAssetImage("had_new_version_img",width: 33,height: 13,),),
+                                  visible: mHasNewVersion,
+                                  child:const LoadAssetImage("had_new_version_img",width: 33,height: 13,),),
                                 const Expanded(child: Gaps.empty),
-                                Text("$_appVersion版本",style:const TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_546092),),
+                                Text("${_settingPresenter.appVersion}版本",style:const TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_546092),),
                                 Gaps.hGap6,
                                 const LoadAssetImage(
                                   "to_next_img",
@@ -213,7 +205,32 @@ class _SettingPageState extends State<SettingPage>
     );
   }
 
-  /// type 0(手机)1（微信）2（qq）
+
+
+  Widget phoneBindState(int type,String name,bool hasBind){
+    return Row(
+      children: [
+        imageWidget(type),
+        Gaps.hGap7,
+        Text(name,style:const TextStyle(fontSize: 15,color: Colours.color_111B44),),
+        const Expanded(child: Gaps.empty),
+        Text(
+          hasBind ? "去换绑" : "去绑定",style:const TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_546092),
+        ),
+        Gaps.hGap6,
+        Visibility(
+          visible: !hasBind,
+          child: const LoadAssetImage(
+            "to_next_img",
+            width: 5,
+            height: 9,
+          ),
+        )
+      ],
+    );
+  }
+
+  ///1（微信）2（qq）
   Widget bindState(int type,String name,bool hasBind){
     return Row(
       children: [
@@ -250,7 +267,7 @@ class _SettingPageState extends State<SettingPage>
       case 2:
         return const LoadAssetImage("bind_qq_img",width: 20,height: 20,);
       default:
-        return const LoadAssetImage("bind_phone_img",width: 20,height: 20,);
+        return Gaps.empty;
     }
   }
 
@@ -310,5 +327,32 @@ class _SettingPageState extends State<SettingPage>
 
   @override
   void getAppInfo() {
+    _showUpdateDialog();
+  }
+
+
+  void _showUpdateDialog() {
+    showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => const UpdateDialog()
+    );
+  }
+
+  @override
+  void viewLocalAppName(String appName) {
+    setState(() {
+
+    });
+  }
+
+  @override
+  void hasNewVersion(hasNew) {
+    mHasNewVersion = hasNew;
+    if(hasNew){
+      setState(() {
+
+      });
+    }
   }
 }

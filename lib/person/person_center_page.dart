@@ -89,7 +89,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                 ),
 
                 Container(
-                  margin: const EdgeInsets.only(top: 220),
+                  margin: const EdgeInsets.only(top: 200),
                   width: ScreenUtil.getScreenW(context),
                   height: ScreenUtil.getScreenH(context),
                   decoration: const BoxDecoration(
@@ -102,7 +102,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                 Container(
                   width: ScreenUtil.getScreenW(context),
                   height: ScreenUtil.getScreenH(context),
-                  margin: const EdgeInsets.only(top: 220),
+                  margin: const EdgeInsets.only(top: 200),
                   padding: const EdgeInsets.only(top: Dimens.gap_dp23,
                     left: Dimens.gap_dp28,
                     right: Dimens.gap_dp28,),
