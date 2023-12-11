@@ -6,7 +6,7 @@ import 'dart:io';
 
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
-import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/setting/provider/device_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -91,7 +91,8 @@ class _ChatInputState extends State<ChatInput> {
   }
 
   Future<void> intCutdown() async {
-    String deviceId = await Device.getDeviceId();
+    // String deviceId = await Device.getDeviceId();
+    String deviceId = Provider.of<DeviceProvider>(context, listen: false).deviceId;
     DioUtils.instance.requestNetwork(
       Method.get,
       HttpApi.permission,
@@ -499,12 +500,14 @@ class _ChatInputState extends State<ChatInput> {
   }
 
   Future<void> addConversationRecord() async {
+    String deviceId = Provider.of<DeviceProvider>(context, listen: false).deviceId;
     await DioUtils.instance.requestNetwork(
       Method.post,
       HttpApi.addConversationRecord,
       params: {
         'session_id': provider!.sessionId,
-        'device_id': await Device.getDeviceId(),
+        // 'device_id': await Device.getDeviceId(),
+        'device_id': deviceId,
         'duration': provider!.usageTime,
       },
       onSuccess: (_) {
@@ -533,6 +536,12 @@ class _ChatInputState extends State<ChatInput> {
 
   @override
   void dispose() {
+    if (recorder != null) {
+      recorder!.closeRecorder();
+    }
+    if (player != null) {
+      player!.closePlayer();
+    }
     super.dispose();
   }
 

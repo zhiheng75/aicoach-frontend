@@ -1,5 +1,6 @@
 
 import 'package:Bubble/mvp/base_page_presenter.dart';
+import 'package:Bubble/util/device_utils.dart';
 
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
@@ -30,9 +31,10 @@ class MyReportPresenter extends BasePagePresenter<MyReportView>{
   }
 
 
-  Future getReport(String sessionId) {
+  Future getReport(String sessionId) async {
     final Map<String, dynamic> params = <String, dynamic>{};
     params['session_id'] = sessionId;
+    params['device_id'] = await Device.getDeviceId();
     return requestNetwork<StudyReportData>(Method.get,
         url: HttpApi.coinReport,
         queryParameters: params,

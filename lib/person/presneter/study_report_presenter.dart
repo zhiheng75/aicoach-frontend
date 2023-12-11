@@ -1,4 +1,5 @@
 import 'package:Bubble/mvp/base_page_presenter.dart';
+import 'package:Bubble/util/device_utils.dart';
 
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
@@ -15,9 +16,14 @@ class StudyReportPresenter extends BasePagePresenter<StudyReportView>{
     getStudyInfo();
   }
 
-  Future getStudyInfo(){
+  Future getStudyInfo() async {
+    String deviceId = await Device.getDeviceId();
     return requestNetwork<StudyListData>(Method.get,
-        url: HttpApi.studyReportList, isShow: false,
+        url: HttpApi.studyReportList,
+        queryParameters: {
+          'device_id': deviceId,
+        },
+        isShow: false,
         onSuccess: (data) {
           if (data != null && data.code == 200) {
             mList.clear();

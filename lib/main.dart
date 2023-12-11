@@ -1,4 +1,5 @@
 import 'package:Bubble/home/provider/selecter_teacher_provider.dart';
+import 'package:Bubble/setting/provider/device_provider.dart';
 import 'package:device_identity/device_identity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -73,13 +74,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final Widget app = MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => DeviceProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
         ChangeNotifierProvider(create: (_) => HomeTeacherProvider()),
       ],
       child: Consumer2<ThemeProvider, LocaleProvider>(
-        builder: (_, ThemeProvider provider, LocaleProvider localeProvider, __) {
-          return _buildMaterialApp(provider, localeProvider);
+        builder: (_, themeProvider, localeProvider, __) {
+          return _buildMaterialApp(themeProvider, localeProvider);
         },
       ),
     );

@@ -1,8 +1,10 @@
 // ignore_for_file: argument_type_not_assignable_to_error_handler, must_be_immutable
 
 import 'package:Bubble/constant/constant.dart';
+import 'package:Bubble/setting/provider/device_provider.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../home/entity/teach_list_entity.dart';
@@ -32,12 +34,13 @@ class _ConnectState extends State<ConnectPage> {
   }
 
   void connectWebsocket() {
+    String deviceId = Provider.of<DeviceProvider>(context, listen: false).deviceId;
     String sessionId = const Uuid().v4().replaceAll('-', '');
     // String model = '';
     String model = 'gpt-3.5-turbo-16k';
     String language = 'en-US';
     String token = SpUtil.getString(Constant.accessToken) ?? '';
-    String url = 'wss://api.demo.shenmo-ai.net/ws/$sessionId?llm_model=$model&platform=app&use_search=false&use_quivr=false&use_multion=false&character_id=${widget.teacher.characterId}&language=$language&token=$token';
+    String url = 'wss://api.demo.shenmo-ai.net/ws/$sessionId?device_id=$deviceId&llm_model=$model&platform=app&use_search=false&use_quivr=false&use_multion=false&character_id=${widget.teacher.characterId}&language=$language&token=$token';
     WebsocketUtils.createWebsocket(
       'CONVERSATION',
       Uri.parse(url),

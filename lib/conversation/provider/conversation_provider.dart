@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:Bubble/net/dio_utils.dart';
@@ -71,19 +72,22 @@ void evaluate(String sessionId, Message message) {
     WebSocketChannel channel = WebSocketChannel.connect(uri);
     channel.stream.listen(
       (event) {
-        onData(event, (evaluation) {
+        onData(event, (evaluation) async {
           List<int> speech = [];
           for (Uint8List item in message.audio) {
             speech.addAll(item.toList());
           }
+          saveAsWav(speech);
+          String deviceId = await Device.getDeviceId();
           DioUtils.instance.requestNetwork(
             Method.post,
             'add_score',
             params: {
               'session_id': sessionId,
+              'device_id': deviceId,
               'message_id': message.id,
               'message': message.text,
-              'speech': base64.encode(Uint8List.fromList(speech)),
+              'speech': base64.encode(toWav(speech)),
               'accuracy_score': evaluation['accuracy_score'],
               'fluency_score': evaluation['fluency_score'],
               'integrity_score': evaluation['integrity_score'],
@@ -114,17 +118,7 @@ void evaluate(String sessionId, Message message) {
   }
 }
 
-void saveAsWav(List<int> data) async {
-  Directory? dir = await getExternalStorageDirectory();
-  if (dir == null) {
-    return;
-  }
-  if (kDebugMode) {
-    print('dir:${dir.path}');
-  }
-  File txtdFile = File('${dir.path}/${DateTime.now().millisecondsSinceEpoch}.txt');
-  File recordedFile = File('${dir.path}/${DateTime.now().millisecondsSinceEpoch}.wav');
-
+Uint8List toWav(List<int> data) {
   var channels = 1;
 
   int sampleRate = 16000;
@@ -135,7 +129,7 @@ void saveAsWav(List<int> data) async {
 
   var fileSize = size + 36;
 
-  Uint8List header = Uint8List.fromList([
+  return Uint8List.fromList([
     // "RIFF"
     82, 73, 70, 70,
     fileSize & 0xff,
@@ -174,8 +168,16 @@ void saveAsWav(List<int> data) async {
     (size >> 24) & 0xff,
     ...data
   ]);
-  recordedFile.writeAsBytesSync(header, flush: true);
-  txtdFile.writeAsString(base64.encode(data));
+}
+
+void saveAsWav(List<int> data) async {
+  Directory? dir = await getExternalStorageDirectory();
+  if (dir == null) {
+    return;
+  }
+  File txtdFile = File('${dir.path}/${DateTime.now().millisecondsSinceEpoch}.txt');
+  Uint8List header = toWav(data);
+  txtdFile.writeAsString(base64.encode(header));
 }
 /** 讯飞评测 end */
 

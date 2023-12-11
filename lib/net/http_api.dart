@@ -53,5 +53,8 @@ class HttpApi{
   //获取会话时长
   static const String permission = 'permission';
 
+  //获取对话音频
+  static const String speechList = 'speech_list';
+
   static const String upload = 'uuc/upload-inco';
 }
