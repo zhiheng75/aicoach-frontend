@@ -6,7 +6,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 Map<String, dynamic> websocketManagement = {};
 
 class WebsocketUtils {
-  static WebsocketManage createWebsocket(String name, Uri url, {
+  static void createWebsocket(String name, Uri url, {
     Function()? onSuccess,
     Function()? onError,
     Function()? onDone
@@ -18,7 +18,6 @@ class WebsocketUtils {
         onSuccess();
       }
     }
-    return manage;
   }
 
   static WebsocketManage? getWebsocket(String name) {

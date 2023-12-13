@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, unnecessary_getters_setters, slash_for_doc_comments, argument_type_not_assignable_to_error_handler
+// ignore_for_file: prefer_final_fields, unnecessary_getters_setters, slash_for_doc_comments, argument_type_not_assignable_to_error_handler, depend_on_referenced_packages
 
 import 'dart:convert';
 import 'dart:io';
@@ -218,13 +218,19 @@ class ConversationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void appendMessage(Message message) {
-    _messageList.add(message);
-    notifyListeners();
-    // 评测
-    if (message.speaker == 'user') {
-      evaluate(_sessionId, message);
-    }
+  Message createMessage() {
+    _messageList.add(Message());
+    return _messageList.last;
+  }
+
+  void runEvaluate ([int? index]) {
+    Message message = index != null ? _messageList.elementAt(index) : _messageList.last;
+    evaluate(_sessionId, message);
+  }
+
+  void runTranslate([int? index]) {
+    Message message = index != null ? _messageList.elementAt(index) : _messageList.last;
+    message.translate();
   }
 
   void updateMessageList() {
@@ -271,7 +277,9 @@ class Message {
   bool get isTranslate => _isTranslate;
   List<Uint8List> get audio => _audio;
 
-  set speaker(String speaker) => _speaker = speaker;
+  void setSpeaker(String speaker) {
+    _speaker = speaker;
+  }
 
   void appendText(String text) {
     _text += text;

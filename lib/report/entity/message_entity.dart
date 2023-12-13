@@ -3,6 +3,7 @@ class MessageEntity {
   late String messageId;
   late String clientMessageUnicode;
   late String serverMessageUnicode;
+  String? avatar;
 
   MessageEntity();
 
@@ -11,5 +12,6 @@ class MessageEntity {
     messageId = json['message_id'];
     clientMessageUnicode = json['client_message_unicode'];
     serverMessageUnicode = json['server_message_unicode'];
+    avatar = json['avatar'];
   }
 }

@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:xml2json/xml2json.dart';
 
 // 语音识别
@@ -68,7 +69,8 @@ class XunfeiUtil {
       frameData['business'] = {
         'language': 'en_us',
         'domain': 'iat',
-        // 'vad_eos': 1000,
+        'vad_eos': 1000,
+        'ptt': 0,
         'vinfo': 1,
       };
     }
@@ -134,8 +136,8 @@ class XunfeiUtil {
       'code': response['code'],
     };
     if (response['code'] == 0) {
-      Map<String, dynamic> data = response['data'];
       String text = '';
+      Map<String, dynamic> data = response['data'];
       Map<String, dynamic> recognizeResult = data['result'];
       // 获取语音帧
       Map<String, dynamic>? vad = recognizeResult['vad'];
