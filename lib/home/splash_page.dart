@@ -43,17 +43,17 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void _initSplash() {
-    Provider.of<DeviceProvider>(context, listen: false).getDeviceId();
-    _subscription =
-        Stream.value(1).delay(const Duration(milliseconds: 1000)).listen((_) {
-      bool hasAgree =
-          SpUtil.getBool(Constant.agreement, defValue: false) ?? false;
-      if (hasAgree) {
-        _gotoHome();
-      } else {
-        _showAgreement();
-      }
-    });
+    // Provider.of<DeviceProvider>(context, listen: false).getDeviceId();
+    // _subscription =
+    //     Stream.value(1).delay(const Duration(milliseconds: 1000)).listen((_) {
+    //   bool hasAgree =
+    //       SpUtil.getBool(Constant.agreement, defValue: false) ?? false;
+    //   if (hasAgree) {
+    //     _gotoHome();
+    //   } else {
+    //     _showAgreement();
+    //   }
+    // });
   }
 
   void _showAgreement() {
@@ -84,7 +84,7 @@ class _SplashPageState extends State<SplashPage> {
             heightFactor: 0.3,
             widthFactor: 0.6,
             leftFactor: 0.2,
-            bottomFactor: 0.5,
+            bottomFactor: 0.4,
             child: Column(
               children: [
                 LoadAssetImage(
