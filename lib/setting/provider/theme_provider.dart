@@ -7,11 +7,17 @@ import '../../res/colors.dart';
 import '../../constant/constant.dart';
 import '../../res/styles.dart';
 
+const bool isPriorityApp = true;
+
 extension ThemeModeExtension on ThemeMode {
   String get value => <String>['System', 'Light', 'Dark'][index];
 }
 
 class ThemeProvider extends ChangeNotifier {
+
+  /// 是否跟随系统
+  bool get isFollowSystem =>
+      getThemeMode() == ThemeMode.system;
 
   void syncTheme() {
     final String theme = SpUtil.getString(Constant.theme) ?? '';
@@ -35,6 +41,26 @@ class ThemeProvider extends ChangeNotifier {
       default:
         return ThemeMode.system;
     }
+  }
+
+
+
+  /// 暗黑模式判断
+  bool isDark(BuildContext context) {
+    if (!isPriorityApp) {
+      return Theme.of(context).brightness == Brightness.dark;
+    } else {
+      if (isFollowSystem) {
+        return Theme.of(context).brightness == Brightness.dark;
+      } else {
+        return getThemeColor() == Colours.app_main;
+      }
+    }
+  }
+
+  /// 获取当前主题色
+  Color getThemeColor() {
+    return Colours.dark_app_main;
   }
 
   ThemeData getTheme({bool isDarkMode = false}) {

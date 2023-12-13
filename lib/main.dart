@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
 
   final Widget? home;
   final ThemeData? theme;
-  static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+  // static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   void initDio() {
     final List<Interceptor> interceptors = <Interceptor>[];
@@ -113,7 +113,7 @@ class MyApp extends StatelessWidget {
       // localizationsDelegates: DeerLocalizations.localizationsDelegates,
       // supportedLocales: DeerLocalizations.supportedLocales,
       locale: localeProvider.locale,
-      navigatorKey: navigatorKey,
+      navigatorKey: Constant.navigatorKey,
       builder: (BuildContext context, Widget? child) {
         /// 仅针对安卓
         if (Device.isAndroid) {

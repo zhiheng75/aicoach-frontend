@@ -101,11 +101,11 @@ StudyReportDataData $StudyReportDataDataFromJson(Map<String, dynamic> json) {
   if (totalScore != null) {
     studyReportDataData.totalScore = totalScore;
   }
-  final String? sessionTime = jsonConvert.convert<String>(json['session_time']);
+  final String? sessionTime = jsonConvert.convert<String>(json['sessionTime']);
   if (sessionTime != null) {
     studyReportDataData.sessionTime = sessionTime;
   }
-  final num? sessionCount = jsonConvert.convert<num>(json['session_count']);
+  final num? sessionCount = jsonConvert.convert<num>(json['sessionCount']);
   if (sessionCount != null) {
     studyReportDataData.sessionCount = sessionCount;
   }

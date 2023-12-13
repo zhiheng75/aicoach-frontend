@@ -54,18 +54,25 @@ class _ChangeRolePageState extends State<ChangeRolePage>
                     fit: BoxFit.fill,
                   ),
                   Positioned(
-                    top: 60.0,
-                    left: 27.0,
+                    top: 45.0,
+                    left: 16.0,
                     child: GestureDetector(
                       onTap: () {
                         NavigatorUtils.goBack(context);
                       },
-                      child: const LoadAssetImage(
-                        'ic_back_black',
-                        color: Colors.white,
-                        width: 22.0,
-                        height: 22.0,
-                        fit: BoxFit.fill,
+                      child: IconButton(
+                        onPressed: () async {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          final isBack = await Navigator.maybePop(context);
+                          if (!isBack) {
+                            await SystemNavigator.pop();
+                          }
+                        },
+                        icon: Image.asset(
+                          'assets/images/ic_back_white.png',
+                          width: 10,
+                          height: 16,
+                        ),
                       ),
                     ),
                   ),

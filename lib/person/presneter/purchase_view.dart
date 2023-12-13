@@ -8,4 +8,6 @@ abstract class PurchaseView implements IMvpView{
   void goodListData(List<MyGoodListEntity> bean);
 
   void getWXPayMsg(WxPayDataData bean);
+
+  void paySuccess();
 }

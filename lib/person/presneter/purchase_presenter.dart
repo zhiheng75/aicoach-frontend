@@ -21,8 +21,7 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView>{
   Future wxChatPay(goodId,goodPrice,bool showLoading){
     final Map<String, dynamic> params = <String, String>{};
     params["goods_id"] = goodId.toString();
-    // params["goods_price"] = goodPrice.toString();
-    params["goods_price"] = "0.01";
+    params["goods_price"] = goodPrice.toString();
     params["payment_method"] = "WXPAY";//0=WXPAY 1=ALIPAY
     return requestNetwork<WxPayData>(
         Method.post,
@@ -35,6 +34,7 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView>{
               if(value==0){
                 Toast.show("支付成功");
                 getOrderStatus(data.data.order_no,"WXPAY");
+                view.paySuccess();
               }else {
                 Toast.show("支付失败");
               }
@@ -65,6 +65,7 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView>{
                if(value==0){
                  Toast.show("支付成功");
                  getOrderStatus(data.data.orderNo,"ALIPAY");
+                 view.paySuccess();
                }else {
                  Toast.show("支付失败");
                }

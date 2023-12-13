@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 class Constant {
@@ -25,5 +26,7 @@ class Constant {
   static const String deviceId = 'device_id';
 
   static const String teacher = 'teacher';
+
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
 }

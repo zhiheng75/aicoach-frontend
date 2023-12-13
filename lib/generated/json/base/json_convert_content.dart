@@ -13,6 +13,7 @@ import 'package:Bubble/login/entity/wx_info_entity.dart';
 import 'package:Bubble/order/entity/order_list_entity.dart';
 import 'package:Bubble/person/entity/ali_pay_entity.dart';
 import 'package:Bubble/person/entity/good_list_entity.dart';
+import 'package:Bubble/person/entity/send_img_result_entity.dart';
 import 'package:Bubble/person/entity/study_info_entity.dart';
 import 'package:Bubble/person/entity/study_list_entity.dart';
 import 'package:Bubble/person/entity/wx_pay_entity.dart';
@@ -237,6 +238,18 @@ class JsonConvert {
       return data.map<GoodListDataData>((Map<String, dynamic> e) =>
           GoodListDataData.fromJson(e)).toList() as M;
     }
+    if (<SendImgResultEntity>[] is M) {
+      return data.map<SendImgResultEntity>((Map<String, dynamic> e) =>
+          SendImgResultEntity.fromJson(e)).toList() as M;
+    }
+    if (<SendImgResultData>[] is M) {
+      return data.map<SendImgResultData>((Map<String, dynamic> e) =>
+          SendImgResultData.fromJson(e)).toList() as M;
+    }
+    if (<SendImgResultDataData>[] is M) {
+      return data.map<SendImgResultDataData>((Map<String, dynamic> e) =>
+          SendImgResultDataData.fromJson(e)).toList() as M;
+    }
     if (<StudyInfoEntity>[] is M) {
       return data.map<StudyInfoEntity>((Map<String, dynamic> e) =>
           StudyInfoEntity.fromJson(e)).toList() as M;
@@ -342,6 +355,9 @@ class JsonConvertClassCollection {
     (GoodListEntity).toString(): GoodListEntity.fromJson,
     (GoodListData).toString(): GoodListData.fromJson,
     (GoodListDataData).toString(): GoodListDataData.fromJson,
+    (SendImgResultEntity).toString(): SendImgResultEntity.fromJson,
+    (SendImgResultData).toString(): SendImgResultData.fromJson,
+    (SendImgResultDataData).toString(): SendImgResultDataData.fromJson,
     (StudyInfoEntity).toString(): StudyInfoEntity.fromJson,
     (StudyInfoData).toString(): StudyInfoData.fromJson,
     (StudyInfoDataData).toString(): StudyInfoDataData.fromJson,

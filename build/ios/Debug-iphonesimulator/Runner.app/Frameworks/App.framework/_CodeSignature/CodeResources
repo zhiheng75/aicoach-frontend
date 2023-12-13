@@ -10,11 +10,11 @@
 		</data>
 		<key>flutter_assets/AssetManifest.bin</key>
 		<data>
-		Racidmx+S9m4kh0HfXuyQKWFAvU=
+		O4J84W0ZLHdCoWMLvEx0C1Nx7PM=
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		rOeEWnAh5HsmdCw/xTkXHs0gYRY=
+		yerxjWXlWFcEMKrK1fj0wAlqcD4=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -22,7 +22,7 @@
 		</data>
 		<key>flutter_assets/NOTICES.Z</key>
 		<data>
-		wKGVaLndIuz373ErK91YW10aEjA=
+		H1JlCv31sdrmDm5He7qK+NJq8ms=
 		</data>
 		<key>flutter_assets/assets/avatar/bundle.js</key>
 		<data>
@@ -344,6 +344,10 @@
 		<data>
 		lif+AF4r69DkaUJehNvXnqeUIFU=
 		</data>
+		<key>flutter_assets/assets/images/ic_back_white.png</key>
+		<data>
+		OaIKURayT9Zw7CuW0XTsdeXdYfw=
+		</data>
 		<key>flutter_assets/assets/images/issue_img.png</key>
 		<data>
 		HDoW48nYGFwhX0G+gH0STNv8gXM=
@@ -532,6 +536,10 @@
 		<data>
 		NiO0wwI+83Jksvw/GtVYB4oC6uU=
 		</data>
+		<key>flutter_assets/assets/images/update_bg2.png</key>
+		<data>
+		KpoIm27JSZX5EkSlicd66/hnPyE=
+		</data>
 		<key>flutter_assets/assets/images/update_head.jpg</key>
 		<data>
 		If8asByBc5HA9TI8GpFkbDu4qaY=
@@ -562,11 +570,11 @@
 		</data>
 		<key>flutter_assets/isolate_snapshot_data</key>
 		<data>
-		xNtTifxki/wRmYKz/+z2r6q/Edo=
+		sZcG/IyIY4Zj14zcVkLxBjLthFs=
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		ZRRYlFVBsP1dhhZVzYwxx+A8sO8=
+		8eyIlvRKJmiOZhgUUVDYFpQwJ3U=
 		</data>
 		<key>flutter_assets/packages/flutter_sound_web/howler/howler.js</key>
 		<data>
@@ -602,11 +610,11 @@
 		</data>
 		<key>flutter_assets/shaders/ink_sparkle.frag</key>
 		<data>
-		ZiX/DByz8A2xHGmziP9zxnaRW9M=
+		KL+7f3IYR/Y9WDlxxUeDmgGoluc=
 		</data>
 		<key>flutter_assets/vm_snapshot_data</key>
 		<data>
-		cW0Pqsk2814YYWUEON+YgI6+YD0=
+		+HsWKuOINTMijVvKruokFpzcml8=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -615,14 +623,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			w2/jF0sTQdDlVgTv8VvVj/BliKNEuOl7gj2AXiYTCyo=
+			5ryOf5ks4DN7pWvjGZ3qQ6ZnLS/yPkg0Jj5dvtR8piQ=
 			</data>
 		</dict>
 		<key>flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			hJM6U4SIoBaPOctOg4NeWKjFuoE86Tym0g4dni+kxuw=
+			igCbAFd8NVANGUUszxe+E2luqDUv6BW31RPMZwC1xus=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -636,7 +644,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			/iWG+tpJe8O7/5qRuja195Nrlm2lHOv6MpcutJj1qA4=
+			8MUCW8ENCo5Bb2VTFFY7HrHl8C6EBYag2cxVz4IypCA=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/avatar/bundle.js</key>
@@ -1199,6 +1207,13 @@
 			DBw+wsUjHgprBo+jNiivXeyk+QHPgtAgQKESPBreHSY=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/ic_back_white.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			oojo4t07TIXHbfZVQNAD+U4mLQpeQGUDGvx94i/1G0w=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/issue_img.png</key>
 		<dict>
 			<key>hash2</key>
@@ -1528,6 +1543,13 @@
 			Eme1YmkJDarOce6CzgPDn0Fg5Qv4OtDnbv2nASKWCtk=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/update_bg2.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Gsj1O7VT1i8rttKIxGi+THMsotgfwTCRX+DQDtp3mlc=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/update_head.jpg</key>
 		<dict>
 			<key>hash2</key>
@@ -1581,14 +1603,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			DvWuOOGkIlm7/Owgrr9NUYh8fb4cTxRJmPk98vLuino=
+			BXV9zforqjV2xDEWFnfOol9xQ3r0c56U62EvllNav+c=
 			</data>
 		</dict>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			m7wdDCkLVsTdE3gSsdRXjpumJFRGSr4KbFhzicUo5hM=
+			0Ubd21Gf4w/L0XMuOi+uNT5z9SsTU+uX7ShvN6tmi8M=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/flutter_sound_web/howler/howler.js</key>
@@ -1651,14 +1673,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			49CVVGC0BQtpsarzJBllXjeVYst0OhUVq6Izlb7jGMQ=
+			v6u8YtYjslOLIIb1rrgcOW817fxVEiBaprKuV+f6FpY=
 			</data>
 		</dict>
 		<key>flutter_assets/vm_snapshot_data</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			sev5a27JT/ZUSpHrGmWBmxjqtUgq1PyqOI5pHwvTLwg=
+			XRpcsR0vWGkDzG+35GjjzaJtqN3CuV3azmWWPti/o3M=
 			</data>
 		</dict>
 	</dict>

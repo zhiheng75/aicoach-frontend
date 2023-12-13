@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:dio/dio.dart';
 
 import '../net/dio_utils.dart';
@@ -87,26 +88,27 @@ class BasePagePresenter<V extends IMvpView> extends BasePresenter<V> {
   }
 
   /// 上传图片实现
-  Future<String> uploadImg(File image) async {
-    String imgPath = '';
-    try{
-      final String path = image.path;
-      final String name = path.substring(path.lastIndexOf('/') + 1);
-      final FormData formData = FormData.fromMap(<String, dynamic>{
-        'uploadIcon': await MultipartFile.fromFile(path, filename: name)
-      });
-      await requestNetwork<String>(Method.post,
-          url: HttpApi.upload,
-          params: formData,
-          onSuccess: (data) {
-            imgPath = data ?? '';
-          }
-      );
-    } catch(e) {
-      view.showToast('图片上传失败！');
-    }
-    return imgPath;
-  }
+  // Future<String> uploadImg(File image) async {
+  //   String imgPath = '';
+  //   try{
+  //     final String path = image.path;
+  //     final String name = path.substring(path.lastIndexOf('/') + 1);
+  //     final FormData formData = FormData.fromMap(<String, dynamic>{
+  //       'file': await MultipartFile.fromFile(path, filename: name)
+  //     });
+  //     await requestNetwork<String>(Method.post,
+  //         url: HttpApi.upload,
+  //         params: formData,
+  //         onSuccess: (data) {
+  //           imgPath = data ?? '';
+  //           Toast.show("上传成功");
+  //         }
+  //     );
+  //   } catch(e) {
+  //     view.showToast('图片上传失败！');
+  //   }
+  //   return imgPath;
+  // }
 
   void _onError(int code, String msg, NetErrorCallback? onError) {
     /// 异常时直接关闭加载圈，不受isClose影响

@@ -17,7 +17,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title = '',
     this.centerTitle = '',
     this.actionName = '',
-    this.backImg = 'assets/images/ic_back_black.png',
+    this.backImg = 'assets/images/ic_back_white.png',
     this.backImgColor,
     this.onPressed,
     this.isBack = true
@@ -69,8 +69,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         }
       },
       tooltip: 'Back',
-      padding: const EdgeInsets.all(12.0),
+      // padding: const EdgeInsets.all(12.0),
       icon: Image.asset(
+        width:10,
+        height:16,
         backImg,
         color: backImgColor ?? ThemeUtils.getIconColor(context),
       ),
@@ -95,14 +97,18 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Material(
         color: bgColor,
         child: SafeArea(
-          child: Stack(
-            alignment: Alignment.centerLeft,
-            children: <Widget>[
-              titleWidget,
-              back,
-              action,
-            ],
-          ),
+          child: Container(
+            padding:const EdgeInsets.only(left: 15,right: 15),
+            child:Stack(
+              alignment: Alignment.centerLeft,
+              children: <Widget>[
+                titleWidget,
+                back,
+                action,
+              ],
+            ) ,
+          )
+          ,
         ),
       ),
     );

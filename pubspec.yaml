@@ -35,6 +35,12 @@ dependencies:
   url_launcher: 6.1.8
   # 图片选择插件 https://github.com/flutter/packages/tree/main/packages/image_picker
   image_picker: 1.0.4
+  # 图片视频选择器(微信UI) https://pub.flutter-io.cn/packages/wechat_assets_picker
+  wechat_assets_picker: ^8.8.0
+  # 拍照与录像(微信UI) https://pub.flutter-io.cn/packages/wechat_camera_picker
+  wechat_camera_picker: ^4.1.0
+  # 屏幕参数适配 https://pub.flutter-io.cn/packages/flutter_screenutil
+  flutter_screenutil: ^5.9.0
   # 侧滑删除 https://github.com/letsar/flutter_slidable
   flutter_slidable: ^3.0.0
   # WebView插件 https://github.com/flutter/packages/tree/main/packages/webview_flutter

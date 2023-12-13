@@ -8,9 +8,9 @@ import 'base_entity.dart';
 import 'error_handle.dart';
 
 /// 默认dio配置
-Duration _connectTimeout = const Duration(seconds: 25);
-Duration _receiveTimeout = const Duration(seconds: 25);
-Duration _sendTimeout = const Duration(seconds: 20);
+Duration _connectTimeout = const Duration(seconds: 35);
+Duration _receiveTimeout = const Duration(seconds: 35);
+Duration _sendTimeout = const Duration(seconds: 30);
 String _baseUrl = '';
 List<Interceptor> _interceptors = [];
 

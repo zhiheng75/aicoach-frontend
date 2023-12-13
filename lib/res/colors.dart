@@ -1,6 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../setting/provider/theme_provider.dart';
+
+
+/// 暗黑模式判断
+extension ThemeExtension on BuildContext {
+
+  bool get jhIsDark => Provider.of<ThemeProvider>(this).isDark(this);
+}
 class Colours {
+
+  /// 设置动态颜色
+  static Color dynamicColor(BuildContext context, Color lightColor, [Color? darkColor]) {
+    var isDark = context.jhIsDark;
+    return isDark ? darkColor ?? lightColor : lightColor;
+  }
+  static const Color kThemeColor = Color(0xFFFFFFff);
+  // 黑色文字
+  static const Color kBlackTextColor = Color(0xFF333333); // (51, 51, 51)
+  static const Color kBlackTextDarkColor = Color(0xFFC6C6C6); // (198, 198, 198)
+  // 分割线
+  static const Color kLineColor = Color(0xFFE6E6E6); // (230, 230, 230)
+  static const Color kLineDarkColor = Color(0xFF232323); // (35, 35, 35)
+
+  // picker、bottomSheet颜色
+  static const Color kPickerBgColor = Colors.white;
+  static const Color kPickerBgDarkColor = Color(0xFF1E1E1E); // (30, 30, 30)
+  static const Color kPickerTitleColor = Color(0xFF787878); // (120, 120, 120)
+  static const Color kPickerTitleDarkColor = Color(0xFF878787); // (135, 135, 135)
+  static const Color kPickerTextColor = kBlackTextColor;
+  static const Color kPickerTextDarkColor = kBlackTextDarkColor;
+  static const Color kPickerRedTextDarkColor = Color(0xFFE64242); // (230, 66, 66)
+  static const Color kPickerHeaderColor = kPickerBgColor;
+  static const Color kPickerHeaderDarkColor = kPickerBgDarkColor;
+  static const Color kPickerHeaderLineColor = kLineColor;
+  static const Color kPickerHeaderLineDarkColor = kLineDarkColor;
+  static const Color kPickerBtnColor = kBlackTextColor;
+  static const Color kPickerBtnDarkColor = kBlackTextDarkColor;
+
   static const Color app_main = Color(0xFF4688FA);
   static const Color dark_app_main = Color(0xFF3F7AE0);
 

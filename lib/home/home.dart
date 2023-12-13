@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage>
                 child: Stack(
                   children: [
                     Positioned(
-                      left: 40,
+                      right: 28,
                       top: 70,
                       child: GestureDetector(
                           onTap: () {
@@ -304,7 +304,7 @@ class _HomePageState extends State<HomePage>
     showPopupWindow<void>(
       context: context,
       isShowBg: false,
-      offset: Offset(button.size.width-25 , -28.0),
+      offset: Offset(button.size.width+12 , -28.0),
       anchor: button,
       child: MainPageSelectMenu(() {
         NavigatorUtils.goBack(context);
