@@ -285,7 +285,7 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
     );
     if (result != null) {
       // setState(() {
-      //   _selectedAssets.add(result);
+        _selectedAssets.add(result);
         // 相机回调
         widget.callBack?.call(_selectedAssets);
       // });
