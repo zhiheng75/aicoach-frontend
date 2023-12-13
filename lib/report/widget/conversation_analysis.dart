@@ -36,19 +36,30 @@ class _ConversationAnalysisState extends State<ConversationAnalysis> {
   List<String> speechList = [];
 
   void getMoreMessage() {
-    DioUtils.instance
-        .requestNetwork(Method.get, 'session_history', queryParameters: {
-      'session_id': widget.sessionId,
-    }, onSuccess: (_) {
-      List<dynamic> list = _ as List<dynamic>;
-      messageList.addAll(list.map((item) => MessageEntity.fromJson(item)));
-      setState(() {});
-    }, onError: (code, msg) {
-      Toast.show(
-        msg,
-        duration: 1000,
-      );
-    });
+    DioUtils.instance.requestNetwork(
+      Method.get,
+      'session_history',
+      queryParameters: {
+        'session_id': widget.sessionId,
+      },
+      onSuccess: (result) {
+        if (result != null) {
+          result = result as Map<String, dynamic>;
+          if (result['data'] != null && result['data'] is List) {
+            List<dynamic> list = result['data'] as List<dynamic>;
+            messageList
+                .addAll(list.map((item) => MessageEntity.fromJson(item)));
+            setState(() {});
+          }
+        }
+      },
+      onError: (code, msg) {
+        Toast.show(
+          msg,
+          duration: 1000,
+        );
+      },
+    );
   }
 
   void initPlayer() async {
@@ -61,41 +72,36 @@ class _ConversationAnalysisState extends State<ConversationAnalysis> {
     if (playerState == 1) {
       await stopPlayer();
     }
-    DioUtils.instance.requestNetwork(
-      Method.get,
-      HttpApi.speechList,
-      queryParameters: {
-        'message_id': messageId,
-        'type': type,
-      },
-      onSuccess: (result) {
-        if (currentMessageId != messageId) {
-          return;
-        }
-        if (result == null) {
-          isLocked = false;
-          setState(() {});
-          return;
-        }
-        result = result as Map<String, dynamic>;
-        isLocked = false;
-        List<dynamic> list = result['data'] ?? [];
-        speechList = list.map((item) => item as String).toList();
-        setState(() {});
-        startPlayer();
-      },
-      onError: (code, msg) {
-        Toast.show(
-          msg,
-          duration: 1000,
-        );
-        if (currentMessageId != messageId) {
-          return;
-        }
-        isLocked = false;
-        setState(() {});
+    DioUtils.instance
+        .requestNetwork(Method.get, HttpApi.speechList, queryParameters: {
+      'message_id': messageId,
+      'type': type,
+    }, onSuccess: (result) {
+      if (currentMessageId != messageId) {
+        return;
       }
-    );
+      if (result == null) {
+        isLocked = false;
+        setState(() {});
+        return;
+      }
+      result = result as Map<String, dynamic>;
+      isLocked = false;
+      List<dynamic> list = result['data'] ?? [];
+      speechList = list.map((item) => item as String).toList();
+      setState(() {});
+      startPlayer();
+    }, onError: (code, msg) {
+      Toast.show(
+        msg,
+        duration: 1000,
+      );
+      if (currentMessageId != messageId) {
+        return;
+      }
+      isLocked = false;
+      setState(() {});
+    });
   }
 
   Future<void> startPlayer() async {
@@ -173,13 +179,17 @@ class _ConversationAnalysisState extends State<ConversationAnalysis> {
         fit: BoxFit.fill,
       );
       // 加载状态
-      if (isLocked && currentMessageId == message.messageId && isUser == isUserSpeech) {
+      if (isLocked &&
+          currentMessageId == message.messageId &&
+          isUser == isUserSpeech) {
         icon = LoadingAnimationWidget.hexagonDots(
           color: Colors.white,
           size: 24.0,
         );
       }
-      if (playerState == 1 && currentMessageId == message.messageId && isUser == isUserSpeech) {
+      if (playerState == 1 &&
+          currentMessageId == message.messageId &&
+          isUser == isUserSpeech) {
         icon = const LoadAssetImage(
           'bofangyuyin',
           width: 14.0,
@@ -219,7 +229,8 @@ class _ConversationAnalysisState extends State<ConversationAnalysis> {
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () async {
-                  if (currentMessageId == message.messageId && isUserSpeech == isUser) {
+                  if (currentMessageId == message.messageId &&
+                      isUserSpeech == isUser) {
                     // 请求中或者播放中
                     if (isLocked || playerState == 1) {
                       return;
@@ -238,20 +249,14 @@ class _ConversationAnalysisState extends State<ConversationAnalysis> {
     }
 
     aiMessage(MessageEntity message) {
-      String? userHead;
-      if (LoginManager.isLogin()) {
-        Map<String, dynamic> userInfo =
-            (SpUtil.getObject(Constant.userInfoKey) ?? {})
-                as Map<String, dynamic>;
-        userHead = userInfo['headimgurl'];
-      }
+      String? headimg = message.avatar;
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          userHead != null
+          headimg != null
               ? ClipOval(
                   child: LoadImage(
-                    userHead,
+                    headimg,
                     width: 51.0,
                     height: 51.0,
                     fit: BoxFit.cover,
@@ -274,6 +279,13 @@ class _ConversationAnalysisState extends State<ConversationAnalysis> {
     }
 
     userMessage(MessageEntity message) {
+      String? headimg;
+      if (LoginManager.isLogin()) {
+        Map<String, dynamic> userInfo =
+            (SpUtil.getObject(Constant.userInfoKey) ?? {})
+                as Map<String, dynamic>;
+        headimg = userInfo['headimgurl'];
+      }
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -281,14 +293,23 @@ class _ConversationAnalysisState extends State<ConversationAnalysis> {
           const SizedBox(
             width: 10.0,
           ),
-          const ClipOval(
-            child: LoadAssetImage(
-              'test_banner_img',
-              width: 51.0,
-              height: 51.0,
-              fit: BoxFit.cover,
-            ),
-          ),
+          headimg != null
+              ? ClipOval(
+                  child: LoadImage(
+                    headimg,
+                    width: 51.0,
+                    height: 51.0,
+                    fit: BoxFit.cover,
+                  ),
+                )
+              : Container(
+                  width: 51.0,
+                  height: 51.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(26.0),
+                    color: Colors.blue,
+                  ),
+                ),
         ],
       );
     }
