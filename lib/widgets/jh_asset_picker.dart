@@ -50,6 +50,7 @@ class JhAssetPicker extends StatefulWidget {
     this.maximumRecordingDuration = _maximumRecordingDuration,
     this.bgColor = _bgColor,
     this.callBack,
+    this.deleteCallBack,
   }) : super(key: key);
 
   final AssetType assetType; // 资源类型
@@ -59,6 +60,8 @@ class JhAssetPicker extends StatefulWidget {
   final Duration? maximumRecordingDuration; // 录制视频最长时长, 默认为 15 秒，可以使用 `null` 来设置无限制的视频录制
   final Color bgColor; // 背景色
   final Function(List<AssetEntity> assetEntityList)? callBack; // 选择回调
+
+  final Function(int index)? deleteCallBack; // 删除回调
 
   @override
   State<JhAssetPicker> createState() => _JhAssetPickerState();
@@ -72,7 +75,8 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
   void initState() {
     super.initState();
     bus.on("refreshSelectImg", (arg){
-      _selectedAssets.add(arg);
+      _selectedAssets.clear();
+      _selectedAssets.addAll(arg);
       setState(() {
 
       });
@@ -115,6 +119,7 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
           } else {
             return _itemWidget(index);
           }
+
         },
       ),
     );
@@ -159,16 +164,16 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
               constraints: const BoxConstraints.expand(),
               child: _loadAsset(_selectedAssets[index]),
             ),
-            // GestureDetector(
-            //   child: const Image(
-            //     image: AssetImage(_deleteBtnIcon),
-            //     width: _deleteBtnWH,
-            //     height: _deleteBtnWH,
-            //   ),
-            //   onTap: () =>{
-            //     _deleteAsset(index),
-            //   }
-            // )
+            GestureDetector(
+              child: const Image(
+                image: AssetImage(_deleteBtnIcon),
+                width: _deleteBtnWH,
+                height: _deleteBtnWH,
+              ),
+              onTap: () =>{
+                _deleteAsset(index),
+              }
+            )
           ],
         ),
       ),
@@ -182,9 +187,10 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
 
   void _deleteAsset(index) {
     setState(() {
-      _selectedAssets.removeAt(index);
+      // _selectedAssets.removeAt(index);
+      // widget.callBack?.call(_selectedAssets);
       // 选择回调
-      widget.callBack?.call(_selectedAssets);
+      widget.deleteCallBack?.call(index);
     });
   }
 
@@ -285,6 +291,7 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
     );
     if (result != null) {
       // setState(() {
+      _selectedAssets.clear();
         _selectedAssets.add(result);
         // 相机回调
         widget.callBack?.call(_selectedAssets);

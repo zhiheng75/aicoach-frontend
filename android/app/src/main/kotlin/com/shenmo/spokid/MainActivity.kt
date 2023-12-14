@@ -63,7 +63,7 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
 
             val sWxApi = WXAPIFactory.createWXAPI(this, BuildConfig.WXID, false)
             sWxApi.registerApp(BuildConfig.WXID)
-            Toast.makeText(context,BuildConfig.WXID,Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context,BuildConfig.WXID,Toast.LENGTH_SHORT).show()
             val req = SendAuth.Req()
             req.scope = "snsapi_userinfo"
             req.state = "wx_login"

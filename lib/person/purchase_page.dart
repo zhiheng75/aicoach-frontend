@@ -73,6 +73,21 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
               ),
             ),
             Container(
+              alignment: Alignment.center,
+              height: 100,
+              margin: const EdgeInsets.only(top: 105,left: 50),
+              child: RichText(
+                  text:const
+                  TextSpan(
+                      children: <TextSpan>[
+                         TextSpan(text: "专属口语教练,科学测评,个性化定制 ",style:  TextStyle(fontSize: 13,color: Colors.white)),
+                         TextSpan(text: "\n每天低至1块钱",style: const TextStyle(fontSize: 13,color: Colours.color_00DBAF)),
+                      ]
+                  )),
+            )
+            ,
+
+            Container(
               width: ScreenUtil.getScreenW(context),
               margin: const EdgeInsets.only(top: 220),
               padding: const EdgeInsets.only(top: Dimens.gap_dp23,
@@ -200,7 +215,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
               Gaps.vGap15,
               purchaseItemTxt2(bean),
               Gaps.vGap13,
-              const Text("24小时随时可学习，不限场景。",style: TextStyle(fontSize: Dimens.font_sp13,color:Colours.color_546092),),
+              Text(bean.desc,style:const TextStyle(fontSize: Dimens.font_sp13,color:Colours.color_546092),),
             ],
           ),
         ),
@@ -286,7 +301,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
               ),
             ):Gaps.empty),
          Text(
-          "${viewPrice(bean.price)}/${bean.unit}",
+          "¥ ${viewPrice(bean.price)}元/${bean.unit}",
           style: const TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
       ],
     );
