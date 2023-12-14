@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:Bubble/constant/constant.dart';
+import 'package:Bubble/conversation/provider/conversation_provider.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +16,8 @@ import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:provider/provider.dart';
 import '../conversation/conversation_router.dart';
 import '../mvp/base_page.dart';
+import '../net/dio_utils.dart';
+import '../net/http_api.dart';
 import '../res/colors.dart';
 import '../res/gaps.dart';
 import '../setting/widgets/update_dialog.dart';
@@ -43,6 +47,43 @@ class _HomePageState extends State<HomePage>
 
   late HomePagePresenter _homePagePresenter;
 
+  void init() {
+    getDefaultTeacher();
+  }
+
+  void getDefaultTeacher() async {
+    HomeTeacherProvider provider = Provider.of<HomeTeacherProvider>(context, listen: false);
+    String userId = await provider.getUserId();
+    Map<dynamic, dynamic>? value = SpUtil.getObject(userId);
+    if (value != null) {
+      TeachListEntity teacher = TeachListEntity.fromJson(value as Map<String, dynamic>);
+      provider.updateTeacher(teacher);
+      return;
+    }
+
+    _homePagePresenter.requestNetwork<List<TeachListEntity>>(
+      Method.get,
+      url: HttpApi.teacherList,
+      onSuccess: (teacherList) {
+        if (teacherList != null && teacherList.isNotEmpty) {
+          provider.updateTeacher(teacherList.first);
+        }
+        openSelectTeacher();
+      },
+      onError: (code, msg) {
+        openSelectTeacher();
+      },
+    );
+  }
+
+  void openSelectTeacher() {
+    String? isFirstUseApp = SpUtil.getString(Constant.isFirstUseApp);
+    if (isFirstUseApp != 'Y') {
+      SpUtil.putString(Constant.isFirstUseApp, 'Y');
+      _showBottomSheet();
+    }
+  }
+
   void conversationWithTeacher(TeachListEntity? teacher) {
     if (teacher == null) {
       return;
@@ -59,7 +100,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
-    Provider.of<HomeTeacherProvider>(context, listen: false).getCachedTeacherForUser();
+    init();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
           overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
@@ -115,12 +156,21 @@ class _HomePageState extends State<HomePage>
                           width: ScreenUtil.getScreenW(context),
                           alignment: Alignment.center,
                           child: GestureDetector(
-                              onTap: () {
+                              onTap: () async {
+                                // 未选择老师（加载失败）
                                 if (teacher == null) {
-                                  provider.chooseTeacher(null);
-                                  _showBottomSheet();
+                                  getDefaultTeacher();
                                   return;
                                 }
+                                showProgress();
+                                bool hasAvailableTime = (await Provider.of<ConversationProvider>(context, listen: false).getAvailableTime()) > 0;
+                                // 体验到期
+                                if (!hasAvailableTime) {
+                                  closeProgress();
+                                  _showTimeOutBottomSheet();
+                                  return;
+                                }
+                                closeProgress();
                                 conversationWithTeacher(teacher);
                               },
                               child: Container(
@@ -133,7 +183,7 @@ class _HomePageState extends State<HomePage>
                                         fit: BoxFit.fill)),
                                 child: Center(
                                   child: Text(
-                                    teacher != null ? '与${teacher.name}对话' : '请选择老师',
+                                    teacher != null ? '与${teacher.name}对话' : '刷新加载',
                                     style: const TextStyle(color: Colors.white, fontSize: 16),
                                   ),
                                 ),
@@ -328,10 +378,6 @@ class _HomePageState extends State<HomePage>
         )
       ],
     );
-  }
-
-  @override
-  void setTeachList(List<TeachListEntity> list) {
   }
 
   @override

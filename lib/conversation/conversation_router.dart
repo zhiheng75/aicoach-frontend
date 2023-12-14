@@ -20,13 +20,7 @@ class ConversationRouter implements IRouterProvider{
     router.define(
       conversationPage,
       handler: Handler(
-          handlerFunc: (context, __) {
-            Map<String, dynamic> arguments = context!.settings!.arguments! as Map<String, dynamic>;
-            return ConversationPage(
-              teacher: arguments['teacher'] as TeachListEntity,
-              sessionId: arguments['sessionId'],
-            );
-          }
+          handlerFunc: (context, __) => const ConversationPage(),
       ),
     );
   }

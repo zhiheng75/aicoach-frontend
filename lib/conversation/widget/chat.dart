@@ -64,13 +64,11 @@ class _ChatState extends State<Chat> {
       duration: 0,
     );
     await inputController.endConversation();
-    String sessionId = provider.sessionId;
     StudyListDataData data = StudyListDataData.fromJson({
-      'session_id': sessionId,
+      'session_id': provider.sessionId,
     });
     Toast.cancelToast();
     Future.delayed(Duration.zero, () {
-      provider.clear();
       NavigatorUtils.push(
         context,
         MyReportRouter.myReportPage,

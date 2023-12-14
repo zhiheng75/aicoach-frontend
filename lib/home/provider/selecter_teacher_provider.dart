@@ -16,7 +16,7 @@ class HomeTeacherProvider extends ChangeNotifier{
   TeachListEntity? get teacher => _teacher;
   TeachListEntity? get selectedTeacher => _selectedTeacher;
 
-  Future<String?> getUserId() async {
+  Future<String> getUserId() async {
     String? id;
     if (LoginManager.isLogin()) {
       Map<dynamic, dynamic>? value = SpUtil.getObject(Constant.userInfoKey);
@@ -29,20 +29,7 @@ class HomeTeacherProvider extends ChangeNotifier{
     } else {
       id = await Device.getDeviceId();
     }
-    return id;
-  }
-
-  void getCachedTeacherForUser() async {
-    String? id = await getUserId();
-    if (id == null) {
-      return;
-    }
-    Map<dynamic, dynamic>? teacher = SpUtil.getObject('${Constant.teacher}_$id');
-    if (teacher == null) {
-      return;
-    }
-    _teacher = TeachListEntity.fromJson(teacher as Map<String, dynamic>);
-    notifyListeners();
+    return id ?? '';
   }
 
   void chooseTeacher(TeachListEntity? teacher) {
@@ -50,13 +37,16 @@ class HomeTeacherProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  void updateTeacher() async {
-    String? id = await getUserId();
-    if (id != null) {
-      SpUtil.putObject('${Constant.teacher}_$id', _selectedTeacher!.toJson());
+  void updateTeacher([TeachListEntity? teacher]) async {
+    teacher = teacher ?? _selectedTeacher;
+    String userId = await getUserId();
+    if (userId != '') {
+      SpUtil.putObject('${Constant.teacher}_$userId', teacher!.toJson());
     }
-    _teacher = _selectedTeacher;
-    _selectedTeacher = null;
+    _teacher = teacher;
+    if (_selectedTeacher != null) {
+      _selectedTeacher = null;
+    }
     notifyListeners();
   }
 }

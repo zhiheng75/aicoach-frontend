@@ -34,15 +34,14 @@ class ChatInput extends StatefulWidget {
 }
 
 class _ChatInputState extends State<ChatInput> {
-  // 是否可对话
-  bool canConversate = false;
-
   /** 输入相关参数 */
   // 输入方式：audio-语音 text-文字
   String inputType = 'audio';
   // 是否输入中
   bool isInputting = false;
   final TextEditingController textEditingController = TextEditingController();
+  // 是否允许录音权限
+  bool hasRecordPermission = true;
 
   /** 录音相关参数 */
   FlutterSoundRecorder? recorder;
@@ -80,70 +79,35 @@ class _ChatInputState extends State<ChatInput> {
   Message? message;
 
 
-  void init() {
+  void init() async {
     provider = Provider.of<ConversationProvider>(context, listen: false);
+    bool granted = await checkPermission();
+    if (!granted) {
+      hasRecordPermission = false;
+      setState(() {});
+    }
     // 初始化录音
-    initRecorder();
+    await initRecorder();
     // 初始化播放器
-    initPlayer();
+    await initPlayer();
     // 初始化AI
     initAI();
     // 初始化倒计时
     intCutdown();
   }
 
-  Future<void> intCutdown() async {
-    // String deviceId = await Device.getDeviceId();
-    String deviceId = Provider.of<DeviceProvider>(context, listen: false).deviceId;
-    DioUtils.instance.requestNetwork(
-      Method.get,
-      HttpApi.permission,
-      queryParameters: {
-        'device_id': deviceId,
-      },
-      onSuccess: (result) {
-        if (result == null) {
-          return;
-        }
-        result = result as Map<String, dynamic>;
-        if (result['data'] == null) {
-          return;
-        }
-        int leftTime = result['data']['left_time'] ?? 0;
-        if (leftTime > 0) {
-          provider!.setAvailableTime(leftTime);
-          provider!.setCutdownState(1);
-          canConversate = true;
-          // 避免刚好在接受欢迎语期间请求成功
-          if (isTextReturnComplete && aiSpeechList.isEmpty && playerState == 0 && inputType == 'audio' && !isInputting) {
-            startRecord();
-          }
-        }
-      },
-      onError: (code, msg) {
-        if (kDebugMode) {
-          print('获取倒计时：code=$code msg=$msg');
-        }
-      },
-    );
+  void intCutdown() {
+    provider!.setCutdownState(1);
   }
 
-  void initRecorder() async {
-    bool granted = await checkPermission();
-    if (!granted) {
-      return;
-    }
+  Future<void> initRecorder() async {
     recorder = await FlutterSoundRecorder(
       logLevel: Level.nothing,
     ).openRecorder();
-    if (recorder == null) {
-      Toast.show("语音初始化错误", duration: 1000);
-      return;
-    }
     addRecordStream();
   }
 
-  void initPlayer() async {
+  Future<void> initPlayer() async {
     player = await FlutterSoundPlayer(
       logLevel: Level.nothing,
     ).openPlayer();
@@ -182,13 +146,13 @@ class _ChatInputState extends State<ChatInput> {
   }
 
   void startRecord() async {
-    if (!canConversate) {
+    if (isInputting && recordState == 1) {
+      return;
+    }
+    if (!hasRecordPermission) {
       return;
     }
     if (recorder == null) {
-      return;
-    }
-    if (isInputting && recordState == 1) {
       return;
     }
 
@@ -701,6 +665,17 @@ class _ChatInputState extends State<ChatInput> {
         color: Colors.white,
       ),
     );
+
+    if (!hasRecordPermission) {
+      input = const Text(
+        '未授权录音，语音不可用',
+        style: TextStyle(
+          fontSize: 13.0,
+          color: Colors.white,
+        ),
+      );
+    }
+
     if (isInputting) {
       if (inputType == 'audio') {
         micIcon = Image.asset(
@@ -715,7 +690,8 @@ class _ChatInputState extends State<ChatInput> {
           fit: BoxFit.fitWidth,
         );
       }
-    } else {
+    }
+    if (isAnswering) {
       input = const Text(
         '老师正在回答中...',
         style: TextStyle(

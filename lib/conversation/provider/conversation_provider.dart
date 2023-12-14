@@ -10,6 +10,7 @@ import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../net/http_api.dart';
 import '../utils/xunfei_util.dart';
 
 /** 讯飞评测 start */
@@ -202,9 +203,31 @@ class ConversationProvider extends ChangeNotifier {
   int get usageTime => _usageTime;
   int get cutdownState => _cutdownState;
 
-  void setAvailableTime(int time) {
-    _availableTime = time;
-    notifyListeners();
+  // 获取剩余体验时间
+  Future<int> getAvailableTime() async {
+    _availableTime = 0;
+    String deviceId = await Device.getDeviceId();
+    await DioUtils.instance.requestNetwork(
+      Method.get,
+      HttpApi.permission,
+      queryParameters: {
+        'device_id': deviceId,
+      },
+      onSuccess: (result) {
+        if (result == null) {
+          return;
+        }
+        result = result as Map<String, dynamic>;
+        if (result['data'] == null) {
+          return;
+        }
+        int leftTime = result['data']['left_time'] ?? 0;
+        if (leftTime > 0) {
+          _availableTime = leftTime;
+        }
+      },
+    );
+    return _availableTime;
   }
 
   void decreaseTime() {
@@ -248,10 +271,8 @@ class ConversationProvider extends ChangeNotifier {
   }
 
   void clear() {
-    _sessionId = '';
     _messageList = [];
     _showTranslation = false;
-    _availableTime = 0;
     _usageTime = 0;
     _cutdownState = -1;
   }

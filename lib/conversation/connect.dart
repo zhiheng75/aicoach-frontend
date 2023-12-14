@@ -1,6 +1,7 @@
 // ignore_for_file: argument_type_not_assignable_to_error_handler, must_be_immutable
 
 import 'package:Bubble/constant/constant.dart';
+import 'package:Bubble/conversation/provider/conversation_provider.dart';
 import 'package:Bubble/setting/provider/device_provider.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
@@ -45,15 +46,14 @@ class _ConnectState extends State<ConnectPage> {
       'CONVERSATION',
       Uri.parse(url),
       onSuccess: () {
+        ConversationProvider provider = Provider.of<ConversationProvider>(context, listen: false);
+        provider.sessionId = sessionId;
+        provider.clear();
         Future.delayed(const Duration(seconds: 1), () {
           NavigatorUtils.push(
             context,
             ConversationRouter.conversationPage,
             replace: true,
-            arguments: {
-              'teacher': widget.teacher,
-              'sessionId': sessionId,
-            },
           );
         });
       },

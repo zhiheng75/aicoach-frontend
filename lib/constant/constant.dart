@@ -26,4 +26,6 @@ class Constant {
 
   static const String teacher = 'teacher';
 
+  static const String isFirstUseApp = 'is_first_use_app';
+
 }
