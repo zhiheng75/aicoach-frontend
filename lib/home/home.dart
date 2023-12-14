@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage>
   void getDefaultTeacher() async {
     HomeTeacherProvider provider = Provider.of<HomeTeacherProvider>(context, listen: false);
     String userId = await provider.getUserId();
-    Map<dynamic, dynamic>? value = SpUtil.getObject(userId);
+    Map<dynamic, dynamic>? value = SpUtil.getObject('${Constant.teacher}_$userId');
     if (value != null) {
       TeachListEntity teacher = TeachListEntity.fromJson(value as Map<String, dynamic>);
       provider.updateTeacher(teacher);

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
+
+
 class Constant {
 
   /// App运行在Release环境时，inProduction为true；当App运行在Debug和Profile环境时，inProduction为false
@@ -28,6 +30,10 @@ class Constant {
   static const String teacher = 'teacher';
 
   static const String isFirstUseApp = 'is_first_use_app';
+
+  static const String avatarParams = 'avatar-params';
+
+  static const String avatarModel = 'avatar-model';
 
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
