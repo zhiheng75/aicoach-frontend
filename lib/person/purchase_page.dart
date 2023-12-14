@@ -1,4 +1,5 @@
 
+import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/person/presneter/purchase_presenter.dart';
 import 'package:Bubble/person/presneter/purchase_view.dart';
@@ -58,14 +59,16 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
             const LoadAssetImage("purchase_bg_img"),
             Positioned(
               top: 35,
-              child: IconButton(
-                onPressed: () {
+              left: 15,
+              child:
+              IconButton(
+                onPressed: () async {
                   NavigatorUtils.goBack(context);
                 },
-                padding: const EdgeInsets.all(12.0),
                 icon: Image.asset(
-                  "assets/images/ic_back_black.png",
-                  color: Colors.white,
+                  'assets/images/ic_back_white.png',
+                  width: 10,
+                  height: 16,
                 ),
               ),
             ),
@@ -384,6 +387,11 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
   void getWXPayMsg(WxPayDataData bean) {
 
 
+  }
+
+  @override
+  void paySuccess() {
+    NavigatorUtils.push(context, HomeRouter.homePage,clearStack: true);
   }
 
 }

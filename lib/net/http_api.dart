@@ -56,5 +56,6 @@ class HttpApi{
   //获取对话音频
   static const String speechList = 'speech_list';
 
-  static const String upload = 'uuc/upload-inco';
+  //上传图片
+  static const String upload = 'uploadfile';
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 class Constant {
@@ -27,5 +28,7 @@ class Constant {
   static const String teacher = 'teacher';
 
   static const String isFirstUseApp = 'is_first_use_app';
+
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
 }

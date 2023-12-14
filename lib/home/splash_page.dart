@@ -84,7 +84,7 @@ class _SplashPageState extends State<SplashPage> {
             heightFactor: 0.3,
             widthFactor: 0.6,
             leftFactor: 0.2,
-            bottomFactor: 0.5,
+            bottomFactor: 0.4,
             child: Column(
               children: [
                 LoadAssetImage(

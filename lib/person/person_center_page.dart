@@ -52,36 +52,36 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
               children: [
                 const LoadAssetImage("personal_center_bg"),
                 Container(
-                  margin: const EdgeInsets.only(top: 35),
+                  padding: const EdgeInsets.only(top: 48,left: 15,right: 15),
                   child: Column(
                     children: [
                         Row(
                           children: [
                             IconButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 NavigatorUtils.goBack(context);
-                              },
-                              padding: const EdgeInsets.all(12.0),
-                              icon: Image.asset(
-                                "assets/images/ic_back_black.png",
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Expanded(child: Gaps.empty),
+                              }, icon: Image.asset(
+                              'assets/images/ic_back_white.png',
+                          width: 10,
+                          height: 16,
+                        ),
+                      ),
+                      const Expanded(child: Gaps.empty),
                             IconButton(
                               onPressed: () {
                                 NavigatorUtils.push(context, SettingRouter.settingPage);
                               },
-                              padding: const EdgeInsets.all(12.0),
                               icon: Image.asset(
                                 "assets/images/setting_img.png",
+                                width: 17,
+                                height: 18,
                                 color: Colors.white,
                               ),
                             ),
                           ],
                         ),
                       Container(
-                        margin:const EdgeInsets.only(left: 18,right: 18,top: 15),
+                        margin:const EdgeInsets.only(left: 18,right: 18,top: 17),
                         child: headerItem(),
                       ),
                     ],
@@ -89,7 +89,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                 ),
 
                 Container(
-                  margin: const EdgeInsets.only(top: 200),
+                  margin: const EdgeInsets.only(top: 220),
                   width: ScreenUtil.getScreenW(context),
                   height: ScreenUtil.getScreenH(context),
                   decoration: const BoxDecoration(
@@ -102,7 +102,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                 Container(
                   width: ScreenUtil.getScreenW(context),
                   height: ScreenUtil.getScreenH(context),
-                  margin: const EdgeInsets.only(top: 200),
+                  margin: const EdgeInsets.only(top: 220),
                   padding: const EdgeInsets.only(top: Dimens.gap_dp23,
                     left: Dimens.gap_dp28,
                     right: Dimens.gap_dp28,),
@@ -115,7 +115,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                             Colours.color_3053C5FF,
                             Colours.color_30E0AEFF,
                           ],
-                          stops: [0.0,0.2,1]
+                          stops: [0.0,0.5,1]
                       ),
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(20),
                           topRight: Radius.circular(20)),

@@ -17,19 +17,19 @@ import '../../widgets/load_image.dart';
 
 /// 选择跳转哪个页面
 class MainPageSelectMenu extends StatefulWidget {
-
   final Function _press;
-  const MainPageSelectMenu(this._press,{
+
+  const MainPageSelectMenu(
+    this._press, {
     super.key,
   });
-
 
   @override
   State<MainPageSelectMenu> createState() => _MainPageSelectMenuState();
 }
 
-class _MainPageSelectMenuState extends State<MainPageSelectMenu> with SingleTickerProviderStateMixin {
-
+class _MainPageSelectMenuState extends State<MainPageSelectMenu>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
@@ -53,7 +53,6 @@ class _MainPageSelectMenuState extends State<MainPageSelectMenu> with SingleTick
 
   @override
   Widget build(BuildContext context) {
-
     return AnimatedBuilder(
       animation: _scaleAnimation,
       builder: (_, child) {
@@ -67,55 +66,77 @@ class _MainPageSelectMenuState extends State<MainPageSelectMenu> with SingleTick
     );
   }
 
-  Widget moreBtnWidget(){
+  Widget moreBtnWidget() {
     return Container(
-      padding: const EdgeInsets.only(left: 6,right: 6,top: 6,bottom: 6),
+      padding: const EdgeInsets.only(left: 6, right: 6, top: 6, ),
       decoration: BoxDecoration(
           image: DecorationImage(
-              image: ImageUtils.getAssetImage(
-                  "more_btn_bg"),
-              fit: BoxFit.fill)
-      ),
-      child:Column(
+              image: ImageUtils.getAssetImage("more_btn_bg"),
+              fit: BoxFit.fill)),
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: (){
+            onTap: () {
               NavigatorUtils.goBack(context);
             },
-            child:const LoadAssetImage("up_more_img",width: 26,height: 26,),
+            child: Container(
+              padding:const EdgeInsets.only(top: 2,bottom: 10),
+              child: const LoadAssetImage(
+                "up_more_img",
+                width: 26,
+                height: 26,
+              ),
+            ),
           ),
-          Gaps.vGap10,
-          GestureDetector(
-            onTap: (){
-              NavigatorUtils.push(context, ChangeRoleRouter.changeRole);
-            },
-            child:const LoadAssetImage("change_role_img",width: 20,height: 20,),
-          ),
-          Gaps.vGap10,
-          GestureDetector(
-            onTap: (){
-              // NavigatorUtils.push(context, PersonalRouter.personalPurchase);
-              LoginManager.checkLogin(context, (){
-                NavigatorUtils.push(context, PersonalRouter.personalStudyReport,replace: true);
-              });
-            },
-            child:const LoadAssetImage("study_center_img",width: 20,height: 20,),
-          ),
-          Gaps.vGap10,
           GestureDetector(
             onTap: () {
-
-              LoginManager.checkLogin(context, (){
-                NavigatorUtils.push(context, PersonalRouter.personalCenter,replace: true);
-              });
-
+              NavigatorUtils.push(context, ChangeRoleRouter.changeRole);
             },
-            child:const LoadAssetImage("personal_info_more_img",width: 20,height: 20,),
+            child: Container(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: const LoadAssetImage(
+                "change_role_img",
+                width: 21,
+                height: 20,
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              // NavigatorUtils.push(context, PersonalRouter.personalPurchase);
+              LoginManager.checkLogin(context, () {
+                NavigatorUtils.push(context, PersonalRouter.personalStudyReport,
+                    replace: true);
+              });
+            },
+            child: Container(
+              padding: const EdgeInsets.only(bottom: 10,top: 5),
+              child: const LoadAssetImage(
+                "study_center_img",
+                width: 20,
+                height: 18,
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              LoginManager.checkLogin(context, () {
+                NavigatorUtils.push(context, PersonalRouter.personalCenter,
+                    replace: true);
+              });
+            },
+            child: Container(
+              padding: const EdgeInsets.only(bottom: 10,top: 5),
+              child: const LoadAssetImage(
+                "personal_info_more_img",
+                width: 20,
+                height: 20,
+              ),
+            ),
           ),
         ],
       ),
     );
   }
-
 }

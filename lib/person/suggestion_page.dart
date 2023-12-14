@@ -1,17 +1,23 @@
 
+import 'dart:io';
+
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/person/presneter/suggestion_presenter.dart';
 import 'package:Bubble/person/view/suggestion_view.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/toast_utils.dart';
+import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../res/colors.dart';
 import '../res/dimens.dart';
+import '../util/EventBus.dart';
+import '../widgets/jh_asset_picker.dart';
 import '../widgets/my_app_bar.dart';
+import 'entity/send_img_result_entity.dart';
 
 class SuggestionPage extends StatefulWidget {
   const SuggestionPage({Key? key}) : super(key: key);
@@ -25,7 +31,6 @@ class _SuggestionPageState extends State<SuggestionPage>
         BasePageMixin<SuggestionPage, SuggestionPresenter>,
         AutomaticKeepAliveClientMixin<SuggestionPage>
     implements SuggestionView {
-
 
   late SuggestionPresenter _presenter;
 
@@ -45,10 +50,10 @@ class _SuggestionPageState extends State<SuggestionPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return AnnotatedRegion(
         value: SystemUiOverlayStyle.light,
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
           body: Container(
             alignment: Alignment.centerLeft,
             decoration: const BoxDecoration(
@@ -87,8 +92,8 @@ class _SuggestionPageState extends State<SuggestionPage>
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20)),
                         color: Colors.white),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child:
+                    MyScrollView(
                       children: [
                         const Text(
                           "遇到的问题和建议写这里吧",
@@ -102,7 +107,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                           padding: const EdgeInsets.all(13),
                           decoration: const BoxDecoration(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(13)),
+                              BorderRadius.all(Radius.circular(13)),
                               color: Color(0x4D5B8BD2)),
                           child: Semantics(
                             multiline: true,
@@ -118,14 +123,53 @@ class _SuggestionPageState extends State<SuggestionPage>
                               inputFormatters: _inputFormatters,
                               decoration: const InputDecoration(
                                 hintText:
-                                    "和智能语音老师用英语交流真是非常不错的体验！希望开发出更好用的英语学习APP。",
+                                "和智能语音老师用英语交流真是非常不错的体验！希望开发出更好用的英语学习APP。",
                                 hintStyle:
-                                    TextStyle(color: Colours.color_B7BFD9),
+                                TextStyle(color: Colours.color_B7BFD9),
                                 border: InputBorder.none,
                               ),
                             ),
                           ),
                         ),
+
+                        Gaps.vGap33,
+                        const Text("可上传图片说明（选填）",style: TextStyle(fontSize: 15,color: Colours.color_111B44),),
+                        Gaps.vGap16,
+                        Container(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: JhAssetPicker(
+                            assetType: AssetType.image,
+                            maxAssets: 4-_presenter.imgAmount,
+                            bgColor: Colors.white,
+                            callBack: (assetEntityList) async {
+                              // print('assetEntityList-------------');
+                              // print(assetEntityList);
+                              _presenter.selectedAssets.addAll(assetEntityList);
+                              if (assetEntityList.isNotEmpty) {
+                                List<File> mlist = [];
+                                for(int i = 0;i<assetEntityList.length;i++){
+                                  var asset = assetEntityList[i];
+                                  var f = await asset.file;
+                                  if(f!=null){
+                                    mlist.add(f);
+                                  }
+                                }
+                                _presenter.uploadImg(mlist);
+                                // var asset = assetEntityList[0];
+                                // print(await asset.file);
+                                // print(await asset.originFile);
+                                // var asd = await asset.file;
+                                // if(asd!=null){
+                                //   _presenter.uploadImg(asd);
+                                // }
+
+                              }
+                              // print('assetEntityList-------------');
+
+                            },
+                          ),
+                        ),
+
                         Gaps.vGap20,
                         const Text(
                           "方便联系您的方式",
@@ -134,7 +178,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                               fontSize: 15,
                               fontWeight: FontWeight.bold),
                         ),
-                        Gaps.vGap20,
+                        Gaps.vGap16,
                         Container(
                           width: ScreenUtil.getScreenW(context),
                           padding: const EdgeInsets.only(
@@ -142,7 +186,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                           ),
                           decoration: const BoxDecoration(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(13)),
+                              BorderRadius.all(Radius.circular(13)),
                               color: Color(0x4D5B8BD2)),
                           child: TextField(
                             cursorColor: Colors.white,
@@ -158,7 +202,8 @@ class _SuggestionPageState extends State<SuggestionPage>
                             ),
                           ),
                         ),
-                        const Expanded(child: Gaps.empty),
+                        // const Expanded(child: Gaps.empty),
+                        Gaps.vGap32,
                         Container(
                           alignment: Alignment.center,
                           child: const Text(
@@ -187,7 +232,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                             height: 45,
                             decoration: const BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(100)),
+                                BorderRadius.all(Radius.circular(100)),
                                 gradient: LinearGradient(
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
@@ -205,7 +250,8 @@ class _SuggestionPageState extends State<SuggestionPage>
                           ),
                         ),
                       ],
-                    ),
+                    )
+                    ,
                   ),
                 )
               ],
@@ -232,5 +278,33 @@ class _SuggestionPageState extends State<SuggestionPage>
   void sendSuccess() {
     Toast.show("反馈成功");
     NavigatorUtils.goBack(context);
+  }
+
+  @override
+  void sendImgFail() {
+    _presenter.sendImgSuccess = true;
+    setState(() {
+
+    });
+  }
+
+
+
+  @override
+  void sendImgSuccess(List<SendImgResultDataData> mList) {
+    _presenter.sendImgSuccess = false;
+
+    for(int i = 0;i<mList.length;i++){
+      _presenter.suggestImgStr = "${mList[i].filename},";
+    }
+    _presenter.refreshAssets.clear();
+    if(_presenter.selectedAssets.length>4){
+      for(int i = _presenter.selectedAssets.length-1;i>_presenter.selectedAssets.length-5;i--){
+        _presenter.refreshAssets.add(_presenter.selectedAssets[i]);
+      }
+    } else {
+      _presenter.refreshAssets.addAll(_presenter.selectedAssets);
+    }
+    bus.emit('refreshSelectImg',_presenter.refreshAssets);
   }
 }

@@ -39,11 +39,11 @@ class _TeacherWidgetState extends State<TeacherWidget> {
       },
       child: Container(
         height: 100,
-        padding:const EdgeInsets.only(left: 10,right: 10,top: 15,bottom: 10),
+        padding: isSelected ? const EdgeInsets.only(left: 9,right: 9,top: 15,bottom: 10) : const EdgeInsets.only(left: 10,right: 10,top: 15,bottom: 10),
         decoration: BoxDecoration(
-            borderRadius:const BorderRadius.all(Radius.circular(10)),
+            borderRadius:const BorderRadius.all(Radius.circular(13)),
             border: Border.all(
-                width: isSelected ? 2 : 1,
+                width: isSelected ? 2 : 0.3,
                 color:  isSelected ? Colours.color_00E6D0 : Colours.color_5B8BD2
             ),
             color: isSelected ? Colours.hex2color('#DEFFFC') : Colors.transparent
