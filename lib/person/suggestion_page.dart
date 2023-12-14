@@ -167,8 +167,9 @@ class _SuggestionPageState extends State<SuggestionPage>
                               // print('assetEntityList-------------');
 
                             },
-                            deleteCallBack: (index){
+                            deleteCallBack: (index) async{
                               _presenter.refreshAssets.removeAt(index as int);
+                              bus.emit('refreshSelectImg',_presenter.refreshAssets);
                             },
                           ),
                         ),
@@ -227,7 +228,6 @@ class _SuggestionPageState extends State<SuggestionPage>
                         GestureDetector(
                           onTap: () {
                             _presenter.pushSuggest(_controller.text,_contactController.text);
-
                             // Toast.show(msg)
                           },
                           child: Container(

@@ -61,7 +61,7 @@ class JhAssetPicker extends StatefulWidget {
   final Color bgColor; // 背景色
   final Function(List<AssetEntity> assetEntityList)? callBack; // 选择回调
 
-  final Function(List<AssetEntity> assetEntityList)? deleteCallBack; // 删除回调
+  final Function(int index)? deleteCallBack; // 删除回调
 
   @override
   State<JhAssetPicker> createState() => _JhAssetPickerState();
