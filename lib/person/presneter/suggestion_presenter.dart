@@ -17,14 +17,13 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView>{
 
   bool sendImgSuccess = false;
 
-  int imgAmount=0;
+
 
   String suggestImgStr = "";
 
   List<SendImgResultDataData> allSendList = [];//需要发送的集合
   List<SendImgResultDataData> allImgList = [];//所以上传过的集合
 
-  Map<int,String> mm = {};
 
   List<AssetEntity> selectedAssets = [];//选的照片（本地）
 
@@ -88,7 +87,7 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView>{
         if (data != null && data.code == 200) {
           // imgPath = data ?? '';
           Toast.show("上传成功");
-          imgAmount += data.data.length;
+
           allImgList.addAll(data.data);
           allSendList.clear();
 

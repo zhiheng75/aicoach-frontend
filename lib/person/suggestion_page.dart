@@ -139,7 +139,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                           padding: const EdgeInsets.only(left: 5),
                           child: JhAssetPicker(
                             assetType: AssetType.image,
-                            maxAssets: 4-_presenter.imgAmount,
+                            maxAssets: 4,
                             bgColor: Colors.white,
                             callBack: (assetEntityList) async {
                               // print('assetEntityList-------------');
@@ -166,6 +166,9 @@ class _SuggestionPageState extends State<SuggestionPage>
                               }
                               // print('assetEntityList-------------');
 
+                            },
+                            deleteCallBack: (index){
+                              _presenter.refreshAssets.removeAt(index as int);
                             },
                           ),
                         ),

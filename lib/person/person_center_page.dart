@@ -167,7 +167,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                                       children: <TextSpan>[
                                         const TextSpan(text: "会员权益",style:  TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold)),
 
-                                        TextSpan(text: "  $studyRank",style: const TextStyle(fontSize: 12,color: Colours.color_00DBAF)),
+                                        TextSpan(text: "  --年--月--日",style: const TextStyle(fontSize: 12,color: Colours.color_00DBAF)),
                                       ]
                                   )),
                                  const Text("专属口语教练,科学测评,个性化定制\n24小时不限场景 ",style: TextStyle(color: Colors.white,fontSize: 11),),
