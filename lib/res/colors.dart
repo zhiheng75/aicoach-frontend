@@ -84,6 +84,7 @@ class Colours {
   static const Color color_c979ff = Color(0xFFC979FF);
   static const Color color_925DFF = Color(0xFF925DFF);
   static const Color color_546092 = Color(0xFF546092);
+  static const Color color_4ED7FF = Color(0xFF4ED7FF);
 
   static const Color color_00FFB4 = Color(0xb300FFB4);
   static const Color color_0E90FF = Color(0xb30E90FF);
@@ -124,6 +125,7 @@ class Colours {
   static const Color color_BABFD6 = Color(0xFFBABFD6);
   static const Color color_B7BFD9 = Color(0xFFB7BFD9);
   static const Color color_2F468A = Color(0xFF2F468A);
+  static const Color color_3A74E6 = Color(0xFF3A74E6);
 
   static Color hex2color(String hex) {
     if (hex.length != 7) {

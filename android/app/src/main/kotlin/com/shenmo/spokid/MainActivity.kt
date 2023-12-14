@@ -126,7 +126,7 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
                         val payRunnable = Runnable {
                             val alipay = PayTask(this@MainActivity)
                             val result = alipay.payV2(prepay_url, true)
-                            Log.i("msp", result.toString())
+//                            Log.i("msp", result.toString())
                             val msg = Message()
                             msg.what = SDK_PAY_FLAG
                             msg.obj = result
@@ -148,10 +148,10 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
             JVerificationInterface.loginAuth(
                 this
             ) { code, token, operator ->
-                Log.e(
-                    "MainActivity.TAG",
-                    "onResult: code=$code,token=$token,operator=$operator"
-                )
+//                Log.e(
+//                    "MainActivity.TAG",
+//                    "onResult: code=$code,token=$token,operator=$operator"
+//                )
                 val errorMsg = "operator=$operator,code=$code\ncontent=$token"
                 runOnUiThread {
 //                    mProgressbar.setVisibility(View.GONE)

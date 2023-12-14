@@ -74,8 +74,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                         new WeChatLoginResultListener() {
                             @Override
                             public void onSuccess(@Nullable String code) {
-                                Toast.makeText(WXEntryActivity.this,"成功的值=="+code,
-                                        Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(WXEntryActivity.this,"成功的值=="+code,
+//                                        Toast.LENGTH_SHORT).show();
                                 if (code!=null&&!code.isEmpty()){
                                     EventBus.getDefault().post(new WechatBean(code));
                                 }else {

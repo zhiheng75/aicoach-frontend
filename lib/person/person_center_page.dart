@@ -5,7 +5,6 @@ import 'package:Bubble/person/presneter/person_center_presenter.dart';
 import 'package:Bubble/person/view/person_center_view.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/setting/setting_router.dart';
-import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +153,51 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                         onTap: (){
                           NavigatorUtils.push(context, PersonalRouter.personalPurchase);
                         },
-                        child: const LoadAssetImage("vip_img",fit: BoxFit.cover,),
+                        child:Stack(
+                          children: [
+                            const LoadAssetImage("purchase_img",fit: BoxFit.fill,height: 210),
+                            Container(
+                              margin:const EdgeInsets.only(left: 30,top: 35),
+                              child:Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  RichText(text:
+                                  TextSpan(
+                                      children: <TextSpan>[
+                                        const TextSpan(text: "会员权益",style:  TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold)),
+
+                                        TextSpan(text: "  $studyRank",style: const TextStyle(fontSize: 12,color: Colours.color_00DBAF)),
+                                      ]
+                                  )),
+                                 const Text("专属口语教练,科学测评,个性化定制\n24小时不限场景 ",style: TextStyle(color: Colors.white,fontSize: 11),),
+                                  Container(
+                                    width: 106,
+                                    margin: const EdgeInsets.only(top: 8),
+                                    padding: const EdgeInsets.only(left: 18,top: 3,bottom: 3),
+                                    decoration: BoxDecoration(
+                                      borderRadius:const BorderRadius.all(Radius.circular(100)),
+                                      border: Border.all(
+                                        color: Colors.white,
+                                      ),
+                                      color: Colors.white,
+                                    ),
+                                    child: const Row(
+                                      children: [
+                                         LoadAssetImage("dimond_img",width: 15,height: 14,),
+                                        Gaps.hGap4,
+                                        Text("立即续费",style: TextStyle(fontSize: 12,color: Colours.color_3A74E6,fontWeight: FontWeight.bold),)
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ) ,
+                            )
+
+
+                          ],
+                        )
+
                       ),
 
                       GestureDetector(
@@ -204,6 +247,8 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
         Gaps.hGap16,
         Expanded(
             child:Column(
+              mainAxisAlignment:MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
                 GestureDetector(
@@ -213,7 +258,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                   child: Row(
                     mainAxisAlignment:MainAxisAlignment.start,
                     children: [
-                      Text(_userName,style: TextStyle(fontSize: 17,color: Colors.white),),
+                      Text(_userName,style: const TextStyle(fontSize: 17,color: Colors.white),),
                       Gaps.hGap4,
                       const Visibility(
                         visible: false,
@@ -228,7 +273,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                        TextSpan(text: activePercent,style:const  TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
                       const TextSpan(text: ",前边还有",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
                        TextSpan(text: activeRank,style:const TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
-                      const TextSpan(text: "位保持每天学习，加油赶超~",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
+                      const TextSpan(text: "位\n保持每天学习，加油赶超~",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
                     ]
                 ))
 

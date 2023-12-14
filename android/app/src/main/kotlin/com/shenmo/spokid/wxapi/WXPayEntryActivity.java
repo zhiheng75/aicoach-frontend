@@ -31,7 +31,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onReq(BaseReq baseReq) {
-        LogUtil.INSTANCE.d("das");
+
     }
 
     @Override

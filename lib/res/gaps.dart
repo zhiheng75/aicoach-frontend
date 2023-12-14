@@ -18,22 +18,30 @@ class Gaps {
   static const Widget hGap32 = SizedBox(width: Dimens.gap_dp32);
   
   /// 垂直间隔
+  static const Widget vGap2 = SizedBox(height: Dimens.gap_dp2);
+  static const Widget vGap3 = SizedBox(height: Dimens.gap_dp3);
   static const Widget vGap4 = SizedBox(height: Dimens.gap_dp4);
   static const Widget vGap5 = SizedBox(height: Dimens.gap_dp5);
+  static const Widget vGap7 = SizedBox(height: Dimens.gap_dp7);
   static const Widget vGap8 = SizedBox(height: Dimens.gap_dp8);
   static const Widget vGap10 = SizedBox(height: Dimens.gap_dp10);
+  static const Widget vGap11 = SizedBox(height: Dimens.gap_dp11);
   static const Widget vGap12 = SizedBox(height: Dimens.gap_dp12);
   static const Widget vGap13 = SizedBox(height: Dimens.gap_dp13);
   static const Widget vGap15 = SizedBox(height: Dimens.gap_dp15);
   static const Widget vGap16 = SizedBox(height: Dimens.gap_dp16);
+  static const Widget vGap18 = SizedBox(height: Dimens.gap_dp18);
   static const Widget vGap20 = SizedBox(height: Dimens.gap_dp20);
   static const Widget vGap24 = SizedBox(height: Dimens.gap_dp24);
+  static const Widget vGap26 = SizedBox(height: Dimens.gap_dp26);
   static const Widget vGap30 = SizedBox(height: Dimens.gap_dp30);
   static const Widget vGap32 = SizedBox(height: Dimens.gap_dp32);
   static const Widget vGap33 = SizedBox(height: Dimens.gap_dp33);
   static const Widget vGap40 = SizedBox(height: Dimens.gap_dp40);
   static const Widget vGap50 = SizedBox(height: Dimens.gap_dp50);
   static const Widget vGap60 = SizedBox(height: Dimens.gap_dp60);
+  static const Widget vGap80 = SizedBox(height: Dimens.gap_dp80);
+  static const Widget vGap85 = SizedBox(height: Dimens.gap_dp85);
   static const Widget vGap100 = SizedBox(height: Dimens.gap_dp100);
 
 //  static Widget line = const SizedBox(

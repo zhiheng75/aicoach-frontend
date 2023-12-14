@@ -10,11 +10,11 @@
 		</data>
 		<key>flutter_assets/AssetManifest.bin</key>
 		<data>
-		O4J84W0ZLHdCoWMLvEx0C1Nx7PM=
+		Lc3m4Wsi8jl1t72vA117hrbkBm0=
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		yerxjWXlWFcEMKrK1fj0wAlqcD4=
+		tQt14UBSoo15HPITMazuwQB6+Nc=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -236,6 +236,10 @@
 		<data>
 		DvB6osh4Ic/7DH3lRWJHPxRHh9Q=
 		</data>
+		<key>flutter_assets/assets/images/camera_img.png</key>
+		<data>
+		nlbKr/iRpAmUSTfPAmTk62IRHFI=
+		</data>
 		<key>flutter_assets/assets/images/cancel_bg1.png</key>
 		<data>
 		qmsV7Z4srmLWKkVaZ9KfaIyfyD0=
@@ -364,6 +368,10 @@
 		<data>
 		0doqLJujtoHkTbutTvSXHGaCPtc=
 		</data>
+		<key>flutter_assets/assets/images/login_logo_img.png</key>
+		<data>
+		xqTiMBMbV4ryNO0acwmNWcK70JA=
+		</data>
 		<key>flutter_assets/assets/images/login_out_bg_img.png</key>
 		<data>
 		TT+hzPSjtx3qoGtZ1Zhfatn9eg4=
@@ -435,6 +443,14 @@
 		<key>flutter_assets/assets/images/role_bg.png</key>
 		<data>
 		76sP4p8SXa8s4710GbLpNP7PS3o=
+		</data>
+		<key>flutter_assets/assets/images/selectPhoto_add.png</key>
+		<data>
+		lPpRUpPKrQS513YSpx/ReXWwMNI=
+		</data>
+		<key>flutter_assets/assets/images/selectPhoto_close.png</key>
+		<data>
+		DlG78AZo2vJHAe/7n6FJoBOP2Co=
 		</data>
 		<key>flutter_assets/assets/images/select_img.png</key>
 		<data>
@@ -574,7 +590,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		8eyIlvRKJmiOZhgUUVDYFpQwJ3U=
+		Tke0GVYpprvbnoEXTEMWNSyrsPM=
 		</data>
 		<key>flutter_assets/packages/flutter_sound_web/howler/howler.js</key>
 		<data>
@@ -623,14 +639,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			5ryOf5ks4DN7pWvjGZ3qQ6ZnLS/yPkg0Jj5dvtR8piQ=
+			//LhZZp9hQm35MusHz6LztbtEjSRRA0G2NALWJs4WYo=
 			</data>
 		</dict>
 		<key>flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			igCbAFd8NVANGUUszxe+E2luqDUv6BW31RPMZwC1xus=
+			pS+DQpI1VJMfLCQbBkdeuWslHmD9MlHWx6e+/brDHvE=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -1018,6 +1034,13 @@
 			PiVDAvjE3F6mz7hN6F1HzUtwYWl2gx/ED9K/TAnL4vo=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/camera_img.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			jjwqchwZa/kePIIVBJswIfJs8DgEAaiq6rpSO/3FJVY=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/cancel_bg1.png</key>
 		<dict>
 			<key>hash2</key>
@@ -1242,6 +1265,13 @@
 			pgis4826Sx6/ZrQIGMkus9X/1oTGBDelm8Y1kgYANrc=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/login_logo_img.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			cVtMCfk+B3CCKJiv1Y3bNqs0W3Y/bSpffB3YKPA7xNs=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/login_out_bg_img.png</key>
 		<dict>
 			<key>hash2</key>
@@ -1366,6 +1396,20 @@
 			<key>hash2</key>
 			<data>
 			ufTWwUjO+4yhpcEoyiRkK96mIjU4aUMI2Po5nrJ7aVQ=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/selectPhoto_add.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			27P3bBL5SGyGSAPOcqNTgpkccRGaWyP5CJbOGQCIzy8=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/selectPhoto_close.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			2w7wY+E1vbcXceBaa8WBuKNTjgZCrJoIcTFROMN0Ce8=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/select_img.png</key>
@@ -1610,7 +1654,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			0Ubd21Gf4w/L0XMuOi+uNT5z9SsTU+uX7ShvN6tmi8M=
+			uqRnwDD9rzppbGRczIY3phwIPyjyIDzllPvJx+hdH7Y=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/flutter_sound_web/howler/howler.js</key>

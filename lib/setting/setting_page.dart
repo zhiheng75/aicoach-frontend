@@ -130,13 +130,13 @@ class _SettingPageState extends State<SettingPage>
                           color: Colours.color_5B8BD2,
                         ),
                         Gaps.vGap20,
-                        bindState(2,"QQ",false),
-                        Gaps.vGap20,
-                        const Divider(
-                          height: Dimens.gap_dp1,
-                          color: Colours.color_5B8BD2,
-                        ),
-                        Gaps.vGap20,
+                        // bindState(2,"QQ",false),
+                        // Gaps.vGap20,
+                        // const Divider(
+                        //   height: Dimens.gap_dp1,
+                        //   color: Colours.color_5B8BD2,
+                        // ),
+                        // Gaps.vGap20,
                         GestureDetector(
                           onTap: (){
                             _settingPresenter.getUpdate(true);

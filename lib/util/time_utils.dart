@@ -32,7 +32,7 @@ class TimeUtils {
 
   static String formatedMinute(int secTime) {
     String getParsedTime(String time) {
-      if (time.length <= 1) return "0$time";
+      if (time.length <= 1) return time;
       return time;
     }
 

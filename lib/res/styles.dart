@@ -88,4 +88,9 @@ class TextStyles {
       fontSize: Dimens.font_sp18,
       color: Colors.white
   );
+
+  static const TextStyle text20_white = TextStyle(
+      fontSize: Dimens.font_sp20,
+      color: Colors.white
+  );
 }

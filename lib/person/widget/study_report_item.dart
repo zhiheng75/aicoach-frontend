@@ -72,12 +72,14 @@ class _StudyReportWidgetState extends State<StudyReportWidget> {
             Expanded(
                 flex: 2,
                 child: Container(
-                  padding:const EdgeInsets.only(left: 17,top: 10,bottom: 10),
+                  padding:const EdgeInsets.only(left: 17,top: 2,bottom: 2),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         widget._entity.message,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                         style: TextStyles.text12_11B44,
                       ),
                       Gaps.vGap5,

@@ -10,6 +10,7 @@ import '../../constant/constant.dart';
 import '../../home/home_router.dart';
 import '../../method/fluter_native.dart';
 import '../../mvp/base_page.dart';
+import '../../util/image_utils.dart';
 import '../../widgets/my_text_field.dart';
 import '../../person/person_router.dart';
 import '../../res/colors.dart';
@@ -89,28 +90,24 @@ class _NewRegisterPageState extends State<NewRegisterPage>
       child: Scaffold(
         resizeToAvoidBottomInset:false,
         body: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colours.color_00FFB4,
-                  Colours.color_0E90FF,
-                  Colours.color_DA2FFF,
-                ],
-              )
-          ),
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: ImageUtils.getAssetImage(
+                      "login_bg_img"),
+                  fit: BoxFit.fill)),
           child: Column(
             children: [
               MyOnlyImgBar(
                 backgroundColor: Colours.transflate,
+                  width: 17.0,
+                  height: 17.0,
                   actionUrl: "white_close_img",
                   onActionPress: () {
                     NavigatorUtils.goBack(context);
                   }),
               Expanded(
                   child: Container(
-                    padding:const EdgeInsets.only(left: 20,right: 20),
+                    padding:const EdgeInsets.only(left: 42,right: 42),
                     child:
                     Column(
                       children:
@@ -139,20 +136,21 @@ class _NewRegisterPageState extends State<NewRegisterPage>
 
   List<Widget> _buildBody(){
     return <Widget>[
-      Gaps.vGap50,
+      Gaps.vGap80,
       Container(
         alignment: Alignment.centerLeft,
         child: GestureDetector(
           onTap: () {
-            NavigatorUtils.push(context, LoginRouter.onlySmsPage);
+            // NavigatorUtils.push(context, LoginRouter.onlySmsPage);
           },
-          child: const Text(
-            "Bubble",
-            style: TextStyles.textBold26,
-          ),
+          child:const LoadAssetImage("login_logo_img",width: 180,height: 67,),
+          // const Text(
+          //   "Bubble",
+          //   style: TextStyles.textBold26,
+          // ),
         ),
       ),
-      Gaps.vGap32,
+      Gaps.vGap85,
       Container(
         alignment: Alignment.centerLeft,
         child: const Text(
@@ -160,28 +158,33 @@ class _NewRegisterPageState extends State<NewRegisterPage>
           style: TextStyle(fontSize: 20, color: Colors.white),
         ),
       ),
-
       Row(
         children: [
-          const Text("+86>",style: TextStyles.text18_white,),
+          const Text("+86 >",style: TextStyles.text20_white,),
           Gaps.hGap10,
           Expanded(child:MyTextField(
             key: const Key('phone'),
+            txtStyle:const TextStyle(fontSize: 26,color: Colors.white,fontWeight: FontWeight.bold),
+            hintStyle: const TextStyle(fontSize: 26,color: Colours.color_4ED7FF),
             focusNode: _nodeText1,
             controller: _phoneController,
             maxLength: 11,
             keyboardType: TextInputType.phone,
-            hintText: "请输入手机号",
-          ) )
-          ,
+            hintText: "输入手机号",
+            underLineColor: Colors.transparent,
+          ) ),
         ],
       ),
+      const Divider(color: Colors.white,height: 0.4,),
       MyTextField(
         focusNode: _nodeText2,
+        txtStyle:const TextStyle(fontSize: 26,color: Colors.white,fontWeight: FontWeight.bold),
+        hintStyle: const TextStyle(fontSize: 26,color: Colours.color_4ED7FF),
+        underLineColor: Colors.transparent,
         controller: _vCodeController,
         maxLength: 4,
         keyboardType: TextInputType.number,
-        hintText: "请输入验证码",
+        hintText: "输入验证码",
         getVCode: () async {
           if (_phoneController.text.length == 11) {
             _registerPresenter.sendSms(_phoneController.text.trim(),true);
@@ -192,10 +195,11 @@ class _NewRegisterPageState extends State<NewRegisterPage>
           }
         },
       ),
+      const Divider(color: Colors.white,height:0.4,),
       Gaps.vGap10,
       Container(
         alignment: Alignment.centerLeft,
-        child: const Text("未注册手机号验证后生成新账号",style: TextStyle(color: Colors.white),),
+        child: const Text("未注册手机号验证后生成新账号",style: TextStyle(color: Colors.white,fontSize: 13),),
       ),
       // Gaps.vGap50,
       const Expanded(child: Gaps.empty),
@@ -238,7 +242,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
           // child: Center(
           child: const Text(
             "注册/登录",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -263,31 +267,31 @@ class _NewRegisterPageState extends State<NewRegisterPage>
               ),
             ),
             Gaps.hGap10,
-            const Text("请阅读并同意", style: TextStyle(fontSize: 12),),
+            const Text("我以阅读并同意 ", style: TextStyle(fontSize: 10,color: Colours.color_546092),),
             GestureDetector(
               onTap: () {
                 NavigatorUtils.goWebViewPage(context, "隐私政策",
                     "http://www.shenmo-ai.com/privacy_policy/");
               },
               child: const Text("隐私政策", style: TextStyle(
-                  fontSize: 12, decoration: TextDecoration.underline)),
+                  fontSize: 10,color: Colours.color_546092, decoration: TextDecoration.underline)),
             ),
-            const Text(" 和 ", style: TextStyle(fontSize: 12),),
+            const Text(" 和 ", style: TextStyle(fontSize: 10,color: Colours.color_546092),),
             GestureDetector(
               onTap: () {
                 NavigatorUtils.goWebViewPage(
                     context, "服务协议", "http://www.shenmo-ai.com/tos/");
               },
-              child: const Text("服务协议", style: TextStyle(
-                  fontSize: 12, decoration: TextDecoration.underline),),
+              child: const Text("服务协议", style: TextStyle(color: Colours.color_546092,
+                  fontSize: 10, decoration: TextDecoration.underline),),
             ),
           ],
         ) ,
       )
      ,
-      Gaps.vGap24,
-      const Text("其他登录方式"),
-      Gaps.vGap15,
+      Gaps.vGap26,
+      const Text("其他登录方式",style: TextStyle(color: Colours.color_546092,fontSize: 13),),
+      Gaps.vGap11,
       GestureDetector(
         onTap: () {
 

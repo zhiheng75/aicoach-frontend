@@ -101,11 +101,11 @@ StudyReportDataData $StudyReportDataDataFromJson(Map<String, dynamic> json) {
   if (totalScore != null) {
     studyReportDataData.totalScore = totalScore;
   }
-  final String? sessionTime = jsonConvert.convert<String>(json['sessionTime']);
+  final String? sessionTime = jsonConvert.convert<String>(json['session_time']);
   if (sessionTime != null) {
     studyReportDataData.sessionTime = sessionTime;
   }
-  final num? sessionCount = jsonConvert.convert<num>(json['sessionCount']);
+  final num? sessionCount = jsonConvert.convert<num>(json['session_count']);
   if (sessionCount != null) {
     studyReportDataData.sessionCount = sessionCount;
   }
@@ -123,8 +123,8 @@ Map<String, dynamic> $StudyReportDataDataToJson(StudyReportDataData entity) {
   data['integrity_score'] = entity.integrityScore;
   data['standard_score'] = entity.standardScore;
   data['total_score'] = entity.totalScore;
-  data['sessionTime'] = entity.sessionTime;
-  data['sessionCount'] = entity.sessionCount;
+  data['session_time'] = entity.sessionTime;
+  data['session_count'] = entity.sessionCount;
   data['rank'] = entity.rank;
   return data;
 }

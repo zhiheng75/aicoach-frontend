@@ -20,6 +20,8 @@ class MyOnlyImgBar extends StatelessWidget implements PreferredSizeWidget {
     this.backImgColor,
     this.actionUrl = "",
     this.onActionPress,
+    this.height = 20.0,
+    this.width = 20.0,
   });
 
   final Color? backgroundColor;
@@ -27,6 +29,8 @@ class MyOnlyImgBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backImgColor;
   final String actionName;
   final String actionUrl ;
+  final double height ;
+  final double width ;
   final VoidCallback? onActionPress;
 
   @override
@@ -38,7 +42,7 @@ class MyOnlyImgBar extends StatelessWidget implements PreferredSizeWidget {
 
 
 
-    final Widget actionImgBtn = actionUrl.isNotEmpty? MyImgButton(
+    final Widget actionImgBtn = actionUrl.isNotEmpty? MyImgButton(minHeight: height,minWidth: width,
         onPressed: onActionPress,url:actionUrl):Gaps.empty;
 
 

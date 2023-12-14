@@ -1,6 +1,7 @@
 import 'package:Bubble/login/view/bind_phone_view.dart';
 import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/widgets/load_image.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,9 +11,11 @@ import '../../res/colors.dart';
 import '../../res/gaps.dart';
 import '../../res/styles.dart';
 import '../../util/change_notifier_manage.dart';
+import '../../util/image_utils.dart';
 import '../../util/other_utils.dart';
 import '../../util/toast_utils.dart';
 import '../../widgets/my_app_bar.dart';
+import '../../widgets/my_only_img_bar.dart';
 import '../../widgets/my_scroll_view.dart';
 import '../../widgets/my_text_field.dart';
 import '../entity/login_info_entity.dart';
@@ -89,23 +92,39 @@ class _BindPhonePageState extends State<BindPhonePage>
         child:Scaffold(
           resizeToAvoidBottomInset:false,
           body: Container(
-            height: ScreenUtil.getScreenH(context),
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colours.color_00FFB4,
-                    Colours.color_0E90FF,
-                    Colours.color_DA2FFF,
-                  ],
-                )
-            ),
-            child: MyScrollView(
-              keyboardConfig: Utils.getKeyboardActionsConfig(context, <FocusNode>[_nodeText1, _nodeText2]),
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0,),
-              children: _buildBody(),
-            ),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: ImageUtils.getAssetImage(
+                        "login_bg_img"),
+                    fit: BoxFit.fill)),
+            child:Column(
+
+              children: [
+                MyOnlyImgBar(
+                    backgroundColor: Colours.transflate,
+                    width: 17.0,
+                    height: 17.0,
+                    actionUrl: "white_close_img",
+                    onActionPress: () {
+                      NavigatorUtils.goBack(context);
+                    }),
+                  Expanded(
+                      child: Container(
+                        padding:const EdgeInsets.only(left: 42,right: 42),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: _buildBody(),
+                    ),
+                  ))
+                ],
+            )
+
+            // MyScrollView(
+            //   keyboardConfig: Utils.getKeyboardActionsConfig(context, <FocusNode>[_nodeText1, _nodeText2]),
+            //   padding: const EdgeInsets.only(left: 16.0, right: 16.0,),
+            //   children: _buildBody(),
+            // ),
           ),
         )
     );
@@ -114,30 +133,50 @@ class _BindPhonePageState extends State<BindPhonePage>
 
   List<Widget> _buildBody() {
     return <Widget>[
-      const MyAppBar(
-        backImgColor: Colors.white,
-        backgroundColor: Colours.transflate,
-      ),
-
+      // const MyAppBar(
+      //   backImgColor: Colors.white,
+      //   backgroundColor: Colours.transflate,
+      // ),
+      Gaps.vGap80,
+      const LoadAssetImage("login_logo_img",width: 180,height: 67,),
+      Gaps.vGap85,
       const Text(
         "绑定手机号",
-        style: TextStyles.textBold26,
+        style: TextStyles.text20_white,
       ),
-      Gaps.vGap16,
-      MyTextField(
-        focusNode: _nodeText1,
-        controller: _phoneController,
-        maxLength: 11,
-        keyboardType: TextInputType.phone,
-        hintText: "请输入手机号",
+      const Text("根据国家网络安全法要求，需完成手机号绑定才能使用本产品。",style: TextStyle(fontSize: 13,color: Colors.white),),
+      Gaps.vGap26,
+      Row(
+        children: [
+          const Text(
+            "+86 >",
+            style: TextStyles.text20_white,
+          ),
+          Gaps.hGap10,
+          Expanded(
+              child: MyTextField(
+            focusNode: _nodeText1,
+            txtStyle: const TextStyle(
+                fontSize: 26, color: Colors.white, fontWeight: FontWeight.bold),
+            hintStyle:
+                const TextStyle(fontSize: 26, color: Colours.color_4ED7FF),
+            controller: _phoneController,
+            maxLength: 11,
+            keyboardType: TextInputType.phone,
+            hintText: "输入手机号",
+          )),
+        ],
       ),
-      Gaps.vGap8,
+      const Divider(color: Colors.white,height: 0.4,),
+      Gaps.vGap10,
       MyTextField(
         focusNode: _nodeText2,
+        txtStyle:const TextStyle(fontSize: 26,color: Colors.white,fontWeight: FontWeight.bold),
+        hintStyle: const TextStyle(fontSize: 26,color: Colours.color_4ED7FF),
         controller: _vCodeController,
         maxLength: 4,
         keyboardType: TextInputType.number,
-        hintText: "请输入验证码",
+        hintText: "输入验证码",
         getVCode: () async {
 
           if(_bindPhonePresenter.data.phone.isEmpty){
@@ -155,7 +194,6 @@ class _BindPhonePageState extends State<BindPhonePage>
         },
       ),
       Gaps.vGap24,
-
       GestureDetector(
         onTap: (){
           if(_clickable){
