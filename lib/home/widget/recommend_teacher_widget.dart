@@ -1,8 +1,10 @@
+import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/widgets/load_data.dart';
+import 'package:Bubble/widgets/load_fail.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
@@ -33,31 +35,27 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
   String state = 'loading';
 
   void init() {
-    DioUtils.instance.requestNetwork(
+    state = 'loading';
+    setState(() {});
+    DioUtils.instance.requestNetwork<ResultData>(
       Method.get,
       HttpApi.teacherList,
       cancelToken: cancelToken,
-      onSuccess: (data) {
-        if (data != null && data is List && data.isNotEmpty) {
-          List<TeachListEntity> list = data.map((item) => TeachListEntity.fromJson(item)).toList();
-          setState(() {
-            allTeacher = list;
+      onSuccess: (result) {
+        if (result != null && result.code == 200) {
+          if (result.data != null && result.data is List) {
+            List<dynamic> list = result.data as List;
+            allTeacher = list.map((item) => TeachListEntity.fromJson(item)).toList();
             state = 'success';
-          });
-          return;
-        }
-        setState(() {
+          }
+        } else {
           state = 'fail';
-        });
+        }
+        setState(() {});
       },
       onError: (code, msg) {
-        setState(() {
-          state = 'fail';
-        });
-        Toast.show(
-          msg,
-          duration: 1000,
-        );
+        state = 'fail';
+        setState(() {});
       }
     );
   }
@@ -72,42 +70,26 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
   Widget build(BuildContext context) {
     return Consumer<HomeTeacherProvider>(
       builder: (_, provider, __) {
-        Widget child = Center(
-          child: Column(
-            children: <Widget>[
-              const LoadAssetImage(
-                'no_data',
-                width: 77.0,
-                height: 77.0,
-                fit: BoxFit.fill,
-              ),
-              const SizedBox(
-                height: 19.0,
-              ),
-              Text(
-                '暂无数据',
-                style: TextStyle(
-                  fontSize: 15.0,
-                  color: Colours.hex2color('#546092'),
-                  letterSpacing: 16.0 / 15.0,
-                  height: 24.0 / 15.0,
-                ),
-              ),
-            ],
-          ),
+        Widget child = const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            LoadData(),
+          ],
         );
 
-        if (state == 'loading') {
-          child = Center(
-            child: LoadingAnimationWidget.waveDots(
-              color: Colors.white,
-              size: 32.0,
-            ),
+        if (state == 'fail') {
+          child = Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              LoadFail(
+                reload: init,
+              )
+            ],
           );
         }
 
-        if (state == 'success' && allTeacher.isNotEmpty) {
-          child = GridView.builder(
+        if (state == 'success') {
+          child = allTeacher.isNotEmpty ? GridView.builder(
               itemCount: allTeacher.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 //设置列数
@@ -127,7 +109,17 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
                     provider.chooseTeacher(teacher);
                   },
                 );
-              });
+              }) : const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                LoadAssetImage(
+                  'no_data',
+                  width: 77.0,
+                  height: 77.0,
+                  fit: BoxFit.fill,
+                ),
+              ],
+            );
         }
 
         return DraggableScrollableSheet(
