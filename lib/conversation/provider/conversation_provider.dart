@@ -242,7 +242,8 @@ class ConversationProvider extends ChangeNotifier {
   }
 
   Message createMessage() {
-    _messageList.add(Message());
+    Message message = Message();
+    _messageList.add(message);
     return _messageList.last;
   }
 
@@ -251,9 +252,10 @@ class ConversationProvider extends ChangeNotifier {
     evaluate(_sessionId, message);
   }
 
-  void runTranslate([int? index]) {
+  void runTranslate([int? index]) async {
     Message message = index != null ? _messageList.elementAt(index) : _messageList.last;
-    message.translate();
+    await message.translate();
+    notifyListeners();
   }
 
   void updateMessageList() {
@@ -262,6 +264,9 @@ class ConversationProvider extends ChangeNotifier {
 
   void openTranslation() {
     _showTranslation = true;
+    for (Message message in _messageList) {
+      message.translate();
+    }
     notifyListeners();
   }
 
@@ -282,21 +287,29 @@ class ConversationProvider extends ChangeNotifier {
 class Message {
   Message() {
     _id = const Uuid().v1().replaceAll('-', '').substring(0, 16);
+    _translationState = 'loading';
   }
 
   String _id = '';
   String _speaker = '';
   String _text = '';
+  bool _isTextEnd = false;
   String _translation = '';
-  List<Uint8List> _audio = [];
   bool _isTranslate = false;
+  // 状态 loading-翻译中 fail-翻译失败 success-翻译成功
+  String _translationState = '';
+  List<Uint8List> _audio = [];
 
   String get id => _id;
   String get speaker => _speaker;
   String get text => _text;
+  bool get isTextEnd => _isTextEnd;
   String get translation => _translation;
   bool get isTranslate => _isTranslate;
+  String get translationState => _translationState;
   List<Uint8List> get audio => _audio;
+
+  set isTextEnd(bool isTextEnd) => _isTextEnd = isTextEnd;
 
   void setSpeaker(String speaker) {
     _speaker = speaker;
@@ -310,10 +323,19 @@ class Message {
     _audio.addAll(audio);
   }
 
-  void translate() async {
+  Future<void> translate() async {
+    // 文本未收集完
+    if (!_isTextEnd) {
+      return;
+    }
+    // 已翻译
+    if (_translationState == 'success') {
+      return;
+    }
     if (_isTranslate) {
       return;
     }
+    _translationState = 'loading';
     _isTranslate = true;
     Map<String, dynamic> body = XunfeiUtil.createBodyForTranslation(_text);
     String bodySignature = XunfeiUtil.getBodySignatureForTranslation(body);
@@ -343,6 +365,7 @@ class Message {
             if (translation.containsKey('trans_result')) {
               Map<String, dynamic> transResult = (translation['trans_result'] ?? {}) as Map<String, dynamic>;
               if (transResult['dst'] != null && transResult['dst'] != '') {
+                _translationState = 'success';
                 _translation = transResult['dst'];
                 return;
               }
@@ -359,6 +382,7 @@ class Message {
       if (kDebugMode) {
         print('调用讯飞翻译失败，原因：${e.toString()}');
       }
+      _translationState = 'fail';
     } finally {
       _isTranslate = false;
     }

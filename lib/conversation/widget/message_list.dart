@@ -74,7 +74,7 @@ class _MessageListState extends State<MessageList> {
                                 top: 10.0,
                               ),
                               child: Text(
-                                message.isTranslate ? '翻译中...' : (message.translation != '' ? message.translation : '翻译失败，请重新翻译'),
+                                message.translationState == 'loading' ? '翻译中...' : (message.translationState == 'success' ? message.translation : '翻译失败，请重新翻译'),
                                 style: TextStyle(
                                   fontSize: 12.0,
                                   color: Colours.hex2color('#111B44'),
