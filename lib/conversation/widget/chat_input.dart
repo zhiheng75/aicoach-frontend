@@ -337,6 +337,7 @@ class _ChatInputState extends State<ChatInput> {
           return;
         }
 
+        message!.isTextEnd = true;
         WebsocketManage? manage = WebsocketUtils.getWebsocket('CONVERSATION');
         if (manage != null) {
           manage.send('[message_id=${message!.id}]${message!.text}');
@@ -533,8 +534,9 @@ class _ChatInputState extends State<ChatInput> {
         if (isString) {
           bool isEnd = data.startsWith('[end');
           if (isEnd) {
+            message!.isTextEnd = true;
             isTextReturnComplete = true;
-            message!.translate();
+            provider!.runTranslate();
             message = null;
             // 避免语音播放结束无法进行下一步
             if (aiSpeechList.isEmpty && playerState == 0 && inputType == 'audio' && !isInputting) {

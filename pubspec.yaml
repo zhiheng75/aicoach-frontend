@@ -95,6 +95,8 @@ dependencies:
   device_identity: ^1.0.0
   #loading_animation_widget https://github.com/watery-desert/loading_animation_widget
   loading_animation_widget: ^1.2.0+4
+  #archive https://github.com/brendan-duncan/archive
+  archive: ^3.4.9
 
 dev_dependencies:
   flutter_test:
@@ -122,11 +124,6 @@ flutter:
     - assets/images/
     - assets/images/state/
     - assets/avatar/
-    - assets/avatar/resource/
-    - assets/avatar/resource/Haru/
-    - assets/avatar/resource/Haru/expressions/
-    - assets/avatar/resource/Haru/motions/
-    - assets/avatar/resource/Haru/Haru.2048/
 
   fonts:
     - family: RobotoThin

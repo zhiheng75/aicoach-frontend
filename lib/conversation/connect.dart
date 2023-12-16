@@ -4,6 +4,7 @@ import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/conversation/provider/conversation_provider.dart';
 import 'package:Bubble/setting/provider/device_provider.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';

@@ -1,19 +1,21 @@
 import 'dart:convert';
 
+import 'package:Bubble/conversation/utils/avatar_util.dart';
+import 'package:Bubble/home/entity/teach_list_entity.dart';
+import 'package:Bubble/home/provider/selecter_teacher_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class Avatar extends StatefulWidget {
   const Avatar({
     Key? key,
-    required this.avatarId,
     this.width,
     this.height,
   }) : super(key: key);
 
-  final String avatarId;
   final double? width;
   final double? height;
 
@@ -22,10 +24,21 @@ class Avatar extends StatefulWidget {
 }
 
 class _AvatarState extends State<Avatar> {
-  late WebViewController controller;
+  WebViewController? controller;
   final String basePath = 'assets/avatar';
+  bool showAvatar = false;
 
   void init() {
+    // 测试
+    TeachListEntity? teacher = Provider.of<HomeTeacherProvider>(context, listen: false).teacher;
+    if (teacher == null) {
+      return;
+    }
+    String avatarId = teacher.avatarId;
+    if (avatarId == '') {
+      return;
+    }
+
     final NavigationDelegate delegate = NavigationDelegate(
         onPageFinished: (_) async {
           // 加载js
@@ -35,7 +48,7 @@ class _AvatarState extends State<Avatar> {
           ];
           for (var js in jsList) {
             String jsString = await rootBundle.loadString('$basePath/$js');
-            controller.runJavaScript(jsString);
+            controller!.runJavaScript(jsString);
           }
         },
         onWebResourceError: (_) {
@@ -45,9 +58,9 @@ class _AvatarState extends State<Avatar> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..addJavaScriptChannel('Channel', onMessageReceived: (_) async {
         if (_.message == 'SUCCESS') {
-          String base64Str = await getBase64ForAsset('Haru.model3.json');
+          String base64Str = await AvatarUtil().loadModelSetting(avatarId);
           try {
-            Object setting = await controller.runJavaScriptReturningResult('window.Live2D.getModelSetting("$base64Str")');
+            Object setting = await controller!.runJavaScriptReturningResult('window.Live2D.getModelSetting("$base64Str")');
             Map<String, dynamic> params = {};
             while (true) {
               bool isString = setting is String;
@@ -59,7 +72,7 @@ class _AvatarState extends State<Avatar> {
             if (setting is Map<String, dynamic>) {
               params = setting;
             }
-            loadModel(params);
+            loadModel(avatarId, params);
           } catch (error) {
             if (kDebugMode) {
               print("error:$error");
@@ -69,76 +82,18 @@ class _AvatarState extends State<Avatar> {
       })
       ..setNavigationDelegate(delegate)
       ..loadFlutterAsset('assets/avatar/index.html');
+    showAvatar = true;
+    setState(() {});
   }
 
-  Future<String> getBase64ForAsset(String path) async {
-    String assetPath = '$basePath/resource/${widget.avatarId}/$path';
-    final asset = await rootBundle.load(assetPath);
-    return base64.encode(asset.buffer.asUint8List());
+  void loadModel(String id, Map<String, dynamic> params) async {
+    AvatarAsset avatarAsset = await AvatarUtil().loadModel(id, params);
+    renderModel(avatarAsset.toJson());
   }
 
-  bool checkString(String? string) {
-    return string != null && string != '';
-  }
-
-  void loadModel(Map<String, dynamic> params) async {
-    String? moc;
-    // moc
-    if (checkString(params['moc'])) {
-      moc = await getBase64ForAsset(params['moc']);
-    }
-    // exp
-    List<String> exp = [];
-    if (checkString(params['exp'])) {
-      List<String> expList = (params['exp'] as String).split(',');
-      for (String expPath in expList) {
-        exp.add(await getBase64ForAsset(expPath));
-      }
-    }
-    // physic
-    String? physic;
-    if (checkString(params['physic'])) {
-      physic = await getBase64ForAsset(params['physic']);
-    }
-    // pose
-    String? pose;
-    if (checkString(params['pose'])) {
-      pose = await getBase64ForAsset(params['pose']);
-    }
-    // user
-    String? user;
-    if (checkString(params['user'])) {
-      user = await getBase64ForAsset(params['user']);
-    }
-    // motion
-    List<String> motion = [];
-    if (checkString(params['motion'])) {
-      List<String> motionList = (params['motion'] as String).split(',');
-      for (String motionPath in motionList) {
-        motion.add(await getBase64ForAsset(motionPath));
-      }
-    }
-    // texture
-    List<String> texture = [];
-    if (checkString(params['texture'])) {
-      List<String> textureList = (params['texture'] as String).split(',');
-      for (String texturePath in textureList) {
-        texture.add(await getBase64ForAsset(texturePath));
-      }
-    }
-
-    Map<String, String> live2DModelData = {
-      'moc': moc ?? '',
-      'exp': exp.join(','),
-      'physic': physic ?? '',
-      'pose': pose ?? '',
-      'user': user ?? '',
-      'motion': motion.join(','),
-      'texture': texture.join(','),
-    };
-
-    await controller.runJavaScript('window.Live2DModelData = ${jsonEncode(live2DModelData)}');
-    await controller.runJavaScript('window.Live2D.loadModel()');
+  void renderModel(Map<String, dynamic> model) async {
+    await controller!.runJavaScript('window.Live2DModelData = ${jsonEncode(model)}');
+    await controller!.runJavaScript('window.Live2D.loadModel()');
   }
 
   @override
@@ -150,7 +105,9 @@ class _AvatarState extends State<Avatar> {
   @override
   void deactivate() async {
     super.deactivate();
-    await controller.runJavaScript('window.Live2D.destroy()');
+    if (controller != null) {
+      await controller!.runJavaScript('window.Live2D.destroy()');
+    }
   }
 
   @override
@@ -160,6 +117,9 @@ class _AvatarState extends State<Avatar> {
 
   @override
   Widget build(BuildContext context) {
+    if (!showAvatar) {
+      return const SizedBox();
+    }
     return SizedBox(
       width: widget.width,
       height: widget.height,
@@ -170,7 +130,7 @@ class _AvatarState extends State<Avatar> {
           ),
           Expanded(
             child: WebViewWidget(
-              controller: controller,
+              controller: controller!,
             ),
           )
         ],

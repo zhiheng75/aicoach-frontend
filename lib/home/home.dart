@@ -15,6 +15,7 @@ import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:provider/provider.dart';
 import '../conversation/conversation_router.dart';
+import '../entity/result_entity.dart';
 import '../mvp/base_page.dart';
 import '../net/dio_utils.dart';
 import '../net/http_api.dart';
@@ -54,19 +55,24 @@ class _HomePageState extends State<HomePage>
   void getDefaultTeacher() async {
     HomeTeacherProvider provider = Provider.of<HomeTeacherProvider>(context, listen: false);
     String userId = await provider.getUserId();
-    Map<dynamic, dynamic>? value = SpUtil.getObject(userId);
+    Map<dynamic, dynamic>? value = SpUtil.getObject('${Constant.teacher}_$userId');
     if (value != null) {
       TeachListEntity teacher = TeachListEntity.fromJson(value as Map<String, dynamic>);
       provider.updateTeacher(teacher);
       return;
     }
 
-    _homePagePresenter.requestNetwork<List<TeachListEntity>>(
+    _homePagePresenter.requestNetwork<ResultData>(
       Method.get,
       url: HttpApi.teacherList,
-      onSuccess: (teacherList) {
-        if (teacherList != null && teacherList.isNotEmpty) {
-          provider.updateTeacher(teacherList.first);
+      onSuccess: (result) {
+        if (result != null && result.code == 200) {
+          if (result.data != null && result.data is List) {
+            List<dynamic> list = result.data as List;
+            if (list.isNotEmpty) {
+              provider.updateTeacher(TeachListEntity.fromJson(list.first));
+            }
+          }
         }
         openSelectTeacher();
       },

@@ -51,7 +51,6 @@ class _ConversationPageState extends State<ConversationPage> with BasePageMixin<
             child: Stack(
               children: <Widget>[
                 Avatar(
-                  avatarId: 'Haru',
                   width: size.width,
                   height: size.height,
                 ),
