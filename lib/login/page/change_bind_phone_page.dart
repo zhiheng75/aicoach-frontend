@@ -7,12 +7,16 @@ import 'package:flutter/services.dart';
 
 import '../../mvp/base_page.dart';
 import '../../res/colors.dart';
+import '../../res/dimens.dart';
 import '../../res/gaps.dart';
 import '../../res/styles.dart';
 import '../../util/change_notifier_manage.dart';
+import '../../util/image_utils.dart';
 import '../../util/other_utils.dart';
 import '../../util/toast_utils.dart';
+import '../../widgets/load_image.dart';
 import '../../widgets/my_app_bar.dart';
+import '../../widgets/my_only_img_bar.dart';
 import '../../widgets/my_scroll_view.dart';
 import '../../widgets/my_text_field.dart';
 import '../entity/login_info_entity.dart';
@@ -41,6 +45,10 @@ class _ChangeBindPhonePageState extends State<ChangeBindPhonePage>
   void initState() {
     super.initState();
     _bindPhonePresenter.data = widget.wechatData;
+    if(_bindPhonePresenter.data.phone!=null&&
+        _bindPhonePresenter.data.phone.isNotEmpty){
+      _phoneController.text = _bindPhonePresenter.data.phone;
+    }
   }
 
   late ChangeBindPhonePresenter _bindPhonePresenter;
@@ -90,23 +98,50 @@ class _ChangeBindPhonePageState extends State<ChangeBindPhonePage>
       value: SystemUiOverlayStyle.light,
         child:Scaffold(
           resizeToAvoidBottomInset:false,
-          body: Container(
-            height: ScreenUtil.getScreenH(context),
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colours.color_00FFB4,
-                    Colours.color_0E90FF,
-                    Colours.color_DA2FFF,
-                  ],
-                )
-            ),
-            child: MyScrollView(
-              keyboardConfig: Utils.getKeyboardActionsConfig(context, <FocusNode>[_nodeText1, _nodeText2]),
-              children: _buildBody(),
-            ),
+          body:
+
+          Container(
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        Colours.color_00E6D0,
+                        Colours.color_006CFF,
+                        Colours.color_D74DFF,
+                      ],
+                      stops: [0.0,0.2,1]
+                  )
+              ),
+            child:Column(
+              children: [
+                const MyAppBar(
+                  centerTitle: "绑定手机号",
+                  backImgColor: Colors.white,
+                  backgroundColor: Colours.transflate,
+                ),
+                Expanded(
+                    child: Container(
+                      width: ScreenUtil.getScreenW(context),
+                      height: 500,
+                      padding:const EdgeInsets.only(top: Dimens.gap_dp23,left: Dimens.gap_dp28,right:Dimens.gap_dp28,bottom: Dimens.gap_dp40),
+                      decoration:const BoxDecoration(
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight:  Radius.circular(20)),
+                          color: Colors.white
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: _buildBody(),
+                      ),
+                    ))
+              ],
+            )
+
+            // MyScrollView(
+            //   keyboardConfig: Utils.getKeyboardActionsConfig(context, <FocusNode>[_nodeText1, _nodeText2]),
+            //   children: _buildBody(),
+            // ),
           ),
         )
     );
@@ -115,80 +150,80 @@ class _ChangeBindPhonePageState extends State<ChangeBindPhonePage>
 
   List<Widget> _buildBody() {
     return <Widget>[
-      const MyAppBar(
-        centerTitle:  "换绑定手机号",
-        backImgColor: Colors.white,
-        backgroundColor: Colours.transflate,
+      Gaps.vGap30,
+      MyTextField(
+        focusNode: _nodeText1,
+        txtStyle: const TextStyle(
+            fontSize: 17, color: Colours.color_111B44, fontWeight: FontWeight.bold),
+        hintStyle:
+        const TextStyle(fontSize: 17, color: Colours.color_B7BFD9),
+        controller: _phoneController,
+        maxLength: 11,
+        keyboardType: TextInputType.phone,
+        underLineColor: Colours.color_5B8BD2,
+        hintText: "输入手机号",
+        countDownColor:Colours.color_546092,
+        closeColor: Colours.color_546092,
       ),
-      Container(
-        padding: const EdgeInsets.only(left: 26.0, right: 26.0,),
-        child: Column(
-          children: [
-            Gaps.vGap16,
-            MyTextField(
-              focusNode: _nodeText1,
-              controller: _phoneController,
-              maxLength: 11,
-              keyboardType: TextInputType.phone,
-              hintText: "请输入手机号",
+      // const Divider(color: Colours.color_5B8BD2,height: 0.4,),
+      Gaps.vGap20,
+      MyTextField(
+        focusNode: _nodeText2,
+        txtStyle:const TextStyle(fontSize: 17,color: Colours.color_111B44,fontWeight: FontWeight.bold),
+        hintStyle: const TextStyle(fontSize: 17,color: Colours.color_B7BFD9),
+        controller: _vCodeController,
+        maxLength: 4,
+        underLineColor: Colours.color_5B8BD2,
+        keyboardType: TextInputType.number,
+        countDownColor:Colours.color_546092,
+        closeColor: Colours.color_546092,
+        hintText: "输入验证码",
+        getVCode: () async {
+
+          if(_phoneController.text.isNotEmpty){
+            if(_bindPhonePresenter.data.phone!=_phoneController.text){
+              return judgementPhone();
+            }else{
+              Toast.show("请输入新手机号");
+              return false;
+            }
+          }else{
+            Toast.show("请输入手机号");
+            return false;
+          }
+
+
+
+
+        },
+      ),
+      Gaps.vGap24,
+      const Expanded(child: Gaps.empty),
+      GestureDetector(
+        onTap: (){
+          if(_clickable){
+            _bind();
+          }
+        },
+        child: Container(
+          alignment: Alignment.center,
+          width: 400,
+          height: 46,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: ImageUtils.getAssetImage(
+                  "login_out_bg_img",),
+                fit: BoxFit.fill
             ),
-            Gaps.vGap8,
-            MyTextField(
-              focusNode: _nodeText2,
-              controller: _vCodeController,
-              maxLength: 4,
-              keyboardType: TextInputType.number,
-              hintText: "请输入验证码",
-              getVCode: () async {
-
-                if(_bindPhonePresenter.data.phone.isEmpty){
-                  return judgementPhone();
-                }else{
-                  if(_bindPhonePresenter.data.phone!=_phoneController.text){
-                    Toast.show("请输入新手机号");
-                    return false;
-                  }else{
-                    return judgementPhone();
-                  }
-                }
-
-
-              },
-            ),
-            Gaps.vGap24,
-
-            GestureDetector(
-              onTap: (){
-                if(_clickable){
-                  _bind();
-                }
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: ScreenUtil.getScreenW(context),
-                height: 40,
-                decoration: const BoxDecoration(
-                    borderRadius:
-                    BorderRadius.all(Radius.circular(100)),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Colours.color_DA2FFF,
-                        Colours.color_0E90FF,
-                        Colours.color_00FFB4,
-                      ],
-                    )),
-                // child: Center(
-                child: const Text(
-                  "绑定",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            )
-          ],
+          ),
+          // child: Center(
+          child: const Text(
+            "绑定",
+            style: TextStyle(color: Colours.color_3389FF,fontSize: 16),
+          ),
         ),
       ),
+
 
 
       // MyButton(

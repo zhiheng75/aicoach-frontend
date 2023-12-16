@@ -177,7 +177,7 @@ class _SettingPageState extends State<SettingPage>
                           },
                           child: Container(
                             width: 400,
-                            height: 40,
+                            height: 46,
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: ImageUtils.getAssetImage(

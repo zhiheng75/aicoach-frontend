@@ -70,7 +70,7 @@ class _CommonDialogState extends State<CommonDialog> {
                         GestureDetector(
                           onTap: () {
                             NavigatorUtils.goBack(context);
-                            widget.confirmPress();
+                            widget.cancelPress();
                           },
                           child: Container(
                             width: 125,
@@ -84,7 +84,7 @@ class _CommonDialogState extends State<CommonDialog> {
                             ),
 
                             child: Center(
-                              child:Text(widget.confirmStr, style:const TextStyle(fontSize: 13,color: Colours.color_3389FF),) ,
+                              child:Text(widget.cancelStr, style:const TextStyle(fontSize: 13,color: Colours.color_3389FF),) ,
                             ) ,
                           ),
                         ),
@@ -92,7 +92,7 @@ class _CommonDialogState extends State<CommonDialog> {
                         GestureDetector(
                           onTap: () async {
                             NavigatorUtils.goBack(context);
-                            widget.cancelPress();
+                            widget.confirmPress();
                           },
                           child: Container(
                             width: 125,
@@ -105,7 +105,7 @@ class _CommonDialogState extends State<CommonDialog> {
                               ),
                             ),
                             child: Center(
-                              child: Text(widget.cancelStr,style: const TextStyle(fontSize: 13,color: Colors.white),),
+                              child: Text(widget.confirmStr,style: const TextStyle(fontSize: 13,color: Colors.white),),
                             ),
                           ),
                         ),

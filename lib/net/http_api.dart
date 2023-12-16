@@ -41,6 +41,12 @@ class HttpApi{
   //会话时常
   static const String studyInfo = "conversation_record";
 
+  //用户信息
+  static const String userInfo = "user_info";
+
+  //获取基础配置
+  static const String baseConfig = "variable_list";
+
   //学习报告的集合
   static const String studyReportList = "app/conversations";
 

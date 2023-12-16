@@ -43,17 +43,17 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void _initSplash() {
-    Provider.of<DeviceProvider>(context, listen: false).getDeviceId();
-    _subscription =
-        Stream.value(1).delay(const Duration(milliseconds: 1000)).listen((_) {
-      bool hasAgree =
-          SpUtil.getBool(Constant.agreement, defValue: false) ?? false;
-      if (hasAgree) {
+    // Provider.of<DeviceProvider>(context, listen: false).getDeviceId();
+    // _subscription =
+    //     Stream.value(1).delay(const Duration(milliseconds: 1000)).listen((_) {
+    //   bool hasAgree =
+    //       SpUtil.getBool(Constant.agreement, defValue: false) ?? false;
+    //   if (hasAgree) {
         _gotoHome();
-      } else {
-        _showAgreement();
-      }
-    });
+    //   } else {
+    //     _showAgreement();
+    //   }
+    // });
   }
 
   void _showAgreement() {

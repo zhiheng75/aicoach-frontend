@@ -90,7 +90,7 @@ class _AgreementDialogState extends State<AgreementDialog> {
                             GestureDetector(
                               onTap: () {
                                 NavigatorUtils.goBack(context);
-                                widget._confirmPress();
+
                               },
                               child: Container(
                                 width: 125,
@@ -104,7 +104,7 @@ class _AgreementDialogState extends State<AgreementDialog> {
                                 ),
 
                                 child:const Center(
-                                  child:Text("确定", style: TextStyle(fontSize: 13,color: Colours.color_3389FF),) ,
+                                  child:Text("再想一想", style: TextStyle(fontSize: 13,color: Colours.color_3389FF),) ,
                                 ) ,
                               ),
                             ),
@@ -112,7 +112,9 @@ class _AgreementDialogState extends State<AgreementDialog> {
                             GestureDetector(
                               onTap: () async {
                                 NavigatorUtils.goBack(context);
-                                await SystemNavigator.pop();
+                                // await SystemNavigator.pop();
+
+                                widget._confirmPress();
                               },
                               child: Container(
                                 width: 125,
@@ -125,7 +127,7 @@ class _AgreementDialogState extends State<AgreementDialog> {
                                   ),
                                 ),
                                 child:const Center(
-                                  child: Text("再想一想",style: TextStyle(fontSize: 13,color: Colors.white),),
+                                  child: Text("确定",style: TextStyle(fontSize: 13,color: Colors.white),),
                                 ),
                               ),
                             ),

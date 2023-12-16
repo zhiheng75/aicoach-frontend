@@ -20,7 +20,7 @@ class LoginRouter implements IRouterProvider{
   static String registerPage = '/login/register';
   static String smsLoginPage = '/login/smsLogin';
   static String onlySmsPage = '/login/onlySmsLogin';
-  static String bindPhonePage = "/login/BindPhonePage";
+  // static String bindPhonePage = "/login/BindPhonePage";
   static String changeBindPhonePage = "/login/ChangeBindPhonePage";
   static String resetPasswordPage = '/login/resetPassword';
   static String updatePasswordPage = '/login/updatePassword';
@@ -32,13 +32,13 @@ class LoginRouter implements IRouterProvider{
     router.define(registerPage, handler: Handler(handlerFunc: (_, __) => const RegisterPage()));
     router.define(smsLoginPage, handler: Handler(handlerFunc: (_, __) => const SMSLoginPage()));
     router.define(onlySmsPage, handler: Handler(handlerFunc: (_, __) => const OnlySmsPage()));
-    router.define(bindPhonePage, handler: Handler(handlerFunc: (context, params) {
-      LoginInfoDataData entity = LoginInfoDataData();
-      if(context!=null){
-        entity = ModalRoute.of(context)?.settings.arguments as LoginInfoDataData;
-      }
-      return  BindPhonePage(entity);
-    }));
+    // router.define(bindPhonePage, handler: Handler(handlerFunc: (context, params) {
+    //   LoginInfoDataData entity = LoginInfoDataData();
+    //   if(context!=null){
+    //     entity = ModalRoute.of(context)?.settings.arguments as LoginInfoDataData;
+    //   }
+    //   return  BindPhonePage(entity);
+    // }));
     router.define(changeBindPhonePage, handler: Handler(handlerFunc: (context, params) {
       LoginInfoDataData entity = LoginInfoDataData();
       if(context!=null){

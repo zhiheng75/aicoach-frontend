@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:sp_util/sp_util.dart';
 
 import '../../constant/constant.dart';
+import '../../dialog/agreement_dialog.dart';
 import '../../home/home_router.dart';
 import '../../method/fluter_native.dart';
 import '../../mvp/base_page.dart';
@@ -150,36 +151,44 @@ class _NewRegisterPageState extends State<NewRegisterPage>
           // ),
         ),
       ),
-      Gaps.vGap85,
+      Gaps.vGap80,
       Container(
         alignment: Alignment.centerLeft,
         child: const Text(
           "手机号登录",
-          style: TextStyle(fontSize: 20, color: Colors.white),
+          style: TextStyle(fontSize: 26, color: Colors.white,fontWeight: FontWeight.bold),
         ),
       ),
-      Row(
-        children: [
-          const Text("+86 >",style: TextStyles.text20_white,),
-          Gaps.hGap10,
-          Expanded(child:MyTextField(
-            key: const Key('phone'),
-            txtStyle:const TextStyle(fontSize: 26,color: Colors.white,fontWeight: FontWeight.bold),
-            hintStyle: const TextStyle(fontSize: 26,color: Colours.color_4ED7FF),
-            focusNode: _nodeText1,
-            controller: _phoneController,
-            maxLength: 11,
-            keyboardType: TextInputType.phone,
-            hintText: "输入手机号",
-            underLineColor: Colors.transparent,
-          ) ),
-        ],
+      // Row(
+      //   children: [
+      //     Expanded(child:MyTextField(
+      //       key: const Key('phone'),
+      //       txtStyle:const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),
+      //       hintStyle: const TextStyle(fontSize: 20,color: Colours.color_4ED7FF),
+      //       focusNode: _nodeText1,
+      //       controller: _phoneController,
+      //       maxLength: 11,
+      //       keyboardType: TextInputType.phone,
+      //       hintText: "输入手机号",
+      //     ) ),
+      //   ],
+      // ),
+      MyTextField(
+        key: const Key('phone'),
+        txtStyle:const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),
+        hintStyle: const TextStyle(fontSize: 20,color: Colours.color_4ED7FF),
+        focusNode: _nodeText1,
+        controller: _phoneController,
+        maxLength: 11,
+        keyboardType: TextInputType.phone,
+        hintText: "输入手机号",
+        underLineColor: Colors.transparent,
       ),
-      const Divider(color: Colors.white,height: 0.4,),
+      Gaps.vGap15,
       MyTextField(
         focusNode: _nodeText2,
-        txtStyle:const TextStyle(fontSize: 26,color: Colors.white,fontWeight: FontWeight.bold),
-        hintStyle: const TextStyle(fontSize: 26,color: Colours.color_4ED7FF),
+        txtStyle:const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),
+        hintStyle: const TextStyle(fontSize: 20,color: Colours.color_4ED7FF),
         underLineColor: Colors.transparent,
         controller: _vCodeController,
         maxLength: 4,
@@ -195,7 +204,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
           }
         },
       ),
-      const Divider(color: Colors.white,height:0.4,),
+
       Gaps.vGap10,
       Container(
         alignment: Alignment.centerLeft,
@@ -206,45 +215,24 @@ class _NewRegisterPageState extends State<NewRegisterPage>
 
       GestureDetector(
         onTap: (){
-          if(_isSelect&&_clickable){
-            _registerPresenter.register(_phoneController.text, _vCodeController.text,true);
-
-          }else if(!_clickable){
-            if(_phoneController.text.isEmpty){
-              Toast.show("手机号无效");
-            }else if(_phoneController.text.isEmpty) {
-              Toast.show("验证码无效");
-            }else{
-              Toast.show("输入有误");
-            }
-
-          }else if(!_isSelect){
-            Toast.show("请同意服务协议");
-          }
-
+          toNext(0);
         },
         child: Container(
-          alignment: Alignment.center,
-          width: 300,
-          height: 40,
-          decoration: const BoxDecoration(
-              borderRadius:
-              BorderRadius.all(Radius.circular(100)),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colours.color_DA2FFF,
-                  Colours.color_0E90FF,
-                  Colours.color_00FFB4,
-                ],
-              )),
-          // child: Center(
-          child: const Text(
-            "注册/登录",
-            style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+
+          height: 46,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: ImageUtils.getAssetImage(
+                      "purchase_btn_img"),
+                  fit: BoxFit.fill)),
+          child: const Center(
+            child: Text(
+              "注册/登录",
+              style: TextStyle(
+                  color: Colors.white, fontSize: 16),
+            ),
           ),
-        ),
+        )
       ),
       Gaps.vGap15,
       GestureDetector(
@@ -294,19 +282,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
       Gaps.vGap11,
       GestureDetector(
         onTap: () {
-
-          if(_isSelect){
-            FlutterToNative.jumpToWechatLogin().then((value) => {
-              // _wechatCode = value,
-              // Log.e("===========>$_wechatCode"),
-
-              _registerPresenter.getWxInfo(value)
-            });
-          }else{
-            Toast.show("请同意服务协议");
-          }
-
-
+          toNext(1);
               },
         child: const LoadAssetImage("wechat_login_img",width: 30,height: 30,),
       ),
@@ -343,7 +319,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
   void wechatSuccess(LoginInfoDataData data) {
     // SpUtil.putObject(Constant.userInfoKey, data);
     // SpUtil.putString(Constant.accessToken, data.token);
-    NavigatorUtils.push(context, LoginRouter.bindPhonePage,arguments:data,replace: true);
+    NavigatorUtils.push(context, LoginRouter.changeBindPhonePage,arguments:data,replace: true);
   }
 
   @override
@@ -359,4 +335,47 @@ class _NewRegisterPageState extends State<NewRegisterPage>
     NavigatorUtils.push(context, PersonalRouter.personalCenter,replace: true);
   }
 
+
+  void _showAgreement(int state) {
+    showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => AgreementDialog(() {
+          _isSelect = true;
+          toNext(state);
+        }));
+  }
+
+  // 0 手机号登录 1微信登录
+  void toNext(int state){
+    if(state==0){
+      if(_isSelect&&_clickable){
+        _registerPresenter.register(_phoneController.text, _vCodeController.text,true);
+
+      }else if(!_clickable){
+        if(_phoneController.text.isEmpty){
+          Toast.show("手机号无效");
+        }else if(_vCodeController.text.isEmpty) {
+          Toast.show("验证码无效");
+        }else{
+          Toast.show("输入有误");
+        }
+
+      }else if(!_isSelect){
+
+        _showAgreement(state);
+      }
+    }else if(state==1){
+      if(_isSelect){
+        FlutterToNative.jumpToWechatLogin().then((value) => {
+
+          _registerPresenter.getWxInfo(value)
+        });
+      }else{
+        // Toast.show("请同意服务协议");
+        _showAgreement(state);
+      }
+    }
+
+  }
 }

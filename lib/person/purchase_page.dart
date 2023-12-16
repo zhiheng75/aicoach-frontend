@@ -1,4 +1,5 @@
 
+import 'package:Bubble/home/entity/base_config_entity.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/person/presneter/purchase_presenter.dart';
@@ -39,6 +40,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
   bool agreeAgreement = false;
   late PurchasePresenter _purchasePresenter;
   int selectIndex = 0;
+  String category="";
 
 
 
@@ -73,15 +75,14 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
               ),
             ),
             Container(
-              alignment: Alignment.center,
-              height: 100,
-              margin: const EdgeInsets.only(top: 105,left: 50),
+              alignment: Alignment.topLeft,
+              height: 60,
+              margin: const EdgeInsets.only(top: 140,left: 120,right: 50),
               child: RichText(
-                  text:const
-                  TextSpan(
+                  text: TextSpan(
                       children: <TextSpan>[
-                         TextSpan(text: "专属口语教练,科学测评,个性化定制 ",style:  TextStyle(fontSize: 13,color: Colors.white)),
-                         TextSpan(text: "\n每天低至1块钱",style: const TextStyle(fontSize: 13,color: Colours.color_00DBAF)),
+                         TextSpan(text: category,style:  TextStyle(fontSize: 13,color: Colors.white)),
+                         // TextSpan(text: "\n每天低至1块钱",style: const TextStyle(fontSize: 13,color: Colours.color_00DBAF)),
                       ]
                   )),
             )
@@ -287,18 +288,18 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
         Expanded(
             child: bean.recommend==true?
             Container(
-              margin: const EdgeInsets.only(left: 5, right: 20),
+              alignment: Alignment.center,
+              margin: const EdgeInsets.only(left: 5, right: 5),
+              padding:const EdgeInsets.only(left: 7,right: 7),
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: ImageUtils.getAssetImage("auto_purchase_bg"),
                       fit: BoxFit.cover)),
-              child: const Center(
-                child: Text(
+                child:const Text(
                   "自动续费，可随时取消",
                   style: TextStyle(
                       fontSize: Dimens.font_sp10, color: Colors.white),
                 ),
-              ),
             ):Gaps.empty),
          Text(
           "¥ ${viewPrice(bean.price)}元/${bean.unit}",
@@ -407,6 +408,16 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
   @override
   void paySuccess() {
     NavigatorUtils.push(context, HomeRouter.homePage,clearStack: true);
+  }
+
+  @override
+  void getBaseConfig(BaseConfigDataData data) {
+    if(data.key=="rechargeSlogan"){
+      category = data.value;
+      setState(() {
+
+      });
+    }
   }
 
 }

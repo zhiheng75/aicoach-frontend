@@ -8,15 +8,14 @@ import 'package:flutter/services.dart';
 
 import '../../mvp/base_page.dart';
 import '../../res/colors.dart';
+import '../../res/dimens.dart';
 import '../../res/gaps.dart';
 import '../../res/styles.dart';
 import '../../util/change_notifier_manage.dart';
 import '../../util/image_utils.dart';
-import '../../util/other_utils.dart';
 import '../../util/toast_utils.dart';
 import '../../widgets/my_app_bar.dart';
 import '../../widgets/my_only_img_bar.dart';
-import '../../widgets/my_scroll_view.dart';
 import '../../widgets/my_text_field.dart';
 import '../entity/login_info_entity.dart';
 import '../presenter/bind_phone_presenter.dart';
@@ -38,12 +37,6 @@ class _BindPhonePageState extends State<BindPhonePage>
         AutomaticKeepAliveClientMixin<BindPhonePage>
     implements BindPhoneView {
 
-  @override
-  void initState() {
-    super.initState();
-    _bindPhonePresenter.data = widget.wechatData;
-  }
-
   late BindPhonePresenter _bindPhonePresenter;
 
   final TextEditingController _phoneController = TextEditingController();
@@ -51,6 +44,18 @@ class _BindPhonePageState extends State<BindPhonePage>
   final FocusNode _nodeText1 = FocusNode();
   final FocusNode _nodeText2 = FocusNode();
   bool _clickable = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _bindPhonePresenter.data = widget.wechatData;
+    if(_bindPhonePresenter.data.phone!=null&&
+        _bindPhonePresenter.data.phone.isNotEmpty){
+      _phoneController.text = _bindPhonePresenter.data.phone;
+    }
+  }
+
 
   @override
   Map<ChangeNotifier, List<VoidCallback>?>? changeNotifier() {
@@ -92,25 +97,36 @@ class _BindPhonePageState extends State<BindPhonePage>
         child:Scaffold(
           resizeToAvoidBottomInset:false,
           body: Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: ImageUtils.getAssetImage(
-                        "login_bg_img"),
-                    fit: BoxFit.fill)),
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        Colours.color_00E6D0,
+                        Colours.color_006CFF,
+                        Colours.color_D74DFF,
+                      ],
+                      stops: [0.0,0.2,1]
+                  )
+              ),
             child:Column(
 
               children: [
-                MyOnlyImgBar(
-                    backgroundColor: Colours.transflate,
-                    width: 17.0,
-                    height: 17.0,
-                    actionUrl: "white_close_img",
-                    onActionPress: () {
-                      NavigatorUtils.goBack(context);
-                    }),
+                const MyAppBar(
+                  centerTitle: "绑定手机号",
+                  backImgColor: Colors.white,
+                  backgroundColor: Colours.transflate,
+                ),
                   Expanded(
                       child: Container(
-                        padding:const EdgeInsets.only(left: 42,right: 42),
+                        width: ScreenUtil.getScreenW(context),
+                        height: 500,
+                        padding:const EdgeInsets.only(top: Dimens.gap_dp23,left: Dimens.gap_dp28,right:Dimens.gap_dp28,bottom: Dimens.gap_dp40),
+                        decoration:const BoxDecoration(
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight:  Radius.circular(20)),
+                            color: Colors.white
+                        ),
+
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,

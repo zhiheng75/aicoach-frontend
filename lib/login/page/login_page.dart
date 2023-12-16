@@ -222,7 +222,7 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   void wechatSuccess(WxInfoDataData entity) {
-    NavigatorUtils.push(context, LoginRouter.bindPhonePage,arguments:entity);
+    NavigatorUtils.push(context, LoginRouter.changeBindPhonePage,arguments:entity);
   }
 
   @override

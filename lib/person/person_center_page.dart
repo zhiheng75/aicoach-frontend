@@ -38,6 +38,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
   String studyRank="--";
   String activePercent="--%";//活跃指数
   String activeRank="--";//前面还有多少人
+  String vipTime = "--";
 
   late PersonalCenterPresenter _presenter;
 
@@ -49,7 +50,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
         child:Scaffold(
             body:Stack(
               children: [
-                const LoadAssetImage("personal_center_bg"),
+                const LoadAssetImage("personal_center_bg",height: 280,fit: BoxFit.fitHeight,),
                 Container(
                   padding: const EdgeInsets.only(top: 48,left: 15,right: 15),
                   child: Column(
@@ -167,7 +168,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                                       children: <TextSpan>[
                                         const TextSpan(text: "会员权益",style:  TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold)),
 
-                                        TextSpan(text: "  --年--月--日",style: const TextStyle(fontSize: 12,color: Colours.color_00DBAF)),
+                                        TextSpan(text: " 至$vipTime",style: const TextStyle(fontSize: 12,color: Colours.color_00DBAF)),
                                       ]
                                   )),
                                  const Text("专属口语教练,科学测评,个性化定制\n24小时不限场景 ",style: TextStyle(color: Colors.white,fontSize: 11),),
@@ -271,8 +272,8 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                     children: <TextSpan>[
                       const TextSpan(text: "你的周学习活跃指数为",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
                        TextSpan(text: activePercent,style:const  TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
-                      const TextSpan(text: ",前边还有",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
-                       TextSpan(text: activeRank,style:const TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
+                      // const TextSpan(text: ",前边还有",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
+                      //  TextSpan(text: activeRank,style:const TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
                       const TextSpan(text: "位\n保持每天学习，加油赶超~",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
                     ]
                 ))
@@ -344,6 +345,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
   void getUserInfo(LoginInfoDataData data) {
     _headerImg = data.headimgurl;
     _userName = data.nickname;
+    vipTime = data.membershipExpiryDate??"--";
     setState(() {
 
     });

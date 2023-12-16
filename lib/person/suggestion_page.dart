@@ -142,8 +142,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                             maxAssets: 4,
                             bgColor: Colors.white,
                             callBack: (assetEntityList) async {
-                              // print('assetEntityList-------------');
-                              // print(assetEntityList);
+
                               _presenter.selectedAssets.addAll(assetEntityList);
                               if (assetEntityList.isNotEmpty) {
                                 List<File> mlist = [];
@@ -162,10 +161,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                                 // if(asd!=null){
                                 //   _presenter.uploadImg(asd);
                                 // }
-
                               }
-                              // print('assetEntityList-------------');
-
                             },
                             deleteCallBack: (index) async{
                               _presenter.refreshAssets.removeAt(index as int);

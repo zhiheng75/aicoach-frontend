@@ -71,9 +71,11 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
   List<AssetEntity> _selectedAssets = [];
   Color _themeColor = Colours.kThemeColor;
 
+  int maxAmount = 0;
   @override
   void initState() {
     super.initState();
+    maxAmount = widget.maxAssets;
     bus.on("refreshSelectImg", (arg){
       _selectedAssets.clear();
       _selectedAssets.addAll(arg);

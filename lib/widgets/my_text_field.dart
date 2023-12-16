@@ -28,6 +28,8 @@ class MyTextField extends StatefulWidget {
     this.underLineColor = Colors.white,
     this.txtStyle = TextStyles.text20_white,
     this.hintStyle = TextStyles.text20_white,
+    this.closeColor = Colors.white,
+    this.countDownColor = Colors.white,
   });
 
   final TextEditingController controller;
@@ -43,6 +45,8 @@ class MyTextField extends StatefulWidget {
   final Color underLineColor ;
   final TextStyle txtStyle;
   final TextStyle hintStyle;
+  final Color countDownColor;
+  final Color closeColor;
 
   @override
   _MyTextFieldState createState() => _MyTextFieldState();
@@ -118,7 +122,7 @@ class _MyTextFieldState extends State<MyTextField> {
       inputFormatters: (widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone) ?
       [FilteringTextInputFormatter.allow(RegExp('[0-9]'))] : [FilteringTextInputFormatter.deny(RegExp('[\u4e00-\u9fa5]'))],
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(vertical: 16.0),
+        contentPadding: EdgeInsets.zero,
         hintText: widget.hintText,
         hintStyle: widget.hintStyle,
         counterText: '',
@@ -154,7 +158,7 @@ class _MyTextFieldState extends State<MyTextField> {
         hint: '清空输入框',
         child: GestureDetector(
           child: LoadAssetImage('delete_img',
-            color: Colors.white,
+            color: widget.closeColor,
             key: Key('${widget.keyName}_delete'),
             width: 13.0,
             height: 13.0,
@@ -191,26 +195,34 @@ class _MyTextFieldState extends State<MyTextField> {
         key: const Key('getVerificationCode'),
         onPressed: _clickable ? _getVCode : null,
         fontSize: Dimens.font_sp12,
-        text: _clickable ? "获取验证码" : '（$_currentSecond s）',
-        textColor: Colors.white,
+        text: _clickable ? "获取验证码" : '$_currentSecond s',
+        textColor: widget.countDownColor,
         disabledTextColor: isDark ? Colours.dark_text : Colors.white,
         backgroundColor: Colors.transparent,
-        disabledBackgroundColor: isDark ? Colours.dark_text_gray : Colours.text_gray_c,
-        radius: 1.0,
+        // disabledBackgroundColor: isDark ? Colours.dark_text_gray : Colours.text_gray_c,
+        disabledBackgroundColor: Colors.transparent,
+        radius: 100.0,
         minHeight: 26.0,
         minWidth: 76.0,
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.only(left: 19,top: 10,right: 19,bottom: 10),
         side: BorderSide(
-          color: _clickable ? Colors.white : Colors.transparent,
+          // color: _clickable ? Colors.white : Colors.transparent,
+          color:  widget.countDownColor,
           width: 0.8,
         ),
       );
     }
 
-    return Stack(
-      alignment: Alignment.centerRight,
+    return Row(
+      // alignment: Alignment.centerRight,
       children: <Widget>[
-        textField,
+
+        Expanded(child: Column(
+          children: [
+            textField,
+            const Divider(color: Colors.white,height: 0.4,),
+          ],
+        )),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -223,7 +235,10 @@ class _MyTextFieldState extends State<MyTextField> {
             if (widget.isInputPwd) Gaps.hGap15,
             if (widget.isInputPwd) pwdVisible,
             if (widget.getVCode != null) Gaps.hGap15,
-            if (widget.getVCode != null) getVCodeButton,
+            if (widget.getVCode != null) Container(
+
+              child: getVCodeButton,
+            ) ,
           ],
         )
       ],

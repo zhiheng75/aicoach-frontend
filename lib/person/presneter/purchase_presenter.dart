@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:Bubble/mvp/base_page_presenter.dart';
 import 'package:Bubble/person/presneter/purchase_view.dart';
+import 'package:sp_util/sp_util.dart';
 
+import '../../constant/constant.dart';
+import '../../home/entity/base_config_entity.dart';
 import '../../method/fluter_native.dart';
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
@@ -16,7 +19,18 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView>{
 
    List<MyGoodListEntity> goodList = [];
 
-
+  @override
+  void initState() {
+    super.initState();
+    SpUtil.getObjList(
+        Constant.baseConfig,
+        (v) => {
+              if (v != null && v.isNotEmpty)
+                {
+                  view.getBaseConfig(BaseConfigDataData.fromJson(v as Map<String, dynamic>)),
+                }
+            });
+  }
 
   Future wxChatPay(goodId,goodPrice,bool showLoading){
     final Map<String, dynamic> params = <String, String>{};
