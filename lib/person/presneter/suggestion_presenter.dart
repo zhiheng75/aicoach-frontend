@@ -64,7 +64,7 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView>{
 
 
   /// 上传图片实现
-  Future<String> uploadImg(List<File> images) async {
+  Future<String> uploadImg(List<File> images,List<AssetEntity> sendList) async {
     String imgPath = '';
     try{
       List<MultipartFile> mList = [];
@@ -90,6 +90,8 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView>{
 
           allImgList.addAll(data.data);
           allSendList.clear();
+
+          selectedAssets.addAll(sendList);
 
           if(allImgList.length>4){
             for(int i = allImgList.length-1;i>allImgList.length-5;i--){

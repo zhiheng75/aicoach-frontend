@@ -111,16 +111,26 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
         ),
         // GridView内边距
         padding: EdgeInsets.all(widget.itemSpace),
-        itemCount: _selectedAssets.length == widget.maxAssets ? _selectedAssets.length : allCount,
+        // itemCount: _selectedAssets.length == widget.maxAssets ? _selectedAssets.length : allCount,
+        itemCount: _selectedAssets.length == 4 ? _selectedAssets.length : allCount,
         itemBuilder: (context, index) {
-          if (_selectedAssets.length == widget.maxAssets) {
-            return _itemWidget(index);
+
+          if(_selectedAssets.length<5){
+            if (index == allCount - 1) {
+              return _addBtnWidget();
+            } else {
+              return _itemWidget(index);
+            }
           }
-          if (index == allCount - 1) {
-            return _addBtnWidget();
-          } else {
-            return _itemWidget(index);
-          }
+
+          // if (_selectedAssets.length == widget.maxAssets) {
+          //   return _itemWidget(index);
+          // }
+          // if (index == allCount - 1) {
+          //   return _addBtnWidget();
+          // } else {
+          //   return _itemWidget(index);
+          // }
 
         },
       ),
@@ -241,7 +251,7 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
       pickerConfig: AssetPickerConfig(
         maxAssets: widget.maxAssets,
         requestType: requestType,
-        selectedAssets: _selectedAssets,
+        // selectedAssets: _selectedAssets,
         themeColor: _themeColor,
         // textDelegate: const EnglishAssetPickerTextDelegate(),
       ),

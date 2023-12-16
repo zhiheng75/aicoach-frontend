@@ -38,6 +38,7 @@ class _SuggestionPageState extends State<SuggestionPage>
   final TextEditingController _contactController = TextEditingController();
   List<TextInputFormatter>? _inputFormatters;
   late int _maxLength;
+  int selectImgAmount = 0;
 
   @override
   void initState() {
@@ -139,13 +140,14 @@ class _SuggestionPageState extends State<SuggestionPage>
                           padding: const EdgeInsets.only(left: 5),
                           child: JhAssetPicker(
                             assetType: AssetType.image,
-                            maxAssets: 4,
+                            maxAssets: 4-_presenter.refreshAssets.length,
                             bgColor: Colors.white,
                             callBack: (assetEntityList) async {
+                              selectImgAmount = assetEntityList.length;
 
-                              _presenter.selectedAssets.addAll(assetEntityList);
                               if (assetEntityList.isNotEmpty) {
                                 List<File> mlist = [];
+
                                 for(int i = 0;i<assetEntityList.length;i++){
                                   var asset = assetEntityList[i];
                                   var f = await asset.file;
@@ -153,7 +155,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                                     mlist.add(f);
                                   }
                                 }
-                                _presenter.uploadImg(mlist);
+                                _presenter.uploadImg(mlist,assetEntityList);
                                 // var asset = assetEntityList[0];
                                 // print(await asset.file);
                                 // print(await asset.originFile);
@@ -164,8 +166,12 @@ class _SuggestionPageState extends State<SuggestionPage>
                               }
                             },
                             deleteCallBack: (index) async{
-                              _presenter.refreshAssets.removeAt(index as int);
+                              // _presenter.selectedAssets.removeAt(index);
+                              _presenter.refreshAssets.removeAt(index);
                               bus.emit('refreshSelectImg',_presenter.refreshAssets);
+                              setState(() {
+
+                              });
                             },
                           ),
                         ),
@@ -305,5 +311,11 @@ class _SuggestionPageState extends State<SuggestionPage>
       _presenter.refreshAssets.addAll(_presenter.selectedAssets);
     }
     bus.emit('refreshSelectImg',_presenter.refreshAssets);
+      if(_presenter.refreshAssets.length<4){
+        setState(() {
+
+        });
+      }
+
   }
 }
