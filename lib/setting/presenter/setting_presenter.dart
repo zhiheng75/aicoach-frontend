@@ -46,6 +46,12 @@ class SettingPresenter extends BasePagePresenter<SettingView>{
                 }
             });
 
+
+  }
+
+  @override
+  void afterInit() {
+    super.afterInit();
     getUpdate(false);
   }
 
@@ -140,7 +146,7 @@ class SettingPresenter extends BasePagePresenter<SettingView>{
           netAppCode =  int.parse(data.data.version.replaceAll(".", ""));
           if(show){
             if(netAppCode>localAppCode){
-              view.getAppInfo();
+              view.getAppInfo(data.data);
             }else{
               Toast.show("已是最新版本");
             }

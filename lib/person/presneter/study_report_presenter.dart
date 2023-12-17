@@ -10,9 +10,10 @@ class StudyReportPresenter extends BasePagePresenter<StudyReportView>{
 
   List<StudyListDataData> mList = [];
 
+
   @override
-  void initState() {
-    super.initState();
+  void afterInit() {
+    super.afterInit();
     getStudyInfo();
   }
 
@@ -23,7 +24,6 @@ class StudyReportPresenter extends BasePagePresenter<StudyReportView>{
         queryParameters: {
           'device_id': deviceId,
         },
-        isShow: false,
         onSuccess: (data) {
           if (data != null && data.code == 200) {
             mList.clear();

@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import 'mvps.dart';
 
 ///生命周期绑定
@@ -18,5 +20,15 @@ class BasePresenter<V extends IMvpView> extends IPresenter {
   void dispose() {}
 
   @override
-  void initState() {}
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      afterInit();
+    });
+  }
+
+  @override
+  void afterInit() {
+
+  }
+
 }

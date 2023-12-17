@@ -38,7 +38,6 @@ class MyReportPresenter extends BasePagePresenter<MyReportView>{
     return requestNetwork<StudyReportData>(Method.get,
         url: HttpApi.coinReport,
         queryParameters: params,
-         isShow: false,
          onSuccess: (data) {
       if(data!=null){
         if(data.code==200){

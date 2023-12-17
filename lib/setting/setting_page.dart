@@ -20,6 +20,7 @@ import '../mvp/base_page.dart';
 import '../res/colors.dart';
 import '../util/image_utils.dart';
 import '../widgets/my_app_bar.dart';
+import 'entity/updata_info_entity.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -326,16 +327,16 @@ class _SettingPageState extends State<SettingPage>
   }
 
   @override
-  void getAppInfo() {
-    _showUpdateDialog();
+  void getAppInfo(UpdataInfoDataData data) {
+    _showUpdateDialog(data);
   }
 
 
-  void _showUpdateDialog() {
+  void _showUpdateDialog(UpdataInfoDataData data) {
     showDialog<void>(
         context: context,
         barrierDismissible: false,
-        builder: (_) => const UpdateDialog()
+        builder: (_) =>  UpdateDialog(data)
     );
   }
 

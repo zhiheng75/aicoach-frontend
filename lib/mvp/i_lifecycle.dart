@@ -10,4 +10,6 @@ abstract class ILifecycle {
   void deactivate();
   
   void dispose();
+
+  void afterInit();
 }

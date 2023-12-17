@@ -215,7 +215,23 @@ class _NewRegisterPageState extends State<NewRegisterPage>
 
       GestureDetector(
         onTap: (){
-          toNext(0);
+          if(_isSelect&&_clickable){
+            _registerPresenter.register(_phoneController.text, _vCodeController.text,true);
+
+          }else if(!_clickable){
+            if(_phoneController.text.isEmpty){
+              Toast.show("手机号无效");
+            }else if(_phoneController.text.isEmpty) {
+              Toast.show("验证码无效");
+            }else{
+              Toast.show("输入有误");
+            }
+
+          }else if(!_isSelect){
+            Toast.show("请同意服务协议");
+          }
+
+          // toNext(0);
         },
         child: Container(
 
@@ -282,7 +298,17 @@ class _NewRegisterPageState extends State<NewRegisterPage>
       Gaps.vGap11,
       GestureDetector(
         onTap: () {
-          toNext(1);
+          // toNext(1);
+          if(_isSelect){
+            FlutterToNative.jumpToWechatLogin().then((value) => {
+              // _wechatCode = value,
+              // Log.e("===========>$_wechatCode"),
+
+              _registerPresenter.getWxInfo(value)
+            });
+          }else{
+            Toast.show("请同意服务协议");
+          }
               },
         child: const LoadAssetImage("wechat_login_img",width: 30,height: 30,),
       ),
@@ -363,7 +389,8 @@ class _NewRegisterPageState extends State<NewRegisterPage>
 
       }else if(!_isSelect){
 
-        _showAgreement(state);
+        // _showAgreement(state);
+        toNext(state);
       }
     }else if(state==1){
       if(_isSelect){
@@ -373,7 +400,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
         });
       }else{
         // Toast.show("请同意服务协议");
-        _showAgreement(state);
+        // _showAgreement(state);
       }
     }
 

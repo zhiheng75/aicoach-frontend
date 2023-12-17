@@ -10,10 +10,11 @@ class MyOrderPresenter extends BasePagePresenter<MyOrderView>{
 
   List<OrderListDataData> mList = [];
 
+
   @override
-  void initState() {
-    super.initState();
-    getOrderList(false);
+  void afterInit() {
+    super.afterInit();
+    getOrderList(true);
   }
 
   Future getOrderList(bool showLoading){

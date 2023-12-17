@@ -1,6 +1,7 @@
 import 'package:Bubble/mvp/mvps.dart';
 
 import '../../login/entity/login_info_entity.dart';
+import '../entity/updata_info_entity.dart';
 
 abstract class SettingView implements IMvpView{
 
@@ -13,7 +14,7 @@ abstract class SettingView implements IMvpView{
   void wechatSuccess();
   void wechatFail(String msg);
 
-  void getAppInfo();
+  void getAppInfo(UpdataInfoDataData data);
 
   void hasNewVersion(bool hasNew);
 

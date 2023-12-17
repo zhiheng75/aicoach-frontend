@@ -395,11 +395,11 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
-  void _showUpdateDialog() {
-    showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) => const UpdateDialog()
-    );
-  }
+  // void _showUpdateDialog() {
+  //   showDialog<void>(
+  //       context: context,
+  //       barrierDismissible: false,
+  //       builder: (_) => const UpdateDialog()
+  //   );
+  // }
 }

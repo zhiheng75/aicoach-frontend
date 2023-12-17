@@ -44,11 +44,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
 
 
 
-  @override
-  void initState() {
-    super.initState();
-    _purchasePresenter.getGoodsList(false);
-  }
+
 
   @override
   Widget build(BuildContext context) {

@@ -1,16 +1,17 @@
 import 'dart:async';
 
-import 'package:Bubble/setting/provider/device_provider.dart';
+import 'package:Bubble/home/home_router.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:Bubble/home/home_router.dart';
 import 'package:sp_util/sp_util.dart';
-import '../dialog/agreement_dialog.dart';
+
 import '../constant/constant.dart';
+import '../dialog/agreement_dialog.dart';
 import '../routers/fluro_navigator.dart';
+import '../setting/provider/device_provider.dart';
 import '../util/device_utils.dart';
 import '../util/image_utils.dart';
 import '../widgets/fractionally_aligned_sized_box.dart';
@@ -43,17 +44,17 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void _initSplash() {
-    // Provider.of<DeviceProvider>(context, listen: false).getDeviceId();
-    // _subscription =
-    //     Stream.value(1).delay(const Duration(milliseconds: 1000)).listen((_) {
-    //   bool hasAgree =
-    //       SpUtil.getBool(Constant.agreement, defValue: false) ?? false;
-    //   if (hasAgree) {
+    Provider.of<DeviceProvider>(context, listen: false).getDeviceId();
+    _subscription =
+        Stream.value(1).delay(const Duration(milliseconds: 1000)).listen((_) {
+      bool hasAgree =
+          SpUtil.getBool(Constant.agreement, defValue: false) ?? false;
+      if (hasAgree) {
         _gotoHome();
-    //   } else {
-    //     _showAgreement();
-    //   }
-    // });
+      } else {
+        _showAgreement();
+      }
+    });
   }
 
   void _showAgreement() {

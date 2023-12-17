@@ -197,7 +197,7 @@ class _MyTextFieldState extends State<MyTextField> {
         fontSize: Dimens.font_sp12,
         text: _clickable ? "获取验证码" : '$_currentSecond s',
         textColor: widget.countDownColor,
-        disabledTextColor: isDark ? Colours.dark_text : Colors.white,
+        disabledTextColor: widget.countDownColor,
         backgroundColor: Colors.transparent,
         // disabledBackgroundColor: isDark ? Colours.dark_text_gray : Colours.text_gray_c,
         disabledBackgroundColor: Colors.transparent,

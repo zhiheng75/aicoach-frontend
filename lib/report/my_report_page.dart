@@ -36,7 +36,10 @@ class _MyReportPageState extends State<MyReportPage>
   @override
   void initState() {
     super.initState();
-    _myReportPresenter.getReport(widget.entity.sessionId);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _myReportPresenter.getReport(widget.entity.sessionId);
+    });
+
   }
 
   @override

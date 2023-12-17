@@ -32,6 +32,12 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView>{
             });
   }
 
+  @override
+  void afterInit() {
+    super.afterInit();
+    getGoodsList(true);
+  }
+
   Future wxChatPay(goodId,goodPrice,bool showLoading){
     final Map<String, dynamic> params = <String, String>{};
     params["goods_id"] = goodId.toString();

@@ -344,7 +344,14 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
   @override
   void getUserInfo(LoginInfoDataData data) {
     _headerImg = data.headimgurl;
-    _userName = data.nickname;
+    if(data.name!=null){
+      _userName = data.name;
+    }else if(data.nickname!=null&&data.nickname.isNotEmpty){
+      _userName = data.nickname;
+    }else{
+      _userName = data.phone.substring(7,data.phone.length);
+    }
+
     vipTime = data.membershipExpiryDate??"--";
     setState(() {
 
