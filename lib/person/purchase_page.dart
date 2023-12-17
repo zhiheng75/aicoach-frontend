@@ -87,7 +87,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
             Container(
               width: ScreenUtil.getScreenW(context),
               margin: const EdgeInsets.only(top: 220),
-              padding: const EdgeInsets.only(top: Dimens.gap_dp23,
+              padding: const EdgeInsets.only(top: Dimens.gap_dp15,
                   left: Dimens.gap_dp28,
                   right: Dimens.gap_dp28,),
               decoration: const BoxDecoration(
@@ -177,7 +177,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                           },
                           child: agreement(agreeAgreement),
                         ),
-                        Gaps.vGap15,
+                        Gaps.vGap40,
                       ],
                     )
                   : Container(
@@ -197,7 +197,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
       children: [
         Container(
           margin:const EdgeInsets.only(bottom: 15),
-          padding:const EdgeInsets.only(left: 26,right: 26,top: 10,bottom: 30),
+          padding:const EdgeInsets.only(left: 22,right: 22,top: 10,bottom: 30),
           decoration: BoxDecoration(
             image: DecorationImage(
                 image: ImageUtils.getAssetImage(
@@ -290,11 +290,13 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: ImageUtils.getAssetImage("auto_purchase_bg"),
-                      fit: BoxFit.cover)),
-                child:const Text(
-                  "自动续费，可随时取消",
-                  style: TextStyle(
-                      fontSize: Dimens.font_sp10, color: Colors.white),
+                            fit: BoxFit.cover)),
+                    child: const Text(
+                      "自动续费，可随时取消",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                          fontSize: Dimens.font_sp10, color: Colors.white),
                 ),
             ):Gaps.empty),
          Text(

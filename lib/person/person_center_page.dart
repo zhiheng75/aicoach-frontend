@@ -274,7 +274,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                        TextSpan(text: activePercent,style:const  TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
                       // const TextSpan(text: ",前边还有",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
                       //  TextSpan(text: activeRank,style:const TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
-                      const TextSpan(text: "位\n保持每天学习，加油赶超~",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
+                      const TextSpan(text: "\n保持每天学习，加油赶超~",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
                     ]
                 ))
 

@@ -191,10 +191,6 @@ class _ChangeBindPhonePageState extends State<ChangeBindPhonePage>
             Toast.show("请输入手机号");
             return false;
           }
-
-
-
-
         },
       ),
       Gaps.vGap24,
@@ -203,6 +199,8 @@ class _ChangeBindPhonePageState extends State<ChangeBindPhonePage>
         onTap: (){
           if(_clickable){
             _bind();
+          }else{
+            Toast.show("输入内容有误");
           }
         },
         child: Container(
