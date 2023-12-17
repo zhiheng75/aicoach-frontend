@@ -15,6 +15,7 @@ import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:provider/provider.dart';
 import '../conversation/conversation_router.dart';
+import '../dialog/agreement_dialog.dart';
 import '../entity/result_entity.dart';
 import '../mvp/base_page.dart';
 import '../net/dio_utils.dart';
