@@ -10,6 +10,7 @@ import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+
 import '../login/entity/login_info_entity.dart';
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
@@ -103,7 +104,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                   width: ScreenUtil.getScreenW(context),
                   height: ScreenUtil.getScreenH(context),
                   margin: const EdgeInsets.only(top: 220),
-                  padding: const EdgeInsets.only(top: Dimens.gap_dp23,
+                  padding:  EdgeInsets.only(top: Dimens.gap_dp23,
                     left: Dimens.gap_dp28,
                     right: Dimens.gap_dp28,),
                   decoration: const BoxDecoration(
@@ -135,12 +136,12 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                             Expanded(child: studyItem("完成对话",studyAmount,"个")),
                             Expanded(child:Column(
                               children: [
-                                const Text("学习排行", style: TextStyles.text12_546092,),
+                                 Text("学习排行", style: TextStyles.text12_546092,),
                                 Gaps.vGap4,
                                 RichText(text:
                                 TextSpan(
                                     children: <TextSpan>[
-                                      const TextSpan(text: "优胜",style:  TextStyle(fontSize: 10,color: Colours.color_546092)),
+                                       TextSpan(text: "优胜",style:  TextStyle(fontSize: Dimens.font_sp10,color: Colours.color_546092)),
                                       TextSpan(text: studyRank,style: const TextStyle(fontSize: 17,color: Colours.color_00DBAF)),
                                     ]
                                 ))
@@ -156,7 +157,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                         },
                         child:Stack(
                           children: [
-                            const LoadAssetImage("purchase_img",fit: BoxFit.fill,height: 210),
+                            const LoadAssetImage("purchase_img"),
                             Container(
                               margin:const EdgeInsets.only(left: 30,top: 35),
                               child:Column(
@@ -166,12 +167,17 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                                   RichText(text:
                                   TextSpan(
                                       children: <TextSpan>[
-                                        const TextSpan(text: "会员权益",style:  TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold)),
+                                         TextSpan(text: "会员权益",style:  TextStyle(fontSize: Dimens.font_sp20,color: Colors.white,fontWeight: FontWeight.bold)),
 
-                                        TextSpan(text: " 至$vipTime",style: const TextStyle(fontSize: 12,color: Colours.color_00DBAF)),
+                                        TextSpan(text: " 至$vipTime",style:  TextStyle(fontSize: Dimens.font_sp12,color: Colours.color_00DBAF)),
                                       ]
                                   )),
-                                 const Text("专属口语教练,科学测评,个性化定制\n24小时不限场景 ",style: TextStyle(color: Colors.white,fontSize: 11),),
+
+                                   Container(
+                                   child:const Text("专属口语教练,科学测评,个性化定制",style: TextStyle(color: Colors.white,fontSize: 11),) ,
+                                 ),
+
+                                 const Text("24小时不限场景 ",style: TextStyle(color: Colors.white,fontSize: 11),),
                                   Container(
                                     width: 106,
                                     margin: const EdgeInsets.only(top: 8),
@@ -270,11 +276,11 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                 ),
                 RichText(text: TextSpan(
                     children: <TextSpan>[
-                      const TextSpan(text: "你的周学习活跃指数为",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
-                       TextSpan(text: activePercent,style:const  TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
+                       TextSpan(text: "你的周学习活跃指数为",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
+                       TextSpan(text: activePercent,style:  TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
                       // const TextSpan(text: ",前边还有",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
                       //  TextSpan(text: activeRank,style:const TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
-                      const TextSpan(text: "\n保持每天学习，加油赶超~",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
+                       TextSpan(text: "\n保持每天学习，加油赶超~",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
                     ]
                 ))
 
@@ -294,8 +300,8 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
         RichText(text:
         TextSpan(
             children: <TextSpan>[
-              TextSpan(text: content1,style: const TextStyle(fontSize: 17,color: Colours.color_00DBAF)),
-              TextSpan(text: content2,style: const TextStyle(fontSize: 10,color: Colours.color_546092)),
+              TextSpan(text: content1,style:  TextStyle(fontSize: Dimens.font_sp17,color: Colours.color_00DBAF)),
+              TextSpan(text: content2,style:  TextStyle(fontSize: Dimens.font_sp10,color: Colours.color_546092)),
             ]
         ))
       ],
@@ -308,7 +314,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
       children: [
         imageWidget(type),
         Gaps.hGap7,
-        Expanded(child: Text(name,style:const TextStyle(fontSize: 15,color: Colours.color_111B44),),),
+        Expanded(child: Text(name,style: TextStyle(fontSize: Dimens.font_sp15,color: Colours.color_111B44),),),
         Gaps.hGap6,
         const LoadAssetImage(
           "to_next_img",

@@ -162,7 +162,7 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
                           const EdgeInsets.only(left: 20, right: 20, top: 20),
                           child: Row(
                             children: [
-                              const Text(
+                               Text(
                                 "选择自己喜欢的老师",
                                 style: TextStyle(
                                     color: Colours.color_111B44,

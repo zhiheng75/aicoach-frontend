@@ -79,7 +79,7 @@ class _SettingPageState extends State<SettingPage>
                       children: [
                         Container(
                             alignment: Alignment.centerLeft,
-                            child:  const Text(
+                            child:   Text(
                               "账户绑定",
                               style: TextStyle(
                                   fontSize: Dimens.font_sp16,
@@ -146,7 +146,7 @@ class _SettingPageState extends State<SettingPage>
                             alignment: Alignment.centerLeft,
                             child: Row(
                               children: [
-                                const Text(
+                                 Text(
                                   "版本升级检测",
                                   style: TextStyle(
                                       fontSize: Dimens.font_sp16,
@@ -157,7 +157,7 @@ class _SettingPageState extends State<SettingPage>
                                   visible: mHasNewVersion,
                                   child:const LoadAssetImage("had_new_version_img",width: 33,height: 13,),),
                                 const Expanded(child: Gaps.empty),
-                                Text("${_settingPresenter.appVersion}版本",style:const TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_546092),),
+                                Text("${_settingPresenter.appVersion}版本",style: TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_546092),),
                                 Gaps.hGap6,
                                 const LoadAssetImage(
                                   "to_next_img",
@@ -186,7 +186,7 @@ class _SettingPageState extends State<SettingPage>
                                   fit: BoxFit.fill
                               ),
                             ),
-                            child: const Center(
+                            child:  Center(
                               child: Text("退出登录", style: TextStyle(
                                   fontSize: Dimens.font_sp17,
                                   color: Colours.color_3389FF),),
@@ -194,7 +194,7 @@ class _SettingPageState extends State<SettingPage>
                           ),
                         ),
                         Gaps.vGap20,
-                        const Text("京ICP备2023024660号-1",style: TextStyle(fontSize: Dimens.font_sp10,color: Colours.color_546092),)
+                         Text("京ICP备2023024660号-1",style: TextStyle(fontSize: Dimens.font_sp10,color: Colours.color_546092),)
                       ],
                     ) ,
                   )
@@ -216,7 +216,7 @@ class _SettingPageState extends State<SettingPage>
         Text(name,style:const TextStyle(fontSize: 15,color: Colours.color_111B44),),
         const Expanded(child: Gaps.empty),
         Text(
-          hasBind ? "去换绑" : "去绑定",style:const TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_546092),
+          hasBind ? "去换绑" : "去绑定",style: TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_546092),
         ),
         Gaps.hGap6,
         Visibility(
@@ -240,7 +240,7 @@ class _SettingPageState extends State<SettingPage>
         Text(name,style:const TextStyle(fontSize: 15,color: Colours.color_111B44),),
         const Expanded(child: Gaps.empty),
         Text(
-          hasBind ? "已绑定" : "去绑定",style:const TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_546092),
+          hasBind ? "已绑定" : "去绑定",style: TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_546092),
         ),
         Gaps.hGap6,
         Visibility(

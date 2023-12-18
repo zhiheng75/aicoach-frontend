@@ -212,7 +212,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
               Gaps.vGap15,
               purchaseItemTxt2(bean),
               Gaps.vGap13,
-              Text(bean.desc,style:const TextStyle(fontSize: Dimens.font_sp13,color:Colours.color_546092),),
+              Text(bean.desc,style: TextStyle(fontSize: Dimens.font_sp13,color:Colours.color_546092),),
             ],
           ),
         ),
@@ -239,7 +239,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                 image: ImageUtils.getAssetImage("auto_purchase_bg"),
                     fit: BoxFit.cover
               )),
-              child: const Center(
+              child:  Center(
                 child: Text(
                   "自动续费，可随时取消",
                   style: TextStyle(
@@ -247,22 +247,22 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                 ),
               ),
             )),
-            const Text("¥ 365元/年",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
+             Text("¥ 365元/年",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
           ],
         );
       case 1:
-        return const Row(
+        return  Row(
           children: [
-            Text("连续包月",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
-            Expanded(child: Gaps.empty),
+            const Text("连续包月",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
+            const  Expanded(child: Gaps.empty),
              Text("¥ 48元/月",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
           ],
         );
       case 2:
-        return const Row(
+        return  Row(
           children: [
-            Text("年度会员",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
-            Expanded(child: Gaps.empty),
+            const Text("年度会员",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
+            const Expanded(child: Gaps.empty),
              Text("¥ 638元/年",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
           ],
         );
@@ -291,7 +291,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                   image: DecorationImage(
                       image: ImageUtils.getAssetImage("auto_purchase_bg"),
                             fit: BoxFit.cover)),
-                    child: const Text(
+                    child:  Text(
                       "自动续费，可随时取消",
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -301,7 +301,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
             ):Gaps.empty),
          Text(
           "¥ ${viewPrice(bean.price)}元/${bean.unit}",
-          style: const TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
+          style:  TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
       ],
     );
   }
@@ -323,7 +323,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
           children: [
             const LoadAssetImage("wechat_pay_img",width: 27,height: 27,),
             Gaps.hGap8,
-            const  Expanded(child: Text("微信支付",style: TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_111B44),)),
+            Expanded(child: Text("微信支付",style: TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_111B44),)),
             LoadAssetImage(isCheck==true?"select_img":"unselect_img",width: 17,height: 17,),
           ],
         );
@@ -332,7 +332,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
           children: [
             const LoadAssetImage("alipay_img",width: 27,height: 27,),
             Gaps.hGap8,
-            const Expanded(child:  Text("支付宝支付",style: TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_111B44),)),
+             Expanded(child:  Text("支付宝支付",style: TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_111B44),)),
             LoadAssetImage(isCheck==true?"select_img":"unselect_img",width: 17,height: 17,),
           ],
         );

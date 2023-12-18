@@ -82,7 +82,7 @@ class _RegisterPageState extends State<RegisterPage> with ChangeNotifierMixin<Re
 
   List<Widget> _buildBody() {
     return <Widget>[
-     const Text(
+      Text(
         "注册",
         style: TextStyles.textBold26,
       ),

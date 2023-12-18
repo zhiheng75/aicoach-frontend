@@ -144,7 +144,7 @@ class _MyReportPageState extends State<MyReportPage>
                         ),
                       ),
                     ),
-                    const Center(
+                     Center(
                       child: Text(
                         "对话内容解析",
                         style: TextStyle(

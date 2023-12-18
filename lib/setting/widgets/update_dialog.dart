@@ -78,7 +78,7 @@ class _UpdateDialogState extends State<UpdateDialog> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text('新版本更新', style: TextStyles.textSize16),
+                       Text('新版本更新', style: TextStyles.textSize16),
                       Gaps.vGap10,
 
                       SizedBox(

@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage>
   }
 
   List<Widget> get _buildBody => <Widget>[
-   const Text(
+    Text(
       "密码登录",
       style: TextStyles.textBold26,
     ),

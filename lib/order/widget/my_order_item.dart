@@ -52,8 +52,8 @@ class _MyOrderItemState extends State<MyOrderItem> {
               // child: Center(
                 child: Column(
                   children: [
-                    Text(widget.data.name,style:const TextStyle(fontSize: Dimens.font_sp22,color: Colors.white),),
-                    Text("¥ ${widget.data.goodsPrice}/${widget.data.unit}",style:const TextStyle(fontSize: Dimens.font_sp13,color: Colors.white),)
+                    Text(widget.data.name,style: TextStyle(fontSize: Dimens.font_sp22,color: Colors.white),),
+                    Text("¥ ${widget.data.goodsPrice}/${widget.data.unit}",style: TextStyle(fontSize: Dimens.font_sp13,color: Colors.white),)
                   ],
                 ),
               // ),

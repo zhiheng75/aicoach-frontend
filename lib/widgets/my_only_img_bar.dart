@@ -55,7 +55,7 @@ class MyOnlyImgBar extends StatelessWidget implements PreferredSizeWidget {
         width: double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 48.0),
         child: Text(centerTitle,
-          style: const TextStyle(color: Colors.white,fontSize: Dimens.font_sp18,),
+          style:  TextStyle(color: Colors.white,fontSize: Dimens.font_sp18,),
         ),
       ),
     );

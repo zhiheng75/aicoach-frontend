@@ -258,8 +258,8 @@ class _HomePageState extends State<HomePage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 20, right: 20, top: 50),
+                         Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
                           child: Text(
                             "体验到期, 与你的专属AI外教开启学习之旅",
                             style: TextStyle(
@@ -267,8 +267,8 @@ class _HomePageState extends State<HomePage>
                                 fontSize: Dimens.font_sp22),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 20, right: 20, top: 16),
+                         Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
                           child: Text(
                             "赠送的体验时长已经使用完成，\n升级会员后,可查看完整的个性化学习报告。",
                             style: TextStyle(
@@ -328,7 +328,7 @@ class _HomePageState extends State<HomePage>
                                       ],
                                     )),
                                 // child: Center(
-                                child: const Text(
+                                child:  Text(
                                   "查看会员升级方案",
                                   style: TextStyle(
                                       color: Colors.white,
@@ -380,7 +380,7 @@ class _HomePageState extends State<HomePage>
         Gaps.hGap6,
         Text(
           content,
-          style: const TextStyle(
+          style:  TextStyle(
               fontSize: Dimens.font_sp14, color: Colours.color_111B44),
         )
       ],

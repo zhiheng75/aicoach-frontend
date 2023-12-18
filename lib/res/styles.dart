@@ -5,91 +5,91 @@ import 'dimens.dart';
 
 class TextStyles {
   
-  static const TextStyle textSize12 = TextStyle(
+  static  TextStyle textSize12 = TextStyle(
     fontSize: Dimens.font_sp12,
   );
-  static const TextStyle textSize16 = TextStyle(
+  static  TextStyle textSize16 = TextStyle(
     fontSize: Dimens.font_sp16,
   );
-  static const TextStyle textBold14 = TextStyle(
+  static  TextStyle textBold14 = TextStyle(
     fontSize: Dimens.font_sp14,
     fontWeight: FontWeight.bold
   );
-  static const TextStyle textBold16 = TextStyle(
+  static  TextStyle textBold16 = TextStyle(
     fontSize: Dimens.font_sp16,
     fontWeight: FontWeight.bold
   );
-  static const TextStyle textBold18 = TextStyle(
+  static  TextStyle textBold18 = TextStyle(
     fontSize: Dimens.font_sp18,
     fontWeight: FontWeight.bold
   );
-  static const TextStyle textBold24 = TextStyle(
+  static  TextStyle textBold24 = TextStyle(
     fontSize: 24.0,
     fontWeight: FontWeight.bold
   );
-  static const TextStyle textBold26 = TextStyle(
+  static  TextStyle textBold26 = TextStyle(
     fontSize: 26.0,
     fontWeight: FontWeight.bold
   );
  
-  static const TextStyle textGray14 = TextStyle(
+  static  TextStyle textGray14 = TextStyle(
     fontSize: Dimens.font_sp14,
     color: Colours.text_gray,
   );
-  static const TextStyle textDarkGray14 = TextStyle(
+  static  TextStyle textDarkGray14 = TextStyle(
     fontSize: Dimens.font_sp14,
     color: Colours.dark_text_gray,
   );
 
-  static const TextStyle textWhite14 = TextStyle(
+  static  TextStyle textWhite14 = TextStyle(
     fontSize: Dimens.font_sp14,
     color: Colors.white,
   );
   
-  static const TextStyle text = TextStyle(
+  static  TextStyle text = TextStyle(
     fontSize: Dimens.font_sp14,
     color: Colours.text,
     textBaseline: TextBaseline.alphabetic
   );
-  static const TextStyle textDark = TextStyle(
+  static  TextStyle textDark = TextStyle(
     fontSize: Dimens.font_sp14,
     color: Colours.dark_text,
     textBaseline: TextBaseline.alphabetic
   );
 
-  static const TextStyle textGray12 = TextStyle(
+  static  TextStyle textGray12 = TextStyle(
     fontSize: Dimens.font_sp12,
     color: Colours.text_gray,
     fontWeight: FontWeight.normal
   );
-  static const TextStyle textDarkGray12 = TextStyle(
+  static  TextStyle textDarkGray12 = TextStyle(
     fontSize: Dimens.font_sp12,
     color: Colours.dark_text_gray,
     fontWeight: FontWeight.normal
   );
   
-  static const TextStyle textHint14 = TextStyle(
+  static  TextStyle textHint14 = TextStyle(
     fontSize: Dimens.font_sp14,
     color: Colours.dark_unselected_item_color
   );
 
-  static const TextStyle text12_11B44 = TextStyle(
+  static  TextStyle text12_11B44 = TextStyle(
     fontSize: Dimens.font_sp12,
     color: Colours.color_111B44
   );
 
-  static const TextStyle text12_546092 = TextStyle(
+  static  TextStyle text12_546092 = TextStyle(
       fontSize: Dimens.font_sp12,
       color: Colours.color_546092
   );
 
 
-  static const TextStyle text18_white = TextStyle(
+  static  TextStyle text18_white = TextStyle(
       fontSize: Dimens.font_sp18,
       color: Colors.white
   );
 
-  static const TextStyle text20_white = TextStyle(
+  static  TextStyle text20_white = TextStyle(
       fontSize: Dimens.font_sp20,
       color: Colors.white
   );

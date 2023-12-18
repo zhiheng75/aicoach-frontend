@@ -4,6 +4,7 @@ import 'package:Bubble/setting/provider/device_provider.dart';
 import 'package:device_identity/device_identity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
@@ -81,11 +82,18 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => HomeTeacherProvider()),
         ChangeNotifierProvider(create: (_) => ConversationProvider()),
       ],
-      child: Consumer2<ThemeProvider, LocaleProvider>(
-        builder: (_, themeProvider, localeProvider, __) {
-          return _buildMaterialApp(themeProvider, localeProvider);
-        },
-      ),
+      child: ScreenUtilInit(
+        designSize:const Size(360, 690),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        child: Consumer2<ThemeProvider, LocaleProvider>(
+          builder: (_, themeProvider, localeProvider, __) {
+            return _buildMaterialApp(themeProvider, localeProvider);
+          },
+        ),
+      )
+
+      ,
     );
 
     /// Toast 配置

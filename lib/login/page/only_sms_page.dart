@@ -41,7 +41,7 @@ class _OnlySmsPageState extends State<OnlySmsPage> {
                 Gaps.vGap50,
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: const Text(
+                  child:  Text(
                     "Bubble",
                     style: TextStyles.textBold26,
                   ),
@@ -49,7 +49,7 @@ class _OnlySmsPageState extends State<OnlySmsPage> {
                 Gaps.vGap50,
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: const Text(
+                  child:  Text(
                     "请输入验证码",
                     style: TextStyle(fontSize: Dimens.font_sp18, color: Colors.white),
                   ),

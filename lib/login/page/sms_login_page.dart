@@ -76,7 +76,7 @@ class _SMSLoginPageState extends State<SMSLoginPage> with ChangeNotifierMixin<SM
 
   List<Widget> _buildBody() {
     return <Widget>[
-      const Text(
+       Text(
         "验证码登录",
         style: TextStyles.textBold26,
       ),

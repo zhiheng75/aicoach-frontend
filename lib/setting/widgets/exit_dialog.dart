@@ -22,8 +22,8 @@ class _ExitDialog extends State<ExitDialog> {
   Widget build(BuildContext context) {
     return BaseDialog(
       title: '提示',
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child:  Padding(
+        padding:const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Text('您确定要退出登录吗？', style: TextStyles.textSize16),
       ),
       onPressed: () {

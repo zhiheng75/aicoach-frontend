@@ -10,11 +10,11 @@
 		</data>
 		<key>flutter_assets/AssetManifest.bin</key>
 		<data>
-		d3Ha32e18FGowdSPMtwju7jH5ks=
+		VFDJYcawVwBmpn6RI7++cPgBYD8=
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		pGjlvsglp8vH9bInD1Yxka8ca/Q=
+		0mQrha9pVmPlghckyu3qCD4kXlU=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -212,6 +212,10 @@
 		<data>
 		9xzNVj+VzMGHz0/oEodEXpH3Ehs=
 		</data>
+		<key>flutter_assets/assets/images/agreement_dialog_bg.png</key>
+		<data>
+		ZBIyyxs/4sG1FOiJp4SIis6nKv0=
+		</data>
 		<key>flutter_assets/assets/images/alipay_img.png</key>
 		<data>
 		G1qPIbDgjjWa4BVeIO7I6Ovd9fY=
@@ -219,10 +223,6 @@
 		<key>flutter_assets/assets/images/auto_purchase_bg.png</key>
 		<data>
 		NOvGk4hqSijUmaZkp46HW63piBY=
-		</data>
-		<key>flutter_assets/assets/images/back_bai.png</key>
-		<data>
-		QRuytp/a43k+3YJs1YnvPv8VTUg=
 		</data>
 		<key>flutter_assets/assets/images/bind_phone_img.png</key>
 		<data>
@@ -411,10 +411,6 @@
 		<key>flutter_assets/assets/images/more_btn_bg.png</key>
 		<data>
 		sRaqxNwTEvfQAEL5jftt+FTvQFw=
-		</data>
-		<key>flutter_assets/assets/images/no_data.png</key>
-		<data>
-		+uRcfZ50AtuaAkY42ajXCqso7IM=
 		</data>
 		<key>flutter_assets/assets/images/nulijiazaizhong.png</key>
 		<data>
@@ -622,7 +618,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		Q36RV6eYzPLSaVNQ8bzk0rkhWQU=
+		t2rjJFo5FONkLIvVcgKbZTg3GSs=
 		</data>
 		<key>flutter_assets/packages/flutter_sound_web/howler/howler.js</key>
 		<data>
@@ -671,14 +667,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			y3DmPfXo8TkjhSLENjULmRwg3FyiRzfO5VoIYxd+uqA=
+			Tq84SMwdONJYXu2kkltM/RHzAlpTmtB9PZLGgngUMF8=
 			</data>
 		</dict>
 		<key>flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			obr9NCQxsCP4eBWFOvfvLtGf7G/5etSA8xgadoj4QLs=
+			4rFGbGKGBwm+2Ru5uBCbuKqr77851s1Z1VidYf+D6YM=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -1024,6 +1020,13 @@
 			EdvYv0+MYdZl9PMVcCe5ZD2yRU1dhNr/vmOF1w6L8TE=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/agreement_dialog_bg.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ANTcUYA1ZgQNm/Wa/LebefD9v/pDe/12Qu3Tre5VCYQ=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/alipay_img.png</key>
 		<dict>
 			<key>hash2</key>
@@ -1036,13 +1039,6 @@
 			<key>hash2</key>
 			<data>
 			dVRSkiumgZIk2SaqHIvN033KMPCwRmIUgRur3zBZtuk=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/images/back_bai.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			VBQLmdhwdWdHNKFBv9U5KzBvnCbz0wDliGwa55NoVzI=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/bind_phone_img.png</key>
@@ -1372,13 +1368,6 @@
 			<key>hash2</key>
 			<data>
 			PYGJMQtejggxs64bo8pzSm3peEBHeXSsMcnaifHBDlE=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/images/no_data.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			AKgY9kqZvuY6sGX88OnwyIWaO3/70c52DbfVPMBb+Xs=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/nulijiazaizhong.png</key>
@@ -1742,7 +1731,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Z2wr7s0MSaelevMCVwcpitFDD/S7qy/pYMQoaxvrido=
+			bL36nXRjasWUYT/RG82CKy3SPZoF8NaKBkUHbWdSrQE=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/flutter_sound_web/howler/howler.js</key>

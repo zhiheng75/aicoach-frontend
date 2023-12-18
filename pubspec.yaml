@@ -97,6 +97,8 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   #archive https://github.com/brendan-duncan/archive
   archive: ^3.4.9
+  # 上拉下拉加载控件
+  flutter_easyrefresh: ^2.2.1
 
 dev_dependencies:
   flutter_test:

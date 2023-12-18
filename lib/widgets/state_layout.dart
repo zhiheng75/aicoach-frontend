@@ -40,7 +40,7 @@ class StateLayout extends StatelessWidget {
           const SizedBox(width: double.infinity, height: Dimens.gap_dp16,),
           Text(
             hintText ?? type.hintText,
-            style: const TextStyle(color: Colours.color_546092,fontSize: Dimens.font_sp14),
+            style:  TextStyle(color: Colours.color_546092,fontSize: Dimens.font_sp14),
           ),
           Gaps.vGap50,
         ],

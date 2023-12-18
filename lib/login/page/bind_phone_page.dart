@@ -156,7 +156,7 @@ class _BindPhonePageState extends State<BindPhonePage>
       Gaps.vGap80,
       const LoadAssetImage("login_logo_img",width: 180,height: 67,),
       Gaps.vGap85,
-      const Text(
+       Text(
         "绑定手机号",
         style: TextStyles.text20_white,
       ),
@@ -164,7 +164,7 @@ class _BindPhonePageState extends State<BindPhonePage>
       Gaps.vGap26,
       Row(
         children: [
-          const Text(
+           Text(
             "+86 >",
             style: TextStyles.text20_white,
           ),

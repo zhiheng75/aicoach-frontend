@@ -95,7 +95,7 @@ class _StudyReportWidgetState extends State<StudyReportWidget> {
                       Gaps.vGap5,
                       Row(
                         children: [
-                         const Text(
+                          Text(
                             "星级：",
                             style: TextStyles.text12_546092,
                           ),

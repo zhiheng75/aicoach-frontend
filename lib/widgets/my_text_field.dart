@@ -26,8 +26,8 @@ class MyTextField extends StatefulWidget {
     this.getVCode,
     this.keyName,
     this.underLineColor = Colors.white,
-    this.txtStyle = TextStyles.text20_white,
-    this.hintStyle = TextStyles.text20_white,
+    this.txtStyle = const TextStyle(color: Colors.white,fontSize: 20),
+    this.hintStyle = const TextStyle(color: Colors.white,fontSize: 20),
     this.closeColor = Colors.white,
     this.countDownColor = Colors.white,
   });
@@ -118,6 +118,12 @@ class _MyTextFieldState extends State<MyTextField> {
       controller: widget.controller,
       textInputAction: TextInputAction.done,
       keyboardType: widget.keyboardType,
+      onTapOutside: (e) => {
+        widget.focusNode?.unfocus(),
+      },
+      onEditingComplete: () => {
+        FocusScope.of(context).requestFocus(widget.focusNode),
+      },
       // 数字、手机号限制格式为0到9， 密码限制不包含汉字
       inputFormatters: (widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone) ?
       [FilteringTextInputFormatter.allow(RegExp('[0-9]'))] : [FilteringTextInputFormatter.deny(RegExp('[\u4e00-\u9fa5]'))],
