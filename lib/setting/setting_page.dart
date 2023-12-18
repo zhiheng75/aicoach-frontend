@@ -2,7 +2,7 @@ import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/setting/widgets/update_dialog.dart';
-import 'package:flustars_flutter3/flustars_flutter3.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:Bubble/res/dimens.dart';
@@ -11,6 +11,7 @@ import 'package:Bubble/setting/presenter/setting_presenter.dart';
 import 'package:Bubble/setting/view/setting_view.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../dialog/common_dialog.dart';
 import '../login/entity/login_info_entity.dart';
@@ -68,8 +69,7 @@ class _SettingPageState extends State<SettingPage>
               ),
               Expanded(
                   child: Container(
-                    width: ScreenUtil.getScreenW(context),
-                    height: 500,
+                    width: ScreenUtil().screenWidth,
                     padding:const EdgeInsets.only(top: Dimens.gap_dp23,left: Dimens.gap_dp28,right:Dimens.gap_dp28,bottom: Dimens.gap_dp40),
                     decoration:const BoxDecoration(
                         borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight:  Radius.circular(20)),

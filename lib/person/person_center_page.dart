@@ -6,9 +6,9 @@ import 'package:Bubble/person/view/person_center_view.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/setting/setting_router.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
-import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 import '../login/entity/login_info_entity.dart';
@@ -51,7 +51,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
         child:Scaffold(
             body:Stack(
               children: [
-                const LoadAssetImage("personal_center_bg",height: 280,fit: BoxFit.fitHeight,),
+                LoadAssetImage("personal_center_bg",height: 280.h,fit: BoxFit.fitHeight,),
                 Container(
                   padding: const EdgeInsets.only(top: 48,left: 15,right: 15),
                   child: Column(
@@ -91,8 +91,8 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
 
                 Container(
                   margin: const EdgeInsets.only(top: 220),
-                  width: ScreenUtil.getScreenW(context),
-                  height: ScreenUtil.getScreenH(context),
+                  width: ScreenUtil().screenWidth,
+                  height: ScreenUtil().screenHeight,
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(20),
                         topRight: Radius.circular(20)),
@@ -101,10 +101,10 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
 
                 ),
                 Container(
-                  width: ScreenUtil.getScreenW(context),
-                  height: ScreenUtil.getScreenH(context),
+                  width: ScreenUtil().screenWidth,
+                  height: ScreenUtil().screenHeight,
                   margin: const EdgeInsets.only(top: 220),
-                  padding:  EdgeInsets.only(top: Dimens.gap_dp23,
+                  padding: const EdgeInsets.only(top: Dimens.gap_dp23,
                     left: Dimens.gap_dp28,
                     right: Dimens.gap_dp28,),
                   decoration: const BoxDecoration(
@@ -173,11 +173,9 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                                       ]
                                   )),
 
-                                   Container(
-                                   child:const Text("专属口语教练,科学测评,个性化定制",style: TextStyle(color: Colors.white,fontSize: 11),) ,
-                                 ),
+                                  Text("专属口语教练,科学测评,个性化定制",style: TextStyle(color: Colors.white,fontSize: Dimens.font_sp11),),
 
-                                 const Text("24小时不限场景 ",style: TextStyle(color: Colors.white,fontSize: 11),),
+                                  Text("24小时不限场景 ",style: TextStyle(color: Colors.white,fontSize: Dimens.font_sp11),),
                                   Container(
                                     width: 106,
                                     margin: const EdgeInsets.only(top: 8),
@@ -200,13 +198,10 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                                 ],
                               ) ,
                             )
-
-
                           ],
                         )
-
                       ),
-
+                      Gaps.vGap40,
                       GestureDetector(
                         onTap: (){
                           NavigatorUtils.push(context, PersonalRouter.personalStudyReport);
@@ -350,7 +345,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
   @override
   void getUserInfo(LoginInfoDataData data) {
     _headerImg = data.headimgurl;
-    if(data.name!=null){
+    if(data.name!=null&&data.name.isNotEmpty){
       _userName = data.name;
     }else if(data.nickname!=null&&data.nickname.isNotEmpty){
       _userName = data.nickname;

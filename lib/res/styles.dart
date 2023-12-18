@@ -24,11 +24,11 @@ class TextStyles {
     fontWeight: FontWeight.bold
   );
   static  TextStyle textBold24 = TextStyle(
-    fontSize: 24.0,
+    fontSize: Dimens.font_sp24,
     fontWeight: FontWeight.bold
   );
   static  TextStyle textBold26 = TextStyle(
-    fontSize: 26.0,
+    fontSize: Dimens.font_sp26,
     fontWeight: FontWeight.bold
   );
  
@@ -91,6 +91,11 @@ class TextStyles {
 
   static  TextStyle text20_white = TextStyle(
       fontSize: Dimens.font_sp20,
+      color: Colors.white
+  );
+
+  static TextStyle text17_white = TextStyle(
+      fontSize: Dimens.font_sp17,
       color: Colors.white
   );
 }
