@@ -103,15 +103,16 @@ class _ChangeRolePageState extends State<ChangeRolePage>
         if (state == 'success') {
           content = allTeacher.isNotEmpty ? Expanded(
               child: GridView.builder(
+                  padding: const EdgeInsets.all(0),
                   itemCount: allTeacher.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     //设置列数
                     crossAxisCount: 3,
                     //设置横向间距
-                    crossAxisSpacing: 10,
+                    crossAxisSpacing: 12,
                     //设置主轴间距
-                    mainAxisSpacing: 20,
-                    mainAxisExtent: 180,
+                    mainAxisSpacing: 13,
+                    mainAxisExtent: 173,
                   ),
                   itemBuilder: (BuildContext ctx, int index) {
                     TeachListEntity item = allTeacher.elementAt(index);
@@ -149,74 +150,78 @@ class _ChangeRolePageState extends State<ChangeRolePage>
                     fit: BoxFit.fill,
                   ),
                   Positioned(
-                    top: 45.0,
-                    left: 16.0,
+                    top: 62.0,
+                    left: 28.0,
                     child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
                       onTap: () {
                         NavigatorUtils.goBack(context);
                       },
-                      child: IconButton(
-                        onPressed: () async {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          final isBack = await Navigator.maybePop(context);
-                          if (!isBack) {
-                            await SystemNavigator.pop();
-                          }
-                        },
-                        icon: Image.asset(
-                          'assets/images/ic_back_white.png',
-                          width: 10,
-                          height: 16,
-                        ),
+                      child: const LoadAssetImage(
+                        'ic_back_white',
+                        width: 10.0,
+                        height: 17.0,
                       ),
                     ),
                   ),
                   Container(
                       width: ScreenUtil.getScreenW(context),
-                      margin: const EdgeInsets.only(top: 221),
+                      margin: const EdgeInsets.only(top: 230),
                       padding: const EdgeInsets.only(
-                        left: Dimens.gap_dp20,
-                        right: Dimens.gap_dp20,
+                        left: Dimens.gap_dp28,
+                        right: Dimens.gap_dp28,
                       ),
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20)),
+                              topLeft: Radius.circular(27),
+                              topRight: Radius.circular(27)),
                           color: Colors.white),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          content,
-                          Gaps.vGap15,
-                          GestureDetector(
-                            onTap: () {
-                              if (provider.selectedTeacher == null) {
-                                Toast.show(
-                                  '请选择老师',
-                                  duration: 1000,
-                                );
-                                return;
-                              }
-                              provider.updateTeacher();
-                              NavigatorUtils.goBack(context);
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(left: 28, right: 28),
-                              height: 46,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: ImageUtils.getAssetImage(
-                                          "purchase_btn_img"),
-                                      fit: BoxFit.fill)),
-                              child: const Center(
-                                child: Text(
-                                  "确定",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                              ),
+                          Expanded(
+                            child: Column(
+                              children: <Widget>[
+                                if (state == 'success' && allTeacher.isNotEmpty)
+                                  Gaps.vGap26,
+                                content,
+                              ],
                             ),
                           ),
-                          Gaps.vGap15,
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  if (provider.selectedTeacher == null) {
+                                    Toast.show(
+                                      '请选择老师',
+                                      duration: 1000,
+                                    );
+                                    return;
+                                  }
+                                  provider.updateTeacher();
+                                  NavigatorUtils.goBack(context);
+                                },
+                                child: Container(
+                                  height: 47,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: ImageUtils.getAssetImage(
+                                              "purchase_btn_img"),
+                                          fit: BoxFit.fill)),
+                                  child: const Center(
+                                    child: Text(
+                                      "确定",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 17),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Gaps.vGap33,
+                            ],
+                          ),
                         ],
                       ),
                   )

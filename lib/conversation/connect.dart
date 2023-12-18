@@ -39,10 +39,10 @@ class _ConnectState extends State<ConnectPage> {
     String deviceId = Provider.of<DeviceProvider>(context, listen: false).deviceId;
     String sessionId = const Uuid().v4().replaceAll('-', '');
     // String model = '';
-    String model = 'gpt-3.5-turbo-16k';
     String language = 'en-US';
     String token = SpUtil.getString(Constant.accessToken) ?? '';
-    String url = 'wss://api.demo.shenmo-ai.net/ws/$sessionId?device_id=$deviceId&llm_model=$model&platform=app&use_search=false&use_quivr=false&use_multion=false&character_id=${widget.teacher.characterId}&language=$language&token=$token';
+    // String url = 'wss://api.demo.shenmo-ai.net/ws/$sessionId?device_id=$deviceId&llm_model=$model&platform=app&use_search=false&use_quivr=false&use_multion=false&character_id=${widget.teacher.characterId}&language=$language&token=$token';
+    String url = 'wss://api.demo.shenmo-ai.net/ws/$sessionId?device_id=$deviceId&platform=app&use_search=false&use_quivr=false&use_multion=false&character_id=${widget.teacher.characterId}&language=$language&token=$token';
     WebsocketUtils.createWebsocket(
       'CONVERSATION',
       Uri.parse(url),
@@ -90,28 +90,29 @@ class _ConnectState extends State<ConnectPage> {
             fit: BoxFit.fill,
           ),
           Positioned(
-            top: size.height * (192 / 812),
+            top: 200.0,
             child: SizedBox(
               width: size.width,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Container(
-                    width: 128.0,
-                    height: 128.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(128.0),
-                      color: Colors.white,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(133.0),
+                    child: LoadImage(
+                      widget.teacher.imageUrl,
+                      width: 133.0,
+                      height: 133.0,
                     ),
                   ),
                   const SizedBox(
-                    height: 28.0,
+                    height: 29.0,
                   ),
                   Text(
                     '正在呼叫${widget.teacher.name}...',
                     style: const TextStyle(
-                      fontSize: 16.0,
+                      fontSize: 17.0,
                       color: Colors.white,
+                      height: 18.0 / 17.0,
                     ),
                   ),
                 ],
@@ -119,21 +120,21 @@ class _ConnectState extends State<ConnectPage> {
             ),
           ),
           Positioned(
-            bottom: size.height * (144 / 812),
-            left: (size.width - 63.0) * 0.5,
-            child: IconButton(
-              icon: const LoadAssetImage(
-                'guaduan',
-                width: 63.0,
-                height: 63.0,
-              ),
-              padding: const EdgeInsets.all(0),
-              onPressed: () {
+            bottom: 150.0,
+            left: (size.width - 66.0) * 0.5,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
                 WebsocketManage? manage = WebsocketUtils.getWebsocket('CONVERSATION');
                 if (manage != null) {
                   WebsocketUtils.closeWebsocket('CONVERSATION');
                 }
               },
+              child: const LoadAssetImage(
+                'guaduan_big',
+                width: 66.0,
+                height: 66.0,
+              ),
             ),
           ),
         ],

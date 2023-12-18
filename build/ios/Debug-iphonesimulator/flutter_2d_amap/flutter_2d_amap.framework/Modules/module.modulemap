@@ -1,6 +1,0 @@
-framework module flutter_2d_amap {
-  umbrella header "flutter_2d_amap-umbrella.h"
-
-  export *
-  module * { export * }
-}

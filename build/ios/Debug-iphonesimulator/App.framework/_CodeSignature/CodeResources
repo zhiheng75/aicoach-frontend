@@ -10,11 +10,11 @@
 		</data>
 		<key>flutter_assets/AssetManifest.bin</key>
 		<data>
-		VFDJYcawVwBmpn6RI7++cPgBYD8=
+		3KntuIqxprqdEJqdqMc8Tse2b/c=
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		0mQrha9pVmPlghckyu3qCD4kXlU=
+		vqrkmYW2kG4Wjr8gkm7W51Nimx4=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -22,7 +22,7 @@
 		</data>
 		<key>flutter_assets/NOTICES.Z</key>
 		<data>
-		H1JlCv31sdrmDm5He7qK+NJq8ms=
+		FC21qIhLEqWW5prmir8/1HpMzc4=
 		</data>
 		<key>flutter_assets/assets/avatar/bundle.js</key>
 		<data>
@@ -35,178 +35,6 @@
 		<key>flutter_assets/assets/avatar/live2dcubismcore.js</key>
 		<data>
 		azWXcwizIZpN0LvPtyAm1U/F2FI=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.2048/texture_00.png</key>
-		<data>
-		bse3JH0tyNhD4LJTXzJegbvzpV0=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.2048/texture_01.png</key>
-		<data>
-		hbv0STG9bukLazXTYeVOzRCkyx0=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.cdi3.json</key>
-		<data>
-		UJZO6RCFPfMRCKhD2ODbtBCQkfc=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.moc3</key>
-		<data>
-		Fjp1Q+Hkz6VEMYhe5O12wvUXBqE=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.model3.json</key>
-		<data>
-		15WKHugUf4C8FTYHdvzi5RloBRg=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.physics3.json</key>
-		<data>
-		WFGPWtgfpiDvJbhgVT0FhuGum54=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.pose3.json</key>
-		<data>
-		FKgvrpDhvv523fMnjlPW1BhqtDM=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.userdata3.json</key>
-		<data>
-		ZVukO8/VhcJSSWP44jld5m0YbX8=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F01.exp3.json</key>
-		<data>
-		nIjegB5No8bPG8vBlKKeCwgOOLU=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F02.exp3.json</key>
-		<data>
-		7HJQgKac4lgma9cMP2NaaLAJmVk=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F03.exp3.json</key>
-		<data>
-		fUYNhi1xwiB853kCyumMe3ZiGRc=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F04.exp3.json</key>
-		<data>
-		h3dacUHTawo8O6oxZCjm2cNTYJg=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F05.exp3.json</key>
-		<data>
-		NUCmot1irlfsaiRRbMpaRSLhGoM=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F06.exp3.json</key>
-		<data>
-		OyLsye3/MRlYGiMXeHBRrVn+CdU=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F07.exp3.json</key>
-		<data>
-		1A0/ZTdn9PIUVQ9jOUC+2z8SFWQ=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F08.exp3.json</key>
-		<data>
-		5DBcAAz3BFwiTgRg3XUwRzzrn90=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_idle.motion3.json</key>
-		<data>
-		JwpiIM893SHMm6jpkc1rs8VfLzs=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m01.motion3.json</key>
-		<data>
-		HOFLq5bkStFUBfEgzHi06RYBC2Q=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m02.motion3.json</key>
-		<data>
-		KbyHjaOBzlwKghDlio91H5ebFtc=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m03.motion3.json</key>
-		<data>
-		J3KAjI4dI3hoA61StYfvnqfzLAg=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m04.motion3.json</key>
-		<data>
-		DJiRz3Fpbf++AuxhXxBGyD3FMwk=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m05.motion3.json</key>
-		<data>
-		ToNi9LEi6FdRdg/Orppi4B8qKGk=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m06.motion3.json</key>
-		<data>
-		aO89Ztc/4KTzqnbAmy9UobHQXBs=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m07.motion3.json</key>
-		<data>
-		CecG30L+LUkJVew7N8wnaNoIz0M=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m08.motion3.json</key>
-		<data>
-		zYz+3caqgKiNhQk4vyieeThSUaE=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m09.motion3.json</key>
-		<data>
-		C0YGhOAomWwt2fwr9M26oRDn5Ic=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m10.motion3.json</key>
-		<data>
-		8k5pouy957/qcpqCbFpnALmUfqY=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m11.motion3.json</key>
-		<data>
-		39lrC/Xl7GBG3z3kZiUbYftbpAc=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m12.motion3.json</key>
-		<data>
-		a2zdKxwMZQKVqVhbcDZauuy/3gw=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m13.motion3.json</key>
-		<data>
-		obHJb7VraCPr0X6bXw7EsuX4EmE=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m14.motion3.json</key>
-		<data>
-		7gH2+pv5b3sKIYeg6X1s3Yv3NnY=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m15.motion3.json</key>
-		<data>
-		L53S9rgrDLjZkQJXkAcD0pcWqsI=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m16.motion3.json</key>
-		<data>
-		CjQWz8cUVuWcTh9ki+ONBIGnmng=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m17.motion3.json</key>
-		<data>
-		uph/wOGN/0heytd/wxWil0rR0ys=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m18.motion3.json</key>
-		<data>
-		34DFOSFdyG5dpOijefjPTs1YXuE=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m19.motion3.json</key>
-		<data>
-		kAnnakdYZD7Xf/Nayg2JuBfE9NI=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m20.motion3.json</key>
-		<data>
-		S4Mcdol/KRey3Zq3wjfFDVyzdEQ=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m21.motion3.json</key>
-		<data>
-		MHsruesXOplMwcodtRYMrVOOsYA=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m22.motion3.json</key>
-		<data>
-		8k0+v9JHCLpFQRTcoGmGACpcpks=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m23.motion3.json</key>
-		<data>
-		BOjdCuqtQhbNncEVN9fTgsjLPFQ=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m24.motion3.json</key>
-		<data>
-		YL1ZyCMoIuPy/laXWGCMGmPVCSM=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m25.motion3.json</key>
-		<data>
-		W51jiuIIbfVW0snp9IoO3oEHlgY=
-		</data>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m26.motion3.json</key>
-		<data>
-		05O9Cx5E8bewpyX6oNe1/EiaUlo=
 		</data>
 		<key>flutter_assets/assets/fonts/Roboto-Thin.ttf</key>
 		<data>
@@ -223,6 +51,10 @@
 		<key>flutter_assets/assets/images/auto_purchase_bg.png</key>
 		<data>
 		NOvGk4hqSijUmaZkp46HW63piBY=
+		</data>
+		<key>flutter_assets/assets/images/back_bai.png</key>
+		<data>
+		QRuytp/a43k+3YJs1YnvPv8VTUg=
 		</data>
 		<key>flutter_assets/assets/images/bind_phone_img.png</key>
 		<data>
@@ -250,7 +82,7 @@
 		</data>
 		<key>flutter_assets/assets/images/change_role_bg_img.png</key>
 		<data>
-		qpvtU4w3fmlS8j1Mf1+85GdMDmc=
+		1nVK3LBahXEefmy5zSU0wZm8jKY=
 		</data>
 		<key>flutter_assets/assets/images/change_role_img.png</key>
 		<data>
@@ -332,6 +164,10 @@
 		<data>
 		rVPSpKL/IsGz7kvI5ABh0KOWvxo=
 		</data>
+		<key>flutter_assets/assets/images/guaduan_big.png</key>
+		<data>
+		VjIpVopabg98SHpAJ39eFmRZ3Jg=
+		</data>
 		<key>flutter_assets/assets/images/guanbi_bai.png</key>
 		<data>
 		iPIoNOrg8mxy4mb3PcGMvfyLsh4=
@@ -411,6 +247,10 @@
 		<key>flutter_assets/assets/images/more_btn_bg.png</key>
 		<data>
 		sRaqxNwTEvfQAEL5jftt+FTvQFw=
+		</data>
+		<key>flutter_assets/assets/images/no_data.png</key>
+		<data>
+		+uRcfZ50AtuaAkY42ajXCqso7IM=
 		</data>
 		<key>flutter_assets/assets/images/nulijiazaizhong.png</key>
 		<data>
@@ -588,10 +428,6 @@
 		<data>
 		If8asByBc5HA9TI8GpFkbDu4qaY=
 		</data>
-		<key>flutter_assets/assets/images/vip_img.png</key>
-		<data>
-		YhEeV5rfBMstYlMVF0MBqcLO9VA=
-		</data>
 		<key>flutter_assets/assets/images/wechat_login_img.png</key>
 		<data>
 		+7d6+oLmiDYqa+7oy9pSaQwes7g=
@@ -618,7 +454,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		t2rjJFo5FONkLIvVcgKbZTg3GSs=
+		t29I6cLPwyEjSbZnXcIpDEw+eaQ=
 		</data>
 		<key>flutter_assets/packages/flutter_sound_web/howler/howler.js</key>
 		<data>
@@ -636,22 +472,6 @@
 		<data>
 		mfTfrGNlaeiwEdd8JAM8xBoi+Bs=
 		</data>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_close.png</key>
-		<data>
-		1U2XC/VL4Uf0UjDVrfQmXY5r44E=
-		</data>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_maximize.png</key>
-		<data>
-		yjgxKji/xqzO7SSWHKS3+DF37rM=
-		</data>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_minimize.png</key>
-		<data>
-		KCVbcXNIJ5yFbLd8YyKBpH54ltE=
-		</data>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_unmaximize.png</key>
-		<data>
-		JDI0MPNTceGjL+6TDSt8B19xS84=
-		</data>
 		<key>flutter_assets/shaders/ink_sparkle.frag</key>
 		<data>
 		KL+7f3IYR/Y9WDlxxUeDmgGoluc=
@@ -667,14 +487,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Tq84SMwdONJYXu2kkltM/RHzAlpTmtB9PZLGgngUMF8=
+			gkPdP9TTdPnHi51542R8tpTzYssdvdet62upfSF2cSU=
 			</data>
 		</dict>
 		<key>flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			4rFGbGKGBwm+2Ru5uBCbuKqr77851s1Z1VidYf+D6YM=
+			AdWLQGcnDPevx1ZjtmKg9SAONAhP8aMSKrY4xmS5fXs=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -688,7 +508,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			8MUCW8ENCo5Bb2VTFFY7HrHl8C6EBYag2cxVz4IypCA=
+			Je2IzehuGRBURdls5spiGNkfgtoNm8PtxGcc4Qc/f+Y=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/avatar/bundle.js</key>
@@ -710,307 +530,6 @@
 			<key>hash2</key>
 			<data>
 			lCeDWHZmo6G93qk6/TSeJveY7Rnc16UkSdCuMyL8/3w=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.2048/texture_00.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			MPzoHmstafuZ6NG185Gm4CQPZxCV5JHpu+JN3Xx/Q00=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.2048/texture_01.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			4el3RH7n5uNH8blrkQOuJp5vTkqM84Bo0WFTdBXMUcg=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.cdi3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			8Le2joQE+yoyf3dRU4j58kGNA44+uYp+z/iYGMPdTpc=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.moc3</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			qln3o9w7MLI7XxCv2Rku11Xk0B3JoSRC2ZuXKkGOJUM=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.model3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			WkGWmAK4+QGcpzGwfZGPwTfmph65lDvdP1Mq6qCTb4w=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.physics3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			sJplR1mgoKSZmKJjdXsQ8xA3etq0uKKBrlxwkCqKfR8=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.pose3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			zRweLA+qw78MQv3xpNWgZOvV4fLcQRapp8cjuUiBjvY=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/Haru.userdata3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			bQATZZZc2r2fs2z/qVg8nj7/IDMdeRwABkxPkkbKKJM=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F01.exp3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			sUPTfSSvj6XWGeMz55H6zYfWOWq3Xgn6kFHnYPj/luc=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F02.exp3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			wL1PkjsS9A+K13h2bPSKJgBU/zRhVqruBi3K14gFMGM=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F03.exp3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			zepxdzIF5imRVYIMEq/iDBXc9T8Oc9p6MMNk/l0W04w=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F04.exp3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			NUxYYJtkp02vjX43tNKKNlVIqluhv5QexNjbS9O7Q70=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F05.exp3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			T0OvVyKUZ0kvqxOoj2ALdB9CiHST6ZO27J9VhojS3Oo=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F06.exp3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			G/mtamQLgAnUKdiDcYsr8tAJGzgMY8ocZTJr28FxBao=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F07.exp3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			d+O5QeJSWv8DCO2CmY5rQ1bIlul9lBHFKPmP1KdT1oU=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/expressions/F08.exp3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			vmUoMbeUWP0/nVWyjBWw6T1VHdcwxeEFPiPSOP6HmiE=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_idle.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ik+sRZq/Nd+wSRiOQzDUhan85UrmERYl9P+uTZsDq/s=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m01.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			7YXAd5X7ouV9dwG3BroEUWuDoLfkRjdSMgwsCovcoDM=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m02.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ihh6moMN22L1Rx3JdHgq9o9h3+sSsx6zhY01E88sA10=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m03.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			jtujlS4MRc4Lw9IHVbohJSi2RQZB6C3sFi16Mn1IuCs=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m04.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			lTJZnqfFRFLhsqaJZSp25Q+h0mHwpc0K2qoBscVn+98=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m05.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			UBXRT/rZmp60P0jfqm5AAHK2EEZ2Ea1yIhsEoh4yUsY=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m06.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			MRxUTGcoLLxArB4Ch3UbIKf0mkb07qmJtwce/DGIBTw=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m07.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			+qOqfKnAXMOVADpKBy6o0zl8mjSAySIOSG3XC+syvak=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m08.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			iTPi4NuIGAN9uBfV5qpP15XG8+MC/OribytaS4iIlEY=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m09.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			1sirsB3P7oJGzMvnpDfwJcsxiE+ECPMgfhpuQTmIjkU=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m10.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			J5M7A2Or2lwTpVz+pfKWgpOry8iZUUB3P/K/cYbGMcE=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m11.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			zUr6lkIvZJzfMngvbXlZSlL7wQZxektAVsqt2+x1ONM=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m12.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			pRLPmcQW6tFM2LyJ8uOwIfzivPRvZw8dFR03TZVHarg=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m13.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			y1nK+tZWe03+cfadb8GdF5Avmjl7rcTkADSRIp/nRL4=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m14.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			phdlxIXWEWmy29Okt2DUCZZO3W8nLzribvMGno68dVk=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m15.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Q4MUe9Yae9LZkFkVEr/inup0P5OGjoZ5/+0W5YhigIg=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m16.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			erRPPj4yWMRmb7PtNkPpR/rwSiwXt3vAsSEh6pg8niM=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m17.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			m+lxdg+5IuPcPViLfsoVxIZV23IcNXjXPlTa9V/IZ30=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m18.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Tb7Ppg8IHcX/Y6CPu/J4iWY/dmtMRJ31NKkEUo0rfzY=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m19.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			WYxStAaEguzpwdbd8fDw3YsY62Jfo+dYoKy2d7surJ0=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m20.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			U25GfWUzwIg7KtbIkVvGMrTUGI/D06uxnMa09f0S3bk=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m21.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Au+4/CKW2mUx02Tex5KcFoV2MEa3RLpHAya3lhxxI7M=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m22.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			AvK8oA8iKBlmqG1ohdve5n1yXH3BY+Wyu76xzPn7XsM=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m23.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			JM7wOROM4UyQKAfPGk0kzkjPtIAseIqan7i1psRVZEQ=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m24.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			cMnzQZPz2f0w+ewgSjM7AWm7KQVA51HPogPeZhGpyNc=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m25.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			vvD9zZvEDWHuu3IyNOAKX4e6ANl/MfZd0hW4YsMHQkU=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/avatar/resource/Haru/motions/haru_g_m26.motion3.json</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			KyD7vzFDmleSyAgIXs1MncWt3rYZXG0ROiXnf3rMD08=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/fonts/Roboto-Thin.ttf</key>
@@ -1039,6 +558,13 @@
 			<key>hash2</key>
 			<data>
 			dVRSkiumgZIk2SaqHIvN033KMPCwRmIUgRur3zBZtuk=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/back_bai.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			VBQLmdhwdWdHNKFBv9U5KzBvnCbz0wDliGwa55NoVzI=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/bind_phone_img.png</key>
@@ -1087,7 +613,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			RFOJFywzDPsc+DU6mI6K8e+L7eOpD9TYGHx6UOJ6bo0=
+			T0q1jt8vWjqTs92LbWbFz5ziNEQiyAu62wvGUdDDvJo=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/change_role_img.png</key>
@@ -1230,6 +756,13 @@
 			ZbsX3DSV0XvxRCDQoP5vRlx9tH9SmIj4QulVa2BW7wk=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/guaduan_big.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ABSLBJj3CNpPhcxLcupmUbbR1UhIUxglPL7uUBftlfg=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/guanbi_bai.png</key>
 		<dict>
 			<key>hash2</key>
@@ -1368,6 +901,13 @@
 			<key>hash2</key>
 			<data>
 			PYGJMQtejggxs64bo8pzSm3peEBHeXSsMcnaifHBDlE=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/no_data.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			AKgY9kqZvuY6sGX88OnwyIWaO3/70c52DbfVPMBb+Xs=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/nulijiazaizhong.png</key>
@@ -1678,13 +1218,6 @@
 			XL7HMT+pAq9vL/Ayorv+uxM29JFA3unbXW+u1gIJamw=
 			</data>
 		</dict>
-		<key>flutter_assets/assets/images/vip_img.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			DY1ldD3B2CX4h4I5qFqLTVG1W1HCRsVwttJF0GF58nw=
-			</data>
-		</dict>
 		<key>flutter_assets/assets/images/wechat_login_img.png</key>
 		<dict>
 			<key>hash2</key>
@@ -1731,7 +1264,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			bL36nXRjasWUYT/RG82CKy3SPZoF8NaKBkUHbWdSrQE=
+			Z8d7gIxjnQOmg3jGWUhH3x4/sYaAlOdduaInPwD/oUM=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/flutter_sound_web/howler/howler.js</key>
@@ -1760,34 +1293,6 @@
 			<key>hash2</key>
 			<data>
 			qWCKpuHsq6kgMGGoVssygUO0BrxLaIv0SI+sTgJ7PK0=
-			</data>
-		</dict>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_close.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			cP4BMLu9ko0EzTOkns3kIuxU/XSLek6YP04xvm5z9fU=
-			</data>
-		</dict>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_maximize.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			k/LtAS7AEoi3itSBbvJUJh6f8l6KmFg1m0VDHJpd5fQ=
-			</data>
-		</dict>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_minimize.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			CXbtu5l3E2VErxfeEl80WkEGVpTekgNtk2WBfqbY8Fo=
-			</data>
-		</dict>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_unmaximize.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			PTdZMMUU7C68BgOtHhOYtNr0WJUQQqlyMtFvF+HJYDs=
 			</data>
 		</dict>
 		<key>flutter_assets/shaders/ink_sparkle.frag</key>

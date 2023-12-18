@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../util/image_utils.dart';
 
@@ -32,7 +33,10 @@ class LoadImage extends StatelessWidget {
     if (image.isNotEmpty) {
       return CachedNetworkImage(
         imageUrl: image,
-        placeholder: (_, __) => holder,
+        placeholder: (_, __) => LoadingAnimationWidget.waveDots(
+          color: Colors.white,
+          size: 20.0,
+        ),
         errorWidget: (_, __, dynamic error) => holder,
         width: width,
         height: height,

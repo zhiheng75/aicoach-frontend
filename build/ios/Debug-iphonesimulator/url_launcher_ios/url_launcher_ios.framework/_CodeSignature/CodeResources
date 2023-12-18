@@ -4,25 +4,9 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Headers/FLTURLLauncherPlugin.h</key>
-		<data>
-		zowjQKs5Dznnk0Xo6aiJhmnLWdQ=
-		</data>
-		<key>Headers/FLTURLLauncherPlugin_Test.h</key>
-		<data>
-		IBBPMToxTRJRBprfuAbAYqYdfcQ=
-		</data>
-		<key>Headers/FULLauncher.h</key>
-		<data>
-		Wut9GlI4sWvdVM+HEosTI84iGNE=
-		</data>
-		<key>Headers/messages.g.h</key>
-		<data>
-		na6ifxNXtVmkd/T6LegIuDicpHc=
-		</data>
 		<key>Headers/url_launcher_ios-Swift.h</key>
 		<data>
-		DGIpsq1DqQtQk7iSjs4pRVEA4cs=
+		Olb5bD6BkX0FS4gphO0qb/46rVs=
 		</data>
 		<key>Headers/url_launcher_ios-umbrella.h</key>
 		<data>
@@ -30,7 +14,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		Jk6qEBrxfxvuL+3MGJxNHmrRbG8=
+		2UD25URUPKP8gZrD60A9os8o60M=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -38,11 +22,11 @@
 		</data>
 		<key>Modules/url_launcher_ios.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		XjJTNRVYqAy6OmCfSUZahcMKKNQ=
+		ENgXwUPfPaKGdwWxGfYpGvPY+Sc=
 		</data>
 		<key>Modules/url_launcher_ios.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		bHId5JX1/yNBQJ4c9gwFRzh28O4=
+		if/+n3EGHHr5itlNnM8aiww/1eY=
 		</data>
 		<key>Modules/url_launcher_ios.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -50,11 +34,11 @@
 		</data>
 		<key>Modules/url_launcher_ios.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		N+R7R4Ws7B4yyXZrycti9/o3xns=
+		JpclsRr17pvqe1xUt/IQeQWj/IA=
 		</data>
 		<key>Modules/url_launcher_ios.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		T1ue0AtvMJd9AkCBj28fB3S6UuM=
+		3am18psd2tsk5SQG2l1/20n3qng=
 		</data>
 		<key>Modules/url_launcher_ios.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -62,48 +46,20 @@
 		</data>
 		<key>Modules/url_launcher_ios.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		6+sZlZz7QtKMSTTtjMEj6pXU1FA=
+		8S7DISBts7CakO7e2DcSqAkyIwM=
 		</data>
 		<key>Modules/url_launcher_ios.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		gdBOsPGK1CXb3+tmmWVDC6ZVbps=
+		XUEedPcegEWe/SlY4P3dfoHxYNE=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Headers/FLTURLLauncherPlugin.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			AIqSTR7iYRF9eqVGu1wq3BGALC+GxwQ/bwrTq+lcNng=
-			</data>
-		</dict>
-		<key>Headers/FLTURLLauncherPlugin_Test.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			fhZ/84kI8dPwNlEsSCMQHdP2LKJcP9a6d4oFCVRQfVE=
-			</data>
-		</dict>
-		<key>Headers/FULLauncher.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Vig4/9NDyr7oz8EdpUSoJSbKzeomMk64v+dVtx7mSJg=
-			</data>
-		</dict>
-		<key>Headers/messages.g.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Fx8FvIgY5kQ7pJe1PmFtHUC7ZjfbjknMUejv5Oga2Dk=
-			</data>
-		</dict>
 		<key>Headers/url_launcher_ios-Swift.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			2zna2f9uqrd+6uuqFubI/vkG95E5Z7S2aKnxp/Zh1So=
+			TcJK3LP42cz7T+Nlq1nWL3o91j5mK1m21ckOvEU0plw=
 			</data>
 		</dict>
 		<key>Headers/url_launcher_ios-umbrella.h</key>
@@ -124,14 +80,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			x31VnxFFOlW3IE9lljp7vajKm5M0i3Q+bZwXv8IG110=
+			QjJ8iDwUMucPdK5fXiTFZHAs4XuZZvFLh6/Jga9KAMQ=
 			</data>
 		</dict>
 		<key>Modules/url_launcher_ios.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			UtpbV1VTOzLLYXrAjbR/mwwFnAytzE5HMAZvjJ9uf8M=
+			/1tgCw8QarfKv5IYZH//1kL/jgJIetO0/aYiRZheR0Y=
 			</data>
 		</dict>
 		<key>Modules/url_launcher_ios.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
@@ -145,14 +101,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			V5rotoKgNyxm+J2ZoC09Ch3iJ6vD2x4lnFT0U55duJU=
+			2UrR8WK/HLLXUb6sfqf150wF/Q7ogErXDeJlVZbm7iM=
 			</data>
 		</dict>
 		<key>Modules/url_launcher_ios.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			jq46ZPTo4s/WiApUb2F2PuU8zNmbcBNlfrZEAB8t6kk=
+			JUmXr8SliDVc7kBrJADdFOO8oe9atC52eVm/H78ILN4=
 			</data>
 		</dict>
 		<key>Modules/url_launcher_ios.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
@@ -166,14 +122,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			G5CqfEgkaQfeaQA/0ZDpu1h8rPWFDwYjKlFZF7yJUw0=
+			pen84rdHu+PGQH3xkvjUaxGtJIM1ZHsSkp6Px2gEMYc=
 			</data>
 		</dict>
 		<key>Modules/url_launcher_ios.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			+xNMGmxySEfSt+qsuiFD0CYgulZ+8/PYPDpB5VgUk90=
+			8sh8LHUG6idSUyYopQm9XabkzbTFqw+niS/epgRvN+A=
 			</data>
 		</dict>
 	</dict>
