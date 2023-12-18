@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:Bubble/util/theme_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../res/colors.dart';
 import '../res/dimens.dart';
@@ -84,7 +85,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Container(
         alignment: centerTitle.isEmpty ? Alignment.centerLeft : Alignment.center,
         width: double.infinity,
-        margin: const EdgeInsets.symmetric(horizontal: 48.0),
+        margin:  EdgeInsets.symmetric(horizontal: 48.0.h),
         child: Text(
           title.isEmpty ? centerTitle : title,
           style:  TextStyle(color: Colors.white,fontSize: Dimens.font_sp18,),
@@ -115,5 +116,5 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(48.0);
+  Size get preferredSize =>  Size.fromHeight(48.0.h);
 }
