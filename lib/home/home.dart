@@ -15,14 +15,12 @@ import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:provider/provider.dart';
 import '../conversation/conversation_router.dart';
-import '../dialog/agreement_dialog.dart';
 import '../entity/result_entity.dart';
 import '../mvp/base_page.dart';
 import '../net/dio_utils.dart';
 import '../net/http_api.dart';
 import '../res/colors.dart';
 import '../res/gaps.dart';
-import '../setting/widgets/update_dialog.dart';
 import '../util/image_utils.dart';
 import '../widgets/double_tap_back_exit_app.dart';
 import '../widgets/load_image.dart';
@@ -182,7 +180,7 @@ class _HomePageState extends State<HomePage>
                               },
                               child: Container(
                                 margin: const EdgeInsets.only(left: 28, right: 28),
-                                height: 46,
+                                height: 47.0,
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
                                         image: ImageUtils.getAssetImage(
@@ -191,7 +189,7 @@ class _HomePageState extends State<HomePage>
                                 child: Center(
                                   child: Text(
                                     teacher != null ? '与${teacher.name}对话' : '刷新加载',
-                                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                                    style: const TextStyle(color: Colors.white, fontSize: 17),
                                   ),
                                 ),
                               )),
@@ -212,6 +210,9 @@ class _HomePageState extends State<HomePage>
         enableDrag: false,
         isScrollControlled: true,
         isDismissible: false,
+        constraints: const BoxConstraints(
+          maxHeight: 533,
+        ),
         builder: (_) => const RecommendTeacherWidget(),
     );
   }

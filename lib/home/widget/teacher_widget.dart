@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:Bubble/res/colors.dart';
-import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/load_image.dart';
 
 import '../entity/teach_list_entity.dart';
@@ -55,21 +54,26 @@ class _TeacherWidgetState extends State<TeacherWidget> {
             ClipOval(
               child: LoadImage(
                 widget.teacher.imageUrl,
-                height: 71,
-                width: 71,
+                height: 73,
+                width: 73,
                 fit: BoxFit.cover,
               ),
             ),
-            Gaps.vGap10,
+            const SizedBox(
+              height: 17.0,
+            ),
             Text(
               widget.teacher.name,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: const TextStyle(
-                  fontSize: 16, color: Colours.color_111B44,fontWeight: FontWeight.bold),
+                  fontSize: 17, color: Colours.color_111B44, height: 18.0 / 17.0),
             ),
-            Text(widget.teacher.slogan,    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 12),),
-            Text(widget.teacher.character.replaceAll(",", " "),    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 12),)
+            const SizedBox(
+              height: 6.0,
+            ),
+            Text(widget.teacher.slogan,    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 11),),
+            Text(widget.teacher.character.replaceAll(",", " "),    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 11),)
           ],
         ),
       ),

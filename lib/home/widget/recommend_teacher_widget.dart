@@ -90,15 +90,16 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
 
         if (state == 'success') {
           child = allTeacher.isNotEmpty ? GridView.builder(
+              padding: const EdgeInsets.all(0),
               itemCount: allTeacher.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 //设置列数
                 crossAxisCount: 3,
                 //设置横向间距
-                crossAxisSpacing: 10,
+                crossAxisSpacing: 12,
                 //设置主轴间距
-                mainAxisSpacing: 20,
-                mainAxisExtent: 180,
+                mainAxisSpacing: 13,
+                mainAxisExtent: 173,
               ),
               itemBuilder: (BuildContext ctx, int index) {
                 TeachListEntity item = allTeacher.elementAt(index);
@@ -123,8 +124,8 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
         }
 
         return DraggableScrollableSheet(
-            initialChildSize: 0.7,
-            minChildSize: 0.65,
+            initialChildSize: 1,
+            minChildSize: 1,
             expand: false,
             builder: (_, scrollController) {
               return Stack(
@@ -132,16 +133,16 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
                   Container(
                     decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)),
+                            topLeft: Radius.circular(27),
+                            topRight: Radius.circular(27)),
                         color: Colors.white
                     ),
                   ),
                   Container(
                     decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)),
+                            topLeft: Radius.circular(27),
+                            topRight: Radius.circular(27)),
                         gradient: LinearGradient(
                             begin: Alignment.topRight,
                             end: Alignment.bottomLeft,
@@ -157,71 +158,92 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
                             ])),
                     child: Column(
                       children: [
-                        Padding(
-                          padding:
-                          const EdgeInsets.only(left: 20, right: 20, top: 20),
-                          child: Row(
-                            children: [
-                               Text(
-                                "选择自己喜欢的老师",
-                                style: TextStyle(
-                                    color: Colours.color_111B44,
-                                    fontSize: Dimens.font_sp15,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const Expanded(child: Gaps.empty),
-                              GestureDetector(
-                                onTap: () {
-                                  provider.chooseTeacher(null);
-                                  NavigatorUtils.goBack(context);
-                                },
-                                child: const LoadAssetImage(
-                                  "close_img",
-                                  width: 15,
-                                  height: 15,
+                        Expanded(
+                          child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding:
+                                const EdgeInsets.only(left: 28, right: 20, top: 20, bottom: 31),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "选择自己喜欢的老师",
+                                      style: TextStyle(
+                                        height: 1,
+                                        letterSpacing: 17.0 / Dimens.font_sp15,
+                                        color: Colours.color_111B44,
+                                        fontSize: Dimens.font_sp15,),
+                                    ),
+                                    const Expanded(child: Gaps.empty),
+                                    GestureDetector(
+                                      onTap: () {
+                                        provider.chooseTeacher(null);
+                                        NavigatorUtils.goBack(context);
+                                      },
+                                      child: const LoadAssetImage(
+                                        "close_img",
+                                        width: 13,
+                                        height: 13,
+                                      ),
+                                    )
+                                  ],
                                 ),
-                              )
+                              ),
+                              Expanded(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 28.0,
+                                          ),
+                                          child: child,
+                                        ),
+                                      ),
+                                      if (state == 'success' && allTeacher.isNotEmpty)
+                                        const SizedBox(
+                                          height: 27,
+                                        ),
+                                    ],
+                                  )
+                              ),
                             ],
                           ),
                         ),
-                        Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.only(
-                                  left: 20, right: 20, top: 20, bottom: 10),
-                              child: child,
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: GestureDetector(
-                              onTap: () {
-                                if (provider.selectedTeacher == null) {
-                                  Toast.show(
-                                    '请选择老师',
-                                    duration: 1000,
-                                  );
-                                  return;
-                                }
-                                NavigatorUtils.goBack(context);
-                                provider.updateTeacher();
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.only(left: 28, right: 28),
-                                height: 46,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: ImageUtils.getAssetImage(
-                                            "purchase_btn_img"),
-                                        fit: BoxFit.fill)),
-                                child: const Center(
-                                  child: Text(
-                                    "确定",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 16),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            GestureDetector(
+                                onTap: () {
+                                  if (provider.selectedTeacher == null) {
+                                    Toast.show(
+                                      '请选择老师',
+                                      duration: 1000,
+                                    );
+                                    return;
+                                  }
+                                  NavigatorUtils.goBack(context);
+                                  provider.updateTeacher();
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 28, right: 28),
+                                  height: 47,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: ImageUtils.getAssetImage(
+                                              "purchase_btn_img"),
+                                          fit: BoxFit.fill)),
+                                  child: const Center(
+                                    child: Text(
+                                      "确定",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 17),
+                                    ),
                                   ),
-                                ),
-                              )),
+                                )),
+                            Gaps.vGap33,
+                          ],
                         ),
-                        Gaps.vGap24,
                       ],
                     ),
                   )

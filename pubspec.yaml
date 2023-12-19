@@ -99,6 +99,8 @@ dependencies:
   archive: ^3.4.9
   # 上拉下拉加载控件
   flutter_easyrefresh: ^2.2.1
+  #in_app_purchase https://github.com/flutter/packages/tree/main/packages/in_app_purchase/in_app_purchase
+  in_app_purchase: ^3.1.11
 
 dev_dependencies:
   flutter_test:
