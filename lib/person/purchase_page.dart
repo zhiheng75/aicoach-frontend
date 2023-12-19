@@ -7,9 +7,9 @@ import 'package:Bubble/person/presneter/purchase_view.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
-import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
@@ -77,7 +77,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
               child: RichText(
                   text: TextSpan(
                       children: <TextSpan>[
-                         TextSpan(text: category,style:  TextStyle(fontSize: 13,color: Colors.white)),
+                         TextSpan(text: category,style:  TextStyle(fontSize: Dimens.font_sp13,color: Colors.white)),
                          // TextSpan(text: "\n每天低至1块钱",style: const TextStyle(fontSize: 13,color: Colours.color_00DBAF)),
                       ]
                   )),
@@ -85,10 +85,9 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
             ,
 
             Container(
-              width: ScreenUtil.getScreenW(context),
+              width: ScreenUtil().screenWidth,
               margin: const EdgeInsets.only(top: 220),
-              padding: const EdgeInsets.only(top: Dimens.gap_dp15,
-                  left: Dimens.gap_dp28,
+              padding: const EdgeInsets.only(left: Dimens.gap_dp28,
                   right: Dimens.gap_dp28,),
               decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(20),
@@ -118,7 +117,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                               )
                                 ;
                             }),
-                        Gaps.vGap30,
+                        SizedBox(height: 15.h),
                         GestureDetector(
                           onTap: () {
                             wxPay = true;
@@ -136,7 +135,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                           },
                           child: purchaseType(1, aliPay),
                         ),
-                        Gaps.vGap32,
+                SizedBox(height: 40.h),
                         GestureDetector(
                           onTap: () {
                             if(agreeAgreement){
@@ -150,8 +149,6 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                             }else{
                               Toast.show("请同意会员协议和续费规则");
                             }
-
-
                           },
                           child: Container(
                             height: 46,
@@ -196,7 +193,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
   return Stack(
       children: [
         Container(
-          margin:const EdgeInsets.only(bottom: 15),
+          margin: EdgeInsets.only(bottom: 15.h),
           padding:const EdgeInsets.only(left: 22,right: 22,top: 10,bottom: 30),
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -225,52 +222,6 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
     );
   }
 
-  Widget purchaseItemTxt(int type){
-    switch(type){
-      case 0:
-        return  Row(
-          children: [
-           const Text("连续包年",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
-            Expanded(
-                child: Container(
-                  margin:const EdgeInsets.only(left:5,right: 20),
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: ImageUtils.getAssetImage("auto_purchase_bg"),
-                    fit: BoxFit.cover
-              )),
-              child:  Center(
-                child: Text(
-                  "自动续费，可随时取消",
-                  style: TextStyle(
-                      fontSize: Dimens.font_sp10, color: Colors.white),
-                ),
-              ),
-            )),
-             Text("¥ 365元/年",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
-          ],
-        );
-      case 1:
-        return  Row(
-          children: [
-            const Text("连续包月",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
-            const  Expanded(child: Gaps.empty),
-             Text("¥ 48元/月",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
-          ],
-        );
-      case 2:
-        return  Row(
-          children: [
-            const Text("年度会员",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
-            const Expanded(child: Gaps.empty),
-             Text("¥ 638元/年",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
-          ],
-        );
-      default :
-        return  Gaps.empty;
-    }
-  }
-
   Widget purchaseItemTxt2(MyGoodListEntity bean){
     return Row(
       children: [
@@ -282,23 +233,30 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
               fontWeight: FontWeight.bold),
         ),
         Expanded(
-            child: bean.recommend==true?
-            Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.only(left: 5, right: 5),
-              padding:const EdgeInsets.only(left: 7,right: 7),
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: ImageUtils.getAssetImage("auto_purchase_bg"),
-                            fit: BoxFit.cover)),
-                    child:  Text(
-                      "自动续费，可随时取消",
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontSize: Dimens.font_sp10, color: Colors.white),
-                ),
-            ):Gaps.empty),
+            child: bean.recommend==true? Row(
+                    children: [
+                         Container(
+                          constraints:BoxConstraints(maxWidth: 125.w) ,
+                          alignment: Alignment.center,
+                          margin:  EdgeInsets.only(left: Dimens.w_dp5, right: Dimens.w_dp5),
+                          padding:  EdgeInsets.only(
+                              left: Dimens.w_dp7, right:Dimens.w_dp7, top:Dimens.h_dp3, bottom: Dimens.h_dp3),
+                          decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(Dimens.gap_dp3)),
+                              color: Colours.color_00B4DA),
+                          child: Text(
+                            "自动续费，可随时取消",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontSize: Dimens.font_sp10,
+                                color: Colors.white),
+                          ),
+                        ),
+                    ],
+                  )
+            :Gaps.empty),
          Text(
           "¥ ${viewPrice(bean.price)}元/${bean.unit}",
           style:  TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
@@ -418,4 +376,51 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
     }
   }
 
+
+
+  Widget purchaseItemTxt(int type){
+    switch(type){
+      case 0:
+        return  Row(
+          children: [
+            const Text("连续包年",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
+            Expanded(
+                child: Container(
+                  margin:const EdgeInsets.only(left:5,right: 20),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: ImageUtils.getAssetImage("auto_purchase_bg"),
+                          fit: BoxFit.cover
+                      )),
+                  child:  Center(
+                    child: Text(
+                      "自动续费，可随时取消",
+                      style: TextStyle(
+                          fontSize: Dimens.font_sp10, color: Colors.white),
+                    ),
+                  ),
+                )),
+            Text("¥ 365元/年",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
+          ],
+        );
+      case 1:
+        return  Row(
+          children: [
+            const Text("连续包月",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
+            const  Expanded(child: Gaps.empty),
+            Text("¥ 48元/月",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
+          ],
+        );
+      case 2:
+        return  Row(
+          children: [
+            const Text("年度会员",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
+            const Expanded(child: Gaps.empty),
+            Text("¥ 638元/年",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
+          ],
+        );
+      default :
+        return  Gaps.empty;
+    }
+  }
 }

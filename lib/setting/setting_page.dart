@@ -87,7 +87,7 @@ class _SettingPageState extends State<SettingPage>
                             )),
                         Gaps.vGap20,
                         const Divider(
-                          height: Dimens.gap_dp1,
+                          thickness: 0.4,
                           color: Colours.color_5B8BD2,
                         ),
                         Gaps.vGap20,
@@ -103,7 +103,7 @@ class _SettingPageState extends State<SettingPage>
 
                         Gaps.vGap20,
                         const Divider(
-                          height: Dimens.gap_dp1,
+                          thickness: 0.4,
                           color: Colours.color_5B8BD2,
                         ),
                         Gaps.vGap20,
@@ -127,7 +127,7 @@ class _SettingPageState extends State<SettingPage>
                         ),
                         Gaps.vGap20,
                         const Divider(
-                          height: Dimens.gap_dp1,
+                          thickness: 0.4,
                           color: Colours.color_5B8BD2,
                         ),
                         Gaps.vGap20,

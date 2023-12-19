@@ -126,6 +126,7 @@ class Colours {
   static const Color color_B7BFD9 = Color(0xFFB7BFD9);
   static const Color color_2F468A = Color(0xFF2F468A);
   static const Color color_3A74E6 = Color(0xFF3A74E6);
+  static const Color color_00B4DA = Color(0x8000B4DA);
 
   static Color hex2color(String hex) {
     if (hex.length != 7) {

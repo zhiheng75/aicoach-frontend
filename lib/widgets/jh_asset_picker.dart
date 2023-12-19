@@ -3,6 +3,7 @@
 ///  Created by iotjin on 2022/09/10.
 ///  description: 基于微信UI的图片/视频选择器(支持拍照及录制视频) 封装wechat_assets_picker、wechat_camera_picker
 
+import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,7 @@ const int _lineCount = 4;
 // 每个GridView item间距(GridView四周与内部item间距在此统一设置)
 const double _itemSpace = 7.0;
 // 右上角删除按钮大小
-const double _deleteBtnWH = 20.0;
+const double _deleteBtnWH = 17.0;
 // 默认添加图片
 const String _addBtnIcon = 'assets/images/selectPhoto_add.png';
 // 默认删除按钮图片
@@ -150,13 +151,13 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
               width: 0.5
           )
         ),
-        child: const Column(
+        child:  Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            LoadAssetImage("camera_img",width: 28,height: 23,),
+            const LoadAssetImage("camera_img",width: 28,height: 23,),
             Gaps.vGap8,
-            Text("上传",style: TextStyle(fontSize: 10,color: Colours.color_546092),)
+            Text("上传",style: TextStyle(fontSize: Dimens.font_sp10,color: Colours.color_546092),)
           ],
         ),
       ),
@@ -177,11 +178,14 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
               child: _loadAsset(_selectedAssets[index]),
             ),
             GestureDetector(
-              child: const Image(
-                image: AssetImage(_deleteBtnIcon),
-                width: _deleteBtnWH,
-                height: _deleteBtnWH,
-              ),
+              child:  Container(
+                margin: const EdgeInsets.all(3),
+                child:const Image(
+                  image: AssetImage(_deleteBtnIcon),
+                  width: _deleteBtnWH,
+                  height: _deleteBtnWH,
+                ),
+              ) ,
               onTap: () =>{
                 _deleteAsset(index),
               }
@@ -194,7 +198,10 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
   }
 
   Widget _loadAsset(AssetEntity asset) {
-    return Image(image: AssetEntityImageProvider(asset), fit: BoxFit.cover);
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(13),
+      child: Image(image: AssetEntityImageProvider(asset), fit: BoxFit.cover),
+    );
   }
 
   void _deleteAsset(index) {

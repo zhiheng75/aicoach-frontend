@@ -1,6 +1,7 @@
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../res/colors.dart';
 import '../../res/gaps.dart';
@@ -70,10 +71,10 @@ class _MyOrderItemState extends State<MyOrderItem> {
                         children: [
                           Expanded(
                               child: Text(
-                                "订 单 号：${widget.data.orderNo}",
+                                "订  单  号：${widget.data.orderNo}",
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
-                                style: TextStyles.text12_11B44,
+                                style: TextStyles.text12_546092,
                               )),
                           const LoadAssetImage("copy_img",width: 9,height: 10,)
                           

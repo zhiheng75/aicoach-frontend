@@ -53,7 +53,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
               children: [
                 LoadAssetImage("personal_center_bg",height: 280.h,fit: BoxFit.fitHeight,),
                 Container(
-                  padding: const EdgeInsets.only(top: 48,left: 15,right: 15),
+                  padding:  EdgeInsets.only(top: 48,left: Dimens.w_dp12,right: Dimens.w_dp12),
                   child: Column(
                     children: [
                         Row(
@@ -82,7 +82,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                           ],
                         ),
                       Container(
-                        margin:const EdgeInsets.only(left: 18,right: 18,top: 17),
+                        margin: EdgeInsets.only(left: Dimens.w_dp15,right:Dimens.w_dp15,top: Dimens.h_dp17),
                         child: headerItem(),
                       ),
                     ],
@@ -187,11 +187,11 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                                       ),
                                       color: Colors.white,
                                     ),
-                                    child: const Row(
+                                    child:  Row(
                                       children: [
-                                         LoadAssetImage("dimond_img",width: 15,height: 14,),
+                                        const  LoadAssetImage("dimond_img",width: 15,height: 14,),
                                         Gaps.hGap4,
-                                        Text("立即续费",style: TextStyle(fontSize: 12,color: Colours.color_3A74E6,fontWeight: FontWeight.bold),)
+                                        Text("立即续费",style: TextStyle(fontSize: Dimens.font_sp12,color: Colours.color_3A74E6,fontWeight: FontWeight.bold),)
                                       ],
                                     ),
                                   )
