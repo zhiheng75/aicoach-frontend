@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:Bubble/home/entity/base_config_entity.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/person/entity/wx_pay_entity.dart';
@@ -36,6 +38,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
 
   bool wxPay = true;
   bool aliPay = false;
+  bool applePay = false;
 
   bool agreeAgreement = false;
   late PurchasePresenter _purchasePresenter;
@@ -123,6 +126,7 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                           onTap: () {
                             wxPay = true;
                             aliPay = false;
+                            applePay = false;
                             setState(() {});
                           },
                           child: purchaseType(0, wxPay),
@@ -132,10 +136,24 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                           onTap: () {
                             wxPay = false;
                             aliPay = true;
+                            applePay = false;
                             setState(() {});
                           },
                           child: purchaseType(1, aliPay),
                         ),
+                        if (Platform.isIOS)
+                          ...[
+                            Gaps.vGap30,
+                            GestureDetector(
+                              onTap: () {
+                                wxPay = false;
+                                aliPay = false;
+                                applePay = true;
+                                setState(() {});
+                              },
+                              child: purchaseType(2, applePay),
+                            ),
+                          ],
                         Gaps.vGap32,
                         GestureDetector(
                           onTap: () {
@@ -143,9 +161,11 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                               if(wxPay){
                                 _purchasePresenter.wxChatPay(_purchasePresenter.goodList[selectIndex].id,
                                     _purchasePresenter.goodList[selectIndex].price,true);
-                              }else{
+                              }else if (aliPay) {
                                 _purchasePresenter.aliPay(_purchasePresenter.goodList[selectIndex].id,
                                     _purchasePresenter.goodList[selectIndex].price,true);
+                              }else if (applePay) {
+                                _purchasePresenter.applePay(_purchasePresenter.goodList[selectIndex].id);
                               }
                             }else{
                               Toast.show("请同意会员协议和续费规则");
@@ -333,6 +353,15 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
             const LoadAssetImage("alipay_img",width: 27,height: 27,),
             Gaps.hGap8,
              Expanded(child:  Text("支付宝支付",style: TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_111B44),)),
+            LoadAssetImage(isCheck==true?"select_img":"unselect_img",width: 17,height: 17,),
+          ],
+        );
+      case 2:
+        return Row(
+          children: [
+            const LoadAssetImage("alipay_img",width: 27,height: 27,),
+            Gaps.hGap8,
+            Expanded(child:  Text("苹果支付",style: TextStyle(fontSize: Dimens.font_sp13,color: Colours.color_111B44),)),
             LoadAssetImage(isCheck==true?"select_img":"unselect_img",width: 17,height: 17,),
           ],
         );

@@ -26,6 +26,9 @@ class HttpApi{
   //查询订单支付状态
   static const String queryOrderStatus = "query_order";
 
+  //ApplePay验单
+  static const String applePayValidate = "applepay_validate";
+
   //获取商品列表
   static const String goodList = "goods_list";
 

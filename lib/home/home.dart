@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/conversation/provider/conversation_provider.dart';
+import 'package:Bubble/loginManager/login_manager.dart';
+import 'package:Bubble/util/apple_pay_utils.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,6 +52,11 @@ class _HomePageState extends State<HomePage>
 
   void init() {
     getDefaultTeacher();
+    if (Platform.isIOS && LoginManager.isLogin()) {
+      // 处理用户苹果支付未处理完的交易
+      int userId = LoginManager.getUserId();
+      ApplePayUtils.dealtUnCompletedPurchase(userId.toString());
+    }
   }
 
   void getDefaultTeacher() async {

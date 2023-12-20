@@ -118,6 +118,10 @@ GoodListDataData $GoodListDataDataFromJson(Map<String, dynamic> json) {
   if (createdAt != null) {
     goodListDataData.createdAt = createdAt;
   }
+  final String? productId = jsonConvert.convert<String>(json['product_id']);
+  if (productId != null) {
+    goodListDataData.productId = productId;
+  }
   return goodListDataData;
 }
 
@@ -132,6 +136,7 @@ Map<String, dynamic> $GoodListDataDataToJson(GoodListDataData entity) {
   data['id'] = entity.id;
   data['unit'] = entity.unit;
   data['created_at'] = entity.createdAt;
+  data['product_id'] = entity.productId;
   return data;
 }
 

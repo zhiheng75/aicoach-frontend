@@ -10,11 +10,11 @@
 		</data>
 		<key>flutter_assets/AssetManifest.bin</key>
 		<data>
-		VFDJYcawVwBmpn6RI7++cPgBYD8=
+		19ZZ+X+UmnsTgruOUIDRliAiyaA=
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		0mQrha9pVmPlghckyu3qCD4kXlU=
+		P6dXcox3NaxTzG6ChVZgMlcnzMs=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -22,7 +22,7 @@
 		</data>
 		<key>flutter_assets/NOTICES.Z</key>
 		<data>
-		nsXE8mTm+Jp12ugXx72h4On5VKI=
+		FC21qIhLEqWW5prmir8/1HpMzc4=
 		</data>
 		<key>flutter_assets/assets/avatar/bundle.js</key>
 		<data>
@@ -52,6 +52,10 @@
 		<data>
 		NOvGk4hqSijUmaZkp46HW63piBY=
 		</data>
+		<key>flutter_assets/assets/images/back_bai.png</key>
+		<data>
+		QRuytp/a43k+3YJs1YnvPv8VTUg=
+		</data>
 		<key>flutter_assets/assets/images/bind_phone_img.png</key>
 		<data>
 		x1CLEtnHNEoDJ080QLMJl4udsqQ=
@@ -78,7 +82,7 @@
 		</data>
 		<key>flutter_assets/assets/images/change_role_bg_img.png</key>
 		<data>
-		qpvtU4w3fmlS8j1Mf1+85GdMDmc=
+		1nVK3LBahXEefmy5zSU0wZm8jKY=
 		</data>
 		<key>flutter_assets/assets/images/change_role_img.png</key>
 		<data>
@@ -160,6 +164,10 @@
 		<data>
 		rVPSpKL/IsGz7kvI5ABh0KOWvxo=
 		</data>
+		<key>flutter_assets/assets/images/guaduan_big.png</key>
+		<data>
+		VjIpVopabg98SHpAJ39eFmRZ3Jg=
+		</data>
 		<key>flutter_assets/assets/images/guanbi_bai.png</key>
 		<data>
 		iPIoNOrg8mxy4mb3PcGMvfyLsh4=
@@ -239,6 +247,10 @@
 		<key>flutter_assets/assets/images/more_btn_bg.png</key>
 		<data>
 		sRaqxNwTEvfQAEL5jftt+FTvQFw=
+		</data>
+		<key>flutter_assets/assets/images/no_data.png</key>
+		<data>
+		+uRcfZ50AtuaAkY42ajXCqso7IM=
 		</data>
 		<key>flutter_assets/assets/images/nulijiazaizhong.png</key>
 		<data>
@@ -432,6 +444,10 @@
 		<data>
 		utGdCObAhgfm4oJ3jNEoNfOaQxc=
 		</data>
+		<key>flutter_assets/assets/images/xuanzelaoshi_bg.png</key>
+		<data>
+		wD4K86R+RFm8X5MvlgoyIiSgVWc=
+		</data>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
 		/CUoTuPQqqdexfyOT9lpJhV+2MQ=
@@ -442,7 +458,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		bK7A7Jm+Vf2jDbaR9nzjALmGlxc=
+		4U05QEMGtG1+2bY1kxbsumez57Y=
 		</data>
 		<key>flutter_assets/packages/flutter_sound_web/howler/howler.js</key>
 		<data>
@@ -460,22 +476,6 @@
 		<data>
 		mfTfrGNlaeiwEdd8JAM8xBoi+Bs=
 		</data>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_close.png</key>
-		<data>
-		1U2XC/VL4Uf0UjDVrfQmXY5r44E=
-		</data>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_maximize.png</key>
-		<data>
-		yjgxKji/xqzO7SSWHKS3+DF37rM=
-		</data>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_minimize.png</key>
-		<data>
-		KCVbcXNIJ5yFbLd8YyKBpH54ltE=
-		</data>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_unmaximize.png</key>
-		<data>
-		JDI0MPNTceGjL+6TDSt8B19xS84=
-		</data>
 		<key>flutter_assets/shaders/ink_sparkle.frag</key>
 		<data>
 		KL+7f3IYR/Y9WDlxxUeDmgGoluc=
@@ -491,14 +491,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Tq84SMwdONJYXu2kkltM/RHzAlpTmtB9PZLGgngUMF8=
+			CdMbOM8DJX4L6p5hxmteYqh4AEDi1G9h1rgfvFHF1b4=
 			</data>
 		</dict>
 		<key>flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			4rFGbGKGBwm+2Ru5uBCbuKqr77851s1Z1VidYf+D6YM=
+			6ubNh4IGqGAj4OjV9FeGJfvBHGK/iuh3UF817yUXP0E=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -512,7 +512,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			m8OP6mj+KpnIgys/mOqlME2FbKEe1ORO6tR8Evuwuis=
+			Je2IzehuGRBURdls5spiGNkfgtoNm8PtxGcc4Qc/f+Y=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/avatar/bundle.js</key>
@@ -564,6 +564,13 @@
 			dVRSkiumgZIk2SaqHIvN033KMPCwRmIUgRur3zBZtuk=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/back_bai.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			VBQLmdhwdWdHNKFBv9U5KzBvnCbz0wDliGwa55NoVzI=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/bind_phone_img.png</key>
 		<dict>
 			<key>hash2</key>
@@ -610,7 +617,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			RFOJFywzDPsc+DU6mI6K8e+L7eOpD9TYGHx6UOJ6bo0=
+			T0q1jt8vWjqTs92LbWbFz5ziNEQiyAu62wvGUdDDvJo=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/change_role_img.png</key>
@@ -753,6 +760,13 @@
 			ZbsX3DSV0XvxRCDQoP5vRlx9tH9SmIj4QulVa2BW7wk=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/guaduan_big.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ABSLBJj3CNpPhcxLcupmUbbR1UhIUxglPL7uUBftlfg=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/guanbi_bai.png</key>
 		<dict>
 			<key>hash2</key>
@@ -891,6 +905,13 @@
 			<key>hash2</key>
 			<data>
 			PYGJMQtejggxs64bo8pzSm3peEBHeXSsMcnaifHBDlE=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/no_data.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			AKgY9kqZvuY6sGX88OnwyIWaO3/70c52DbfVPMBb+Xs=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/nulijiazaizhong.png</key>
@@ -1229,6 +1250,13 @@
 			Tmv5p8f7x69IqZRzyxE/IJO21Al4GEm3kGLy8NpDEKk=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/xuanzelaoshi_bg.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			rcLIso0V4BtmbVpHeQ1E8OHY7HsCbVGKSMFapm/lYOw=
+			</data>
+		</dict>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<dict>
 			<key>hash2</key>
@@ -1247,7 +1275,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			kj+wwJMt7TGXF6oycNlsjhkqotg/2PEDMAWaSBQ1xEo=
+			yz6O3e+iHPsexxVCG92uki9KNbIRTi3JN1kaf0T/+X4=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/flutter_sound_web/howler/howler.js</key>
@@ -1276,34 +1304,6 @@
 			<key>hash2</key>
 			<data>
 			qWCKpuHsq6kgMGGoVssygUO0BrxLaIv0SI+sTgJ7PK0=
-			</data>
-		</dict>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_close.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			cP4BMLu9ko0EzTOkns3kIuxU/XSLek6YP04xvm5z9fU=
-			</data>
-		</dict>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_maximize.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			k/LtAS7AEoi3itSBbvJUJh6f8l6KmFg1m0VDHJpd5fQ=
-			</data>
-		</dict>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_minimize.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			CXbtu5l3E2VErxfeEl80WkEGVpTekgNtk2WBfqbY8Fo=
-			</data>
-		</dict>
-		<key>flutter_assets/packages/window_manager/images/ic_chrome_unmaximize.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			PTdZMMUU7C68BgOtHhOYtNr0WJUQQqlyMtFvF+HJYDs=
 			</data>
 		</dict>
 		<key>flutter_assets/shaders/ink_sparkle.frag</key>

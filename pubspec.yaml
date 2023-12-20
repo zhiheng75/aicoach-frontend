@@ -101,6 +101,8 @@ dependencies:
   flutter_easyrefresh: ^2.2.1
   #in_app_purchase https://github.com/flutter/packages/tree/main/packages/in_app_purchase/in_app_purchase
   in_app_purchase: ^3.1.11
+  #flutter_keychain https://github.com/jeroentrappers/flutter_keychain
+  flutter_keychain: ^2.4.0
 
 dev_dependencies:
   flutter_test:

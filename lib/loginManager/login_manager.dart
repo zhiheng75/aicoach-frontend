@@ -29,4 +29,15 @@ class LoginManager{
     SpUtil.remove(Constant.accessToken);
     SpUtil.remove(Constant.userInfoKey);
   }
+
+  static int getUserId() {
+    if (!isLogin()) {
+      return 0;
+    }
+    Map<dynamic, dynamic>? userInfo = SpUtil.getObject(Constant.userInfoKey);
+    if (userInfo == null) {
+      return 0;
+    }
+    return userInfo['id'] as int;
+  }
 }

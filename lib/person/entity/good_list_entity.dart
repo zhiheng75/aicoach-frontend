@@ -52,6 +52,8 @@ class GoodListDataData {
 	late String unit;
 	@JSONField(name: "created_at")
 	late String createdAt;
+	@JSONField(name: "product_id")
+	late String productId;
 	// late bool isSelect;
 	// late bool recommend;
 

@@ -110,7 +110,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Bubble',
       // showPerformanceOverlay: true, //显示性能标签
-      // debugShowCheckedModeBanner: false, // 去除右上角debug的标签
+      debugShowCheckedModeBanner: false, // 去除右上角debug的标签
       // checkerboardRasterCacheImages: true,
       // showSemanticsDebugger: true, // 显示语义视图
       // checkerboardOffscreenLayers: true, // 检查离屏渲染

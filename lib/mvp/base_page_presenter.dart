@@ -1,10 +1,7 @@
-import 'dart:io';
-import 'package:Bubble/util/toast_utils.dart';
 import 'package:dio/dio.dart';
 
 import '../net/dio_utils.dart';
 import '../net/error_handle.dart';
-import '../net/http_api.dart';
 import 'base_presenter.dart';
 import 'mvps.dart';
 
@@ -120,5 +117,9 @@ class BasePagePresenter<V extends IMvpView> extends BasePresenter<V> {
     if (onError != null) {
       onError(code, msg);
     }
+  }
+
+  V getView() {
+    return view;
   }
 }
