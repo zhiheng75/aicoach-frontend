@@ -1,48 +1,50 @@
 import 'package:flutter/material.dart';
 
+import 'colors.dart';
 import 'dimens.dart';
 
 /// 间隔
 class Gaps {
   
   /// 水平间隔
-  static const Widget hGap4 = SizedBox(width: Dimens.gap_dp4);
-  static const Widget hGap5 = SizedBox(width: Dimens.gap_dp5);
-  static const Widget hGap6 = SizedBox(width: Dimens.gap_dp6);
-  static const Widget hGap7 = SizedBox(width: Dimens.gap_dp7);
-  static const Widget hGap8 = SizedBox(width: Dimens.gap_dp8);
-  static const Widget hGap10 = SizedBox(width: Dimens.gap_dp10);
-  static const Widget hGap12 = SizedBox(width: Dimens.gap_dp12);
-  static const Widget hGap15 = SizedBox(width: Dimens.gap_dp15);
-  static const Widget hGap16 = SizedBox(width: Dimens.gap_dp16);
-  static const Widget hGap32 = SizedBox(width: Dimens.gap_dp32);
+  static  Widget hGap4 = SizedBox(width: Dimens.w_dp4);
+  static  Widget hGap5 = SizedBox(width: Dimens.w_dp5);
+  static  Widget hGap6 = SizedBox(width: Dimens.w_dp6);
+  static  Widget hGap7 = SizedBox(width: Dimens.w_dp7);
+  static  Widget hGap8 = SizedBox(width: Dimens.w_dp8);
+  static  Widget hGap10 = SizedBox(width: Dimens.w_dp10);
+  static  Widget hGap12 = SizedBox(width: Dimens.w_dp12);
+  static  Widget hGap15 = SizedBox(width: Dimens.w_dp15);
+  static  Widget hGap16 = SizedBox(width: Dimens.w_dp16);
+  static  Widget hGap32 = SizedBox(width: Dimens.w_dp32);
   
   /// 垂直间隔
-  static const Widget vGap2 = SizedBox(height: Dimens.gap_dp2);
-  static const Widget vGap3 = SizedBox(height: Dimens.gap_dp3);
-  static const Widget vGap4 = SizedBox(height: Dimens.gap_dp4);
-  static const Widget vGap5 = SizedBox(height: Dimens.gap_dp5);
-  static const Widget vGap7 = SizedBox(height: Dimens.gap_dp7);
-  static const Widget vGap8 = SizedBox(height: Dimens.gap_dp8);
-  static const Widget vGap10 = SizedBox(height: Dimens.gap_dp10);
-  static const Widget vGap11 = SizedBox(height: Dimens.gap_dp11);
-  static const Widget vGap12 = SizedBox(height: Dimens.gap_dp12);
-  static const Widget vGap13 = SizedBox(height: Dimens.gap_dp13);
-  static const Widget vGap15 = SizedBox(height: Dimens.gap_dp15);
-  static const Widget vGap16 = SizedBox(height: Dimens.gap_dp16);
-  static const Widget vGap18 = SizedBox(height: Dimens.gap_dp18);
-  static const Widget vGap20 = SizedBox(height: Dimens.gap_dp20);
-  static const Widget vGap24 = SizedBox(height: Dimens.gap_dp24);
-  static const Widget vGap26 = SizedBox(height: Dimens.gap_dp26);
-  static const Widget vGap30 = SizedBox(height: Dimens.gap_dp30);
-  static const Widget vGap32 = SizedBox(height: Dimens.gap_dp32);
-  static const Widget vGap33 = SizedBox(height: Dimens.gap_dp33);
-  static const Widget vGap40 = SizedBox(height: Dimens.gap_dp40);
-  static const Widget vGap50 = SizedBox(height: Dimens.gap_dp50);
-  static const Widget vGap60 = SizedBox(height: Dimens.gap_dp60);
-  static const Widget vGap80 = SizedBox(height: Dimens.gap_dp80);
-  static const Widget vGap85 = SizedBox(height: Dimens.gap_dp85);
-  static const Widget vGap100 = SizedBox(height: Dimens.gap_dp100);
+  static  Widget vGap2 = SizedBox(height: Dimens.h_dp2);
+  static  Widget vGap3 = SizedBox(height: Dimens.h_dp3);
+  static  Widget vGap4 = SizedBox(height: Dimens.h_dp4);
+  static  Widget vGap5 = SizedBox(height: Dimens.h_dp5);
+  static  Widget vGap7 = SizedBox(height: Dimens.h_dp7);
+  static  Widget vGap8 = SizedBox(height: Dimens.h_dp8);
+  static  Widget vGap10 = SizedBox(height: Dimens.h_dp10);
+  static  Widget vGap11 = SizedBox(height: Dimens.h_dp11);
+  static  Widget vGap12 = SizedBox(height: Dimens.h_dp12);
+  static  Widget vGap13 = SizedBox(height: Dimens.h_dp13);
+  static  Widget vGap15 = SizedBox(height: Dimens.h_dp15);
+  static  Widget vGap16 = SizedBox(height: Dimens.h_dp16);
+  static  Widget vGap18 = SizedBox(height: Dimens.h_dp18);
+  static  Widget vGap20 = SizedBox(height: Dimens.h_dp20);
+  static  Widget vGap24 = SizedBox(height: Dimens.h_dp24);
+  static  Widget vGap26 = SizedBox(height: Dimens.h_dp26);
+  static  Widget vGap30 = SizedBox(height: Dimens.h_dp30);
+  static  Widget vGap32 = SizedBox(height: Dimens.h_dp32);
+  static  Widget vGap33 = SizedBox(height: Dimens.h_dp33);
+  static  Widget vGap40 = SizedBox(height: Dimens.h_dp40);
+  static  Widget vGap50 = SizedBox(height: Dimens.h_dp50);
+  static  Widget vGap60 = SizedBox(height: Dimens.h_dp60);
+  static  Widget vGap80 = SizedBox(height: Dimens.h_dp80);
+  static  Widget vGap85 = SizedBox(height: Dimens.h_dp85);
+  static  Widget vGap100 = SizedBox(height: Dimens.h_dp100);
+  static  Widget vGap168 = SizedBox(height: Dimens.h_dp168);
 
 //  static Widget line = const SizedBox(
 //    height: 0.6,

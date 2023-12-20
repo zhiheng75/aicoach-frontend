@@ -75,4 +75,75 @@ class Dimens {
   static const double gap_dp80 = 80;
   static const double gap_dp85 = 85;
   static const double gap_dp100 = 100;
+
+
+
+  static  double w_dp1 = 1.w;
+  static  double w_dp2 = 2.w;
+  static  double w_dp3 = 3.w;
+  static  double w_dp4 = 4.w;
+  static  double w_dp5 = 5.w;
+  static  double w_dp6 = 6.w;
+  static  double w_dp7 = 7.w;
+  static  double w_dp8 = 8.w;
+  static  double w_dp9 = 9.w;
+  static  double w_dp10 = 10.w;
+  static  double w_dp11 = 11.w;
+  static  double w_dp12 = 12.w;
+  static  double w_dp13 = 13.w;
+  static  double w_dp15 = 15.w;
+  static  double w_dp16 = 16.w;
+  static  double w_dp17 = 17.w;
+  static  double w_dp18 = 18.w;
+  static  double w_dp19 = 19.w;
+  static  double w_dp20 = 20.w;
+  static  double w_dp23 = 23.w;
+  static  double w_dp24 = 24.w;
+  static  double w_dp26 = 26.w;
+  static  double w_dp28 = 28.w;
+  static  double w_dp30 = 30.w;
+  static  double w_dp32 = 32.w;
+  static  double w_dp33 = 33.w;
+  static  double w_dp40 = 40.w;
+  static  double w_dp50 = 50.w;
+  static  double w_dp60 = 60.w;
+  static  double w_dp80 = 80.w;
+  static  double w_dp85 = 85.w;
+  static  double w_dp100 = 100.w;
+
+
+  static  double h_dp1 = 1.h;
+  static  double h_dp2 = 2.h;
+  static  double h_dp3 = 3.h;
+  static  double h_dp4 = 4.h;
+  static  double h_dp5 = 5.h;
+  static  double h_dp6 = 6.h;
+  static  double h_dp7 = 7.h;
+  static  double h_dp8 = 8.h;
+  static  double h_dp9 = 9.h;
+  static  double h_dp10 = 10.h;
+  static  double h_dp11 = 11.h;
+  static  double h_dp12 = 12.h;
+  static  double h_dp13 = 13.h;
+  static  double h_dp15 = 15.h;
+  static  double h_dp16 = 16.h;
+  static  double h_dp17 = 17.h;
+  static  double h_dp18 = 18.h;
+  static  double h_dp19 = 19.h;
+  static  double h_dp20 = 20.h;
+  static  double h_dp23 = 23.h;
+  static  double h_dp24 = 24.h;
+  static  double h_dp26 = 26.h;
+  static  double h_dp28 = 28.h;
+  static  double h_dp30 = 30.h;
+  static  double h_dp32 = 32.h;
+  static  double h_dp33 = 33.h;
+  static  double h_dp40 = 40.h;
+  static  double h_dp50 = 50.h;
+  static  double h_dp60 = 60.h;
+  static  double h_dp80 = 80.h;
+  static  double h_dp85 = 85.h;
+  static  double h_dp100 = 100.h;
+  static  double h_dp168 = 168.h;
+
 }

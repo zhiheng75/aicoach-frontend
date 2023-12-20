@@ -99,7 +99,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         color: bgColor,
         child: SafeArea(
           child: Container(
-            padding:const EdgeInsets.only(left: 15,right: 15),
+            padding: EdgeInsets.only(left: Dimens.w_dp10,right: Dimens.w_dp10),
             child:Stack(
               alignment: Alignment.centerLeft,
               children: <Widget>[

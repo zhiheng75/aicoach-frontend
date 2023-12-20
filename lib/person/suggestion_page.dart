@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/person/presneter/suggestion_presenter.dart';
 import 'package:Bubble/person/view/suggestion_view.dart';
-import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/res/resources.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/toast_utils.dart';
@@ -14,10 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../res/colors.dart';
-import '../res/dimens.dart';
 import '../util/EventBus.dart';
-import '../util/image_utils.dart';
 import '../widgets/jh_asset_picker.dart';
 import '../widgets/my_app_bar.dart';
 import 'entity/send_img_result_entity.dart';
@@ -121,7 +117,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                               style: const TextStyle(
                                   color: Colours.color_546092, fontSize: 13),
                               maxLength: _maxLength,
-                              maxLines: 10,
+                              maxLines: 5,
                               autofocus: false,
                               controller: _controller,
                               inputFormatters: _inputFormatters,
@@ -212,7 +208,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                           ),
                         ),
                         // const Expanded(child: Gaps.empty),
-                        Gaps.vGap32,
+                        Gaps.vGap100,
                         Container(
                           alignment: Alignment.center,
                           child:  Text(
