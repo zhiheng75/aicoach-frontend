@@ -1,4 +1,3 @@
-
 import 'package:Bubble/home/entity/base_config_entity.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/person/entity/wx_pay_entity.dart';
@@ -139,6 +138,19 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                           },
                           child: purchaseType(1, aliPay),
                         ),
+                        if (Device.isIOS)
+                          ...[
+                            Gaps.vGap30,
+                            GestureDetector(
+                              onTap: () {
+                                wxPay = false;
+                                aliPay = false;
+                                applePay = true;
+                                setState(() {});
+                              },
+                              child: purchaseType(2, applePay),
+                            ),
+                          ],
                 SizedBox(height: 40.h),
                         GestureDetector(
                           onTap: () {
@@ -152,8 +164,9 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                                   _purchasePresenter.aliPay(_purchasePresenter.goodList[selectIndex].id,
                                       _purchasePresenter.goodList[selectIndex].price,true);
                                 }
-                              }else {
-
+                              }
+                              if (Device.isIOS) {
+                                _purchasePresenter.applePay(_purchasePresenter.goodList[selectIndex].id);
                               }
 
                             }else{
@@ -444,50 +457,50 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
   }
 
 
-
-  Widget purchaseItemTxt(int type){
-    switch(type){
-      case 0:
-        return  Row(
-          children: [
-            const Text("连续包年",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
-            Expanded(
-                child: Container(
-                  margin:const EdgeInsets.only(left:5,right: 20),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: ImageUtils.getAssetImage("auto_purchase_bg"),
-                          fit: BoxFit.cover
-                      )),
-                  child:  Center(
-                    child: Text(
-                      "自动续费，可随时取消",
-                      style: TextStyle(
-                          fontSize: Dimens.font_sp10, color: Colors.white),
-                    ),
-                  ),
-                )),
-            Text("¥ 365元/年",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
-          ],
-        );
-      case 1:
-        return  Row(
-          children: [
-            const Text("连续包月",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
-            const  Expanded(child: Gaps.empty),
-            Text("¥ 48元/月",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
-          ],
-        );
-      case 2:
-        return  Row(
-          children: [
-            const Text("年度会员",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
-            const Expanded(child: Gaps.empty),
-            Text("¥ 638元/年",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
-          ],
-        );
-      default :
-        return  Gaps.empty;
-    }
-  }
+  //
+  // Widget purchaseItemTxt(int type){
+  //   switch(type){
+  //     case 0:
+  //       return  Row(
+  //         children: [
+  //           const Text("连续包年",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
+  //           Expanded(
+  //               child: Container(
+  //                 margin:const EdgeInsets.only(left:5,right: 20),
+  //                 decoration: BoxDecoration(
+  //                     image: DecorationImage(
+  //                         image: ImageUtils.getAssetImage("auto_purchase_bg"),
+  //                         fit: BoxFit.cover
+  //                     )),
+  //                 child:  Center(
+  //                   child: Text(
+  //                     "自动续费，可随时取消",
+  //                     style: TextStyle(
+  //                         fontSize: Dimens.font_sp10, color: Colors.white),
+  //                   ),
+  //                 ),
+  //               )),
+  //           Text("¥ 365元/年",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
+  //         ],
+  //       );
+  //     case 1:
+  //       return  Row(
+  //         children: [
+  //           const Text("连续包月",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
+  //           const  Expanded(child: Gaps.empty),
+  //           Text("¥ 48元/月",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
+  //         ],
+  //       );
+  //     case 2:
+  //       return  Row(
+  //         children: [
+  //           const Text("年度会员",style: TextStyle(fontSize: 16,color: Colours.color_111B44,fontWeight: FontWeight.bold),),
+  //           const Expanded(child: Gaps.empty),
+  //           Text("¥ 638元/年",style: TextStyle(fontSize: Dimens.font_sp14,color: Colours.color_925DFF,fontWeight: FontWeight.bold),),
+  //         ],
+  //       );
+  //     default :
+  //       return  Gaps.empty;
+  //   }
+  // }
 }

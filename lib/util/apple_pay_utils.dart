@@ -196,6 +196,23 @@ class ApplePayUtils {
     List<SKPaymentTransactionWrapper> transactionList = await getTransactionList(userId: userId, productId: product.id);
     if (transactionList.isNotEmpty) {
       Log.d('存在同类型的未处理完成的交易', tag: 'dealSameType');
+      SKPaymentTransactionWrapper transaction = transactionList.first;
+      // 已支付
+      if (transaction.transactionState == SKPaymentTransactionStateWrapper.purchased) {
+        try {
+          await verifyPurchase(transaction.transactionIdentifier!, () async {
+            await SKPaymentQueueWrapper().finishTransaction(transaction);
+            await removePurchaseOrder(userId, transaction.payment.productIdentifier);
+            if (_onSuccess != null) {
+              _onSuccess!();
+            }
+          });
+        } catch (e) {
+          if (_onFail != null) {
+            _onFail!();
+          }
+        }
+      }
       return;
     }
 
