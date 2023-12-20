@@ -167,11 +167,20 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                                   RichText(text:
                                   TextSpan(
                                       children: <TextSpan>[
-                                         TextSpan(text: "会员权益",style:  TextStyle(fontSize: Dimens.font_sp20,color: Colors.white,fontWeight: FontWeight.bold)),
-
-                                        TextSpan(text: " 至$vipTime",style:  TextStyle(fontSize: Dimens.font_sp12,color: Colours.color_00DBAF)),
-                                      ]
-                                  )),
+                                  TextSpan(
+                                      text: "会员权益",
+                                      style: TextStyle(
+                                          fontSize: Dimens.font_sp20,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold)),
+                                  vipTime.isNotEmpty
+                                      ? TextSpan(
+                                          text: " 至$vipTime",
+                                          style: TextStyle(
+                                              fontSize: Dimens.font_sp12,
+                                              color: Colours.color_00DBAF))
+                                      : const TextSpan(),
+                                ])),
 
                                   Text("专属口语教练,科学测评,个性化定制",style: TextStyle(color: Colors.white,fontSize: Dimens.font_sp11),),
 

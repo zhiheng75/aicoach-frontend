@@ -1,6 +1,7 @@
 import 'package:Bubble/login/entity/wx_info_entity.dart';
 import 'package:Bubble/login/presenter/register_presenter.dart';
 import 'package:Bubble/login/view/register_view.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -300,12 +301,18 @@ class _NewRegisterPageState extends State<NewRegisterPage>
         onTap: () {
           // toNext(1);
           if(_isSelect){
-            FlutterToNative.jumpToWechatLogin().then((value) => {
-              // _wechatCode = value,
-              // Log.e("===========>$_wechatCode"),
 
-              _registerPresenter.getWxInfo(value)
-            });
+            if(Device.isAndroid){
+              FlutterToNative.jumpToWechatLogin().then((value) => {
+                // _wechatCode = value,
+                // Log.e("===========>$_wechatCode"),
+                _registerPresenter.getWxInfo(value)
+              });
+            }else{
+
+            }
+
+
           }else{
             Toast.show("请同意服务协议");
           }

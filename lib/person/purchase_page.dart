@@ -5,6 +5,7 @@ import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/person/presneter/purchase_presenter.dart';
 import 'package:Bubble/person/presneter/purchase_view.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,11 @@ import '../mvp/base_page.dart';
 import '../res/colors.dart';
 import '../res/dimens.dart';
 import '../routers/fluro_navigator.dart';
+import '../util/AlipayTool.dart';
 import '../util/image_utils.dart';
 import '../widgets/load_image.dart';
 import 'entity/my_good_list_entity.dart';
+import 'package:alipay_kit/alipay_kit.dart';
 
 ///购买
 class PurchasePage extends StatefulWidget {
@@ -139,13 +142,19 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                         GestureDetector(
                           onTap: () {
                             if(agreeAgreement){
-                              if(wxPay){
-                                _purchasePresenter.wxChatPay(_purchasePresenter.goodList[selectIndex].id,
-                                    _purchasePresenter.goodList[selectIndex].price,true);
-                              }else{
-                                _purchasePresenter.aliPay(_purchasePresenter.goodList[selectIndex].id,
-                                    _purchasePresenter.goodList[selectIndex].price,true);
+
+                              if(Device.isAndroid){
+                                if(wxPay){
+                                  _purchasePresenter.wxChatPay(_purchasePresenter.goodList[selectIndex].id,
+                                      _purchasePresenter.goodList[selectIndex].price,true);
+                                }else{
+                                  _purchasePresenter.aliPay(_purchasePresenter.goodList[selectIndex].id,
+                                      _purchasePresenter.goodList[selectIndex].price,true);
+                                }
+                              }else {
+
                               }
+
                             }else{
                               Toast.show("请同意会员协议和续费规则");
                             }
