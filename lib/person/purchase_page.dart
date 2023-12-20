@@ -16,11 +16,9 @@ import '../mvp/base_page.dart';
 import '../res/colors.dart';
 import '../res/dimens.dart';
 import '../routers/fluro_navigator.dart';
-import '../util/AlipayTool.dart';
 import '../util/image_utils.dart';
 import '../widgets/load_image.dart';
 import 'entity/my_good_list_entity.dart';
-import 'package:alipay_kit/alipay_kit.dart';
 
 ///购买
 class PurchasePage extends StatefulWidget {
