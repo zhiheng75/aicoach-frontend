@@ -103,6 +103,8 @@ dependencies:
   in_app_purchase: ^3.1.11
   #微信登录三方
   fluwx: ^3.12.2
+  #极光
+  jverify: 2.1.2
   #flutter_keychain https://github.com/jeroentrappers/flutter_keychain
   flutter_keychain: ^2.4.0
 

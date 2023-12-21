@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:jverify/jverify.dart';
 
 
 
@@ -38,5 +39,14 @@ class Constant {
   static const String avatarModel = 'avatar-model';
 
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
+  static const String jgResultKey = "result";//极光result
+
+  static const String jgCodeKey = "code";//极光code
+
+  static const String jgMsgKey = "message";
+
+
+  static Jverify jverify =  Jverify();
 
 }

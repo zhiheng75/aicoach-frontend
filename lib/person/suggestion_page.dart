@@ -108,7 +108,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                           decoration: const BoxDecoration(
                               borderRadius:
                               BorderRadius.all(Radius.circular(13)),
-                              color: Color(0x4D5B8BD2)),
+                              color: Color(0xffeef3fa)),
                           child: Semantics(
                             multiline: true,
                             maxValueLength: _maxLength,
@@ -192,7 +192,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                           decoration: const BoxDecoration(
                               borderRadius:
                               BorderRadius.all(Radius.circular(13)),
-                              color: Color(0x4D5B8BD2)),
+                              color: Color(0xffeef3fa)),
                           child: TextField(
                             cursorColor: Colors.white,
                             style:  TextStyle(

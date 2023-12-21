@@ -89,8 +89,8 @@
         </provider>
 
         <!-- Required -->
-        <meta-data android:name="JPUSH_APPKEY" android:value="0846276bad587d5808701213"/>
-        <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
+<!--        <meta-data android:name="JPUSH_APPKEY" android:value="0846276bad587d5808701213"/>-->
+<!--        <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>-->
 
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
@@ -115,10 +115,10 @@
             android:taskAffinity="com.shenmo.spokid"
             android:launchMode="singleTop"/>
 
-        <provider
-            android:exported="false"
-            android:authorities="com.shenmo.spokid.jiguang.InitProvider"
-            android:name="cn.jpush.android.service.InitProvider"/>
+<!--        <provider-->
+<!--            android:exported="false"-->
+<!--            android:authorities="com.shenmo.spokid.jiguang.InitProvider"-->
+<!--            android:name="cn.jpush.android.service.InitProvider"/>-->
 
     </application>
 </manifest>

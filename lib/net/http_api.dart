@@ -50,6 +50,9 @@ class HttpApi{
   //获取基础配置
   static const String baseConfig = "variable_list";
 
+  //一键登录
+  static const String keyLogin = "jg_login";
+
   //学习报告的集合
   static const String studyReportList = "app/conversations";
 
