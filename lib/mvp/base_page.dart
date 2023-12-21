@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../routers/fluro_navigator.dart';
 import '../util/log_utils.dart';
 import '../util/toast_utils.dart';
+import '../widgets/load.dart';
 import '../widgets/progress_dialog.dart';
 import 'base_presenter.dart';
 import 'mvps.dart';
@@ -62,6 +63,16 @@ mixin BasePageMixin<T extends StatefulWidget, P extends BasePresenter> on State<
   
   /// 可自定义Progress
   Widget buildProgress() => const ProgressDialog(hintText: '正在加载...');
+
+
+  void showLoading(BuildContext context) {
+    LoadingDialog.show(context);
+  }
+
+  void hideLoading() {
+    LoadingDialog.hidden();
+  }
+
 
   @override
   void didChangeDependencies() {

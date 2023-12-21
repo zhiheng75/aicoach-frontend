@@ -77,6 +77,24 @@ class RegisterPresenter extends BasePagePresenter<RegisterView>{
   }
 
 
+  Future sendKeyLoginToken(token){
+    Map<String,String> map = {};
+    map["loginToken"] = token;
+    return requestNetwork<LoginInfoData>(Method.post,
+        params: map,
+        url: HttpApi.keyLogin, isShow: true, onSuccess: (data) {
+          if (data != null){
+            if (data.code == 200) {
+
+              SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
+              SpUtil.putString(Constant.accessToken, data.data.token);
+
+              view.loginSuccess();
+            }
+          }
+        });
+  }
+
 
   Future getWxInfo(
     String wechatCode,

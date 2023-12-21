@@ -106,6 +106,8 @@ dependencies:
   #支付宝支付
   alipay_kit_ios: ^6.0.1
   alipay_kit: ^6.0.0
+  #极光
+  jverify: 2.1.2
   #flutter_keychain https://github.com/jeroentrappers/flutter_keychain
   flutter_keychain: ^2.4.0
 

@@ -1,4 +1,5 @@
 import 'package:Bubble/login/page/change_bind_phone_page.dart';
+import 'package:Bubble/login/page/one_key_login_page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:Bubble/login/page/new_register_page.dart';
@@ -24,13 +25,24 @@ class LoginRouter implements IRouterProvider{
   static String changeBindPhonePage = "/login/ChangeBindPhonePage";
   static String resetPasswordPage = '/login/resetPassword';
   static String updatePasswordPage = '/login/updatePassword';
+  static String keyLoginPage= "/login/keyLogin";
   
   @override
   void initRouter(FluroRouter router) {
     // router.define(loginPage, handler: Handler(handlerFunc: (_, __) => const LoginPage()));
-    router.define(loginPage, handler: Handler(handlerFunc: (_, __) => const NewRegisterPage()));
+    router.define(loginPage, handler: Handler(handlerFunc: (_, params) {
+      //0 一键登录  1 其他登录
+       bool keyLogin = false;
+       final int index = int.parse(params['needKeyLogin']?.first ?? '1');
+
+       keyLogin = index == 0;
+
+      return NewRegisterPage(isKeyLogin: keyLogin);
+
+    }));
     router.define(registerPage, handler: Handler(handlerFunc: (_, __) => const RegisterPage()));
     router.define(smsLoginPage, handler: Handler(handlerFunc: (_, __) => const SMSLoginPage()));
+    router.define(keyLoginPage, handler: Handler(handlerFunc: (_, __) => const KeyLoginPage()));
     router.define(onlySmsPage, handler: Handler(handlerFunc: (_, __) => const OnlySmsPage()));
     // router.define(bindPhonePage, handler: Handler(handlerFunc: (context, params) {
     //   LoginInfoDataData entity = LoginInfoDataData();

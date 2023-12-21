@@ -26,7 +26,7 @@ def keystorePropertiesFile = rootProject.file("app/key.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 android {
-    namespace "com.shenmo.spokid"
+//    namespace "com.shenmo.spokid"
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
@@ -57,7 +57,7 @@ android {
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME : applicationId,
-                JPUSH_APPKEY : "0846276bad587d5808701213", //Portal 上注册的包名对应的 appKey.
+                JPUSH_APPKEY : "d213d60b209d0807dc4146f4", //Portal 上注册的包名对应的 appKey.
                 JPUSH_CHANNEL : "developer-default", // 暂时填写默认值即可.
         ]
     }
@@ -100,6 +100,6 @@ dependencies {
     api 'com.alipay.sdk:alipaysdk-android:+@aar'
     implementation "com.squareup.okhttp3:okhttp:4.9.2"
     implementation 'org.greenrobot:eventbus:3.2.0'
-    implementation 'cn.jiguang.sdk:jverification:3.0.0'
+//    implementation 'cn.jiguang.sdk:jverification:3.1.7'
     implementation 'com.google.code.gson:gson:2.8.4'
 }

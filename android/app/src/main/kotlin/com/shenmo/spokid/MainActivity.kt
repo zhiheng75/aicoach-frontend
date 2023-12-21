@@ -14,8 +14,8 @@ import android.util.Log
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.NonNull
-import cn.jiguang.verifysdk.api.JVerificationInterface
-import cn.jiguang.verifysdk.api.JVerifyUIConfig
+//import cn.jiguang.verifysdk.api.JVerificationInterface
+//import cn.jiguang.verifysdk.api.JVerifyUIConfig
 import com.alipay.sdk.app.PayTask
 import com.shenmo.spokid.entity.*
 import com.shenmo.spokid.utils.JsonUtils
@@ -142,30 +142,30 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
         }
 
         else if(call.method == "keyLogin"){
-            JVerificationInterface.setCustomUIWithConfig(
-                getDialogPortraitConfig(),
-            )
-            JVerificationInterface.loginAuth(
-                this
-            ) { code, token, operator ->
-//                Log.e(
-//                    "MainActivity.TAG",
-//                    "onResult: code=$code,token=$token,operator=$operator"
-//                )
-                val errorMsg = "operator=$operator,code=$code\ncontent=$token"
-                runOnUiThread {
-//                    mProgressbar.setVisibility(View.GONE)
-//                    btnLoginDialog.setEnabled(true)
-//                    btnLogin.setEnabled(true)
-//                    if (code == Constants.CODE_LOGIN_SUCCESS) {
-//                        toSuccessActivity(Constants.ACTION_LOGIN_SUCCESS, token)
-//                        Log.e(MainActivity.TAG, "onResult: loginSuccess")
-//                    } else if (code != Constants.CODE_LOGIN_CANCELD) {
-//                        Log.e(MainActivity.TAG, "onResult: loginError")
-//                        toFailedActivigy(code, token)
-//                    }
-                }
-            }
+//            JVerificationInterface.setCustomUIWithConfig(
+//                getDialogPortraitConfig(),
+//            )
+//            JVerificationInterface.loginAuth(
+//                this
+//            ) { code, token, operator ->
+////                Log.e(
+////                    "MainActivity.TAG",
+////                    "onResult: code=$code,token=$token,operator=$operator"
+////                )
+//                val errorMsg = "operator=$operator,code=$code\ncontent=$token"
+//                runOnUiThread {
+////                    mProgressbar.setVisibility(View.GONE)
+////                    btnLoginDialog.setEnabled(true)
+////                    btnLogin.setEnabled(true)
+////                    if (code == Constants.CODE_LOGIN_SUCCESS) {
+////                        toSuccessActivity(Constants.ACTION_LOGIN_SUCCESS, token)
+////                        Log.e(MainActivity.TAG, "onResult: loginSuccess")
+////                    } else if (code != Constants.CODE_LOGIN_CANCELD) {
+////                        Log.e(MainActivity.TAG, "onResult: loginError")
+////                        toFailedActivigy(code, token)
+////                    }
+//                }
+//            }
         }
         else {
             result.notImplemented()
@@ -200,85 +200,85 @@ class MainActivity: FlutterActivity() , MethodChannel.MethodCallHandler{
         EventBus.getDefault().unregister(this)
     }
 
-    private fun getDialogPortraitConfig(): JVerifyUIConfig? {
-//        val widthDp: Int = px2dip(this, winWidth)
-        val widthDp: Int = 300
-        val uiConfigBuilder =
-            JVerifyUIConfig.Builder().setDialogTheme(widthDp - 60, 300, 0, 0, false)
-        //        uiConfigBuilder.setLogoHeight(30);
-//        uiConfigBuilder.setLogoWidth(30);
-//        uiConfigBuilder.setLogoOffsetY(-15);
-//        uiConfigBuilder.setLogoOffsetX((widthDp-40)/2-15-20);
-//        uiConfigBuilder.setLogoImgPath("logo_login_land");
-        uiConfigBuilder.setLogoHidden(true)
-        uiConfigBuilder.setNumFieldOffsetY(104).setNumberColor(Color.BLACK)
-        uiConfigBuilder.setSloganOffsetY(135)
-        uiConfigBuilder.setSloganTextColor(-0x2f2f27)
-        uiConfigBuilder.setLogBtnOffsetY(161)
-        uiConfigBuilder.setPrivacyOffsetY(15)
-        uiConfigBuilder.setCheckedImgPath("cb_chosen")
-        uiConfigBuilder.setUncheckedImgPath("cb_unchosen")
-        uiConfigBuilder.setNumberColor(-0xdddcd8)
-        uiConfigBuilder.setLogBtnImgPath("selector_btn_normal")
-        uiConfigBuilder.setPrivacyState(true)
-        uiConfigBuilder.setLogBtnText("一键登录")
-        uiConfigBuilder.setLogBtnHeight(44)
-        uiConfigBuilder.setLogBtnWidth(250)
-        uiConfigBuilder.setAppPrivacyColor(-0x44433b, -0x766701)
-        uiConfigBuilder.setPrivacyText("登录即同意《","》并授权Spokid获取本机号码")
-        uiConfigBuilder.setPrivacyCheckboxHidden(true)
-        uiConfigBuilder.setPrivacyTextCenterGravity(true)
-        //        uiConfigBuilder.setPrivacyOffsetX(52-15);
-        uiConfigBuilder.setPrivacyTextSize(10)
-
-
-        // 图标和标题
-        val layoutTitle = LinearLayout(this)
-        val layoutTitleParam = RelativeLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        layoutTitleParam.setMargins(0,  50, 0, 0)
-        layoutTitleParam.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE)
-        layoutTitleParam.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE)
-        layoutTitleParam.layoutDirection = LinearLayout.HORIZONTAL
-        layoutTitle.layoutParams = layoutTitleParam
-        val img = ImageView(this)
-        img.setImageResource(R.drawable.logo_login_land)
-        val tvTitle = TextView(this)
-        tvTitle.text = "Spokid"
-        tvTitle.textSize = 19f
-        tvTitle.setTextColor(Color.BLACK)
-        tvTitle.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD))
-        val imgParam = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-//        imgParam.setMargins(0, 0, dp2Pix(this, 6f), 0)
-        imgParam.setMargins(0, 0, 6, 0)
-        val titleParam = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        imgParam.setMargins(0, 0,  4, 0)
-        layoutTitle.addView(img, imgParam)
-        layoutTitle.addView(tvTitle, titleParam)
-        uiConfigBuilder.addCustomView(layoutTitle, false, null)
-
-        // 关闭按钮
-        val closeButton = ImageView(this)
-        val mLayoutParams1 = RelativeLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        mLayoutParams1.setMargins(0, 10,  10, 0)
-        mLayoutParams1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE)
-        mLayoutParams1.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE)
-        closeButton.layoutParams = mLayoutParams1
-        closeButton.setImageResource(R.drawable.btn_close)
-        uiConfigBuilder.addCustomView(closeButton, true, null)
-        return uiConfigBuilder.build()
-    }
+//    private fun getDialogPortraitConfig(): JVerifyUIConfig? {
+////        val widthDp: Int = px2dip(this, winWidth)
+//        val widthDp: Int = 300
+//        val uiConfigBuilder =
+//            JVerifyUIConfig.Builder().setDialogTheme(widthDp - 60, 300, 0, 0, false)
+//        //        uiConfigBuilder.setLogoHeight(30);
+////        uiConfigBuilder.setLogoWidth(30);
+////        uiConfigBuilder.setLogoOffsetY(-15);
+////        uiConfigBuilder.setLogoOffsetX((widthDp-40)/2-15-20);
+////        uiConfigBuilder.setLogoImgPath("logo_login_land");
+//        uiConfigBuilder.setLogoHidden(true)
+//        uiConfigBuilder.setNumFieldOffsetY(104).setNumberColor(Color.BLACK)
+//        uiConfigBuilder.setSloganOffsetY(135)
+//        uiConfigBuilder.setSloganTextColor(-0x2f2f27)
+//        uiConfigBuilder.setLogBtnOffsetY(161)
+//        uiConfigBuilder.setPrivacyOffsetY(15)
+//        uiConfigBuilder.setCheckedImgPath("cb_chosen")
+//        uiConfigBuilder.setUncheckedImgPath("cb_unchosen")
+//        uiConfigBuilder.setNumberColor(-0xdddcd8)
+//        uiConfigBuilder.setLogBtnImgPath("selector_btn_normal")
+//        uiConfigBuilder.setPrivacyState(true)
+//        uiConfigBuilder.setLogBtnText("一键登录")
+//        uiConfigBuilder.setLogBtnHeight(44)
+//        uiConfigBuilder.setLogBtnWidth(250)
+//        uiConfigBuilder.setAppPrivacyColor(-0x44433b, -0x766701)
+//        uiConfigBuilder.setPrivacyText("登录即同意《","》并授权Spokid获取本机号码")
+//        uiConfigBuilder.setPrivacyCheckboxHidden(true)
+//        uiConfigBuilder.setPrivacyTextCenterGravity(true)
+//        //        uiConfigBuilder.setPrivacyOffsetX(52-15);
+//        uiConfigBuilder.setPrivacyTextSize(10)
+//
+//
+//        // 图标和标题
+//        val layoutTitle = LinearLayout(this)
+//        val layoutTitleParam = RelativeLayout.LayoutParams(
+//            ViewGroup.LayoutParams.WRAP_CONTENT,
+//            ViewGroup.LayoutParams.WRAP_CONTENT
+//        )
+//        layoutTitleParam.setMargins(0,  50, 0, 0)
+//        layoutTitleParam.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE)
+//        layoutTitleParam.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE)
+//        layoutTitleParam.layoutDirection = LinearLayout.HORIZONTAL
+//        layoutTitle.layoutParams = layoutTitleParam
+//        val img = ImageView(this)
+//        img.setImageResource(R.drawable.logo_login_land)
+//        val tvTitle = TextView(this)
+//        tvTitle.text = "Spokid"
+//        tvTitle.textSize = 19f
+//        tvTitle.setTextColor(Color.BLACK)
+//        tvTitle.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD))
+//        val imgParam = LinearLayout.LayoutParams(
+//            ViewGroup.LayoutParams.WRAP_CONTENT,
+//            ViewGroup.LayoutParams.WRAP_CONTENT
+//        )
+////        imgParam.setMargins(0, 0, dp2Pix(this, 6f), 0)
+//        imgParam.setMargins(0, 0, 6, 0)
+//        val titleParam = LinearLayout.LayoutParams(
+//            ViewGroup.LayoutParams.WRAP_CONTENT,
+//            ViewGroup.LayoutParams.WRAP_CONTENT
+//        )
+//        imgParam.setMargins(0, 0,  4, 0)
+//        layoutTitle.addView(img, imgParam)
+//        layoutTitle.addView(tvTitle, titleParam)
+//        uiConfigBuilder.addCustomView(layoutTitle, false, null)
+//
+//        // 关闭按钮
+//        val closeButton = ImageView(this)
+//        val mLayoutParams1 = RelativeLayout.LayoutParams(
+//            ViewGroup.LayoutParams.WRAP_CONTENT,
+//            ViewGroup.LayoutParams.WRAP_CONTENT
+//        )
+//        mLayoutParams1.setMargins(0, 10,  10, 0)
+//        mLayoutParams1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE)
+//        mLayoutParams1.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE)
+//        closeButton.layoutParams = mLayoutParams1
+//        closeButton.setImageResource(R.drawable.btn_close)
+//        uiConfigBuilder.addCustomView(closeButton, true, null)
+//        return uiConfigBuilder.build()
+//    }
 
 
     @SuppressLint("HandlerLeak")
