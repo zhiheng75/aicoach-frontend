@@ -1,12 +1,10 @@
 import 'package:Bubble/constant/constant.dart';
-import 'package:Bubble/home/home.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
-import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:jverify/jverify.dart';
+import 'package:flutter/material.dart';
+
 import '../util/other_utils.dart';
 import '../widgets/load.dart';
 
