@@ -49,8 +49,14 @@ Future<void> verifyPurchase(String receipt, Function() callback) async {
     params: {
       'receipt': receipt
     },
-    onSuccess: (_) {
-      Log.d('validate success:$_', tag: 'verifyPurchase');
+    onSuccess: (result) {
+      if (result == null) {
+        throw Exception('开通失败');
+      }
+      result = result as Map<String, dynamic>;
+      if (result['code'] != 200) {
+        throw Exception('开通失败');
+      }
       callback();
     },
     onError: (code, msg) {
@@ -155,11 +161,13 @@ class ApplePayUtils {
             Map<String, dynamic> order = {
               'id': purchase.purchaseID,
               'productId': purchase.productID,
+              'serverVerificationData': purchase.verificationData.serverVerificationData,
               'state': purchase.status.name,
+              'date': purchase.transactionDate,
             };
             await addPurchasedOrder(userId, order);
             try {
-              await verifyPurchase(purchase.purchaseID!, () async {
+              await verifyPurchase(purchase.verificationData.serverVerificationData, () async {
                 // 结束交易
                 await removePurchaseOrder(userId, purchase.productID);
                 await inAppPurchase.completePurchase(purchase);
@@ -175,6 +183,7 @@ class ApplePayUtils {
           }
 
           if (status == PurchaseStatus.restored) {
+            Log.d('restored', tag: 'onData');
           }
 
           if (status == PurchaseStatus.pending) {
@@ -196,23 +205,10 @@ class ApplePayUtils {
     List<SKPaymentTransactionWrapper> transactionList = await getTransactionList(userId: userId, productId: product.id);
     if (transactionList.isNotEmpty) {
       Log.d('存在同类型的未处理完成的交易', tag: 'dealSameType');
-      SKPaymentTransactionWrapper transaction = transactionList.first;
-      // 已支付
-      if (transaction.transactionState == SKPaymentTransactionStateWrapper.purchased) {
-        try {
-          await verifyPurchase(transaction.transactionIdentifier!, () async {
-            await SKPaymentQueueWrapper().finishTransaction(transaction);
-            await removePurchaseOrder(userId, transaction.payment.productIdentifier);
-            if (_onSuccess != null) {
-              _onSuccess!();
-            }
-          });
-        } catch (e) {
-          if (_onFail != null) {
-            _onFail!();
-          }
-        }
-      }
+      Toast.show(
+        '存在同类型的未处理完成的交易',
+        duration: 1000,
+      );
       return;
     }
 
@@ -234,6 +230,7 @@ class ApplePayUtils {
     // for (SKPaymentTransactionWrapper transaction in transactionList) {
     //   await payment.finishTransaction(transaction);
     // }
+    // await FlutterKeychain.clear();
 
     List<SKPaymentTransactionWrapper> transactionList = await getTransactionList(userId: userId);
     for (SKPaymentTransactionWrapper transaction in transactionList) {

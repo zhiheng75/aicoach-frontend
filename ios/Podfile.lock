@@ -1,4 +1,12 @@
 PODS:
+  - alipay_kit_ios (6.0.1):
+    - alipay_kit_ios/noutdid (= 6.0.1)
+    - alipay_kit_ios/vendor (= 6.0.1)
+    - Flutter
+  - alipay_kit_ios/noutdid (6.0.1):
+    - Flutter
+  - alipay_kit_ios/vendor (6.0.1):
+    - Flutter
   - app_tracking_transparency (0.0.1):
     - Flutter
   - camera_avfoundation (0.0.1):
@@ -14,6 +22,9 @@ PODS:
     - Flutter
     - flutter_sound_core (= 9.2.13)
   - flutter_sound_core (9.2.13)
+  - fluwx (0.0.1):
+    - Flutter
+    - WechatOpenSDK-XCFramework (~> 2.0.2)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -55,8 +66,10 @@ PODS:
     - FlutterMacOS
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
+  - WechatOpenSDK-XCFramework (2.0.2)
 
 DEPENDENCIES:
+  - alipay_kit_ios (from `.symlinks/plugins/alipay_kit_ios/ios`)
   - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
   - device_identity (from `.symlinks/plugins/device_identity/ios`)
@@ -64,6 +77,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_keychain (from `.symlinks/plugins/flutter_keychain/ios`)
   - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
+  - fluwx (from `.symlinks/plugins/fluwx/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - in_app_purchase_storekit (from `.symlinks/plugins/in_app_purchase_storekit/darwin`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
@@ -85,8 +99,11 @@ SPEC REPOS:
     - flutter_sound_core
     - FMDB
     - MTBBarcodeScanner
+    - WechatOpenSDK-XCFramework
 
 EXTERNAL SOURCES:
+  alipay_kit_ios:
+    :path: ".symlinks/plugins/alipay_kit_ios/ios"
   app_tracking_transparency:
     :path: ".symlinks/plugins/app_tracking_transparency/ios"
   camera_avfoundation:
@@ -101,6 +118,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_keychain/ios"
   flutter_sound:
     :path: ".symlinks/plugins/flutter_sound/ios"
+  fluwx:
+    :path: ".symlinks/plugins/fluwx/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   in_app_purchase_storekit:
@@ -133,6 +152,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
+  alipay_kit_ios: 4c2f36d6400728a7b1ecdddac81e668928bcc332
   app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
   camera_avfoundation: 3125e8cd1a4387f6f31c6c63abb8a55892a9eeeb
   device_identity: ad27231cb8754e5bc63ce2225e2e1d95d374ca88
@@ -141,6 +161,7 @@ SPEC CHECKSUMS:
   flutter_keychain: 01aabf894ffe8b01adfda1d9df21c210c1b4b452
   flutter_sound: c60effa2a350fb977885f0db2fbc4c1ad5160900
   flutter_sound_core: 26c10e5832e76aaacfae252d8925232281c486ae
+  fluwx: e9e728cfdb80e82dac5f4ff974b1901a7939dcd0
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   in_app_purchase_storekit: 4fb7ee9e824b1f09107fbfbbce8c4b276366dc43
@@ -158,7 +179,8 @@ SPEC CHECKSUMS:
   vibration: 7d883d141656a1c1a6d8d238616b2042a51a1241
   video_player_avfoundation: e9e6f9cae7d7a6d9b43519b0aab382bca60fcfd1
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
+  WechatOpenSDK-XCFramework: acdeeda129efbef9532bca8a10c24e1b4b8c7d69
 
-PODFILE CHECKSUM: 4090be87ef3353b7d49432b8f3a5c66e8cea7f68
+PODFILE CHECKSUM: 32a598a2e4da28e5598615497917ea857a3ad3e8
 
 COCOAPODS: 1.13.0
