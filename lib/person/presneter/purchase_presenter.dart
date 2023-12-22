@@ -154,15 +154,15 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView>{
              tobias.pay(payData.prepayUrl).then(
                (result) {
                  Log.d('支付结果:$result');
-                 int code = result['resultStatus'];
-                 if (code == 9000) {
+                 String code = result['resultStatus'];
+                 if (code == '9000') {
                    Toast.show("支付成功");
                    getOrderStatus(payData.orderNo,"ALIPAY");
-                 } else if (code == 6001) {
+                 } else if (code == '6001') {
                    Toast.show("取消支付");
-                 } else if (code == 8000) {
+                 } else if (code == '8000') {
                    Toast.show("支付处理中，请在购买记录页确认是否开通成功");
-                 } else if (code == 6004) {
+                 } else if (code == '6004') {
                    Toast.show("支付处理中，请在购买记录页确认是否开通成功");
                  } else {
                    Toast.show(result['memo']);
