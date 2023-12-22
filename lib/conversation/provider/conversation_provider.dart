@@ -190,6 +190,7 @@ class ConversationProvider extends ChangeNotifier {
   bool _showTranslation = false;
   // 是否超出体验期
   bool _hasFreeUsage = false;
+  int _isVip = 0;
   // 剩余时间
   int _availableTime = 0;
   // 单次会话使用时间
@@ -204,6 +205,7 @@ class ConversationProvider extends ChangeNotifier {
   bool get showTranslation => _showTranslation;
   int get availableTime => _availableTime;
   bool get hasFreeUsage => _hasFreeUsage;
+  int get isVip => _isVip;
   int get usageTime => _usageTime;
   int get cutdownState => _cutdownState;
 
@@ -222,11 +224,13 @@ class ConversationProvider extends ChangeNotifier {
           return;
         }
         Map<dynamic, dynamic> data = result.data! as Map<dynamic, dynamic>;
+        _isVip = data['is_member'];
         int leftTime = data['left_time'] ?? 0;
         if (leftTime > 0) {
           _availableTime = leftTime;
         }
-        // todo 超过体验期字段赋值
+        int expDay = data['exp_day'] ?? 0;
+        _hasFreeUsage = expDay > 0;
       },
     );
     return _availableTime;

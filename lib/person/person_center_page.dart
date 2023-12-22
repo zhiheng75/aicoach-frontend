@@ -40,6 +40,10 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
   String activePercent="--%";//活跃指数
   String activeRank="--";//前面还有多少人
   String vipTime = "--";
+  // 总剩余免费体验时间
+  int _leftTime = 0;
+  // 是否为会员
+  int _isVip = 0;
 
   late PersonalCenterPresenter _presenter;
 
@@ -151,41 +155,64 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                           ],
                         ),
                       ),
-                      GestureDetector(
-                        onTap: (){
-                          NavigatorUtils.push(context, PersonalRouter.personalPurchase);
-                        },
-                        child:Stack(
-                          children: [
-                            const LoadAssetImage("purchase_img"),
-                            Container(
-                              margin:const EdgeInsets.only(left: 30,top: 35),
-                              child:Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  RichText(text:
-                                  TextSpan(
-                                      children: <TextSpan>[
-                                  TextSpan(
-                                      text: "会员权益",
-                                      style: TextStyle(
-                                          fontSize: Dimens.font_sp20,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold)),
-                                  vipTime.isNotEmpty
-                                      ? TextSpan(
+
+                      // 体验文案
+                      if (_isVip == 0)
+                        ...[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              const Text(
+                                '免费体验3天，每天15分钟',
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                              Text(
+                                '剩余体验时间：$_leftTime分钟',
+                                style: const TextStyle(
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      Stack(
+                        children: [
+                          const LoadAssetImage("purchase_img"),
+                          Container(
+                            margin:const EdgeInsets.only(left: 30,top: 35),
+                            child:Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                RichText(text:
+                                TextSpan(
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: "会员权益",
+                                          style: TextStyle(
+                                              fontSize: Dimens.font_sp20,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold)),
+                                      vipTime.isNotEmpty
+                                          ? TextSpan(
                                           text: " 至$vipTime",
                                           style: TextStyle(
                                               fontSize: Dimens.font_sp12,
                                               color: Colours.color_00DBAF))
-                                      : const TextSpan(),
-                                ])),
+                                          : const TextSpan(),
+                                    ])),
 
-                                  Text("专属口语教练,科学测评,个性化定制",style: TextStyle(color: Colors.white,fontSize: Dimens.font_sp11),),
+                                Text("专属口语教练,科学测评,个性化定制",style: TextStyle(color: Colors.white,fontSize: Dimens.font_sp11),),
 
-                                  Text("24小时不限场景 ",style: TextStyle(color: Colors.white,fontSize: Dimens.font_sp11),),
-                                  Container(
+                                Text("24小时不限场景 ",style: TextStyle(color: Colors.white,fontSize: Dimens.font_sp11),),
+                                GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () {
+                                    NavigatorUtils.push(context, PersonalRouter.personalPurchase);
+                                  },
+                                  child: Container(
                                     width: 106,
                                     margin: const EdgeInsets.only(top: 8),
                                     padding: const EdgeInsets.only(left: 18,top: 3,bottom: 3),
@@ -200,15 +227,15 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                                       children: [
                                         const  LoadAssetImage("dimond_img",width: 15,height: 14,),
                                         Gaps.hGap4,
-                                        Text("立即续费",style: TextStyle(fontSize: Dimens.font_sp12,color: Colours.color_3A74E6,fontWeight: FontWeight.bold),)
+                                        Text(_isVip == 0 ? "立即开通" : "立即续费",style: TextStyle(fontSize: Dimens.font_sp12,color: Colours.color_3A74E6,fontWeight: FontWeight.bold),)
                                       ],
                                     ),
-                                  )
-                                ],
-                              ) ,
-                            )
-                          ],
-                        )
+                                  ),
+                                )
+                              ],
+                            ) ,
+                          )
+                        ],
                       ),
                       Gaps.vGap40,
                       GestureDetector(
@@ -239,8 +266,6 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
         )
     );
   }
-
-
 
   Widget headerItem(){
     return  Row(
@@ -352,11 +377,18 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
   bool get wantKeepAlive => true;
 
   @override
+  void getAvailableTime(Map<String, dynamic> data) {
+    _leftTime = data['left_time'];
+    _isVip = data['is_member'];
+    setState(() {});
+  }
+
+  @override
   void getUserInfo(LoginInfoDataData data) {
     _headerImg = data.headimgurl;
     if(data.name!=null&&data.name.isNotEmpty){
       _userName = data.name;
-    }else if(data.nickname!=null&&data.nickname.isNotEmpty){
+    }else if(data.nickname.isNotEmpty){
       _userName = data.nickname;
     }else{
       _userName = data.phone.substring(7,data.phone.length);
@@ -379,4 +411,5 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
 
     });
   }
+
 }

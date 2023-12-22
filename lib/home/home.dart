@@ -180,9 +180,22 @@ class _HomePageState extends State<HomePage>
                                   return;
                                 }
                                 showProgress();
-                                bool hasAvailableTime = (await Provider.of<ConversationProvider>(context, listen: false).getAvailableTime()) > 0;
+                                ConversationProvider provider = Provider.of<ConversationProvider>(context, listen: false);
+                                await provider.getAvailableTime();
                                 // 体验到期
-                                if (!hasAvailableTime) {
+                                if (provider.isVip == 0 && !provider.hasFreeUsage) {
+                                  closeProgress();
+                                  _showTimeOutBottomSheet();
+                                  return;
+                                }
+                                // 会员到期
+                                if (provider.isVip == 2) {
+                                  closeProgress();
+                                  _showTimeOutBottomSheet();
+                                  return;
+                                }
+                                // 无使用时间
+                                if (provider.availableTime == 0) {
                                   closeProgress();
                                   _showTimeOutBottomSheet();
                                   return;
@@ -237,155 +250,165 @@ class _HomePageState extends State<HomePage>
         enableDrag: false,
         isScrollControlled: true,
         isDismissible: false,
-        builder: (_) => DraggableScrollableSheet(
-            initialChildSize: 0.6,
-            minChildSize: 0.45,
-            expand: false,
-            builder: (_, scrollController) {
-              return Consumer<ConversationProvider>(builder: (_, provider, __) {
-                return Stack(
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30)),
-                          color: Colors.white
-                      ),
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30)),
-                          gradient: LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft,
-                            colors: [
-                              Colours.color_300EF4D1,
-                              Colours.color_3053C5FF,
-                              Colours.color_30E0AEFF,
-                            ],
-                            stops: [0.0, 0.4, 1.0],
-                          )),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
-                            child: Text(
-                              "体验到期, 与你的专属AI外教开启学习之旅",
-                              style: TextStyle(
-                                  color: Colours.color_111B44,
-                                  fontSize: Dimens.font_sp22),
-                            ),
-                          ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
-                          //   child: Text(
-                          //     "赠送的体验时长已经使用完成，\n升级会员后,可查看完整的个性化学习报告。",
-                          //     style: TextStyle(
-                          //         color: Colours.color_546092,
-                          //         fontSize: Dimens.font_sp13),
-                          //   ),
-                          // ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
-                            child: Text(
-                              "新用户可免费试用3天，每天15分钟",
-                              style: TextStyle(
-                                  color: Colours.color_546092,
-                                  fontSize: Dimens.font_sp13),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
-                            child: Text(
-                              provider.hasFreeUsage ? "今天赠送的体验时长已经使用完成" : "赠送的体验时长已全部使用完成",
-                              style: TextStyle(
-                                  color: Colours.color_546092,
-                                  fontSize: Dimens.font_sp13),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
-                            child: Text(
-                              "升级会员后，可畅享所有功能。",
-                              style: TextStyle(
-                                  color: Colours.color_546092,
-                                  fontSize: Dimens.font_sp13),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(
-                                left: 20, right: 20, top: 20, bottom: 20),
-                            padding: const EdgeInsets.only(left: 16, right: 16),
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: ImageUtils.getAssetImage(
-                                    "experience_board_img",
-                                  ),
-                                  fit: BoxFit.fill),
-                            ),
-                            child: Column(
-                              children: [
-                                Gaps.vGap15,
-                                categoryWidget("自由选择喜欢的虚拟外教老师"),
-                                Gaps.vGap15,
-                                categoryWidget("自定义话题场景练习"),
-                                Gaps.vGap15,
-                                categoryWidget("24小时，随时随地开始练习"),
-                                Gaps.vGap15,
-                                categoryWidget("地道英语口语，纯真发音，引导式对话 "),
-                                Gaps.vGap15,
-                                categoryWidget("全方位测评报告"),
-                                Gaps.vGap15,
-                              ],
-                            ),
-                          ),
-                          Gaps.vGap15,
-                          Padding(
-                              padding: const EdgeInsets.only(left: 20, right: 20),
-                              child: GestureDetector(
-                                onTap: () {
-                                  NavigatorUtils.goBack(context);
-                                  NavigatorUtils.push(context, PersonalRouter.personalPurchase);
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: 400,
-                                  height: 40,
-                                  decoration: const BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(100)),
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [
-                                          Colours.color_DA2FFF,
-                                          Colours.color_0E90FF,
-                                          Colours.color_00FFB4,
-                                        ],
-                                      )),
-                                  // child: Center(
-                                  child:  Text(
-                                    "查看会员升级方案",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: Dimens.font_sp18),
-                                  ),
-                                  // ),
-                                ),
-                              )),
-                          Gaps.vGap24,
+        builder: (_) => Consumer<ConversationProvider>(builder: (_, provider, __) {
+          Widget title = Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
+            child: Text(
+              provider.isVip == 0 ? "体验到期, 与你的专属AI外教开启学习之旅" : (provider.isVip == 2 ? "会员到期，邀请您继续一路同行" : "您的免费时长已用完"),
+              style: TextStyle(
+                  color: Colours.color_111B44,
+                  fontSize: Dimens.font_sp22),
+            ),
+          );
+
+          Widget tip = Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
+                child: Text(
+                  provider.isVip == 0 ? "新用户可免费试用3天，每天15分钟" : "您购买的会员已到期",
+                  style: TextStyle(
+                      color: Colours.color_546092,
+                      fontSize: Dimens.font_sp13),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
+                child: Text(
+                  provider.isVip == 0 ? (provider.hasFreeUsage ? "今天赠送的体验时长已经使用完成" : "赠送的体验时长已全部使用完成") : "续费会员，继续畅享所有功能",
+                  style: TextStyle(
+                      color: Colours.color_546092,
+                      fontSize: Dimens.font_sp13),
+                ),
+              ),
+              if (provider.isVip == 0)
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
+                  child: Text(
+                    "升级会员后，可畅享所有功能。",
+                    style: TextStyle(
+                        color: Colours.color_546092,
+                        fontSize: Dimens.font_sp13),
+                  ),
+                ),
+            ],
+          );
+
+          Widget desc = Container(
+            margin: const EdgeInsets.only(
+                left: 20, right: 20, top: 20, bottom: 20),
+            padding: const EdgeInsets.only(left: 16, right: 16),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: ImageUtils.getAssetImage(
+                    "experience_board_img",
+                  ),
+                  fit: BoxFit.fill),
+            ),
+            child: Column(
+              children: [
+                Gaps.vGap15,
+                categoryWidget("自由选择喜欢的虚拟外教老师"),
+                Gaps.vGap15,
+                categoryWidget("自定义话题场景练习"),
+                Gaps.vGap15,
+                categoryWidget("24小时，随时随地开始练习"),
+                Gaps.vGap15,
+                categoryWidget("地道英语口语，纯真发音，引导式对话 "),
+                Gaps.vGap15,
+                categoryWidget("全方位测评报告"),
+                Gaps.vGap15,
+              ],
+            ),
+          );
+
+          Widget button = Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: GestureDetector(
+                onTap: () {
+                  NavigatorUtils.goBack(context);
+                  NavigatorUtils.push(context, PersonalRouter.personalPurchase);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: 400,
+                  height: 40,
+                  decoration: const BoxDecoration(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(100)),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colours.color_DA2FFF,
+                          Colours.color_0E90FF,
+                          Colours.color_00FFB4,
                         ],
-                      ),
-                    )
-                  ],
-                );
-              });
-            }));
+                      )),
+                  // child: Center(
+                  child:  Text(
+                    provider.isVip == 0 ? "查看会员升级方案" : (provider.isVip == 2 ? "会员续费" : "去购买"),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: Dimens.font_sp18),
+                  ),
+                  // ),
+                ),
+              ));
+
+          return Container(
+            color: Colors.transparent,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                    color: Colors.white,
+                  ),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                        ),
+                        gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            Colours.color_300EF4D1,
+                            Colours.color_3053C5FF,
+                            Colours.color_30E0AEFF,
+                          ],
+                          stops: [0.0, 0.4, 1.0],
+                        ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        title,
+                        if (provider.isVip != 1)
+                          ...[
+                            tip,
+                            desc,
+                          ],
+                        Gaps.vGap15,
+                        button,
+                        Gaps.vGap24,
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        }),
+    );
   }
 
   @override
