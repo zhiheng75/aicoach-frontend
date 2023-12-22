@@ -156,16 +156,18 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
                           onTap: () {
                             if(agreeAgreement){
 
-                              if(Device.isAndroid){
-                                if(wxPay){
-                                  _purchasePresenter.wxChatPay(_purchasePresenter.goodList[selectIndex].id,
-                                      _purchasePresenter.goodList[selectIndex].price,true);
-                                }else{
-                                  _purchasePresenter.aliPay(_purchasePresenter.goodList[selectIndex].id,
-                                      _purchasePresenter.goodList[selectIndex].price,true);
-                                }
+                              // 微信支付
+                              if (wxPay) {
+                                _purchasePresenter.wxChatPay(_purchasePresenter.goodList[selectIndex].id,
+                                    _purchasePresenter.goodList[selectIndex].price,true);
                               }
-                              if (Device.isIOS) {
+                              // 支付宝
+                              if (aliPay) {
+                                _purchasePresenter.aliPay(_purchasePresenter.goodList[selectIndex].id,
+                                    _purchasePresenter.goodList[selectIndex].price,true);
+                              }
+                              // 苹果支付
+                              if (applePay) {
                                 _purchasePresenter.applePay(_purchasePresenter.goodList[selectIndex].id);
                               }
 

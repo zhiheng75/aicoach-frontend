@@ -9,6 +9,15 @@ version: 1.0.0+1
 environment:
   sdk: '>=3.1.3 <4.0.0'
 
+fluwx:
+  app_id: wxfb033d09d2eecaf0
+  ios:
+    universal_link: https://demo.shenmo-ai.net/ios/
+tobias:
+  url_scheme: tobiasexample
+  ios:
+    ignore_security: true
+
 dependencies:
   flutter:
     sdk: flutter
@@ -101,12 +110,14 @@ dependencies:
   flutter_easyrefresh: ^2.2.1
   #in_app_purchase https://github.com/flutter/packages/tree/main/packages/in_app_purchase/in_app_purchase
   in_app_purchase: ^3.1.11
-  #微信登录三方
-  fluwx: ^3.12.2
   #极光
   jverify: 2.1.2
   #flutter_keychain https://github.com/jeroentrappers/flutter_keychain
   flutter_keychain: ^2.4.0
+  #fluwx https://github.com/OpenFlutter/fluwx
+  fluwx: ^4.4.8
+  #tobias https://github.com/OpenFlutter/tobias
+  tobias: ^3.2.2
 
 dev_dependencies:
   flutter_test:

@@ -16,6 +16,9 @@ PODS:
   - flutter_sound_core (9.2.13)
   - fluwx (0.0.1):
     - Flutter
+    - fluwx/pay (= 0.0.1)
+  - fluwx/pay (0.0.1):
+    - Flutter
     - WechatOpenSDK-XCFramework (~> 2.0.2)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
@@ -56,6 +59,11 @@ PODS:
   - sqflite (0.0.3):
     - Flutter
     - FMDB (>= 2.7.5)
+  - tobias (0.0.1):
+    - Flutter
+    - tobias/normal (= 0.0.1)
+  - tobias/normal (0.0.1):
+    - Flutter
   - url_launcher_ios (0.0.1):
     - Flutter
   - vibration (1.7.5):
@@ -88,6 +96,7 @@ DEPENDENCIES:
   - sensors_plus (from `.symlinks/plugins/sensors_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - tobias (from `.symlinks/plugins/tobias/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - vibration (from `.symlinks/plugins/vibration/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
@@ -143,6 +152,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
+  tobias:
+    :path: ".symlinks/plugins/tobias/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   vibration:
@@ -161,7 +172,7 @@ SPEC CHECKSUMS:
   flutter_keychain: 01aabf894ffe8b01adfda1d9df21c210c1b4b452
   flutter_sound: c60effa2a350fb977885f0db2fbc4c1ad5160900
   flutter_sound_core: 26c10e5832e76aaacfae252d8925232281c486ae
-  fluwx: e9e728cfdb80e82dac5f4ff974b1901a7939dcd0
+  fluwx: 4e01cbba9403c95cd973d5d8f8b9db5244f09446
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   in_app_purchase_storekit: 4fb7ee9e824b1f09107fbfbbce8c4b276366dc43
@@ -178,6 +189,7 @@ SPEC CHECKSUMS:
   sensors_plus: 42b9de1b8237675fa8d8121e4bb93be0f79fa61d
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
+  tobias: 22f69183b14af82a2ac8ff698af084c352744e5f
   url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
   vibration: 7d883d141656a1c1a6d8d238616b2042a51a1241
   video_player_avfoundation: e9e6f9cae7d7a6d9b43519b0aab382bca60fcfd1
