@@ -134,4 +134,8 @@ class Colours {
     }
     return Color(int.parse(hex.substring(1, 7), radix: 16) + 0xFF000000);
   }
+
+  ///  新版UI
+  static const Color color_999999 = Color(0xFF999999);
+  static const Color color_001652 = Color(0xFF001652);
 }

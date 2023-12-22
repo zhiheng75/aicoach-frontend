@@ -573,6 +573,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.8.1"
+  jverify:
+    dependency: "direct main"
+    description:
+      name: jverify
+      sha256: dd5c951223d8b6f77da3c573b146cf138b8287f23eb3845463db7781a78bd628
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.2"
   keyboard_actions:
     dependency: "direct main"
     description:

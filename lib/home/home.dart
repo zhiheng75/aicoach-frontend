@@ -5,7 +5,6 @@ import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/conversation/provider/conversation_provider.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/util/apple_pay_utils.dart';
-import 'package:Bubble/home/home_router.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -243,123 +242,149 @@ class _HomePageState extends State<HomePage>
             minChildSize: 0.45,
             expand: false,
             builder: (_, scrollController) {
-              return Stack(
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)),
-                        color: Colors.white
+              return Consumer<ConversationProvider>(builder: (_, provider, __) {
+                return Stack(
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30)),
+                          color: Colors.white
+                      ),
                     ),
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)),
-                        gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            Colours.color_300EF4D1,
-                            Colours.color_3053C5FF,
-                            Colours.color_30E0AEFF,
-                          ],
-                          stops: [0.0, 0.4, 1.0],
-                        )),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                         Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
-                          child: Text(
-                            "体验到期, 与你的专属AI外教开启学习之旅",
-                            style: TextStyle(
-                                color: Colours.color_111B44,
-                                fontSize: Dimens.font_sp22),
-                          ),
-                        ),
-                         Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
-                          child: Text(
-                            "赠送的体验时长已经使用完成，\n升级会员后,可查看完整的个性化学习报告。",
-                            style: TextStyle(
-                                color: Colours.color_546092,
-                                fontSize: Dimens.font_sp13),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(
-                              left: 20, right: 20, top: 20, bottom: 20),
-                          padding: const EdgeInsets.only(left: 16, right: 16),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: ImageUtils.getAssetImage(
-                                  "experience_board_img",
-                                ),
-                                fit: BoxFit.fill),
-                          ),
-                          child: Column(
-                            children: [
-                              Gaps.vGap15,
-                              categoryWidget("自由选择喜欢的虚拟外教老师"),
-                              Gaps.vGap15,
-                              categoryWidget("自定义话题场景练习"),
-                              Gaps.vGap15,
-                              categoryWidget("24小时，随时随地开始练习"),
-                              Gaps.vGap15,
-                              categoryWidget("地道英语口语，纯真发音，引导式对话 "),
-                              Gaps.vGap15,
-                              categoryWidget("全方位测评报告"),
-                              Gaps.vGap15,
+                    Container(
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30)),
+                          gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [
+                              Colours.color_300EF4D1,
+                              Colours.color_3053C5FF,
+                              Colours.color_30E0AEFF,
                             ],
+                            stops: [0.0, 0.4, 1.0],
+                          )),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
+                            child: Text(
+                              "体验到期, 与你的专属AI外教开启学习之旅",
+                              style: TextStyle(
+                                  color: Colours.color_111B44,
+                                  fontSize: Dimens.font_sp22),
+                            ),
                           ),
-                        ),
-                        Gaps.vGap15,
-                        Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20),
-                            child: GestureDetector(
-                              onTap: () {
-                                NavigatorUtils.goBack(context);
-                                NavigatorUtils.push(context, PersonalRouter.personalPurchase);
-                              },
-                              child: Container(
-                                alignment: Alignment.center,
-                                width: 400,
-                                height: 40,
-                                decoration: const BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(100)),
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: [
-                                        Colours.color_DA2FFF,
-                                        Colours.color_0E90FF,
-                                        Colours.color_00FFB4,
-                                      ],
-                                    )),
-                                // child: Center(
-                                child:  Text(
-                                  "查看会员升级方案",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: Dimens.font_sp18),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
+                          //   child: Text(
+                          //     "赠送的体验时长已经使用完成，\n升级会员后,可查看完整的个性化学习报告。",
+                          //     style: TextStyle(
+                          //         color: Colours.color_546092,
+                          //         fontSize: Dimens.font_sp13),
+                          //   ),
+                          // ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
+                            child: Text(
+                              "新用户可免费试用3天，每天15分钟",
+                              style: TextStyle(
+                                  color: Colours.color_546092,
+                                  fontSize: Dimens.font_sp13),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
+                            child: Text(
+                              provider.hasFreeUsage ? "今天赠送的体验时长已经使用完成" : "赠送的体验时长已全部使用完成",
+                              style: TextStyle(
+                                  color: Colours.color_546092,
+                                  fontSize: Dimens.font_sp13),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
+                            child: Text(
+                              "升级会员后，可畅享所有功能。",
+                              style: TextStyle(
+                                  color: Colours.color_546092,
+                                  fontSize: Dimens.font_sp13),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(
+                                left: 20, right: 20, top: 20, bottom: 20),
+                            padding: const EdgeInsets.only(left: 16, right: 16),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: ImageUtils.getAssetImage(
+                                    "experience_board_img",
+                                  ),
+                                  fit: BoxFit.fill),
+                            ),
+                            child: Column(
+                              children: [
+                                Gaps.vGap15,
+                                categoryWidget("自由选择喜欢的虚拟外教老师"),
+                                Gaps.vGap15,
+                                categoryWidget("自定义话题场景练习"),
+                                Gaps.vGap15,
+                                categoryWidget("24小时，随时随地开始练习"),
+                                Gaps.vGap15,
+                                categoryWidget("地道英语口语，纯真发音，引导式对话 "),
+                                Gaps.vGap15,
+                                categoryWidget("全方位测评报告"),
+                                Gaps.vGap15,
+                              ],
+                            ),
+                          ),
+                          Gaps.vGap15,
+                          Padding(
+                              padding: const EdgeInsets.only(left: 20, right: 20),
+                              child: GestureDetector(
+                                onTap: () {
+                                  NavigatorUtils.goBack(context);
+                                  NavigatorUtils.push(context, PersonalRouter.personalPurchase);
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 400,
+                                  height: 40,
+                                  decoration: const BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(100)),
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [
+                                          Colours.color_DA2FFF,
+                                          Colours.color_0E90FF,
+                                          Colours.color_00FFB4,
+                                        ],
+                                      )),
+                                  // child: Center(
+                                  child:  Text(
+                                    "查看会员升级方案",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: Dimens.font_sp18),
+                                  ),
+                                  // ),
                                 ),
-                                // ),
-                              ),
-                            )),
-                        Gaps.vGap24,
-                      ],
-                    ),
-                  )
-                ],
-              )
-
-
-                ;
+                              )),
+                          Gaps.vGap24,
+                        ],
+                      ),
+                    )
+                  ],
+                );
+              });
             }));
   }
 
@@ -430,7 +455,7 @@ class _HomePageState extends State<HomePage>
 
     Constant.jverify.setDebugMode(true); // 打开调试模式
     Constant.jverify.setup(
-        appKey: "0846276bad587d5808701213", //"你自己应用的 AppKey",
+        appKey: "d213d60b209d0807dc4146f4", //"你自己应用的 AppKey",
         channel: "devloper-default"); // 初始化sdk,  appKey 和 channel 只对ios设置有效
     if (!mounted) return;
 

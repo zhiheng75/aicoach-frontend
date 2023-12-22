@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -187,6 +188,8 @@ class ConversationProvider extends ChangeNotifier {
   String _sessionId = '';
   List<Message> _messageList = [];
   bool _showTranslation = false;
+  // 是否超出体验期
+  bool _hasFreeUsage = false;
   // 剩余时间
   int _availableTime = 0;
   // 单次会话使用时间
@@ -200,6 +203,7 @@ class ConversationProvider extends ChangeNotifier {
   set messageList(List<Message> messageList) => _messageList = messageList;
   bool get showTranslation => _showTranslation;
   int get availableTime => _availableTime;
+  bool get hasFreeUsage => _hasFreeUsage;
   int get usageTime => _usageTime;
   int get cutdownState => _cutdownState;
 
@@ -207,24 +211,22 @@ class ConversationProvider extends ChangeNotifier {
   Future<int> getAvailableTime() async {
     _availableTime = 0;
     String deviceId = await Device.getDeviceId();
-    await DioUtils.instance.requestNetwork(
+    await DioUtils.instance.requestNetwork<ResultData>(
       Method.get,
       HttpApi.permission,
       queryParameters: {
         'device_id': deviceId,
       },
       onSuccess: (result) {
-        if (result == null) {
+        if (result == null || result.data == null) {
           return;
         }
-        result = result as Map<String, dynamic>;
-        if (result['data'] == null) {
-          return;
-        }
-        int leftTime = result['data']['left_time'] ?? 0;
+        Map<dynamic, dynamic> data = result.data! as Map<dynamic, dynamic>;
+        int leftTime = data['left_time'] ?? 0;
         if (leftTime > 0) {
           _availableTime = leftTime;
         }
+        // todo 超过体验期字段赋值
       },
     );
     return _availableTime;
