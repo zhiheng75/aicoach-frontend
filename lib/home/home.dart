@@ -182,8 +182,8 @@ class _HomePageState extends State<HomePage>
                                 showProgress();
                                 ConversationProvider provider = Provider.of<ConversationProvider>(context, listen: false);
                                 await provider.getAvailableTime();
-                                // 体验到期
-                                if (provider.isVip == 0 && !provider.hasFreeUsage) {
+                                // 体验到期（不在体验期或者当天体验时间为0）
+                                if (provider.isVip == 0 && (!provider.hasFreeUsage || provider.availableTime == 0)) {
                                   closeProgress();
                                   _showTimeOutBottomSheet();
                                   return;
@@ -194,8 +194,8 @@ class _HomePageState extends State<HomePage>
                                   _showTimeOutBottomSheet();
                                   return;
                                 }
-                                // 无使用时间
-                                if (provider.availableTime == 0) {
+                                // 无使用时间（会员）
+                                if (provider.isVip == 1 && provider.availableTime == 0) {
                                   closeProgress();
                                   _showTimeOutBottomSheet();
                                   return;
@@ -254,7 +254,7 @@ class _HomePageState extends State<HomePage>
           Widget title = Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
             child: Text(
-              provider.isVip == 0 ? "体验到期, 与你的专属AI外教开启学习之旅" : (provider.isVip == 2 ? "会员到期，邀请您继续一路同行" : "您的免费时长已用完"),
+              provider.isVip == 0 ? "体验到期, 与你的专属AI外教开启学习之旅" : (provider.isVip == 2 ? "会员到期，邀请您继续一路同行" : "您的时长已用完"),
               style: TextStyle(
                   color: Colours.color_111B44,
                   fontSize: Dimens.font_sp22),
