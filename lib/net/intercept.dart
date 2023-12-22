@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:Bubble/util/device_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:sprintf/sprintf.dart';
@@ -17,6 +18,11 @@ class AuthInterceptor extends Interceptor {
     final String accessToken = SpUtil.getString(Constant.accessToken).nullSafe;
     if (accessToken.isNotEmpty) {
       options.headers['Authorization'] = "Bearer $accessToken";
+    }
+    if (Device.isAndroid){
+      options.headers['X-Source'] =  "android";
+    }else{
+      options.headers['X-Source'] =  "ios";
     }
 
     super.onRequest(options, handler);

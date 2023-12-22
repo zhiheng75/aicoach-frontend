@@ -92,8 +92,8 @@ class _MainPageSelectMenuState extends State<MainPageSelectMenu>
           ),
           GestureDetector(
             onTap: () {
-              // NavigatorUtils.push(context, ChangeRoleRouter.changeRole);
-              NavigatorUtils.push(context, HomeRouter.demoTest);
+              NavigatorUtils.push(context, ChangeRoleRouter.changeRole);
+              // NavigatorUtils.push(context, HomeRouter.demoTest);
             },
             child: Container(
               padding: const EdgeInsets.only(bottom: 10),
