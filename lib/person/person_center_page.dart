@@ -43,7 +43,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
   // 总剩余免费体验时间
   int _leftTime = 0;
   // 是否为会员
-  int _isVip = 0;
+  int _isVip = 2;
 
   late PersonalCenterPresenter _presenter;
 
@@ -169,7 +169,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                                 ),
                               ),
                               Text(
-                                '剩余体验时间：$_leftTime分钟',
+                                '剩余体验时间：${_leftTime >= 60 ? '${_leftTime ~/ 60}分钟' : '$_leftTime秒'}',
                                 style: const TextStyle(
                                   fontSize: 12.0,
                                 ),
@@ -378,7 +378,8 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
 
   @override
   void getAvailableTime(Map<String, dynamic> data) {
-    _leftTime = data['left_time'];
+    // _leftTime = data['left_time'];
+    _leftTime = 75;
     _isVip = data['is_member'];
     setState(() {});
   }
