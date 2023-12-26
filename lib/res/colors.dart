@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -138,4 +140,8 @@ class Colours {
   ///  新版UI
   static const Color color_999999 = Color(0xFF999999);
   static const Color color_001652 = Color(0xFF001652);
+  static const Color color_9AC3FF = Color(0xFF9AC3FF);
+  static const Color color_FF71E0 = Color(0xFFFF71E0);
+  static const Color color_E8CCFE = Color(0xFFE8CCFE);
+  static const Color color_ACCDFF = Color(0xFFACCDFF);
 }

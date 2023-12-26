@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../res/colors.dart';
+import 'example.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({Key? key}) : super(key: key);
@@ -13,6 +14,25 @@ class BottomBar extends StatefulWidget {
 
 class _BottomBarState extends State<BottomBar> {
   final ScreenUtil _screenUtil = ScreenUtil();
+
+  void getExample() {
+    String text = 'Hello, I would like to ask what preparations need to be made for traveling abroad.';
+    String textZh = '你好，可以告诉我国外旅游需要做哪些准备吗？';
+    String audio = '';
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.transparent,
+      isScrollControlled: true,
+      isDismissible: false,
+      clipBehavior: Clip.none,
+      builder: (_) => Example(
+        text: text,
+        textZh: textZh,
+        audio: audio,
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -79,6 +99,14 @@ class _BottomBarState extends State<BottomBar> {
                     style: BorderStyle.solid,
                     color: Colours.color_001652,
                   ),
+                  gradient: const LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: [
+                      Colours.color_9AC3FF,
+                      Colours.color_FF71E0,
+                    ],
+                  ),
                 ),
                 alignment: Alignment.center,
                 child: const Row(
@@ -110,7 +138,7 @@ class _BottomBarState extends State<BottomBar> {
               left: 8.0,
             ),
             child: iconButtom(
-              onPress: () {},
+              onPress: getExample,
               child: const LoadAssetImage(
                 'tishi',
                 width: 17.5,

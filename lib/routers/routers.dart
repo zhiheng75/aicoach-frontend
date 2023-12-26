@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../changeRole/change_role_router.dart';
 import '../common/webview_page.dart';
 import '../conversation/conversation_router.dart';
-import '../home/home.dart';
 import '../home/home_router.dart';
 import '../login/login_router.dart';
 import '../order/order_router.dart';
@@ -29,10 +28,8 @@ class Routes {
       handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
         debugPrint('未找到目标页');
         return const NotFoundPage();
-      });
-
-    router.define(home, handler: Handler(
-      handlerFunc: (BuildContext? context, Map<String, List<String>> params) => const HomePage()));
+      },
+    );
     
     router.define(webViewPage, handler: Handler(handlerFunc: (_, params) {
       final String title = params['title']?.first ?? '';

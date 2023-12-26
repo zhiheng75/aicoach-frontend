@@ -2,6 +2,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../loginManager/login_manager.dart';
 import '../../person/person_router.dart';
 import '../../res/colors.dart';
 import '../../routers/fluro_navigator.dart';
@@ -83,7 +84,16 @@ class _HomeTabbarState extends State<HomeTabbar> {
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              NavigatorUtils.push(context, PersonalRouter.personalCenter);
+              LoginManager.checkLogin(
+                context,
+                () {
+                  NavigatorUtils.push(
+                    context,
+                    PersonalRouter.personalCenter,
+                    replace: true,
+                  );
+                }
+              );
             },
             child: const LoadAssetImage(
               'gerenzhongxin',
@@ -107,7 +117,16 @@ class _HomeTabbarState extends State<HomeTabbar> {
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              NavigatorUtils.push(context, PersonalRouter.personalStudyReport);
+              LoginManager.checkLogin(
+                context,
+                () {
+                  NavigatorUtils.push(
+                    context,
+                    PersonalRouter.personalStudyReport,
+                    replace: true,
+                  );
+                },
+              );
             },
             child: Container(
               width: 36.0,
