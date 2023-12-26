@@ -3,6 +3,7 @@ class CharacterEntity {
   String characterId = '';
   String name = '';
   String imageUrl = '';
+  String slogan = '';
   String text = '';
   String audio = '';
   List<CharacterTopic> topicList = [];
@@ -20,6 +21,9 @@ class CharacterEntity {
     }
     if (json['image_url'] != null) {
       entity.imageUrl = json['image_url'];
+    }
+    if (json['slogan'] != null) {
+      entity.slogan = json['slogan'];
     }
     if (json['text'] != null) {
       entity.text = json['text'];
@@ -39,6 +43,7 @@ class CharacterEntity {
       'character_id': characterId,
       'name': name,
       'image_url': imageUrl,
+      'slogan': slogan,
       'text': text,
       'audio': audio,
       'topic': topicList,

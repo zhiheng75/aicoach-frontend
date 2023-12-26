@@ -1,7 +1,10 @@
+import 'package:Bubble/home/widget/expiration_reminder.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
+import '../../home/provider/home_provider.dart';
 import '../../res/colors.dart';
 import 'example.dart';
 
@@ -14,6 +17,7 @@ class BottomBar extends StatefulWidget {
 
 class _BottomBarState extends State<BottomBar> {
   final ScreenUtil _screenUtil = ScreenUtil();
+  late HomeProvider _homeProvider;
 
   void getExample() {
     String text = 'Hello, I would like to ask what preparations need to be made for traveling abroad.';
@@ -34,9 +38,37 @@ class _BottomBarState extends State<BottomBar> {
     );
   }
 
+  void sendMessage() {
+    bool isAvailable = true;
+
+    int usageTime = _homeProvider.usageTime;
+    int vipState = _homeProvider.vipState;
+    int expDay = _homeProvider.expDay;
+    // 是否体验到期
+    if (vipState == 0 && (usageTime == 0 || expDay == 0)) {
+      isAvailable = false;
+    }
+    // 是否会员到期
+    if (vipState == 2) {
+      isAvailable = false;
+    }
+    if (!isAvailable) {
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        barrierColor: Colors.transparent,
+        isScrollControlled: true,
+        isDismissible: false,
+        builder: (_) => ExpirationReminder(),
+      );
+      return;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _homeProvider = Provider.of<HomeProvider>(context, listen: false);
   }
 
   @override
@@ -89,7 +121,7 @@ class _BottomBarState extends State<BottomBar> {
           Expanded(
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onLongPress: () {},
+              onLongPress: sendMessage,
               child: Container(
                 height: 50.0,
                 decoration: BoxDecoration(

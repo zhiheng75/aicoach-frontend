@@ -7,6 +7,7 @@ import '../../chat/utils/translate_util.dart';
 import '../../entity/result_entity.dart';
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
+import '../../scene/entity/scene_entity.dart';
 import '../../util/device_utils.dart';
 
 class HomeProvider extends ChangeNotifier {
@@ -21,6 +22,7 @@ class HomeProvider extends ChangeNotifier {
   late CharacterEntity _character;
   // 话题
   CharacterTopic? _topic;
+  SceneEntity? _scene;
   // 对话相关
   String _sessionId = '';
   List<MessageEntity> _messageList = [];
@@ -30,11 +32,13 @@ class HomeProvider extends ChangeNotifier {
   int get expDay => _expDay;
   int get vipState => _vipState;
   String get sessionId => _sessionId;
+  SceneEntity? get scene => _scene;
   CharacterTopic? get topic => _topic;
   List<MessageEntity> get messageList => _messageList;
 
   /// set
   set character(CharacterEntity character) => _character = character;
+  set scene(SceneEntity? scene) => _scene = scene;
   set topic(CharacterTopic? topic) => _topic = topic;
   set sessionId(String sessionId) => _sessionId = sessionId;
 
@@ -91,7 +95,7 @@ class HomeProvider extends ChangeNotifier {
   void addIntroductionMessage([bool update = true]) {
     IntroductionMessage introductionMessage = IntroductionMessage();
     introductionMessage.name = _character.name;
-    introductionMessage.desc = '这是角色简介';
+    introductionMessage.desc = _character.slogan;
     _messageList.add(introductionMessage);
     if (update == true) {
       notifyListeners();

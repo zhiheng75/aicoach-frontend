@@ -1,3 +1,4 @@
+import 'package:Bubble/scene/widget/select_scene.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,8 +24,6 @@ class HomeTabbar extends StatefulWidget {
 
 class _HomeTabbarState extends State<HomeTabbar> {
   final ScreenUtil _screenUtil = ScreenUtil();
-
-
 
   @override
   void initState() {
@@ -62,6 +61,18 @@ class _HomeTabbarState extends State<HomeTabbar> {
         behavior: HitTestBehavior.opaque,
         onTap: () {
           if (isSelected) {
+            return;
+          }
+          // 场景则弹窗
+          if (value == 'scene') {
+            showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              barrierColor: Colors.transparent,
+              isScrollControlled: true,
+              isDismissible: false,
+              builder: (_) => const SelectScene(),
+            );
             return;
           }
           widget.changeTab(value);
