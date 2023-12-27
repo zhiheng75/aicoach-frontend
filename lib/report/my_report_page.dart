@@ -16,20 +16,20 @@ import '../res/gaps.dart';
 import '../util/image_utils.dart';
 import '../widgets/load_image.dart';
 
-class MyReportPage extends StatefulWidget {
+class reportPage extends StatefulWidget {
 
   final StudyListDataData  entity;
 
-  const MyReportPage(this.entity,{Key? key}) : super(key: key);
+  const reportPage(this.entity,{Key? key}) : super(key: key);
 
   @override
-  State<MyReportPage> createState() => _MyReportPageState();
+  State<reportPage> createState() => _reportPageState();
 }
 
-class _MyReportPageState extends State<MyReportPage>
+class _reportPageState extends State<reportPage>
     with
-        BasePageMixin<MyReportPage, MyReportPresenter>,
-        AutomaticKeepAliveClientMixin<MyReportPage>
+        BasePageMixin<reportPage, MyReportPresenter>,
+        AutomaticKeepAliveClientMixin<reportPage>
     implements MyReportView {
   late MyReportPresenter _myReportPresenter;
 

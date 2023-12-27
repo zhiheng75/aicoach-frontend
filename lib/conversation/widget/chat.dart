@@ -71,7 +71,7 @@ class _ChatState extends State<Chat> {
     Future.delayed(Duration.zero, () {
       NavigatorUtils.push(
         context,
-        MyReportRouter.myReportPage,
+        ReportRouter.reportPage,
         arguments: data,
         replace: true,
       );

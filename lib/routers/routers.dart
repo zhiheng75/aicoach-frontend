@@ -43,7 +43,7 @@ class Routes {
     _listRouter.add(LoginRouter());
     _listRouter.add(HomeRouter());
     _listRouter.add(SettingRouter());
-    _listRouter.add(MyReportRouter());
+    _listRouter.add(ReportRouter());
     _listRouter.add(ChangeRoleRouter());
     _listRouter.add(PersonalRouter());
     _listRouter.add(ConversationRouter());

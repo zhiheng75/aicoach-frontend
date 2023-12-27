@@ -1,12 +1,13 @@
-import 'package:Bubble/scene/widget/select_scene.dart';
-import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../loginManager/login_manager.dart';
 import '../../person/person_router.dart';
+import '../../report/report_router.dart';
 import '../../res/colors.dart';
 import '../../routers/fluro_navigator.dart';
+import '../../scene/widget/select_scene.dart';
+import '../../widgets/load_image.dart';
 
 class HomeTabbar extends StatefulWidget {
   const HomeTabbar({
@@ -133,7 +134,7 @@ class _HomeTabbarState extends State<HomeTabbar> {
                 () {
                   NavigatorUtils.push(
                     context,
-                    PersonalRouter.personalStudyReport,
+                    ReportRouter.reportPage,
                     replace: true,
                   );
                 },
