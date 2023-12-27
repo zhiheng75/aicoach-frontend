@@ -4,6 +4,7 @@ import 'package:jverify/jverify.dart';
 
 import '../chat/chat.dart';
 import '../constant/constant.dart';
+import '../exam/exam.dart';
 import '../mvp/base_page.dart';
 import '../widgets/double_tap_back_exit_app.dart';
 import 'presenter/home_new_page_presenter.dart';
@@ -60,6 +61,8 @@ class _HomePageState extends State<HomeNewPage> with BasePageMixin<HomeNewPage, 
           children: <Widget>[
             if (_currentTab == 'chat')
               const ChatPage(),
+            if (_currentTab == 'exam')
+              const ExamPage(),
             Positioned(
               top: 60.0,
               child: HomeTabbar(

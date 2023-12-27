@@ -72,7 +72,7 @@ android {
 
     buildTypes {
         debug {
-//            signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
             buildConfigField("String", "WXID", '"wxfb033d09d2eecaf0"')
             buildConfigField("String", "ALI", '"2021004128604118"')
         }

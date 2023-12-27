@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:Bubble/util/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -11,9 +10,12 @@ import '../mvp/base_page.dart';
 import '../net/dio_utils.dart';
 import '../net/http_api.dart';
 import '../util/log_utils.dart';
+import '../util/media_utils.dart';
+import '../util/toast_utils.dart';
 import '../widgets/load_data.dart';
 import '../widgets/load_fail.dart';
 import 'entity/character_entity.dart';
+import 'entity/message_entity.dart';
 import 'presenter/chat_page_presenter.dart';
 import 'view/chat_view.dart';
 import 'widget/background.dart';
@@ -87,8 +89,10 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       _homeProvider.clearMessageList();
       _homeProvider.addIntroductionMessage();
       _homeProvider.addTipMessage('Role-plays started！');
-      // todo 添加角色问候
-      openTopic();
+      NormalMessage normalMessage = _homeProvider.createNormalMessage() as NormalMessage;
+      normalMessage.text = _character!.text;
+      _homeProvider.addNormalMessage(normalMessage);
+      MediaUtils().play(_character!.audio);
     });
   }
 

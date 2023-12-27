@@ -25,11 +25,11 @@ class CharacterEntity {
     if (json['slogan'] != null) {
       entity.slogan = json['slogan'];
     }
-    if (json['text'] != null) {
-      entity.text = json['text'];
+    if (json['greeting_text'] != null) {
+      entity.text = json['greeting_text'];
     }
-    if (json['audio'] != null) {
-      entity.audio = json['audio'];
+    if (json['greeting_audio'] != null) {
+      entity.audio = json['greeting_audio'];
     }
     if (json['topic'] != null) {
       List<dynamic> list = json['topic'] as List<dynamic>;
@@ -44,8 +44,8 @@ class CharacterEntity {
       'name': name,
       'image_url': imageUrl,
       'slogan': slogan,
-      'text': text,
-      'audio': audio,
+      'greeting_text': text,
+      'greeting_audio': audio,
       'topic': topicList,
     };
   }

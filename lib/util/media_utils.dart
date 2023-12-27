@@ -3,6 +3,8 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'toast_utils.dart';
 
+
+
 class MediaUtils {
 
   MediaUtils();
@@ -29,6 +31,21 @@ class MediaUtils {
   Future<FlutterSoundPlayer?> getPlayer() async {
     _player ??= await FlutterSoundPlayer().openPlayer();
     return _player;
+  }
+
+  void play(String audioPath, { Function? whenFinished }) async {
+    await getPlayer();
+    if (_player == null) {
+      return;
+    }
+    _player!.startPlayer(
+      fromURI: audioPath,
+      whenFinished: () {
+        if (whenFinished != null) {
+          whenFinished();
+        }
+      },
+    );
   }
 
 }

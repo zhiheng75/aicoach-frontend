@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, unnecessary_getters_setters
+// ignore_for_file: prefer_final_fields, unnecessary_getters_setters, slash_for_doc_comments
 import 'package:flutter/material.dart';
 
 import '../../chat/entity/character_entity.dart';
@@ -12,6 +12,7 @@ import '../../util/device_utils.dart';
 
 class HomeProvider extends ChangeNotifier {
 
+  /** 对话 */
   // 使用时间
   int _usageTime = 0;
   // 体验天数
@@ -23,9 +24,13 @@ class HomeProvider extends ChangeNotifier {
   // 话题
   CharacterTopic? _topic;
   SceneEntity? _scene;
-  // 对话相关
   String _sessionId = '';
   List<MessageEntity> _messageList = [];
+
+  /** 模考 */
+  // 使用次数
+  int _usageCount = 0;
+
 
   /// get
   int get usageTime => _usageTime;
@@ -35,6 +40,7 @@ class HomeProvider extends ChangeNotifier {
   SceneEntity? get scene => _scene;
   CharacterTopic? get topic => _topic;
   List<MessageEntity> get messageList => _messageList;
+  int get usageCount => _usageCount;
 
   /// set
   set character(CharacterEntity character) => _character = character;
@@ -166,6 +172,16 @@ class HomeProvider extends ChangeNotifier {
 
     normalMessage.translateState = 1;
     notifyListeners();
+  }
+
+  // 增加模考次数
+  void increaseUsageCount(int count) {
+    _usageCount += count;
+  }
+
+  // 减少模考次数
+  void decreaseUsageCount(int count) {
+    _usageCount -= count;
   }
 
 }
