@@ -19,6 +19,8 @@ class HomeProvider extends ChangeNotifier {
   int _expDay = 0;
   // 当前用户会员状态 0-未开通 1-已开通 2-已过期
   int _vipState = 0;
+  // 会员过期时间
+  String _expireDate = '';
   // 角色
   late CharacterEntity _character;
   // 话题
@@ -36,6 +38,7 @@ class HomeProvider extends ChangeNotifier {
   int get usageTime => _usageTime;
   int get expDay => _expDay;
   int get vipState => _vipState;
+  String get expireDate => _expireDate;
   String get sessionId => _sessionId;
   SceneEntity? get scene => _scene;
   CharacterTopic? get topic => _topic;
@@ -73,6 +76,9 @@ class HomeProvider extends ChangeNotifier {
         }
         if (data.containsKey('exp_day')) {
           _expDay = data['exp_day'];
+        }
+        if (data.containsKey('membership_expiry_date')) {
+          _expireDate = data['membership_expiry_date'] ?? '';
         }
       }
     );

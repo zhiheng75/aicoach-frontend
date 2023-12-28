@@ -372,4 +372,9 @@ class LoginManager{
     }
     return userInfo['id'] as int;
   }
+
+  static Map<String, dynamic> getUserInfo() {
+    Map<dynamic, dynamic>? userInfo = SpUtil.getObject(Constant.userInfoKey);
+    return (userInfo ?? {}) as Map<String, dynamic>;
+  }
 }
