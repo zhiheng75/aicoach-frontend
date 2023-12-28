@@ -101,7 +101,7 @@ class _HomeTabbarState extends State<HomeTabbar> {
                 () {
                   NavigatorUtils.push(
                     context,
-                    PersonalRouter.personalCenter,
+                    PersonalRouter.person,
                   );
                 }
               );

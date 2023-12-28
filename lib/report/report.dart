@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
+import '../widgets/navbar.dart';
 import 'entity/chat_report_entity.dart';
 import 'entity/exam_report_entity.dart';
 import 'presenter/report_page_presenter.dart';
@@ -91,33 +92,8 @@ class _ReportPageState extends State<ReportPage> with BasePageMixin<ReportPage, 
   Widget build(BuildContext context) {
     super.build(context);
 
-    Widget navbar = Stack(
-      children: [
-        Container(
-          width: _screenUtil.screenWidth - 32.0,
-          alignment: Alignment.center,
-          child: const Text(
-            '学情报告',
-            style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.w500,
-              color: Colors.black,
-              letterSpacing: 0.05,
-            ),
-          ),
-        ),
-        Positioned(
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => Navigator.of(context).pop(),
-            child: const LoadAssetImage(
-              'navbar_back',
-              width: 18.3,
-              height: 22.0,
-            ),
-          ),
-        ),
-      ],
+    Widget navbar = const Navbar(
+      title: '学情报告',
     );
 
     Widget barItem(String label, String type) {
@@ -417,7 +393,7 @@ class _ReportPageState extends State<ReportPage> with BasePageMixin<ReportPage, 
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             LoadAssetImage(
-              'no_report',
+              'no_data',
               width: 63.0,
               height: 63.0,
             ),
@@ -459,7 +435,7 @@ class _ReportPageState extends State<ReportPage> with BasePageMixin<ReportPage, 
         child: Column(
           children: <Widget>[
             const SizedBox(
-              height: 40.0,
+              height: 60.0,
             ),
             navbar,
             const SizedBox(
