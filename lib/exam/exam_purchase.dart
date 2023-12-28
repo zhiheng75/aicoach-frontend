@@ -101,6 +101,23 @@ class _ExamPurchasePageState extends State<ExamPurchasePage> with BasePageMixin<
     
     Widget goodsItem(ExamGoodEntity goods) {
       bool isSelected = _goodsId == goods.id;
+      BoxDecoration decoration = BoxDecoration(
+        borderRadius: BorderRadius.circular(20.0),
+        color: const Color(0xFFF5F5F5),
+      );
+      if (isSelected) {
+        decoration = BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+          gradient: const LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            colors: [
+              Colours.color_E8CCFE,
+              Colours.color_ACCDFF,
+            ],
+          ),
+        );
+      }
       return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
@@ -112,10 +129,7 @@ class _ExamPurchasePageState extends State<ExamPurchasePage> with BasePageMixin<
         },
         child: Container(
           width: _screenUtil.screenWidth - 32.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0),
-            color: isSelected ? const Color(0xFFF5F5F5) : const Color(0xFFF5F5F5),
-          ),
+          decoration: decoration,
           padding: const EdgeInsets.all(24.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -185,10 +199,23 @@ class _ExamPurchasePageState extends State<ExamPurchasePage> with BasePageMixin<
           _pay = pay;
           setState(() {});
         },
-        child: LoadAssetImage(
-          'exam_$pay',
-          width: 40.0,
-          height: 40.0,
+        child: Container(
+          decoration: isSelected ? BoxDecoration(
+            borderRadius: BorderRadius.circular(12.0),
+            color: const Color(0xFFECECEC),
+          ) : null,
+          padding: EdgeInsets.all(isSelected ? 12.0 : 0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              color: Colors.white,
+            ),
+            child: LoadAssetImage(
+              'exam_$pay',
+              width: 40.0,
+              height: 40.0,
+            ),
+          ),
         ),
       );
     }
@@ -324,7 +351,7 @@ class _ExamPurchasePageState extends State<ExamPurchasePage> with BasePageMixin<
                     setState(() {});
                   },
                   child: LoadAssetImage(
-                    _checked ? 'weigouxuan' : 'weigouxuan',
+                    _checked ? 'yigouxuan' : 'weigouxuan',
                     width: 10.0,
                     height: 10.0,
                   ),

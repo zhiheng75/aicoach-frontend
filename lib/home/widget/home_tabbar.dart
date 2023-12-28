@@ -102,7 +102,6 @@ class _HomeTabbarState extends State<HomeTabbar> {
                   NavigatorUtils.push(
                     context,
                     PersonalRouter.personalCenter,
-                    replace: true,
                   );
                 }
               );
@@ -135,7 +134,6 @@ class _HomeTabbarState extends State<HomeTabbar> {
                   NavigatorUtils.push(
                     context,
                     ReportRouter.reportPage,
-                    replace: true,
                   );
                 },
               );

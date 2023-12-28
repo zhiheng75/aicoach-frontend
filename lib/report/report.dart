@@ -24,6 +24,7 @@ class _ReportPageState extends State<ReportPage> with BasePageMixin<ReportPage, 
   final ScreenUtil _screenUtil = ScreenUtil();
   String _type = 'chat';
   int _page = 1;
+  int _loading = 0;
   List<dynamic> _list = [];
 
   void init() {
@@ -32,6 +33,8 @@ class _ReportPageState extends State<ReportPage> with BasePageMixin<ReportPage, 
   }
 
   void getMore() {
+    _loading = 1;
+    setState(() {});
     // todo 对接列表接口
     Future.delayed(const Duration(seconds: 1), () {
       List<dynamic> list = [];
@@ -54,6 +57,7 @@ class _ReportPageState extends State<ReportPage> with BasePageMixin<ReportPage, 
         list.add(item);
       }
       _list.addAll(list);
+      _loading = 0;
       setState(() {});
     });
   }
@@ -404,16 +408,48 @@ class _ReportPageState extends State<ReportPage> with BasePageMixin<ReportPage, 
       );
     }
 
-    Widget list = ListView.builder(
-      padding: EdgeInsets.zero,
-      itemCount: _list.length,
-      itemBuilder: (_, i) => Padding(
-        padding: EdgeInsets.only(
-          bottom: i == _list.length - 1 ? 0 : 16.0,
+    Widget list = const SizedBox();
+
+    if (_loading == 0 && _list.isEmpty) {
+      list = Container(
+        alignment: Alignment.center,
+        child: const Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            LoadAssetImage(
+              'no_report',
+              width: 63.0,
+              height: 63.0,
+            ),
+            SizedBox(
+              height: 21.0,
+            ),
+            Text(
+              '还没有口语学习报告，\n快点开始学习吧！',
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.w400,
+                color: Colours.color_999999,
+                letterSpacing: 0.05,
+              ),
+            ),
+          ],
         ),
-        child: listItem(_list.elementAt(i)),
-      ),
-    );
+      );
+    }
+
+    if (_loading == 0 && _list.isNotEmpty) {
+      list = ListView.builder(
+        padding: EdgeInsets.zero,
+        itemCount: _list.length,
+        itemBuilder: (_, i) => Padding(
+          padding: EdgeInsets.only(
+            bottom: i == _list.length - 1 ? 0 : 16.0,
+          ),
+          child: listItem(_list.elementAt(i)),
+        ),
+      );
+    }
 
     return Scaffold(
       body: Container(
