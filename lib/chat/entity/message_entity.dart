@@ -1,6 +1,6 @@
 import 'package:uuid/uuid.dart';
 
-import 'character_entity.dart';
+import 'topic_entity.dart';
 
 class MessageEntity {
 
@@ -52,7 +52,7 @@ class TipMessage extends MessageEntity {
 
 class TopicMessage extends MessageEntity {
 
-  List<CharacterTopic> topicList = [];
+  List<TopicEntity> topicList = [];
 
   TopicMessage() {
     type = 'topic';

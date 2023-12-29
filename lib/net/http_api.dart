@@ -70,4 +70,6 @@ class HttpApi{
 
   //上传图片
   static const String upload = 'uploadfile';
+
+  static const String topicOrScene = 'scene_list';
 }

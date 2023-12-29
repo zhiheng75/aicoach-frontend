@@ -1,4 +1,5 @@
-import 'package:Bubble/chat/entity/character_entity.dart';
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -12,11 +13,9 @@ class MessageItem extends StatefulWidget {
   const MessageItem({
     Key? key,
     required this.message,
-    required this.onSelectTopic,
   }) : super(key: key);
 
   final MessageEntity message;
-  final Function(CharacterTopic) onSelectTopic;
 
   @override
   State<MessageItem> createState() => _MessageItemState();
@@ -114,57 +113,57 @@ class _MessageItemState extends State<MessageItem> {
       );
     }
 
-    // 话题消息
-    if (type == 'topic') {
-      _message = _message as TopicMessage;
-      double itemSize = (width - 16.0) / 3;
-      return SizedBox(
-        width: width,
-        child: Wrap(
-          spacing: 8.0,
-          runSpacing: 8.0,
-          children: _message.topicList.map((topic) {
-            return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                widget.onSelectTopic(topic);
-              },
-              child: Stack(
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12.0),
-                    child: LoadImage(
-                      topic.cover,
-                      width: itemSize,
-                      height: itemSize,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 11.0,
-                    child: Container(
-                      width: itemSize,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                      ),
-                      child: Text(
-                        topic.title,
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                          height: 21.0 / 14.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
-        ),
-      );
-    }
+    // // 话题消息
+    // if (type == 'topic') {
+    //   _message = _message as TopicMessage;
+    //   double itemSize = (width - 16.0) / 3;
+    //   return SizedBox(
+    //     width: width,
+    //     child: Wrap(
+    //       spacing: 8.0,
+    //       runSpacing: 8.0,
+    //       children: _message.topicList.map((topic) {
+    //         return GestureDetector(
+    //           behavior: HitTestBehavior.opaque,
+    //           onTap: () {
+    //             widget.onSelectTopic(topic);
+    //           },
+    //           child: Stack(
+    //             children: <Widget>[
+    //               ClipRRect(
+    //                 borderRadius: BorderRadius.circular(12.0),
+    //                 child: LoadImage(
+    //                   topic.cover,
+    //                   width: itemSize,
+    //                   height: itemSize,
+    //                 ),
+    //               ),
+    //               Positioned(
+    //                 bottom: 11.0,
+    //                 child: Container(
+    //                   width: itemSize,
+    //                   alignment: Alignment.center,
+    //                   padding: const EdgeInsets.symmetric(
+    //                     horizontal: 12.0,
+    //                   ),
+    //                   child: Text(
+    //                     topic.title,
+    //                     style: const TextStyle(
+    //                       fontSize: 14.0,
+    //                       fontWeight: FontWeight.w400,
+    //                       color: Colors.white,
+    //                       height: 21.0 / 14.0,
+    //                     ),
+    //                   ),
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         );
+    //       }).toList(),
+    //     ),
+    //   );
+    // }
 
     // 报告消息
     if (type == 'report') {

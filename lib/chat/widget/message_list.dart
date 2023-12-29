@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../home/provider/home_provider.dart';
-import '../entity/character_entity.dart';
 import 'message_item.dart';
 
 class MessageList extends StatelessWidget {
 
-  MessageList({
+  const MessageList({
     Key? key,
-    required this.onSelectTopic,
   }) : super(key: key);
-
-  final Function(CharacterTopic) onSelectTopic;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +22,6 @@ class MessageList extends StatelessWidget {
             ),
             child: MessageItem(
               message: provider.messageList.elementAt(i),
-              onSelectTopic: onSelectTopic,
             ),
           ),
           padding: const EdgeInsets.all(0),

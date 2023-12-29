@@ -21,6 +21,7 @@ import 'view/chat_view.dart';
 import 'widget/background.dart';
 import 'widget/bottom_bar.dart';
 import 'widget/message_list.dart';
+import 'widget/topic.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -97,27 +98,26 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   }
 
   void openTopic() {
-    // todo 待对接角色话题字段
-    List<CharacterTopic> testTopicList = [];
-    for (int i = 0; i < 5; i++) {
-      CharacterTopic topic = CharacterTopic();
-      topic.title = '话题标题';
-      topic.desc = '这是一个测试话题';
-      topic.cover = '';
-      testTopicList.add(topic);
-    }
-    _homeProvider.addTopicMessage(testTopicList);
-  }
-
-  void selectTopic(CharacterTopic topic) {
-    if (_homeProvider.topic != null && _homeProvider.topic!.id == topic.id) {
-      Toast.show(
-        '您已选择该话题',
-        duration: 1000,
-      );
-      return;
-    }
-    _homeProvider.topic = topic;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.transparent,
+      isScrollControlled: true,
+      isDismissible: false,
+      builder: (_) => Topic(
+        onSelect: (topic) {
+          if (_homeProvider.topic?.id == topic.id) {
+            Toast.show(
+              '该话题正在使用中',
+              duration: 1000,
+            );
+            return;
+          }
+          Navigator.of(context).pop();
+          _homeProvider.topic = topic;
+        },
+      ),
+    );
   }
 
   @override
@@ -180,9 +180,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
             left: 16.0,
             right: 16.0,
           ),
-          child: MessageList(
-            onSelectTopic: selectTopic,
-          ),
+          child: MessageList(),
         ),
         Positioned(
           bottom: _screenUtil.bottomBarHeight + 16.0,

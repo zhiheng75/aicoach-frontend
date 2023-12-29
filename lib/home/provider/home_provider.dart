@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../chat/entity/character_entity.dart';
 import '../../chat/entity/message_entity.dart';
+import '../../chat/entity/topic_entity.dart';
 import '../../chat/utils/translate_util.dart';
 import '../../entity/result_entity.dart';
 import '../../net/dio_utils.dart';
@@ -24,7 +25,7 @@ class HomeProvider extends ChangeNotifier {
   // 角色
   late CharacterEntity _character;
   // 话题
-  CharacterTopic? _topic;
+  TopicEntity? _topic;
   SceneEntity? _scene;
   String _sessionId = '';
   List<MessageEntity> _messageList = [];
@@ -33,22 +34,22 @@ class HomeProvider extends ChangeNotifier {
   // 使用次数
   int _usageCount = 0;
 
-
   /// get
   int get usageTime => _usageTime;
   int get expDay => _expDay;
   int get vipState => _vipState;
   String get expireDate => _expireDate;
+  CharacterEntity get character => _character;
   String get sessionId => _sessionId;
   SceneEntity? get scene => _scene;
-  CharacterTopic? get topic => _topic;
+  TopicEntity? get topic => _topic;
   List<MessageEntity> get messageList => _messageList;
   int get usageCount => _usageCount;
 
   /// set
   set character(CharacterEntity character) => _character = character;
   set scene(SceneEntity? scene) => _scene = scene;
-  set topic(CharacterTopic? topic) => _topic = topic;
+  set topic(TopicEntity? topic) => _topic = topic;
   set sessionId(String sessionId) => _sessionId = sessionId;
 
   // 获取使用时间、体验天数
@@ -124,15 +125,15 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-  // 渲染话题消息到列表
-  void addTopicMessage(List<CharacterTopic> topicList, [bool update = true]) {
-    TopicMessage topicMessage = TopicMessage();
-    topicMessage.topicList = topicList;
-    _messageList.add(topicMessage);
-    if (update == true) {
-      notifyListeners();
-    }
-  }
+  // // 渲染话题消息到列表
+  // void addTopicMessage(List<TopicEntity> topicList, [bool update = true]) {
+  //   TopicMessage topicMessage = TopicMessage();
+  //   topicMessage.topicList = topicList;
+  //   _messageList.add(topicMessage);
+  //   if (update == true) {
+  //     notifyListeners();
+  //   }
+  // }
 
   // 渲染报告消息到列表
   void addReportMessage(dynamic report, [bool update = true]) {

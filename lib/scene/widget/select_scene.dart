@@ -1,15 +1,19 @@
 // ignore_for_file: prefer_final_fields
 
-import 'package:Bubble/home/provider/home_provider.dart';
-import 'package:Bubble/util/confirm_utils.dart';
-import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../entity/result_entity.dart';
+import '../../home/provider/home_provider.dart';
+import '../../net/dio_utils.dart';
+import '../../net/http_api.dart';
 import '../../res/colors.dart';
+import '../../util/confirm_utils.dart';
+import '../../util/log_utils.dart';
 import '../../widgets/load_data.dart';
 import '../../widgets/load_fail.dart';
+import '../../widgets/load_image.dart';
 import '../entity/category_entity.dart';
 import '../entity/scene_entity.dart';
 
@@ -24,11 +28,12 @@ class SelectScene extends StatefulWidget {
 
 class _SelectSceneState extends State<SelectScene> {
 
+  late HomeProvider _homeProvider;
   final ScreenUtil _screenUtil = ScreenUtil();
   // 状态 loading-加载中 fail-失败 success-成功
   String _pageState = 'loading';
   List<CategoryEntity> _categoryList = [];
-  ValueNotifier<int> _currentCategory = ValueNotifier(0);
+  ValueNotifier<dynamic> _currentCategory = ValueNotifier(null);
   // 状态 loading-加载中 fail-失败 success-成功
   String _sceneState = 'loading';
   List<SceneEntity> _sceneList = [];
@@ -41,44 +46,60 @@ class _SelectSceneState extends State<SelectScene> {
   }
 
   void getCategoryList() {
-    // todo 对接获取场景分类
-    Future.delayed(const Duration(seconds: 3), () {
-      List<CategoryEntity> list = [];
-      for (int i = 0; i < 10; i++) {
-        CategoryEntity category = CategoryEntity();
-        category.id = i;
-        category.name = '分类$i';
-        list.add(category);
+    _pageState = 'loading';
+    setState(() {});
+    DioUtils.instance.requestNetwork<ResultData>(
+      Method.get,
+      HttpApi.topicOrScene,
+      queryParameters: {
+        'character_id': _homeProvider.character.characterId,
+        'type': 2,
+      },
+      onSuccess: (result) {
+        if (result == null || result.data == null) {
+          _pageState = 'fail';
+          setState(() {});
+          return;
+        }
+        List<dynamic> data = result.data as List<dynamic>;
+        List<CategoryEntity> list = data.map((item) => CategoryEntity.fromJson(item)).toList();
+        _pageState = 'success';
+        _categoryList = list;
+        setState(() {});
+
+        if (_categoryList.isNotEmpty) {
+          getSceneListByCategory(_categoryList.first.id);
+        }
+      },
+      onError: (code, msg) {
+        Log.d('getCategoryList fail:[reason]$msg', tag: '获取场景分类');
+        _pageState = 'fail';
+        setState(() {});
       }
-      _categoryList = list;
-      _pageState = 'success';
-      setState(() {});
-      getSceneListByCategory(_categoryList.first.id);
-    });
+    );
   }
 
-  void getSceneListByCategory(int categoryId) {
+  void getSceneListByCategory(dynamic categoryId) {
+    _currentCategory.value = categoryId;
+
     _sceneState = 'loading';
     setState(() {});
-    // todo 根据分类获取场景列表
-    Future.delayed(const Duration(seconds: 3), () {
-      List<SceneEntity> list = [];
-      for (int i = 0; i < 10; i++) {
-        SceneEntity scene = SceneEntity();
-        scene.id = i;
-        scene.desc = '场景$i';
-        scene.cover = '';
-        list.add(scene);
+
+    for (int i = 0; i < _categoryList.length; i++) {
+      CategoryEntity category = _categoryList.elementAt(i);
+      if (category.id == categoryId) {
+        _sceneList = category.sceneList;
+        _sceneState = 'success';
+        setState(() {});
+        break;
       }
-      _sceneList = list;
-      _sceneState = 'success';
-      setState(() {});
-    });
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     init();
   }
 
@@ -122,7 +143,7 @@ class _SelectSceneState extends State<SelectScene> {
     double titleHeight = 66.0;
     double categoryHeight = 30.0;
 
-    Widget categoryItem(CategoryEntity category, int currentCategory) {
+    Widget categoryItem(CategoryEntity category, dynamic currentCategory) {
       bool isSelected = category.id == currentCategory;
 
       TextStyle style = TextStyle(
@@ -139,7 +160,6 @@ class _SelectSceneState extends State<SelectScene> {
           if (isSelected) {
             return;
           }
-          _currentCategory.value = category.id;
           getSceneListByCategory(category.id);
         },
         child: Column(
@@ -283,6 +303,11 @@ class _SelectSceneState extends State<SelectScene> {
           rows.add(row);
           row = [];
         }
+      }
+
+      // 不足3个
+      if (row.isNotEmpty) {
+        rows.add(row);
       }
 
       double height = _pageHeight - titleHeight - categoryHeight - 12 - _screenUtil.bottomBarHeight;
