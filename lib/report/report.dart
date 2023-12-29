@@ -4,12 +4,15 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../exam/exam_router.dart';
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
+import '../routers/fluro_navigator.dart';
 import '../widgets/navbar.dart';
 import 'entity/chat_report_entity.dart';
 import 'entity/exam_report_entity.dart';
 import 'presenter/report_page_presenter.dart';
+import 'report_router.dart';
 import 'view/report_view.dart';
 
 class ReportPage extends StatefulWidget {
@@ -145,229 +148,255 @@ class _ReportPageState extends State<ReportPage> with BasePageMixin<ReportPage, 
       Widget content = const SizedBox();
       if (_type == 'chat') {
         item = item as ChatReportEntity;
-        content = Padding(
-          padding: const EdgeInsets.only(
-            right: 16.0,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: LoadImage(
-                      item.topicCover,
-                      width: 118.0,
-                      height: 118.0,
+        int id = item.id;
+        content = GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            NavigatorUtils.push(
+              context,
+              ReportRouter.reportDetailPage,
+              arguments: {
+                'id': id,
+              },
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(
+              right: 16.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20.0),
+                      child: LoadImage(
+                        item.topicCover,
+                        width: 118.0,
+                        height: 118.0,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 8.0,
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        item.topicName,
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                          height: 18.0 / 16.0,
-                          letterSpacing: 0.05,
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          item.topicName,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            height: 18.0 / 16.0,
+                            letterSpacing: 0.05,
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
-                      Text(
-                        '时长：${item.duration ~/ 60}min',
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF666666),
-                          height: 18.0 / 14.0,
-                          letterSpacing: 0.05,
+                        const SizedBox(
+                          height: 8.0,
                         ),
-                      ),
-                      Text(
-                        item.createTime,
-                        style: const TextStyle(
-                          fontSize: 11.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colours.color_999999,
-                          height: 18.0 / 11.0,
-                          letterSpacing: 0.05,
+                        Text(
+                          '时长：${item.duration ~/ 60}min',
+                          style: const TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF666666),
+                            height: 18.0 / 14.0,
+                            letterSpacing: 0.05,
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        '${item.score}',
-                        style: TextStyle(
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w400,
-                          color: getColorByScore(item.score),
-                          letterSpacing: 0.05,
+                        Text(
+                          item.createTime,
+                          style: const TextStyle(
+                            fontSize: 11.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.color_999999,
+                            height: 18.0 / 11.0,
+                            letterSpacing: 0.05,
+                          ),
                         ),
-                      ),
-                      const Text(
-                        '总分',
-                        style: TextStyle(
-                          fontSize: 11.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colours.color_999999,
-                          letterSpacing: 0.05,
+                        const SizedBox(
+                          height: 8.0,
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 7.0,
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(32.0),
-                        child: LoadImage(
-                          item.topicCover,
-                          width: 32.0,
-                          height: 32.0,
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          '${item.score}',
+                          style: TextStyle(
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w400,
+                            color: getColorByScore(item.score),
+                            letterSpacing: 0.05,
+                          ),
                         ),
-                      ),
-                      Text(
-                        item.characterName,
-                        style: const TextStyle(
-                          fontSize: 10.0,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF666666),
-                          height: 18.0 / 10.0,                    letterSpacing: 0.05,
+                        const Text(
+                          '总分',
+                          style: TextStyle(
+                            fontSize: 11.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.color_999999,
+                            letterSpacing: 0.05,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 7.0,
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(32.0),
+                          child: LoadImage(
+                            item.topicCover,
+                            width: 32.0,
+                            height: 32.0,
+                          ),
+                        ),
+                        Text(
+                          item.characterName,
+                          style: const TextStyle(
+                            fontSize: 10.0,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF666666),
+                            height: 18.0 / 10.0,                    letterSpacing: 0.05,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       }
       if (_type == 'exam') {
         item = item as ExamReportEntity;
-        content = Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    item.name,
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                      height: 18.0 / 16.0,
-                      letterSpacing: 0.05,
+        int id = item.id;
+        content = GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            NavigatorUtils.push(
+              context,
+              ExamRouter.examDetailPage,
+              arguments: {
+                'id': id,
+              },
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      item.name,
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        height: 18.0 / 16.0,
+                        letterSpacing: 0.05,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  Text(
-                    '时长：${item.duration ~/ 60}min',
-                    style: const TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFF666666),
-                      height: 18.0 / 14.0,
-                      letterSpacing: 0.05,
+                    const SizedBox(
+                      height: 8.0,
                     ),
-                  ),
-                  Text(
-                    item.createTime,
-                    style: const TextStyle(
-                      fontSize: 11.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colours.color_999999,
-                      height: 18.0 / 11.0,
-                      letterSpacing: 0.05,
+                    Text(
+                      '时长：${item.duration ~/ 60}min',
+                      style: const TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF666666),
+                        height: 18.0 / 14.0,
+                        letterSpacing: 0.05,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Text(
-                        '${item.score}',
-                        style: TextStyle(
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w400,
-                          color: getColorByScore(item.score),
-                          letterSpacing: 0.05,
-                        ),
+                    Text(
+                      item.createTime,
+                      style: const TextStyle(
+                        fontSize: 11.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colours.color_999999,
+                        height: 18.0 / 11.0,
+                        letterSpacing: 0.05,
                       ),
-                      const Text(
-                        '总分',
-                        style: TextStyle(
-                          fontSize: 11.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colours.color_999999,
-                          letterSpacing: 0.05,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          '${item.score}',
+                          style: TextStyle(
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w400,
+                            color: getColorByScore(item.score),
+                            letterSpacing: 0.05,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 7.0,
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(32.0),
-                        child: LoadImage(
-                          item.examinerAvatar,
-                          width: 32.0,
-                          height: 32.0,
+                        const Text(
+                          '总分',
+                          style: TextStyle(
+                            fontSize: 11.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.color_999999,
+                            letterSpacing: 0.05,
+                          ),
                         ),
-                      ),
-                      Text(
-                        item.examinerName,
-                        style: const TextStyle(
-                          fontSize: 10.0,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF666666),
-                          height: 18.0 / 10.0,                    letterSpacing: 0.05,
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 7.0,
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(32.0),
+                          child: LoadImage(
+                            item.examinerAvatar,
+                            width: 32.0,
+                            height: 32.0,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+                        Text(
+                          item.examinerName,
+                          style: const TextStyle(
+                            fontSize: 10.0,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF666666),
+                            height: 18.0 / 10.0,                    letterSpacing: 0.05,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       }
