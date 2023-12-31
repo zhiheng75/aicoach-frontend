@@ -107,10 +107,10 @@ class _MainPageSelectMenuState extends State<MainPageSelectMenu>
           GestureDetector(
             onTap: () {
               // NavigatorUtils.push(context, PersonalRouter.personalPurchase);
-              LoginManager.checkLogin(context, () {
-                NavigatorUtils.push(context, PersonalRouter.personalStudyReport,
-                    replace: true);
-              });
+              // LoginManager.checkLogin(context, () {
+              //   NavigatorUtils.push(context, PersonalRouter.personalStudyReport,
+              //       replace: true);
+              // });
             },
             child: Container(
               padding: const EdgeInsets.only(bottom: 10,top: 5),
@@ -123,10 +123,10 @@ class _MainPageSelectMenuState extends State<MainPageSelectMenu>
           ),
           GestureDetector(
             onTap: () {
-              LoginManager.checkLogin(context, () {
-                NavigatorUtils.push(context, PersonalRouter.personalCenter,
-                    replace: true);
-              });
+              // LoginManager.checkLogin(context, () {
+              //   NavigatorUtils.push(context, PersonalRouter.personalCenter,
+              //       replace: true);
+              // });
             },
             child: Container(
               padding: const EdgeInsets.only(bottom: 10,top: 5),

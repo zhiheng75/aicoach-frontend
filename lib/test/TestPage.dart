@@ -649,7 +649,7 @@ class _TestpageState extends State<Testpage>  with
   void loginSuccess() {
     jverify.dismissLoginAuthView();
     Toast.show("登录成功");
-    NavigatorUtils.push(context, PersonalRouter.personalCenter,replace: true);
+    NavigatorUtils.push(context, PersonalRouter.person,replace: true);
   }
 }
 

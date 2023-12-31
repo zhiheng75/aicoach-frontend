@@ -281,27 +281,31 @@ class _PersonPageState extends State<PersonPage> with BasePageMixin<PersonPage, 
               ),
             ],
           ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(40.0),
-              border: Border.all(
-                width: 1.0,
-                style: BorderStyle.solid,
-                color: const Color(0xFFE49600),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => NavigatorUtils.push(context, PersonalRouter.purchase),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40.0),
+                border: Border.all(
+                  width: 1.0,
+                  style: BorderStyle.solid,
+                  color: const Color(0xFFE49600),
+                ),
+                color: const Color(0xFFFFCF71),
               ),
-              color: const Color(0xFFFFCF71),
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 14.0,
-              vertical: 7.0,
-            ),
-            child: Text(
-              provider.vipState == 1 ? '续费' : '立即开通',
-              style: const TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
-                height: 20.0 / 15.0,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 14.0,
+                vertical: 7.0,
+              ),
+              child: Text(
+                provider.vipState == 1 ? '续费' : '立即开通',
+                style: const TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                  height: 20.0 / 15.0,
+                ),
               ),
             ),
           ),

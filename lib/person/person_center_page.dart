@@ -210,7 +210,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                                 GestureDetector(
                                   behavior: HitTestBehavior.opaque,
                                   onTap: () {
-                                    NavigatorUtils.push(context, PersonalRouter.personalPurchase);
+                                    // NavigatorUtils.push(context, PersonalRouter.personalPurchase);
                                   },
                                   child: Container(
                                     width: 106,
@@ -240,7 +240,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
                       Gaps.vGap40,
                       GestureDetector(
                         onTap: (){
-                          NavigatorUtils.push(context, PersonalRouter.personalStudyReport);
+                          // NavigatorUtils.push(context, PersonalRouter.personalStudyReport);
                         },
                         child: personItem(0,"学习报告"),
                       ),

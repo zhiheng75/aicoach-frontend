@@ -377,7 +377,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
       hideLoading();
     }
 
-    NavigatorUtils.push(context, PersonalRouter.personalCenter,replace: true);
+    NavigatorUtils.push(context, PersonalRouter.person,replace: true);
   }
 
 

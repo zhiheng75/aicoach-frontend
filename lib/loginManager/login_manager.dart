@@ -290,7 +290,7 @@ class LoginManager{
               SpUtil.putString(Constant.accessToken, data.data.token);
 
               Constant.jverify.dismissLoginAuthView();
-              NavigatorUtils.push(context, PersonalRouter.personalCenter);
+              NavigatorUtils.push(context, PersonalRouter.person);
             }
           }
         },

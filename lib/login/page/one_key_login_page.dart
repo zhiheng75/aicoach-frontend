@@ -260,7 +260,7 @@ class _KeyLoginPageState extends State<KeyLoginPage>
   void loginSuccess() {
     Constant.jverify.dismissLoginAuthView();
     Toast.show("登录成功");
-    NavigatorUtils.push(context, PersonalRouter.personalCenter,replace: true);
+    NavigatorUtils.push(context, PersonalRouter.person,replace: true);
   }
 
   @override

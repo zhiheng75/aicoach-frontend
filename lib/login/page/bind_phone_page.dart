@@ -285,7 +285,7 @@ class _BindPhonePageState extends State<BindPhonePage>
   @override
   void wechatLoginSuccess(String msg) {
     Toast.show(msg);
-    NavigatorUtils.push(context, PersonalRouter.personalCenter,replace: true);
+    NavigatorUtils.push(context, PersonalRouter.person,replace: true);
   }
 
 

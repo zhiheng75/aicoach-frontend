@@ -328,7 +328,7 @@ class _HomePageState extends State<HomePage>
               child: GestureDetector(
                 onTap: () {
                   NavigatorUtils.goBack(context);
-                  NavigatorUtils.push(context, PersonalRouter.personalPurchase);
+                  // NavigatorUtils.push(context, PersonalRouter.personalPurchase);
                 },
                 child: Container(
                   alignment: Alignment.center,
