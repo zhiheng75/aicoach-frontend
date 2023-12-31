@@ -93,7 +93,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       NormalMessage normalMessage = _homeProvider.createNormalMessage() as NormalMessage;
       normalMessage.text = _character!.text;
       _homeProvider.addNormalMessage(normalMessage);
-      // MediaUtils().play(_character!.audio);
+      MediaUtils().play(_character!.audio);
     });
   }
 

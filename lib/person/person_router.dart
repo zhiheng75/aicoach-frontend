@@ -5,11 +5,13 @@ import 'about.dart';
 import 'order.dart';
 import 'person.dart';
 import 'purchase.dart';
+import 'setting.dart';
 import 'suggestion_page.dart';
 
 class PersonalRouter implements IRouterProvider{
 
   static String purchase = '/purchase';
+  static String setting = '/setting';
   static String personalSuggestion = '/personal/Suggestion';
 
   static String person = '/person';
@@ -19,6 +21,7 @@ class PersonalRouter implements IRouterProvider{
   @override
   void initRouter(FluroRouter router) {
     router.define(person, handler: Handler(handlerFunc: (_, __) => const PersonPage()));
+    router.define(setting, handler: Handler(handlerFunc: (_, __) => const SettingPage()));
     router.define(purchase, handler: Handler(handlerFunc: (_, __) => const PurchasePage()));
     router.define(order, handler: Handler(handlerFunc: (_, __) => const OrderPage()));
     router.define(personalSuggestion, handler: Handler(handlerFunc: (_, __) => const SuggestionPage()));

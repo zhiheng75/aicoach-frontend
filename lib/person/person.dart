@@ -92,8 +92,7 @@ class _PersonPageState extends State<PersonPage> with BasePageMixin<PersonPage, 
       title: '个人中心',
       action: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () {
-        },
+        onTap: () => NavigatorUtils.push(context, PersonalRouter.setting),
         child: const LoadAssetImage(
           'shezhi',
           width: 22.0,
@@ -225,7 +224,7 @@ class _PersonPageState extends State<PersonPage> with BasePageMixin<PersonPage, 
           Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              LoadAssetImage(
+              const LoadAssetImage(
                 'zhuanshi',
                 width: 48.0,
                 height: 48.0,

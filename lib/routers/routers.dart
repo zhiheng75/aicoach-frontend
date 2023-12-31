@@ -9,7 +9,6 @@ import '../login/login_router.dart';
 import '../order/order_router.dart';
 import '../person/person_router.dart';
 import '../report/report_router.dart';
-import '../setting/setting_router.dart';
 import 'i_router.dart';
 import 'not_found_page.dart';
 
@@ -42,7 +41,6 @@ class Routes {
 
     _listRouter.add(LoginRouter());
     _listRouter.add(HomeRouter());
-    _listRouter.add(SettingRouter());
     _listRouter.add(ReportRouter());
     _listRouter.add(ChangeRoleRouter());
     _listRouter.add(PersonalRouter());

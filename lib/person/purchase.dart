@@ -2,26 +2,26 @@
 
 import 'dart:io';
 
-import 'package:Bubble/home/provider/home_provider.dart';
-import 'package:Bubble/net/dio_utils.dart';
-import 'package:Bubble/net/http_api.dart';
-import 'package:Bubble/person/widget/illustration.dart';
-import 'package:Bubble/util/log_utils.dart';
-import 'package:Bubble/widgets/load_data.dart';
-import 'package:Bubble/widgets/load_fail.dart';
-import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../entity/result_entity.dart';
+import '../home/provider/home_provider.dart';
 import '../mvp/base_page.dart';
+import '../net/dio_utils.dart';
+import '../net/http_api.dart';
 import '../res/colors.dart';
+import '../util/log_utils.dart';
 import '../util/toast_utils.dart';
+import '../widgets/load_data.dart';
+import '../widgets/load_fail.dart';
+import '../widgets/load_image.dart';
 import 'entity/good_entity.dart';
 import 'presneter/purchase_page_presenter.dart';
 import 'view/purchase_view.dart';
+import 'widget/illustration.dart';
 
 class PurchasePage extends StatefulWidget {
   const PurchasePage({Key? key}) : super(key: key);
@@ -30,11 +30,7 @@ class PurchasePage extends StatefulWidget {
   State<PurchasePage> createState() => _PurchasePageState();
 }
 
-class _PurchasePageState extends State<PurchasePage>
-    with
-        BasePageMixin<PurchasePage, PurchasePagePresenter>,
-        AutomaticKeepAliveClientMixin<PurchasePage>
-    implements PurchaseView {
+class _PurchasePageState extends State<PurchasePage> with BasePageMixin<PurchasePage, PurchasePagePresenter>, AutomaticKeepAliveClientMixin<PurchasePage> implements PurchaseView {
   late PurchasePagePresenter _purchasePagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
   // 状态 loading-加载中 fail-失败 success-成功
