@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +9,6 @@ import '../mvp/base_page.dart';
 import '../net/dio_utils.dart';
 import '../net/http_api.dart';
 import '../util/log_utils.dart';
-import '../util/media_utils.dart';
 import '../util/toast_utils.dart';
 import '../widgets/load_data.dart';
 import '../widgets/load_fail.dart';
@@ -22,6 +20,7 @@ import 'widget/background.dart';
 import 'widget/bottom_bar.dart';
 import 'widget/message_list.dart';
 import 'widget/topic.dart';
+import 'widget/record.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -41,6 +40,8 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   CharacterEntity? _character;
   // 背景组件控制器
   final BackgroundController _backgroundController = BackgroundController();
+  // 底部按钮控制器
+  final BottomBarControll _bottomBarControll = BottomBarControll();
 
   void init() {
     _pageState = 'loading';
@@ -93,7 +94,13 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       NormalMessage normalMessage = _homeProvider.createNormalMessage() as NormalMessage;
       normalMessage.text = _character!.text;
       _homeProvider.addNormalMessage(normalMessage);
-      MediaUtils().play(_character!.audio);
+      // MediaUtils().play(
+      //   _character!.audio,
+      //   whenFinished: () {
+      //     _bottomBarControll.setDisabled(false);
+      //   },
+      // );
+      _bottomBarControll.setDisabled(false);
     });
   }
 
@@ -180,11 +187,13 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
             left: 16.0,
             right: 16.0,
           ),
-          child: MessageList(),
+          child: const MessageList(),
         ),
         Positioned(
           bottom: _screenUtil.bottomBarHeight + 16.0,
-          child: const BottomBar(),
+          child: BottomBar(
+            controller: _bottomBarControll,
+          ),
         ),
         Positioned(
           top: 216.0,
@@ -217,6 +226,14 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
                 ),
               ),
             ),
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 0,
+          child: ValueListenableBuilder(
+            valueListenable: _bottomBarControll.showRecord,
+            builder: (_, show, __) => Record(show: show, offset: _bottomBarControll.offset),
           ),
         ),
       ],
