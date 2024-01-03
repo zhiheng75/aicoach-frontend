@@ -72,4 +72,7 @@ class HttpApi{
   static const String upload = 'uploadfile';
 
   static const String topicOrScene = 'scene_list';
+
+  //获取oss上传
+  static const String getOssSts = "oss_sts";
 }

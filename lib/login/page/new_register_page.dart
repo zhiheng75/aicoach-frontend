@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:Bubble/login/page/check_code_page.dart';
 import 'package:Bubble/login/presenter/register_presenter.dart';
 import 'package:Bubble/login/view/register_view.dart';
+import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,8 +41,12 @@ class _NewRegisterPageState extends State<NewRegisterPage>
     with
         ChangeNotifierMixin<NewRegisterPage>,
         BasePageMixin<NewRegisterPage, RegisterPresenter>,
+
         AutomaticKeepAliveClientMixin<NewRegisterPage>
-    implements RegisterView {
+    implements
+        RegisterView {
+
+
   //定义一个controller
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _vCodeController = TextEditingController();
@@ -51,6 +55,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
   bool _clickable = false;
   late RegisterPresenter _registerPresenter;
   bool _isSelect = false;
+
 
   void _verify() {
     final String name = _phoneController.text;
@@ -70,11 +75,12 @@ class _NewRegisterPageState extends State<NewRegisterPage>
     }
   }
 
+
   @override
   void initState() {
     super.initState();
     // if(widget.isKeyLogin){
-    // loginAuth();
+      // loginAuth();
     // }
   }
 
@@ -93,49 +99,55 @@ class _NewRegisterPageState extends State<NewRegisterPage>
   Widget build(BuildContext context) {
     super.build(context);
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.light,
+          value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset:false,
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: ImageUtils.getAssetImage("splash_bg"),
+                  image: ImageUtils.getAssetImage(
+                      "person_bg"),
                   fit: BoxFit.fill)),
           child: Column(
             children: [
               MyOnlyImgBar(
-                  backgroundColor: Colours.transflate,
-                  width: 17.0,
-                  height: 17.0,
-                  actionUrl: "white_close_img",
+                backgroundColor: Colours.transflate,
+                  width: Dimens.w_dp32,
+                  height: Dimens.h_dp32,
+                  actionUrl: "round_close_img",
                   onActionPress: () {
                     NavigatorUtils.goBack(context);
                   }),
               Expanded(
                   child: Container(
-                padding: const EdgeInsets.only(left: 42, right: 42),
-                child: Column(
-                  children: _buildBody(),
-                ),
-              )
-
-                  //     MyScrollView(
-                  //   keyboardConfig: Utils.getKeyboardActionsConfig(
-                  //       context, <FocusNode>[_nodeText1]),
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   padding:
-                  //       const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0),
-                  //   children: _buildBody(),
-                  // )
+                    padding:const EdgeInsets.only(left: 42,right: 42),
+                    child:
+                    Column(
+                      children:
+                      _buildBody()
+                      ,
+                    ),
                   )
+
+
+              //     MyScrollView(
+              //   keyboardConfig: Utils.getKeyboardActionsConfig(
+              //       context, <FocusNode>[_nodeText1]),
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   padding:
+              //       const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0),
+              //   children: _buildBody(),
+              // )
+              )
             ],
           ),
         ),
-      ),
-    );
+      )
+
+      ,);
   }
 
-  List<Widget> _buildBody() {
+  List<Widget> _buildBody(){
     return <Widget>[
       Gaps.vGap80,
       Container(
@@ -144,11 +156,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
           onTap: () {
             // NavigatorUtils.push(context, LoginRouter.onlySmsPage);
           },
-          child: const LoadAssetImage(
-            "login_logo_img",
-            width: 180,
-            height: 67,
-          ),
+          child:const LoadAssetImage("login_logo_img",width: 180,height: 67,),
           // const Text(
           //   "Bubble",
           //   style: TextStyles.textBold26,
@@ -160,8 +168,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
         alignment: Alignment.centerLeft,
         child: const Text(
           "手机号登录",
-          style: TextStyle(
-              fontSize: 26, color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 26, color: Colours.color_001652,fontWeight: FontWeight.bold),
         ),
       ),
       // Row(
@@ -180,36 +187,29 @@ class _NewRegisterPageState extends State<NewRegisterPage>
       // ),
       MyTextField(
         key: const Key('phone'),
-        txtStyle: const TextStyle(
-            fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-        hintStyle: const TextStyle(fontSize: 20, color: Colours.color_4ED7FF),
+        txtStyle:const TextStyle(fontSize: 20,color: Colours.color_001652,fontWeight: FontWeight.bold),
+        hintStyle: const TextStyle(fontSize: 20,color: Colours.color_001652),
         focusNode: _nodeText1,
         controller: _phoneController,
         maxLength: 11,
         keyboardType: TextInputType.phone,
         hintText: "输入手机号",
-        underLineColor: Colors.transparent,
+        underLineColor: Colours.color_001652,
+        countDownColor: Colours.color_001652,
       ),
       Gaps.vGap15,
       MyTextField(
         focusNode: _nodeText2,
-        txtStyle: const TextStyle(
-            fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-        hintStyle: const TextStyle(fontSize: 20, color: Colours.color_4ED7FF),
-        underLineColor: Colors.transparent,
+        txtStyle:const TextStyle(fontSize: 20,color: Colours.color_001652,fontWeight: FontWeight.bold),
+        hintStyle: const TextStyle(fontSize: 20,color: Colours.color_001652),
+        underLineColor: Colours.color_001652,
         controller: _vCodeController,
         maxLength: 4,
         keyboardType: TextInputType.number,
         hintText: "输入验证码",
         getVCode: () async {
-          // NavigatorUtils.push(
-          //   context,
-          //   LoginRouter.keyCheckCodePage,
-          // );
-          // return false;
-
           if (_phoneController.text.length == 11) {
-            _registerPresenter.sendSms(_phoneController.text.trim(), true);
+            _registerPresenter.sendSms(_phoneController.text.trim(),true);
             return true;
           } else {
             Toast.show("手机号无效");
@@ -221,51 +221,55 @@ class _NewRegisterPageState extends State<NewRegisterPage>
       Gaps.vGap10,
       Container(
         alignment: Alignment.centerLeft,
-        child: const Text(
-          "未注册手机号验证后生成新账号",
-          style: TextStyle(color: Colors.white, fontSize: 13),
-        ),
+        child: const Text("未注册手机号验证后生成新账号",style: TextStyle(color: Colours.color_001652,fontSize: 13),),
       ),
       // Gaps.vGap50,
       const Expanded(child: Gaps.empty),
 
       GestureDetector(
-          onTap: () {
-            if (_isSelect && _clickable) {
-              _registerPresenter.register(
-                  _phoneController.text, _vCodeController.text, true);
-            } else if (!_clickable) {
-              if (_phoneController.text.isEmpty) {
-                Toast.show("手机号无效");
-              } else if (_phoneController.text.isEmpty) {
-                Toast.show("验证码无效");
-              } else {
-                Toast.show("输入有误");
-              }
-            } else if (!_isSelect) {
-              Toast.show("请同意服务协议");
+        onTap: (){
+          if(_isSelect&&_clickable){
+            _registerPresenter.register(_phoneController.text, _vCodeController.text,true);
+
+          }else if(!_clickable){
+            if(_phoneController.text.isEmpty){
+              Toast.show("手机号无效");
+            }else if(_phoneController.text.isEmpty) {
+              Toast.show("验证码无效");
+            }else{
+              Toast.show("输入有误");
             }
 
-            // toNext(0);
-          },
-          child: Container(
-            height: 46,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: ImageUtils.getAssetImage("purchase_btn_img"),
-                    fit: BoxFit.fill)),
-            child: const Center(
-              child: Text(
-                "注册/登录",
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
+          }else if(!_isSelect){
+            Toast.show("请同意服务协议");
+          }
+
+          // toNext(0);
+        },
+        child: Container(
+
+          height: Dimens.h_dp48,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: ImageUtils.getAssetImage(
+                      "btn_bg_img"),
+                  fit: BoxFit.fill)),
+          child:  Center(
+            child: Text(
+              "注册/登录",
+              style: TextStyle(
+                  color: Colours.color_001652, fontSize: Dimens.font_sp18),
             ),
-          )),
+          ),
+        )
+      ),
       Gaps.vGap15,
       GestureDetector(
-        onTap: () {
+        onTap: (){
           _isSelect = !_isSelect;
-          setState(() {});
+          setState(() {
+
+          });
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -274,76 +278,62 @@ class _NewRegisterPageState extends State<NewRegisterPage>
             Container(
               alignment: Alignment.center,
               child: LoadAssetImage(
-                _isSelect ? "select_img" : "unselect_img",
+                _isSelect ? "select_img2" : "unselect_img2",
                 width: 11,
                 height: 11,
               ),
             ),
             Gaps.hGap10,
-            const Text(
-              "我以阅读并同意 ",
-              style: TextStyle(fontSize: 10, color: Colours.color_546092),
-            ),
+             Text("我以阅读并同意 ", style: TextStyle(fontSize: Dimens.font_sp12,color: Colours.black),),
             GestureDetector(
               onTap: () {
                 NavigatorUtils.goWebViewPage(context, "隐私政策",
                     "http://www.shenmo-ai.com/privacy_policy/");
               },
-              child: const Text("隐私政策",
-                  style: TextStyle(
-                      fontSize: 10,
-                      color: Colours.color_546092,
-                      decoration: TextDecoration.underline)),
+              child:  Text("隐私政策", style: TextStyle(
+                  fontSize: Dimens.font_sp12,color: Colours.color_0047FF, decoration: TextDecoration.underline)),
             ),
-            const Text(
-              " 和 ",
-              style: TextStyle(fontSize: 10, color: Colours.color_546092),
-            ),
+             Text(" 和 ", style: TextStyle(fontSize: Dimens.font_sp12,color: Colours.color_546092),),
             GestureDetector(
               onTap: () {
                 NavigatorUtils.goWebViewPage(
                     context, "服务协议", "http://www.shenmo-ai.com/tos/");
               },
-              child: const Text(
-                "服务协议",
-                style: TextStyle(
-                    color: Colours.color_546092,
-                    fontSize: 10,
-                    decoration: TextDecoration.underline),
-              ),
+              child:  Text("服务协议", style: TextStyle(color: Colours.color_0047FF,
+                  fontSize: Dimens.font_sp12, decoration: TextDecoration.underline),),
             ),
           ],
-        ),
-      ),
+        ) ,
+      )
+     ,
       Gaps.vGap26,
-      const Text(
-        "其他登录方式",
-        style: TextStyle(color: Colours.color_546092, fontSize: 13),
-      ),
+      Text("其他登录方式",style: TextStyle(color: Colours.black,fontSize: Dimens.font_sp13),),
       Gaps.vGap11,
       GestureDetector(
         onTap: () {
           // toNext(1);
-          if (_isSelect) {
-            if (Device.isAndroid) {
+          if(_isSelect){
+
+            if(Device.isAndroid){
               FlutterToNative.jumpToWechatLogin().then((value) => {
-                    // _wechatCode = value,
-                    // Log.e("===========>$_wechatCode"),
-                    _registerPresenter.getWxInfo(value)
-                  });
-            } else {}
-          } else {
+                // _wechatCode = value,
+                // Log.e("===========>$_wechatCode"),
+                _registerPresenter.getWxInfo(value)
+              });
+            }else{
+
+            }
+
+
+          }else{
             Toast.show("请同意服务协议");
           }
-        },
-        child: const LoadAssetImage(
-          "wechat_login_img",
-          width: 30,
-          height: 30,
-        ),
+              },
+        child: const LoadAssetImage("wechat_login_img",width: 30,height: 30,),
       ),
       Gaps.vGap50,
     ];
+
   }
 
   @override
@@ -359,7 +349,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
     // SpUtil.getObj(Constant.userInfoKey, (v) => {
     //   print(v),
     // });
-    NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
+    NavigatorUtils.push(context, HomeRouter.homePage,clearStack: true);
   }
 
   @override
@@ -374,8 +364,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
   void wechatSuccess(LoginInfoDataData data) {
     // SpUtil.putObject(Constant.userInfoKey, data);
     // SpUtil.putString(Constant.accessToken, data.token);
-    NavigatorUtils.push(context, LoginRouter.changeBindPhonePage,
-        arguments: data, replace: true);
+    NavigatorUtils.push(context, LoginRouter.changeBindPhonePage,arguments:data,replace: true);
   }
 
   @override
@@ -385,50 +374,59 @@ class _NewRegisterPageState extends State<NewRegisterPage>
 
   @override
   void loginSuccess() {
-    if (widget.isKeyLogin) {
+
+    if(widget.isKeyLogin){
       Constant.jverify.dismissLoginAuthView();
       hideLoading();
     }
 
-    NavigatorUtils.push(context, PersonalRouter.person, replace: true);
+    NavigatorUtils.push(context, PersonalRouter.person,replace: true);
   }
+
 
   void _showAgreement(int state) {
     showDialog<void>(
         context: context,
         barrierDismissible: false,
         builder: (_) => AgreementDialog(() {
-              _isSelect = true;
-              toNext(state);
-            }));
+          _isSelect = true;
+          toNext(state);
+        }));
   }
 
   // 0 手机号登录 1微信登录
-  void toNext(int state) {
-    if (state == 0) {
-      if (_isSelect && _clickable) {
-        _registerPresenter.register(
-            _phoneController.text, _vCodeController.text, true);
-      } else if (!_clickable) {
-        if (_phoneController.text.isEmpty) {
+  void toNext(int state){
+    if(state==0){
+      if(_isSelect&&_clickable){
+        _registerPresenter.register(_phoneController.text, _vCodeController.text,true);
+
+      }else if(!_clickable){
+        if(_phoneController.text.isEmpty){
           Toast.show("手机号无效");
-        } else if (_vCodeController.text.isEmpty) {
+        }else if(_vCodeController.text.isEmpty) {
           Toast.show("验证码无效");
-        } else {
+        }else{
           Toast.show("输入有误");
         }
-      } else if (!_isSelect) {
+
+      }else if(!_isSelect){
+
         // _showAgreement(state);
         toNext(state);
       }
-    } else if (state == 1) {
-      if (_isSelect) {
-        FlutterToNative.jumpToWechatLogin()
-            .then((value) => {_registerPresenter.getWxInfo(value)});
-      } else {
+    }else if(state==1){
+      if(_isSelect){
+        FlutterToNative.jumpToWechatLogin().then((value) => {
+
+          _registerPresenter.getWxInfo(value)
+        });
+      }else{
         // Toast.show("请同意服务协议");
         // _showAgreement(state);
       }
     }
+
   }
+
+
 }

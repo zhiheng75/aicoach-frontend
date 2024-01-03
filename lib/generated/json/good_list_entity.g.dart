@@ -151,6 +151,7 @@ extension GoodListDataDataExtension on GoodListDataData {
     int? id,
     String? unit,
     String? createdAt,
+    String? productId,
   }) {
     return GoodListDataData()
       ..name = name ?? this.name
@@ -161,6 +162,7 @@ extension GoodListDataDataExtension on GoodListDataData {
       ..price = price ?? this.price
       ..id = id ?? this.id
       ..unit = unit ?? this.unit
-      ..createdAt = createdAt ?? this.createdAt;
+      ..createdAt = createdAt ?? this.createdAt
+      ..productId = productId ?? this.productId;
   }
 }

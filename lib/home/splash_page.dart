@@ -62,7 +62,7 @@ class _SplashPageState extends State<SplashPage> {
         context: context,
         barrierDismissible: false,
         builder: (_) => AgreementDialog(() {
-              SpUtil.putBool(Constant.agreement, true);
+          SpUtil.putBool(Constant.agreement,true);
               _gotoHome();
             }));
   }

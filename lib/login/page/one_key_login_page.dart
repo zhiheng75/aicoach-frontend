@@ -66,7 +66,7 @@ class _KeyLoginPageState extends State<KeyLoginPage>
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: ImageUtils.getAssetImage(
-                        "login_bg_img"),
+                        "login_bg_img2"),
                     fit: BoxFit.fill)),
           ),
         )

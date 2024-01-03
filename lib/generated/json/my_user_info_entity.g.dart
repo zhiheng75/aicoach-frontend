@@ -26,7 +26,7 @@ extension MyUserInfoEntityExtension on MyUserInfoEntity {
   }
 }
 
-MyUserInfoData $MyUserInfoDataFromJson(Map<dynamic, dynamic> json) {
+MyUserInfoData $MyUserInfoDataFromJson(Map<String, dynamic> json) {
   final MyUserInfoData myUserInfoData = MyUserInfoData();
   final dynamic name = json['name'];
   if (name != null) {

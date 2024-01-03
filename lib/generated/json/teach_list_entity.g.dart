@@ -19,11 +19,8 @@ TeachListEntity $TeachListEntityFromJson(Map<String, dynamic> json) {
   if (voiceId != null) {
     teachListEntity.voiceId = voiceId;
   }
-  List<String>? authorName = [];
-  if (json['author_name'] is List) {
-    authorName = (json['author_name'] as List<dynamic>?)?.map(
-            (e) => jsonConvert.convert<String>(e) as String).toList();
-  }
+  final List<String>? authorName = (json['author_name'] as List<dynamic>?)?.map(
+          (e) => jsonConvert.convert<String>(e) as String).toList();
   if (authorName != null) {
     teachListEntity.authorName = authorName;
   }

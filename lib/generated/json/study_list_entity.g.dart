@@ -1,5 +1,6 @@
 import 'package:Bubble/generated/json/base/json_convert_content.dart';
 import 'package:Bubble/person/entity/study_list_entity.dart';
+import 'dart:ffi';
 
 
 StudyListEntity $StudyListEntityFromJson(Map<String, dynamic> json) {

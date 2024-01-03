@@ -1,14 +1,17 @@
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:Bubble/entity/empty_response_entity.dart';
 import 'package:Bubble/mvp/base_page_presenter.dart';
+import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
 import '../../util/toast_utils.dart';
+import '../entity/oss_token_entity.dart';
 import '../entity/send_img_result_entity.dart';
 import '../view/suggestion_view.dart';
 
@@ -29,6 +32,7 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView>{
 
   List<AssetEntity> refreshAssets = [];
 
+  String url = "";
 
   Future pushSuggest(suggest1,contact){
 
@@ -63,8 +67,61 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView>{
   }
 
 
+  Future getOssToken(List<File> files,List<AssetEntity> sendList){
+    return requestNetwork<OssTokenData>(Method.get,
+        url: HttpApi.getOssSts, isShow: true,
+        onSuccess: (data) {
+          if (data != null ) {
+            if(data.code == 200&&data.data!=null){
+            //   Toast.show("反馈成功");
+            //   view.sendSuccess();
+            // }else{
+            //   view.sendFail(data.msg);
+              uploadImg(files,sendList,data.data.accessKeyId,
+                  data.data.accessKeySecret,data.data.expiration);
+            }
+          }else {
+            // view.sendFail("反馈失败");
+          }
+        });
+  }
+
+
+  // void ads(){
+  //   String encodePolicy = base64Encode(utf8.encode(policy));
+  //   String signature = getSignature(encodePolicy);
+  //   String fileName = basename(imgFile.path);
+  //   fileName='flutter/$fileName';
+  //   var formData = FormData.fromMap(
+  //       {
+  //         'key':fileName,
+  //         "success_action_status":200,
+  //         'OSSAccessKeyId':encodePolicy,
+  //         "policy":encodePolicy,
+  //         "Signature":signature,
+  //         "Content-Type":"image/jpeg",
+  //         'file':await MultipartFile.fromFile(image.path),
+  //       }
+  //   );
+  //
+  // }
+
+  String getSignature(accessKeySecret,String encodePolicy){
+    var key = utf8.encode(accessKeySecret);
+    var bytes = utf8.encode(encodePolicy);
+    var hmacSha1 =  Hmac(sha1,key);
+    Digest sha1Result = hmacSha1.convert(bytes);
+    String signature = base64Encode(sha1Result.bytes);
+    return signature;
+  }
+
   /// 上传图片实现
-  Future<String> uploadImg(List<File> images,List<AssetEntity> sendList) async {
+  Future<String> uploadImg(
+      List<File> images,List<AssetEntity> sendList,OSSAccessKeyId,accessKeySecret,
+      policy) async {
+    String encodePolicy = base64Encode(utf8.encode(policy));
+    String signature = getSignature(accessKeySecret,encodePolicy);
+
     String imgPath = '';
     try{
       List<MultipartFile> mList = [];
@@ -77,6 +134,10 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView>{
         mList.add(mf);
       }
       final FormData formData = FormData.fromMap(<String, dynamic>{
+        "success_action_status":200,
+        'OSSAccessKeyId':OSSAccessKeyId,
+        "policy":encodePolicy,
+        "Signature":signature,
         'files':mList
       });
 
