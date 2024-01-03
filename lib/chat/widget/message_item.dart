@@ -25,8 +25,12 @@ class _MessageItemState extends State<MessageItem> {
   late HomeProvider _homeProvider;
   final ScreenUtil _screenUtil = ScreenUtil();
 
-  void translate() {
-    _homeProvider.translate(widget.message as NormalMessage);
+  void openTranslate() {
+    _homeProvider.openTranslate(widget.message as NormalMessage);
+  }
+
+  void closeTranslate() {
+    _homeProvider.closeTranslate(widget.message as NormalMessage);
   }
 
   @override
@@ -193,39 +197,85 @@ class _MessageItemState extends State<MessageItem> {
 
     Widget ext = GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: translate,
+      onTap: openTranslate,
       child: const LoadAssetImage(
         'fanyi',
-        width: 13.0,
-        height: 11.6,
+        width: 20.0,
+        height: 20.0,
       ),
     );
 
-    return Container(
-      width: width,
-      decoration: decoration,
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            child: Text(
-              _message.text,
-              style: const TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w400,
-                color: Colours.color_001652,
-                height: 20.0 / 15.0,
-                letterSpacing: 0.05,
-              ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        if (_message.showTranslation)
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: Colors.black.withOpacity(0.8),
+            ),
+            padding: const EdgeInsets.only(
+              top: 4.0,
+              bottom: 4.0,
+              left: 16.0,
+              right: 8.0,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  _message.translateState == 1 ? '翻译中...' : (_message.translation == 3 ? '翻译失败' : _message.translation),
+                  style: const TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                    height: 15.0 / 12.0,
+                    letterSpacing: 0.05,
+                  ),
+                ),
+                const SizedBox(
+                  width: 4.0,
+                ),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: closeTranslate,
+                  child: const LoadAssetImage(
+                    'fanyi_close',
+                    width: 16.0,
+                    height: 16.0,
+                  ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(
-            width: 10.0,
+        Container(
+          width: width,
+          decoration: decoration,
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  _message.text,
+                  style: const TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w400,
+                    color: Colours.color_001652,
+                    height: 20.0 / 15.0,
+                    letterSpacing: 0.05,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 10.0,
+              ),
+              ext,
+            ],
           ),
-          ext,
-        ],
-      ),
+        ),
+      ],
     );
 
   }

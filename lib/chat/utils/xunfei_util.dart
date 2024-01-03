@@ -10,19 +10,19 @@ import 'package:flutter/foundation.dart';
 import 'package:xml2json/xml2json.dart';
 
 // 语音识别
-String RECOGNIZATION_APP_ID = '8d275e28';
-String RECOGNIZATION_API_SECRET = 'MTNkOWJiZmFlMGMxOTM0NmZhMDliMGMw';
-String RECOGNIZATION_API_KEY = 'a6d70098ffbc7b7857454f5cf412f0b3';
+String RECOGNIZATION_APP_ID = '49939c7b';
+String RECOGNIZATION_API_SECRET = 'ZTRjOTZlNThjN2JiMGY1YThhMWFlNjM5';
+String RECOGNIZATION_API_KEY = '17c4ac9b72497e7fb815100ef2067f22';
 
 // 语音评测
-String EVALUATION_APP_ID = '8d275e28';
-String EVALUATION_API_SECRET = 'MTNkOWJiZmFlMGMxOTM0NmZhMDliMGMw';
-String EVALUATION_API_KEY = 'a6d70098ffbc7b7857454f5cf412f0b3';
+String EVALUATION_APP_ID = '49939c7b';
+String EVALUATION_API_SECRET = 'ZTRjOTZlNThjN2JiMGY1YThhMWFlNjM5';
+String EVALUATION_API_KEY = '17c4ac9b72497e7fb815100ef2067f22';
 
 // 翻译
-String TRANSLATION_APP_ID = '8d275e28';
-String TRANSLATION_API_SECRET = 'MTNkOWJiZmFlMGMxOTM0NmZhMDliMGMw';
-String TRANSLATION_API_KEY = 'a6d70098ffbc7b7857454f5cf412f0b3';
+String TRANSLATION_APP_ID = '49939c7b';
+String TRANSLATION_API_SECRET = 'ZTRjOTZlNThjN2JiMGY1YThhMWFlNjM5';
+String TRANSLATION_API_KEY = '17c4ac9b72497e7fb815100ef2067f22';
 
 class XunfeiUtil {
 
@@ -69,8 +69,8 @@ class XunfeiUtil {
       frameData['business'] = {
         'language': 'en_us',
         'domain': 'iat',
-        'vad_eos': 1000,
-        'ptt': 0,
+        // 设为最大10s
+        'vad_eos': 10000,
         'vinfo': 1,
       };
     }
@@ -134,6 +134,7 @@ class XunfeiUtil {
   static Map<String, dynamic> getRecognizeResult(Map<String, dynamic> response) {
     Map<String, dynamic> result = {
       'code': response['code'],
+      'message': response['message'],
     };
     if (response['code'] == 0) {
       String text = '';
