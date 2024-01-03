@@ -62,7 +62,7 @@ class _SplashPageState extends State<SplashPage> {
         context: context,
         barrierDismissible: false,
         builder: (_) => AgreementDialog(() {
-          SpUtil.putBool(Constant.agreement,true);
+              SpUtil.putBool(Constant.agreement, true);
               _gotoHome();
             }));
   }
@@ -85,17 +85,17 @@ class _SplashPageState extends State<SplashPage> {
             heightFactor: 0.3,
             widthFactor: 0.6,
             leftFactor: 0.2,
-            bottomFactor: 0.4,
+            bottomFactor: 0,
             child: Column(
               children: [
                 LoadAssetImage(
                   "splash_icon",
-                  width: 300,
+                  width: 150,
                 ),
-                Text(
-                  "欢迎加入BuBBle AI语伴",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                )
+                // Text(
+                //   "AI点亮未来",
+                //   style: TextStyle(color: Colors.white, fontSize: 16),
+                // )
               ],
             ),
           ),
