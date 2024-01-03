@@ -78,7 +78,7 @@ extension UserInfoDataExtension on UserInfoData {
   }
 }
 
-UserInfoDataData $UserInfoDataDataFromJson(Map<dynamic, dynamic> json) {
+UserInfoDataData $UserInfoDataDataFromJson(Map<String, dynamic> json) {
   final UserInfoDataData userInfoDataData = UserInfoDataData();
   final int? id = jsonConvert.convert<int>(json['id']);
   if (id != null) {

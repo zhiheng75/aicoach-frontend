@@ -47,7 +47,7 @@ class MyUserInfoData {
 
 	MyUserInfoData();
 
-	factory MyUserInfoData.fromJson(Map<dynamic, dynamic> json) => $MyUserInfoDataFromJson(json);
+	factory MyUserInfoData.fromJson(Map<String, dynamic> json) => $MyUserInfoDataFromJson(json);
 
 	Map<dynamic, dynamic> toJson() => $MyUserInfoDataToJson(this);
 

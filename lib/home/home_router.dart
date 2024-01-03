@@ -1,5 +1,7 @@
 import 'package:fluro/fluro.dart';
 import '../routers/i_router.dart';
+import '../test/TestPage.dart';
+import 'home.dart';
 import 'home_new.dart';
 
 class HomeRouter implements IRouterProvider{

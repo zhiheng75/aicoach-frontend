@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:Bubble/login/presenter/register_presenter.dart';
 import 'package:Bubble/login/view/register_view.dart';
+import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jverify/jverify.dart';
@@ -97,22 +99,22 @@ class _NewRegisterPageState extends State<NewRegisterPage>
   Widget build(BuildContext context) {
     super.build(context);
     return AnnotatedRegion(
-          value: SystemUiOverlayStyle.light,
+          value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         resizeToAvoidBottomInset:false,
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: ImageUtils.getAssetImage(
-                      "login_bg_img"),
+                      "person_bg"),
                   fit: BoxFit.fill)),
           child: Column(
             children: [
               MyOnlyImgBar(
                 backgroundColor: Colours.transflate,
-                  width: 17.0,
-                  height: 17.0,
-                  actionUrl: "white_close_img",
+                  width: Dimens.w_dp32,
+                  height: Dimens.h_dp32,
+                  actionUrl: "round_close_img",
                   onActionPress: () {
                     NavigatorUtils.goBack(context);
                   }),
@@ -166,7 +168,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
         alignment: Alignment.centerLeft,
         child: const Text(
           "手机号登录",
-          style: TextStyle(fontSize: 26, color: Colors.white,fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 26, color: Colours.color_001652,fontWeight: FontWeight.bold),
         ),
       ),
       // Row(
@@ -185,21 +187,22 @@ class _NewRegisterPageState extends State<NewRegisterPage>
       // ),
       MyTextField(
         key: const Key('phone'),
-        txtStyle:const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),
-        hintStyle: const TextStyle(fontSize: 20,color: Colours.color_4ED7FF),
+        txtStyle:const TextStyle(fontSize: 20,color: Colours.color_001652,fontWeight: FontWeight.bold),
+        hintStyle: const TextStyle(fontSize: 20,color: Colours.color_001652),
         focusNode: _nodeText1,
         controller: _phoneController,
         maxLength: 11,
         keyboardType: TextInputType.phone,
         hintText: "输入手机号",
-        underLineColor: Colors.transparent,
+        underLineColor: Colours.color_001652,
+        countDownColor: Colours.color_001652,
       ),
       Gaps.vGap15,
       MyTextField(
         focusNode: _nodeText2,
-        txtStyle:const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),
-        hintStyle: const TextStyle(fontSize: 20,color: Colours.color_4ED7FF),
-        underLineColor: Colors.transparent,
+        txtStyle:const TextStyle(fontSize: 20,color: Colours.color_001652,fontWeight: FontWeight.bold),
+        hintStyle: const TextStyle(fontSize: 20,color: Colours.color_001652),
+        underLineColor: Colours.color_001652,
         controller: _vCodeController,
         maxLength: 4,
         keyboardType: TextInputType.number,
@@ -218,7 +221,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
       Gaps.vGap10,
       Container(
         alignment: Alignment.centerLeft,
-        child: const Text("未注册手机号验证后生成新账号",style: TextStyle(color: Colors.white,fontSize: 13),),
+        child: const Text("未注册手机号验证后生成新账号",style: TextStyle(color: Colours.color_001652,fontSize: 13),),
       ),
       // Gaps.vGap50,
       const Expanded(child: Gaps.empty),
@@ -245,17 +248,17 @@ class _NewRegisterPageState extends State<NewRegisterPage>
         },
         child: Container(
 
-          height: 46,
+          height: Dimens.h_dp48,
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: ImageUtils.getAssetImage(
-                      "purchase_btn_img"),
+                      "btn_bg_img"),
                   fit: BoxFit.fill)),
-          child: const Center(
+          child:  Center(
             child: Text(
               "注册/登录",
               style: TextStyle(
-                  color: Colors.white, fontSize: 16),
+                  color: Colours.color_001652, fontSize: Dimens.font_sp18),
             ),
           ),
         )
@@ -275,36 +278,36 @@ class _NewRegisterPageState extends State<NewRegisterPage>
             Container(
               alignment: Alignment.center,
               child: LoadAssetImage(
-                _isSelect ? "select_img" : "unselect_img",
+                _isSelect ? "select_img2" : "unselect_img2",
                 width: 11,
                 height: 11,
               ),
             ),
             Gaps.hGap10,
-            const Text("我以阅读并同意 ", style: TextStyle(fontSize: 10,color: Colours.color_546092),),
+             Text("我以阅读并同意 ", style: TextStyle(fontSize: Dimens.font_sp12,color: Colours.black),),
             GestureDetector(
               onTap: () {
                 NavigatorUtils.goWebViewPage(context, "隐私政策",
                     "http://www.shenmo-ai.com/privacy_policy/");
               },
-              child: const Text("隐私政策", style: TextStyle(
-                  fontSize: 10,color: Colours.color_546092, decoration: TextDecoration.underline)),
+              child:  Text("隐私政策", style: TextStyle(
+                  fontSize: Dimens.font_sp12,color: Colours.color_0047FF, decoration: TextDecoration.underline)),
             ),
-            const Text(" 和 ", style: TextStyle(fontSize: 10,color: Colours.color_546092),),
+             Text(" 和 ", style: TextStyle(fontSize: Dimens.font_sp12,color: Colours.color_546092),),
             GestureDetector(
               onTap: () {
                 NavigatorUtils.goWebViewPage(
                     context, "服务协议", "http://www.shenmo-ai.com/tos/");
               },
-              child: const Text("服务协议", style: TextStyle(color: Colours.color_546092,
-                  fontSize: 10, decoration: TextDecoration.underline),),
+              child:  Text("服务协议", style: TextStyle(color: Colours.color_0047FF,
+                  fontSize: Dimens.font_sp12, decoration: TextDecoration.underline),),
             ),
           ],
         ) ,
       )
      ,
       Gaps.vGap26,
-      const Text("其他登录方式",style: TextStyle(color: Colours.color_546092,fontSize: 13),),
+      Text("其他登录方式",style: TextStyle(color: Colours.black,fontSize: Dimens.font_sp13),),
       Gaps.vGap11,
       GestureDetector(
         onTap: () {

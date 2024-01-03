@@ -154,7 +154,8 @@ class _SuggestionPageState extends State<SuggestionPage>
                                     mlist.add(f);
                                   }
                                 }
-                                _presenter.uploadImg(mlist,assetEntityList);
+                                // _presenter.uploadImg(mlist,assetEntityList);
+                                _presenter.getOssToken(mlist,assetEntityList);
                                 // var asset = assetEntityList[0];
                                 // print(await asset.file);
                                 // print(await asset.originFile);
@@ -228,15 +229,16 @@ class _SuggestionPageState extends State<SuggestionPage>
                         Gaps.vGap30,
 
                         BtnWidget("purchase_btn_img", "提交",txtStyle: TextStyles.text17_white, () {
-                           if(_controller.text.isNotEmpty&&_contactController.text.isNotEmpty){
-                            _presenter.pushSuggest(_controller.text,_contactController.text);
-                          }else{
-                             if(_controller.text.isEmpty){
-                               Toast.show("请输入问题和意见");
-                             }else if(_contactController.text.isEmpty){
-                               Toast.show("请输入联系方式");
-                             }
-                          }
+                          //  if(_controller.text.isNotEmpty&&_contactController.text.isNotEmpty){
+                          //   _presenter.pushSuggest(_controller.text,_contactController.text);
+                          //    _presenter.getOssToken();
+                          // }else{
+                          //    if(_controller.text.isEmpty){
+                          //      Toast.show("请输入问题和意见");
+                          //    }else if(_contactController.text.isEmpty){
+                          //      Toast.show("请输入联系方式");
+                          //    }
+                          // }
 
                         }),
 

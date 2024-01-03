@@ -25,11 +25,11 @@ class MyTextField extends StatefulWidget {
     this.isInputPwd = false,
     this.getVCode,
     this.keyName,
-    this.underLineColor = Colors.white,
+    this.underLineColor = Colours.color_001652,
     this.txtStyle = const TextStyle(color: Colors.white,fontSize: 20),
     this.hintStyle = const TextStyle(color: Colors.white,fontSize: 20),
-    this.closeColor = Colors.white,
-    this.countDownColor = Colors.white,
+    this.closeColor = Colours.color_001652,
+    this.countDownColor = Colours.color_001652,
   });
 
   final TextEditingController controller;
