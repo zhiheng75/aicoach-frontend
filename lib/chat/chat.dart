@@ -178,16 +178,24 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
             characterAvatarList: characterAvatarList,
           ),
         ),
-        Container(
-          width: _screenUtil.screenWidth,
-          height: _screenUtil.screenHeight,
-          padding: EdgeInsets.only(
-            top: homeTabbarHeight,
-            bottom: bottomBarHeight,
-            left: 16.0,
-            right: 16.0,
-          ),
-          child: const MessageList(),
+        ValueListenableBuilder(
+          valueListenable: _bottomBarControll.showMessageList,
+          builder: (_, showMessageList, __) {
+            if (!showMessageList) {
+              return const SizedBox();
+            }
+            return Container(
+              width: _screenUtil.screenWidth,
+              height: _screenUtil.screenHeight,
+              padding: EdgeInsets.only(
+                top: homeTabbarHeight,
+                bottom: bottomBarHeight,
+                left: 16.0,
+                right: 16.0,
+              ),
+              child: const MessageList(),
+            );
+          },
         ),
         Positioned(
           bottom: _screenUtil.bottomBarHeight + 16.0,

@@ -154,15 +154,14 @@ class HomeProvider extends ChangeNotifier {
   }
 
   // 翻译
-  void translate(NormalMessage normalMessage) {
-    normalMessage.showTranslation = !normalMessage.showTranslation;
-    // 关闭翻译
-    if (!normalMessage.showTranslation) {
-      notifyListeners();
+  void openTranslate(NormalMessage normalMessage) {
+    if (normalMessage.showTranslation) {
       return;
     }
-    // 翻译成功
-    if (normalMessage.translateState == 2) {
+
+    normalMessage.showTranslation = true;
+
+    if (normalMessage.translateState == 1 || normalMessage.translateState == 2) {
       notifyListeners();
       return;
     }
@@ -178,6 +177,11 @@ class HomeProvider extends ChangeNotifier {
     });
 
     normalMessage.translateState = 1;
+    notifyListeners();
+  }
+
+  void closeTranslate(NormalMessage normalMessage) {
+    normalMessage.showTranslation = false;
     notifyListeners();
   }
 

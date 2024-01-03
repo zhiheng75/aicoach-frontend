@@ -194,12 +194,15 @@ class _BottomBarState extends State<BottomBar> {
             padding: const EdgeInsets.only(
               right: 8.0,
             ),
-            child: iconButtom(
-              onPress: () {},
-              child: const LoadAssetImage(
-                'yanjing_kai',
-                width: 24.0,
-                height: 17.9,
+            child: ValueListenableBuilder(
+              valueListenable: widget.controller.showMessageList,
+              builder: (_, showMessageList, __) => iconButtom(
+                onPress: () => widget.controller.setShowMessageList(!showMessageList),
+                child: LoadAssetImage(
+                  showMessageList ? 'yanjing_kai' : 'yanjing_kai',
+                  width: 24.0,
+                  height: 17.9,
+                ),
               ),
             ),
           ),
@@ -280,10 +283,12 @@ class BottomBarControll {
   ValueNotifier<bool> _disabled = ValueNotifier(true);
   ValueNotifier<bool> _showRecord = ValueNotifier(false);
   ValueNotifier<Offset> _offset = ValueNotifier(Offset.zero);
+  ValueNotifier<bool> _showMessageList = ValueNotifier(true);
 
   ValueNotifier<bool> get disabled => _disabled;
   ValueNotifier<bool> get showRecord => _showRecord;
   ValueNotifier<Offset> get offset => _offset;
+  ValueNotifier<bool> get showMessageList => _showMessageList;
 
   void setDisabled(bool disabled) {
     _disabled.value = disabled;
@@ -291,6 +296,10 @@ class BottomBarControll {
 
   void setShowRecord(bool showRecord) {
     _showRecord.value = showRecord;
+  }
+
+  void setShowMessageList(bool showMessageList) {
+    _showMessageList.value = showMessageList;
   }
 
   void updateOffset(Offset offset) {

@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:Bubble/util/log_utils.dart';
 import 'package:dio/dio.dart';
 
+import '../../util/log_utils.dart';
 import 'xunfei_util.dart';
 
 class TranslateUtil {
 
   static Future<Map<String, dynamic>> translate(String english) async {
-    Map<String, dynamic> result = {};
+    Map<String, dynamic> operateResult = {};
 
     Map<String, dynamic> body = XunfeiUtil.createBodyForTranslation(english);
     String bodySignature = XunfeiUtil.getBodySignatureForTranslation(body);
@@ -39,22 +39,27 @@ class TranslateUtil {
             if (translation.containsKey('trans_result')) {
               Map<String, dynamic> transResult = (translation['trans_result'] ?? {}) as Map<String, dynamic>;
               if (transResult['dst'] != null && transResult['dst'] != '') {
-                result['success'] = true;
-                result['data'] = transResult['dst'];
+                operateResult['success'] = true;
+                operateResult['data'] = transResult['dst'];
+              } else {
+                throw Exception('翻译失败:[error]dst为null或者空字符串');
               }
-              throw Exception('翻译失败:[error]dst为null或者空字符串');
+            } else {
+              throw Exception('翻译失败:[error]trans_result字段不存在');
             }
-            throw Exception('翻译失败:[error]trans_result字段不存在');
+          } else {
+            throw Exception('翻译失败:[error]result字段不存在');
           }
-          throw Exception('翻译失败:[error]result字段不存在');
+        } else {
+          throw Exception('翻译失败:[error]${result['message']}');
         }
-        throw Exception('翻译失败:[error]${result['message']}');
+      } else {
+        throw Exception('翻译失败:[error]${response.statusMessage}');
       }
-      throw Exception('翻译失败:[error]${response.statusMessage}');
     } catch (e) {
       Log.d(e.toString(), tag: '翻译');
-      result['success'] = false;
+      operateResult['success'] = false;
     }
-    return result;
+    return operateResult;
   }
 }
