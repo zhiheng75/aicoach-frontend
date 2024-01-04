@@ -1,5 +1,8 @@
+// ignore_for_file: unnecessary_cast
+
 import 'package:Bubble/login/page/change_bind_phone_page.dart';
 import 'package:Bubble/login/page/check_code_page.dart';
+import 'package:Bubble/login/page/new_one_key_phone_page.dart';
 import 'package:Bubble/login/page/one_key_login_page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +16,7 @@ import 'package:Bubble/login/page/sms_login_page.dart';
 import '../routers/i_router.dart';
 import 'entity/login_info_entity.dart';
 import 'entity/wx_info_entity.dart';
+import 'page/phone_login_page.dart';
 
 class LoginRouter implements IRouterProvider {
   // static String loginPage = '/login';
@@ -26,6 +30,8 @@ class LoginRouter implements IRouterProvider {
   static String updatePasswordPage = '/login/updatePassword';
   static String keyLoginPage = "/login/keyLogin";
   static String keyCheckCodePage = "/login/CheckCodePage";
+  static String phoneLoginPage = "/login/PhoneLoginPage";
+  static String newOneKeyPhonePage = "/login/NewOneKeyPhonePage";
 
   @override
   void initRouter(FluroRouter router) {
@@ -47,11 +53,21 @@ class LoginRouter implements IRouterProvider {
         handler: Handler(handlerFunc: (_, __) => const KeyLoginPage()));
     router.define(onlySmsPage,
         handler: Handler(handlerFunc: (_, __) => const OnlySmsPage()));
-    router.define(keyCheckCodePage,
-        handler: Handler(
-            handlerFunc: (_, __) => const CheckCodePage(
-                  phoneNumber: '18611667447',
-                )));
+
+    router.define(keyCheckCodePage, handler: Handler(handlerFunc: (_, params) {
+      print(params);
+      print(params['PhoneNumber']);
+
+      // Map map = params as Map;
+      String phoneNumberStr = params['PhoneNumber']!.first;
+      return CheckCodePage(phoneNumber: phoneNumberStr);
+    }));
+
+    router.define(phoneLoginPage,
+        handler: Handler(handlerFunc: (_, __) => const PhoneLoginPage()));
+    router.define(newOneKeyPhonePage,
+        handler: Handler(handlerFunc: (_, __) => const NewOneKeyPhonePage()));
+
     // router.define(bindPhonePage, handler: Handler(handlerFunc: (context, params) {
     //   LoginInfoDataData entity = LoginInfoDataData();
     //   if(context!=null){

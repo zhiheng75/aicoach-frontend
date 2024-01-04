@@ -5,19 +5,19 @@ import 'package:provider/provider.dart';
 
 import '../setting/provider/theme_provider.dart';
 
-
 /// 暗黑模式判断
 extension ThemeExtension on BuildContext {
-
   bool get jhIsDark => Provider.of<ThemeProvider>(this).isDark(this);
 }
-class Colours {
 
+class Colours {
   /// 设置动态颜色
-  static Color dynamicColor(BuildContext context, Color lightColor, [Color? darkColor]) {
+  static Color dynamicColor(BuildContext context, Color lightColor,
+      [Color? darkColor]) {
     var isDark = context.jhIsDark;
     return isDark ? darkColor ?? lightColor : lightColor;
   }
+
   static const Color kThemeColor = Color(0xFFFFFFff);
   // 黑色文字
   static const Color kBlackTextColor = Color(0xFF333333); // (51, 51, 51)
@@ -30,10 +30,12 @@ class Colours {
   static const Color kPickerBgColor = Colors.white;
   static const Color kPickerBgDarkColor = Color(0xFF1E1E1E); // (30, 30, 30)
   static const Color kPickerTitleColor = Color(0xFF787878); // (120, 120, 120)
-  static const Color kPickerTitleDarkColor = Color(0xFF878787); // (135, 135, 135)
+  static const Color kPickerTitleDarkColor =
+      Color(0xFF878787); // (135, 135, 135)
   static const Color kPickerTextColor = kBlackTextColor;
   static const Color kPickerTextDarkColor = kBlackTextDarkColor;
-  static const Color kPickerRedTextDarkColor = Color(0xFFE64242); // (230, 66, 66)
+  static const Color kPickerRedTextDarkColor =
+      Color(0xFFE64242); // (230, 66, 66)
   static const Color kPickerHeaderColor = kPickerBgColor;
   static const Color kPickerHeaderDarkColor = kPickerBgDarkColor;
   static const Color kPickerHeaderLineColor = kLineColor;
@@ -52,13 +54,13 @@ class Colours {
 
   static const Color text = Color(0xFF333333);
   static const Color dark_text = Color(0xFFB8B8B8);
-  
+
   static const Color text_gray = Color(0xFF999999);
   static const Color dark_text_gray = Color(0xFF666666);
 
   static const Color text_gray_c = Color(0xFFcccccc);
   static const Color dark_button_text = Color(0xFFF2F2F2);
-  
+
   static const Color bg_gray = Color(0xFFF6F6F6);
   static const Color dark_bg_gray = Color(0xFF1F1F1F);
 
@@ -67,7 +69,7 @@ class Colours {
 
   static const Color red = Color(0xFFFF4759);
   static const Color dark_red = Color(0xFFE03E4E);
-  
+
   static const Color text_disabled = Color(0xFFD4E2FA);
   static const Color dark_text_disabled = Color(0xFFCEDBF2);
 
@@ -98,7 +100,6 @@ class Colours {
   static const Color color_0EF4D1 = Color(0xff0EF4D1);
   static const Color color_53C5FF = Color(0xff53C5FF);
   static const Color color_E0AEFF = Color(0xffE0AEFF);
-
 
   static const Color color_700EF4D1 = Color(0x660EF4D1);
   static const Color color_7053C5FF = Color(0x6653C5FF);
@@ -146,4 +147,7 @@ class Colours {
   static const Color color_FF71E0 = Color(0xFFFF71E0);
   static const Color color_E8CCFE = Color(0xFFE8CCFE);
   static const Color color_ACCDFF = Color(0xFFACCDFF);
+
+  static const Color color_9BA9BE = Color.fromRGBO(155, 169, 190, 1);
+  static const Color color_00 = Color.fromRGBO(1, 1, 1, 0);
 }

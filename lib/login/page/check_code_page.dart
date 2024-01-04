@@ -35,7 +35,7 @@ class _CheckCodePageState extends State<CheckCodePage> {
   void _startTimer() {
     _seconds = 30;
     canResend = false;
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_seconds == 0) {
         _cancelTimer();
         if (mounted) {
@@ -125,11 +125,18 @@ class _CheckCodePageState extends State<CheckCodePage> {
                     ),
                   ),
                   canResend
-                      ? const Text(
-                          "重新发送",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Color(0xFF4884F3),
+                      ? GestureDetector(
+                          onTap: () {
+                            if (canResend) {
+                              resendCode();
+                            }
+                          },
+                          child: const Text(
+                            "重新发送",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Color(0xFF4884F3),
+                            ),
                           ),
                         )
                       : Row(
@@ -178,4 +185,9 @@ class _CheckCodePageState extends State<CheckCodePage> {
   }
 
   void verifyCode(String code) async {}
+
+  ///重新发送验证码
+  void resendCode() {
+    _startTimer();
+  }
 }
