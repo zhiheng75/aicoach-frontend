@@ -8,6 +8,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluwx/fluwx.dart';
 import 'package:jverify/jverify.dart';
 
 import '../../constant/constant.dart';
@@ -354,8 +355,17 @@ class _NewRegisterPageState extends State<NewRegisterPage>
         getVCode: () async {
           NavigatorUtils.push(
             context,
-            LoginRouter.newOneKeyPhonePage,
+            "${LoginRouter.newOneKeyPhonePage}?needKeyLogin=1",
           );
+
+          // NavigatorUtils.push(
+          //   context,
+          //   LoginRouter.newBindPhonePage,
+          // );
+          // NavigatorUtils.push(
+          //   context,
+          //   PersonalRouter.personalSuggestion,
+          // );
           return false;
           if (_phoneController.text.length == 11) {
             _registerPresenter.sendSms(_phoneController.text.trim(), true);

@@ -13,6 +13,7 @@ import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_only_img_bar.dart';
+import 'package:Bubble/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:Bubble/login/presenter/register_presenter.dart';
@@ -20,7 +21,10 @@ import '../../home/home_router.dart';
 import '../../mvp/base_page.dart';
 
 class NewOneKeyPhonePage extends StatefulWidget {
-  const NewOneKeyPhonePage({super.key});
+  final bool isKeyLogin;
+
+  const NewOneKeyPhonePage({Key? key, required this.isKeyLogin})
+      : super(key: key);
 
   @override
   State<NewOneKeyPhonePage> createState() => _NewOneKeyPhonePageState();
@@ -109,21 +113,73 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      height: Dimens.h_dp40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(Dimens.h_dp40),
-                        color: Colors.white70,
-                      ),
-                      child: Center(
-                        child: Text(
-                          "186****1111",
-                          style: TextStyle(
-                              color: Colours.color_001652,
-                              fontSize: Dimens.font_sp18),
-                        ),
-                      ),
-                    ),
+                    widget.isKeyLogin
+                        ? Text(
+                            "手机号码登录",
+                            style: TextStyle(
+                                fontSize: Dimens.font_sp17,
+                                color: Colours.black),
+                          )
+                        : Gaps.vGap2,
+                    widget.isKeyLogin
+                        ? Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            height: Dimens.h_dp40,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(Dimens.h_dp40),
+                              color: Colors.white70,
+                            ),
+                            child: Row(
+                              children: [
+                                Gaps.hGap16,
+                                Text(
+                                  "+86",
+                                  style: TextStyle(
+                                      color: Colours.color_9BA9BE,
+                                      fontSize: Dimens.font_sp18),
+                                ),
+                                Gaps.hGap16,
+                                Expanded(
+                                  child: MyTextField(
+                                    key: const Key('phone'),
+                                    txtStyle: const TextStyle(
+                                      fontSize: 20,
+                                      color: Colours.color_001652,
+                                    ),
+                                    hintStyle: const TextStyle(
+                                        fontSize: 20,
+                                        color: Colours.color_001652),
+                                    focusNode: _nodeText1,
+                                    controller: _phoneController,
+                                    maxLength: 11,
+                                    keyboardType: TextInputType.phone,
+                                    hintText: "输入手机号",
+                                    underLineColor: Colours.color_00,
+                                    countDownColor: Colours.color_001652,
+                                  ),
+                                ),
+                                Gaps.hGap16,
+                              ],
+                            ),
+                          )
+                        : Container(
+                            height: Dimens.h_dp40,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(Dimens.h_dp40),
+                              color: Colors.white70,
+                            ),
+                            child: Center(
+                              child: Text(
+                                "186****1111",
+                                style: TextStyle(
+                                    color: Colours.color_001652,
+                                    fontSize: Dimens.font_sp18),
+                              ),
+                            ),
+                          ),
                     Gaps.vGap24,
                     Container(
                       alignment: Alignment.center,
@@ -192,53 +248,82 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                       ),
                     ),
                     Gaps.vGap24,
-                    GestureDetector(
-                        onTap: () {
-                          // if (_phoneController.text.isEmpty) {
-                          //   Toast.show("手机号无效");
-                          // } else if (!_isSelect) {
-                          //   Toast.show("请同意服务协议");
-                          // }
-                        },
-                        child: Container(
-                          height: Dimens.h_dp40,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: ImageUtils.getAssetImage("btn_bg_img"),
-                                  fit: BoxFit.fill)),
-                          child: Center(
-                            child: Text(
-                              "本机号码一键登录",
-                              style: TextStyle(
-                                  color: Colours.color_001652,
-                                  fontSize: Dimens.font_sp18),
-                            ),
-                          ),
-                        )),
+                    widget.isKeyLogin
+                        ? GestureDetector(
+                            onTap: () {
+                              NavigatorUtils.push(context,
+                                  "${LoginRouter.keyCheckCodePage}?PhoneNumber=18611667447");
+                            },
+                            child: Container(
+                              height: Dimens.h_dp40,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(Dimens.h_dp40),
+                                color: Colors.white70,
+                                border:
+                                    Border.all(width: 1, color: Colors.black),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "发送短信验证码",
+                                  style: TextStyle(
+                                      color: Colours.color_001652,
+                                      fontSize: Dimens.font_sp18),
+                                ),
+                              ),
+                            ))
+                        : GestureDetector(
+                            onTap: () {
+                              // if (_phoneController.text.isEmpty) {
+                              //   Toast.show("手机号无效");
+                              // } else if (!_isSelect) {
+                              //   Toast.show("请同意服务协议");
+                              // }
+                            },
+                            child: Container(
+                              height: Dimens.h_dp40,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: ImageUtils.getAssetImage(
+                                          "btn_bg_img"),
+                                      fit: BoxFit.fill)),
+                              child: Center(
+                                child: Text(
+                                  "本机号码一键登录",
+                                  style: TextStyle(
+                                      color: Colours.color_001652,
+                                      fontSize: Dimens.font_sp18),
+                                ),
+                              ),
+                            )),
                     Gaps.vGap24,
-                    GestureDetector(
-                        onTap: () {
-                          NavigatorUtils.push(
-                            context,
-                            LoginRouter.phoneLoginPage,
-                          );
-                        },
-                        child: Container(
-                          height: Dimens.h_dp40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(Dimens.h_dp40),
-                            color: Colors.white70,
-                            border: Border.all(width: 1, color: Colors.black),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "其他手机号登录",
-                              style: TextStyle(
-                                  color: Colours.color_001652,
-                                  fontSize: Dimens.font_sp18),
-                            ),
-                          ),
-                        )),
+                    widget.isKeyLogin
+                        ? Gaps.vGap40
+                        : GestureDetector(
+                            onTap: () {
+                              NavigatorUtils.push(
+                                context,
+                                "${LoginRouter.newOneKeyPhonePage}?needKeyLogin=0",
+                              );
+                            },
+                            child: Container(
+                              height: Dimens.h_dp40,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(Dimens.h_dp40),
+                                color: Colors.white70,
+                                border:
+                                    Border.all(width: 1, color: Colors.black),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "其他手机号登录",
+                                  style: TextStyle(
+                                      color: Colours.color_001652,
+                                      fontSize: Dimens.font_sp18),
+                                ),
+                              ),
+                            )),
                     Gaps.vGap20,
                     Container(
                       alignment: Alignment.center,
@@ -253,7 +338,12 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            NavigatorUtils.push(
+                              context,
+                              "${LoginRouter.newBindPhonePage}?needKeyLogin=0",
+                            );
+                          },
                           child: const LoadAssetImage(
                             "wechat_login_img",
                             width: 40,
@@ -262,7 +352,12 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                         ),
                         Gaps.hGap16,
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            NavigatorUtils.push(
+                              context,
+                              "${LoginRouter.newBindPhonePage}?needKeyLogin=1",
+                            );
+                          },
                           child: const LoadAssetImage(
                             "qq_login_img",
                             width: 40,

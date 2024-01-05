@@ -242,15 +242,8 @@ class _PhoneLoginPageState extends State<PhoneLoginPage>
                     Gaps.vGap24,
                     GestureDetector(
                         onTap: () {
-                          // NavigatorUtils.push(context, LoginRouter.keyCheckCodePage,
-                          //     clearStack: true);
                           NavigatorUtils.push(context,
-                              "${LoginRouter.keyCheckCodePage}?PhoneNumber=18611667447"
-                              // LoginRouter.keyCheckCodePage,
-                              // arguments: {
-                              //   'PhoneNumber': "18611667447",
-                              // },
-                              );
+                              "${LoginRouter.keyCheckCodePage}?PhoneNumber=18611667447");
                         },
                         child: Container(
                           height: Dimens.h_dp40,

@@ -58,7 +58,8 @@ class JhAssetPicker extends StatefulWidget {
   final int maxAssets; // 最大数量
   final int lineCount; // 一行显示几个
   final double itemSpace; // 每个GridView item间距(GridView四周与内部item间距在此统一设置)
-  final Duration? maximumRecordingDuration; // 录制视频最长时长, 默认为 15 秒，可以使用 `null` 来设置无限制的视频录制
+  final Duration?
+      maximumRecordingDuration; // 录制视频最长时长, 默认为 15 秒，可以使用 `null` 来设置无限制的视频录制
   final Color bgColor; // 背景色
   final Function(List<AssetEntity> assetEntityList)? callBack; // 选择回调
 
@@ -77,14 +78,11 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
   void initState() {
     super.initState();
     maxAmount = widget.maxAssets;
-    bus.on("refreshSelectImg", (arg){
+    bus.on("refreshSelectImg", (arg) {
       _selectedAssets.clear();
       _selectedAssets.addAll(arg);
-      setState(() {
-
-      });
+      setState(() {});
     });
-
   }
 
   @override
@@ -94,7 +92,8 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
 
   _body() {
     final provider = Provider.of<ThemeProvider>(context);
-    _themeColor = Colours.dynamicColor(context, provider.getThemeColor(), Colours.kThemeColor);
+    _themeColor = Colours.dynamicColor(
+        context, provider.getThemeColor(), Colours.kThemeColor);
 
     var allCount = _selectedAssets.length + 1;
 
@@ -113,10 +112,10 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
         // GridView内边距
         padding: EdgeInsets.all(widget.itemSpace),
         // itemCount: _selectedAssets.length == widget.maxAssets ? _selectedAssets.length : allCount,
-        itemCount: _selectedAssets.length == 4 ? _selectedAssets.length : allCount,
+        itemCount:
+            _selectedAssets.length == 4 ? _selectedAssets.length : allCount,
         itemBuilder: (context, index) {
-
-          if(_selectedAssets.length<5){
+          if (_selectedAssets.length < 5) {
             if (index == allCount - 1) {
               return _addBtnWidget();
             } else {
@@ -132,7 +131,6 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
           // } else {
           //   return _itemWidget(index);
           // }
-
         },
       ),
     );
@@ -143,23 +141,33 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
     return GestureDetector(
       // child: const Image(image: AssetImage(_addBtnIcon)),
       child: Container(
+        // color: Colors.black,
         alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(13),
-          border: Border.all(
-              color:Colours.color_5B8BD2,
-              width: 0.5
-          )
+        // decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(13),
+        //     border: Border.all(color: Colours.color_5B8BD2, width: 0.5)),
+        child: const LoadAssetImage(
+          "camera_img",
+          width: 50,
+          height: 50,
         ),
-        child:  Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const LoadAssetImage("camera_img",width: 28,height: 23,),
-            Gaps.vGap8,
-            Text("上传",style: TextStyle(fontSize: Dimens.font_sp10,color: Colours.color_546092),)
-          ],
-        ),
+        // child: Column(
+        //   crossAxisAlignment: CrossAxisAlignment.center,
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     const LoadAssetImage(
+        //       "camera_img",
+        //       width: 28,
+        //       height: 23,
+        //     ),
+        //     // Gaps.vGap8,
+        //     // Text(
+        //     //   "上传",
+        //     //   style: TextStyle(
+        //     //       fontSize: Dimens.font_sp10, color: Colours.color_546092),
+        //     // )
+        //   ],
+        // ),
       ),
       onTap: () => _showBottomSheet(),
     );
@@ -178,18 +186,17 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
               child: _loadAsset(_selectedAssets[index]),
             ),
             GestureDetector(
-              child:  Container(
-                margin: const EdgeInsets.all(3),
-                child:const Image(
-                  image: AssetImage(_deleteBtnIcon),
-                  width: _deleteBtnWH,
-                  height: _deleteBtnWH,
+                child: Container(
+                  margin: const EdgeInsets.all(3),
+                  child: const Image(
+                    image: AssetImage(_deleteBtnIcon),
+                    width: _deleteBtnWH,
+                    height: _deleteBtnWH,
+                  ),
                 ),
-              ) ,
-              onTap: () =>{
-                _deleteAsset(index),
-              }
-            )
+                onTap: () => {
+                      _deleteAsset(index),
+                    })
           ],
         ),
       ),
@@ -225,7 +232,8 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
 
   // 点击添加按钮
   void _showBottomSheet() {
-    JhBottomSheet.showText(context, dataArr: ['拍摄', '相册'], title: '请选择', clickCallback: (index, str) async {
+    JhBottomSheet.showText(context, dataArr: ['拍摄', '相册'], title: '请选择',
+        clickCallback: (index, str) async {
       if (index == 1) {
         _openCamera(context);
       }
@@ -275,7 +283,6 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
   // 拍照或录像
   Future<void> _openCamera(context) async {
     if (!Device.isMobile) {
-
       return;
     }
     // 相机权限
@@ -311,9 +318,9 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
     if (result != null) {
       // setState(() {
       _selectedAssets.clear();
-        _selectedAssets.add(result);
-        // 相机回调
-        widget.callBack?.call(_selectedAssets);
+      _selectedAssets.add(result);
+      // 相机回调
+      widget.callBack?.call(_selectedAssets);
       // });
     }
   }

@@ -2,6 +2,7 @@
 
 import 'package:Bubble/login/page/change_bind_phone_page.dart';
 import 'package:Bubble/login/page/check_code_page.dart';
+import 'package:Bubble/login/page/new_bind_phone_page.dart';
 import 'package:Bubble/login/page/new_one_key_phone_page.dart';
 import 'package:Bubble/login/page/one_key_login_page.dart';
 import 'package:fluro/fluro.dart';
@@ -33,6 +34,8 @@ class LoginRouter implements IRouterProvider {
   static String phoneLoginPage = "/login/PhoneLoginPage";
   static String newOneKeyPhonePage = "/login/NewOneKeyPhonePage";
 
+  static String newBindPhonePage = "/login/NewBindPhonePage";
+
   @override
   void initRouter(FluroRouter router) {
     // router.define(loginPage, handler: Handler(handlerFunc: (_, __) => const LoginPage()));
@@ -55,9 +58,6 @@ class LoginRouter implements IRouterProvider {
         handler: Handler(handlerFunc: (_, __) => const OnlySmsPage()));
 
     router.define(keyCheckCodePage, handler: Handler(handlerFunc: (_, params) {
-      print(params);
-      print(params['PhoneNumber']);
-
       // Map map = params as Map;
       String phoneNumberStr = params['PhoneNumber']!.first;
       return CheckCodePage(phoneNumber: phoneNumberStr);
@@ -65,8 +65,19 @@ class LoginRouter implements IRouterProvider {
 
     router.define(phoneLoginPage,
         handler: Handler(handlerFunc: (_, __) => const PhoneLoginPage()));
+
     router.define(newOneKeyPhonePage,
-        handler: Handler(handlerFunc: (_, __) => const NewOneKeyPhonePage()));
+        handler: Handler(handlerFunc: (_, params) {
+      //0 一键登录  1 其他登录
+      bool keyLogin = false;
+      final int index = int.parse(params['needKeyLogin']?.first ?? '1');
+      if (0 == index) {
+        keyLogin = false;
+      } else {
+        keyLogin = true;
+      }
+      return NewOneKeyPhonePage(isKeyLogin: keyLogin);
+    }));
 
     // router.define(bindPhonePage, handler: Handler(handlerFunc: (context, params) {
     //   LoginInfoDataData entity = LoginInfoDataData();
@@ -84,6 +95,22 @@ class LoginRouter implements IRouterProvider {
       }
       return ChangeBindPhonePage(entity);
     }));
+
+    router.define(newBindPhonePage, handler: Handler(handlerFunc: (_, params) {
+      print(params);
+      //0 一键登录  1 其他登录
+      bool keyLogin = false;
+      final int index = int.parse(params['needKeyLogin']?.first ?? '1');
+      if (0 == index) {
+        keyLogin = false;
+      } else {
+        keyLogin = true;
+      }
+      print(keyLogin);
+
+      return NewBindPhonePage(isKeyLogin: keyLogin);
+    }));
+
     // router.define(resetPasswordPage, handler: Handler(handlerFunc: (_, __) => const ResetPasswordPage()));
     // router.define(updatePasswordPage, handler: Handler(handlerFunc: (_, __) => const UpdatePasswordPage()));
   }
