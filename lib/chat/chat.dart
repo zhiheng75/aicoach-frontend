@@ -41,7 +41,9 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   // 背景组件控制器
   final BackgroundController _backgroundController = BackgroundController();
   // 底部按钮控制器
-  final BottomBarControll _bottomBarControll = BottomBarControll();
+  final BottomBarController _bottomBarControll = BottomBarController();
+  // 底部按钮控制器
+  final RecordController _recordController = RecordController();
 
   void init() {
     _pageState = 'loading';
@@ -91,7 +93,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       _homeProvider.clearMessageList();
       _homeProvider.addIntroductionMessage();
       _homeProvider.addTipMessage('Role-plays started！');
-      NormalMessage normalMessage = _homeProvider.createNormalMessage() as NormalMessage;
+      NormalMessage normalMessage = _homeProvider.createNormalMessage();
       normalMessage.text = _character!.text;
       _homeProvider.addNormalMessage(normalMessage);
       // MediaUtils().play(
@@ -201,6 +203,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
           bottom: _screenUtil.bottomBarHeight + 16.0,
           child: BottomBar(
             controller: _bottomBarControll,
+            recordController: _recordController,
           ),
         ),
         Positioned(
@@ -241,7 +244,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
           left: 0,
           child: ValueListenableBuilder(
             valueListenable: _bottomBarControll.showRecord,
-            builder: (_, show, __) => Record(show: show, offset: _bottomBarControll.offset),
+            builder: (_, show, __) => Record(show: show, controller: _recordController),
           ),
         ),
       ],

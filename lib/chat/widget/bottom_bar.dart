@@ -2,6 +2,7 @@
 
 import 'dart:typed_data';
 
+import 'package:Bubble/chat/entity/message_entity.dart';
 import 'package:Bubble/chat/utils/recognize_util.dart';
 import 'package:Bubble/home/widget/expiration_reminder.dart';
 import 'package:Bubble/util/media_utils.dart';
@@ -14,14 +15,17 @@ import 'package:provider/provider.dart';
 import '../../home/provider/home_provider.dart';
 import '../../res/colors.dart';
 import 'example.dart';
+import 'record.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({
     Key? key,
     required this.controller,
+    required this.recordController,
   }) : super(key: key);
 
-  final BottomBarControll controller;
+  final BottomBarController controller;
+  final RecordController recordController;
 
   @override
   State<BottomBar> createState() => _BottomBarState();
@@ -32,6 +36,9 @@ class _BottomBarState extends State<BottomBar> {
   late HomeProvider _homeProvider;
   final MediaUtils _mediaUtils = MediaUtils();
   final RecognizeUtil _recognizeUtil = RecognizeUtil();
+  List<Uint8List> _bufferList = [];
+  bool _isSend = false;
+  bool _isSending = false;
 
   void getExample() {
     String text = 'Hello, I would like to ask what preparations need to be made for traveling abroad.';
@@ -77,6 +84,17 @@ class _BottomBarState extends State<BottomBar> {
       );
     }
     return isAvailable;
+  }
+
+  void sendMessage(String text) {
+    // todo 发送文本到AI
+    NormalMessage message = _homeProvider.createNormalMessage();
+    message.text = text;
+    message.audio = [..._bufferList];
+    message.speaker = 'user';
+    _homeProvider.addNormalMessage(message);
+    _isSending = false;
+    _isSend = false;
   }
 
   @override
@@ -129,8 +147,7 @@ class _BottomBarState extends State<BottomBar> {
           if (disabled) {
             return;
           }
-          // Log.d('移动', tag: '长按移动');
-          // widget.controller.updateOffset(detail.globalPosition);
+          widget.recordController.fingerDetection(detail.globalPosition);
         },
         onLongPressEnd: (_) {
           if (disabled) {
@@ -212,22 +229,26 @@ class _BottomBarState extends State<BottomBar> {
               builder: (_, disabled, __) => button(
                 disabled: disabled,
                 onStart: (detail) async {
+                  if (_isSend) {
+                    return;
+                  }
+                  // if (!isAvailable()) {
+                  //   return;
+                  // }
                   try {
-                    // if (!isAvailable()) {
-                    //   return;
-                    // }
-
                     // 检查权限
                     await _mediaUtils.checkMicrophonePermission();
                     // 开始录音
                     _mediaUtils.startRecord(
                       onData: (buffer) {
+                        _bufferList.add(buffer);
                         _recognizeUtil.pushAudioBuffer(1, buffer);
                       },
                       onComplete: (buffer) {
                         _recognizeUtil.pushAudioBuffer(2, buffer ?? Uint8List(0));
                       }
                     );
+                    _bufferList = [];
                     // 设置识别
                     _recognizeUtil.recognize((result) async {
                       widget.controller.setShowRecord(false);
@@ -239,9 +260,11 @@ class _BottomBarState extends State<BottomBar> {
                         );
                         return;
                       }
-                      // 发送文本
+                      if (_isSend) {
+                        sendMessage(result['text']);
+                      }
                     });
-                    widget.controller.updateOffset(detail.globalPosition);
+                    widget.recordController.fingerDetection(detail.globalPosition);
                     widget.controller.setShowRecord(true);
                   } catch (e) {
                     Toast.show(
@@ -251,6 +274,10 @@ class _BottomBarState extends State<BottomBar> {
                   }
                 },
                 onEnd: (_) async {
+                  if (_isSend) {
+                    return;
+                  }
+                  _isSend = widget.recordController.isInSendButton.value;
                   await _mediaUtils.stopRecord();
                 },
               ),
@@ -276,18 +303,16 @@ class _BottomBarState extends State<BottomBar> {
 }
 
 // 控制器
-class BottomBarControll {
+class BottomBarController {
 
-  BottomBarControll();
+  BottomBarController();
 
   ValueNotifier<bool> _disabled = ValueNotifier(true);
   ValueNotifier<bool> _showRecord = ValueNotifier(false);
-  ValueNotifier<Offset> _offset = ValueNotifier(Offset.zero);
   ValueNotifier<bool> _showMessageList = ValueNotifier(true);
 
   ValueNotifier<bool> get disabled => _disabled;
   ValueNotifier<bool> get showRecord => _showRecord;
-  ValueNotifier<Offset> get offset => _offset;
   ValueNotifier<bool> get showMessageList => _showMessageList;
 
   void setDisabled(bool disabled) {
@@ -300,10 +325,6 @@ class BottomBarControll {
 
   void setShowMessageList(bool showMessageList) {
     _showMessageList.value = showMessageList;
-  }
-
-  void updateOffset(Offset offset) {
-    _offset.value = offset;
   }
 
 }

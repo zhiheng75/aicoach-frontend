@@ -35,6 +35,9 @@ class HttpApi{
   //获取评分报告
   static const String coinReport = "score_detail";
 
+  //添加评分
+  static const String addScore = "add_score";
+
   //绑定微信
   static const String bindWX = "edit_user_wx";
 

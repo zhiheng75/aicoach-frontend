@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_final_fields, unnecessary_getters_setters, slash_for_doc_comments
+import 'package:Bubble/chat/utils/evaluate_util.dart';
 import 'package:flutter/material.dart';
 
 import '../../chat/entity/character_entity.dart';
@@ -29,6 +30,8 @@ class HomeProvider extends ChangeNotifier {
   SceneEntity? _scene;
   String _sessionId = '';
   List<MessageEntity> _messageList = [];
+
+  EvaluateUtil _evaluateUtil = EvaluateUtil();
 
   /** 模考 */
   // 使用次数
@@ -91,14 +94,25 @@ class HomeProvider extends ChangeNotifier {
   }
 
   // 创建普通消息
-  MessageEntity createNormalMessage() {
+  NormalMessage createNormalMessage() {
     NormalMessage normalMessage = NormalMessage();
+    normalMessage.sessionId = _sessionId;
     return normalMessage;
   }
 
   // 渲染普通消息到列表
   void addNormalMessage(NormalMessage normalMessage, [bool update = true]) {
     _messageList.add(normalMessage);
+    // 执行评测
+    if (normalMessage.speaker == 'user') {
+      _evaluateUtil.evaluate(
+        normalMessage,
+        onSuccess: (evaluation) {
+          normalMessage.evaluation = evaluation;
+          notifyListeners();
+        },
+      );
+    }
     if (update == true) {
       notifyListeners();
     }

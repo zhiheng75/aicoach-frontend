@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:uuid/uuid.dart';
 
 import 'topic_entity.dart';
@@ -13,18 +16,47 @@ class MessageEntity {
 
 class NormalMessage extends MessageEntity {
 
+  String sessionId = '';
   String id = '';
   String text = '';
-  String audio = '';
+  List<Uint8List> audio = [];
   bool showTranslation = false;
   // 翻译状态 0-未翻译 1-翻译中 2-翻译成功 3-翻译失败
   int translateState = 0;
   String translation = '';
   String speaker = 'ai';
+  Map<String, dynamic> evaluation = {};
 
   NormalMessage() {
     type = 'normal';
     id = const Uuid().v1().replaceAll('-', '').substring(0, 16);
+  }
+
+  factory NormalMessage.fromJson(dynamic json) {
+    json = json as Map<String, dynamic>;
+    NormalMessage entity = NormalMessage();
+    if (json['session_id'] != null) {
+      entity.sessionId = json['session_id'];
+    }
+    if (json['id'] != null) {
+      entity.id = json['id'];
+    }
+    if (json['text'] != null) {
+      entity.text = json['text'];
+    }
+    if (json['audio'] != null) {
+      entity.audio = jsonDecode(json['audio']) as List<Uint8List>;
+    }
+    return entity;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'session_id': sessionId,
+      'id': id,
+      'text': text,
+      'audio': jsonEncode(audio),
+    };
   }
 
 }
