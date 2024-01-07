@@ -2,19 +2,19 @@
 
 import 'dart:typed_data';
 
-import 'package:Bubble/chat/entity/message_entity.dart';
-import 'package:Bubble/chat/utils/recognize_util.dart';
-import 'package:Bubble/home/widget/expiration_reminder.dart';
-import 'package:Bubble/loginManager/login_manager.dart';
-import 'package:Bubble/util/media_utils.dart';
-import 'package:Bubble/util/toast_utils.dart';
-import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../home/provider/home_provider.dart';
+import '../../loginManager/login_manager.dart';
 import '../../res/colors.dart';
+import '../../util/media_utils.dart';
+import '../../util/toast_utils.dart';
+import '../../widgets/load_image.dart';
+import '../entity/message_entity.dart';
+import '../utils/chat_websocket.dart';
+import '../utils/recognize_util.dart';
 import 'example.dart';
 import 'record.dart';
 
@@ -33,13 +33,13 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
+  final ChatWebsocket _chatWebsocket = ChatWebsocket();
   final ScreenUtil _screenUtil = ScreenUtil();
   late HomeProvider _homeProvider;
   final MediaUtils _mediaUtils = MediaUtils();
   final RecognizeUtil _recognizeUtil = RecognizeUtil();
   List<Uint8List> _bufferList = [];
   bool _isSend = false;
-  bool _isSending = false;
 
   void getExample() {
     String text = 'Hello, I would like to ask what preparations need to be made for traveling abroad.';
@@ -71,39 +71,62 @@ class _BottomBarState extends State<BottomBar> {
 
     bool isAvailable = true;
 
-    int usageTime = _homeProvider.usageTime;
-    int vipState = _homeProvider.vipState;
-    int expDay = _homeProvider.expDay;
-    // 是否体验到期
-    if (vipState == 0 && (usageTime == 0 || expDay == 0)) {
-      isAvailable = false;
-    }
-    // 是否会员到期
-    if (vipState == 2) {
-      isAvailable = false;
-    }
-    if (!isAvailable) {
-      showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        barrierColor: Colors.transparent,
-        isScrollControlled: true,
-        isDismissible: false,
-        builder: (_) => ExpirationReminder(),
-      );
-    }
+    // int usageTime = _homeProvider.usageTime;
+    // int vipState = _homeProvider.vipState;
+    // int expDay = _homeProvider.expDay;
+    // // 是否体验到期
+    // if (vipState == 0 && (usageTime == 0 || expDay == 0)) {
+    //   isAvailable = false;
+    // }
+    // // 是否会员到期
+    // if (vipState == 2) {
+    //   isAvailable = false;
+    // }
+    // if (!isAvailable) {
+    //   showModalBottomSheet(
+    //     context: context,
+    //     backgroundColor: Colors.transparent,
+    //     barrierColor: Colors.transparent,
+    //     isScrollControlled: true,
+    //     isDismissible: false,
+    //     builder: (_) => ExpirationReminder(),
+    //   );
+    // }
     return isAvailable;
   }
 
-  void sendMessage(String text) {
-    // todo 发送文本到AI
-    NormalMessage message = _homeProvider.createNormalMessage(true);
-    message.text = text;
-    message.audio = [..._bufferList];
-    message.speaker = 'user';
-    _homeProvider.addNormalMessage(message);
-    _isSending = false;
-    _isSend = false;
+  void sendMessage(String text) async {
+    try {
+      if (_homeProvider.sessionId == '') {
+        String characterId = _homeProvider.character.characterId;
+        String? sceneId;
+        String sessionType = _homeProvider.sessionType;
+        if (sessionType == 'topic') {
+          sceneId = _homeProvider.topic!.id.toString();
+        }
+        if (sessionType == 'scene') {
+          sceneId = _homeProvider.scene!.id.toString();
+        }
+        _homeProvider.sessionId = await _chatWebsocket.startChat(
+          characterId: characterId,
+          sceneId: sceneId,
+        );
+      }
+      _chatWebsocket.sendMessage(text, () {
+        NormalMessage message = _homeProvider.createNormalMessage(true);
+        message.text = text;
+        message.audio = [..._bufferList];
+        message.speaker = 'user';
+        _homeProvider.addNormalMessage(message);
+        _isSend = false;
+      });
+    } catch(e) {
+      _isSend = false;
+      Toast.show(
+        '对话发生异常，请重启App',
+        duration: 1000,
+      );
+    }
   }
 
   @override

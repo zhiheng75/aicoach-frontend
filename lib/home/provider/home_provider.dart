@@ -127,6 +127,9 @@ class HomeProvider extends ChangeNotifier {
       // 获取上一个AI说的话
       List<MessageEntity> messageList = [..._messageList];
       while (true) {
+        if (messageList.isEmpty) {
+          break;
+        }
         MessageEntity message = messageList.removeLast();
         if (message.type == 'normal') {
           if ((message as NormalMessage).speaker == 'ai') {

@@ -373,6 +373,13 @@ class LoginManager{
     return userInfo['id'] as int;
   }
 
+  static String getUserToken() {
+    if (!isLogin()) {
+      return '';
+    }
+    return SpUtil.getString(Constant.accessToken)!;
+  }
+
   static Map<String, dynamic> getUserInfo() {
     Map<dynamic, dynamic>? userInfo = SpUtil.getObject(Constant.userInfoKey);
     return (userInfo ?? {}) as Map<String, dynamic>;
