@@ -118,6 +118,8 @@ dependencies:
   fluwx: ^4.4.8
   #tobias https://github.com/OpenFlutter/tobias
   tobias: ^3.2.2
+  #fl_chart https://github.com/imaNNeo/fl_chart
+  fl_chart: ^0.65.0
 
 dev_dependencies:
   flutter_test:

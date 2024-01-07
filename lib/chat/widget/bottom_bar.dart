@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:Bubble/chat/entity/message_entity.dart';
 import 'package:Bubble/chat/utils/recognize_util.dart';
 import 'package:Bubble/home/widget/expiration_reminder.dart';
+import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -60,6 +61,14 @@ class _BottomBarState extends State<BottomBar> {
   }
 
   bool isAvailable() {
+    if (!LoginManager.isLogin()) {
+      Toast.show(
+        '请先登录',
+        duration: 1000,
+      );
+      return false;
+    }
+
     bool isAvailable = true;
 
     int usageTime = _homeProvider.usageTime;
@@ -88,7 +97,7 @@ class _BottomBarState extends State<BottomBar> {
 
   void sendMessage(String text) {
     // todo 发送文本到AI
-    NormalMessage message = _homeProvider.createNormalMessage();
+    NormalMessage message = _homeProvider.createNormalMessage(true);
     message.text = text;
     message.audio = [..._bufferList];
     message.speaker = 'user';
@@ -229,12 +238,12 @@ class _BottomBarState extends State<BottomBar> {
               builder: (_, disabled, __) => button(
                 disabled: disabled,
                 onStart: (detail) async {
+                  if (!isAvailable()) {
+                    return;
+                  }
                   if (_isSend) {
                     return;
                   }
-                  // if (!isAvailable()) {
-                  //   return;
-                  // }
                   try {
                     // 检查权限
                     await _mediaUtils.checkMicrophonePermission();
@@ -253,18 +262,19 @@ class _BottomBarState extends State<BottomBar> {
                     _recognizeUtil.recognize((result) async {
                       widget.controller.setShowRecord(false);
                       await _mediaUtils.stopRecord();
+                      if (!_isSend) {
+                        return;
+                      }
                       if (result['success'] == false) {
                         Toast.show(
                           result['message'],
                           duration: 1000,
                         );
+                        _isSend = false;
                         return;
                       }
-                      if (_isSend) {
-                        sendMessage(result['text']);
-                      }
+                      sendMessage(result['text']);
                     });
-                    widget.recordController.fingerDetection(detail.globalPosition);
                     widget.controller.setShowRecord(true);
                   } catch (e) {
                     Toast.show(

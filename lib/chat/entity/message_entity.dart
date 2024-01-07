@@ -16,7 +16,9 @@ class MessageEntity {
 
 class NormalMessage extends MessageEntity {
 
+  String characterId = '';
   String sessionId = '';
+  String question = '';
   String id = '';
   String text = '';
   List<Uint8List> audio = [];

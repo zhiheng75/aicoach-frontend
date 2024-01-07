@@ -27,9 +27,14 @@ class HomeProvider extends ChangeNotifier {
   late CharacterEntity _character;
   // 话题
   TopicEntity? _topic;
+  // 场景
   SceneEntity? _scene;
+  // 对话类型 normal-自由对话 topic-话题对话 scene-场景对话
+  String _sessionType = '';
   String _sessionId = '';
   List<MessageEntity> _messageList = [];
+  // 对话背景
+  String? _chatBackground;
 
   EvaluateUtil _evaluateUtil = EvaluateUtil();
 
@@ -43,17 +48,37 @@ class HomeProvider extends ChangeNotifier {
   int get vipState => _vipState;
   String get expireDate => _expireDate;
   CharacterEntity get character => _character;
-  String get sessionId => _sessionId;
   SceneEntity? get scene => _scene;
   TopicEntity? get topic => _topic;
+  String get sessionId => _sessionId;
+  String get sessionType => _sessionType;
+  String? get chatBackground => _chatBackground;
   List<MessageEntity> get messageList => _messageList;
   int get usageCount => _usageCount;
 
   /// set
-  set character(CharacterEntity character) => _character = character;
-  set scene(SceneEntity? scene) => _scene = scene;
-  set topic(TopicEntity? topic) => _topic = topic;
-  set sessionId(String sessionId) => _sessionId = sessionId;
+  set character(CharacterEntity character) {
+    _character = character;
+    _chatBackground = character.imageUrl;
+    _sessionType = 'normal';
+    notifyListeners();
+  }
+  set topic(TopicEntity? topic) {
+    _topic = topic;
+    _sessionType = 'topic';
+    notifyListeners();
+  }
+  set scene(SceneEntity? scene) {
+    _scene = scene;
+    _sessionType = 'scene';
+    notifyListeners();
+  }
+  set sessionId(String sessionId) {
+    _sessionId = sessionId;
+    if (sessionId == '') {
+      _sessionType = 'normal';
+    }
+  }
 
   // 获取使用时间、体验天数
   Future<void> getUsageTime() async {
@@ -94,9 +119,23 @@ class HomeProvider extends ChangeNotifier {
   }
 
   // 创建普通消息
-  NormalMessage createNormalMessage() {
+  NormalMessage createNormalMessage([bool isUser = false]) {
     NormalMessage normalMessage = NormalMessage();
-    normalMessage.sessionId = _sessionId;
+    if (isUser) {
+      normalMessage.characterId = _character.characterId;
+      normalMessage.sessionId = _sessionId;
+      // 获取上一个AI说的话
+      List<MessageEntity> messageList = [..._messageList];
+      while (true) {
+        MessageEntity message = messageList.removeLast();
+        if (message.type == 'normal') {
+          if ((message as NormalMessage).speaker == 'ai') {
+            normalMessage.question = message.text;
+            break;
+          }
+        }
+      }
+    }
     return normalMessage;
   }
 
@@ -139,15 +178,15 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-  // // 渲染话题消息到列表
-  // void addTopicMessage(List<TopicEntity> topicList, [bool update = true]) {
-  //   TopicMessage topicMessage = TopicMessage();
-  //   topicMessage.topicList = topicList;
-  //   _messageList.add(topicMessage);
-  //   if (update == true) {
-  //     notifyListeners();
-  //   }
-  // }
+  // 渲染话题消息到列表
+  void addTopicMessage(List<TopicEntity> topicList, [bool update = true]) {
+    TopicMessage topicMessage = TopicMessage();
+    topicMessage.topicList = topicList;
+    _messageList.add(topicMessage);
+    if (update == true) {
+      notifyListeners();
+    }
+  }
 
   // 渲染报告消息到列表
   void addReportMessage(dynamic report, [bool update = true]) {

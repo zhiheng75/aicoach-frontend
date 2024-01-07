@@ -82,7 +82,7 @@ class RecognizeUtil {
             if (_recognizedText == '') {
               _recognizeResult = {
                 'success': false,
-                'message': '长时间不说话，请重新操作',
+                'message': '未检测到语音，请重新操作',
               };
               await _disconnectXfRecognization(WebSocketStatus.normalClosure, 'Fail');
               return;

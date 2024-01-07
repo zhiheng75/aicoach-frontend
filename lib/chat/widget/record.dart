@@ -28,19 +28,23 @@ class _RecordState extends State<Record> {
   }
 
   @override
+  void didUpdateWidget(covariant Record oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.show == false && widget.show == true) {
+      widget.controller.init();
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!widget.show) {
-      return const SizedBox();
-    }
-
     return Container(
       width: _screenUtil.screenWidth,
-      height: _screenUtil.screenHeight,
+      height: widget.show ? _screenUtil.screenHeight : 0,
       color: Colors.black.withOpacity(0.6),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -140,12 +144,11 @@ class RecordController {
   GlobalKey get sendButtonGlobalKey => _sendButtonGlobalKey;
   ValueNotifier<bool> get isInSendButton => _isInSendButton;
 
+  void init() {
+    _isInSendButton.value = true;
+  }
+
   void fingerDetection(Offset offset) async {
-    int maxTryCount = 5;
-    while(_sendButtonGlobalKey.currentContext == null && maxTryCount > 0) {
-      await Future.delayed(const Duration(milliseconds: 100));
-      maxTryCount--;
-    }
     isInSendButton.value = _check(offset, _sendButtonGlobalKey);
   }
 
