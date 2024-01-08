@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_cast
 
+import 'dart:ffi';
+
 import 'package:Bubble/login/page/change_bind_phone_page.dart';
 import 'package:Bubble/login/page/check_code_page.dart';
 import 'package:Bubble/login/page/new_bind_phone_page.dart';
@@ -31,6 +33,8 @@ class LoginRouter implements IRouterProvider {
   static String updatePasswordPage = '/login/updatePassword';
   static String keyLoginPage = "/login/keyLogin";
   static String keyCheckCodePage = "/login/CheckCodePage";
+  static String keyCheckTwoCodePage = "/login/CheckTwoCodePage";
+
   static String phoneLoginPage = "/login/PhoneLoginPage";
   static String newOneKeyPhonePage = "/login/NewOneKeyPhonePage";
 
@@ -58,9 +62,27 @@ class LoginRouter implements IRouterProvider {
         handler: Handler(handlerFunc: (_, __) => const OnlySmsPage()));
 
     router.define(keyCheckCodePage, handler: Handler(handlerFunc: (_, params) {
-      // Map map = params as Map;
       String phoneNumberStr = params['PhoneNumber']!.first;
-      return CheckCodePage(phoneNumber: phoneNumberStr);
+      String typeLogin = params['typeLogin']!.first;
+
+      return CheckCodePage(
+        phoneNumber: phoneNumberStr,
+        typeLogin: typeLogin,
+      );
+    }));
+
+    router.define(keyCheckTwoCodePage,
+        handler: Handler(handlerFunc: (context, params) {
+      String phoneNumberStr = params['PhoneNumber']!.first;
+      LoginInfoDataData entity = LoginInfoDataData();
+      if (context != null) {
+        entity =
+            ModalRoute.of(context)?.settings.arguments as LoginInfoDataData;
+      }
+      return CheckTwoCodePage(
+        phoneNumber: phoneNumberStr,
+        wechatData: entity,
+      );
     }));
 
     router.define(phoneLoginPage,
@@ -69,21 +91,16 @@ class LoginRouter implements IRouterProvider {
     router.define(newOneKeyPhonePage,
         handler: Handler(handlerFunc: (_, params) {
       //0 一键登录  1 其他登录
-      bool keyLogin = false;
-      final int index = int.parse(params['needKeyLogin']?.first ?? '1');
-      if (0 == index) {
-        keyLogin = false;
-      } else {
-        keyLogin = true;
-      }
-      return NewOneKeyPhonePage(isKeyLogin: keyLogin);
+      String keyLogin = params['typeLogin']!.first;
+
+      return NewOneKeyPhonePage(typeLogin: keyLogin);
     }));
 
     // router.define(bindPhonePage, handler: Handler(handlerFunc: (context, params) {
-    //   LoginInfoDataData entity = LoginInfoDataData();
-    //   if(context!=null){
-    //     entity = ModalRoute.of(context)?.settings.arguments as LoginInfoDataData;
-    //   }
+    // LoginInfoDataData entity = LoginInfoDataData();
+    // if(context!=null){
+    //   entity = ModalRoute.of(context)?.settings.arguments as LoginInfoDataData;
+    // }
     //   return  BindPhonePage(entity);
     // }));
     router.define(changeBindPhonePage,
@@ -96,19 +113,15 @@ class LoginRouter implements IRouterProvider {
       return ChangeBindPhonePage(entity);
     }));
 
-    router.define(newBindPhonePage, handler: Handler(handlerFunc: (_, params) {
-      print(params);
-      //0 一键登录  1 其他登录
-      bool keyLogin = false;
-      final int index = int.parse(params['needKeyLogin']?.first ?? '1');
-      if (0 == index) {
-        keyLogin = false;
-      } else {
-        keyLogin = true;
+    router.define(newBindPhonePage,
+        handler: Handler(handlerFunc: (context, params) {
+      LoginInfoDataData entity = LoginInfoDataData();
+      if (context != null) {
+        entity =
+            ModalRoute.of(context)?.settings.arguments as LoginInfoDataData;
       }
-      print(keyLogin);
 
-      return NewBindPhonePage(isKeyLogin: keyLogin);
+      return NewBindPhonePage(wechatData: entity);
     }));
 
     // router.define(resetPasswordPage, handler: Handler(handlerFunc: (_, __) => const ResetPasswordPage()));

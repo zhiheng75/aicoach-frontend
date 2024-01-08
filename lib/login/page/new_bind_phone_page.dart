@@ -1,9 +1,15 @@
+import 'package:Bubble/login/entity/login_info_entity.dart';
 import 'package:Bubble/login/login_router.dart';
+import 'package:Bubble/login/presenter/bind_phone_presenter.dart';
+import 'package:Bubble/login/view/bind_phone_view.dart';
+import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/change_notifier_manage.dart';
 import 'package:Bubble/util/image_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_only_img_bar.dart';
 import 'package:Bubble/widgets/my_text_field.dart';
@@ -11,17 +17,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class NewBindPhonePage extends StatefulWidget {
-  final bool isKeyLogin;
+  final LoginInfoDataData wechatData;
 
-  const NewBindPhonePage({Key? key, required this.isKeyLogin})
+  const NewBindPhonePage({Key? key, required this.wechatData})
       : super(key: key);
 
   @override
   State<NewBindPhonePage> createState() => _NewBindPhonePageState();
 }
 
-class _NewBindPhonePageState extends State<NewBindPhonePage> {
+class _NewBindPhonePageState extends State<NewBindPhonePage>
+    with
+        ChangeNotifierMixin<NewBindPhonePage>,
+        BasePageMixin<NewBindPhonePage, BindPhonePresenter>,
+        AutomaticKeepAliveClientMixin<NewBindPhonePage>
+    implements BindPhoneView {
   // final bool isKeyLogin = false;
+  late BindPhonePresenter _bindPhonePresenter;
 
   bool _isSelect = false;
 
@@ -30,6 +42,14 @@ class _NewBindPhonePageState extends State<NewBindPhonePage> {
   // final TextEditingController _vCodeController = TextEditingController();
   final FocusNode _nodeText1 = FocusNode();
   // final FocusNode _nodeText2 = FocusNode();
+
+  String typeLogin = "0";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +65,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage> {
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              widget.isKeyLogin
+              typeLogin == "1"
                   ? Gaps.vGap12
                   : MyOnlyImgBar(
                       alignment: Alignment.centerLeft,
@@ -61,7 +81,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage> {
                 padding: EdgeInsets.only(
                     left: 42,
                     right: 42,
-                    top: widget.isKeyLogin ? Dimens.h_dp168 : Dimens.h_dp60),
+                    top: typeLogin == "1" ? Dimens.h_dp168 : Dimens.h_dp60),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -95,10 +115,10 @@ class _NewBindPhonePageState extends State<NewBindPhonePage> {
                                 color: Colours.color_9BA9BE,
                                 fontSize: Dimens.font_sp18),
                           ),
-                          widget.isKeyLogin ? Gaps.hGap4 : Gaps.hGap16,
+                          typeLogin == "1" ? Gaps.hGap4 : Gaps.hGap16,
                           Expanded(
                             child: Center(
-                              child: widget.isKeyLogin
+                              child: typeLogin == "1"
                                   ? Text(
                                       "186****1111",
                                       style: TextStyle(
@@ -129,7 +149,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage> {
                       ),
                     ),
                     Gaps.vGap12,
-                    widget.isKeyLogin
+                    typeLogin == "1"
                         ? Container(
                             alignment: Alignment.center,
                             child: const Text(
@@ -146,12 +166,11 @@ class _NewBindPhonePageState extends State<NewBindPhonePage> {
                           //   context,
                           //   LoginRouter.phoneLoginPage,
                           // );
-
-                          if (widget.isKeyLogin) {
-                          } else {
-                            NavigatorUtils.push(context,
-                                "${LoginRouter.keyCheckCodePage}?PhoneNumber=18611667447");
-                          }
+                          judgementPhone();
+                          NavigatorUtils.push(
+                              context,
+                              arguments: widget.wechatData,
+                              "${LoginRouter.keyCheckCodePage}?PhoneNumber=${widget.wechatData.phone}&typeLogin=2");
                         },
                         child: Container(
                           height: Dimens.h_dp40,
@@ -162,7 +181,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage> {
                           ),
                           child: Center(
                             child: Text(
-                              widget.isKeyLogin ? "绑定手机号" : "下一步",
+                              typeLogin == "1" ? "绑定手机号" : "下一步",
                               style: TextStyle(
                                   color: Colours.color_001652,
                                   fontSize: Dimens.font_sp18),
@@ -170,7 +189,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage> {
                           ),
                         )),
                     Gaps.vGap12,
-                    widget.isKeyLogin
+                    typeLogin == "1"
                         ? GestureDetector(
                             onTap: () {
                               NavigatorUtils.push(
@@ -262,5 +281,51 @@ class _NewBindPhonePageState extends State<NewBindPhonePage> {
         ),
       ),
     );
+  }
+
+  bool judgementPhone() {
+    if (_phoneController.text.length == 11) {
+      _bindPhonePresenter.sendSms(_phoneController.text.trim());
+      return true;
+    } else {
+      Toast.show("手机号无效");
+      return false;
+    }
+  }
+
+  @override
+  Map<ChangeNotifier?, List<VoidCallback>?>? changeNotifier() {
+    // TODO: implement changeNotifier
+    throw UnimplementedError();
+  }
+
+  @override
+  BindPhonePresenter createPresenter() {
+    _bindPhonePresenter = BindPhonePresenter();
+    return _bindPhonePresenter;
+  }
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+  }
+
+  @override
+  void sendSuccess(String msg) {
+    // TODO: implement sendSuccess
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+
+  @override
+  void wechatLoginFail(String msg) {
+    // TODO: implement wechatLoginFail
+  }
+
+  @override
+  void wechatLoginSuccess(String msg) {
+    // TODO: implement wechatLoginSuccess
   }
 }

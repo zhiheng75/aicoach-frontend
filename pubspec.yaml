@@ -116,6 +116,8 @@ dependencies:
   flutter_keychain: ^2.4.0
   #fluwx https://github.com/OpenFlutter/fluwx
   fluwx: ^4.4.8
+    # fluwx: ^3.12.2
+
   #tobias https://github.com/OpenFlutter/tobias
   tobias: ^3.2.2
 

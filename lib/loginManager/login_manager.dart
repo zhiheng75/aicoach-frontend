@@ -32,6 +32,12 @@ class LoginManager {
       //跳转登录()
       LoadingDialog.show(context);
       int type = 1; //0 一键登录  1 其他登录
+      // NavigatorUtils.push(
+      //   context,
+      //   "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+      // );
+      // LoadingDialog.hidden();
+      // return;
       isInitSuccess().then((value) => {
             if (value)
               {
@@ -42,28 +48,41 @@ class LoginManager {
                                 if (value)
                                   {
                                     type = 0,
+                                    print(type),
+                                    LoadingDialog.hidden(),
+                                    // NavigatorUtils.push(context,
+                                    //     "${LoginRouter.loginPage}?needKeyLogin=$type"),
+                                    loginAuth(context),
                                   }
                                 else
                                   {
                                     type = 1,
+                                    NavigatorUtils.push(
+                                      context,
+                                      "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+                                    ),
                                   },
-                                LoadingDialog.hidden(),
-                                // NavigatorUtils.push(context,
-                                //     "${LoginRouter.loginPage}?needKeyLogin=$type"),
-                                loginAuth(context),
                               })
                         }
                       else
                         {
                           LoadingDialog.hidden(),
-                          NavigatorUtils.push(context, LoginRouter.loginPage),
+                          // NavigatorUtils.push(context, LoginRouter.loginPage),
+                          NavigatorUtils.push(
+                            context,
+                            "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+                          ),
                         }
                     })
               }
             else
               {
                 LoadingDialog.hidden(),
-                NavigatorUtils.push(context, LoginRouter.loginPage),
+                // NavigatorUtils.push(context, LoginRouter.loginPage),
+                NavigatorUtils.push(
+                  context,
+                  "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+                ),
               }
           });
     }
@@ -120,8 +139,6 @@ class LoginManager {
 
   /// SDK 请求授权一键登录
   static void loginAuth(BuildContext context) {
-    // showProgress();
-    String _result = "token=";
     Constant.jverify.checkVerifyEnable().then((map) {
       bool result = map[Constant.jgResultKey];
       if (result) {
@@ -135,36 +152,38 @@ class LoginManager {
         /// ios项目存放在 Assets.xcassets。
         ///
         JVUIConfig uiConfig = JVUIConfig();
-        uiConfig.navColor = Colors.transparent.value;
-        uiConfig.navText = "";
+        // uiConfig.authBGGifPath = "main_gif";
+
+        // uiConfig.navHidden = true;
+        uiConfig.navColor = Colors.white.value;
+        uiConfig.navText = "登录";
         uiConfig.navTextColor = Colors.blue.value;
-        uiConfig.navReturnImgPath = "return_bg"; //图片必须存在
-        // uiConfig.authBackgroundImage = "login_bg_img";
+
         uiConfig.logoWidth = 80;
         uiConfig.logoHeight = 80;
-        uiConfig.statusBarDarkMode = false;
+        //uiConfig.logoOffsetX = isiOS ? 0 : null;//(screenWidth/2 - uiConfig.logoWidth/2).toInt();
         uiConfig.logoOffsetY = 100;
-        uiConfig.logoOffsetX = 35;
         uiConfig.logoVerticalLayoutItem = JVIOSLayoutItem.ItemSuper;
         uiConfig.logoHidden = false;
-        uiConfig.logoImgPath = "login_logo_img";
+        uiConfig.logoImgPath = "icon";
 
         uiConfig.numberFieldWidth = 200;
         uiConfig.numberFieldHeight = 40;
-        uiConfig.numFieldOffsetY = 280;
-        uiConfig.numFieldOffsetX = 25;
+        uiConfig.numFieldOffsetY = 180;
         uiConfig.numberVerticalLayoutItem = JVIOSLayoutItem.ItemLogo;
-        uiConfig.numberColor = Colors.white.value;
+        uiConfig.numberColor = Colors.black.value;
         uiConfig.numberSize = 35;
 
-        uiConfig.sloganOffsetY = 480;
+        uiConfig.sloganOffsetY = 10;
         uiConfig.sloganVerticalLayoutItem = JVIOSLayoutItem.ItemNumber;
-        uiConfig.sloganTextColor = Colours.color_546092.value;
+        uiConfig.sloganTextColor = Colors.black.value;
         uiConfig.sloganTextSize = 15;
+//        uiConfig.slogan
+        //uiConfig.sloganHidden = 0;
 
         uiConfig.logBtnWidth = 320;
         uiConfig.logBtnHeight = 50;
-        uiConfig.logBtnOffsetY = 0;
+        uiConfig.logBtnOffsetY = 30;
         uiConfig.logBtnBackgroundPath = "purchase_btn_img";
         uiConfig.logBtnVerticalLayoutItem = JVIOSLayoutItem.ItemSlogan;
         uiConfig.logBtnText = "本机号码一键登录";
@@ -215,7 +234,7 @@ class LoginManager {
         /// 添加自定义的 控件 到授权界面
         List<JVCustomWidget> jgListWidget = [];
         jgListWidget.add(otherNumberLoginType(context));
-        jgListWidget.add(tipsWidget());
+        jgListWidget.add(tipsWidget(context));
 
         Constant.jverify.addAuthPageEventListener((JVAuthPageEvent event) {
           Log.d("======");
@@ -255,7 +274,7 @@ class LoginManager {
       } else {
         // setState(() {
         //   _result = "[2016],msg = 当前网络环境不支持认证";
-        Toast.show(_result);
+        // Toast.show(_result);
         // });
       }
     });
@@ -309,7 +328,11 @@ class LoginManager {
 
     Constant.jverify.addClikWidgetEventListener(btnWidgetId, (eventId) {
       if (btnWidgetId == eventId) {
-        NavigatorUtils.push(context, LoginRouter.loginPage);
+        // NavigatorUtils.push(context, LoginRouter.loginPage);
+        NavigatorUtils.push(
+          context,
+          "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+        );
         Constant.jverify.dismissLoginAuthView();
       }
     });
@@ -317,18 +340,18 @@ class LoginManager {
   }
 
   //登录及注册文案
-  static JVCustomWidget tipsWidget() {
+  static JVCustomWidget tipsWidget(BuildContext context) {
     const String txtWidget = "jv_add_custom_txt1"; // 标识控件 id
     JVCustomWidget textWidget =
         JVCustomWidget(txtWidget, JVCustomWidgetType.textView);
     textWidget.title = "未注册手机号验证后生成新账户";
-    textWidget.left = 25;
-    textWidget.top = 315;
+    textWidget.left = (MediaQuery.of(context).size.width / 2 - 100) as int;
+    textWidget.top = 400;
     textWidget.width = 200;
     textWidget.height = 40;
     textWidget.titleFont = 13;
     // textWidget.backgroundColor = Colors.transparent.value;
-    textWidget.titleColor = Colors.white.value;
+    textWidget.titleColor = Colors.black.value;
     textWidget.isShowUnderline = false;
     textWidget.textAlignment = JVTextAlignmentType.center;
     textWidget.isClickEnable = false;

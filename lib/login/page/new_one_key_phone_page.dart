@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/dialog/agreement_dialog.dart';
 import 'package:Bubble/login/entity/login_info_entity.dart';
 import 'package:Bubble/login/login_router.dart';
@@ -19,11 +22,12 @@ import 'package:flutter/services.dart';
 import 'package:Bubble/login/presenter/register_presenter.dart';
 import '../../home/home_router.dart';
 import '../../mvp/base_page.dart';
+import 'package:fluwx/fluwx.dart';
 
 class NewOneKeyPhonePage extends StatefulWidget {
-  final bool isKeyLogin;
+  final String typeLogin;
 
-  const NewOneKeyPhonePage({Key? key, required this.isKeyLogin})
+  const NewOneKeyPhonePage({Key? key, required this.typeLogin})
       : super(key: key);
 
   @override
@@ -36,6 +40,9 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
         BasePageMixin<NewOneKeyPhonePage, RegisterPresenter>,
         AutomaticKeepAliveClientMixin<NewOneKeyPhonePage>
     implements RegisterView {
+  //微信登录监听
+  // late StreamSubscription codeListen;
+
   //定义一个controller
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _vCodeController = TextEditingController();
@@ -44,6 +51,8 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   bool _clickable = false;
   late RegisterPresenter _registerPresenter;
   bool _isSelect = false;
+
+  Fluwx fluwx = Fluwx();
 
   void _verify() {
     final String name = _phoneController.text;
@@ -66,9 +75,17 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   @override
   void initState() {
     super.initState();
-    // if(widget.isKeyLogin){
-    // loginAuth();
-    // }
+
+    fluwx.addSubscriber((response) {
+      if (response is WeChatAuthResponse) {
+        // String? result = response.code;
+        _registerPresenter.getWxInfo(response.code ?? "");
+        // setState(() {
+        //   String result = 'state :${response.state} \n code:${response.code}';
+        //   print(result)
+        // });
+      }
+    });
   }
 
   @override
@@ -113,7 +130,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    widget.isKeyLogin
+                    widget.typeLogin == "1"
                         ? Text(
                             "手机号码登录",
                             style: TextStyle(
@@ -121,7 +138,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                                 color: Colours.black),
                           )
                         : Gaps.vGap2,
-                    widget.isKeyLogin
+                    widget.typeLogin == "1"
                         ? Container(
                             margin: const EdgeInsets.only(top: 20),
                             height: Dimens.h_dp40,
@@ -248,11 +265,27 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                       ),
                     ),
                     Gaps.vGap24,
-                    widget.isKeyLogin
+                    widget.typeLogin == "1"
                         ? GestureDetector(
                             onTap: () {
-                              NavigatorUtils.push(context,
-                                  "${LoginRouter.keyCheckCodePage}?PhoneNumber=18611667447");
+                              if (_isSelect) {
+                                if (_phoneController.text.length == 11) {
+                                  _registerPresenter.sendSms(
+                                      _phoneController.text.trim(), false);
+                                  NavigatorUtils.push(
+                                    context,
+                                    clearStack: true,
+                                    "${LoginRouter.keyCheckCodePage}?PhoneNumber=${_phoneController.text.trim()}&typeLogin=${widget.typeLogin}",
+                                  );
+                                } else {
+                                  Toast.show("手机号无效");
+                                }
+                              } else {
+                                Toast.show("请同意服务协议");
+                              }
+
+                              // NavigatorUtils.push(context,
+                              //     "${LoginRouter.keyCheckCodePage}?PhoneNumber=18611667447");
                             },
                             child: Container(
                               height: Dimens.h_dp40,
@@ -297,13 +330,14 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                               ),
                             )),
                     Gaps.vGap24,
-                    widget.isKeyLogin
+                    widget.typeLogin == "1"
                         ? Gaps.vGap40
                         : GestureDetector(
                             onTap: () {
                               NavigatorUtils.push(
                                 context,
-                                "${LoginRouter.newOneKeyPhonePage}?needKeyLogin=0",
+                                clearStack: true,
+                                "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
                               );
                             },
                             child: Container(
@@ -339,10 +373,12 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                       children: [
                         GestureDetector(
                           onTap: () {
-                            NavigatorUtils.push(
-                              context,
-                              "${LoginRouter.newBindPhonePage}?needKeyLogin=0",
-                            );
+                            // NavigatorUtils.push(
+                            //   context,
+                            //   clearStack: true,
+                            //   "${LoginRouter.newBindPhonePage}?needKeyLogin=0",
+                            // );
+                            weChatLogin();
                           },
                           child: const LoadAssetImage(
                             "wechat_login_img",
@@ -353,10 +389,11 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                         Gaps.hGap16,
                         GestureDetector(
                           onTap: () {
-                            NavigatorUtils.push(
-                              context,
-                              "${LoginRouter.newBindPhonePage}?needKeyLogin=1",
-                            );
+                            // NavigatorUtils.push(
+                            //   context,
+                            //   clearStack: true,
+                            //   "${LoginRouter.newBindPhonePage}?needKeyLogin=1",
+                            // );
                           },
                           child: const LoadAssetImage(
                             "qq_login_img",
@@ -375,6 +412,31 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
         ),
       ),
     );
+  }
+
+  ///微信授权
+  weChatLogin() async {
+    if (_isSelect) {
+      fluwx.registerApi(
+          appId: "wxfb033d09d2eecaf0",
+          universalLink: "https://demo.shenmo-ai.net/ios/");
+      if (await fluwx.isWeChatInstalled) {
+        fluwx
+            .authBy(
+                which: NormalAuth(
+                    scope: 'snsapi_userinfo', state: 'wechat_sdk_demo_test'))
+            .then((data) {
+          print(data);
+        });
+
+// fluwx.authBy(which: NormalAuth(scope: 'snsapi_userinfo', state: 'wechat_sdk_demo_test')).then((data) => null);
+// fluwx.weChatResponseEventHandler
+      } else {
+        Toast.show("没有安装微信");
+      }
+    } else {
+      Toast.show("请同意服务协议");
+    }
   }
 
   @override
@@ -405,7 +467,9 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   void wechatSuccess(LoginInfoDataData data) {
     // SpUtil.putObject(Constant.userInfoKey, data);
     // SpUtil.putString(Constant.accessToken, data.token);
-    NavigatorUtils.push(context, LoginRouter.changeBindPhonePage,
+    // NavigatorUtils.push(context, LoginRouter.changeBindPhonePage,
+    //     arguments: data, replace: true);
+    NavigatorUtils.push(context, LoginRouter.newBindPhonePage,
         arguments: data, replace: true);
   }
 
@@ -416,12 +480,12 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
 
   @override
   void loginSuccess() {
-    // if (widget.isKeyLogin) {
+    // if (widget.typeLogin == "0") {
     //   Constant.jverify.dismissLoginAuthView();
     //   hideLoading();
     // }
 
-    NavigatorUtils.push(context, PersonalRouter.person, replace: true);
+    // NavigatorUtils.push(context, PersonalRouter.person, replace: true);
   }
 
   void _showAgreement(int state) {

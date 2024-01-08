@@ -258,7 +258,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                                     color: Colours.color_001652,
                                     fontSize: Dimens.font_sp18), () {
                               //  if(_controller.text.isNotEmpty&&_contactController.text.isNotEmpty){
-                              //   _presenter.pushSuggest(_controller.text,_contactController.text);
+                              // _presenter.pushSuggest(_controller.text,_contactController.text);
                               //    _presenter.getOssToken();
                               // }else{
                               //    if(_controller.text.isEmpty){

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:Bubble/util/toast_utils.dart';
+import 'package:dio/dio.dart';
 import 'package:sp_util/sp_util.dart';
 
 import '../../constant/constant.dart';
@@ -12,9 +13,7 @@ import '../entity/login_info_entity.dart';
 import '../entity/my_user_info_entity.dart';
 import '../view/register_view.dart';
 
-
-class RegisterPresenter extends BasePagePresenter<RegisterView>{
-
+class RegisterPresenter extends BasePagePresenter<RegisterView> {
   Future sendSms(String phoneNum, bool isShowLoading) {
     final Map<String, dynamic> params = <String, dynamic>{};
     params['phone'] = phoneNum;
@@ -23,16 +22,48 @@ class RegisterPresenter extends BasePagePresenter<RegisterView>{
         url: HttpApi.smsLogin,
         queryParameters: params,
         isShow: isShowLoading, onSuccess: (data) {
-      if (data != null&&data.code==200) {
+      if (data != null && data.code == 200) {
         Toast.show("短信发送成功，请注意查收");
-      }else{
+      } else {
         Toast.show("发送失败");
       }
     });
   }
 
+  Future toBind(String phoneNum, String smsCode, LoginInfoDataData data) {
+    Options op = Options();
+    op.contentType = "application/json";
+    Map<String, dynamic> params = {};
+    params['phone'] = phoneNum;
+    params['code'] = smsCode;
+    params['openid'] = data.openid;
+    params['nickname'] = data.nickname;
+    params['headimgurl'] = data.headimgurl;
+    params['sex'] = data.sex;
+    params['city'] = data.city;
+    params['country'] = data.country;
+    params['province'] = data.province;
+    params['unionid'] = data.unionid;
 
-  Future register(String phoneNum,String code, bool isShowLoading) {
+    return requestNetwork<LoginInfoData>(Method.post,
+        url: HttpApi.wechatLogin,
+        params: params,
+        options: op,
+        isShow: true, onSuccess: (data) {
+      if (data != null) {
+        if (data.code == 200) {
+          SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
+          SpUtil.putString(Constant.accessToken, data.data.token);
+          // view.wechatLoginSuccess("登录成功");
+          view.loginSuccess();
+        } else {
+          // view.wechatLoginFail(data.msg);
+        }
+      }
+    });
+  }
+
+  Future register(String phoneNum, String code, bool isShowLoading) {
     final Map<String, dynamic> params = <String, dynamic>{};
     params['phone'] = phoneNum;
     params['code'] = code;
@@ -70,31 +101,27 @@ class RegisterPresenter extends BasePagePresenter<RegisterView>{
         } else {
           Toast.show(data.msg);
         }
-      }else{
+      } else {
         Toast.show("登录失败");
       }
     });
   }
 
-
-  Future sendKeyLoginToken(token){
-    Map<String,String> map = {};
+  Future sendKeyLoginToken(token) {
+    Map<String, String> map = {};
     map["loginToken"] = token;
     return requestNetwork<LoginInfoData>(Method.post,
-        params: map,
-        url: HttpApi.keyLogin, isShow: true, onSuccess: (data) {
-          if (data != null){
-            if (data.code == 200) {
+        params: map, url: HttpApi.keyLogin, isShow: true, onSuccess: (data) {
+      if (data != null) {
+        if (data.code == 200) {
+          SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
+          SpUtil.putString(Constant.accessToken, data.data.token);
 
-              SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
-              SpUtil.putString(Constant.accessToken, data.data.token);
-
-              view.loginSuccess();
-            }
-          }
-        });
+          view.loginSuccess();
+        }
+      }
+    });
   }
-
 
   Future getWxInfo(
     String wechatCode,
@@ -106,29 +133,23 @@ class RegisterPresenter extends BasePagePresenter<RegisterView>{
     return requestNetwork<LoginInfoData>(Method.get,
         url: HttpApi.wechatInfo,
         queryParameters: params,
-        isShow: true,
-        onSuccess: (data) {
-      if(data!=null){
-
-        if(data.data.token!=null&&data.data.token.isNotEmpty){
-            SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
-            SpUtil.putString(Constant.accessToken, data.data.token);
+        isShow: true, onSuccess: (data) {
+      if (data != null) {
+        if (data.data.token != null && data.data.token.isNotEmpty) {
+          SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
+          SpUtil.putString(Constant.accessToken, data.data.token);
           view.hadBindWechat();
-        }else{
+        } else {
           //没绑定
           view.wechatSuccess(data.data);
 
           // view.loginSuccess(myUserInfo);
         }
-
-
-      }else{
+      } else {
         view.wechatFail();
       }
-
-        },
-        onError: (code, msg) {
-          view.wechatFail();
-        });
+    }, onError: (code, msg) {
+      view.wechatFail();
+    });
   }
 }

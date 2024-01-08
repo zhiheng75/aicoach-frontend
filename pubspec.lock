@@ -417,10 +417,10 @@ packages:
     dependency: "direct main"
     description:
       name: fluwx
-      sha256: "7a7863cd675040402da3e0df7fdc34d7edb4574f81c69241480ad0c0b8e595c3"
+      sha256: "7a1596e8fad1b2191cf62f4cc80f3c63c01306bd6d8fa4f5c815f5e309da1dba"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.4.8"
+    version: "4.4.9"
   html:
     dependency: transitive
     description:

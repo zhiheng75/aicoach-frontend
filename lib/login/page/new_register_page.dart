@@ -353,11 +353,10 @@ class _NewRegisterPageState extends State<NewRegisterPage>
         keyboardType: TextInputType.number,
         hintText: "输入验证码",
         getVCode: () async {
-          NavigatorUtils.push(
-            context,
-            "${LoginRouter.newOneKeyPhonePage}?needKeyLogin=1",
-          );
-
+          // NavigatorUtils.push(
+          //   context,
+          //   "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+          // );
           // NavigatorUtils.push(
           //   context,
           //   LoginRouter.newBindPhonePage,
@@ -365,6 +364,10 @@ class _NewRegisterPageState extends State<NewRegisterPage>
           // NavigatorUtils.push(
           //   context,
           //   PersonalRouter.personalSuggestion,
+          // );
+          // NavigatorUtils.push(
+          //   context,
+          //   LoginRouter.xxWidget,
           // );
           return false;
           if (_phoneController.text.length == 11) {
