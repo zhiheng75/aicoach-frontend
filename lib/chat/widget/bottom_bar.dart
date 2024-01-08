@@ -21,10 +21,12 @@ import 'record.dart';
 class BottomBar extends StatefulWidget {
   const BottomBar({
     Key? key,
+    required this.chatWebsocket,
     required this.controller,
     required this.recordController,
   }) : super(key: key);
 
+  final ChatWebsocket chatWebsocket;
   final BottomBarController controller;
   final RecordController recordController;
 
@@ -33,12 +35,14 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
-  final ChatWebsocket _chatWebsocket = ChatWebsocket();
+  late ChatWebsocket _chatWebsocket;
   final ScreenUtil _screenUtil = ScreenUtil();
   late HomeProvider _homeProvider;
   final MediaUtils _mediaUtils = MediaUtils();
   final RecognizeUtil _recognizeUtil = RecognizeUtil();
   List<Uint8List> _bufferList = [];
+  // ai回答消息
+  NormalMessage? _answer;
   bool _isSend = false;
 
   void getExample() {
@@ -110,6 +114,24 @@ class _BottomBarState extends State<BottomBar> {
         _homeProvider.sessionId = await _chatWebsocket.startChat(
           characterId: characterId,
           sceneId: sceneId,
+          onAnswer: (answer) {
+            if (_answer == null) {
+              _answer = NormalMessage();
+              _homeProvider.addNormalMessage(_answer!);
+            }
+            if (answer is String) {
+              if (answer.startsWith('[end=')) {
+                _answer!.isTextEnd = true;
+                _homeProvider.notify();
+                _answer = null;
+                return;
+              };
+              _answer!.text += answer;
+              _homeProvider.notify();
+              return;
+            }
+
+          },
         );
       }
       _chatWebsocket.sendMessage(text, () {
@@ -123,7 +145,7 @@ class _BottomBarState extends State<BottomBar> {
     } catch(e) {
       _isSend = false;
       Toast.show(
-        '对话发生异常，请重启App',
+        '发送失败，请稍后再试',
         duration: 1000,
       );
     }
@@ -132,6 +154,7 @@ class _BottomBarState extends State<BottomBar> {
   @override
   void initState() {
     super.initState();
+    _chatWebsocket = widget.chatWebsocket;
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
   }
 
@@ -269,7 +292,10 @@ class _BottomBarState extends State<BottomBar> {
                   }
                   try {
                     // 检查权限
-                    await _mediaUtils.checkMicrophonePermission();
+                    bool isRequest = await _mediaUtils.checkMicrophonePermission();
+                    if (isRequest) {
+                      return;
+                    }
                     // 开始录音
                     _mediaUtils.startRecord(
                       onData: (buffer) {

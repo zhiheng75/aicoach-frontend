@@ -12,6 +12,7 @@ import '../mvp/base_page.dart';
 import '../net/dio_utils.dart';
 import '../net/http_api.dart';
 import '../util/log_utils.dart';
+import '../util/media_utils.dart';
 import '../util/toast_utils.dart';
 import '../widgets/load_data.dart';
 import '../widgets/load_fail.dart';
@@ -19,6 +20,7 @@ import 'entity/character_entity.dart';
 import 'entity/message_entity.dart';
 import 'entity/topic_entity.dart';
 import 'presenter/chat_page_presenter.dart';
+import 'utils/chat_websocket.dart';
 import 'view/chat_view.dart';
 import 'widget/background.dart';
 import 'widget/bottom_bar.dart';
@@ -33,6 +35,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePresenter>, AutomaticKeepAliveClientMixin<ChatPage> implements ChatView {
+  final ChatWebsocket _chatWebsocket = ChatWebsocket();
   late HomeProvider _homeProvider;
   late ChatPagePresenter _chatPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
@@ -132,7 +135,9 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     startNormalChat(character);
   }
 
-  void startNormalChat(CharacterEntity character) {
+  void startNormalChat(CharacterEntity character) async {
+    await _chatWebsocket.stopChat();
+    _homeProvider.sessionId = '';
     _homeProvider.character = character;
     _homeProvider.clearMessageList();
     Future.delayed(Duration.zero, () {
@@ -141,14 +146,13 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
       normalMessage.text = _character!.text;
       _homeProvider.addNormalMessage(normalMessage);
-      // MediaUtils().play(
-      //   _character!.audio,
-      //   whenFinished: () {
-      //     _bottomBarControll.setDisabled(false);
-      //   },
-      // );
-      _bottomBarControll.setDisabled(false);
-      _isCharacterChanging = false;
+      MediaUtils().play(
+        _character!.audio,
+        whenFinished: () {
+          _bottomBarControll.setDisabled(false);
+          _isCharacterChanging = false;
+        },
+      );
     });
   }
 
@@ -256,7 +260,9 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     startTopicChat(topic);
   }
 
-  void startTopicChat(TopicEntity topic) {
+  void startTopicChat(TopicEntity topic) async {
+    await _chatWebsocket.stopChat();
+    _homeProvider.sessionId = '';
     _homeProvider.topic = topic;
     _homeProvider.clearMessageList();
     Future.delayed(Duration.zero, () {
@@ -266,7 +272,9 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     });
   }
 
-  void startSceneChat(SceneEntity scene) {
+  void startSceneChat(SceneEntity scene) async {
+    await _chatWebsocket.stopChat();
+    _homeProvider.sessionId = '';
     _homeProvider.scene = scene;
     _homeProvider.clearMessageList();
     Future.delayed(Duration.zero, () {
@@ -365,6 +373,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
           Positioned(
             bottom: _screenUtil.bottomBarHeight + 16.0,
             child: BottomBar(
+              chatWebsocket: _chatWebsocket,
               controller: _bottomBarControll,
               recordController: _recordController,
             ),

@@ -119,6 +119,7 @@ class EvaluateUtil {
       'session_id': message.sessionId,
       'message_id': message.id,
       'message': message.text,
+      'speech': '',
       'accuracy_score': evaluation['accuracy_score'],
       'fluency_score': evaluation['fluency_score'],
       'integrity_score': evaluation['integrity_score'],
@@ -184,13 +185,12 @@ class EvaluateUtil {
           host,
           data: formData,
         );
-        print(response.headers);
         if (response.statusCode == 200) {
           Log.d('upload audio success:url=${'$host/$key'}', tag: '上传音频');
           onSuccess('$host/$key');
         }
       } catch (e) {
-        print(e);
+        Log.d('upload audio error:${e.toString()}', tag: '_uploadAudio');
       }
     });
   }
@@ -248,8 +248,7 @@ class EvaluateUtil {
   }
 
   void _getOssToken(Function(Map<String, dynamic>) onSuccess) {
-    // Map<dynamic, dynamic>? evaluateOss = SpUtil.getObject(_oss);
-    Map<dynamic, dynamic>? evaluateOss = null;
+    Map<dynamic, dynamic>? evaluateOss = SpUtil.getObject(_oss);
     // 未获取或者已过期
     if (evaluateOss == null || DateTime.parse(evaluateOss['Expiration']).millisecondsSinceEpoch < DateTime.now().millisecondsSinceEpoch) {
       DioUtils.instance.requestNetwork<ResultData>(

@@ -17,14 +17,13 @@ class ChatWebsocket {
     required String characterId,
     // 话题和场景都用sceneID
     String? sceneId,
+    required Function(dynamic) onAnswer,
   }) async {
     try {
       String sessionId = const Uuid().v4().replaceAll('-', '');
       await _connect(sessionId, characterId, sceneId);
       _websocket!.stream.listen(
-        (event) {
-          Log.d('接收回答:$event', tag: 'AI回答');
-        },
+        onAnswer,
         onDone: () {
           _websocket = null;
         },
@@ -40,13 +39,25 @@ class ChatWebsocket {
     }
   }
 
-  void sendMessage(String text, Function() onSuccess) {
-    try {
-      _websocket!.sink.add(text);
-      onSuccess();
-    } catch (error) {
-      Log.d('send message error:[reason]${error.toString()}', tag: '发送消息');
-      rethrow;
+  void sendMessage(String text, Function() onSuccess) async {
+    bool canSend = true;
+    int tryCount = 5;
+    while(_websocket == null) {
+      if (tryCount == 0) {
+        canSend = false;
+        break;
+      }
+      await Future.delayed(const Duration(milliseconds: 100));
+      tryCount--;
+    }
+    if (canSend) {
+      try {
+        _websocket!.sink.add(text);
+        onSuccess();
+      } catch (error) {
+        Log.d('send message error:[reason]${error.toString()}', tag: '发送消息');
+        rethrow;
+      }
     }
   }
 

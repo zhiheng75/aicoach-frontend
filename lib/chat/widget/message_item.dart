@@ -2,6 +2,7 @@
 
 import 'package:Bubble/chat/entity/topic_entity.dart';
 import 'package:Bubble/chat/widget/evaluation.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,13 @@ class _MessageItemState extends State<MessageItem> {
   final ScreenUtil _screenUtil = ScreenUtil();
 
   void openTranslate() {
+    if (!(widget.message as NormalMessage).isTextEnd) {
+      Toast.show(
+        '回答中，请稍后再试',
+        duration: 1000,
+      );
+      return;
+    }
     _homeProvider.openTranslate(widget.message as NormalMessage);
   }
 
@@ -273,14 +281,16 @@ class _MessageItemState extends State<MessageItem> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text(
-                  _message.translateState == 1 ? '翻译中...' : (_message.translation == 3 ? '翻译失败' : _message.translation),
-                  style: const TextStyle(
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white,
-                    height: 15.0 / 12.0,
-                    letterSpacing: 0.05,
+                Expanded(
+                  child: Text(
+                    _message.translateState == 1 ? '翻译中...' : (_message.translation == 3 ? '翻译失败' : _message.translation),
+                    style: const TextStyle(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                      height: 15.0 / 12.0,
+                      letterSpacing: 0.05,
+                    ),
                   ),
                 ),
                 const SizedBox(

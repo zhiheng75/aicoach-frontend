@@ -28,6 +28,8 @@ class NormalMessage extends MessageEntity {
   String translation = '';
   String speaker = 'ai';
   Map<String, dynamic> evaluation = {};
+  // 是否文本已全部返回
+  bool isTextEnd = false;
 
   NormalMessage() {
     type = 'normal';

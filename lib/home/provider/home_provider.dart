@@ -24,7 +24,7 @@ class HomeProvider extends ChangeNotifier {
   // 会员过期时间
   String _expireDate = '';
   // 角色
-  late CharacterEntity _character;
+  CharacterEntity _character = CharacterEntity();
   // 话题
   TopicEntity? _topic;
   // 场景
@@ -249,6 +249,10 @@ class HomeProvider extends ChangeNotifier {
   // 减少模考次数
   void decreaseUsageCount(int count) {
     _usageCount -= count;
+  }
+
+  void notify() {
+    notifyListeners();
   }
 
 }
