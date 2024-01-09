@@ -15,13 +15,16 @@ import '../entity/my_user_info_entity.dart';
 import '../view/register_view.dart';
 
 class RegisterPresenter extends BasePagePresenter<RegisterView> {
+  static late CancelToken cancelToken;
   Future sendSms(String phoneNum, bool isShowLoading) {
     final Map<String, dynamic> params = <String, dynamic>{};
     params['phone'] = phoneNum;
+    cancelToken = CancelToken();
 
     return requestNetwork<EmptyResponseData>(Method.post,
         url: HttpApi.smsLogin,
         queryParameters: params,
+        cancelToken: cancelToken,
         isShow: isShowLoading, onSuccess: (data) {
       if (data != null && data.code == 200) {
         Toast.show("短信发送成功，请注意查收");
@@ -29,6 +32,12 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         Toast.show("发送失败");
       }
     });
+  }
+
+  static void disHttpKeyLogin() {
+    if (!cancelToken.isCancelled) {
+      cancelToken.cancel();
+    }
   }
 
   Future toBind(String phoneNum, String smsCode, LoginInfoDataData data) {

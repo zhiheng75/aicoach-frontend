@@ -89,10 +89,7 @@ class _PersonPageState extends State<PersonPage>
       title: '个人中心',
       action: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () => NavigatorUtils.push(
-            context,
-            PersonalRouter
-                .personalSuggestion), //NavigatorUtils.push(context, PersonalRouter.setting),
+        onTap: () => NavigatorUtils.push(context, PersonalRouter.setting), //
         child: const LoadAssetImage(
           'shezhi',
           width: 22.0,
