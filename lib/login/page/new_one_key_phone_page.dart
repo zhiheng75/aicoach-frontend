@@ -29,6 +29,7 @@ import '../../mvp/base_page.dart';
 import 'package:fluwx/fluwx.dart';
 
 class NewOneKeyPhonePage extends StatefulWidget {
+  //1手机号登录
   final String typeLogin;
 
   const NewOneKeyPhonePage({Key? key, required this.typeLogin})
@@ -262,7 +263,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                                 if (_phoneController.text.length == 11) {
                                   NavigatorUtils.push(
                                     context,
-                                    replace: true,
+                                    replace: true, //应该的注释
                                     "${LoginRouter.keyCheckCodePage}?PhoneNumber=${_phoneController.text.trim()}&typeLogin=${widget.typeLogin}",
                                   );
                                   _registerPresenter.sendSms(
@@ -415,9 +416,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
             .authBy(
                 which: NormalAuth(
                     scope: 'snsapi_userinfo', state: 'wechat_sdk_demo_test'))
-            .then((data) {
-          print(data);
-        });
+            .then((data) {});
         fluwx.addSubscriber((response) {
           if (response is WeChatAuthResponse) {
             Log.e(response.code ?? "");
@@ -487,9 +486,8 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   @override
   void newwechatSuccess(NewWxInfoBeanData data) {
     // TODO: implement newwechatSuccess
-    print(data);
-    // NavigatorUtils.push(context, LoginRouter.newBindPhonePage,
-    //     arguments: data, replace: true);
+    NavigatorUtils.push(context, LoginRouter.newBindPhonePage,
+        arguments: data, replace: true);
   }
 
   // void _showAgreement(int state) {

@@ -1,6 +1,9 @@
 import 'dart:convert';
 
+import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/login/entity/new_wx_entity.dart';
+import 'package:Bubble/login/entity/user_info_entity.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:sp_util/sp_util.dart';
@@ -34,13 +37,13 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
     });
   }
 
-  static void disHttpKeyLogin() {
+  static void disHttpKeySendSms() {
     if (!cancelToken.isCancelled) {
       cancelToken.cancel();
     }
   }
 
-  Future toBind(String phoneNum, String smsCode, LoginInfoDataData data) {
+  Future toBind(String phoneNum, String smsCode, NewWxInfoBeanData data) {
     Options op = Options();
     op.contentType = "application/json";
     Map<String, dynamic> params = {};
@@ -140,33 +143,49 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
     params["code"] = wechatCode;
     params["platform"] = "app";
 
-    return requestNetwork<NewWxInfoBean>(Method.get,
+    return requestNetwork<ResultData>(Method.get,
         url: HttpApi.wechatInfo,
         queryParameters: params,
-        isShow: true, onSuccess: (data) {
-      print("==================");
-      print(data);
-      print("==================");
+        isShow: true, onSuccess: (result) {
+      Log.e("=============");
 
-      if (data != null) {
-        if (data.data.token != null && data.data.token.isNotEmpty) {
-          SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
-          SpUtil.putString(Constant.accessToken, data.data.token);
+      Log.e(result.toString());
+
+      Map<String, dynamic> data = result?.data! as Map<String, dynamic>;
+      Log.e(data.toString());
+
+      Map<String, dynamic> newWxInfoMap = json.decode(result.toString());
+      NewWxInfoBean newWxInfoBean = NewWxInfoBean.fromJson(newWxInfoMap);
+      Log.e("=============");
+      Log.e(newWxInfoBean.data.openid);
+      Log.e("=============");
+
+      // Map<String, dynamic> data = result?.data! as Map<String, dynamic>;
+
+      // // Map loginMap = json.decode(result.toString());
+      // NewWxInfoBeanData loginModel = NewWxInfoBeanData.fromJson(data);
+      // Log.e("=============");
+
+      // Log.e(loginModel.openid);
+      // Log.e("=============");
+
+      if (newWxInfoBean != null) {
+        if (newWxInfoBean.data.token != null &&
+            newWxInfoBean.data.token.isNotEmpty) {
+          SpUtil.putObject(Constant.userInfoKey, newWxInfoBean.data.toJson());
+          SpUtil.putString(Constant.accessToken, newWxInfoBean.data.token);
           view.hadBindWechat();
         } else {
           //没绑定
-          view.newwechatSuccess(data.data);
+          view.newwechatSuccess(newWxInfoBean.data);
 
           // view.loginSuccess(myUserInfo);
         }
       } else {
-        print("没有数据");
-
         view.wechatFail();
       }
     }, onError: (code, msg) {
       view.wechatFail();
-      print("失败失败失败失败失败失败");
     });
   }
 }

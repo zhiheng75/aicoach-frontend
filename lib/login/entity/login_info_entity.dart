@@ -1,7 +1,6 @@
 import 'package:Bubble/generated/json/base/json_field.dart';
 import 'package:Bubble/generated/json/login_info_entity.g.dart';
 import 'dart:convert';
-export 'package:Bubble/generated/json/login_info_entity.g.dart';
 
 @JsonSerializable()
 class LoginInfoEntity {

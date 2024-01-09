@@ -4,11 +4,14 @@
 
 import 'dart:convert';
 
+import 'package:Bubble/generated/json/base/json_field.dart';
+
 NewWxInfoBean newWxInfoBeanFromJson(String str) =>
     NewWxInfoBean.fromJson(json.decode(str));
 
 String newWxInfoBeanToJson(NewWxInfoBean data) => json.encode(data.toJson());
 
+@JsonSerializable()
 class NewWxInfoBean {
   int code;
   String msg;
@@ -36,15 +39,16 @@ class NewWxInfoBean {
 class NewWxInfoBeanData {
   String openid;
   String nickname;
-  int sex;
+  String sex;
   String language;
   String city;
   String province;
   String country;
   String headimgurl;
-  List<dynamic> privilege;
+  // List<dynamic> privilege;
   String unionid;
   String token;
+  String id;
 
   NewWxInfoBeanData({
     required this.openid,
@@ -55,24 +59,26 @@ class NewWxInfoBeanData {
     required this.province,
     required this.country,
     required this.headimgurl,
-    required this.privilege,
+    // required this.privilege,
     required this.unionid,
     required this.token,
+    required this.id,
   });
 
   factory NewWxInfoBeanData.fromJson(Map<String, dynamic> json) =>
       NewWxInfoBeanData(
-        openid: json["openid"],
-        nickname: json["nickname"],
-        sex: json["sex"],
-        language: json["language"],
+        openid: json["openid"] ?? "",
+        nickname: json["nickname"] ?? "",
+        sex: json["sex"] ?? "",
+        language: json["language"] ?? "",
         city: json["city"],
-        province: json["province"],
-        country: json["country"],
-        headimgurl: json["headimgurl"],
-        privilege: List<dynamic>.from(json["privilege"].map((x) => x)),
-        unionid: json["unionid"],
-        token: json["token"],
+        province: json["province"] ?? "",
+        country: json["country"] ?? "",
+        headimgurl: json["headimgurl"] ?? "",
+        // privilege: List<dynamic>.from(json["privilege"].map((x) => x)),
+        unionid: json["unionid"] ?? "",
+        token: json["token"] ?? "",
+        id: json["id"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
@@ -84,8 +90,9 @@ class NewWxInfoBeanData {
         "province": province,
         "country": country,
         "headimgurl": headimgurl,
-        "privilege": List<dynamic>.from(privilege.map((x) => x)),
+        // "privilege": List<dynamic>.from(privilege.map((x) => x)),
         "unionid": unionid,
         "token": token,
+        "id": id,
       };
 }

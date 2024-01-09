@@ -1,4 +1,5 @@
 import 'package:Bubble/login/entity/login_info_entity.dart';
+import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/login/presenter/bind_phone_presenter.dart';
 import 'package:Bubble/login/view/bind_phone_view.dart';
@@ -17,7 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class NewBindPhonePage extends StatefulWidget {
-  final LoginInfoDataData wechatData;
+  final NewWxInfoBeanData wechatData;
 
   const NewBindPhonePage({Key? key, required this.wechatData})
       : super(key: key);
@@ -28,7 +29,6 @@ class NewBindPhonePage extends StatefulWidget {
 
 class _NewBindPhonePageState extends State<NewBindPhonePage>
     with
-        ChangeNotifierMixin<NewBindPhonePage>,
         BasePageMixin<NewBindPhonePage, BindPhonePresenter>,
         AutomaticKeepAliveClientMixin<NewBindPhonePage>
     implements BindPhoneView {
@@ -166,11 +166,14 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
                           //   context,
                           //   LoginRouter.phoneLoginPage,
                           // );
-                          judgementPhone();
+                          // judgementPhone();
                           NavigatorUtils.push(
                               context,
                               arguments: widget.wechatData,
-                              "${LoginRouter.keyCheckTwoCodePage}?PhoneNumber=${widget.wechatData.phone}&typeLogin=2");
+                              replace: true,
+                              "${LoginRouter.keyCheckTwoCodePage}?PhoneNumber=${_phoneController.text.trim()}");
+
+                          _bindPhonePresenter.sendSms(_phoneController.text);
                         },
                         child: Container(
                           height: Dimens.h_dp40,
@@ -192,10 +195,10 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
                     typeLogin == "1"
                         ? GestureDetector(
                             onTap: () {
-                              NavigatorUtils.push(
-                                context,
-                                "${LoginRouter.newBindPhonePage}?needKeyLogin=0",
-                              );
+                              // NavigatorUtils.push(
+                              //   context,
+                              //   "${LoginRouter.newBindPhonePage}?needKeyLogin=0",
+                              // );
                             },
                             child: SizedBox(
                               height: Dimens.h_dp20,
@@ -291,12 +294,6 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
       Toast.show("手机号无效");
       return false;
     }
-  }
-
-  @override
-  Map<ChangeNotifier?, List<VoidCallback>?>? changeNotifier() {
-    // TODO: implement changeNotifier
-    throw UnimplementedError();
   }
 
   @override

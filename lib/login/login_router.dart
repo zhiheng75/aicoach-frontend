@@ -2,6 +2,7 @@
 
 import 'dart:ffi';
 
+import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/page/change_bind_phone_page.dart';
 import 'package:Bubble/login/page/check_code_page.dart';
 import 'package:Bubble/login/page/new_bind_phone_page.dart';
@@ -75,11 +76,9 @@ class LoginRouter implements IRouterProvider {
     router.define(keyCheckTwoCodePage,
         handler: Handler(handlerFunc: (context, params) {
       String phoneNumberStr = params['PhoneNumber']!.first;
-      LoginInfoDataData entity = LoginInfoDataData();
-      if (context != null) {
-        entity =
-            ModalRoute.of(context)?.settings.arguments as LoginInfoDataData;
-      }
+      NewWxInfoBeanData entity =
+          ModalRoute.of(context!)?.settings.arguments as NewWxInfoBeanData;
+
       return CheckTwoCodePage(
         phoneNumber: phoneNumberStr,
         wechatData: entity,
@@ -116,16 +115,14 @@ class LoginRouter implements IRouterProvider {
 
     router.define(newBindPhonePage,
         handler: Handler(handlerFunc: (context, params) {
-      LoginInfoDataData entity = LoginInfoDataData();
+      NewWxInfoBeanData entity =
+          ModalRoute.of(context!)?.settings.arguments as NewWxInfoBeanData;
+      Log.e("===============");
 
-      if (context != null) {
-        entity =
-            ModalRoute.of(context)?.settings.arguments as LoginInfoDataData;
-      }
-      // Log.e(entity as String);
-      print("=================");
-      print(entity);
-      print("=================");
+      Log.e(entity.toString());
+      Log.e(entity.openid);
+
+      Log.e("===============");
 
       return NewBindPhonePage(wechatData: entity);
     }));

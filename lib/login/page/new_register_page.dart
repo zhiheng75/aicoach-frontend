@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/presenter/register_presenter.dart';
 import 'package:Bubble/login/view/register_view.dart';
+import 'package:Bubble/main.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';

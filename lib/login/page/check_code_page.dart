@@ -21,7 +21,7 @@ import '../../util/change_notifier_manage.dart';
 
 class CheckCodePage extends StatefulWidget {
   final String phoneNumber;
-  //1手机号登录 2微信登录绑定
+  //1手机号登录
   final String typeLogin;
 
   const CheckCodePage({
@@ -91,6 +91,8 @@ class _CheckCodePageState extends State<CheckCodePage>
 
   @override
   void dispose() {
+    RegisterPresenter.disHttpKeySendSms();
+
     _cancelTimer();
     super.dispose();
   }
@@ -156,6 +158,7 @@ class _CheckCodePageState extends State<CheckCodePage>
                           onTap: () {
                             if (canResend) {
                               resendCode();
+                              RegisterPresenter.disHttpKeySendSms();
                               _registerPresenter.sendSms(
                                   widget.phoneNumber, true);
                             }
@@ -277,7 +280,7 @@ class _CheckCodePageState extends State<CheckCodePage>
 class CheckTwoCodePage extends StatefulWidget {
   final String phoneNumber;
   //微信登录绑定
-  final LoginInfoDataData wechatData;
+  final NewWxInfoBeanData wechatData;
 
   const CheckTwoCodePage(
       {super.key, required this.phoneNumber, required this.wechatData});
@@ -341,6 +344,8 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   @override
   void dispose() {
     _cancelTimer();
+    RegisterPresenter.disHttpKeySendSms();
+
     super.dispose();
   }
 
@@ -464,6 +469,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
 
   void verifyCode(String code) {
     print(code);
+    RegisterPresenter.disHttpKeySendSms();
 
     _registerPresenter.register(widget.phoneNumber, code, true);
   }
