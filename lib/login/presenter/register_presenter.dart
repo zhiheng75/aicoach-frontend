@@ -136,7 +136,6 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         queryParameters: params,
         isShow: true, onSuccess: (data) {
       print("==================");
-
       print(data);
       print("==================");
 
@@ -147,7 +146,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           view.hadBindWechat();
         } else {
           //没绑定
-          // view.wechatSuccess(data.data);
+          view.newwechatSuccess(data.data);
 
           // view.loginSuccess(myUserInfo);
         }

@@ -1,4 +1,3 @@
-
 import 'dart:convert' as convert;
 import 'package:common_utils/common_utils.dart';
 
@@ -6,7 +5,6 @@ import '../constant/constant.dart';
 
 /// 输出Log工具类
 class Log {
-
   static const String tag = 'SPOKID-LOG';
 
   static void init() {
@@ -36,13 +34,17 @@ class Log {
         } else {
           LogUtil.v(msg, tag: tag);
         }
-      } catch(e) {
+      } catch (e) {
         LogUtil.e(msg, tag: tag);
       }
     }
   }
 
-  static void _printMap(Map<dynamic, dynamic> data, {String tag = tag, int tabs = 1, bool isListItem = false, bool isLast = false}) {
+  static void _printMap(Map<dynamic, dynamic> data,
+      {String tag = tag,
+      int tabs = 1,
+      bool isListItem = false,
+      bool isLast = false}) {
     final bool isRoot = tabs == 1;
     final String initialIndent = _indent(tabs);
     tabs++;
@@ -59,7 +61,8 @@ class Log {
       }
       if (value is Map) {
         if (value.isEmpty) {
-          LogUtil.v('${_indent(tabs)} $key: $value${!isLast ? ',' : ''}', tag: tag);
+          LogUtil.v('${_indent(tabs)} $key: $value${!isLast ? ',' : ''}',
+              tag: tag);
         } else {
           LogUtil.v('${_indent(tabs)} $key: {', tag: tag);
           _printMap(value, tabs: tabs);
@@ -102,4 +105,6 @@ class Log {
   }
 
   static String _indent([int tabCount = 1]) => '  ' * tabCount;
+
+  static void c() {}
 }

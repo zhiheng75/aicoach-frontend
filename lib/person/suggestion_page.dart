@@ -20,6 +20,12 @@ import '../widgets/jh_asset_picker.dart';
 import '../widgets/my_app_bar.dart';
 import 'entity/send_img_result_entity.dart';
 
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
+import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart';
+
 class SuggestionPage extends StatefulWidget {
   const SuggestionPage({Key? key}) : super(key: key);
 
@@ -39,6 +45,8 @@ class _SuggestionPageState extends State<SuggestionPage>
   List<TextInputFormatter>? _inputFormatters;
   late int _maxLength;
   int selectImgAmount = 0;
+
+  List<File> mlist = [];
 
   @override
   void initState() {
@@ -165,7 +173,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                               selectImgAmount = assetEntityList.length;
 
                               if (assetEntityList.isNotEmpty) {
-                                List<File> mlist = [];
+                                mlist = [];
 
                                 for (int i = 0;
                                     i < assetEntityList.length;
@@ -178,12 +186,12 @@ class _SuggestionPageState extends State<SuggestionPage>
                                 }
                                 Log.e("============");
                                 Log.e(mlist as String);
-                                Log.e(selectImgAmount);
+                                Log.e(selectImgAmount as String);
 
                                 Log.e("============");
 
                                 // _presenter.uploadImg(mlist,assetEntityList);
-                                _presenter.getOssToken(mlist, assetEntityList);
+                                // _presenter.getOssToken(mlist, assetEntityList);
                                 // var asset = assetEntityList[0];
                                 // print(await asset.file);
                                 // print(await asset.originFile);
@@ -256,7 +264,6 @@ class _SuggestionPageState extends State<SuggestionPage>
                           ),
                         ),
                         Gaps.vGap30,
-
                         Center(
                           child: SizedBox(
                             width: 200,
@@ -264,16 +271,20 @@ class _SuggestionPageState extends State<SuggestionPage>
                                 txtStyle: TextStyle(
                                     color: Colours.color_001652,
                                     fontSize: Dimens.font_sp18), () {
-                              //  if(_controller.text.isNotEmpty&&_contactController.text.isNotEmpty){
-                              // _presenter.pushSuggest(_controller.text,_contactController.text);
-                              //    _presenter.getOssToken();
-                              // }else{
-                              //    if(_controller.text.isEmpty){
-                              //      Toast.show("请输入问题和意见");
-                              //    }else if(_contactController.text.isEmpty){
-                              //      Toast.show("请输入联系方式");
-                              //    }
-                              // }
+                              if (_controller.text.isNotEmpty &&
+                                  _contactController.text.isNotEmpty) {
+                                _presenter.getOssToken(mlist, _controller.text,
+                                    _contactController.text);
+                                // _presenter.pushSuggest(
+                                //     _controller.text, _contactController.text);
+                                //    _presenter.getOssToken();
+                              } else {
+                                if (_controller.text.isEmpty) {
+                                  Toast.show("请输入问题和意见");
+                                } else if (_contactController.text.isEmpty) {
+                                  Toast.show("请输入联系方式");
+                                }
+                              }
                             }),
                           ),
                         ),
