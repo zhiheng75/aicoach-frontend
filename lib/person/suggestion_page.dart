@@ -5,6 +5,7 @@ import 'package:Bubble/person/presneter/suggestion_presenter.dart';
 import 'package:Bubble/person/view/suggestion_view.dart';
 import 'package:Bubble/res/resources.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/btn_bg_widget.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
@@ -175,6 +176,12 @@ class _SuggestionPageState extends State<SuggestionPage>
                                     mlist.add(f);
                                   }
                                 }
+                                Log.e("============");
+                                Log.e(mlist as String);
+                                Log.e(selectImgAmount);
+
+                                Log.e("============");
+
                                 // _presenter.uploadImg(mlist,assetEntityList);
                                 _presenter.getOssToken(mlist, assetEntityList);
                                 // var asset = assetEntityList[0];

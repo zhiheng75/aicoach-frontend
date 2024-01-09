@@ -170,7 +170,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
                           NavigatorUtils.push(
                               context,
                               arguments: widget.wechatData,
-                              "${LoginRouter.keyCheckCodePage}?PhoneNumber=${widget.wechatData.phone}&typeLogin=2");
+                              "${LoginRouter.keyCheckTwoCodePage}?PhoneNumber=${widget.wechatData.phone}&typeLogin=2");
                         },
                         child: Container(
                           height: Dimens.h_dp40,

@@ -7,6 +7,7 @@ import 'package:Bubble/login/page/check_code_page.dart';
 import 'package:Bubble/login/page/new_bind_phone_page.dart';
 import 'package:Bubble/login/page/new_one_key_phone_page.dart';
 import 'package:Bubble/login/page/one_key_login_page.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:Bubble/login/page/new_register_page.dart';
@@ -116,10 +117,15 @@ class LoginRouter implements IRouterProvider {
     router.define(newBindPhonePage,
         handler: Handler(handlerFunc: (context, params) {
       LoginInfoDataData entity = LoginInfoDataData();
+
       if (context != null) {
         entity =
             ModalRoute.of(context)?.settings.arguments as LoginInfoDataData;
       }
+      // Log.e(entity as String);
+      print("=================");
+      print(entity);
+      print("=================");
 
       return NewBindPhonePage(wechatData: entity);
     }));

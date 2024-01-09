@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:sp_util/sp_util.dart';
@@ -130,10 +131,15 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
     params["code"] = wechatCode;
     params["platform"] = "app";
 
-    return requestNetwork<LoginInfoData>(Method.get,
+    return requestNetwork<NewWxInfoBean>(Method.get,
         url: HttpApi.wechatInfo,
         queryParameters: params,
         isShow: true, onSuccess: (data) {
+      print("==================");
+
+      print(data);
+      print("==================");
+
       if (data != null) {
         if (data.data.token != null && data.data.token.isNotEmpty) {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
@@ -141,15 +147,18 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           view.hadBindWechat();
         } else {
           //没绑定
-          view.wechatSuccess(data.data);
+          // view.wechatSuccess(data.data);
 
           // view.loginSuccess(myUserInfo);
         }
       } else {
+        print("没有数据");
+
         view.wechatFail();
       }
     }, onError: (code, msg) {
       view.wechatFail();
+      print("失败失败失败失败失败失败");
     });
   }
 }

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/login/entity/login_info_entity.dart';
+import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/presenter/register_presenter.dart';
 import 'package:Bubble/login/view/register_view.dart';
 import 'package:Bubble/login/view/verification_box.dart';
@@ -80,6 +81,8 @@ class _CheckCodePageState extends State<CheckCodePage>
     print(widget.typeLogin);
     _startTimer();
     super.initState();
+
+    // _registerPresenter.sendSms(widget.phoneNumber, true);
   }
 
   void _cancelTimer() {
@@ -240,7 +243,10 @@ class _CheckCodePageState extends State<CheckCodePage>
       hideLoading();
     }
 
-    NavigatorUtils.push(context, PersonalRouter.person, replace: true);
+    NavigatorUtils.push(
+      context,
+      PersonalRouter.person,
+    );
   }
 
   @override
@@ -260,6 +266,11 @@ class _CheckCodePageState extends State<CheckCodePage>
   @override
   void wechatSuccess(LoginInfoDataData data) {
     // TODO: implement wechatSuccess
+  }
+
+  @override
+  void newwechatSuccess(NewWxInfoBeanData data) {
+    // TODO: implement newwechatSuccess
   }
 }
 
@@ -501,5 +512,10 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   @override
   void wechatSuccess(LoginInfoDataData data) {
     // TODO: implement wechatSuccess
+  }
+
+  @override
+  void newwechatSuccess(NewWxInfoBeanData data) {
+    // TODO: implement newwechatSuccess
   }
 }

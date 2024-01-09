@@ -1,8 +1,11 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 
 import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/dialog/agreement_dialog.dart';
 import 'package:Bubble/login/entity/login_info_entity.dart';
+import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/login/view/register_view.dart';
 import 'package:Bubble/method/fluter_native.dart';
@@ -13,6 +16,7 @@ import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/change_notifier_manage.dart';
 import 'package:Bubble/util/image_utils.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_only_img_bar.dart';
@@ -40,9 +44,6 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
         BasePageMixin<NewOneKeyPhonePage, RegisterPresenter>,
         AutomaticKeepAliveClientMixin<NewOneKeyPhonePage>
     implements RegisterView {
-  //微信登录监听
-  // late StreamSubscription codeListen;
-
   //定义一个controller
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _vCodeController = TextEditingController();
@@ -75,17 +76,6 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   @override
   void initState() {
     super.initState();
-
-    fluwx.addSubscriber((response) {
-      if (response is WeChatAuthResponse) {
-        // String? result = response.code;
-        _registerPresenter.getWxInfo(response.code ?? "");
-        // setState(() {
-        //   String result = 'state :${response.state} \n code:${response.code}';
-        //   print(result)
-        // });
-      }
-    });
   }
 
   @override
@@ -270,13 +260,13 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                             onTap: () {
                               if (_isSelect) {
                                 if (_phoneController.text.length == 11) {
-                                  _registerPresenter.sendSms(
-                                      _phoneController.text.trim(), false);
                                   NavigatorUtils.push(
                                     context,
-                                    clearStack: true,
+                                    replace: true,
                                     "${LoginRouter.keyCheckCodePage}?PhoneNumber=${_phoneController.text.trim()}&typeLogin=${widget.typeLogin}",
                                   );
+                                  _registerPresenter.sendSms(
+                                      _phoneController.text.trim(), false);
                                 } else {
                                   Toast.show("手机号无效");
                                 }
@@ -428,9 +418,17 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
             .then((data) {
           print(data);
         });
-
-// fluwx.authBy(which: NormalAuth(scope: 'snsapi_userinfo', state: 'wechat_sdk_demo_test')).then((data) => null);
-// fluwx.weChatResponseEventHandler
+        fluwx.addSubscriber((response) {
+          if (response is WeChatAuthResponse) {
+            Log.e(response.code ?? "");
+            // String? result = response.code;
+            _registerPresenter.getWxInfo(response.code ?? "");
+            // setState(() {
+            //   String result = 'state :${response.state} \n code:${response.code}';
+            //   print(result)
+            // });
+          }
+        });
       } else {
         Toast.show("没有安装微信");
       }
@@ -469,8 +467,6 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     // SpUtil.putString(Constant.accessToken, data.token);
     // NavigatorUtils.push(context, LoginRouter.changeBindPhonePage,
     //     arguments: data, replace: true);
-    NavigatorUtils.push(context, LoginRouter.newBindPhonePage,
-        arguments: data, replace: true);
   }
 
   @override
@@ -488,42 +484,50 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     // NavigatorUtils.push(context, PersonalRouter.person, replace: true);
   }
 
-  void _showAgreement(int state) {
-    showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) => AgreementDialog(() {
-              _isSelect = true;
-              toNext(state);
-            }));
+  @override
+  void newwechatSuccess(NewWxInfoBeanData data) {
+    // TODO: implement newwechatSuccess
+    print(data);
+    // NavigatorUtils.push(context, LoginRouter.newBindPhonePage,
+    //     arguments: data, replace: true);
   }
 
-  // 0 手机号登录 1微信登录
-  void toNext(int state) {
-    if (state == 0) {
-      if (_isSelect && _clickable) {
-        _registerPresenter.register(
-            _phoneController.text, _vCodeController.text, true);
-      } else if (!_clickable) {
-        if (_phoneController.text.isEmpty) {
-          Toast.show("手机号无效");
-        } else if (_vCodeController.text.isEmpty) {
-          Toast.show("验证码无效");
-        } else {
-          Toast.show("输入有误");
-        }
-      } else if (!_isSelect) {
-        // _showAgreement(state);
-        toNext(state);
-      }
-    } else if (state == 1) {
-      if (_isSelect) {
-        FlutterToNative.jumpToWechatLogin()
-            .then((value) => {_registerPresenter.getWxInfo(value)});
-      } else {
-        // Toast.show("请同意服务协议");
-        // _showAgreement(state);
-      }
-    }
-  }
+  // void _showAgreement(int state) {
+  //   showDialog<void>(
+  //       context: context,
+  //       barrierDismissible: false,
+  //       builder: (_) => AgreementDialog(() {
+  //             _isSelect = true;
+  //             toNext(state);
+  //           }));
+  // }
+
+  // // 0 手机号登录 1微信登录
+  // void toNext(int state) {
+  //   if (state == 0) {
+  //     if (_isSelect && _clickable) {
+  //       _registerPresenter.register(
+  //           _phoneController.text, _vCodeController.text, true);
+  //     } else if (!_clickable) {
+  //       if (_phoneController.text.isEmpty) {
+  //         Toast.show("手机号无效");
+  //       } else if (_vCodeController.text.isEmpty) {
+  //         Toast.show("验证码无效");
+  //       } else {
+  //         Toast.show("输入有误");
+  //       }
+  //     } else if (!_isSelect) {
+  //       // _showAgreement(state);
+  //       toNext(state);
+  //     }
+  //   } else if (state == 1) {
+  //     if (_isSelect) {
+  //       FlutterToNative.jumpToWechatLogin()
+  //           .then((value) => {_registerPresenter.getWxInfo(value)});
+  //     } else {
+  //       // Toast.show("请同意服务协议");
+  //       // _showAgreement(state);
+  //     }
+  //   }
+  // }
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/presenter/register_presenter.dart';
 import 'package:Bubble/login/view/register_view.dart';
 import 'package:Bubble/res/dimens.dart';
@@ -595,5 +596,10 @@ class _NewRegisterPageState extends State<NewRegisterPage>
         // _showAgreement(state);
       }
     }
+  }
+
+  @override
+  void newwechatSuccess(NewWxInfoBeanData data) {
+    // TODO: implement newwechatSuccess
   }
 }

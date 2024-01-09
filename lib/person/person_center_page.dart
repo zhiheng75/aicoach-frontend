@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 import '../login/entity/login_info_entity.dart';
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
@@ -31,14 +30,13 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
         BasePageMixin<PersonalCenterPage, PersonalCenterPresenter>,
         AutomaticKeepAliveClientMixin<PersonalCenterPage>
     implements PersonCenterView {
-
   String _headerImg = "";
   String _userName = "";
-  String studyTime="--";
+  String studyTime = "--";
   String studyAmount = "--";
-  String studyRank="--";
-  String activePercent="--%";//活跃指数
-  String activeRank="--";//前面还有多少人
+  String studyRank = "--";
+  String activePercent = "--%"; //活跃指数
+  String activeRank = "--"; //前面还有多少人
   String vipTime = "--";
   // 总剩余免费体验时间
   int _leftTime = 0;
@@ -52,223 +50,264 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
     super.build(context);
     return AnnotatedRegion(
         value: SystemUiOverlayStyle.light,
-        child:Scaffold(
-            body:Stack(
-              children: [
-                LoadAssetImage("personal_center_bg",height: 280.h,fit: BoxFit.fitHeight,),
-                Container(
-                  padding:  EdgeInsets.only(top: 48,left: Dimens.w_dp12,right: Dimens.w_dp12),
-                  child: Column(
+        child: Scaffold(
+            body: Stack(
+          children: [
+            LoadAssetImage(
+              "personal_center_bg",
+              height: 280.h,
+              fit: BoxFit.fitHeight,
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                  top: 48, left: Dimens.w_dp12, right: Dimens.w_dp12),
+              child: Column(
+                children: [
+                  Row(
                     children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () async {
-                                NavigatorUtils.goBack(context);
-                              }, icon: Image.asset(
-                              'assets/images/ic_back_white.png',
+                      IconButton(
+                        onPressed: () async {
+                          NavigatorUtils.goBack(context);
+                        },
+                        icon: Image.asset(
+                          'assets/images/ic_back_white.png',
                           width: 10,
                           height: 16,
                         ),
                       ),
                       const Expanded(child: Gaps.empty),
-                            IconButton(
-                              onPressed: () {
-                                NavigatorUtils.push(context, SettingRouter.settingPage);
-                              },
-                              icon: Image.asset(
-                                "assets/images/setting_img.png",
-                                width: 17,
-                                height: 18,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
+                      IconButton(
+                        onPressed: () {
+                          NavigatorUtils.push(
+                              context, SettingRouter.settingPage);
+                        },
+                        icon: Image.asset(
+                          "assets/images/setting_img.png",
+                          width: 17,
+                          height: 18,
+                          color: Colors.white,
                         ),
-                      Container(
-                        margin: EdgeInsets.only(left: Dimens.w_dp15,right:Dimens.w_dp15,top: Dimens.h_dp17),
-                        child: headerItem(),
                       ),
                     ],
                   ),
-                ),
-
-                Container(
-                  margin: const EdgeInsets.only(top: 220),
-                  width: ScreenUtil().screenWidth,
-                  height: ScreenUtil().screenHeight,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20)),
-                    color: Colors.white,
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: Dimens.w_dp15,
+                        right: Dimens.w_dp15,
+                        top: Dimens.h_dp17),
+                    child: headerItem(),
                   ),
-
-                ),
-                Container(
-                  width: ScreenUtil().screenWidth,
-                  height: ScreenUtil().screenHeight,
-                  margin: const EdgeInsets.only(top: 220),
-                  padding: const EdgeInsets.only(top: Dimens.gap_dp23,
-                    left: Dimens.gap_dp28,
-                    right: Dimens.gap_dp28,),
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            Colours.color_300EF4D1,
-                            Colours.color_3053C5FF,
-                            Colours.color_30E0AEFF,
-                          ],
-                          stops: [0.0,0.5,1]
-                      ),
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20)),
-                  ),
-                  child: MyScrollView(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 30,bottom: 17),
-                          padding: const EdgeInsets.all(24),
-                          decoration:BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.white,
-                          ),
-                        child: Row(
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 220),
+              width: ScreenUtil().screenWidth,
+              height: ScreenUtil().screenHeight,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20)),
+                color: Colors.white,
+              ),
+            ),
+            Container(
+              width: ScreenUtil().screenWidth,
+              height: ScreenUtil().screenHeight,
+              margin: const EdgeInsets.only(top: 220),
+              padding: const EdgeInsets.only(
+                top: Dimens.gap_dp23,
+                left: Dimens.gap_dp28,
+                right: Dimens.gap_dp28,
+              ),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [
+                      Colours.color_300EF4D1,
+                      Colours.color_3053C5FF,
+                      Colours.color_30E0AEFF,
+                    ],
+                    stops: [
+                      0.0,
+                      0.5,
+                      1
+                    ]),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20)),
+              ),
+              child: MyScrollView(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 30, bottom: 17),
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(child: studyItem("学习时长", studyTime, "min")),
+                        Expanded(child: studyItem("完成对话", studyAmount, "个")),
+                        Expanded(
+                            child: Column(
                           children: [
-                            Expanded(child:studyItem("学习时长",studyTime,"min") ),
-                            Expanded(child: studyItem("完成对话",studyAmount,"个")),
-                            Expanded(child:Column(
-                              children: [
-                                 Text("学习排行", style: TextStyles.text12_546092,),
-                                Gaps.vGap4,
-                                RichText(text:
-                                TextSpan(
-                                    children: <TextSpan>[
-                                       TextSpan(text: "优胜",style:  TextStyle(fontSize: Dimens.font_sp10,color: Colours.color_546092)),
-                                      TextSpan(text: studyRank,style: const TextStyle(fontSize: 17,color: Colours.color_00DBAF)),
-                                    ]
-                                ))
-                              ],
-                            ) ),
+                            Text(
+                              "学习排行",
+                              style: TextStyles.text12_546092,
+                            ),
+                            Gaps.vGap4,
+                            RichText(
+                                text: TextSpan(children: <TextSpan>[
+                              TextSpan(
+                                  text: "优胜",
+                                  style: TextStyle(
+                                      fontSize: Dimens.font_sp10,
+                                      color: Colours.color_546092)),
+                              TextSpan(
+                                  text: studyRank,
+                                  style: const TextStyle(
+                                      fontSize: 17,
+                                      color: Colours.color_00DBAF)),
+                            ]))
+                          ],
+                        )),
+                      ],
+                    ),
+                  ),
 
+                  // 体验文案
+                  if (_isVip == 0) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        const Text(
+                          '免费体验3天，每天15分钟',
+                          style: TextStyle(
+                            fontSize: 12.0,
+                          ),
+                        ),
+                        Text(
+                          '剩余体验时间：${_leftTime >= 60 ? '${_leftTime ~/ 60}分钟' : '$_leftTime秒'}',
+                          style: const TextStyle(
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                  Stack(
+                    children: [
+                      const LoadAssetImage("purchase_img"),
+                      Container(
+                        margin: const EdgeInsets.only(left: 30, top: 35),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                                text: TextSpan(children: <TextSpan>[
+                              TextSpan(
+                                  text: "会员权益",
+                                  style: TextStyle(
+                                      fontSize: Dimens.font_sp20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              vipTime.isNotEmpty
+                                  ? TextSpan(
+                                      text: " 至$vipTime",
+                                      style: TextStyle(
+                                          fontSize: Dimens.font_sp12,
+                                          color: Colours.color_00DBAF))
+                                  : const TextSpan(),
+                            ])),
+                            Text(
+                              "专属口语教练,科学测评,个性化定制",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: Dimens.font_sp11),
+                            ),
+                            Text(
+                              "24小时不限场景 ",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: Dimens.font_sp11),
+                            ),
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                // NavigatorUtils.push(context, PersonalRouter.personalPurchase);
+                              },
+                              child: Container(
+                                width: 106,
+                                margin: const EdgeInsets.only(top: 8),
+                                padding: const EdgeInsets.only(
+                                    left: 18, top: 3, bottom: 3),
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(100)),
+                                  border: Border.all(
+                                    color: Colors.white,
+                                  ),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  children: [
+                                    const LoadAssetImage(
+                                      "dimond_img",
+                                      width: 15,
+                                      height: 14,
+                                    ),
+                                    Gaps.hGap4,
+                                    Text(
+                                      _isVip == 0 ? "立即开通" : "立即续费",
+                                      style: TextStyle(
+                                          fontSize: Dimens.font_sp12,
+                                          color: Colours.color_3A74E6,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
                           ],
                         ),
-                      ),
-
-                      // 体验文案
-                      if (_isVip == 0)
-                        ...[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              const Text(
-                                '免费体验3天，每天15分钟',
-                                style: TextStyle(
-                                  fontSize: 12.0,
-                                ),
-                              ),
-                              Text(
-                                '剩余体验时间：${_leftTime >= 60 ? '${_leftTime ~/ 60}分钟' : '$_leftTime秒'}',
-                                style: const TextStyle(
-                                  fontSize: 12.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      Stack(
-                        children: [
-                          const LoadAssetImage("purchase_img"),
-                          Container(
-                            margin:const EdgeInsets.only(left: 30,top: 35),
-                            child:Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                RichText(text:
-                                TextSpan(
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                          text: "会员权益",
-                                          style: TextStyle(
-                                              fontSize: Dimens.font_sp20,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold)),
-                                      vipTime.isNotEmpty
-                                          ? TextSpan(
-                                          text: " 至$vipTime",
-                                          style: TextStyle(
-                                              fontSize: Dimens.font_sp12,
-                                              color: Colours.color_00DBAF))
-                                          : const TextSpan(),
-                                    ])),
-
-                                Text("专属口语教练,科学测评,个性化定制",style: TextStyle(color: Colors.white,fontSize: Dimens.font_sp11),),
-
-                                Text("24小时不限场景 ",style: TextStyle(color: Colors.white,fontSize: Dimens.font_sp11),),
-                                GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTap: () {
-                                    // NavigatorUtils.push(context, PersonalRouter.personalPurchase);
-                                  },
-                                  child: Container(
-                                    width: 106,
-                                    margin: const EdgeInsets.only(top: 8),
-                                    padding: const EdgeInsets.only(left: 18,top: 3,bottom: 3),
-                                    decoration: BoxDecoration(
-                                      borderRadius:const BorderRadius.all(Radius.circular(100)),
-                                      border: Border.all(
-                                        color: Colors.white,
-                                      ),
-                                      color: Colors.white,
-                                    ),
-                                    child:  Row(
-                                      children: [
-                                        const  LoadAssetImage("dimond_img",width: 15,height: 14,),
-                                        Gaps.hGap4,
-                                        Text(_isVip == 0 ? "立即开通" : "立即续费",style: TextStyle(fontSize: Dimens.font_sp12,color: Colours.color_3A74E6,fontWeight: FontWeight.bold),)
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ) ,
-                          )
-                        ],
-                      ),
-                      Gaps.vGap40,
-                      GestureDetector(
-                        onTap: (){
-                          // NavigatorUtils.push(context, PersonalRouter.personalStudyReport);
-                        },
-                        child: personItem(0,"学习报告"),
-                      ),
-                      Gaps.vGap30,
-                      GestureDetector(
-                        onTap: (){
-                          NavigatorUtils.push(context, MyOrderRouter.myOrder);
-                        },
-                        child: personItem(1,"购买记录"),
-                      ),
-                      Gaps.vGap30,
-                      GestureDetector(
-                        onTap: (){
-                          NavigatorUtils.push(context, PersonalRouter.personalSuggestion);
-                        },
-                        child: personItem(2,"意见反馈"),
-                      ),
+                      )
                     ],
                   ),
-                )
-              ],
+                  Gaps.vGap40,
+                  GestureDetector(
+                    onTap: () {
+                      // NavigatorUtils.push(context, PersonalRouter.personalStudyReport);
+                    },
+                    child: personItem(0, "学习报告"),
+                  ),
+                  Gaps.vGap30,
+                  GestureDetector(
+                    onTap: () {
+                      NavigatorUtils.push(context, MyOrderRouter.myOrder);
+                    },
+                    child: personItem(1, "购买记录"),
+                  ),
+                  Gaps.vGap30,
+                  GestureDetector(
+                    onTap: () {
+                      NavigatorUtils.push(
+                          context, PersonalRouter.personalSuggestion);
+                    },
+                    child: personItem(2, "意见反馈"),
+                  ),
+                ],
+              ),
             )
-        )
-    );
+          ],
+        )));
   }
 
-  Widget headerItem(){
-    return  Row(
+  Widget headerItem() {
+    return Row(
       children: [
         Center(
           child: ClipOval(
@@ -282,68 +321,90 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
         ),
         Gaps.hGap16,
         Expanded(
-            child:Column(
-              mainAxisAlignment:MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                GestureDetector(
-                  onTap: (){
-                    // Toast.show("编辑");
-                  },
-                  child: Row(
-                    mainAxisAlignment:MainAxisAlignment.start,
-                    children: [
-                      Text(_userName,style: const TextStyle(fontSize: 17,color: Colors.white),),
-                      Gaps.hGap4,
-                      const Visibility(
-                        visible: false,
-                          child:   LoadAssetImage("edit_img",width: 14,height: 14,)
-                      ),
-                    ],
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: () {
+                // Toast.show("编辑");
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    _userName,
+                    style: const TextStyle(fontSize: 17, color: Colors.white),
                   ),
-                ),
-                RichText(text: TextSpan(
-                    children: <TextSpan>[
-                       TextSpan(text: "你的周学习活跃指数为",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
-                       TextSpan(text: activePercent,style:  TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
-                      // const TextSpan(text: ",前边还有",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
-                      //  TextSpan(text: activeRank,style:const TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
-                       TextSpan(text: "\n保持每天学习，加油赶超~",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
-                    ]
-                ))
-
-              ],
-            )
-        )
-
-      ],
-    );
-  }
-
-  Widget studyItem(String title,String content1,String content2){
-    return Column(
-      children: [
-        Text(title, style: TextStyles.text12_546092,),
-        Gaps.vGap4,
-        RichText(text:
-        TextSpan(
-            children: <TextSpan>[
-              TextSpan(text: content1,style:  TextStyle(fontSize: Dimens.font_sp17,color: Colours.color_00DBAF)),
-              TextSpan(text: content2,style:  TextStyle(fontSize: Dimens.font_sp10,color: Colours.color_546092)),
-            ]
+                  Gaps.hGap4,
+                  const Visibility(
+                      visible: false,
+                      child: LoadAssetImage(
+                        "edit_img",
+                        width: 14,
+                        height: 14,
+                      )),
+                ],
+              ),
+            ),
+            RichText(
+                text: TextSpan(children: <TextSpan>[
+              TextSpan(
+                  text: "你的周学习活跃指数为",
+                  style: TextStyle(
+                      fontSize: Dimens.font_sp11, color: Colors.white)),
+              TextSpan(
+                  text: activePercent,
+                  style: TextStyle(
+                      fontSize: Dimens.font_sp11, color: Colours.color_00DFB3)),
+              // const TextSpan(text: ",前边还有",style: TextStyle(fontSize: Dimens.font_sp11,color: Colors.white)),
+              //  TextSpan(text: activeRank,style:const TextStyle(fontSize: Dimens.font_sp11,color: Colours.color_00DFB3)),
+              TextSpan(
+                  text: "\n保持每天学习，加油赶超~",
+                  style: TextStyle(
+                      fontSize: Dimens.font_sp11, color: Colors.white)),
+            ]))
+          ],
         ))
       ],
     );
   }
 
+  Widget studyItem(String title, String content1, String content2) {
+    return Column(
+      children: [
+        Text(
+          title,
+          style: TextStyles.text12_546092,
+        ),
+        Gaps.vGap4,
+        RichText(
+            text: TextSpan(children: <TextSpan>[
+          TextSpan(
+              text: content1,
+              style: TextStyle(
+                  fontSize: Dimens.font_sp17, color: Colours.color_00DBAF)),
+          TextSpan(
+              text: content2,
+              style: TextStyle(
+                  fontSize: Dimens.font_sp10, color: Colours.color_546092)),
+        ]))
+      ],
+    );
+  }
 
-  Widget personItem(int type,String name){
+  Widget personItem(int type, String name) {
     return Row(
       children: [
         imageWidget(type),
         Gaps.hGap7,
-        Expanded(child: Text(name,style: TextStyle(fontSize: Dimens.font_sp15,color: Colours.color_111B44),),),
+        Expanded(
+          child: Text(
+            name,
+            style: TextStyle(
+                fontSize: Dimens.font_sp15, color: Colours.color_111B44),
+          ),
+        ),
         Gaps.hGap6,
         const LoadAssetImage(
           "to_next_img",
@@ -354,14 +415,26 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
     );
   }
 
-  Widget imageWidget(int type){
-    switch(type){
+  Widget imageWidget(int type) {
+    switch (type) {
       case 0:
-        return const  LoadAssetImage("study_report_img",width: 20,height: 20,);
+        return const LoadAssetImage(
+          "study_report_img",
+          width: 20,
+          height: 20,
+        );
       case 1:
-        return const LoadAssetImage("purchase_record_img",width: 20,height: 20,);
+        return const LoadAssetImage(
+          "purchase_record_img",
+          width: 20,
+          height: 20,
+        );
       case 2:
-        return const LoadAssetImage("issue_img",width: 20,height: 20,);
+        return const LoadAssetImage(
+          "issue_img",
+          width: 20,
+          height: 20,
+        );
       default:
         return Gaps.empty;
     }
@@ -387,18 +460,16 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
   @override
   void getUserInfo(LoginInfoDataData data) {
     _headerImg = data.headimgurl;
-    if(data.name!=null&&data.name.isNotEmpty){
+    if (data.name != null && data.name.isNotEmpty) {
       _userName = data.name;
-    }else if(data.nickname.isNotEmpty){
+    } else if (data.nickname.isNotEmpty) {
       _userName = data.nickname;
-    }else{
-      _userName = data.phone.substring(7,data.phone.length);
+    } else {
+      _userName = data.phone.substring(7, data.phone.length);
     }
 
-    vipTime = data.membershipExpiryDate??"--";
-    setState(() {
-
-    });
+    vipTime = data.membershipExpiryDate ?? "--";
+    setState(() {});
   }
 
   @override
@@ -408,9 +479,6 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
     studyRank = data.rank;
     activePercent = data.activeRank;
     activeRank = data.activeRankCount.toString();
-    setState(() {
-
-    });
+    setState(() {});
   }
-
 }
