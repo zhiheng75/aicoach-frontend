@@ -65,7 +65,7 @@ class _HomeTabbarState extends State<HomeTabbar> {
             return;
           }
           // 场景则弹窗
-          if (value == 'scene') {
+          if (widget.currentTab == 'chat' && value == 'scene') {
             showModalBottomSheet(
               context: context,
               backgroundColor: Colors.transparent,

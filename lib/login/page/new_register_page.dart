@@ -355,23 +355,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
         keyboardType: TextInputType.number,
         hintText: "输入验证码",
         getVCode: () async {
-          // NavigatorUtils.push(
-          //   context,
-          //   "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
-          // );
-          // NavigatorUtils.push(
-          //   context,
-          //   LoginRouter.newBindPhonePage,
-          // );
-          // NavigatorUtils.push(
-          //   context,
-          //   PersonalRouter.personalSuggestion,
-          // );
-          // NavigatorUtils.push(
-          //   context,
-          //   LoginRouter.xxWidget,
-          // );
-          return false;
+
           if (_phoneController.text.length == 11) {
             _registerPresenter.sendSms(_phoneController.text.trim(), true);
             return true;

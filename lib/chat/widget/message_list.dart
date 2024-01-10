@@ -1,3 +1,4 @@
+import 'package:Bubble/chat/entity/topic_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +9,10 @@ class MessageList extends StatelessWidget {
 
   const MessageList({
     Key? key,
+    required this.onSelectTopic,
   }) : super(key: key);
+
+  final Function(TopicEntity) onSelectTopic;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +26,7 @@ class MessageList extends StatelessWidget {
             ),
             child: MessageItem(
               message: provider.messageList.elementAt(i),
+              onSelectTopic: onSelectTopic,
             ),
           ),
           padding: const EdgeInsets.all(0),

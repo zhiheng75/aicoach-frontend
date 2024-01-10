@@ -80,9 +80,11 @@ class MediaUtils {
     }
   }
 
-  Future<void> checkMicrophonePermission() async {
+  Future<bool> checkMicrophonePermission() async {
+    bool isRequest = false;
     PermissionStatus status = await Permission.microphone.status;
     if (status == PermissionStatus.denied) {
+      isRequest = true;
       status = await Permission.microphone.request();
       if (status == PermissionStatus.denied) {
         throw Exception('用户拒绝权限');
@@ -91,6 +93,7 @@ class MediaUtils {
     if (status == PermissionStatus.permanentlyDenied) {
       throw Exception('请前往App权限设置开启录音权限');
     }
+    return isRequest;
   }
 
   Future<FlutterSoundRecorder?> _createRecorder() async {

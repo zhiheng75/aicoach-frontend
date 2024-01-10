@@ -7,6 +7,7 @@ class ConfirmUtils {
     required BuildContext context,
     required String title,
     String? buttonDirection,
+    String? confirmButtonText,
     String? cancelButtonText,
     required Function() onConfirm,
     Widget? child,
@@ -19,6 +20,7 @@ class ConfirmUtils {
       builder: (_) => Confirm(
         title: title,
         buttonDirection: buttonDirection,
+        confirmButtonText: confirmButtonText,
         cancelButtonText: cancelButtonText,
         onConfirm: onConfirm,
         child: child,
@@ -33,6 +35,7 @@ class Confirm extends StatelessWidget {
     Key? key,
     required this.title,
     this.buttonDirection = 'horizontal',
+    this.confirmButtonText,
     this.cancelButtonText,
     required this.onConfirm,
     this.child,
@@ -40,6 +43,7 @@ class Confirm extends StatelessWidget {
 
   final String title;
   final String? buttonDirection;
+  final String? confirmButtonText;
   final String? cancelButtonText;
   final Function() onConfirm;
   final Widget? child;
@@ -83,7 +87,7 @@ class Confirm extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         button(
-          '确定',
+          confirmButtonText ?? '确定',
           onPress: () {
             Navigator.of(context).pop();
             onConfirm();

@@ -321,6 +321,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "5.4.0"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.5"
   extended_image:
     dependency: transitive
     description:
@@ -401,6 +409,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.0"
+  fl_chart:
+    dependency: "direct main"
+    description:
+      name: fl_chart
+      sha256: "5a74434cc83bf64346efb562f1a06eefaf1bcb530dc3d96a104f631a1eff8d79"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.65.0"
   fluro:
     dependency: "direct main"
     description:

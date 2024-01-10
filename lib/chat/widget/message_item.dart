@@ -1,5 +1,8 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'package:Bubble/chat/entity/topic_entity.dart';
+import 'package:Bubble/chat/widget/evaluation.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -13,9 +16,11 @@ class MessageItem extends StatefulWidget {
   const MessageItem({
     Key? key,
     required this.message,
+    required this.onSelectTopic,
   }) : super(key: key);
 
   final MessageEntity message;
+  final Function(TopicEntity) onSelectTopic;
 
   @override
   State<MessageItem> createState() => _MessageItemState();
@@ -26,11 +31,34 @@ class _MessageItemState extends State<MessageItem> {
   final ScreenUtil _screenUtil = ScreenUtil();
 
   void openTranslate() {
+    if (!(widget.message as NormalMessage).isTextEnd) {
+      Toast.show(
+        '回答中，请稍后再试',
+        duration: 1000,
+      );
+      return;
+    }
     _homeProvider.openTranslate(widget.message as NormalMessage);
   }
 
   void closeTranslate() {
     _homeProvider.closeTranslate(widget.message as NormalMessage);
+  }
+
+  void openEvaluation() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.transparent,
+      isScrollControlled: true,
+      isDismissible: false,
+      builder: (_) => Evaluation(message: widget.message as NormalMessage),
+    );
+  }
+
+  String formatScore(dynamic score) {
+    score = score is String ? double.parse(score) : score as double;
+    return score.toInt().toString();
   }
 
   @override
@@ -117,57 +145,57 @@ class _MessageItemState extends State<MessageItem> {
       );
     }
 
-    // // 话题消息
-    // if (type == 'topic') {
-    //   _message = _message as TopicMessage;
-    //   double itemSize = (width - 16.0) / 3;
-    //   return SizedBox(
-    //     width: width,
-    //     child: Wrap(
-    //       spacing: 8.0,
-    //       runSpacing: 8.0,
-    //       children: _message.topicList.map((topic) {
-    //         return GestureDetector(
-    //           behavior: HitTestBehavior.opaque,
-    //           onTap: () {
-    //             widget.onSelectTopic(topic);
-    //           },
-    //           child: Stack(
-    //             children: <Widget>[
-    //               ClipRRect(
-    //                 borderRadius: BorderRadius.circular(12.0),
-    //                 child: LoadImage(
-    //                   topic.cover,
-    //                   width: itemSize,
-    //                   height: itemSize,
-    //                 ),
-    //               ),
-    //               Positioned(
-    //                 bottom: 11.0,
-    //                 child: Container(
-    //                   width: itemSize,
-    //                   alignment: Alignment.center,
-    //                   padding: const EdgeInsets.symmetric(
-    //                     horizontal: 12.0,
-    //                   ),
-    //                   child: Text(
-    //                     topic.title,
-    //                     style: const TextStyle(
-    //                       fontSize: 14.0,
-    //                       fontWeight: FontWeight.w400,
-    //                       color: Colors.white,
-    //                       height: 21.0 / 14.0,
-    //                     ),
-    //                   ),
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         );
-    //       }).toList(),
-    //     ),
-    //   );
-    // }
+    // 话题消息
+    if (type == 'topic') {
+      _message = _message as TopicMessage;
+      double itemSize = (width - 16.0) / 3;
+      return SizedBox(
+        width: width,
+        child: Wrap(
+          spacing: 8.0,
+          runSpacing: 8.0,
+          children: _message.topicList.map((topic) {
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                widget.onSelectTopic(topic);
+              },
+              child: Stack(
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: LoadImage(
+                      topic.cover,
+                      width: itemSize,
+                      height: itemSize,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 11.0,
+                    child: Container(
+                      width: itemSize,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                      ),
+                      child: Text(
+                        topic.title,
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                          height: 21.0 / 14.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+        ),
+      );
+    }
 
     // 报告消息
     if (type == 'report') {
@@ -197,8 +225,37 @@ class _MessageItemState extends State<MessageItem> {
 
     Widget ext = GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: openTranslate,
-      child: const LoadAssetImage(
+      onTap: () {
+        NormalMessage message = widget.message as NormalMessage;
+        if (message.speaker != 'user') {
+          openTranslate();
+          return;
+        }
+        if (message.evaluation.isEmpty) {
+          return;
+        }
+        openEvaluation();
+      },
+      child: _message.speaker == 'user' ? Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const LoadAssetImage(
+            'jiexi',
+            width: 20.0,
+            height: 20.0,
+          ),
+          Text(
+            _message.evaluation['total_score'] != null ? formatScore(_message.evaluation['total_score']) : '',
+            style: const TextStyle(
+              fontSize: 13.0,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+              height: 24.0 / 13.0,
+              letterSpacing: 0.05,
+            ),
+          ),
+        ],
+      ) : const LoadAssetImage(
         'fanyi',
         width: 20.0,
         height: 20.0,
@@ -224,14 +281,16 @@ class _MessageItemState extends State<MessageItem> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text(
-                  _message.translateState == 1 ? '翻译中...' : (_message.translation == 3 ? '翻译失败' : _message.translation),
-                  style: const TextStyle(
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white,
-                    height: 15.0 / 12.0,
-                    letterSpacing: 0.05,
+                Expanded(
+                  child: Text(
+                    _message.translateState == 1 ? '翻译中...' : (_message.translation == 3 ? '翻译失败' : _message.translation),
+                    style: const TextStyle(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                      height: 15.0 / 12.0,
+                      letterSpacing: 0.05,
+                    ),
                   ),
                 ),
                 const SizedBox(

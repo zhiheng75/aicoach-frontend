@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:Bubble/util/EventBus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -94,6 +95,30 @@ class _SelectSceneState extends State<SelectScene> {
         break;
       }
     }
+  }
+
+  void selectScene(SceneEntity scene) {
+    HomeProvider homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    if (homeProvider.scene?.id == scene.id) {
+      return;
+    }
+    Navigator.of(context).pop();
+    ConfirmUtils.show(
+      context: context,
+      title: '你要切换场景吗？',
+      onConfirm: () {
+        EventBus().emit('SELECT_SCENE', scene);
+      },
+      child: const Text(
+        '场景切换会结束当前对话',
+        style: TextStyle(
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+          color: Color(0xFF333333),
+          height: 18.0 / 15.0,
+        ),
+      ),
+    );
   }
 
   @override
@@ -220,29 +245,7 @@ class _SelectSceneState extends State<SelectScene> {
     Widget sceneItem(SceneEntity scene) {
       return GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () {
-          HomeProvider homeProvider = Provider.of<HomeProvider>(context, listen: false);
-          if (homeProvider.scene?.id == scene.id) {
-            return;
-          }
-          Navigator.of(context).pop();
-          ConfirmUtils.show(
-            context: context,
-            title: '你要切换场景吗？',
-            onConfirm: () {
-              homeProvider.scene = scene;
-            },
-            child: const Text(
-              '场景切换会结束当前对话',
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w400,
-                color: Color(0xFF333333),
-                height: 18.0 / 15.0,
-              ),
-            ),
-          );
-        },
+        onTap: () => selectScene(scene),
         child: Stack(
           children: [
             ClipRRect(
