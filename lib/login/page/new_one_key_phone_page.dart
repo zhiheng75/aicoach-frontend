@@ -15,6 +15,7 @@ import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/change_notifier_manage.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
@@ -408,28 +409,36 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   ///微信授权
   weChatLogin() async {
     if (_isSelect) {
-      fluwx.registerApi(
-          appId: "wxfb033d09d2eecaf0",
-          universalLink: "https://demo.shenmo-ai.net/ios/");
-      if (await fluwx.isWeChatInstalled) {
-        fluwx
-            .authBy(
-                which: NormalAuth(
-                    scope: 'snsapi_userinfo', state: 'wechat_sdk_demo_test'))
-            .then((data) {});
-        fluwx.addSubscriber((response) {
-          if (response is WeChatAuthResponse) {
-            Log.e(response.code ?? "");
-            // String? result = response.code;
-            _registerPresenter.getWxInfo(response.code ?? "");
-            // setState(() {
-            //   String result = 'state :${response.state} \n code:${response.code}';
-            //   print(result)
-            // });
-          }
-        });
+      if (Device.isAndroid) {
+        FlutterToNative.jumpToWechatLogin().then((value) => {
+              // _wechatCode = value,
+              // Log.e("===========>$_wechatCode"),
+              _registerPresenter.getWxInfo(value)
+            });
       } else {
-        Toast.show("没有安装微信");
+        fluwx.registerApi(
+            appId: "wxfb033d09d2eecaf0",
+            universalLink: "https://demo.shenmo-ai.net/ios/");
+        if (await fluwx.isWeChatInstalled) {
+          fluwx
+              .authBy(
+                  which: NormalAuth(
+                      scope: 'snsapi_userinfo', state: 'wechat_sdk_demo_test'))
+              .then((data) {});
+          fluwx.addSubscriber((response) {
+            if (response is WeChatAuthResponse) {
+              Log.e(response.code ?? "");
+              // String? result = response.code;
+              _registerPresenter.getWxInfo(response.code ?? "");
+              // setState(() {
+              //   String result = 'state :${response.state} \n code:${response.code}';
+              //   print(result)
+              // });
+            }
+          });
+        } else {
+          Toast.show("没有安装微信");
+        }
       }
     } else {
       Toast.show("请同意服务协议");
