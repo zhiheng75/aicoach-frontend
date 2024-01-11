@@ -153,4 +153,17 @@ class Colours {
   static const Color color_F8F8F8 = Color.fromRGBO(248, 248, 248, 1);
   static const Color color_666666 = Color.fromRGBO(102, 102, 102, 1);
   static const Color color_333333 = Color.fromRGBO(51, 51, 51, 1);
+  static const Color color_CDEDF4 = Color.fromRGBO(205, 237, 244, 1);
+  static const Color color_51D8FF = Color.fromRGBO(81, 216, 255, 1);
+  static const Color color_FF71CF = Color.fromRGBO(255, 113, 207, 1);
+  static const Color color_8E30FF = Color.fromRGBO(142, 48, 255, 1);
+  static const Color color_C1EBF7 = Color.fromRGBO(193, 235, 247, 1);
+  static const Color color_DDF3D2 = Color.fromRGBO(221, 245, 210, 1);
+  static const Color color_51D6FF = Color.fromRGBO(71, 216, 255, 1);
+
+  static const Color color_FFF5BF = Color.fromRGBO(255, 245, 191, 1);
+  static const Color color_examination = Color.fromRGBO(71, 0, 250, 1);
+
+  // static const Color color_C1EBF7 = Color.fromRGBO(71, 216, 255, 1);
+  // static const Color color_8E30FF = Color.fromRGBO(71, 216, 255, 1);
 }

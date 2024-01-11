@@ -94,6 +94,7 @@ class NavigationBackWidget extends StatelessWidget {
   final int? leftIconPoint;
 
   final double size;
+  final String backUp;
 
   static setBackCodePoint(int codePoint) {
     gCodePoint = codePoint;
@@ -107,6 +108,7 @@ class NavigationBackWidget extends StatelessWidget {
       this.widthIcon = 20,
       this.heightIcon = 20,
       this.size = 20,
+      this.backUp = "1",
       this.onBack,
       this.leftIconPoint,
       this.alignment = Alignment.centerLeft,
@@ -121,6 +123,7 @@ class NavigationBackWidget extends StatelessWidget {
         final isBack = await Navigator.maybePop(context);
         if (!isBack) {
           await SystemNavigator.pop();
+          if (backUp != "1") {}
         }
         // if (onBack != null) {
         //   return onBack!();

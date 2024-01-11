@@ -5,6 +5,7 @@ import 'package:Bubble/setting/provider/device_provider.dart';
 import 'package:device_identity/device_identity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,7 @@ import 'home/splash_page.dart';
 import 'net/dio_utils.dart';
 import 'net/intercept.dart';
 
-Future<void> main() async{
+Future<void> main() async {
   /// 异常处理
   handleError(() async {
     /// 确保初始化完成
@@ -33,12 +34,13 @@ Future<void> main() async{
 
     /// device_identity初始化
     await DeviceIdentity.register();
-
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     runApp(MyApp());
   });
 
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
 }
+
 class MyApp extends StatelessWidget {
   MyApp({super.key, this.home, this.theme}) {
     Log.init();
@@ -72,7 +74,6 @@ class MyApp extends StatelessWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     final Widget app = MultiProvider(
@@ -85,7 +86,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ConversationProvider()),
       ],
       child: ScreenUtilInit(
-        designSize:const Size(360, 690),
+        designSize: const Size(360, 690),
         minTextAdapt: true,
         splitScreenMode: true,
         child: Consumer2<ThemeProvider, LocaleProvider>(
@@ -93,22 +94,21 @@ class MyApp extends StatelessWidget {
             return _buildMaterialApp(themeProvider, localeProvider);
           },
         ),
-      )
-
-      ,
+      ),
     );
 
     /// Toast 配置
     return OKToast(
         backgroundColor: Colors.black54,
-        textPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+        textPadding:
+            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
         radius: 20.0,
         position: ToastPosition.center,
-        child: app
-    );
+        child: app);
   }
 
-  Widget _buildMaterialApp(ThemeProvider provider, LocaleProvider localeProvider) {
+  Widget _buildMaterialApp(
+      ThemeProvider provider, LocaleProvider localeProvider) {
     return MaterialApp(
       title: 'Bubble',
       // showPerformanceOverlay: true, //显示性能标签
