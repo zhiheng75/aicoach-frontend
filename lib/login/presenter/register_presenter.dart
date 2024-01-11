@@ -1,6 +1,11 @@
 import 'dart:convert';
 
+import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/login/entity/new_wx_entity.dart';
+import 'package:Bubble/login/entity/user_info_entity.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
+import 'package:dio/dio.dart';
 import 'package:sp_util/sp_util.dart';
 
 import '../../constant/constant.dart';
@@ -12,27 +17,66 @@ import '../entity/login_info_entity.dart';
 import '../entity/my_user_info_entity.dart';
 import '../view/register_view.dart';
 
-
-class RegisterPresenter extends BasePagePresenter<RegisterView>{
-
+class RegisterPresenter extends BasePagePresenter<RegisterView> {
+  static late CancelToken cancelToken;
   Future sendSms(String phoneNum, bool isShowLoading) {
     final Map<String, dynamic> params = <String, dynamic>{};
     params['phone'] = phoneNum;
+    cancelToken = CancelToken();
 
     return requestNetwork<EmptyResponseData>(Method.post,
         url: HttpApi.smsLogin,
         queryParameters: params,
+        cancelToken: cancelToken,
         isShow: isShowLoading, onSuccess: (data) {
-      if (data != null&&data.code==200) {
+      if (data != null && data.code == 200) {
         Toast.show("短信发送成功，请注意查收");
-      }else{
+      } else {
         Toast.show("发送失败");
       }
     });
   }
 
+  static void disHttpKeySendSms() {
+    if (!cancelToken.isCancelled) {
+      cancelToken.cancel();
+    }
+  }
 
-  Future register(String phoneNum,String code, bool isShowLoading) {
+  Future toBind(String phoneNum, String smsCode, NewWxInfoBeanData data) {
+    Options op = Options();
+    op.contentType = "application/json";
+    Map<String, dynamic> params = {};
+    params['phone'] = phoneNum;
+    params['code'] = smsCode;
+    params['openid'] = data.openid;
+    params['nickname'] = data.nickname;
+    params['headimgurl'] = data.headimgurl;
+    params['sex'] = data.sex;
+    params['city'] = data.city;
+    params['country'] = data.country;
+    params['province'] = data.province;
+    params['unionid'] = data.unionid;
+
+    return requestNetwork<LoginInfoData>(Method.post,
+        url: HttpApi.wechatLogin,
+        params: params,
+        options: op,
+        isShow: true, onSuccess: (data) {
+      if (data != null) {
+        if (data.code == 200) {
+          SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
+          SpUtil.putString(Constant.accessToken, data.data.token);
+          // view.wechatLoginSuccess("登录成功");
+          view.loginSuccess();
+        } else {
+          // view.wechatLoginFail(data.msg);
+        }
+      }
+    });
+  }
+
+  Future register(String phoneNum, String code, bool isShowLoading) {
     final Map<String, dynamic> params = <String, dynamic>{};
     params['phone'] = phoneNum;
     params['code'] = code;
@@ -70,31 +114,27 @@ class RegisterPresenter extends BasePagePresenter<RegisterView>{
         } else {
           Toast.show(data.msg);
         }
-      }else{
+      } else {
         Toast.show("登录失败");
       }
     });
   }
 
-
-  Future sendKeyLoginToken(token){
-    Map<String,String> map = {};
+  Future sendKeyLoginToken(token) {
+    Map<String, String> map = {};
     map["loginToken"] = token;
     return requestNetwork<LoginInfoData>(Method.post,
-        params: map,
-        url: HttpApi.keyLogin, isShow: true, onSuccess: (data) {
-          if (data != null){
-            if (data.code == 200) {
+        params: map, url: HttpApi.keyLogin, isShow: true, onSuccess: (data) {
+      if (data != null) {
+        if (data.code == 200) {
+          SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
+          SpUtil.putString(Constant.accessToken, data.data.token);
 
-              SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
-              SpUtil.putString(Constant.accessToken, data.data.token);
-
-              view.loginSuccess();
-            }
-          }
-        });
+          view.loginSuccess();
+        }
+      }
+    });
   }
-
 
   Future getWxInfo(
     String wechatCode,
@@ -103,32 +143,49 @@ class RegisterPresenter extends BasePagePresenter<RegisterView>{
     params["code"] = wechatCode;
     params["platform"] = "app";
 
-    return requestNetwork<LoginInfoData>(Method.get,
+    return requestNetwork<ResultData>(Method.get,
         url: HttpApi.wechatInfo,
         queryParameters: params,
-        isShow: true,
-        onSuccess: (data) {
-      if(data!=null){
+        isShow: true, onSuccess: (result) {
+      Log.e("=============");
 
-        if(data.data.token!=null&&data.data.token.isNotEmpty){
-            SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
-            SpUtil.putString(Constant.accessToken, data.data.token);
+      Log.e(result.toString());
+
+      Map<String, dynamic> data = result?.data! as Map<String, dynamic>;
+      Log.e(data.toString());
+
+      Map<String, dynamic> newWxInfoMap = json.decode(result.toString());
+      NewWxInfoBean newWxInfoBean = NewWxInfoBean.fromJson(newWxInfoMap);
+      Log.e("=============");
+      Log.e(newWxInfoBean.data.openid);
+      Log.e("=============");
+
+      // Map<String, dynamic> data = result?.data! as Map<String, dynamic>;
+
+      // // Map loginMap = json.decode(result.toString());
+      // NewWxInfoBeanData loginModel = NewWxInfoBeanData.fromJson(data);
+      // Log.e("=============");
+
+      // Log.e(loginModel.openid);
+      // Log.e("=============");
+
+      if (newWxInfoBean != null) {
+        if (newWxInfoBean.data.token != null &&
+            newWxInfoBean.data.token.isNotEmpty) {
+          SpUtil.putObject(Constant.userInfoKey, newWxInfoBean.data.toJson());
+          SpUtil.putString(Constant.accessToken, newWxInfoBean.data.token);
           view.hadBindWechat();
-        }else{
+        } else {
           //没绑定
-          view.wechatSuccess(data.data);
+          view.newwechatSuccess(newWxInfoBean.data);
 
           // view.loginSuccess(myUserInfo);
         }
-
-
-      }else{
+      } else {
         view.wechatFail();
       }
-
-        },
-        onError: (code, msg) {
-          view.wechatFail();
-        });
+    }, onError: (code, msg) {
+      view.wechatFail();
+    });
   }
 }

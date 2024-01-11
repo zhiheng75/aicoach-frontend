@@ -23,8 +23,11 @@ class PersonPage extends StatefulWidget {
   State<PersonPage> createState() => _PersonPageState();
 }
 
-class _PersonPageState extends State<PersonPage> with BasePageMixin<PersonPage, PersonPagePresenter>, AutomaticKeepAliveClientMixin<PersonPage> implements PersonView {
-
+class _PersonPageState extends State<PersonPage>
+    with
+        BasePageMixin<PersonPage, PersonPagePresenter>,
+        AutomaticKeepAliveClientMixin<PersonPage>
+    implements PersonView {
   late PersonPagePresenter _personPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
   StudyEntity _study = StudyEntity();
@@ -34,22 +37,16 @@ class _PersonPageState extends State<PersonPage> with BasePageMixin<PersonPage, 
   }
 
   void getStudyInfo() {
-    _personPagePresenter.requestNetwork<ResultData>(
-      Method.get,
-      url: HttpApi.studyInfo,
-      isShow: false,
-      isClose: false,
-      onSuccess: (result) {
-        if (result == null || result.data == null) {
-          return;
-        }
-        _study = StudyEntity.fromJson(result.data);
-        setState(() {});
-      },
-      onError: (code, msg) {
-
+    _personPagePresenter.requestNetwork<ResultData>(Method.get,
+        url: HttpApi.studyInfo,
+        isShow: false,
+        isClose: false, onSuccess: (result) {
+      if (result == null || result.data == null) {
+        return;
       }
-    );
+      _study = StudyEntity.fromJson(result.data);
+      setState(() {});
+    }, onError: (code, msg) {});
   }
 
   void tapMenu(String path) {
@@ -92,7 +89,7 @@ class _PersonPageState extends State<PersonPage> with BasePageMixin<PersonPage, 
       title: '个人中心',
       action: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () => NavigatorUtils.push(context, PersonalRouter.setting),
+        onTap: () => NavigatorUtils.push(context, PersonalRouter.setting), //
         child: const LoadAssetImage(
           'shezhi',
           width: 22.0,
@@ -122,7 +119,9 @@ class _PersonPageState extends State<PersonPage> with BasePageMixin<PersonPage, 
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  user['name'] ?? user['nickname'] ?? '用户${user['phone'].toString().substring(7, 11)}',
+                  user['name'] ??
+                      user['nickname'] ??
+                      '用户${user['phone'].toString().substring(7, 11)}',
                   style: const TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w500,
@@ -234,7 +233,9 @@ class _PersonPageState extends State<PersonPage> with BasePageMixin<PersonPage, 
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    provider.vipState == 1 ? '会员权益至${provider.expireDate}' : '升级会员 为学习提速',
+                    provider.vipState == 1
+                        ? '会员权益至${provider.expireDate}'
+                        : '升级会员 为学习提速',
                     style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w500,
@@ -256,7 +257,8 @@ class _PersonPageState extends State<PersonPage> with BasePageMixin<PersonPage, 
                             ),
                           ),
                           TextSpan(
-                            text: '${provider.usageTime > 60 ? provider.usageTime ~/ 60 : 1}分钟',
+                            text:
+                                '${provider.usageTime > 60 ? provider.usageTime ~/ 60 : 1}分钟',
                             style: const TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.w500,
@@ -330,25 +332,23 @@ class _PersonPageState extends State<PersonPage> with BasePageMixin<PersonPage, 
                   text: const TextSpan(
                     children: [
                       TextSpan(
-                        text: '免费体验3天，每天',
-                        style: TextStyle(
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                          height: 18.0 / 13.0,
-                          letterSpacing: 0.05,
-                        )
-                      ),
+                          text: '免费体验3天，每天',
+                          style: TextStyle(
+                            fontSize: 13.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                            height: 18.0 / 13.0,
+                            letterSpacing: 0.05,
+                          )),
                       TextSpan(
-                        text: '15分钟',
-                        style: TextStyle(
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF0047FF),
-                          height: 18.0 / 13.0,
-                          letterSpacing: 0.05,
-                        )
-                      ),
+                          text: '15分钟',
+                          style: TextStyle(
+                            fontSize: 13.0,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF0047FF),
+                            height: 18.0 / 13.0,
+                            letterSpacing: 0.05,
+                          )),
                     ],
                   ),
                 ),
@@ -356,25 +356,24 @@ class _PersonPageState extends State<PersonPage> with BasePageMixin<PersonPage, 
                   text: TextSpan(
                     children: [
                       const TextSpan(
-                        text: '剩余体验时间:',
-                        style: TextStyle(
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                          height: 18.0 / 13.0,
-                          letterSpacing: 0.05,
-                        )
-                      ),
+                          text: '剩余体验时间:',
+                          style: TextStyle(
+                            fontSize: 13.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                            height: 18.0 / 13.0,
+                            letterSpacing: 0.05,
+                          )),
                       TextSpan(
-                        text: '${provider.usageTime > 60 ? provider.usageTime ~/ 60 : 1}分钟',
-                        style: const TextStyle(
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF0047FF),
-                          height: 18.0 / 13.0,
-                          letterSpacing: 0.05,
-                        )
-                      ),
+                          text:
+                              '${provider.usageTime > 60 ? provider.usageTime ~/ 60 : 1}分钟',
+                          style: const TextStyle(
+                            fontSize: 13.0,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF0047FF),
+                            height: 18.0 / 13.0,
+                            letterSpacing: 0.05,
+                          )),
                     ],
                   ),
                 ),
@@ -387,7 +386,9 @@ class _PersonPageState extends State<PersonPage> with BasePageMixin<PersonPage, 
       ],
     );
 
-    Widget menuItem(String icon, String label, {
+    Widget menuItem(
+      String icon,
+      String label, {
       Function()? onPress,
     }) {
       return GestureDetector(

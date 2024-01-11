@@ -49,8 +49,8 @@ LoginInfoData $LoginInfoDataFromJson(Map<String, dynamic> json) {
   if (msg != null) {
     loginInfoData.msg = msg;
   }
-  final LoginInfoDataData? data = jsonConvert.convert<LoginInfoDataData>(
-      json['data']);
+  final LoginInfoDataData? data =
+      jsonConvert.convert<LoginInfoDataData>(json['data']);
   if (data != null) {
     loginInfoData.data = data;
   }

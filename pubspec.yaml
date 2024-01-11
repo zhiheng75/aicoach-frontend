@@ -116,8 +116,11 @@ dependencies:
   flutter_keychain: ^2.4.0
   #fluwx https://github.com/OpenFlutter/fluwx
   fluwx: ^4.4.8
+    # fluwx: ^3.12.2
+
   #tobias https://github.com/OpenFlutter/tobias
   tobias: ^3.2.2
+  json_annotation: ^4.4.0
   #fl_chart https://github.com/imaNNeo/fl_chart
   fl_chart: ^0.65.0
 
@@ -131,7 +134,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-
+  json_serializable: ^6.2.0
+  build_runner: ^2.0.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

@@ -18,7 +18,11 @@ class HomeNewPage extends StatefulWidget {
   State<HomeNewPage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomeNewPage> with BasePageMixin<HomeNewPage, HomeNewPagePresenter>, AutomaticKeepAliveClientMixin<HomeNewPage> implements HomeNewView {
+class _HomePageState extends State<HomeNewPage>
+    with
+        BasePageMixin<HomeNewPage, HomeNewPagePresenter>,
+        AutomaticKeepAliveClientMixin<HomeNewPage>
+    implements HomeNewView {
   late HomeNewPagePresenter _homeNewPagePresenter;
   // chat-对话（默认） scene-场景 exam-模考
   String _currentTab = 'chat';
@@ -59,10 +63,8 @@ class _HomePageState extends State<HomeNewPage> with BasePageMixin<HomeNewPage, 
       child: Material(
         child: Stack(
           children: <Widget>[
-            if (_currentTab == 'chat')
-              const ChatPage(),
-            if (_currentTab == 'exam')
-              const ExamPage(),
+            if (_currentTab == 'chat') const ChatPage(),
+            if (_currentTab == 'exam') const ExamPage(),
             Positioned(
               top: 60.0,
               child: HomeTabbar(

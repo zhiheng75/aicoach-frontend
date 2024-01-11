@@ -23,8 +23,11 @@ class ReportDetailPage extends StatefulWidget {
   State<ReportDetailPage> createState() => _ReportDetailPageState();
 }
 
-class _ReportDetailPageState extends State<ReportDetailPage> with BasePageMixin<ReportDetailPage, ReportDetailPagePresenter>, AutomaticKeepAliveClientMixin<ReportDetailPage> implements ReportDetailView {
-
+class _ReportDetailPageState extends State<ReportDetailPage>
+    with
+        BasePageMixin<ReportDetailPage, ReportDetailPagePresenter>,
+        AutomaticKeepAliveClientMixin<ReportDetailPage>
+    implements ReportDetailView {
   late ReportDetailPagePresenter _reportDetailPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
   // evaluation-综合评价 advise-地道表达建议 analysis-细节解析
@@ -192,7 +195,7 @@ class _ReportDetailPageState extends State<ReportDetailPage> with BasePageMixin<
         ),
       ),
     );
-    
+
     Widget schedule = Container(
       width: width,
       decoration: BoxDecoration(
@@ -337,7 +340,9 @@ class _ReportDetailPageState extends State<ReportDetailPage> with BasePageMixin<
               style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-                color: isSelected ? const Color(0xFF000000) : const Color(0xFF333333),
+                color: isSelected
+                    ? const Color(0xFF000000)
+                    : const Color(0xFF333333),
                 height: 18.0 / 16.0,
               ),
             ),
@@ -349,14 +354,16 @@ class _ReportDetailPageState extends State<ReportDetailPage> with BasePageMixin<
               height: 3.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
-                gradient: isSelected ? const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colours.color_9AC3FF,
-                    Colours.color_FF71E0,
-                  ],
-                ) : null,
+                gradient: isSelected
+                    ? const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colours.color_9AC3FF,
+                          Colours.color_FF71E0,
+                        ],
+                      )
+                    : null,
               ),
             ),
           ],
@@ -413,13 +420,12 @@ class _ReportDetailPageState extends State<ReportDetailPage> with BasePageMixin<
                       height: 1.0,
                     ),
                   ),
-                  if (child != null)
-                    ...[
-                      const SizedBox(
-                        width: 8.0,
-                      ),
-                      child,
-                    ],
+                  if (child != null) ...[
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    child,
+                  ],
                 ],
               ),
             ),
@@ -537,12 +543,9 @@ class _ReportDetailPageState extends State<ReportDetailPage> with BasePageMixin<
                     const SizedBox(
                       height: 16.0,
                     ),
-                    if (_type == 'evaluation')
-                      evaluation,
-                    if (_type == 'advise')
-                      Advise(id: widget.id),
-                    if (_type == 'analysis')
-                      Analysis(id: widget.id),
+                    if (_type == 'evaluation') evaluation,
+                    if (_type == 'advise') Advise(id: widget.id),
+                    if (_type == 'analysis') Analysis(id: widget.id),
                     SizedBox(
                       height: _screenUtil.bottomBarHeight,
                     ),

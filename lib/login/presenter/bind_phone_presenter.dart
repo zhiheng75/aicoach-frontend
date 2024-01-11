@@ -10,8 +10,8 @@ import '../entity/login_info_entity.dart';
 import '../view/bind_phone_view.dart';
 
 class BindPhonePresenter extends BasePagePresenter<BindPhoneView> {
-
   late LoginInfoDataData data;
+  static late CancelToken cancelToken;
 
   Future sendSms(String phoneNum) {
     final Map<String, dynamic> params = <String, dynamic>{};
@@ -19,17 +19,24 @@ class BindPhonePresenter extends BasePagePresenter<BindPhoneView> {
     return requestNetwork<EmptyResponseData>(Method.post,
         url: HttpApi.smsLogin,
         queryParameters: params,
+        cancelToken: cancelToken,
         isShow: true, onSuccess: (data) {
-          if (data != null) {
-            if (data.code == 200) {
-              view.sendSuccess("发送成功");
-            } else {
-              view.sendFail(data.msg);
-            }
-          } else {
-            view.sendFail("响应异常");
-          }
-        });
+      if (data != null) {
+        if (data.code == 200) {
+          view.sendSuccess("发送成功");
+        } else {
+          view.sendFail(data.msg);
+        }
+      } else {
+        view.sendFail("响应异常");
+      }
+    });
+  }
+
+  static void disHttpKeySendSms() {
+    if (!cancelToken.isCancelled) {
+      cancelToken.cancel();
+    }
   }
 
   Future toBind(String phoneNum, String smsCode) {
@@ -47,24 +54,20 @@ class BindPhonePresenter extends BasePagePresenter<BindPhoneView> {
     params['province'] = data.province;
     params['unionid'] = data.unionid;
 
-
     return requestNetwork<LoginInfoData>(Method.post,
         url: HttpApi.wechatLogin,
         params: params,
         options: op,
-        isShow: true,
-        onSuccess: (data) {
-          if (data != null) {
-            if (data.code == 200) {
-
-              SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
-              SpUtil.putString(Constant.accessToken, data.data.token);
-              view.wechatLoginSuccess("登录成功");
-            } else {
-              view.wechatLoginFail(data.msg);
-            }
-          }
-        });
+        isShow: true, onSuccess: (data) {
+      if (data != null) {
+        if (data.code == 200) {
+          SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
+          SpUtil.putString(Constant.accessToken, data.data.token);
+          view.wechatLoginSuccess("登录成功");
+        } else {
+          view.wechatLoginFail(data.msg);
+        }
+      }
+    });
   }
-
 }

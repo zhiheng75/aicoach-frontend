@@ -1,3 +1,7 @@
+import 'package:Bubble/exam/exam_router.dart';
+import 'package:Bubble/exam/view/bar_chart.dart';
+import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,8 +21,11 @@ class ExamPage extends StatefulWidget {
   State<ExamPage> createState() => _ExamPageState();
 }
 
-class _ExamPageState extends State<ExamPage> with BasePageMixin<ExamPage, ExamPagePresenter>, AutomaticKeepAliveClientMixin<ExamPage> implements ExamView {
-
+class _ExamPageState extends State<ExamPage>
+    with
+        BasePageMixin<ExamPage, ExamPagePresenter>,
+        AutomaticKeepAliveClientMixin<ExamPage>
+    implements ExamView {
   late ExamPagePresenter _examPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
   late HomeProvider _homeProvider;
@@ -37,6 +44,11 @@ class _ExamPageState extends State<ExamPage> with BasePageMixin<ExamPage, ExamPa
   ];
 
   void startExam() {
+    NavigatorUtils.push(
+      context,
+      ExamRouter.mockExaminationOnePage,
+    );
+    return;
     if (_homeProvider.usageCount == 0) {
       showModalBottomSheet(
         context: context,
@@ -62,53 +74,54 @@ class _ExamPageState extends State<ExamPage> with BasePageMixin<ExamPage, ExamPa
   Widget build(BuildContext context) {
     super.build(context);
 
-    Widget barItem(String label, String type) {
-      bool isSelected = _type == type;
-      return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          if (isSelected) {
-            return;
-          }
-          _type = type;
-          setState(() {});
-        },
-        child: Container(
-          width: 88.0,
-          height: 34.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40.0),
-            color: isSelected ? const Color(0xFF007AFF) : const Color(0xFFF3F5F7),
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-              color: isSelected ? Colors.white : Colours.color_999999,
-              height: 20.0 / 15.0,
-            ),
-          ),
-        ),
-      );
-    }
+    // Widget barItem(String label, String type) {
+    //   bool isSelected = _type == type;
+    //   return GestureDetector(
+    //     behavior: HitTestBehavior.opaque,
+    //     onTap: () {
+    //       if (isSelected) {
+    //         return;
+    //       }
+    //       _type = type;
+    //       setState(() {});
+    //     },
+    //     child: Container(
+    //       width: 88.0,
+    //       height: 34.0,
+    //       decoration: BoxDecoration(
+    //         borderRadius: BorderRadius.circular(40.0),
+    //         color:
+    //             isSelected ? const Color(0xFF007AFF) : const Color(0xFFF3F5F7),
+    //       ),
+    //       alignment: Alignment.center,
+    //       child: Text(
+    //         label,
+    //         style: TextStyle(
+    //           fontSize: 15.0,
+    //           fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
+    //           color: isSelected ? Colors.white : Colours.color_999999,
+    //           height: 20.0 / 15.0,
+    //         ),
+    //       ),
+    //     ),
+    //   );
+    // }
 
-    Widget tabbar = Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16.0,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          barItem('KET', 'ket'),
-          const SizedBox(
-            width: 10.0,
-          ),
-          barItem('PET', 'pet'),
-        ],
-      ),
-    );
+    // Widget tabbar = Padding(
+    //   padding: const EdgeInsets.symmetric(
+    //     horizontal: 16.0,
+    //   ),
+    //   child: Row(
+    //     mainAxisAlignment: MainAxisAlignment.start,
+    //     children: <Widget>[
+    //       barItem('KET', 'ket'),
+    //       const SizedBox(
+    //         width: 10.0,
+    //       ),
+    //       barItem('PET', 'pet'),
+    //     ],
+    //   ),
+    // );
 
     Widget descItem(String desc) {
       return Row(
@@ -227,24 +240,383 @@ class _ExamPageState extends State<ExamPage> with BasePageMixin<ExamPage, ExamPa
       ),
     );
 
-    return Container(
-      color: Colours.color_001652.withOpacity(0.5),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    Widget titleBar() {
+      return const Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SizedBox(
+            height: 100,
+          ),
+          // tabbar,
+          // SizedBox(
+          //   height: 12.0,
+          // ),
+        ],
+      );
+    }
+
+    Widget score = Container(
+      // width: width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.0),
+        color: Colors.black.withOpacity(0.85),
+      ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 48.0,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const SizedBox(
-                height: 102.0,
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colours.color_51D6FF,
+                    ),
+                    width: 8,
+                    height: 8,
+                  ),
+                  Gaps.hGap6,
+                  const Text(
+                    '5发音',
+                    style: TextStyle(
+                      fontSize: 13.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
-              tabbar,
-              const SizedBox(
-                height: 12.0,
+              Gaps.vGap2,
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colours.color_FF71CF,
+                    ),
+                    width: 8,
+                    height: 8,
+                  ),
+                  Gaps.hGap6,
+                  const Text(
+                    '5互动',
+                    style: TextStyle(
+                      fontSize: 13.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
-              desc,
+              Gaps.vGap2,
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colours.color_E8CCFE,
+                    ),
+                    width: 8,
+                    height: 8,
+                  ),
+                  Gaps.hGap6,
+                  const Text(
+                    '4语法词汇',
+                    style: TextStyle(
+                      fontSize: 13.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              Gaps.vGap2,
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colours.color_8E30FF,
+                    ),
+                    width: 8,
+                    height: 8,
+                  ),
+                  Gaps.hGap6,
+                  const Text(
+                    '4整体得分',
+                    style: TextStyle(
+                      fontSize: 13.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
+          Gaps.hGap16,
+          const SizedBox(
+            width: 20.0,
+          ),
+          Container(
+            width: 128.0,
+            height: 128.0,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  'assets/images/caihuan.png',
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+            alignment: Alignment.center,
+            child: const Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  '${76}',
+                  style: TextStyle(
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    height: 37.5 / 32.0,
+                  ),
+                ),
+                Text(
+                  '  总分',
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    height: 14.0 / 12.0,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+
+    Widget typeDecoration = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+                ((_screenUtil.screenWidth - 32.0) / 3 - 5) / 2),
+            color: Colours.color_E8CCFE,
+          ),
+          width: (_screenUtil.screenWidth - 32.0) / 3 - 5,
+          height: (_screenUtil.screenWidth - 32.0) / 3 - 5,
+          // color: Colours.color_E8CCFE,
+          child: const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    "B",
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    "Grade",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                      height: 2.5,
+                      // letterSpacing: 0.05,
+                    ),
+                  ),
+                ],
+              ),
+              Text(
+                "KET证书等级",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Gaps.hGap5,
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+                ((_screenUtil.screenWidth - 32.0) / 3 - 5) / 2),
+            color: Colours.color_C1EBF7,
+          ),
+          width: (_screenUtil.screenWidth - 32.0) / 3 - 5,
+          height: (_screenUtil.screenWidth - 32.0) / 3 - 5,
+          // color: Colours.color_E8CCFE,
+          child: const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "121",
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                "剑桥考试成绩",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Gaps.hGap5,
+        Container(
+          padding: const EdgeInsets.all(20),
+
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+                ((_screenUtil.screenWidth - 32.0) / 3 - 5) / 2),
+            color: Colours.color_DDF3D2,
+          ),
+          width: (_screenUtil.screenWidth - 32.0) / 3 - 5,
+          height: (_screenUtil.screenWidth - 32.0) / 3 - 5,
+          // color: Colours.color_E8CCFE,
+          child: const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "A2",
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                "欧洲语言共同参考标准",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    List<String> xData = [
+      "语法与词汇",
+      "发音",
+      "互动",
+      "整体得分",
+    ];
+    List<double> peopleData = [
+      100,
+      75,
+      45,
+      25,
+    ];
+    List<Color> colorData = [
+      Colours.color_51D8FF,
+      Colours.color_FF71CF,
+      Colours.color_8E30FF,
+      Colours.color_E8CCFE,
+    ];
+
+    Widget contentBar() {
+      return Container(
+        width: double.infinity,
+        // height: double.infinity,
+        // color: Colors.white,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+          color: Colors.white,
+        ),
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Gaps.vGap8,
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                LoadAssetImage(
+                  'zhuangshi_zuo',
+                  width: 16.0,
+                  height: 16.0,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                  ),
+                  child: Text(
+                    '评测报告示例',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                      height: 1.0,
+                      letterSpacing: 0.05,
+                    ),
+                  ),
+                ),
+                LoadAssetImage(
+                  'zhuangshi_you',
+                  width: 16.0,
+                  height: 16.0,
+                ),
+              ],
+            ),
+            Gaps.vGap8,
+            score,
+            Gaps.vGap8,
+            typeDecoration,
+            Gaps.vGap10,
+            BarChart(xData, peopleData, colorData),
+            Gaps.vGap8,
+            Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colours.color_CDEDF4,
+                ),
+                child: const Column(
+                  children: [
+                    Text(
+                      "您的成绩还不错，口语模考达到了剑桥KET考试的Grade B水平。",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    Text(
+                      "建议考前再练习10次模拟考试，争取达到Grade B+水平，加油宝贝！",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ],
+                )),
+            Gaps.vGap8,
+          ],
+        ),
+      );
+    }
+
+    Widget body() {
+      return Column(
+        children: [
+          desc,
+          Gaps.vGap10,
+          contentBar(),
+          Gaps.vGap10,
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -281,14 +653,95 @@ class _ExamPageState extends State<ExamPage> with BasePageMixin<ExamPage, ExamPa
                   ),
                 ),
               ),
-              SizedBox(
-                height: _screenUtil.bottomBarHeight + 24.0,
-              ),
             ],
           ),
+          Gaps.vGap20,
         ],
-      ),
-    );
+      );
+    }
+
+    return Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              'assets/images/mkbg.png',
+            ),
+            fit: BoxFit.cover,
+          ),
+        ),
+        // color: Colours.color_001652.withOpacity(0.5),
+        width: double.infinity,
+        height: double.infinity,
+        child: Column(
+          children: [
+            titleBar(),
+            Expanded(child: SingleChildScrollView(child: body())),
+          ],
+        ));
+
+    // return Container(
+    //   color: Colours.color_001652.withOpacity(0.5),
+    //   width: double.infinity,
+    //   child: Column(
+    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //     children: <Widget>[
+    //       Column(
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: <Widget>[
+    //           const SizedBox(
+    //             height: 102.0,
+    //           ),
+    //           // tabbar,
+    //           const SizedBox(
+    //             height: 12.0,
+    //           ),
+    //           desc,
+    //         ],
+    //       ),
+    // Column(
+    //   mainAxisSize: MainAxisSize.min,
+    //   children: [
+    //     GestureDetector(
+    //       behavior: HitTestBehavior.opaque,
+    //       onTap: startExam,
+    //       child: Container(
+    //         width: 231.0,
+    //         height: 48.0,
+    //         decoration: BoxDecoration(
+    //           borderRadius: BorderRadius.circular(100.0),
+    //           border: Border.all(
+    //             width: 1.0,
+    //             style: BorderStyle.solid,
+    //             color: Colours.color_001652,
+    //           ),
+    //           gradient: const LinearGradient(
+    //             begin: Alignment.bottomLeft,
+    //             end: Alignment.topRight,
+    //             colors: [
+    //               Colours.color_9AC3FF,
+    //               Colours.color_FF71E0,
+    //             ],
+    //           ),
+    //         ),
+    //         alignment: Alignment.center,
+    //         child: const Text(
+    //           '开始考试',
+    //           style: TextStyle(
+    //             fontSize: 18.0,
+    //             fontWeight: FontWeight.w400,
+    //             color: Colours.color_001652,
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //     SizedBox(
+    //       height: _screenUtil.bottomBarHeight + 24.0,
+    //     ),
+    //   ],
+    // ),
+    //     ],
+    //   ),
+    // );
   }
 
   @override

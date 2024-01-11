@@ -26,8 +26,11 @@ class ReportPage extends StatefulWidget {
   State<ReportPage> createState() => _ReportPageState();
 }
 
-class _ReportPageState extends State<ReportPage> with BasePageMixin<ReportPage, ReportPagePresenter>, AutomaticKeepAliveClientMixin<ReportPage> implements ReportView {
-
+class _ReportPageState extends State<ReportPage>
+    with
+        BasePageMixin<ReportPage, ReportPagePresenter>,
+        AutomaticKeepAliveClientMixin<ReportPage>
+    implements ReportView {
   late ReportPagePresenter _reportPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
   String _type = 'chat';
@@ -88,7 +91,7 @@ class _ReportPageState extends State<ReportPage> with BasePageMixin<ReportPage, 
     }
     return ExamReportEntity.fromJson(data);
   }
-  
+
   Color getColorByScore(int score) {
     Color color;
     if (score < 50) {
@@ -134,7 +137,8 @@ class _ReportPageState extends State<ReportPage> with BasePageMixin<ReportPage, 
           height: 34.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(40.0),
-            color: isSelected ? const Color(0xFF007AFF) : const Color(0xFFF3F5F7),
+            color:
+                isSelected ? const Color(0xFF007AFF) : const Color(0xFFF3F5F7),
           ),
           alignment: Alignment.center,
           child: Text(
@@ -288,7 +292,8 @@ class _ReportPageState extends State<ReportPage> with BasePageMixin<ReportPage, 
                             fontSize: 10.0,
                             fontWeight: FontWeight.w400,
                             color: Color(0xFF666666),
-                            height: 18.0 / 10.0,                    letterSpacing: 0.05,
+                            height: 18.0 / 10.0,
+                            letterSpacing: 0.05,
                           ),
                         ),
                       ],
@@ -404,7 +409,8 @@ class _ReportPageState extends State<ReportPage> with BasePageMixin<ReportPage, 
                             fontSize: 10.0,
                             fontWeight: FontWeight.w400,
                             color: Color(0xFF666666),
-                            height: 18.0 / 10.0,                    letterSpacing: 0.05,
+                            height: 18.0 / 10.0,
+                            letterSpacing: 0.05,
                           ),
                         ),
                       ],

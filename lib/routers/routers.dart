@@ -1,3 +1,4 @@
+import 'package:Bubble/exam/exam_router.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,6 @@ import 'i_router.dart';
 import 'not_found_page.dart';
 
 class Routes {
-
   static String home = '/home';
   static String webViewPage = '/webView';
 
@@ -29,7 +29,7 @@ class Routes {
         return const NotFoundPage();
       },
     );
-    
+
     router.define(webViewPage, handler: Handler(handlerFunc: (_, params) {
       final String title = params['title']?.first ?? '';
       final String url = params['url']?.first ?? '';
@@ -37,6 +37,7 @@ class Routes {
     }));
 
     _listRouter.clear();
+
     /// 各自路由由各自模块管理，统一在此添加初始化
 
     _listRouter.add(LoginRouter());
@@ -46,11 +47,13 @@ class Routes {
     _listRouter.add(PersonalRouter());
     _listRouter.add(ConversationRouter());
     _listRouter.add(MyOrderRouter());
+    _listRouter.add(ExamRouter());
 
     /// 初始化路由
     void initRouter(IRouterProvider routerProvider) {
       routerProvider.initRouter(router);
     }
+
     _listRouter.forEach(initRouter);
   }
 }

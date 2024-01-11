@@ -3,8 +3,8 @@ import 'package:Bubble/login/entity/my_user_info_entity.dart';
 
 MyUserInfoEntity $MyUserInfoEntityFromJson(Map<String, dynamic> json) {
   final MyUserInfoEntity myUserInfoEntity = MyUserInfoEntity();
-  final MyUserInfoData? data = jsonConvert.convert<MyUserInfoData>(
-      json['data']);
+  final MyUserInfoData? data =
+      jsonConvert.convert<MyUserInfoData>(json['data']);
   if (data != null) {
     myUserInfoEntity.data = data;
   }
@@ -21,8 +21,7 @@ extension MyUserInfoEntityExtension on MyUserInfoEntity {
   MyUserInfoEntity copyWith({
     MyUserInfoData? data,
   }) {
-    return MyUserInfoEntity()
-      ..data = data ?? this.data;
+    return MyUserInfoEntity()..data = data ?? this.data;
   }
 }
 

@@ -21,10 +21,9 @@ import '../entity/login_info_entity.dart';
 import '../presenter/bind_phone_presenter.dart';
 
 class BindPhonePage extends StatefulWidget {
-
   final LoginInfoDataData wechatData;
 
-  const BindPhonePage(this.wechatData,{Key? key}) : super(key: key);
+  const BindPhonePage(this.wechatData, {Key? key}) : super(key: key);
 
   @override
   State<BindPhonePage> createState() => _BindPhonePageState();
@@ -36,7 +35,6 @@ class _BindPhonePageState extends State<BindPhonePage>
         BasePageMixin<BindPhonePage, BindPhonePresenter>,
         AutomaticKeepAliveClientMixin<BindPhonePage>
     implements BindPhoneView {
-
   late BindPhonePresenter _bindPhonePresenter;
 
   final TextEditingController _phoneController = TextEditingController();
@@ -45,17 +43,15 @@ class _BindPhonePageState extends State<BindPhonePage>
   final FocusNode _nodeText2 = FocusNode();
   bool _clickable = false;
 
-
   @override
   void initState() {
     super.initState();
     _bindPhonePresenter.data = widget.wechatData;
-    if(_bindPhonePresenter.data.phone!=null&&
-        _bindPhonePresenter.data.phone.isNotEmpty){
+    if (_bindPhonePresenter.data.phone != null &&
+        _bindPhonePresenter.data.phone.isNotEmpty) {
       _phoneController.text = _bindPhonePresenter.data.phone;
     }
   }
-
 
   @override
   Map<ChangeNotifier, List<VoidCallback>?>? changeNotifier() {
@@ -85,7 +81,7 @@ class _BindPhonePageState extends State<BindPhonePage>
     }
   }
 
-  void _bind(){
+  void _bind() {
     _bindPhonePresenter.toBind(_phoneController.text, _vCodeController.text);
   }
 
@@ -93,40 +89,45 @@ class _BindPhonePageState extends State<BindPhonePage>
   Widget build(BuildContext context) {
     super.build(context);
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.light,
-        child:Scaffold(
-          resizeToAvoidBottomInset:false,
+        value: SystemUiOverlayStyle.light,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: Container(
               decoration: const BoxDecoration(
                   gradient: LinearGradient(
                       begin: Alignment.topRight,
                       end: Alignment.bottomLeft,
                       colors: [
-                        Colours.color_00E6D0,
-                        Colours.color_006CFF,
-                        Colours.color_D74DFF,
-                      ],
-                      stops: [0.0,0.2,1]
-                  )
-              ),
-            child:Column(
-
-              children: [
-                const MyAppBar(
-                  centerTitle: "绑定手机号",
-                  backImgColor: Colors.white,
-                  backgroundColor: Colours.transflate,
-                ),
+                    Colours.color_00E6D0,
+                    Colours.color_006CFF,
+                    Colours.color_D74DFF,
+                  ],
+                      stops: [
+                    0.0,
+                    0.2,
+                    1
+                  ])),
+              child: Column(
+                children: [
+                  const MyAppBar(
+                    centerTitle: "绑定手机号",
+                    backImgColor: Colors.white,
+                    backgroundColor: Colours.transflate,
+                  ),
                   Expanded(
                       child: Container(
-                        width: ScreenUtil.getScreenW(context),
-                        height: 500,
-                        padding:const EdgeInsets.only(top: Dimens.gap_dp23,left: Dimens.gap_dp28,right:Dimens.gap_dp28,bottom: Dimens.gap_dp40),
-                        decoration:const BoxDecoration(
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight:  Radius.circular(20)),
-                            color: Colors.white
-                        ),
-
+                    width: ScreenUtil.getScreenW(context),
+                    height: 500,
+                    padding: const EdgeInsets.only(
+                        top: Dimens.gap_dp23,
+                        left: Dimens.gap_dp28,
+                        right: Dimens.gap_dp28,
+                        bottom: Dimens.gap_dp40),
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20)),
+                        color: Colors.white),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -134,18 +135,16 @@ class _BindPhonePageState extends State<BindPhonePage>
                     ),
                   ))
                 ],
-            )
+              )
 
-            // MyScrollView(
-            //   keyboardConfig: Utils.getKeyboardActionsConfig(context, <FocusNode>[_nodeText1, _nodeText2]),
-            //   padding: const EdgeInsets.only(left: 16.0, right: 16.0,),
-            //   children: _buildBody(),
-            // ),
-          ),
-        )
-    );
+              // MyScrollView(
+              //   keyboardConfig: Utils.getKeyboardActionsConfig(context, <FocusNode>[_nodeText1, _nodeText2]),
+              //   padding: const EdgeInsets.only(left: 16.0, right: 16.0,),
+              //   children: _buildBody(),
+              // ),
+              ),
+        ));
   }
-
 
   List<Widget> _buildBody() {
     return <Widget>[
@@ -154,17 +153,24 @@ class _BindPhonePageState extends State<BindPhonePage>
       //   backgroundColor: Colours.transflate,
       // ),
       Gaps.vGap80,
-      const LoadAssetImage("login_logo_img",width: 180,height: 67,),
+      const LoadAssetImage(
+        "login_logo_img",
+        width: 180,
+        height: 67,
+      ),
       Gaps.vGap85,
-       Text(
+      Text(
         "绑定手机号",
         style: TextStyles.text20_white,
       ),
-      const Text("根据国家网络安全法要求，需完成手机号绑定才能使用本产品。",style: TextStyle(fontSize: 13,color: Colors.white),),
+      const Text(
+        "根据国家网络安全法要求，需完成手机号绑定才能使用本产品。",
+        style: TextStyle(fontSize: 13, color: Colors.white),
+      ),
       Gaps.vGap26,
       Row(
         children: [
-           Text(
+          Text(
             "+86 >",
             style: TextStyles.text20_white,
           ),
@@ -183,36 +189,37 @@ class _BindPhonePageState extends State<BindPhonePage>
           )),
         ],
       ),
-      const Divider(color: Colors.white,height: 0.4,),
+      const Divider(
+        color: Colors.white,
+        height: 0.4,
+      ),
       Gaps.vGap10,
       MyTextField(
         focusNode: _nodeText2,
-        txtStyle:const TextStyle(fontSize: 26,color: Colors.white,fontWeight: FontWeight.bold),
-        hintStyle: const TextStyle(fontSize: 26,color: Colours.color_4ED7FF),
+        txtStyle: const TextStyle(
+            fontSize: 26, color: Colors.white, fontWeight: FontWeight.bold),
+        hintStyle: const TextStyle(fontSize: 26, color: Colours.color_4ED7FF),
         controller: _vCodeController,
         maxLength: 4,
         keyboardType: TextInputType.number,
         hintText: "输入验证码",
         getVCode: () async {
-
-          if(_bindPhonePresenter.data.phone.isEmpty){
-           return judgementPhone();
-          }else{
-            if(_bindPhonePresenter.data.phone!=_phoneController.text){
+          if (_bindPhonePresenter.data.phone.isEmpty) {
+            return judgementPhone();
+          } else {
+            if (_bindPhonePresenter.data.phone != _phoneController.text) {
               Toast.show("请输入新手机号");
               return false;
-            }else{
+            } else {
               return judgementPhone();
             }
           }
-
-
         },
       ),
       Gaps.vGap24,
       GestureDetector(
-        onTap: (){
-          if(_clickable){
+        onTap: () {
+          if (_clickable) {
             _bind();
           }
         },
@@ -221,8 +228,7 @@ class _BindPhonePageState extends State<BindPhonePage>
           width: ScreenUtil.getScreenW(context),
           height: 40,
           decoration: const BoxDecoration(
-              borderRadius:
-              BorderRadius.all(Radius.circular(100)),
+              borderRadius: BorderRadius.all(Radius.circular(100)),
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -240,7 +246,6 @@ class _BindPhonePageState extends State<BindPhonePage>
         ),
       ),
 
-
       // MyButton(
       //   onPressed: _clickable ? _bind : null,
       //   text: "绑定",
@@ -248,7 +253,7 @@ class _BindPhonePageState extends State<BindPhonePage>
     ];
   }
 
-  bool judgementPhone(){
+  bool judgementPhone() {
     if (_phoneController.text.length == 11) {
       _bindPhonePresenter.sendSms(_phoneController.text.trim());
       return true;
@@ -285,8 +290,6 @@ class _BindPhonePageState extends State<BindPhonePage>
   @override
   void wechatLoginSuccess(String msg) {
     Toast.show(msg);
-    NavigatorUtils.push(context, PersonalRouter.person,replace: true);
+    NavigatorUtils.push(context, PersonalRouter.person, replace: true);
   }
-
-
 }
