@@ -1,11 +1,15 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../exam/exam_router.dart';
 import '../mvp/base_page.dart';
+import '../net/http_api.dart';
 import '../res/colors.dart';
 import '../routers/fluro_navigator.dart';
 import '../widgets/navbar.dart';
@@ -39,32 +43,44 @@ class _ReportPageState extends State<ReportPage> with BasePageMixin<ReportPage, 
   void getMore() {
     _loading = 1;
     setState(() {});
-    // todo 对接列表接口
-    Future.delayed(const Duration(seconds: 1), () {
-      List<dynamic> list = [];
-      for (int i = 0; i < 10; i++) {
-        Map<String, dynamic> data = {
-          'id': i,
-          'topic_cover': '',
-          'topic_name': '探索挪威',
-          'star': 4,
-          'character_name': '爱丽丝',
-          'character_avatar': '',
-          'name': '模考$i',
-          'duration': 900,
-          'score': 90,
-          'examiner_avatar': '',
-          'examiner_name': '考官',
-          'create_time': '2023-12-31 23:59:59'
-        };
-        dynamic item = formatData(data);
-        list.add(item);
-      }
-      _list.addAll(list);
-      _loading = 0;
-      setState(() {});
-    });
+    if (_type == 'chat') {
+      getChatReportList();
+    } else {
+      getExamReortList();
+    }
   }
+
+  void getChatReportList() {
+    if (_page == 1) {
+      _list = [];
+    }
+    _reportPagePresenter.requestNetwork<ResultData>(
+      Method.get,
+      url: HttpApi.studyReportList,
+      isShow: false,
+      isClose: false,
+      onSuccess: (result) {
+        _loading = 0;
+        setState(() {});
+        if (result == null || result.data == null) {
+          return;
+        }
+        List<dynamic> data = result.data as List<dynamic>;
+        List<ChatReportEntity> list = data.map((item) => ChatReportEntity.fromJson(item)).toList();
+        _list.addAll(list);
+      },
+      onError: (code, msg) {
+        _loading = 0;
+        setState(() {});
+        Toast.show(
+          msg,
+          duration: 1000,
+        );
+      },
+    );
+  }
+
+  void getExamReortList() {}
 
   dynamic formatData(dynamic data) {
     if (_type == 'chat') {
