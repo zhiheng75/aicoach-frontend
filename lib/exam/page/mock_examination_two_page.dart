@@ -1,5 +1,7 @@
+import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/dash_line.dart';
@@ -64,7 +66,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
           // fit: BoxFit.cover
         ),
         Positioned(
-            bottom: 2,
+            bottom: 0,
             left: 0,
             right: 0,
             child: Column(
@@ -227,7 +229,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                       backgroundColor: Color(0xFFFFFFFF),
                       border: null,
                       padding: EdgeInsetsDirectional.zero,
-                      leading: NavigationBackWidget(backUp: "2"),
+                      leading: NavigationBackWidget(),
                       middle: Text(
                         "KET考试模拟现场",
                         style: TextStyle(fontWeight: FontWeight.normal),
@@ -267,7 +269,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                             ],
                           )),
                     ),
-                    // Gaps.vGap10,
+                    Gaps.vGap10,
                     Expanded(
                       child: SizedBox(
                         height: double.infinity,
@@ -282,7 +284,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                               // color: Colors.white,
                               width: 188,
                               height: double.infinity,
-                              margin: const EdgeInsets.all(5),
+                              // margin: const EdgeInsets.all(10),
                               child: Column(
                                 children: [
                                   Gaps.vGap20,
@@ -312,7 +314,6 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                             ),
                             Gaps.hGap5,
                             Container(
-                              margin: const EdgeInsets.all(5),
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
@@ -322,8 +323,9 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                                       fit: BoxFit.fill)),
                               width: MediaQuery.of(context).size.width -
                                   188 * 2 -
-                                  40,
+                                  6.w * 2,
                               // width: double.infinity,
+
                               height: double.infinity,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -388,7 +390,13 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                                       onTap: () {
                                         //点击答题
                                         // showConfirmDialog();
-                                        showImageDialog();
+                                        // showImageDialog();
+
+                                        NavigatorUtils.push(
+                                          context,
+                                          replace: true,
+                                          ExamRouter.mockExaminationendOnePage,
+                                        );
                                       },
                                       child: Container(
                                           decoration: BoxDecoration(
@@ -414,8 +422,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                                 ],
                               ),
                             ),
+                            Gaps.hGap5,
                             Container(
-                              margin: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.white,
