@@ -18,29 +18,26 @@ class ChatReportEntity {
     if (json['id'] != null) {
       entity.id = json['id'];
     }
-    if (json['topic_cover'] != null) {
-      entity.topicCover = json['topic_cover'];
+    if (json['scene_image'] != null) {
+      entity.topicCover = json['scene_image'];
     }
-    if (json['topic_name'] != null) {
-      entity.topicName = json['topic_name'];
+    if (json['scene_title'] != null) {
+      entity.topicName = json['scene_title'];
     }
     if (json['duration'] != null) {
       entity.duration = json['duration'];
     }
-    if (json['star'] != null) {
-      entity.star = json['star'];
-    }
     if (json['score'] != null) {
       entity.score = json['score'];
     }
-    if (json['character_name'] != null) {
-      entity.characterName = json['character_name'];
+    if (json['name'] != null) {
+      entity.characterName = json['name'];
     }
-    if (json['character_avatar'] != null) {
-      entity.characterAvatar = json['character_avatar'];
+    if (json['avatar_url'] != null) {
+      entity.characterAvatar = json['avatar_url'];
     }
-    if (json['create_time'] != null) {
-      entity.createTime = json['create_time'];
+    if (json['created_at'] != null) {
+      entity.createTime = json['created_at'];
     }
     return entity;
   }
@@ -48,14 +45,13 @@ class ChatReportEntity {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'topic_cover': topicCover,
-      'topic_name': topicName,
+      'scene_image': topicCover,
+      'scene_title': topicName,
       'duration': duration,
-      'star': star,
       'score': score,
-      'character_name': characterName,
-      'character_avatar': characterAvatar,
-      'create_time': createTime,
+      'name': characterName,
+      'avatar_url': characterAvatar,
+      'created_at': createTime,
     };
   }
 
