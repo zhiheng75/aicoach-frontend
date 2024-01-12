@@ -43,9 +43,17 @@ class _BottomBarState extends State<BottomBar> {
   List<Uint8List> _bufferList = [];
   // ai回答消息
   NormalMessage? _answer;
-  bool _isSend = false;
 
   void getExample() {
+    // 判断是否需要地道表达
+    MessageEntity message = _homeProvider.messageList.lastWhere((message) => message.type == 'normal' && (message as NormalMessage).speaker == 'ai', orElse: () => NormalMessage());
+    if ((message as NormalMessage).text.isEmpty) {
+      Toast.show(
+        '暂无示例',
+        duration: 1000,
+      );
+      return;
+    }
     String text = 'Hello, I would like to ask what preparations need to be made for traveling abroad.';
     String textZh = '你好，可以告诉我国外旅游需要做哪些准备吗？';
     String audio = '';
@@ -124,6 +132,7 @@ class _BottomBarState extends State<BottomBar> {
                 _answer!.isTextEnd = true;
                 _homeProvider.notify();
                 _answer = null;
+                widget.controller.setDisabled(false);
                 return;
               };
               _answer!.text += answer;
@@ -140,14 +149,13 @@ class _BottomBarState extends State<BottomBar> {
         message.audio = [..._bufferList];
         message.speaker = 'user';
         _homeProvider.addNormalMessage(message);
-        _isSend = false;
       });
     } catch(e) {
-      _isSend = false;
       Toast.show(
         '发送失败，请稍后再试',
         duration: 1000,
       );
+      widget.controller.setDisabled(false);
     }
   }
 
@@ -287,9 +295,6 @@ class _BottomBarState extends State<BottomBar> {
                   if (!isAvailable()) {
                     return;
                   }
-                  if (_isSend) {
-                    return;
-                  }
                   try {
                     // 检查权限
                     bool isRequest = await _mediaUtils.checkMicrophonePermission();
@@ -297,6 +302,7 @@ class _BottomBarState extends State<BottomBar> {
                       return;
                     }
                     // 开始录音
+                    _bufferList = [];
                     _mediaUtils.startRecord(
                       onData: (buffer) {
                         _bufferList.add(buffer);
@@ -306,12 +312,25 @@ class _BottomBarState extends State<BottomBar> {
                         _recognizeUtil.pushAudioBuffer(2, buffer ?? Uint8List(0));
                       }
                     );
-                    _bufferList = [];
                     // 设置识别
                     _recognizeUtil.recognize((result) async {
-                      widget.controller.setShowRecord(false);
-                      await _mediaUtils.stopRecord();
-                      if (!_isSend) {
+                      bool shoRecord = widget.controller.showRecord.value;
+                      // 录音中
+                      if (shoRecord) {
+                        // 识别失败
+                        if (result['success'] == false) {
+                          widget.controller.setShowRecord(false);
+                          await _mediaUtils.stopRecord();
+                          Toast.show(
+                            result['message'],
+                            duration: 1000,
+                          );
+                        }
+                       return;
+                      }
+                      bool isInSendButton = widget.recordController.isInSendButton.value;
+                      // 取消发送
+                      if (!isInSendButton) {
                         return;
                       }
                       if (result['success'] == false) {
@@ -319,7 +338,7 @@ class _BottomBarState extends State<BottomBar> {
                           result['message'],
                           duration: 1000,
                         );
-                        _isSend = false;
+                        widget.controller.setDisabled(false);
                         return;
                       }
                       sendMessage(result['text']);
@@ -333,11 +352,19 @@ class _BottomBarState extends State<BottomBar> {
                   }
                 },
                 onEnd: (_) async {
-                  if (_isSend) {
+                  // 录音中因识别失败关闭录音操作后手指还未抬起
+                  if (!widget.controller.showRecord.value) {
                     return;
                   }
-                  _isSend = widget.recordController.isInSendButton.value;
+                  widget.controller.setShowRecord(false);
                   await _mediaUtils.stopRecord();
+                  // 取消发送则关闭识别
+                  if (!widget.recordController.isInSendButton.value) {
+                    await _recognizeUtil.cancelRecognize();
+                    return;
+                  }
+                  // 暂时禁用按钮
+                  widget.controller.setDisabled(true);
                 },
               ),
             ),

@@ -290,6 +290,7 @@ class EvaluateUtil {
             return;
           }
           Map<String, dynamic>? evaluation = XunfeiUtil.getEvaluateResult(response);
+          Log.d('evaluate result:$evaluation', tag: '识别结果');
           if (evaluation != null) {
             _result = evaluation;
           }
@@ -298,6 +299,7 @@ class EvaluateUtil {
         onDone: () {
           int? code = _websocket!.closeCode;
           String? reason = _websocket!.closeReason;
+          Log.d('recognize done:[code=$code][reason=$reason]', tag: '讯飞语音评测断开');
           if (code == WebSocketStatus.normalClosure) {
             onSuccess(_result);
           } else {
