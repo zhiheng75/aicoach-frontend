@@ -1,5 +1,6 @@
 import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/exam/view/bar_chart.dart';
+import 'package:Bubble/report/report_router.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -44,6 +45,10 @@ class _ExamPageState extends State<ExamPage>
   ];
 
   void startExam() {
+    // NavigatorUtils.push(
+    //   context,
+    //   ReportRouter.myExaminationPage,
+    // );
     NavigatorUtils.push(
       context,
       ExamRouter.mockExaminationOnePage,
@@ -678,70 +683,6 @@ class _ExamPageState extends State<ExamPage>
             Expanded(child: SingleChildScrollView(child: body())),
           ],
         ));
-
-    // return Container(
-    //   color: Colours.color_001652.withOpacity(0.5),
-    //   width: double.infinity,
-    //   child: Column(
-    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //     children: <Widget>[
-    //       Column(
-    //         mainAxisSize: MainAxisSize.min,
-    //         children: <Widget>[
-    //           const SizedBox(
-    //             height: 102.0,
-    //           ),
-    //           // tabbar,
-    //           const SizedBox(
-    //             height: 12.0,
-    //           ),
-    //           desc,
-    //         ],
-    //       ),
-    // Column(
-    //   mainAxisSize: MainAxisSize.min,
-    //   children: [
-    //     GestureDetector(
-    //       behavior: HitTestBehavior.opaque,
-    //       onTap: startExam,
-    //       child: Container(
-    //         width: 231.0,
-    //         height: 48.0,
-    //         decoration: BoxDecoration(
-    //           borderRadius: BorderRadius.circular(100.0),
-    //           border: Border.all(
-    //             width: 1.0,
-    //             style: BorderStyle.solid,
-    //             color: Colours.color_001652,
-    //           ),
-    //           gradient: const LinearGradient(
-    //             begin: Alignment.bottomLeft,
-    //             end: Alignment.topRight,
-    //             colors: [
-    //               Colours.color_9AC3FF,
-    //               Colours.color_FF71E0,
-    //             ],
-    //           ),
-    //         ),
-    //         alignment: Alignment.center,
-    //         child: const Text(
-    //           '开始考试',
-    //           style: TextStyle(
-    //             fontSize: 18.0,
-    //             fontWeight: FontWeight.w400,
-    //             color: Colours.color_001652,
-    //           ),
-    //         ),
-    //       ),
-    //     ),
-    //     SizedBox(
-    //       height: _screenUtil.bottomBarHeight + 24.0,
-    //     ),
-    //   ],
-    // ),
-    //     ],
-    //   ),
-    // );
   }
 
   @override

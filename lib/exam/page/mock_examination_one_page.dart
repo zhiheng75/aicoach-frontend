@@ -2,8 +2,9 @@ import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
-import 'package:Bubble/util/image_utils.dart';
+import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/dash_line.dart';
+import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -79,22 +80,31 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage> {
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
           resizeToAvoidBottomInset: false,
-          body: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: ImageUtils.getAssetImage("splash_bg"),
-                      fit: BoxFit.fill)),
-              child: Expanded(
+          body: Stack(
+            children: [
+              const LoadImage(
+                "_headerImg",
+                holderImg: "splash_bg",
+                height: double.infinity,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+              Expanded(
                 child: Column(
                   children: [
                     Gaps.vGap60,
-                    numberWidget,
+                    Row(
+                      children: [
+                        const NavigationBackWidget(),
+                        numberWidget,
+                      ],
+                    ),
                     GestureDetector(
                       onTap: () {
                         NavigatorUtils.push(
                           context,
-                          ExamRouter.mockExaminationTwoPage,
+                          replace: true,
+                          ExamRouter.mockExaminationendTwoPage,
                         );
                       },
                       child: const Text(
@@ -130,12 +140,14 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage> {
                                 color: Colors.white,
                               ),
                             ),
-                            Gaps.vGap8,
+                            Gaps.vGap10,
                           ],
                         )),
                   ],
                 ),
-              ))),
+              )
+            ],
+          )),
     );
   }
 }
