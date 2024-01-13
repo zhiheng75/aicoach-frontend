@@ -1,7 +1,4 @@
 import 'dart:ui';
-import 'package:Bubble/scene/entity/scene_entity.dart';
-import 'package:Bubble/util/EventBus.dart';
-import 'package:Bubble/util/confirm_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +8,9 @@ import '../home/provider/home_provider.dart';
 import '../mvp/base_page.dart';
 import '../net/dio_utils.dart';
 import '../net/http_api.dart';
+import '../scene/entity/scene_entity.dart';
+import '../util/EventBus.dart';
+import '../util/confirm_utils.dart';
 import '../util/log_utils.dart';
 import '../util/media_utils.dart';
 import '../util/toast_utils.dart';
@@ -46,14 +46,16 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   CharacterEntity? _character;
   int _characterIndex = -1;
   bool _isCharacterChanging = false;
+  // 背景控制器
+  final BackgroundController _backgroundController = BackgroundController();
   // 底部按钮控制器
   final BottomBarController _bottomBarControll = BottomBarController();
   // 底部按钮控制器
   final RecordController _recordController = RecordController();
-  // 滑动初始位置
-  Offset? _dragInitialPosition;
-  // 滑动偏移量
-  double _dragOffset = 0;
+  // // 滑动初始位置
+  // Offset? _dragInitialPosition;
+  // // 滑动偏移量
+  // double _dragOffset = 0;
 
   void init() {
     _pageState = 'loading';
@@ -100,6 +102,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       return;
     }
     if (_characterIndex == characterIndex) {
+      _isCharacterChanging = false;
       return;
     }
     // 话题或者场景
@@ -109,6 +112,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
         context: context,
         title: '你要切换角色吗？',
         onConfirm: () {
+          _isCharacterChanging = true;
           confirmChangeCharacter(characterIndex);
         },
         child: const Text(
@@ -123,11 +127,11 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       );
       return;
     }
+    _isCharacterChanging = true;
     confirmChangeCharacter(characterIndex);
   }
 
   void confirmChangeCharacter(int characterIndex) {
-    _isCharacterChanging = true;
     _characterIndex = characterIndex;
     CharacterEntity character = _characterList[characterIndex];
     _character = character;
@@ -189,26 +193,6 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       );
       return;
     }
-    // showModalBottomSheet(
-    //   context: context,
-    //   backgroundColor: Colors.transparent,
-    //   barrierColor: Colors.transparent,
-    //   isScrollControlled: true,
-    //   isDismissible: false,
-    //   builder: (_) => Topic(
-    //     onSelect: (topic) {
-    //       if (_homeProvider.topic?.id == topic.id) {
-    //         Toast.show(
-    //           '该话题正在使用中',
-    //           duration: 1000,
-    //         );
-    //         return;
-    //       }
-    //       Navigator.of(context).pop();
-    //       _homeProvider.topic = topic;
-    //     },
-    //   ),
-    // );
   }
 
   bool checkTopicShouldOpen() {
@@ -323,22 +307,38 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
 
     return GestureDetector(
       onHorizontalDragStart: (details) {
-        _dragInitialPosition = details.globalPosition;
-        _dragOffset = 0;
+        if (_isCharacterChanging) {
+          return;
+        }
+        int pre = _characterIndex > 0 ? _characterIndex - 1 : _characterList.length - 1;
+        int next = _characterIndex < _characterList.length - 1 ? _characterIndex + 1 : 0;
+        _backgroundController.slideStart(
+          position: details.globalPosition,
+          leftImage: _characterList.elementAt(pre).imageUrl,
+          rightImage: _characterList.elementAt(next).imageUrl,
+        );
       },
       onHorizontalDragUpdate: (details) {
-        Offset position = details.globalPosition;
-        _dragOffset = position.dx - _dragInitialPosition!.dx;
+        if (_isCharacterChanging) {
+          return;
+        }
+        _backgroundController.slideMove(details.globalPosition);
       },
       onHorizontalDragEnd: (_) {
-        if (_dragOffset.abs() <= 50.0) {
+        if (_isCharacterChanging) {
           return;
         }
-        int index = _dragOffset < 0 ? _characterIndex + 1 : _characterIndex - 1;
-        if (index < 0 || index > _characterList.length - 1) {
-          return;
-        }
-        changeCharacter(index);
+        _backgroundController.slideEnd((direction) {
+          bool isSlideLeft = direction == 'left';
+          int index = isSlideLeft ? _characterIndex + 1 : _characterIndex - 1;
+          if (index < 0) {
+            index = _characterList.length + index;
+          }
+          if (index == _characterList.length) {
+            index = 0;
+          }
+          changeCharacter(index);
+        });
       },
       child: Stack(
         children: <Widget>[
@@ -347,7 +347,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
               sigmaX: 1.0,
               sigmaY: 1.0,
             ),
-            child: const Background(),
+            child: Background(controller: _backgroundController),
           ),
           ValueListenableBuilder(
             valueListenable: _bottomBarControll.showMessageList,
