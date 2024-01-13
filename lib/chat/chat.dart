@@ -48,14 +48,12 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   bool _isCharacterChanging = false;
   // 背景控制器
   final BackgroundController _backgroundController = BackgroundController();
+  // 消息列表滚动控制器
+  final ScrollController _listScrollController = ScrollController();
   // 底部按钮控制器
   final BottomBarController _bottomBarControll = BottomBarController();
-  // 底部按钮控制器
+  // 录音界面控制器
   final RecordController _recordController = RecordController();
-  // // 滑动初始位置
-  // Offset? _dragInitialPosition;
-  // // 滑动偏移量
-  // double _dragOffset = 0;
 
   void init() {
     _pageState = 'loading';
@@ -365,6 +363,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
                   right: 16.0,
                 ),
                 child: MessageList(
+                  controller: _listScrollController,
                   onSelectTopic: selectTopic,
                 ),
               );

@@ -104,10 +104,9 @@ class Confirm extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: button(
-            '确定',
+            cancelButtonText ?? '取消',
             onPress: () {
               Navigator.of(context).pop();
-              onConfirm();
             },
           ),
         ),
@@ -118,9 +117,10 @@ class Confirm extends StatelessWidget {
         ),
         Expanded(
           child: button(
-            cancelButtonText ?? '取消',
+            '确定',
             onPress: () {
               Navigator.of(context).pop();
+              onConfirm();
             },
           ),
         ),

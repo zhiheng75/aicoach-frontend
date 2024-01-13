@@ -34,10 +34,13 @@ class _SelectSceneState extends State<SelectScene> {
   // 状态 loading-加载中 fail-失败 success-成功
   String _pageState = 'loading';
   List<CategoryEntity> _categoryList = [];
-  ValueNotifier<dynamic> _currentCategory = ValueNotifier(null);
+  ValueNotifier<int> _currentIndex = ValueNotifier(0);
+  Offset? _initialPosition;
+  double _offset = 0;
   // 状态 loading-加载中 fail-失败 success-成功
   String _sceneState = 'loading';
   List<SceneEntity> _sceneList = [];
+  final ScrollController _scrollController = ScrollController();
   double _pageHeight = 340.0;
 
   void init() {
@@ -69,7 +72,7 @@ class _SelectSceneState extends State<SelectScene> {
         setState(() {});
 
         if (_categoryList.isNotEmpty) {
-          getSceneListByCategory(_categoryList.first.id);
+          changeCategory(0);
         }
       },
       onError: (code, msg) {
@@ -80,21 +83,21 @@ class _SelectSceneState extends State<SelectScene> {
     );
   }
 
-  void getSceneListByCategory(dynamic categoryId) {
-    _currentCategory.value = categoryId;
+  void changeCategory(int index) {
+    _currentIndex.value = index;
+    getSceneListByCategory();
+  }
 
+  void getSceneListByCategory() {
     _sceneState = 'loading';
     setState(() {});
-
-    for (int i = 0; i < _categoryList.length; i++) {
-      CategoryEntity category = _categoryList.elementAt(i);
-      if (category.id == categoryId) {
-        _sceneList = category.sceneList;
-        _sceneState = 'success';
-        setState(() {});
-        break;
-      }
-    }
+    CategoryEntity category = _categoryList.elementAt(_currentIndex.value);
+    _sceneList = category.sceneList;
+    _sceneState = 'success';
+    setState(() {});
+    Future.delayed(Duration.zero, () {
+      _scrollController.jumpTo(0);
+    });
   }
 
   void selectScene(SceneEntity scene) {
@@ -168,8 +171,9 @@ class _SelectSceneState extends State<SelectScene> {
     double titleHeight = 66.0;
     double categoryHeight = 30.0;
 
-    Widget categoryItem(CategoryEntity category, dynamic currentCategory) {
-      bool isSelected = category.id == currentCategory;
+    Widget categoryItem(int index, int currentIndex) {
+      CategoryEntity category = _categoryList.elementAt(index);
+      bool isSelected = index == currentIndex;
 
       TextStyle style = TextStyle(
         fontSize: 16.0,
@@ -185,7 +189,7 @@ class _SelectSceneState extends State<SelectScene> {
           if (isSelected) {
             return;
           }
-          getSceneListByCategory(category.id);
+          changeCategory(index);
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -223,11 +227,11 @@ class _SelectSceneState extends State<SelectScene> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: ValueListenableBuilder(
-          valueListenable: _currentCategory,
-          builder: (_, category, __) {
+          valueListenable: _currentIndex,
+          builder: (_, index, __) {
             List<Widget> children = [];
             for (int i = 0; i < _categoryList.length; i++) {
-              children.add(categoryItem(_categoryList.elementAt(i), category));
+              children.add(categoryItem(i, index));
               if (i < _categoryList.length - 1) {
                 children.add(const SizedBox(width: 24.0,));
               }
@@ -242,7 +246,7 @@ class _SelectSceneState extends State<SelectScene> {
       ),
     );
 
-    Widget sceneItem(SceneEntity scene) {
+    Widget sceneItem(SceneEntity scene, double size) {
       return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => selectScene(scene),
@@ -252,16 +256,31 @@ class _SelectSceneState extends State<SelectScene> {
               borderRadius: BorderRadius.circular(12.0),
               child: LoadImage(
                 scene.cover,
-                width: 160.0,
-                height: 160.0,
+                width: size,
+                height: size,
               ),
             ),
             Positioned(
-              bottom: 16.0,
+              bottom: 0,
               left: 0,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
+              child: Container(
+                width: size,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Colors.black.withOpacity(0.8),
+                      Colors.black.withOpacity(0.11),
+                      Colors.black.withOpacity(0.0),
+                    ],
+                    stops: const [0, 0.93, 1],
+                  ),
+                ),
+                padding: const EdgeInsets.only(
+                  bottom: 16.0,
+                  left: 16.0,
+                  right: 16.0,
                 ),
                 child: Text(
                   scene.desc,
@@ -302,27 +321,46 @@ class _SelectSceneState extends State<SelectScene> {
       List<SceneEntity> row = [];
       for (int i = 0; i < _sceneList.length; i++) {
         row.add(_sceneList.elementAt(i));
-        if (row.length == 3) {
+        if (row.length == 2) {
           rows.add(row);
           row = [];
         }
       }
 
-      // 不足3个
       if (row.isNotEmpty) {
         rows.add(row);
       }
 
+      double width = _screenUtil.screenWidth;
       double height = _pageHeight - titleHeight - categoryHeight - 12 - _screenUtil.bottomBarHeight;
-      scene = SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
+      scene = GestureDetector(
+        onHorizontalDragStart: (details) {
+          _initialPosition = details.globalPosition;
+          _offset = 0;
+        },
+        onHorizontalDragUpdate: (details) {
+          Offset position = details.globalPosition;
+          if (position.dy - _initialPosition!.dy < 5.0) {
+            _offset = position.dx - _initialPosition!.dx;
+          }
+        },
+        onHorizontalDragEnd: (_) {
+          if (_offset.abs() > 50) {
+            int index = _offset < 0 ? _currentIndex.value + 1 : _currentIndex.value - 1;
+            if (index < 0 || index == _categoryList.length) {
+              return;
+            }
+            changeCategory(index);
+          }
+        },
         child: Container(
-          width: 528.0,
+          width: width,
           height: height,
           padding: const EdgeInsets.symmetric(
             horizontal: 16.0,
           ),
           child: ListView.builder(
+            controller: _scrollController,
             padding: const EdgeInsets.all(0.0),
             itemCount: rows.length,
             itemBuilder: (_, i) {
@@ -330,7 +368,7 @@ class _SelectSceneState extends State<SelectScene> {
               List<Widget> children = [];
               for (int i = 0; i < row.length; i++) {
                 SceneEntity scene = row.elementAt(i);
-                children.add(sceneItem(scene));
+                children.add(sceneItem(scene, (width - 40.0) * 0.5));
                 if (i < row.length - 1) {
                   children.add(const SizedBox(
                     width: 8.0,
