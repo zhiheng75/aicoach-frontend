@@ -132,14 +132,20 @@ class _BottomBarState extends State<BottomBar> {
                 _answer!.isTextEnd = true;
                 _homeProvider.notify();
                 _answer = null;
-                widget.controller.setDisabled(false);
                 return;
               };
               _answer!.text += answer;
               _homeProvider.notify();
               return;
             }
-
+            if (answer is Uint8List) {
+              _mediaUtils.playLoop(
+                answer,
+                whenFinished: () {
+                  widget.controller.setDisabled(false);
+                },
+              );
+            }
           },
         );
       }
