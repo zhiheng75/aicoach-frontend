@@ -363,7 +363,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
                   right: 16.0,
                 ),
                 child: MessageList(
-                  controller: _listScrollController,
+                  controller: _listScrollController        ,
                   onSelectTopic: selectTopic,
                 ),
               );
@@ -379,23 +379,25 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
           ),
           Positioned(
             top: 216.0,
+            right: 0,
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: openTopic,
               child: Container(
                 width: 52.0,
                 height: 34.0,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(100.0),
-                    bottomRight: Radius.circular(100.0),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(100.0),
+                    bottomLeft: Radius.circular(100.0),
                   ),
-                  border: Border.all(
-                    width: 1.0,
-                    style: BorderStyle.solid,
-                    color: Colors.white.withOpacity(0.2),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFFCCFEF2),
+                      Color(0xFFDEFFF3),
+                    ],
+                    stops: [0.28, 0.9],
                   ),
-                  color: const Color(0xFFB9B9B9).withOpacity(0.36),
                 ),
                 alignment: Alignment.center,
                 child: const Text(
@@ -403,8 +405,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
                   style: TextStyle(
                     fontSize: 14.0,
                     fontWeight: FontWeight.w400,
-                    color: Colors.white,
-                    height: 16.9 / 14.0,
+                    color: Colors.black,
                   ),
                 ),
               ),

@@ -22,17 +22,28 @@ class MessageList extends StatefulWidget {
 
 class _MessageListState extends State<MessageList> {
 
+  bool isDestroyed = false;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       WidgetsBinding.instance.addPersistentFrameCallback((__) {
+        if (isDestroyed) {
+          return;
+        }
         double maxScrollExtent = widget.controller.position.maxScrollExtent;
         if (maxScrollExtent > widget.controller.offset) {
           widget.controller.animateTo(maxScrollExtent, duration: const Duration(milliseconds: 200), curve: Curves.ease);
         }
       });
     });
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    isDestroyed = true;
   }
 
   @override

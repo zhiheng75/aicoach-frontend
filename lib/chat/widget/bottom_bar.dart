@@ -45,6 +45,9 @@ class _BottomBarState extends State<BottomBar> {
   NormalMessage? _answer;
 
   void getExample() {
+    if (widget.controller.disabled.value) {
+      return;
+    }
     // 判断是否需要地道表达
     MessageEntity message = _homeProvider.messageList.lastWhere((message) => message.type == 'normal' && (message as NormalMessage).speaker == 'ai', orElse: () => NormalMessage());
     if ((message as NormalMessage).text.isEmpty) {
@@ -54,9 +57,6 @@ class _BottomBarState extends State<BottomBar> {
       );
       return;
     }
-    String text = 'Hello, I would like to ask what preparations need to be made for traveling abroad.';
-    String textZh = '你好，可以告诉我国外旅游需要做哪些准备吗？';
-    String audio = '';
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -64,11 +64,7 @@ class _BottomBarState extends State<BottomBar> {
       isScrollControlled: true,
       isDismissible: false,
       clipBehavior: Clip.none,
-      builder: (_) => Example(
-        text: text,
-        textZh: textZh,
-        audio: audio,
-      ),
+      builder: (_) => Example(message: message),
     );
   }
 

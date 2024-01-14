@@ -15,8 +15,12 @@ bool _playing = false;
 
 class MediaUtils {
 
-  MediaUtils();
+  factory MediaUtils() {
+    return _mediaUtils;
+  }
+  MediaUtils._internal();
 
+  static final MediaUtils _mediaUtils = MediaUtils._internal();
   FlutterSoundRecorder? _recorder;
   FlutterSoundPlayer? _player;
   StreamSubscription? _subscription;
@@ -42,6 +46,15 @@ class MediaUtils {
       if (whenFinished != null) {
         whenFinished();
       }
+    }
+  }
+
+  Future<void> stopPlay() async {
+    if (_player == null) {
+      return;
+    }
+    if (_player!.isPlaying) {
+      await _player!.stopPlayer();
     }
   }
 
