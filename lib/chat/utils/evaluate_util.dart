@@ -135,6 +135,7 @@ class EvaluateUtil {
       DioUtils.instance.requestNetwork<ResultData>(
         Method.post,
         HttpApi.addScore,
+        params: params,
         onSuccess: (result) {
           if (result != null && result.code == 200) {
             Log.d('upload score success', tag: '上传评分');
@@ -290,7 +291,6 @@ class EvaluateUtil {
             return;
           }
           Map<String, dynamic>? evaluation = XunfeiUtil.getEvaluateResult(response);
-          Log.d('evaluate result:$evaluation', tag: '识别结果');
           if (evaluation != null) {
             _result = evaluation;
           }

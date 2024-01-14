@@ -283,7 +283,7 @@ class _SelectSceneState extends State<SelectScene> {
                   right: 16.0,
                 ),
                 child: Text(
-                  scene.desc,
+                  scene.name,
                   style: const TextStyle(
                     fontSize: 14.0,
                     fontWeight: FontWeight.w400,

@@ -286,10 +286,6 @@ class _ChatInputState extends State<ChatInput> {
 
   void addRecognizeListenner() {
     recognizer!.setOnMessage((event) async {
-      if (kDebugMode) {
-        print('识别结果:$event');
-      }
-
       // 解析结果
       Map<String, dynamic> response = jsonDecode(event);
       Map<String, dynamic> result = XunfeiUtil.getRecognizeResult(response);
@@ -301,9 +297,6 @@ class _ChatInputState extends State<ChatInput> {
       String text = result['text'];
       // 非识别结束
       if (status < 2) {
-        if (kDebugMode) {
-          print('vad 在下一段');
-        }
         isVadInNext = true;
         if (message == null) {
           message = provider!.createMessage();

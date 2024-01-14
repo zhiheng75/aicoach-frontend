@@ -94,15 +94,16 @@ class _MessageItemState extends State<MessageItem> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              _message.name,
-              style: const TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-                height: 22.0 / 16.0,
+            if (_message.name != '')
+              Text(
+                _message.name,
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                  height: 22.0 / 16.0,
+                ),
               ),
-            ),
             Text(
               _message.desc,
               style: const TextStyle(

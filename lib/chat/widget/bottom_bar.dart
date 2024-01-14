@@ -2,6 +2,7 @@
 
 import 'dart:typed_data';
 
+import 'package:Bubble/util/EventBus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +35,7 @@ class BottomBar extends StatefulWidget {
   State<BottomBar> createState() => _BottomBarState();
 }
 
-class _BottomBarState extends State<BottomBar> {
+class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   late ChatWebsocket _chatWebsocket;
   final ScreenUtil _screenUtil = ScreenUtil();
   late HomeProvider _homeProvider;
@@ -43,6 +44,8 @@ class _BottomBarState extends State<BottomBar> {
   List<Uint8List> _bufferList = [];
   // ai回答消息
   NormalMessage? _answer;
+  // app状态
+  AppLifecycleState? _appLifecycleState;
 
   void getExample() {
     if (widget.controller.disabled.value) {
@@ -103,7 +106,7 @@ class _BottomBarState extends State<BottomBar> {
     return isAvailable;
   }
 
-  void sendMessage(String text) async {
+  Future<void> connectWebsocket() async {
     try {
       if (_homeProvider.sessionId == '') {
         String characterId = _homeProvider.character.characterId;
@@ -118,39 +121,67 @@ class _BottomBarState extends State<BottomBar> {
         _homeProvider.sessionId = await _chatWebsocket.startChat(
           characterId: characterId,
           sceneId: sceneId,
-          onAnswer: (answer) {
-            if (_answer == null) {
-              _answer = NormalMessage();
-              _homeProvider.addNormalMessage(_answer!);
-            }
-            if (answer is String) {
-              if (answer.startsWith('[end=')) {
-                _answer!.isTextEnd = true;
-                _homeProvider.notify();
-                _answer = null;
-                return;
-              };
-              _answer!.text += answer;
-              _homeProvider.notify();
-              return;
-            }
-            if (answer is Uint8List) {
-              _mediaUtils.playLoop(
-                answer,
-                whenFinished: () {
-                  widget.controller.setDisabled(false);
-                },
-              );
-            }
+          onAnswer: onAnswer,
+          onEnd: () {
+            String tip = 'Conversation finished！';
+            _homeProvider.addTipMessage(tip);
+            EventBus().emit('SCROLL_MESSAGE_LIST');
+            // 断开则禁用按钮
+            widget.controller.setDisabled(true);
           },
         );
       }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void onAnswer(dynamic answer) {
+    if (_answer == null) {
+      _answer = NormalMessage();
+      _homeProvider.addNormalMessage(_answer!);
+    }
+    if (answer is String) {
+      if (answer.startsWith('[end=')) {
+        _answer!.isTextEnd = true;
+        _homeProvider.notify();
+        _answer = null;
+        return;
+      };
+      _answer!.text += answer;
+      _homeProvider.notify();
+      EventBus().emit('SCROLL_MESSAGE_LIST');
+      return;
+    }
+    if (answer is Uint8List) {
+      if (_appLifecycleState == AppLifecycleState.paused) {
+        return;
+      }
+      _mediaUtils.playLoop(
+        answer,
+        whenFinished: () {
+          widget.controller.setDisabled(false);
+          _chatWebsocket.addAwayTimer(() {
+            String tip = '未发送语音已超过30秒，如若再无发送，将在30秒后自动结束对话！';
+            _homeProvider.addTipMessage(tip);
+            EventBus().emit('SCROLL_MESSAGE_LIST');
+          });
+        },
+      );
+    }
+  }
+
+  void sendMessage(String text) async {
+    try {
+      await connectWebsocket();
       _chatWebsocket.sendMessage(text, () {
         NormalMessage message = _homeProvider.createNormalMessage(true);
         message.text = text;
         message.audio = [..._bufferList];
         message.speaker = 'user';
         _homeProvider.addNormalMessage(message);
+        _answer = null;
+        EventBus().emit('SCROLL_MESSAGE_LIST');
       });
     } catch(e) {
       Toast.show(
@@ -166,10 +197,20 @@ class _BottomBarState extends State<BottomBar> {
     super.initState();
     _chatWebsocket = widget.chatWebsocket;
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    // 监听App状态
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    _appLifecycleState = state;
+    Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlayLoop());
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

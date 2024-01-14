@@ -1,6 +1,7 @@
 class SceneEntity {
 
   int id = 0;
+  String name = '';
   String desc = '';
   String cover = '';
 
@@ -13,7 +14,10 @@ class SceneEntity {
       entity.id = json['id'];
     }
     if (json['title'] != null) {
-      entity.desc = json['title'];
+      entity.name = json['title'];
+    }
+    if (json['desc'] != null) {
+      entity.desc = json['desc'];
     }
     if (json['title_image'] != null) {
       entity.cover = json['title_image'];
@@ -24,7 +28,8 @@ class SceneEntity {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'title': desc,
+      'title': name,
+      'desc': desc,
       'title_image': cover,
     };
   }

@@ -1,4 +1,5 @@
 import 'package:Bubble/chat/entity/topic_entity.dart';
+import 'package:Bubble/util/EventBus.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,28 +23,34 @@ class MessageList extends StatefulWidget {
 
 class _MessageListState extends State<MessageList> {
 
-  bool isDestroyed = false;
+  bool _needScroll = false;
+
+  void scrollToEnd() {
+    _needScroll = false;
+    double maxScrollExtent = widget.controller.position.maxScrollExtent;
+    if (maxScrollExtent > widget.controller.offset) {
+      widget.controller.animateTo(maxScrollExtent, duration: const Duration(milliseconds: 200), curve: Curves.ease);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    EventBus().on('SCROLL_MESSAGE_LIST', (_) => _needScroll = true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       WidgetsBinding.instance.addPersistentFrameCallback((__) {
-        if (isDestroyed) {
+        if (!_needScroll) {
           return;
         }
-        double maxScrollExtent = widget.controller.position.maxScrollExtent;
-        if (maxScrollExtent > widget.controller.offset) {
-          widget.controller.animateTo(maxScrollExtent, duration: const Duration(milliseconds: 200), curve: Curves.ease);
-        }
+        scrollToEnd();
       });
     });
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-    isDestroyed = true;
+  void dispose() {
+    EventBus().off('SCROLL_MESSAGE_LIST');
+    super.dispose();
   }
 
   @override

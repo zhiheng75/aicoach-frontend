@@ -36,6 +36,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePresenter>, AutomaticKeepAliveClientMixin<ChatPage> implements ChatView {
   final ChatWebsocket _chatWebsocket = ChatWebsocket();
+  final MediaUtils _mediaUtils = MediaUtils();
   late HomeProvider _homeProvider;
   late ChatPagePresenter _chatPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
@@ -103,7 +104,6 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       _isCharacterChanging = false;
       return;
     }
-    // 话题或者场景
     String sessionType = _homeProvider.sessionType;
     if (sessionType == 'topic' || sessionType == 'scene') {
       ConfirmUtils.show(
@@ -114,7 +114,27 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
           confirmChangeCharacter(characterIndex);
         },
         child: const Text(
-          '场景角色会结束当前对话',
+          '切换角色会结束当前对话',
+          style: TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.w400,
+            color: Color(0xFF333333),
+            height: 18.0 / 15.0,
+          ),
+        ),
+      );
+      return;
+    }
+    if (_homeProvider.sessionId != '') {
+      ConfirmUtils.show(
+        context: context,
+        title: '你要切换角色吗？',
+        onConfirm: () {
+          _isCharacterChanging = true;
+          confirmChangeCharacter(characterIndex);
+        },
+        child: const Text(
+          '切换角色会结束当前对话',
           style: TextStyle(
             fontSize: 15.0,
             fontWeight: FontWeight.w400,
@@ -137,33 +157,13 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     startNormalChat(character);
   }
 
-  void startNormalChat(CharacterEntity character) async {
-    await _chatWebsocket.stopChat();
-    _homeProvider.sessionId = '';
-    _homeProvider.character = character;
-    _homeProvider.clearMessageList();
-    Future.delayed(Duration.zero, () {
-      _homeProvider.addIntroductionMessage();
-      _homeProvider.addTipMessage('Role-plays started！');
-      NormalMessage normalMessage = _homeProvider.createNormalMessage();
-      normalMessage.text = _character!.text;
-      _homeProvider.addNormalMessage(normalMessage);
-      MediaUtils().play(
-        _character!.audio,
-        whenFinished: () {
-          _bottomBarControll.setDisabled(false);
-          _isCharacterChanging = false;
-        },
-      );
-    });
-  }
-
   void openTopic() {
     String sessionType = _homeProvider.sessionType;
     // 自由对话
     if (sessionType == 'normal' && checkTopicShouldOpen()) {
       getTopicList((topicList) {
         _homeProvider.addTopicMessage(topicList);
+        EventBus().emit('SCROLL_MESSAGE_LIST');
       });
     }
     // 话题对话或者场景对话
@@ -177,6 +177,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
         onConfirm: () {
           getTopicList((topicList) {
             _homeProvider.addTopicMessage(topicList);
+            EventBus().emit('SCROLL_MESSAGE_LIST');
           });
         },
         child: const Text(
@@ -242,8 +243,34 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     startTopicChat(topic);
   }
 
+  Future<void> stopCurrentChat() async {
+    await _chatWebsocket.stopChat('manual');
+    await _mediaUtils.stopPlayLoop();
+  }
+
+  void startNormalChat(CharacterEntity character) async {
+    await stopCurrentChat();
+    _homeProvider.sessionId = '';
+    _homeProvider.character = character;
+    _homeProvider.clearMessageList();
+    Future.delayed(Duration.zero, () {
+      _homeProvider.addIntroductionMessage();
+      _homeProvider.addTipMessage('Role-plays started！');
+      NormalMessage normalMessage = _homeProvider.createNormalMessage();
+      normalMessage.text = _character!.text;
+      _homeProvider.addNormalMessage(normalMessage);
+      MediaUtils().play(
+        _character!.audio,
+        whenFinished: () {
+          _bottomBarControll.setDisabled(false);
+          _isCharacterChanging = false;
+        },
+      );
+    });
+  }
+
   void startTopicChat(TopicEntity topic) async {
-    await _chatWebsocket.stopChat();
+    await stopCurrentChat();
     _homeProvider.sessionId = '';
     _homeProvider.topic = topic;
     _homeProvider.clearMessageList();
@@ -255,11 +282,12 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   }
 
   void startSceneChat(SceneEntity scene) async {
-    await _chatWebsocket.stopChat();
+    await stopCurrentChat();
     _homeProvider.sessionId = '';
     _homeProvider.scene = scene;
     _homeProvider.clearMessageList();
     Future.delayed(Duration.zero, () {
+      _homeProvider.addIntroductionMessage();
       _homeProvider.addTipMessage('Scene started！');
       _bottomBarControll.setDisabled(false);
     });

@@ -55,6 +55,7 @@ class MediaUtils {
     }
     if (_player!.isPlaying) {
       await _player!.stopPlayer();
+      await _destroyPlayer();
     }
   }
 
@@ -64,6 +65,11 @@ class MediaUtils {
       return;
     }
     _playLoop(whenFinished);
+  }
+
+  Future<void> stopPlayLoop() async {
+    await stopPlay();
+    _playing = false;
   }
 
   void startRecord({
