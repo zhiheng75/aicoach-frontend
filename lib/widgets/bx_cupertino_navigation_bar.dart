@@ -92,7 +92,6 @@ class NavigationBackWidget extends StatelessWidget {
   final Alignment alignment;
   final EdgeInsetsGeometry padding;
   final int? leftIconPoint;
-
   final double size;
 
   static setBackCodePoint(int codePoint) {
@@ -117,17 +116,15 @@ class NavigationBackWidget extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () async {
-        FocusManager.instance.primaryFocus?.unfocus();
-        final isBack = await Navigator.maybePop(context);
-        if (!isBack) {
-          await SystemNavigator.pop();
+        if (onBack != null) {
+          return onBack!();
+        } else {
+          FocusManager.instance.primaryFocus?.unfocus();
+          final isBack = await Navigator.maybePop(context);
+          if (!isBack) {
+            await SystemNavigator.pop();
+          }
         }
-        // if (onBack != null) {
-        //   return onBack!();
-        // } else {
-        //   // Navigator.of(context).pop();
-        // SystemNavigator.pop();
-        // }
       },
       child: Container(
         // color: Colors.black,
