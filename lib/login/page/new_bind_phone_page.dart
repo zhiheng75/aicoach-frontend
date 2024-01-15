@@ -53,6 +53,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(

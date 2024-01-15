@@ -9,6 +9,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:Bubble/widgets/my_alert.dart';
 
 class MockExaminationTwoPage extends StatefulWidget {
   const MockExaminationTwoPage({super.key});
@@ -18,7 +19,11 @@ class MockExaminationTwoPage extends StatefulWidget {
 }
 
 class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
-  String type = "2";
+  late String numberType = "2";
+
+  late bool isTalk = false;
+
+  late BuildContext bcontext;
 
   ///启动倒计时器
   // void _startTimer() {
@@ -91,32 +96,32 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
       ],
     );
 
-    return Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            // color: Colors.black,
-            image: DecorationImage(
-                image: ImageUtils.getAssetImage("mkbg"), fit: BoxFit.fill)),
-        width: 140,
-        height: 100,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            isVector
-                ? Image.asset(
-                    'assets/images/shengbo.gif',
-                    width: 35,
-                    height: 18,
-                    fit: BoxFit.fitWidth,
-                  )
-                : Container(),
-            Text(name,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
-                )),
-          ],
-        ));
+    // return Container(
+    //     decoration: BoxDecoration(
+    //         borderRadius: BorderRadius.circular(10),
+    //         // color: Colors.black,
+    //         image: DecorationImage(
+    //             image: ImageUtils.getAssetImage("mkbg"), fit: BoxFit.fill)),
+    //     width: 140,
+    //     height: 100,
+    //     child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.end,
+    //       children: [
+    //         isVector
+    //             ? Image.asset(
+    //                 'assets/images/shengbo.gif',
+    //                 width: 35,
+    //                 height: 18,
+    //                 fit: BoxFit.fitWidth,
+    //               )
+    //             : Container(),
+    //         Text(name,
+    //             style: const TextStyle(
+    //               fontSize: 12,
+    //               color: Colors.white,
+    //             )),
+    //       ],
+    //     ));
   }
 
   //说话的框
@@ -210,8 +215,23 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
         });
   }
 
+  ///返回事件
+  void onBack() {
+    myAlert.showAlert(bcontext,
+        title: "离开考场",
+        content: "模拟考试进行中,\n请尽可能一次性完成整场模拟考试", clickCallback: (index, text) {
+      if (index == 1) {
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+        ]);
+        Navigator.pop(context);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    bcontext = context;
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -225,21 +245,41 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
               child: Expanded(
                 child: Column(
                   children: [
-                    const XTCupertinoNavigationBar(
-                      backgroundColor: Color(0xFFFFFFFF),
+                    XTCupertinoNavigationBar(
+                      backgroundColor: const Color(0xFFFFFFFF),
                       border: null,
                       padding: EdgeInsetsDirectional.zero,
-                      leading: NavigationBackWidget(),
-                      middle: Text(
+                      leading: NavigationBackWidget(onBack: onBack),
+                      middle: const Text(
                         "KET考试模拟现场",
                         style: TextStyle(fontWeight: FontWeight.normal),
                       ),
                       trailing: SizedBox(
-                          width: 100,
+                          width: 120,
                           child: Row(
                             children: [
-                              Text("1"),
-                              SizedBox(
+                              Container(
+                                width: 20,
+                                height: 20,
+                                decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      'assets/images/number_n_icon.png',
+                                    ),
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "1",
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
                                 width: 12,
                                 child: DashLine(
                                   width: 1,
@@ -247,8 +287,30 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                                   color: Colors.black,
                                 ),
                               ),
-                              Text("2"),
-                              SizedBox(
+                              Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      numberType == "2"
+                                          ? 'assets/images/number_s_icon.png'
+                                          : 'assets/images/number_n_icon.png',
+                                    ),
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "2",
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
                                 width: 12,
                                 child: DashLine(
                                   width: 1,
@@ -256,8 +318,30 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                                   color: Colors.black,
                                 ),
                               ),
-                              Text("3"),
-                              SizedBox(
+                              Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      numberType == "2"
+                                          ? 'assets/images/number_n_icon.png'
+                                          : 'assets/images/number_s_icon.png',
+                                    ),
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "3",
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
                                 width: 12,
                                 child: DashLine(
                                   width: 1,
@@ -265,7 +349,27 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                                   color: Colors.black,
                                 ),
                               ),
-                              Text("4"),
+                              Container(
+                                width: 20,
+                                height: 20,
+                                decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      'assets/images/number_n_icon.png',
+                                    ),
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "4",
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           )),
                     ),
@@ -327,98 +431,145 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                               // width: double.infinity,
 
                               height: double.infinity,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Stack(
                                 children: [
-                                  // Gaps.vGap10,
-                                  type == "1"
-                                      ? const Text("请你提问一个问题")
-                                      : Center(
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    color: Colors.white),
-                                                child: const Text(
-                                                  " 倒计时: 20s ",
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Gaps.vGap10,
+                                      numberType == "2"
+                                          ? const Text("请你提问一个问题")
+                                          : Center(
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        color: Colors.white),
+                                                    child: const Text(
+                                                      " 倒计时: 20s ",
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
+                                                  Gaps.vGap10,
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      showImageDialog();
+                                                    },
+                                                    child: const LoadAssetImage(
+                                                      'jpgicon',
+                                                      width: 82,
+                                                      height: 100,
+                                                    ),
+                                                  ),
+                                                  Gaps.vGap10,
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 20,
+                                                            right: 20,
+                                                            top: 10,
+                                                            bottom: 10),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(25),
+                                                        color: Colors.black),
+                                                    child: const Text(
+                                                      "图片接收成功，可以点击查看大图",
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              Gaps.vGap10,
-                                              GestureDetector(
-                                                onTap: () {},
-                                                child: const LoadAssetImage(
-                                                  'jpgicon',
-                                                  width: 82,
-                                                  height: 100,
-                                                ),
+                                            ),
+                                      const Expanded(child: Gaps.empty),
+                                      Center(
+                                        child: GestureDetector(
+                                          onTapUp: (details) {
+                                            setState(() {
+                                              isTalk = false;
+                                            });
+                                          },
+                                          onTapDown: (details) {
+                                            setState(() {
+                                              isTalk = true;
+                                            });
+                                          },
+                                          onTap: () {
+                                            //点击答题
+                                            // showConfirmDialog();
+
+                                            // NavigatorUtils.push(
+                                            //   context,
+                                            //   replace: true,
+                                            //   ExamRouter.mockExaminationendOnePage,
+                                            // );
+
+                                            // NavigatorUtils.push(
+                                            //   context,
+                                            //   replace: true,
+                                            //   ExamRouter.mockExaminationendTwoPage,
+                                            // );
+                                          },
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(24),
+                                                color:
+                                                    Colours.color_examination,
                                               ),
-                                              Gaps.vGap10,
-                                              Container(
-                                                padding: const EdgeInsets.only(
-                                                    left: 20,
-                                                    right: 20,
-                                                    top: 10,
-                                                    bottom: 10),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            25),
-                                                    color: Colors.black),
-                                                child: const Text(
-                                                  "图片接收成功，可以点击查看大图",
+                                              width: 207,
+                                              height: 48,
+                                              // color: Colours.color_examination,
+                                              child: const Center(
+                                                child: Text(
+                                                  "长按答题",
                                                   style: TextStyle(
-                                                    fontSize: 12,
+                                                    fontSize: 16,
                                                     color: Colors.white,
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
+                                              )),
                                         ),
-                                  const Expanded(child: Gaps.empty),
-                                  Center(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        //点击答题
-                                        // showConfirmDialog();
-                                        // showImageDialog();
-
-                                        NavigatorUtils.push(
-                                          context,
-                                          replace: true,
-                                          ExamRouter.mockExaminationendOnePage,
-                                        );
-                                      },
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(24),
-                                            color: Colours.color_examination,
-                                          ),
-                                          width: 207,
-                                          height: 48,
-                                          // color: Colours.color_examination,
-                                          child: const Center(
-                                            child: Text(
-                                              "长按答题",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          )),
-                                    ),
+                                      ),
+                                      // Gaps.vGap20,
+                                    ],
                                   ),
-                                  // Gaps.vGap20,
+                                  isTalk
+                                      ? Center(
+                                          child: Container(
+                                              padding: const EdgeInsets.only(
+                                                  left: 40,
+                                                  right: 40,
+                                                  top: 8,
+                                                  bottom: 8),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                color: Colors.black,
+                                              ),
+                                              width: 160,
+                                              height: 56,
+                                              child: Image.asset(
+                                                'assets/images/shengbo.gif',
+                                                width: 30,
+                                                height: 18,
+                                                // fit: BoxFit.fill,
+                                              )),
+                                        )
+                                      : const Center(),
                                 ],
                               ),
                             ),
