@@ -135,6 +135,7 @@ class EvaluateUtil {
       DioUtils.instance.requestNetwork<ResultData>(
         Method.post,
         HttpApi.addScore,
+        params: params,
         onSuccess: (result) {
           if (result != null && result.code == 200) {
             Log.d('upload score success', tag: '上传评分');
@@ -298,6 +299,7 @@ class EvaluateUtil {
         onDone: () {
           int? code = _websocket!.closeCode;
           String? reason = _websocket!.closeReason;
+          Log.d('recognize done:[code=$code][reason=$reason]', tag: '讯飞语音评测断开');
           if (code == WebSocketStatus.normalClosure) {
             onSuccess(_result);
           } else {

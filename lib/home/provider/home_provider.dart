@@ -163,8 +163,16 @@ class HomeProvider extends ChangeNotifier {
   // 渲染角色简介消息到列表
   void addIntroductionMessage([bool update = true]) {
     IntroductionMessage introductionMessage = IntroductionMessage();
-    introductionMessage.name = _character.name;
-    introductionMessage.desc = _character.slogan;
+    if (_sessionType == 'normal') {
+      introductionMessage.name = _character.name;
+      introductionMessage.desc = _character.slogan;
+    }
+    if (_sessionType == 'topic') {
+      introductionMessage.desc = _topic!.desc;
+    }
+    if (_sessionType == 'scene') {
+      introductionMessage.desc = _scene!.desc;
+    }
     _messageList.add(introductionMessage);
     if (update == true) {
       notifyListeners();

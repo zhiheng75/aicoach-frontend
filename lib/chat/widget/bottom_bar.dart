@@ -2,6 +2,7 @@
 
 import 'dart:typed_data';
 
+import 'package:Bubble/util/EventBus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +35,7 @@ class BottomBar extends StatefulWidget {
   State<BottomBar> createState() => _BottomBarState();
 }
 
-class _BottomBarState extends State<BottomBar> {
+class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   late ChatWebsocket _chatWebsocket;
   final ScreenUtil _screenUtil = ScreenUtil();
   late HomeProvider _homeProvider;
@@ -43,12 +44,22 @@ class _BottomBarState extends State<BottomBar> {
   List<Uint8List> _bufferList = [];
   // ai回答消息
   NormalMessage? _answer;
-  bool _isSend = false;
+  // app状态
+  AppLifecycleState? _appLifecycleState;
 
   void getExample() {
-    String text = 'Hello, I would like to ask what preparations need to be made for traveling abroad.';
-    String textZh = '你好，可以告诉我国外旅游需要做哪些准备吗？';
-    String audio = '';
+    if (widget.controller.disabled.value) {
+      return;
+    }
+    // 判断是否需要地道表达
+    MessageEntity message = _homeProvider.messageList.lastWhere((message) => message.type == 'normal' && (message as NormalMessage).speaker == 'ai', orElse: () => NormalMessage());
+    if ((message as NormalMessage).text.isEmpty) {
+      Toast.show(
+        '暂无示例',
+        duration: 1000,
+      );
+      return;
+    }
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -56,11 +67,7 @@ class _BottomBarState extends State<BottomBar> {
       isScrollControlled: true,
       isDismissible: false,
       clipBehavior: Clip.none,
-      builder: (_) => Example(
-        text: text,
-        textZh: textZh,
-        audio: audio,
-      ),
+      builder: (_) => Example(message: message),
     );
   }
 
@@ -99,7 +106,7 @@ class _BottomBarState extends State<BottomBar> {
     return isAvailable;
   }
 
-  void sendMessage(String text) async {
+  Future<void> connectWebsocket() async {
     try {
       if (_homeProvider.sessionId == '') {
         String characterId = _homeProvider.character.characterId;
@@ -114,40 +121,74 @@ class _BottomBarState extends State<BottomBar> {
         _homeProvider.sessionId = await _chatWebsocket.startChat(
           characterId: characterId,
           sceneId: sceneId,
-          onAnswer: (answer) {
-            if (_answer == null) {
-              _answer = NormalMessage();
-              _homeProvider.addNormalMessage(_answer!);
-            }
-            if (answer is String) {
-              if (answer.startsWith('[end=')) {
-                _answer!.isTextEnd = true;
-                _homeProvider.notify();
-                _answer = null;
-                return;
-              };
-              _answer!.text += answer;
-              _homeProvider.notify();
-              return;
-            }
-
+          onAnswer: onAnswer,
+          onEnd: () {
+            String tip = 'Conversation finished！';
+            _homeProvider.addTipMessage(tip);
+            EventBus().emit('SCROLL_MESSAGE_LIST');
+            // 断开则禁用按钮
+            widget.controller.setDisabled(true);
           },
         );
       }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void onAnswer(dynamic answer) {
+    if (_answer == null) {
+      _answer = NormalMessage();
+      _homeProvider.addNormalMessage(_answer!);
+    }
+    if (answer is String) {
+      if (answer.startsWith('[end=')) {
+        _answer!.isTextEnd = true;
+        _homeProvider.notify();
+        _answer = null;
+        return;
+      };
+      _answer!.text += answer;
+      _homeProvider.notify();
+      EventBus().emit('SCROLL_MESSAGE_LIST');
+      return;
+    }
+    if (answer is Uint8List) {
+      if (_appLifecycleState == AppLifecycleState.paused) {
+        return;
+      }
+      _mediaUtils.playLoop(
+        answer,
+        whenFinished: () {
+          widget.controller.setDisabled(false);
+          _chatWebsocket.addAwayTimer(() {
+            String tip = '未发送语音已超过30秒，如若再无发送，将在30秒后自动结束对话！';
+            _homeProvider.addTipMessage(tip);
+            EventBus().emit('SCROLL_MESSAGE_LIST');
+          });
+        },
+      );
+    }
+  }
+
+  void sendMessage(String text) async {
+    try {
+      await connectWebsocket();
       _chatWebsocket.sendMessage(text, () {
         NormalMessage message = _homeProvider.createNormalMessage(true);
         message.text = text;
         message.audio = [..._bufferList];
         message.speaker = 'user';
         _homeProvider.addNormalMessage(message);
-        _isSend = false;
+        _answer = null;
+        EventBus().emit('SCROLL_MESSAGE_LIST');
       });
     } catch(e) {
-      _isSend = false;
       Toast.show(
         '发送失败，请稍后再试',
         duration: 1000,
       );
+      widget.controller.setDisabled(false);
     }
   }
 
@@ -156,10 +197,20 @@ class _BottomBarState extends State<BottomBar> {
     super.initState();
     _chatWebsocket = widget.chatWebsocket;
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    // 监听App状态
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    _appLifecycleState = state;
+    Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlayLoop());
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -287,9 +338,6 @@ class _BottomBarState extends State<BottomBar> {
                   if (!isAvailable()) {
                     return;
                   }
-                  if (_isSend) {
-                    return;
-                  }
                   try {
                     // 检查权限
                     bool isRequest = await _mediaUtils.checkMicrophonePermission();
@@ -297,6 +345,7 @@ class _BottomBarState extends State<BottomBar> {
                       return;
                     }
                     // 开始录音
+                    _bufferList = [];
                     _mediaUtils.startRecord(
                       onData: (buffer) {
                         _bufferList.add(buffer);
@@ -306,12 +355,25 @@ class _BottomBarState extends State<BottomBar> {
                         _recognizeUtil.pushAudioBuffer(2, buffer ?? Uint8List(0));
                       }
                     );
-                    _bufferList = [];
                     // 设置识别
                     _recognizeUtil.recognize((result) async {
-                      widget.controller.setShowRecord(false);
-                      await _mediaUtils.stopRecord();
-                      if (!_isSend) {
+                      bool shoRecord = widget.controller.showRecord.value;
+                      // 录音中
+                      if (shoRecord) {
+                        // 识别失败
+                        if (result['success'] == false) {
+                          widget.controller.setShowRecord(false);
+                          await _mediaUtils.stopRecord();
+                          Toast.show(
+                            result['message'],
+                            duration: 1000,
+                          );
+                        }
+                       return;
+                      }
+                      bool isInSendButton = widget.recordController.isInSendButton.value;
+                      // 取消发送
+                      if (!isInSendButton) {
                         return;
                       }
                       if (result['success'] == false) {
@@ -319,7 +381,7 @@ class _BottomBarState extends State<BottomBar> {
                           result['message'],
                           duration: 1000,
                         );
-                        _isSend = false;
+                        widget.controller.setDisabled(false);
                         return;
                       }
                       sendMessage(result['text']);
@@ -333,11 +395,19 @@ class _BottomBarState extends State<BottomBar> {
                   }
                 },
                 onEnd: (_) async {
-                  if (_isSend) {
+                  // 录音中因识别失败关闭录音操作后手指还未抬起
+                  if (!widget.controller.showRecord.value) {
                     return;
                   }
-                  _isSend = widget.recordController.isInSendButton.value;
+                  widget.controller.setShowRecord(false);
                   await _mediaUtils.stopRecord();
+                  // 取消发送则关闭识别
+                  if (!widget.recordController.isInSendButton.value) {
+                    await _recognizeUtil.cancelRecognize();
+                    return;
+                  }
+                  // 暂时禁用按钮
+                  widget.controller.setDisabled(true);
                 },
               ),
             ),

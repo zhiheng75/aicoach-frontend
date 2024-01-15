@@ -1,7 +1,4 @@
 import 'dart:ui';
-import 'package:Bubble/scene/entity/scene_entity.dart';
-import 'package:Bubble/util/EventBus.dart';
-import 'package:Bubble/util/confirm_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +8,9 @@ import '../home/provider/home_provider.dart';
 import '../mvp/base_page.dart';
 import '../net/dio_utils.dart';
 import '../net/http_api.dart';
+import '../scene/entity/scene_entity.dart';
+import '../util/EventBus.dart';
+import '../util/confirm_utils.dart';
 import '../util/log_utils.dart';
 import '../util/media_utils.dart';
 import '../util/toast_utils.dart';
@@ -36,6 +36,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePresenter>, AutomaticKeepAliveClientMixin<ChatPage> implements ChatView {
   final ChatWebsocket _chatWebsocket = ChatWebsocket();
+  final MediaUtils _mediaUtils = MediaUtils();
   late HomeProvider _homeProvider;
   late ChatPagePresenter _chatPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
@@ -46,14 +47,14 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   CharacterEntity? _character;
   int _characterIndex = -1;
   bool _isCharacterChanging = false;
+  // 背景控制器
+  final BackgroundController _backgroundController = BackgroundController();
+  // 消息列表滚动控制器
+  final ScrollController _listScrollController = ScrollController();
   // 底部按钮控制器
   final BottomBarController _bottomBarControll = BottomBarController();
-  // 底部按钮控制器
+  // 录音界面控制器
   final RecordController _recordController = RecordController();
-  // 滑动初始位置
-  Offset? _dragInitialPosition;
-  // 滑动偏移量
-  double _dragOffset = 0;
 
   void init() {
     _pageState = 'loading';
@@ -100,19 +101,20 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       return;
     }
     if (_characterIndex == characterIndex) {
+      _isCharacterChanging = false;
       return;
     }
-    // 话题或者场景
     String sessionType = _homeProvider.sessionType;
     if (sessionType == 'topic' || sessionType == 'scene') {
       ConfirmUtils.show(
         context: context,
         title: '你要切换角色吗？',
         onConfirm: () {
+          _isCharacterChanging = true;
           confirmChangeCharacter(characterIndex);
         },
         child: const Text(
-          '场景角色会结束当前对话',
+          '切换角色会结束当前对话',
           style: TextStyle(
             fontSize: 15.0,
             fontWeight: FontWeight.w400,
@@ -123,37 +125,36 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       );
       return;
     }
+    if (_homeProvider.sessionId != '') {
+      ConfirmUtils.show(
+        context: context,
+        title: '你要切换角色吗？',
+        onConfirm: () {
+          _isCharacterChanging = true;
+          confirmChangeCharacter(characterIndex);
+        },
+        child: const Text(
+          '切换角色会结束当前对话',
+          style: TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.w400,
+            color: Color(0xFF333333),
+            height: 18.0 / 15.0,
+          ),
+        ),
+      );
+      return;
+    }
+    _isCharacterChanging = true;
     confirmChangeCharacter(characterIndex);
   }
 
   void confirmChangeCharacter(int characterIndex) {
-    _isCharacterChanging = true;
     _characterIndex = characterIndex;
     CharacterEntity character = _characterList[characterIndex];
     _character = character;
     setState(() {});
     startNormalChat(character);
-  }
-
-  void startNormalChat(CharacterEntity character) async {
-    await _chatWebsocket.stopChat();
-    _homeProvider.sessionId = '';
-    _homeProvider.character = character;
-    _homeProvider.clearMessageList();
-    Future.delayed(Duration.zero, () {
-      _homeProvider.addIntroductionMessage();
-      _homeProvider.addTipMessage('Role-plays started！');
-      NormalMessage normalMessage = _homeProvider.createNormalMessage();
-      normalMessage.text = _character!.text;
-      _homeProvider.addNormalMessage(normalMessage);
-      MediaUtils().play(
-        _character!.audio,
-        whenFinished: () {
-          _bottomBarControll.setDisabled(false);
-          _isCharacterChanging = false;
-        },
-      );
-    });
   }
 
   void openTopic() {
@@ -162,6 +163,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     if (sessionType == 'normal' && checkTopicShouldOpen()) {
       getTopicList((topicList) {
         _homeProvider.addTopicMessage(topicList);
+        EventBus().emit('SCROLL_MESSAGE_LIST');
       });
     }
     // 话题对话或者场景对话
@@ -175,6 +177,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
         onConfirm: () {
           getTopicList((topicList) {
             _homeProvider.addTopicMessage(topicList);
+            EventBus().emit('SCROLL_MESSAGE_LIST');
           });
         },
         child: const Text(
@@ -189,26 +192,6 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       );
       return;
     }
-    // showModalBottomSheet(
-    //   context: context,
-    //   backgroundColor: Colors.transparent,
-    //   barrierColor: Colors.transparent,
-    //   isScrollControlled: true,
-    //   isDismissible: false,
-    //   builder: (_) => Topic(
-    //     onSelect: (topic) {
-    //       if (_homeProvider.topic?.id == topic.id) {
-    //         Toast.show(
-    //           '该话题正在使用中',
-    //           duration: 1000,
-    //         );
-    //         return;
-    //       }
-    //       Navigator.of(context).pop();
-    //       _homeProvider.topic = topic;
-    //     },
-    //   ),
-    // );
   }
 
   bool checkTopicShouldOpen() {
@@ -260,8 +243,34 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     startTopicChat(topic);
   }
 
+  Future<void> stopCurrentChat() async {
+    await _chatWebsocket.stopChat('manual');
+    await _mediaUtils.stopPlayLoop();
+  }
+
+  void startNormalChat(CharacterEntity character) async {
+    await stopCurrentChat();
+    _homeProvider.sessionId = '';
+    _homeProvider.character = character;
+    _homeProvider.clearMessageList();
+    Future.delayed(Duration.zero, () {
+      _homeProvider.addIntroductionMessage();
+      _homeProvider.addTipMessage('Role-plays started！');
+      NormalMessage normalMessage = _homeProvider.createNormalMessage();
+      normalMessage.text = _character!.text;
+      _homeProvider.addNormalMessage(normalMessage);
+      MediaUtils().play(
+        _character!.audio,
+        whenFinished: () {
+          _bottomBarControll.setDisabled(false);
+          _isCharacterChanging = false;
+        },
+      );
+    });
+  }
+
   void startTopicChat(TopicEntity topic) async {
-    await _chatWebsocket.stopChat();
+    await stopCurrentChat();
     _homeProvider.sessionId = '';
     _homeProvider.topic = topic;
     _homeProvider.clearMessageList();
@@ -273,11 +282,12 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   }
 
   void startSceneChat(SceneEntity scene) async {
-    await _chatWebsocket.stopChat();
+    await stopCurrentChat();
     _homeProvider.sessionId = '';
     _homeProvider.scene = scene;
     _homeProvider.clearMessageList();
     Future.delayed(Duration.zero, () {
+      _homeProvider.addIntroductionMessage();
       _homeProvider.addTipMessage('Scene started！');
       _bottomBarControll.setDisabled(false);
     });
@@ -323,22 +333,38 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
 
     return GestureDetector(
       onHorizontalDragStart: (details) {
-        _dragInitialPosition = details.globalPosition;
-        _dragOffset = 0;
+        if (_isCharacterChanging) {
+          return;
+        }
+        int pre = _characterIndex > 0 ? _characterIndex - 1 : _characterList.length - 1;
+        int next = _characterIndex < _characterList.length - 1 ? _characterIndex + 1 : 0;
+        _backgroundController.slideStart(
+          position: details.globalPosition,
+          leftImage: _characterList.elementAt(pre).imageUrl,
+          rightImage: _characterList.elementAt(next).imageUrl,
+        );
       },
       onHorizontalDragUpdate: (details) {
-        Offset position = details.globalPosition;
-        _dragOffset = position.dx - _dragInitialPosition!.dx;
+        if (_isCharacterChanging) {
+          return;
+        }
+        _backgroundController.slideMove(details.globalPosition);
       },
       onHorizontalDragEnd: (_) {
-        if (_dragOffset.abs() <= 50.0) {
+        if (_isCharacterChanging) {
           return;
         }
-        int index = _dragOffset < 0 ? _characterIndex + 1 : _characterIndex - 1;
-        if (index < 0 || index > _characterList.length - 1) {
-          return;
-        }
-        changeCharacter(index);
+        _backgroundController.slideEnd((direction) {
+          bool isSlideLeft = direction == 'left';
+          int index = isSlideLeft ? _characterIndex + 1 : _characterIndex - 1;
+          if (index < 0) {
+            index = _characterList.length + index;
+          }
+          if (index == _characterList.length) {
+            index = 0;
+          }
+          changeCharacter(index);
+        });
       },
       child: Stack(
         children: <Widget>[
@@ -347,7 +373,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
               sigmaX: 1.0,
               sigmaY: 1.0,
             ),
-            child: const Background(),
+            child: Background(controller: _backgroundController),
           ),
           ValueListenableBuilder(
             valueListenable: _bottomBarControll.showMessageList,
@@ -365,6 +391,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
                   right: 16.0,
                 ),
                 child: MessageList(
+                  controller: _listScrollController        ,
                   onSelectTopic: selectTopic,
                 ),
               );
@@ -380,23 +407,25 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
           ),
           Positioned(
             top: 216.0,
+            right: 0,
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: openTopic,
               child: Container(
                 width: 52.0,
                 height: 34.0,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(100.0),
-                    bottomRight: Radius.circular(100.0),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(100.0),
+                    bottomLeft: Radius.circular(100.0),
                   ),
-                  border: Border.all(
-                    width: 1.0,
-                    style: BorderStyle.solid,
-                    color: Colors.white.withOpacity(0.2),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFFCCFEF2),
+                      Color(0xFFDEFFF3),
+                    ],
+                    stops: [0.28, 0.9],
                   ),
-                  color: const Color(0xFFB9B9B9).withOpacity(0.36),
                 ),
                 alignment: Alignment.center,
                 child: const Text(
@@ -404,8 +433,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
                   style: TextStyle(
                     fontSize: 14.0,
                     fontWeight: FontWeight.w400,
-                    color: Colors.white,
-                    height: 16.9 / 14.0,
+                    color: Colors.black,
                   ),
                 ),
               ),
