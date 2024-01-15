@@ -1,13 +1,19 @@
 // ignore_for_file: prefer_final_fields
 
-import 'package:Bubble/chat/entity/message_entity.dart';
-import 'package:Bubble/entity/result_entity.dart';
-import 'package:Bubble/net/dio_utils.dart';
-import 'package:Bubble/net/http_api.dart';
-import 'package:Bubble/util/log_utils.dart';
-import 'package:Bubble/widgets/load_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+
+import '../../entity/result_entity.dart';
+import '../../home/provider/home_provider.dart';
+import '../../net/dio_utils.dart';
+import '../../net/http_api.dart';
+import '../../report/widget/radar_map.dart';
+import '../../util/log_utils.dart';
+import '../../widgets/load_image.dart';
+import '../entity/message_entity.dart';
+import '../utils/evaluate_util.dart';
 
 class Evaluation extends StatefulWidget {
   const Evaluation({
@@ -22,25 +28,30 @@ class Evaluation extends StatefulWidget {
 }
 
 class _EvaluationState extends State<Evaluation> {
+  late HomeProvider _homeProvider;
+  CancelToken _cancelToken = CancelToken();
   String _standardAnswer = '';
   bool _isGetting = false;
 
   void init() {
+    EvaluateUtil().evaluate(widget.message, () {
+      _homeProvider.updateNormalMessage(widget.message);
+    });
     getStandardAnswer();
   }
 
   void getStandardAnswer() {
-    NormalMessage message = widget.message;
     DioUtils.instance.requestNetwork<ResultData>(
-      Method.get,
+      Method.post,
       HttpApi.suggestAnswer,
       params: {
-        'question': message.question,
-        'answer': message.text,
-        'session_id': message.sessionId,
-        'message_id': message.id,
-        'character_id': message.characterId,
+        'question': widget.message.question,
+        'answer': widget.message.text,
+        'session_id': _homeProvider.sessionId,
+        'message_id': widget.message.questionMessageId,
+        'character_id': _homeProvider.character.characterId,
       },
+      cancelToken: _cancelToken,
       onSuccess: (result) {
         if (result == null || result.data == null) {
           _standardAnswer = '获取失败';
@@ -60,6 +71,35 @@ class _EvaluationState extends State<Evaluation> {
         setState(() {});
       },
     );
+    // DioUtils.instance.requestNetwork<ResultData>(
+    //   Method.get,
+    //   HttpApi.suggestAnswer,
+    //   params: {
+    //     'question': message.question,
+    //     'answer': '',
+    //     'session_id': null,
+    //     'message_id': message.questionMessageId,
+    //     'character_id': message.characterId,
+    //   },
+    //   onSuccess: (result) {
+    //     if (result == null || result.data == null) {
+    //       _standardAnswer = '获取失败';
+    //       _isGetting = false;
+    //       setState(() {});
+    //       return;
+    //     }
+    //     Map<String, dynamic> data = result.data as Map<String, dynamic>;
+    //     _standardAnswer = data['text'];
+    //     _isGetting = false;
+    //     setState(() {});
+    //   },
+    //   onError: (code, msg) {
+    //     Log.d('get standard answer fail:msg=$msg', tag: '获取地道表达');
+    //     _standardAnswer = '获取失败';
+    //     _isGetting = false;
+    //     setState(() {});
+    //   },
+    // );
   }
 
   void playVoice(String type) {
@@ -68,6 +108,7 @@ class _EvaluationState extends State<Evaluation> {
   @override
   void initState() {
     super.initState();
+    _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     init();
   }
 
@@ -105,11 +146,64 @@ class _EvaluationState extends State<Evaluation> {
       );
     }
 
-    Widget evaluate = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-      ],
-    );
+    Widget evaluate = const SizedBox();
+    if (widget.message.evaluation.isNotEmpty) {
+      Map<String, dynamic> evaluation = widget.message.evaluation;
+      List<RadarBean> scoreList = [
+        RadarBean(double.parse(evaluation['accuracy_score']), '发音'),
+        RadarBean(double.parse(evaluation['standard_score']), '语法'),
+        RadarBean(double.parse(evaluation['integrity_score']), '完整度'),
+        RadarBean(double.parse(evaluation['fluency_score']), '流畅度'),
+      ];
+      evaluate = Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 24.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: scoreList.map((item) {
+                return Row(
+                  children: <Widget>[
+                    Container(
+                      width: 9.0,
+                      height: 9.0,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1.0,
+                          style: BorderStyle.solid,
+                          color: Colors.black,
+                        ),
+                        borderRadius: BorderRadius.circular(9.0),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 6.0,
+                    ),
+                    Text(
+                      item.name,
+                      style: const TextStyle(
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                        height: 22.0 / 13.0,
+                      ),
+                    ),
+                  ],
+                );
+              }).toList(),
+            ),
+            RadarMap(
+              scoreList,
+              r: 54.8,
+            ),
+          ],
+        ),
+      );
+    }
 
     return Container(
       width: screenUtil.screenWidth,
@@ -128,7 +222,12 @@ class _EvaluationState extends State<Evaluation> {
             ),
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () {
+                if (_isGetting) {
+                  _cancelToken.cancel();
+                }
+                Navigator.of(context).pop();
+              },
               child: const LoadAssetImage(
                 'reminder_close',
                 width: 32.0,

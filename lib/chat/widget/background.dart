@@ -1,11 +1,12 @@
 // ignore_for_file: prefer_final_fields
 
-import 'package:Bubble/home/provider/home_provider.dart';
-import 'package:Bubble/util/log_utils.dart';
-import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
+import '../../home/provider/home_provider.dart';
+import '../../util/log_utils.dart';
+import '../../widgets/load_image.dart';
 
 class Background extends StatefulWidget {
   const Background({

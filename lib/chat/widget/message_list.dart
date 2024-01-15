@@ -1,9 +1,9 @@
-import 'package:Bubble/chat/entity/topic_entity.dart';
-import 'package:Bubble/util/EventBus.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../home/provider/home_provider.dart';
+import '../../util/EventBus.dart';
+import '../entity/topic_entity.dart';
 import 'message_item.dart';
 
 class MessageList extends StatefulWidget {

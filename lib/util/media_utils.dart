@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
+// ignore_for_file: depend_on_referenced_packages, slash_for_doc_comments
 
 import 'dart:async';
 import 'dart:typed_data';
@@ -7,8 +7,6 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:logger/logger.dart';
-
-import 'log_utils.dart';
 
 List<Uint8List> _bufferList = [];
 bool _playing = false;
@@ -25,53 +23,10 @@ class MediaUtils {
   FlutterSoundPlayer? _player;
   StreamSubscription? _subscription;
   StreamController<Food>? _controller;
+  // 是否禁用播放器
+  bool _banUsePlayer = false;
 
-  void play(String audioPath, { Function? whenFinished }) async {
-    try {
-      FlutterSoundPlayer? player  = await _createPlayer();
-      if (player == null) {
-        throw Exception();
-      }
-      _player = player;
-      _player!.startPlayer(
-        fromURI: audioPath,
-        whenFinished: () async {
-          await _destroyPlayer();
-          if (whenFinished != null) {
-            whenFinished();
-          }
-        },
-      );
-    } catch (e) {
-      if (whenFinished != null) {
-        whenFinished();
-      }
-    }
-  }
-
-  Future<void> stopPlay() async {
-    if (_player == null) {
-      return;
-    }
-    if (_player!.isPlaying) {
-      await _player!.stopPlayer();
-      await _destroyPlayer();
-    }
-  }
-
-  void playLoop(Uint8List buffer, { Function()? whenFinished }) async {
-    _bufferList.add(buffer);
-    if (_playing) {
-      return;
-    }
-    _playLoop(whenFinished);
-  }
-
-  Future<void> stopPlayLoop() async {
-    await stopPlay();
-    _playing = false;
-  }
-
+  /** 录音器 */
   void startRecord({
     required Function(Uint8List buffer) onData,
     required Function(Uint8List?) onComplete,
@@ -81,7 +36,6 @@ class MediaUtils {
       if (_recorder == null) {
         throw Exception('录音功能初始化失败，请重启App');
       }
-      Log.d('开始录音', tag: 'startRecord');
       // 监听数据流
       _addListener(onData, onComplete);
       // 开始录音
@@ -101,7 +55,6 @@ class MediaUtils {
     }
     // 是否录音中
     if (_recorder!.isRecording) {
-      Log.d('停止录音', tag: 'stopRecord');
       if (_controller != null) {
         await _controller!.sink.close();
       }
@@ -136,36 +89,10 @@ class MediaUtils {
     return recorder;
   }
 
-  Future<FlutterSoundPlayer?> _createPlayer() async {
-    FlutterSoundPlayer? player;
-    try {
-      player = await FlutterSoundPlayer(logLevel: Level.nothing).openPlayer();
-    } catch (e) {
-      rethrow;
-    }
-    return player;
-  }
-
-  Future<void> _destroyRecorder() async {
-    if (_recorder == null) {
-      return;
-    }
-    await _recorder!.closeRecorder();
-    _recorder = null;
-  }
-
-  Future<void> _destroyPlayer() async {
-    if (_player == null) {
-      return;
-    }
-    await _player!.closePlayer();
-    _player = null;
-  }
-
   void _addListener(Function(Uint8List) listener, Function(Uint8List?) complete) {
     _controller = StreamController<Food>();
     _subscription = _controller!.stream.listen(
-      (food) {
+          (food) {
         if (food is FoodData && food.data != null) {
           listener(food.data!);
         }
@@ -195,17 +122,25 @@ class MediaUtils {
     }
   }
 
-  void _playLoop([Function()? whenFinished]) async {
-    if (_bufferList.isEmpty) {
-      await _destroyPlayer();
-      if (whenFinished != null) {
-        whenFinished();
-      }
+  Future<void> _destroyRecorder() async {
+    if (_recorder == null) {
+      return;
+    }
+    await _recorder!.closeRecorder();
+    _recorder = null;
+  }
+
+  /** 播放器 */
+  void play({
+    String? url,
+    Uint8List? buffer,
+    bool closeAfterFinish = true,
+    Function()? whenFinished,
+  }) async {
+    if (_banUsePlayer) {
       return;
     }
     try {
-      _playing = true;
-      Uint8List buffer = _bufferList.removeAt(0);
       if (_player == null) {
         FlutterSoundPlayer? player  = await _createPlayer();
         if (player == null) {
@@ -214,16 +149,105 @@ class MediaUtils {
         _player = player;
       }
       _player!.startPlayer(
+        fromURI: url,
         fromDataBuffer: buffer,
-        whenFinished: () {
-          _playing = false;
-          _playLoop(whenFinished);
+        whenFinished: () async {
+          if (whenFinished != null) {
+            whenFinished();
+          }
+          if (closeAfterFinish) {
+            await _destroyPlayer();
+          }
         },
       );
     } catch (e) {
-      _playing = false;
-      _playLoop(whenFinished);
+      if (whenFinished != null) {
+        whenFinished();
+      }
     }
+  }
+
+  void playLoop({
+    required Uint8List buffer,
+    Function()? whenFinished,
+  }) async {
+    if (_banUsePlayer) {
+      return;
+    }
+    _bufferList.add(buffer);
+    if (_playing) {
+      return;
+    }
+    _playLoop(
+      whenFinished: whenFinished,
+    );
+  }
+
+  Future<void> stopPlay([bool banUsePlayer = false]) async {
+    _banUsePlayer = banUsePlayer;
+    if (_player == null) {
+      return;
+    }
+    if (_player!.isPlaying) {
+      await _player!.stopPlayer();
+      await _destroyPlayer();
+    }
+  }
+
+  Future<void> stopPlayLoop([bool banUsePlayer = false]) async {
+    await stopPlay(banUsePlayer);
+    _playing = false;
+  }
+
+  void resumeUse() {
+    _banUsePlayer = false;
+  }
+
+  Future<FlutterSoundPlayer?> _createPlayer() async {
+    FlutterSoundPlayer? player;
+    try {
+      player = await FlutterSoundPlayer(logLevel: Level.nothing).openPlayer();
+    } catch (e) {
+      rethrow;
+    }
+    return player;
+  }
+
+  void _playLoop({
+    Function()? whenFinished,
+  }) async {
+    if (_banUsePlayer || _bufferList.isEmpty) {
+      if (whenFinished != null) {
+        whenFinished();
+      }
+      await _destroyPlayer();
+      return;
+    }
+    try {
+      _playing = true;
+      Uint8List buffer = _bufferList.removeAt(0);
+      play(
+        buffer: buffer,
+        whenFinished: () {
+          _playing = false;
+          _playLoop(
+            whenFinished: whenFinished,
+          );
+        },
+      );
+    } catch (e) {
+      _playLoop(
+        whenFinished: whenFinished,
+      );
+    }
+  }
+
+  Future<void> _destroyPlayer() async {
+    if (_player == null) {
+      return;
+    }
+    await _player!.closePlayer();
+    _player = null;
   }
 
 }

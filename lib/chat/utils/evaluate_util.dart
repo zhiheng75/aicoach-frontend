@@ -1,19 +1,20 @@
+// ignore_for_file: slash_for_doc_comments
+
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:Bubble/chat/entity/message_entity.dart';
-import 'package:Bubble/entity/result_entity.dart';
-import 'package:Bubble/net/dio_utils.dart';
-import 'package:Bubble/net/http_api.dart';
-import 'package:Bubble/util/device_utils.dart';
-import 'package:Bubble/util/log_utils.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
-import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+import '../../entity/result_entity.dart';
+import '../../net/dio_utils.dart';
+import '../../net/http_api.dart';
+import '../../util/device_utils.dart';
+import '../../util/log_utils.dart';
+import '../entity/message_entity.dart';
 import 'xunfei_util.dart';
 
 class EvaluateUtil {
@@ -21,105 +22,202 @@ class EvaluateUtil {
   EvaluateUtil();
 
   WebSocketChannel? _websocket;
-  Map<String, dynamic> _result = {};
   final String _key = 'evaluate_task';
   final String _oss = 'evaluate_oss';
+  bool _running = false;
 
-  void evaluate(NormalMessage message, {required Function(Map<String, dynamic>) onSuccess}) async {
-    String taskId = const Uuid().v1();
-    String deviceId = await Device.getDeviceId();
-    _addEvaluateTask(taskId, deviceId, message);
-    String text = message.text;
-    List<Uint8List> bufferList = [...message.audio];
-    _evaluate(text, bufferList, (evaluation) {
-      onSuccess(evaluation);
-      Map<String, dynamic> params = _getParams(message, evaluation);
-      params['device_id'] = deviceId;
-      _uploadEvaluation(taskId, message.audio, params);
+  void evaluate(NormalMessage message, Function() onSuccess) {
+    String cacheId = '${message.sessionId}${message.id}';
+    Map<String, dynamic> cacheMap = _getCacheMap();
+    if (cacheMap.containsKey(cacheId)) {
+      EvaluateCache cache = EvaluateCache.fromJson(cacheMap[cacheId]);
+      if (cache.evaluating) {
+        return;
+      }
+      try {
+        _evaluate(
+          cache: cache,
+          onSuccess: onSuccess,
+        );
+      } catch (e) {
+        cache.evaluating = false;
+        _saveCache(cache);
+      }
+      return;
+    }
+    _createCache(message).then((cache) {
+      _saveCache(cache);
+      try {
+        _evaluate(
+          cache: cache,
+          onSuccess: onSuccess,
+        );
+      } catch (e) {
+        cache.evaluating = false;
+        _saveCache(cache);
+      }
     });
   }
 
-  void delCachedTask() {
-    Map<dynamic, dynamic> cachedTask = SpUtil.getObject(_key) ?? {};
-    List<String> keys = cachedTask.keys.map((key) => key as String).toList();
-    if (keys.isEmpty) {
+  /** 缓存 */
+  Future<EvaluateCache> _createCache(NormalMessage message) async {
+    EvaluateCache cache = EvaluateCache();
+    cache.id = '${message.sessionId}${message.id}';
+    cache.deviceId = await Device.getDeviceId();
+    cache.message = message;
+    return cache;
+  }
+
+  void _saveCache(EvaluateCache cache) {
+    Map<String, dynamic> cacheMap = _getCacheMap();
+    cacheMap[cache.id] = cache.toJson();
+    SpUtil.putObject(_key, cacheMap);
+  }
+
+  void _removeCache(EvaluateCache cache) {
+    Map<String, dynamic> cacheMap = _getCacheMap();
+    cacheMap.remove(cache.id);
+    SpUtil.putObject(_key, cacheMap);
+  }
+
+  Map<String, dynamic> _getCacheMap() {
+    return (SpUtil.getObject(_key) ?? {}) as Map<String, dynamic>;
+  }
+
+  Future<void> _runTask() async {
+    Map<String, dynamic> cacheMap = _getCacheMap();
+    Map<String, dynamic>? cache = cacheMap.values.elementAtOrNull(0);
+    if (cache == null) {
       return;
     }
-    for (String key in keys) {
-      Map<String, dynamic> task = cachedTask[key] as Map<String, dynamic>;
-      NormalMessage message = NormalMessage.fromJson(task['message']);
-      evaluate(
-        message,
-        onSuccess: (evaluation) {
-          Map<String, dynamic> params = _getParams(message, evaluation);
-          params['device_id'] = task['deviceId'];
-          _uploadEvaluation(key, message.audio, params);
+    try {
+      _running = true;
+      EvaluateCache evaluateCache = EvaluateCache.fromJson(cache);
+      _evaluate(
+        cache: evaluateCache,
+        onSuccess: () {
+          _running = false;
+          _runTask();
         },
       );
+    } catch (e) {
+      _running = false;
+      _runTask();
     }
   }
 
-  Future<void> _evaluate(String text, List<Uint8List> bufferList, Function(Map<String, dynamic>) onSuccess) async {
+  /** 评测 */
+  Future<void> _evaluate({
+    required EvaluateCache cache,
+    required Function() onSuccess,
+  }) async {
     try {
-      _connectWebsocket((result) {
-        onSuccess(result);
-      });
-      if (_websocket != null) {
-        Map<String, dynamic> params = XunfeiUtil.createFrameDataForEvaluation(0, text: text);
-        _websocket!.sink.add(jsonEncode(params));
-      }
-      // 发送语音帧
-      int total = bufferList.length;
-      while(bufferList.isNotEmpty) {
-        if (_websocket == null) {
-          break;
-        }
-        Uint8List buffer = bufferList.removeAt(0);
-        int frame = 1;
-        int audioFrame = 2;
-        if (bufferList.length == total - 1) {
-          audioFrame = 1;
-        }
-        if (bufferList.isEmpty) {
-          frame = 2;
-          audioFrame = 4;
-        }
-        Map<String, dynamic> data = XunfeiUtil.createFrameDataForEvaluation(
-          frame,
-          audioFrame: audioFrame,
-          audio: buffer,
+      NormalMessage message = cache.message;
+      // 已评测未保存
+      if (message.evaluation.isNotEmpty) {
+        _saveEvaluation(
+          message: message,
+          onSuccess: () {
+            _removeCache(cache);
+            onSuccess();
+          },
         );
-        _websocket!.sink.add(jsonEncode(data));
+        return;
       }
+      _connectWebsocket((evaluation) {
+        cache.message.evaluation = evaluation;
+        _saveCache(cache);
+        _saveEvaluation(
+          message: message,
+          evaluation: evaluation,
+          onSuccess: () {
+            _removeCache(cache);
+            onSuccess();
+          },
+        );
+      });
+      _sendData(message.text, [...message.audio]);
     } catch(e) {
-      Log.d('connect xunfei evaluation error:[error]${e.toString()}', tag: '连接讯飞语音评测');
+      rethrow;
     }
   }
 
-  void _addEvaluateTask(String taskId, String deviceId, NormalMessage message) {
-    Map<String, dynamic> task = {
-      'message': message.toJson(),
-      'deviceId': deviceId,
-    };
-    Map<dynamic, dynamic> cachedTask = SpUtil.getObject(_key) ?? {};
-    cachedTask[taskId] = task;
-    SpUtil.putObject(_key, cachedTask);
-  }
-
-  void _removeEvaluateTask(String taskId) {
-    Map<dynamic, dynamic> cachedTask = SpUtil.getObject(_key) ?? {};
-    if (cachedTask.containsKey(taskId)) {
-      cachedTask.remove(taskId);
+  void _connectWebsocket(Function(Map<String, dynamic>) onSuccess) {
+    String date = HttpDate.format(DateTime.now());
+    String authorization = XunfeiUtil.getEvaluateAuthorization(date);
+    Uri uri = Uri.parse('wss://ise-api.xfyun.cn:443/v2/open-ise?host=ise-api.xfyun.cn&date=$date&authorization=$authorization');
+    try {
+      _websocket = WebSocketChannel.connect(uri);
+      _websocket!.stream.listen(
+        (event) async {
+          Map<String, dynamic> response = jsonDecode(event);
+          if (response['code'] != 0) {
+            await _disconnectWebsocket(WebSocketStatus.normalClosure, 'Fail');
+            return;
+          }
+          Map<String, dynamic> result = response['data'];
+          if (result['status'] == 2) {
+            await _disconnectWebsocket(WebSocketStatus.normalClosure, 'Success');
+            String xmlString = result['data'] ?? '';
+            Map<String, dynamic> evaluation = XunfeiUtil.getEvaluateResult(xmlString);
+            onSuccess(evaluation);
+          }
+        },
+        onDone: () => _websocket = null,
+        onError: _onWebSocketError,
+        cancelOnError: true,
+      );
+    } catch (e) {
+      rethrow;
     }
-    SpUtil.putObject(_key, cachedTask);
   }
 
+  void _onWebSocketError(dynamic error) async {
+    await _disconnectWebsocket(WebSocketStatus.internalServerError, 'Unknow Error');
+  }
+
+  void _sendData(String text, List<Uint8List> bufferList) async {
+    // 发送首帧
+    Map<String, dynamic> firstData = XunfeiUtil.createFrameDataForEvaluation(0, text: text);
+    _websocket!.sink.add(jsonEncode(firstData));
+    await Future.delayed(const Duration(milliseconds: 20));
+    int total = bufferList.length;
+    while(true) {
+      if (bufferList.isEmpty) {
+        break;
+      }
+      int frame = 1;
+      int audioFrame = 2;
+      if (bufferList.length == total) {
+        audioFrame = 1;
+      }
+      if (bufferList.length == 1) {
+        frame = 2;
+        audioFrame = 4;
+      }
+      Uint8List buffer = bufferList.removeAt(0);
+      Map<String, dynamic> data = XunfeiUtil.createFrameDataForEvaluation(
+        frame,
+        audioFrame: audioFrame,
+        audio: buffer,
+      );
+      _websocket!.sink.add(jsonEncode(data));
+      await Future.delayed(const Duration(milliseconds: 20));
+    }
+  }
+
+  Future<void> _disconnectWebsocket(int code, String reason) async {
+    if (_websocket != null) {
+      await _websocket!.sink.close(code, reason);
+    }
+  }
+
+  /** 保存评测 */
   Map<String, dynamic> _getParams(NormalMessage message, Map<String, dynamic> evaluation) {
     return {
       'session_id': message.sessionId,
       'message_id': message.id,
       'message': message.text,
-      'speech': '',
       'accuracy_score': evaluation['accuracy_score'],
       'fluency_score': evaluation['fluency_score'],
       'integrity_score': evaluation['integrity_score'],
@@ -128,74 +226,34 @@ class EvaluateUtil {
     };
   }
 
-  void _uploadEvaluation(String taskId, List<Uint8List> audio, Map<String, dynamic> params) {
-    String filename = params['session_id'] + '_' + params['message_id'] + '.wav';
-    _uploadAudio(filename, audio, (url) {
-      params['speech_file'] = url;
+  void _saveEvaluation({
+    required NormalMessage message,
+    Map<String, dynamic>? evaluation,
+    required Function() onSuccess,
+  }) {
+    try {
+      Map<String, dynamic> params = _getParams(message, evaluation ?? message.evaluation);
       DioUtils.instance.requestNetwork<ResultData>(
         Method.post,
         HttpApi.addScore,
         params: params,
         onSuccess: (result) {
           if (result != null && result.code == 200) {
-            Log.d('upload score success', tag: '上传评分');
-            _removeEvaluateTask(taskId);
+            onSuccess();
+            return;
           }
+          throw Exception();
         },
         onError: (code, msg) {
-          Log.d('upload score:msg=$msg', tag: '上传评分');
+          throw Exception();
         },
       );
-    });
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  void _uploadAudio(String filename, List<Uint8List> audio, Function(String) onSuccess) async {
-    _getOssToken((evaluateOss) async {
-      String host = 'https://shenmo-statics.oss-cn-beijing.aliyuncs.com';
-      String key = 'audio/$filename';
-
-      // 获取签名
-      Map<String, dynamic> policyParams = {
-        'expiration': evaluateOss['Expiration'],
-        'conditions': [
-          ['content-length-range', 0, 1048576000]
-        ],
-      };
-      // String policy = base64Encode(utf8.encode('{\"expiration\": \"${}\",\"conditions\": [[\"content-length-range\", 0, 104857600]]}'));
-      String policy = base64Encode(utf8.encode(jsonEncode(policyParams)));
-      Digest digest = Hmac(sha1, utf8.encode(evaluateOss['AccessKeySecret'])).convert(utf8.encode(policy));
-      String signature = base64Encode(digest.bytes);
-      
-      List<int> buffer = [];
-      for (Uint8List item in audio) {
-        buffer.addAll(item);
-      }
-      FormData formData = FormData.fromMap({
-        'key': key,
-        'success_action_status': '200',
-        'OSSAccessKeyId': evaluateOss['AccessKeyId'],
-        'x-oss-security-token': evaluateOss['SecurityToken'],
-        'policy': policy,
-        'signature': signature,
-        'Content-Type': 'audio/x-wave',
-        'file': MultipartFile.fromBytes(_toWav(buffer)),
-      });
-      
-      try {
-        Response response = await Dio().post(
-          host,
-          data: formData,
-        );
-        if (response.statusCode == 200) {
-          Log.d('upload audio success:url=${'$host/$key'}', tag: '上传音频');
-          onSuccess('$host/$key');
-        }
-      } catch (e) {
-        Log.d('upload audio error:${e.toString()}', tag: '_uploadAudio');
-      }
-    });
-  }
-
+  /** 上传音频 */
   Uint8List _toWav(List<int> data) {
     var channels = 1;
 
@@ -272,55 +330,85 @@ class EvaluateUtil {
     onSuccess(evaluateOss as Map<String, dynamic>);
   }
 
-  void _connectWebsocket(Function(Map<String, dynamic>) onSuccess) {
-    String date = HttpDate.format(DateTime.now());
-    String authorization = XunfeiUtil.getEvaluateAuthorization(date);
-    Uri uri = Uri.parse('wss://ise-api.xfyun.cn:443/v2/open-ise?host=ise-api.xfyun.cn&date=$date&authorization=$authorization');
-    try {
-      _websocket = WebSocketChannel.connect(uri);
-      _websocket!.stream.listen(
-        (event) async {
-          Map<String, dynamic> response = jsonDecode(event);
-          if (response['code'] != 0) {
-            await _disconnectWebsocket(WebSocketStatus.normalClosure, 'Fail');
-            return;
-          }
-          Map<String, dynamic> result = response['data'];
-          // 非最终结果
-          if (result['status'] != 2) {
-            return;
-          }
-          Map<String, dynamic>? evaluation = XunfeiUtil.getEvaluateResult(response);
-          if (evaluation != null) {
-            _result = evaluation;
-          }
-          await _disconnectWebsocket(WebSocketStatus.normalClosure, 'Success');
-        },
-        onDone: () {
-          int? code = _websocket!.closeCode;
-          String? reason = _websocket!.closeReason;
-          Log.d('recognize done:[code=$code][reason=$reason]', tag: '讯飞语音评测断开');
-          if (code == WebSocketStatus.normalClosure) {
-            onSuccess(_result);
-          } else {
-            Log.d('xunfei evaluation error:[error]$reason', tag: '讯飞语音评测异常');
-          }
-          _websocket = null;
-        },
-        onError: (e) {
-          Log.d('xunfei evaluation error:[error]${e.toString()}', tag: '讯飞语音评测异常');
-        },
-        cancelOnError: true,
-      );
-    } catch (e) {
-      rethrow;
-    }
+  void _uploadAudio(String filename, List<Uint8List> audio, Function(String) onSuccess) async {
+    _getOssToken((evaluateOss) async {
+      String host = 'https://shenmo-statics.oss-cn-beijing.aliyuncs.com';
+      String key = 'audio/$filename';
+
+      // 获取签名
+      Map<String, dynamic> policyParams = {
+        'expiration': evaluateOss['Expiration'],
+        'conditions': [
+          ['content-length-range', 0, 1048576000]
+        ],
+      };
+      // String policy = base64Encode(utf8.encode('{\"expiration\": \"${}\",\"conditions\": [[\"content-length-range\", 0, 104857600]]}'));
+      String policy = base64Encode(utf8.encode(jsonEncode(policyParams)));
+      Digest digest = Hmac(sha1, utf8.encode(evaluateOss['AccessKeySecret'])).convert(utf8.encode(policy));
+      String signature = base64Encode(digest.bytes);
+
+      List<int> buffer = [];
+      for (Uint8List item in audio) {
+        buffer.addAll(item);
+      }
+      FormData formData = FormData.fromMap({
+        'key': key,
+        'success_action_status': '200',
+        'OSSAccessKeyId': evaluateOss['AccessKeyId'],
+        'x-oss-security-token': evaluateOss['SecurityToken'],
+        'policy': policy,
+        'signature': signature,
+        'Content-Type': 'audio/x-wave',
+        'file': MultipartFile.fromBytes(_toWav(buffer)),
+      });
+
+      try {
+        Response response = await Dio().post(
+          host,
+          data: formData,
+        );
+        if (response.statusCode == 200) {
+          Log.d('upload audio success:url=${'$host/$key'}', tag: '上传音频');
+          onSuccess('$host/$key');
+        }
+      } catch (e) {
+        Log.d('upload audio error:${e.toString()}', tag: '_uploadAudio');
+      }
+    });
   }
 
-  Future<void> _disconnectWebsocket(int code, String reason) async {
-    if (_websocket != null) {
-      await _websocket!.sink.close(code, reason);
+}
+
+class EvaluateCache {
+
+  EvaluateCache();
+
+  String id = '';
+  String deviceId = '';
+  bool evaluating = true;
+  NormalMessage message = NormalMessage();
+
+  factory EvaluateCache.fromJson(dynamic json) {
+    json = json as Map<String, dynamic>;
+    EvaluateCache cache = EvaluateCache();
+    if (json['id'] != null) {
+      cache.id = json['id'];
     }
+    if (json['device_id'] != null) {
+      cache.deviceId = json['device_id'];
+    }
+    if (json['message'] != null) {
+      cache.message = NormalMessage.fromJson(json['message']);
+    }
+    return cache;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'device_id': deviceId,
+      'message': message.toJson(),
+    };
   }
 
 }

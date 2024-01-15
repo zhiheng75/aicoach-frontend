@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_final_fields, unnecessary_getters_setters, slash_for_doc_comments
-import 'package:Bubble/chat/utils/evaluate_util.dart';
 import 'package:flutter/material.dart';
 
 import '../../chat/entity/character_entity.dart';
@@ -35,8 +34,6 @@ class HomeProvider extends ChangeNotifier {
   List<MessageEntity> _messageList = [];
   // 对话背景
   String? _chatBackground;
-
-  EvaluateUtil _evaluateUtil = EvaluateUtil();
 
   /** 模考 */
   // 使用次数
@@ -134,6 +131,7 @@ class HomeProvider extends ChangeNotifier {
         if (message.type == 'normal') {
           if ((message as NormalMessage).speaker == 'ai') {
             normalMessage.question = message.text;
+            normalMessage.questionMessageId = message.id;
             break;
           }
         }
@@ -145,17 +143,23 @@ class HomeProvider extends ChangeNotifier {
   // 渲染普通消息到列表
   void addNormalMessage(NormalMessage normalMessage, [bool update = true]) {
     _messageList.add(normalMessage);
-    // 执行评测
-    if (normalMessage.speaker == 'user') {
-      _evaluateUtil.evaluate(
-        normalMessage,
-        onSuccess: (evaluation) {
-          normalMessage.evaluation = evaluation;
-          notifyListeners();
-        },
-      );
-    }
     if (update == true) {
+      notifyListeners();
+    }
+  }
+
+  // 更新普通消息项
+  void updateNormalMessage(NormalMessage normalMessage) {
+    int index = 0;
+    while (index < _messageList.length) {
+      MessageEntity message = _messageList.elementAt(index);
+      if (message is NormalMessage && message.id == normalMessage.id) {
+        break;
+      }
+      index++;
+    }
+    if (index < _messageList.length) {
+      _messageList[index] = normalMessage;
       notifyListeners();
     }
   }

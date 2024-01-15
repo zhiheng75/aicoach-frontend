@@ -29,12 +29,16 @@ class ChatWebsocket {
     required String characterId,
     // 话题和场景都用sceneID
     String? sceneId,
+    Function()? onConnected,
     required Function(dynamic) onAnswer,
     required Function() onEnd,
   }) async {
     try {
       String sessionId = const Uuid().v4().replaceAll('-', '');
       await _connect(sessionId, characterId, sceneId);
+      if (onConnected != null) {
+        onConnected();
+      }
       _websocket!.stream.listen(
         onAnswer,
         onDone: () {

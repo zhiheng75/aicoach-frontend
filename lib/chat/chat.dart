@@ -9,6 +9,7 @@ import '../mvp/base_page.dart';
 import '../net/dio_utils.dart';
 import '../net/http_api.dart';
 import '../scene/entity/scene_entity.dart';
+import '../scene/scene.dart';
 import '../util/EventBus.dart';
 import '../util/confirm_utils.dart';
 import '../util/log_utils.dart';
@@ -244,13 +245,15 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   }
 
   Future<void> stopCurrentChat() async {
+    await _mediaUtils.stopPlayLoop(true);
     await _chatWebsocket.stopChat('manual');
-    await _mediaUtils.stopPlayLoop();
   }
 
   void startNormalChat(CharacterEntity character) async {
     await stopCurrentChat();
     _homeProvider.sessionId = '';
+    _homeProvider.topic = null;
+    _homeProvider.scene = null;
     _homeProvider.character = character;
     _homeProvider.clearMessageList();
     Future.delayed(Duration.zero, () {
@@ -259,8 +262,9 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
       normalMessage.text = _character!.text;
       _homeProvider.addNormalMessage(normalMessage);
-      MediaUtils().play(
-        _character!.audio,
+      _mediaUtils.resumeUse();
+      _mediaUtils.play(
+        url: _character!.audio,
         whenFinished: () {
           _bottomBarControll.setDisabled(false);
           _isCharacterChanging = false;
@@ -287,9 +291,19 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     _homeProvider.scene = scene;
     _homeProvider.clearMessageList();
     Future.delayed(Duration.zero, () {
-      _homeProvider.addIntroductionMessage();
-      _homeProvider.addTipMessage('Scene started！');
-      _bottomBarControll.setDisabled(false);
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        barrierColor: Colors.transparent,
+        isScrollControlled: true,
+        isDismissible: false,
+        clipBehavior: Clip.none,
+        builder: (_) => ScenePage(
+          onEnd: () {
+            startNormalChat(_homeProvider.character);
+          },
+        ),
+      );
     });
   }
 

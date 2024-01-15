@@ -2,7 +2,6 @@
 
 import 'dart:typed_data';
 
-import 'package:Bubble/util/EventBus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -10,11 +9,13 @@ import 'package:provider/provider.dart';
 import '../../home/provider/home_provider.dart';
 import '../../loginManager/login_manager.dart';
 import '../../res/colors.dart';
+import '../../util/EventBus.dart';
 import '../../util/media_utils.dart';
 import '../../util/toast_utils.dart';
 import '../../widgets/load_image.dart';
 import '../entity/message_entity.dart';
 import '../utils/chat_websocket.dart';
+import '../utils/evaluate_util.dart';
 import '../utils/recognize_util.dart';
 import 'example.dart';
 import 'record.dart';
@@ -147,7 +148,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
         _homeProvider.notify();
         _answer = null;
         return;
-      };
+      }
       _answer!.text += answer;
       _homeProvider.notify();
       EventBus().emit('SCROLL_MESSAGE_LIST');
@@ -158,7 +159,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
         return;
       }
       _mediaUtils.playLoop(
-        answer,
+        buffer: answer,
         whenFinished: () {
           widget.controller.setDisabled(false);
           _chatWebsocket.addAwayTimer(() {
@@ -180,6 +181,9 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
         message.audio = [..._bufferList];
         message.speaker = 'user';
         _homeProvider.addNormalMessage(message);
+        EvaluateUtil().evaluate(message, () {
+          _homeProvider.updateNormalMessage(message);
+        });
         _answer = null;
         EventBus().emit('SCROLL_MESSAGE_LIST');
       });

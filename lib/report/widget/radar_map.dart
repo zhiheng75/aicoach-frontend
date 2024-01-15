@@ -176,7 +176,7 @@ class RadarMapState extends State<RadarMap>
 
 
     return CustomPaint(
-      size:const Size.fromRadius(200),
+      size: Size.fromRadius(widget.r),
       painter: RadarmapPainter(widget.scoreList, ctrl, values,
           r: widget.r,
           n: widget.n,

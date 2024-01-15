@@ -1,16 +1,16 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, unrelated_type_equality_checks
 
-import 'package:Bubble/chat/entity/topic_entity.dart';
-import 'package:Bubble/chat/widget/evaluation.dart';
-import 'package:Bubble/util/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../home/provider/home_provider.dart';
 import '../../res/colors.dart';
+import '../../util/toast_utils.dart';
 import '../../widgets/load_image.dart';
 import '../entity/message_entity.dart';
+import '../entity/topic_entity.dart';
+import 'evaluation.dart';
 
 class MessageItem extends StatefulWidget {
   const MessageItem({
@@ -230,9 +230,6 @@ class _MessageItemState extends State<MessageItem> {
         NormalMessage message = widget.message as NormalMessage;
         if (message.speaker != 'user') {
           openTranslate();
-          return;
-        }
-        if (message.evaluation.isEmpty) {
           return;
         }
         openEvaluation();

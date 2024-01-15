@@ -170,27 +170,54 @@ class XunfeiUtil {
     return result;
   }
   // 获取评测结果（base64解密->xml转json->json转map）
-  static Map<String, dynamic>? getEvaluateResult(Map<String, dynamic> response) {
-    Map<String, dynamic> result = response['data'];
-    String xmlString = utf8.decode(base64.decode(result['data']));
+  static Map<String, dynamic> getEvaluateResult(String xmlString) {
+    Map<String, dynamic> evaluation = {};
+
+    xmlString = utf8.decode(base64.decode(xmlString));
     Xml2Json xml2json = Xml2Json();
     xml2json.parse(xmlString);
     String json = xml2json.toOpenRally();
-    Map<String, dynamic> evaluation = jsonDecode(json);
+    Map<String, dynamic> result = jsonDecode(json);
 
-    if (evaluation['xml_result'] != null) {
-      Map<String, dynamic> xmlResult = evaluation['xml_result'];
+    if (result['xml_result'] != null) {
+      Map<String, dynamic> xmlResult = result['xml_result'];
       if (xmlResult['read_sentence'] != null) {
         Map<String, dynamic> readSentence = xmlResult['read_sentence'];
         if (readSentence['rec_paper'] != null) {
           Map<String, dynamic> recPaper = readSentence['rec_paper'];
           if (recPaper['read_chapter'] != null) {
-            return recPaper['read_chapter'];
+            Map<String, dynamic> readChapter = recPaper['read_chapter'];
+            // 4个维度分和总分
+            evaluation['accuracy_score'] = readChapter['accuracy_score'];
+            evaluation['fluency_score'] = readChapter['fluency_score'];
+            evaluation['integrity_score'] = readChapter['integrity_score'];
+            evaluation['standard_score'] = readChapter['standard_score'];
+            evaluation['total_score'] = readChapter['total_score'];
+            // 单词打分
+            if (readChapter['sentence'] != null) {
+              Map<String, dynamic> sentence = readChapter['sentence'];
+              if (sentence['word'] != null && sentence['word'] is List) {
+                List<dynamic> words = sentence['word'] as List;
+                // 分数在60分以下
+                List<Map<String, dynamic>> list = [];
+                for (var word in words) {
+                  if (word['total_score'] != null && double.parse(word['total_score']) < 70) {
+                    list.add({
+                      'content': word['content'],
+                      'beg_pos': word['beg_pos'],
+                      'end_pos': word['end_pos'],
+                    });
+                  }
+                }
+                evaluation['words'] = list;
+              }
+            }
           }
         }
       }
     }
-    return null;
+
+    return evaluation;
   }
 
 }

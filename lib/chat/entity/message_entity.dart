@@ -19,6 +19,7 @@ class NormalMessage extends MessageEntity {
   String characterId = '';
   String sessionId = '';
   String question = '';
+  String questionMessageId = '';
   String id = '';
   String text = '';
   List<Uint8List> audio = [];
@@ -49,7 +50,21 @@ class NormalMessage extends MessageEntity {
       entity.text = json['text'];
     }
     if (json['audio'] != null) {
-      entity.audio = jsonDecode(json['audio']) as List<Uint8List>;
+      List<dynamic> audio = jsonDecode(json['audio']);
+      entity.audio = audio.map((item) {
+        Uint8List buffer;
+        if (item is List) {
+          List<int> list = item.map((e) => e as int).toList();
+          buffer = Uint8List.fromList(list);
+        } else {
+          buffer = Uint8List(0);
+        }
+        return buffer;
+      }).toList();
+      // entity.audio = jsonDecode(json['audio']) as List<Uint8List>;
+    }
+    if (json['evaluation'] != null) {
+      entity.evaluation = json['evaluation'];
     }
     return entity;
   }
@@ -60,6 +75,7 @@ class NormalMessage extends MessageEntity {
       'id': id,
       'text': text,
       'audio': jsonEncode(audio),
+      'evaluation': evaluation,
     };
   }
 
