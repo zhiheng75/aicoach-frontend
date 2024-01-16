@@ -5,13 +5,11 @@ import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/my_alert.dart';
-
 import 'package:Bubble/widgets/dash_line.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
-
 import 'package:rxdart/rxdart.dart';
 
 class MockExaminationOnePage extends StatefulWidget {
