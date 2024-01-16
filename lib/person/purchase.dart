@@ -30,7 +30,11 @@ class PurchasePage extends StatefulWidget {
   State<PurchasePage> createState() => _PurchasePageState();
 }
 
-class _PurchasePageState extends State<PurchasePage> with BasePageMixin<PurchasePage, PurchasePagePresenter>, AutomaticKeepAliveClientMixin<PurchasePage> implements PurchaseView {
+class _PurchasePageState extends State<PurchasePage>
+    with
+        BasePageMixin<PurchasePage, PurchasePagePresenter>,
+        AutomaticKeepAliveClientMixin<PurchasePage>
+    implements PurchaseView {
   late PurchasePagePresenter _purchasePagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
   // 状态 loading-加载中 fail-失败 success-成功
@@ -334,10 +338,12 @@ class _PurchasePageState extends State<PurchasePage> with BasePageMixin<Purchase
           setState(() {});
         },
         child: Container(
-          decoration: isSelected ? BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
-            color: const Color(0xFFECECEC),
-          ) : null,
+          decoration: isSelected
+              ? BoxDecoration(
+                  borderRadius: BorderRadius.circular(12.0),
+                  color: const Color(0xFFECECEC),
+                )
+              : null,
           padding: EdgeInsets.all(isSelected ? 12.0 : 0),
           child: Container(
             decoration: BoxDecoration(

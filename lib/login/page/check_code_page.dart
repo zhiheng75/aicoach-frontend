@@ -248,6 +248,7 @@ class _CheckCodePageState extends State<CheckCodePage>
 
     NavigatorUtils.push(
       context,
+      replace: true, //应该的注释
       PersonalRouter.person,
     );
   }

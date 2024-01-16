@@ -355,7 +355,6 @@ class _NewRegisterPageState extends State<NewRegisterPage>
         keyboardType: TextInputType.number,
         hintText: "输入验证码",
         getVCode: () async {
-
           if (_phoneController.text.length == 11) {
             _registerPresenter.sendSms(_phoneController.text.trim(), true);
             return true;
@@ -430,7 +429,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
             ),
             Gaps.hGap10,
             Text(
-              "我以阅读并同意 ",
+              "我已阅读并同意 ",
               style:
                   TextStyle(fontSize: Dimens.font_sp12, color: Colours.black),
             ),

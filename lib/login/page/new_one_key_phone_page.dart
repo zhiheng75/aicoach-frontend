@@ -218,7 +218,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                           ),
                           Gaps.hGap10,
                           Text(
-                            "我以阅读并同意",
+                            "我已阅读并同意",
                             style: TextStyle(
                                 fontSize: Dimens.font_sp12,
                                 color: Colours.black),
