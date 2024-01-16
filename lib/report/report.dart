@@ -92,7 +92,7 @@ class _ReportPageState extends State<ReportPage>
     return ExamReportEntity.fromJson(data);
   }
 
-  Color getColorByScore(int score) {
+  Color getColorByScore(double score) {
     Color color;
     if (score < 50) {
       color = const Color(0xFFE00094);
@@ -253,7 +253,7 @@ class _ReportPageState extends State<ReportPage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          '${item.score}',
+                          '${item.score.toInt()}',
                           style: TextStyle(
                             fontSize: 24.0,
                             fontWeight: FontWeight.w400,
@@ -374,7 +374,7 @@ class _ReportPageState extends State<ReportPage>
                           style: TextStyle(
                             fontSize: 24.0,
                             fontWeight: FontWeight.w400,
-                            color: getColorByScore(item.score),
+                            color: getColorByScore(item.score as double),
                             letterSpacing: 0.05,
                           ),
                         ),

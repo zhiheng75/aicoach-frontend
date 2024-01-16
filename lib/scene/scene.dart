@@ -98,7 +98,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
       _homeProvider.addNormalMessage(_answer!);
     }
     if (answer is String) {
-      if (answer.startsWith('[end=')) {
+      if (answer.startsWith('[end')) {
         _answer!.isTextEnd = true;
         _homeProvider.notify();
         _answer = null;
@@ -181,7 +181,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
           child: Column(
             children: <Widget>[
               LoadImage(
-                provider.scene!.cover,
+                provider.scene?.cover ?? '',
               ),
               Expanded(
                 child: ImageFiltered(

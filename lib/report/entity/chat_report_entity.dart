@@ -5,7 +5,7 @@ class ChatReportEntity {
   String topicName = '';
   int duration = 0;
   int star = 0;
-  int score = 0;
+  double score = 0;
   String characterName = '';
   String characterAvatar = '';
   String createTime = '';
