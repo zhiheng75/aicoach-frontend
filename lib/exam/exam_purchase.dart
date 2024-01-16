@@ -1,5 +1,14 @@
 // ignore_for_file: prefer_final_fields
 
+import 'dart:convert';
+
+import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/exam/entity/goods_list_bean.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/person/presneter/purchase_page_presenter.dart';
+import 'package:Bubble/person/view/purchase_view.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +20,6 @@ import '../util/toast_utils.dart';
 import '../widgets/load_data.dart';
 import '../widgets/load_fail.dart';
 import 'entity/exam_good_entity.dart';
-import 'presenter/exam_purchase_page_presenter.dart';
 import 'view/exam_purchas_view.dart';
 
 class ExamPurchasePage extends StatefulWidget {
@@ -26,46 +34,62 @@ class ExamPurchasePage extends StatefulWidget {
   State<ExamPurchasePage> createState() => _ExamPurchasePageState();
 }
 
-class _ExamPurchasePageState extends State<ExamPurchasePage> with BasePageMixin<ExamPurchasePage, ExamPurchasePagePresenter>, AutomaticKeepAliveClientMixin<ExamPurchasePage> implements ExamPurchaseView {
-
-  late ExamPurchasePagePresenter _examPurchasePagePresenter;
+class _ExamPurchasePageState extends State<ExamPurchasePage>
+    with
+        BasePageMixin<ExamPurchasePage, PurchasePagePresenter>,
+        AutomaticKeepAliveClientMixin<ExamPurchasePage>
+    implements PurchaseView {
+  late PurchasePagePresenter _purchasePagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
   // 状态 loading-加载中 fail-失败 success-成功
   String _pageState = 'loading';
   List<ExamGoodEntity> _goodsList = [];
   int _goodsId = 0;
+  num _goodPrice = 0;
   String _pay = 'wxpay';
   bool _checked = false;
 
   void init() {
-    getGoodsList();
+    // getGoodsList();
   }
 
-  void getGoodsList() {
-    // todo 对接模考商品列表
-    Future.delayed(const Duration(seconds: 3), () {
-      ExamGoodEntity ten = ExamGoodEntity();
-      ten.id = 1;
-      ten.icon = 'huangguan';
-      ten.name = '模考10次';
-      ten.desc = '强化训练包';
-      ten.price = 299;
-      ExamGoodEntity five = ExamGoodEntity();
-      five.id = 2;
-      five.icon = 'xingxing';
-      five.name = '模考5次';
-      five.desc = '基础训练包';
-      five.price = 199;
-      ExamGoodEntity one = ExamGoodEntity();
-      one.id = 3;
-      one.icon = 'qizhi';
-      one.name = '模考1次';
-      one.desc = '单次训练包';
-      one.price = 59;
-      _goodsList = [ten, five, one];
-      _pageState = 'success';
-      setState(() {});
-    });
+  // void getGoodsList() {
+  //   // todo 对接模考商品列表
+  //   Future.delayed(const Duration(seconds: 3), () {
+  //     ExamGoodEntity ten = ExamGoodEntity();
+  //     ten.id = 1;
+  //     ten.icon = 'huangguan';
+  //     ten.name = '模考10次';
+  //     ten.desc = '强化训练包';
+  //     ten.price = 299;
+  //     ExamGoodEntity five = ExamGoodEntity();
+  //     five.id = 2;
+  //     five.icon = 'xingxing';
+  //     five.name = '模考5次';
+  //     five.desc = '基础训练包';
+  //     five.price = 199;
+  //     ExamGoodEntity one = ExamGoodEntity();
+  //     one.id = 3;
+  //     one.icon = 'qizhi';
+  //     one.name = '模考1次';
+  //     one.desc = '单次训练包';
+  //     one.price = 59;
+  //     _goodsList = [ten, five, one];
+  //     _pageState = 'success';
+  //     setState(() {});
+  //   });
+  // }
+
+  void pay() {
+    if (_pay == 'wxpay') {
+      _purchasePagePresenter.wxChatPay(_goodsId, _goodPrice, true);
+    }
+    if (_pay == 'alipay') {
+      _purchasePagePresenter.aliPay(_goodsId, _goodPrice, true);
+    }
+    if (_pay == 'applepay') {
+      _purchasePagePresenter.applePay(_goodsId);
+    }
   }
 
   void payGoods() {
@@ -83,22 +107,122 @@ class _ExamPurchasePageState extends State<ExamPurchasePage> with BasePageMixin<
       );
       return;
     }
-    Navigator.of(context).pop();
-    if (widget.onPurchased != null) {
-      widget.onPurchased!();
-    }
+    pay();
+  }
+
+  // void initData() {
+  //   _pageState = 'loading';
+  //   setState(() {});
+  //   CancelToken cancelToken = CancelToken();
+
+  //   final Map<String, String> params = <String, String>{};
+  //   params["type"] = "2";
+
+  //   DioUtils.instance.requestNetwork<ResultData>(
+  //     Method.get,
+  //     HttpApi.goodsList,
+  //     params: params,
+  //     cancelToken: cancelToken,
+  //     onSuccess: (result) {
+  //       Log.e(result.toString());
+  //     },
+  //     onError: (code, msg) {},
+  //   );
+  // }
+
+  // void initData() {
+  // Future.delayed(const Duration(milliseconds: 20), () {
+  //   _examPurchasePagePresenter.getGoodsList();
+  // });
+  // }
+
+  void getGoodList() {
+    final Map<String, String> params = <String, String>{};
+    params["type"] = "2";
+
+    _purchasePagePresenter.requestNetwork<ResultData>(Method.get,
+        url: HttpApi.goodsList,
+        queryParameters: params,
+        isShow: false, onSuccess: (result) {
+      Log.e(result.toString());
+
+      Map<String, dynamic> goodsListMap = json.decode(result.toString());
+      GoodsListBean goodsListBean = GoodsListBean.fromJson(goodsListMap);
+
+      Log.e(goodsListBean.msg);
+      if (goodsListBean != null) {
+        _goodsList = [];
+        for (int i = 0; i < goodsListBean.data.length; i++) {
+          ExamGoodEntity ten = ExamGoodEntity();
+          ten.id = i + 1;
+          if (i == 0) {
+            ten.icon = 'huangguan';
+          } else if (i == 1) {
+            ten.icon = 'xingxing';
+          } else {
+            ten.icon = 'qizhi';
+          }
+          ten.name = goodsListBean.data[i].name!;
+          ten.desc = goodsListBean.data[i].desc;
+          ten.price = goodsListBean.data[i].originalPrice!.toInt();
+          _goodsList.add(ten);
+        }
+        _pageState = 'success';
+        setState(() {});
+        // view.sendSuccess(goodsListBean);
+      } else {
+        // view.sendFail("");
+      }
+    }, onError: (code, msg) {
+      // view.sendFail("");
+    });
+
+    // _purchasePagePresenter.requestNetwork<ResultData>(
+    //   Method.get,
+    //   url: HttpApi.goodList,
+    //   isShow: false,
+    //   isClose: false,
+    //   onSuccess: (result) async {
+    //     if (result == null || result.data == null) {
+    //       _pageState = 'fail';
+    //       setState(() {});
+    //       return;
+    //     }
+    //     List<dynamic> data = result.data as List<dynamic>;
+    //     List<GoodEntity> list =
+    //         data.map((item) => GoodEntity.fromJson(item)).toList();
+    //     if (Platform.isIOS) {
+    //       await _purchasePagePresenter.getIosProduct(list);
+    //     }
+    //     _pageState = 'success';
+    //     _goodList = list;
+    //     setState(() {});
+    //   },
+    //   onError: (code, msg) {
+    //     Log.d('getGoodList fail:[reason]$msg', tag: '获取会员商品列表');
+    //     _pageState = 'fail';
+    //     setState(() {});
+    //   },
+    // );
   }
 
   @override
   void initState() {
     super.initState();
-    init();
+    getGoodList();
+    // init();
+    // Future.delayed(const Duration(milliseconds: 20), () {
+    // initData();
+    // });
+    // Future.delayed(const Duration(milliseconds: 10), () {
+    // _examPurchasePagePresenter.getGoodsList();
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    
+
     Widget goodsItem(ExamGoodEntity goods) {
       bool isSelected = _goodsId == goods.id;
       BoxDecoration decoration = BoxDecoration(
@@ -125,6 +249,8 @@ class _ExamPurchasePageState extends State<ExamPurchasePage> with BasePageMixin<
             return;
           }
           _goodsId = goods.id;
+          _goodPrice = goods.price;
+
           setState(() {});
         },
         child: Container(
@@ -200,10 +326,12 @@ class _ExamPurchasePageState extends State<ExamPurchasePage> with BasePageMixin<
           setState(() {});
         },
         child: Container(
-          decoration: isSelected ? BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
-            color: const Color(0xFFECECEC),
-          ) : null,
+          decoration: isSelected
+              ? BoxDecoration(
+                  borderRadius: BorderRadius.circular(12.0),
+                  color: const Color(0xFFECECEC),
+                )
+              : null,
           padding: EdgeInsets.all(isSelected ? 12.0 : 0),
           child: Container(
             decoration: BoxDecoration(
@@ -219,7 +347,7 @@ class _ExamPurchasePageState extends State<ExamPurchasePage> with BasePageMixin<
         ),
       );
     }
-    
+
     List<Widget> goodsChildren = [];
     for (int i = 0; i < _goodsList.length; i++) {
       ExamGoodEntity goods = _goodsList.elementAt(i);
@@ -413,9 +541,11 @@ class _ExamPurchasePageState extends State<ExamPurchasePage> with BasePageMixin<
         height: _screenUtil.screenHeight,
         color: Colors.white,
         alignment: Alignment.center,
-        child: _pageState == 'fail' ? LoadFail(
-          reload: init,
-        ) : const LoadData(),
+        child: _pageState == 'fail'
+            ? LoadFail(
+                reload: init,
+              )
+            : const LoadData(),
       );
     }
 
@@ -440,11 +570,43 @@ class _ExamPurchasePageState extends State<ExamPurchasePage> with BasePageMixin<
   }
 
   @override
-  ExamPurchasePagePresenter createPresenter() {
-    _examPurchasePagePresenter = ExamPurchasePagePresenter();
-    return _examPurchasePagePresenter;
+  PurchasePagePresenter createPresenter() {
+    _purchasePagePresenter = PurchasePagePresenter();
+    return _purchasePagePresenter;
   }
 
   @override
   bool get wantKeepAlive => false;
+
+  // @override
+  // void sendSuccess(GoodsListBean msg) {
+  //   // TODO: implement sendSuccess
+  //   // _goodsList = [];
+  //   // for (int i = 0; i < msg.data.length; i++) {
+  //   //   ExamGoodEntity ten = ExamGoodEntity();
+  //   //   ten.id = i + 1;
+  //   //   if (i == 0) {
+  //   //     ten.icon = 'huangguan';
+  //   //   } else if (i == 1) {
+  //   //     ten.icon = 'xingxing';
+  //   //   } else {
+  //   //     ten.icon = 'qizhi';
+  //   //   }
+  //   //   ten.name = msg.data[i].name!;
+  //   //   ten.desc = msg.data[i].desc!;
+  //   //   ten.price = msg.data[i].originalPrice!.toInt();
+  //   //   _goodsList.add(ten);
+  //   // }
+  //   // _pageState = 'success';
+  //   // setState(() {});
+  // }
+
+  @override
+  paySuccess() {
+    // TODO: implement paySuccess
+    Navigator.of(context).pop();
+    if (widget.onPurchased != null) {
+      widget.onPurchased!();
+    }
+  }
 }
