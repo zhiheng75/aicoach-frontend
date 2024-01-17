@@ -1,5 +1,4 @@
-
-class HttpApi{
+class HttpApi {
   //手机号登录
   static const String phoneLogin = 'mobile_login';
 
@@ -81,4 +80,10 @@ class HttpApi{
 
   //获取oss上传
   static const String suggestAnswer = "suggest_answer";
+
+  //获取模考剩余使用次数
+  static const String examPermission = "exam_permission";
+
+  //获取模考剩余使用次数
+  static const String goodsList = "goods_list";
 }

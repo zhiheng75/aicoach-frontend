@@ -1,4 +1,5 @@
 import 'package:Bubble/exam/exam_router.dart';
+import 'package:Bubble/exam/page/mock_test_purchase_page.dart';
 import 'package:Bubble/exam/view/bar_chart.dart';
 import 'package:Bubble/report/report_router.dart';
 import 'package:Bubble/res/gaps.dart';
@@ -45,28 +46,7 @@ class _ExamPageState extends State<ExamPage>
   ];
 
   void startExam() {
-    // NavigatorUtils.push(
-    //   context,
-    //   ReportRouter.myExaminationPage,
-    // );
-    NavigatorUtils.push(
-      context,
-      ExamRouter.mockExaminationOnePage,
-    );
-    return;
-    if (_homeProvider.usageCount == 0) {
-      showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        barrierColor: Colors.transparent,
-        isScrollControlled: true,
-        isDismissible: false,
-        builder: (_) => ExamPurchasePage(
-          onPurchased: () {},
-        ),
-      );
-      return;
-    }
+    _examPagePresenter.getExamPermission();
   }
 
   @override
@@ -525,9 +505,9 @@ class _ExamPageState extends State<ExamPage>
       "整体得分",
     ];
     List<double> peopleData = [
-      100,
-      75,
+      85,
       45,
+      65,
       25,
     ];
     List<Color> colorData = [
@@ -708,4 +688,38 @@ class _ExamPageState extends State<ExamPage>
 
   @override
   bool get wantKeepAlive => false;
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+  }
+
+  @override
+  void sendSuccess(int leftTime) {
+    // TODO: implement sendSuccess
+    // if (leftTime > 0) {
+    //   NavigatorUtils.push(
+    //     context,
+    //     ExamRouter.mockExaminationOnePage,
+    //   );
+    // } else {
+    //   //_homeProvider.usageCount == 0
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.transparent,
+      isScrollControlled: true,
+      isDismissible: false,
+      builder: (_) => ExamPurchasePage(
+        onPurchased: () {},
+      ),
+    );
+    // }
+
+    // NavigatorUtils.push(
+    //   context,
+    //   ExamRouter.mockTestPurchasePage,
+    // );
+  }
 }
