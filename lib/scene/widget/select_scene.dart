@@ -41,7 +41,6 @@ class _SelectSceneState extends State<SelectScene> {
   String _sceneState = 'loading';
   List<SceneEntity> _sceneList = [];
   final ScrollController _scrollController = ScrollController();
-  double _pageHeight = 340.0;
 
   void init() {
     _pageState = 'loading';
@@ -149,7 +148,7 @@ class _SelectSceneState extends State<SelectScene> {
           children: <Widget>[
             Container(
               width: _screenUtil.screenWidth,
-              height: _pageHeight,
+              height: _screenUtil.screenHeight,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12.0),
                 color: const Color(0xFF111111).withOpacity(0.95),
@@ -168,7 +167,7 @@ class _SelectSceneState extends State<SelectScene> {
     }
 
     // 各个组件的高度
-    double titleHeight = 66.0;
+    double titleHeight = _screenUtil.statusBarHeight +  80.0;
     double categoryHeight = 30.0;
 
     Widget categoryItem(int index, int currentIndex) {
@@ -332,7 +331,7 @@ class _SelectSceneState extends State<SelectScene> {
       }
 
       double width = _screenUtil.screenWidth;
-      double height = _pageHeight - titleHeight - categoryHeight - 12 - _screenUtil.bottomBarHeight;
+      double height = _screenUtil.screenHeight - titleHeight - categoryHeight - 12 - _screenUtil.bottomBarHeight;
       scene = GestureDetector(
         onHorizontalDragStart: (details) {
           _initialPosition = details.globalPosition;
@@ -398,7 +397,7 @@ class _SelectSceneState extends State<SelectScene> {
         children: <Widget>[
           Container(
             width: _screenUtil.screenWidth,
-            height: _pageHeight,
+            height: _screenUtil.screenHeight,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12.0),
               color: const Color(0xFF111111).withOpacity(0.95),
@@ -407,20 +406,36 @@ class _SelectSceneState extends State<SelectScene> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 24.0,
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: _screenUtil.statusBarHeight + 24.0,
+                    bottom: 24.0,
+                    left: 16.0,
+                    right: 16.0,
                   ),
-                  child: Text(
-                    '场景',
-                    style: TextStyle(
-                      fontSize: 17.0,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                      height: 18.0 / 17.0,
-                      letterSpacing: 0.05,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      const Text(
+                        '场景',
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          height: 18.0 / 17.0,
+                          letterSpacing: 0.05,
+                        ),
+                      ),
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => Navigator.of(context).pop(),
+                        child: const LoadAssetImage(
+                          'guanbi_yuan_bai',
+                          width: 32.0,
+                          height: 32.0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(

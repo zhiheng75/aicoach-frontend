@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
@@ -25,6 +26,8 @@ class MediaUtils {
   StreamController<Food>? _controller;
   // 是否禁用播放器
   bool _banUsePlayer = false;
+
+  bool get banUsePlayer => _banUsePlayer;
 
   /** 录音器 */
   void startRecord({
@@ -77,6 +80,59 @@ class MediaUtils {
       throw Exception('请前往App权限设置开启录音权限');
     }
     return isRequest;
+  }
+
+  /** 上传音频 */
+  Uint8List toWav(List<int> data) {
+    var channels = 1;
+
+    int sampleRate = 16000;
+
+    int byteRate = ((16 * sampleRate * channels) / 8).round();
+
+    var size = data.length;
+
+    var fileSize = size + 36;
+
+    return Uint8List.fromList([
+      // "RIFF"
+      82, 73, 70, 70,
+      fileSize & 0xff,
+      (fileSize >> 8) & 0xff,
+      (fileSize >> 16) & 0xff,
+      (fileSize >> 24) & 0xff,
+      // WAVE
+      87, 65, 86, 69,
+      // fmt
+      102, 109, 116, 32,
+      // fmt chunk size 16
+      16, 0, 0, 0,
+      // Type of format
+      1, 0,
+      // One channel
+      channels, 0,
+      // Sample rate
+      sampleRate & 0xff,
+      (sampleRate >> 8) & 0xff,
+      (sampleRate >> 16) & 0xff,
+      (sampleRate >> 24) & 0xff,
+      // Byte rate
+      byteRate & 0xff,
+      (byteRate >> 8) & 0xff,
+      (byteRate >> 16) & 0xff,
+      (byteRate >> 24) & 0xff,
+      // Uhm
+      ((16 * channels) / 8).round(), 0,
+      // bitsize
+      16, 0,
+      // "data"
+      100, 97, 116, 97,
+      size & 0xff,
+      (size >> 8) & 0xff,
+      (size >> 16) & 0xff,
+      (size >> 24) & 0xff,
+      ...data
+    ]);
   }
 
   Future<FlutterSoundRecorder?> _createRecorder() async {
@@ -134,12 +190,8 @@ class MediaUtils {
   void play({
     String? url,
     Uint8List? buffer,
-    bool closeAfterFinish = true,
     Function()? whenFinished,
   }) async {
-    if (_banUsePlayer) {
-      return;
-    }
     try {
       if (_player == null) {
         FlutterSoundPlayer? player  = await _createPlayer();
@@ -148,19 +200,19 @@ class MediaUtils {
         }
         _player = player;
       }
+      Log.d('播放语音', tag: 'play');
       _player!.startPlayer(
         fromURI: url,
         fromDataBuffer: buffer,
         whenFinished: () async {
+          Log.d('播放语音结束', tag: 'play');
           if (whenFinished != null) {
             whenFinished();
-          }
-          if (closeAfterFinish) {
-            await _destroyPlayer();
           }
         },
       );
     } catch (e) {
+      Log.d('播放语音出错', tag: 'play');
       if (whenFinished != null) {
         whenFinished();
       }
@@ -172,6 +224,10 @@ class MediaUtils {
     Function()? whenFinished,
   }) async {
     if (_banUsePlayer) {
+      Log.d('ban', tag: 'playLoop');
+      if (whenFinished != null) {
+        whenFinished();
+      }
       return;
     }
     _bufferList.add(buffer);
@@ -189,6 +245,8 @@ class MediaUtils {
       return;
     }
     if (_player!.isPlaying) {
+      _player!.audioPlayerFinished(PlayerState.isPlaying.index);
+      await Future.delayed(const Duration(milliseconds: 300));
       await _player!.stopPlayer();
       await _destroyPlayer();
     }
@@ -217,15 +275,15 @@ class MediaUtils {
     Function()? whenFinished,
   }) async {
     if (_banUsePlayer || _bufferList.isEmpty) {
+      Log.d('ban or end', tag: '_playLoop');
       if (whenFinished != null) {
         whenFinished();
       }
-      await _destroyPlayer();
       return;
     }
+    _playing = true;
+    Uint8List buffer = _bufferList.removeAt(0);
     try {
-      _playing = true;
-      Uint8List buffer = _bufferList.removeAt(0);
       play(
         buffer: buffer,
         whenFinished: () {
@@ -236,6 +294,7 @@ class MediaUtils {
         },
       );
     } catch (e) {
+      _playing = false;
       _playLoop(
         whenFinished: whenFinished,
       );

@@ -2,6 +2,7 @@
 
 import 'dart:typed_data';
 
+import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -49,6 +50,13 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   AppLifecycleState? _appLifecycleState;
 
   void getExample() {
+    if (!LoginManager.isLogin()) {
+      Toast.show(
+        '请先登录',
+        duration: 1000,
+      );
+      return;
+    }
     if (widget.controller.disabled.value) {
       return;
     }
@@ -108,45 +116,39 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   }
 
   Future<void> connectWebsocket() async {
+    if (_homeProvider.sessionId != '') {
+      return;
+    }
+    String characterId = _homeProvider.character.characterId;
+    String? sceneId;
+    String sessionType = _homeProvider.sessionType;
+    if (sessionType == 'topic') {
+      sceneId = _homeProvider.topic!.id.toString();
+    }
+    if (sessionType == 'scene') {
+      sceneId = _homeProvider.scene!.id.toString();
+    }
     try {
-      if (_homeProvider.sessionId == '') {
-        String characterId = _homeProvider.character.characterId;
-        String? sceneId;
-        String sessionType = _homeProvider.sessionType;
-        if (sessionType == 'topic') {
-          sceneId = _homeProvider.topic!.id.toString();
-        }
-        if (sessionType == 'scene') {
-          sceneId = _homeProvider.scene!.id.toString();
-        }
-        _homeProvider.sessionId = await _chatWebsocket.startChat(
-          characterId: characterId,
-          sceneId: sceneId,
-          onAnswer: onAnswer,
-          onEnd: () {
-            String tip = 'Conversation finished！';
-            _homeProvider.addTipMessage(tip);
-            EventBus().emit('SCROLL_MESSAGE_LIST');
-            // 断开则禁用按钮
-            widget.controller.setDisabled(true);
-          },
-        );
-      }
+      _homeProvider.sessionId = await _chatWebsocket.startChat(
+        characterId: characterId,
+        sceneId: sceneId,
+        onAnswer: onWebsocketAnswer,
+        onEnd: onWebsocketEnd,
+      );
     } catch (e) {
       rethrow;
     }
   }
 
-  void onAnswer(dynamic answer) {
+  void onWebsocketAnswer(dynamic answer) {
     if (_answer == null) {
       _answer = NormalMessage();
       _homeProvider.addNormalMessage(_answer!);
     }
     if (answer is String) {
-      if (answer.startsWith('[end=')) {
+      if (answer.startsWith('[end')) {
         _answer!.isTextEnd = true;
         _homeProvider.notify();
-        _answer = null;
         return;
       }
       _answer!.text += answer;
@@ -161,39 +163,71 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       _mediaUtils.playLoop(
         buffer: answer,
         whenFinished: () {
+          // 其他播放语音操作强制结束AI语音
+          if (!_mediaUtils.banUsePlayer && !_answer!.isTextEnd) {
+            return;
+          }
           widget.controller.setDisabled(false);
-          _chatWebsocket.addAwayTimer(() {
-            String tip = '未发送语音已超过30秒，如若再无发送，将在30秒后自动结束对话！';
-            _homeProvider.addTipMessage(tip);
-            EventBus().emit('SCROLL_MESSAGE_LIST');
-          });
         },
       );
     }
   }
 
+  void onWebsocketEnd(String? reason, String endType) {
+    widget.controller.setDisabled(true);
+    // 异常结束
+    if (reason == 'Error') {
+      insertTipMessage('Please switch to new roles, topics, or scene');
+    }
+    // 正常结束
+    if (reason == 'Session End' && endType == 'normal') {
+      insertTipMessage('Conversation finished！');
+    }
+  }
+
   void sendMessage(String text) async {
+    // 连接
     try {
       await connectWebsocket();
-      _chatWebsocket.sendMessage(text, () {
-        NormalMessage message = _homeProvider.createNormalMessage(true);
-        message.text = text;
-        message.audio = [..._bufferList];
-        message.speaker = 'user';
-        _homeProvider.addNormalMessage(message);
-        EvaluateUtil().evaluate(message, () {
-          _homeProvider.updateNormalMessage(message);
-        });
-        _answer = null;
-        EventBus().emit('SCROLL_MESSAGE_LIST');
-      });
     } catch(e) {
-      Toast.show(
-        '发送失败，请稍后再试',
-        duration: 1000,
+      Log.d('connect websocket fail:[error]${e.toString()}', tag: 'sendMessage');
+    } finally {
+      _chatWebsocket.sendMessage(
+        text: text,
+        onUninited: () {
+          Toast.show(
+            '发送失败，请稍后再试',
+            duration: 1000,
+          );
+        },
+        onSuccess: () {
+          insertUserMessage(text, (message) {
+            EvaluateUtil().evaluate(message, () {
+              _homeProvider.updateNormalMessage(message);
+            });
+          });
+        },
+        onFail: () {
+          insertTipMessage('Please switch to new roles, topics, or scene');
+        },
       );
-      widget.controller.setDisabled(false);
     }
+  }
+
+  void insertTipMessage(String tip) {
+    _homeProvider.addTipMessage(tip);
+    EventBus().emit('SCROLL_MESSAGE_LIST');
+  }
+
+  void insertUserMessage(String text, Function(NormalMessage) onSuccess) {
+    NormalMessage message = _homeProvider.createNormalMessage(true);
+    message.text = text;
+    message.audio = [..._bufferList];
+    message.speaker = 'user';
+    _homeProvider.addNormalMessage(message);
+    EventBus().emit('SCROLL_MESSAGE_LIST');
+    _answer = null;
+    onSuccess(message);
   }
 
   @override
