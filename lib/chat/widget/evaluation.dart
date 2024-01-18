@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_final_fields
 
+import 'dart:typed_data';
+
+import 'package:Bubble/util/media_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,6 +31,7 @@ class Evaluation extends StatefulWidget {
 }
 
 class _EvaluationState extends State<Evaluation> {
+  final MediaUtils _mediaUtils = MediaUtils();
   late HomeProvider _homeProvider;
   CancelToken _cancelToken = CancelToken();
   String _standardAnswer = '';
@@ -56,53 +60,44 @@ class _EvaluationState extends State<Evaluation> {
         if (result == null || result.data == null) {
           _standardAnswer = '获取失败';
           _isGetting = false;
-          setState(() {});
+          if (mounted) {
+            setState(() {});
+          }
           return;
         }
         Map<String, dynamic> data = result.data as Map<String, dynamic>;
         _standardAnswer = data['text'];
         _isGetting = false;
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       },
       onError: (code, msg) {
         Log.d('get standard answer fail:msg=$msg', tag: '获取地道表达');
         _standardAnswer = '获取失败';
         _isGetting = false;
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       },
     );
-    // DioUtils.instance.requestNetwork<ResultData>(
-    //   Method.get,
-    //   HttpApi.suggestAnswer,
-    //   params: {
-    //     'question': message.question,
-    //     'answer': '',
-    //     'session_id': null,
-    //     'message_id': message.questionMessageId,
-    //     'character_id': message.characterId,
-    //   },
-    //   onSuccess: (result) {
-    //     if (result == null || result.data == null) {
-    //       _standardAnswer = '获取失败';
-    //       _isGetting = false;
-    //       setState(() {});
-    //       return;
-    //     }
-    //     Map<String, dynamic> data = result.data as Map<String, dynamic>;
-    //     _standardAnswer = data['text'];
-    //     _isGetting = false;
-    //     setState(() {});
-    //   },
-    //   onError: (code, msg) {
-    //     Log.d('get standard answer fail:msg=$msg', tag: '获取地道表达');
-    //     _standardAnswer = '获取失败';
-    //     _isGetting = false;
-    //     setState(() {});
-    //   },
-    // );
   }
 
-  void playVoice(String type) {
+  void playVoice(String type) async {
+    await _mediaUtils.stopPlayLoop(true);
+    if (type == 'user') {
+      List<int> bytes = [];
+      List<Uint8List> bufferList = widget.message.audio;
+      for (Uint8List element in bufferList) {
+        bytes.addAll(element.map((item) => item).toList());
+      }
+      _mediaUtils.play(
+        buffer: _mediaUtils.toWav(bytes),
+        whenFinished: () {
+          _mediaUtils.resumeUse();
+        },
+      );
+    }
   }
 
   @override

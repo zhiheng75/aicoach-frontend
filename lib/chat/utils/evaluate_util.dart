@@ -81,7 +81,11 @@ class EvaluateUtil {
   }
 
   Map<String, dynamic> _getCacheMap() {
-    return (SpUtil.getObject(_key) ?? {}) as Map<String, dynamic>;
+    Map<dynamic, dynamic>? cacheMap = SpUtil.getObject(_key);
+    if (cacheMap == null) {
+      return {};
+    }
+    return cacheMap as Map<String, dynamic>;
   }
 
   Future<void> _runTask() async {
@@ -254,7 +258,7 @@ class EvaluateUtil {
   }
 
   /** 上传音频 */
-  Uint8List _toWav(List<int> data) {
+  Uint8List toWav(List<int> data) {
     var channels = 1;
 
     int sampleRate = 16000;
@@ -359,7 +363,7 @@ class EvaluateUtil {
         'policy': policy,
         'signature': signature,
         'Content-Type': 'audio/x-wave',
-        'file': MultipartFile.fromBytes(_toWav(buffer)),
+        'file': MultipartFile.fromBytes(toWav(buffer)),
       });
 
       try {

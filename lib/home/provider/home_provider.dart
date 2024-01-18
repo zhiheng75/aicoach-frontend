@@ -115,7 +115,10 @@ class HomeProvider extends ChangeNotifier {
     });
   }
 
-  void clearMessageList() {
+  void resetChatParams() {
+    _sessionId = '';
+    _topic = null;
+    _scene = null;
     _messageList = [];
     notifyListeners();
   }
@@ -169,7 +172,7 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-  // 渲染角色简介消息到列表
+  // 渲染简介消息到列表
   void addIntroductionMessage([bool update = true]) {
     IntroductionMessage introductionMessage = IntroductionMessage();
     if (_sessionType == 'normal') {
@@ -180,6 +183,7 @@ class HomeProvider extends ChangeNotifier {
       introductionMessage.desc = _topic!.desc;
     }
     if (_sessionType == 'scene') {
+      introductionMessage.name = '${_scene!.name} ${_scene!.enName}';
       introductionMessage.desc = _scene!.desc;
     }
     _messageList.add(introductionMessage);

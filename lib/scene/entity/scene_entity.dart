@@ -2,6 +2,7 @@ class SceneEntity {
 
   int id = 0;
   String name = '';
+  String enName = '';
   String desc = '';
   String cover = '';
 
@@ -16,6 +17,9 @@ class SceneEntity {
     if (json['title'] != null) {
       entity.name = json['title'];
     }
+    if (json['en_title'] != null) {
+      entity.enName = json['en_title'];
+    }
     if (json['desc'] != null) {
       entity.desc = json['desc'];
     }
@@ -29,6 +33,7 @@ class SceneEntity {
     return {
       'id': id,
       'title': name,
+      'en_title': enName,
       'desc': desc,
       'title_image': cover,
     };

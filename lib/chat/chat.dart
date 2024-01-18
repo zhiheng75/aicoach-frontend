@@ -111,7 +111,6 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
         context: context,
         title: '你要切换角色吗？',
         onConfirm: () {
-          _isCharacterChanging = true;
           confirmChangeCharacter(characterIndex);
         },
         child: const Text(
@@ -131,7 +130,6 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
         context: context,
         title: '你要切换角色吗？',
         onConfirm: () {
-          _isCharacterChanging = true;
           confirmChangeCharacter(characterIndex);
         },
         child: const Text(
@@ -146,11 +144,12 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       );
       return;
     }
-    _isCharacterChanging = true;
     confirmChangeCharacter(characterIndex);
   }
 
   void confirmChangeCharacter(int characterIndex) {
+    _isCharacterChanging = true;
+    _bottomBarControll.setDisabled(true);
     _characterIndex = characterIndex;
     CharacterEntity character = _characterList[characterIndex];
     _character = character;
@@ -241,43 +240,41 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   }
 
   void selectTopic(TopicEntity topic) {
+    _bottomBarControll.setDisabled(true);
     startTopicChat(topic);
   }
 
-  Future<void> stopCurrentChat() async {
+  Future<void> endCurrentChat() async {
+    await _chatWebsocket.endChat(true);
     await _mediaUtils.stopPlayLoop(true);
-    await _chatWebsocket.stopChat('manual');
   }
 
   void startNormalChat(CharacterEntity character) async {
-    await stopCurrentChat();
-    _homeProvider.sessionId = '';
-    _homeProvider.topic = null;
-    _homeProvider.scene = null;
+    await endCurrentChat();
+    _homeProvider.resetChatParams();
     _homeProvider.character = character;
-    _homeProvider.clearMessageList();
     Future.delayed(Duration.zero, () {
+      _isCharacterChanging = false;
       _homeProvider.addIntroductionMessage();
       _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
       normalMessage.text = _character!.text;
+      normalMessage.isTextEnd = true;
       _homeProvider.addNormalMessage(normalMessage);
       _mediaUtils.resumeUse();
       _mediaUtils.play(
         url: _character!.audio,
         whenFinished: () {
           _bottomBarControll.setDisabled(false);
-          _isCharacterChanging = false;
         },
       );
     });
   }
 
   void startTopicChat(TopicEntity topic) async {
-    await stopCurrentChat();
-    _homeProvider.sessionId = '';
+    await endCurrentChat();
+    _homeProvider.resetChatParams();
     _homeProvider.topic = topic;
-    _homeProvider.clearMessageList();
     Future.delayed(Duration.zero, () {
       _homeProvider.addIntroductionMessage();
       _homeProvider.addTipMessage('Topic started！');
@@ -286,10 +283,9 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   }
 
   void startSceneChat(SceneEntity scene) async {
-    await stopCurrentChat();
-    _homeProvider.sessionId = '';
+    await endCurrentChat();
+    _homeProvider.resetChatParams();
     _homeProvider.scene = scene;
-    _homeProvider.clearMessageList();
     Future.delayed(Duration.zero, () {
       showModalBottomSheet(
         context: context,

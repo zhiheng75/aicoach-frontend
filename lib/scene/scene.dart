@@ -64,7 +64,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
     try {
       String characterId = _homeProvider.character.characterId;
       String sceneId = _homeProvider.scene!.id.toString();
-      String sessionId = await _chatWebsocket.startChat(
+      _homeProvider.sessionId = await _chatWebsocket.startChat(
         characterId: characterId,
         sceneId: sceneId,
         onConnected: () {
@@ -75,24 +75,16 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
           _bottomBarControll.setDisabled(false);
           _mediaUtils.resumeUse();
         },
-        onAnswer: onAnswer,
-        onEnd: () {
-          _isConversationEnd = true;
-          String tip = 'Conversation finished！';
-          _homeProvider.addTipMessage(tip);
-          EventBus().emit('SCROLL_MESSAGE_LIST');
-          // 断开则禁用按钮
-          _bottomBarControll.setDisabled(true);
-        },
+        onAnswer: onWebsocketAnswer,
+        onEnd: onWebsocketEnd,
       );
-      _homeProvider.sessionId = sessionId;
     } catch (e) {
       _pageState = 'fail';
       setState(() {});
     }
   }
 
-  void onAnswer(dynamic answer) {
+  void onWebsocketAnswer(dynamic answer) {
     if (_answer == null) {
       _answer = NormalMessage();
       _homeProvider.addNormalMessage(_answer!);
@@ -101,7 +93,6 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
       if (answer.startsWith('[end')) {
         _answer!.isTextEnd = true;
         _homeProvider.notify();
-        _answer = null;
         return;
       }
       _answer!.text += answer;
@@ -117,14 +108,28 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
         buffer: answer,
         whenFinished: () {
           _bottomBarControll.setDisabled(false);
-          _chatWebsocket.addAwayTimer(() {
-            String tip = '未发送语音已超过30秒，如若再无发送，将在30秒后自动结束对话！';
-            _homeProvider.addTipMessage(tip);
-            EventBus().emit('SCROLL_MESSAGE_LIST');
-          });
         },
       );
     }
+  }
+
+
+  void onWebsocketEnd(String? reason, String endType) {
+    _bottomBarControll.setDisabled(true);
+    _isConversationEnd = true;
+    // 异常结束
+    if (reason == 'Error') {
+      insertTipMessage('Please switch to new roles, topics, or scene');
+    }
+    // 正常结束
+    if (reason == 'Session End' && endType == 'normal') {
+      insertTipMessage('Conversation finished！');
+    }
+  }
+
+  void insertTipMessage(String tip) {
+    _homeProvider.addTipMessage(tip);
+    EventBus().emit('SCROLL_MESSAGE_LIST');
   }
 
   void onConversationEnd() {
@@ -190,7 +195,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
                     sigmaY: 7.0,
                   ),
                   child: LoadImage(
-                    provider.scene!.cover,
+                    provider.scene?.cover ?? '',
                     fit: BoxFit.fitHeight,
                   ),
                 ),
