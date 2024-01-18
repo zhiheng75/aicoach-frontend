@@ -55,8 +55,6 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   late RegisterPresenter _registerPresenter;
   bool _isSelect = false;
 
-  Fluwx fluwx = Fluwx();
-
   void _verify() {
     final String name = _phoneController.text;
     final String vCode = _vCodeController.text;
@@ -416,6 +414,9 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
               _registerPresenter.getWxInfo(value)
             });
       } else {
+        Log.e("===========>");
+        Fluwx fluwx = Fluwx();
+
         fluwx.registerApi(
             appId: "wxfb033d09d2eecaf0",
             universalLink: "https://demo.shenmo-ai.net/ios/");
@@ -427,7 +428,10 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
               .then((data) {});
           fluwx.addSubscriber((response) {
             if (response is WeChatAuthResponse) {
+              Log.e("===========>");
               Log.e(response.code ?? "");
+              Log.e("===========>");
+
               // String? result = response.code;
               _registerPresenter.getWxInfo(response.code ?? "");
               // setState(() {

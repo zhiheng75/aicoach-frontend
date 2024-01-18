@@ -26,6 +26,10 @@ class LoginManager {
 
   static void checkLogin(BuildContext context, Function toNext) {
     final String accessToken = SpUtil.getString(Constant.accessToken).nullSafe;
+
+    // NavigatorUtils.push(context, LoginRouter.myApp);
+    // return;
+
     if (accessToken.isNotEmpty) {
       toNext();
     } else {
@@ -39,18 +43,20 @@ class LoginManager {
                       if (value)
                         {
                           getToken().then((value) => {
+                                LoadingDialog.hidden(),
                                 if (value)
                                   {
                                     type = 0,
+                                    loginAuth(context),
                                   }
                                 else
                                   {
                                     type = 1,
+                                    NavigatorUtils.push(
+                                      context,
+                                      "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+                                    ),
                                   },
-                                LoadingDialog.hidden(),
-                                // NavigatorUtils.push(context,
-                                //     "${LoginRouter.loginPage}?needKeyLogin=$type"),
-                                loginAuth(context),
                               })
                         }
                       else
@@ -118,7 +124,7 @@ class LoginManager {
       if (code == 2000 && token != null && token.isNotEmpty) {
         return true;
       } else {
-        Toast.show(token);
+        // Toast.show(token);
         return false;
       }
     });

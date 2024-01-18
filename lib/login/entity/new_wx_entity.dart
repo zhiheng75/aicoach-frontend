@@ -39,7 +39,7 @@ class NewWxInfoBean {
 class NewWxInfoBeanData {
   String openid;
   String nickname;
-  String sex;
+  int sex;
   String language;
   String city;
   String province;
@@ -67,18 +67,18 @@ class NewWxInfoBeanData {
 
   factory NewWxInfoBeanData.fromJson(Map<String, dynamic> json) =>
       NewWxInfoBeanData(
-        openid: json["openid"] ?? "",
-        nickname: json["nickname"] ?? "",
+        openid: json["openid"].toString() ?? "",
+        nickname: json["nickname"].toString() ?? "",
         sex: json["sex"] ?? "",
-        language: json["language"] ?? "",
-        city: json["city"],
-        province: json["province"] ?? "",
-        country: json["country"] ?? "",
-        headimgurl: json["headimgurl"] ?? "",
+        language: json["language"].toString() ?? "",
+        city: json["city"].toString(),
+        province: json["province"].toString() ?? "",
+        country: json["country"].toString() ?? "",
+        headimgurl: json["headimgurl"].toString() ?? "",
         // privilege: List<dynamic>.from(json["privilege"].map((x) => x)),
-        unionid: json["unionid"] ?? "",
-        token: json["token"] ?? "",
-        id: json["id"] ?? "",
+        unionid: json["unionid"].toString() ?? "",
+        token: json["token"].toString() ?? "",
+        id: json["id"].toString() ?? "",
       );
 
   Map<String, dynamic> toJson() => {
