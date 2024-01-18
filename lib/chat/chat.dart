@@ -259,6 +259,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
       normalMessage.text = _character!.text;
+      normalMessage.isTextEnd = true;
       _homeProvider.addNormalMessage(normalMessage);
       _mediaUtils.resumeUse();
       _mediaUtils.play(

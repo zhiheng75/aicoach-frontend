@@ -60,7 +60,7 @@ class _EvaluationState extends State<Evaluation> {
         if (result == null || result.data == null) {
           _standardAnswer = '获取失败';
           _isGetting = false;
-          if (!mounted) {
+          if (mounted) {
             setState(() {});
           }
           return;
@@ -68,7 +68,7 @@ class _EvaluationState extends State<Evaluation> {
         Map<String, dynamic> data = result.data as Map<String, dynamic>;
         _standardAnswer = data['text'];
         _isGetting = false;
-        if (!mounted) {
+        if (mounted) {
           setState(() {});
         }
       },
@@ -76,7 +76,7 @@ class _EvaluationState extends State<Evaluation> {
         Log.d('get standard answer fail:msg=$msg', tag: '获取地道表达');
         _standardAnswer = '获取失败';
         _isGetting = false;
-        if (!mounted) {
+        if (mounted) {
           setState(() {});
         }
       },

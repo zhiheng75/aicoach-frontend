@@ -56,19 +56,25 @@ class _ExampleState extends State<Example> {
       onSuccess: (result) {
         if (result == null || result.data == null) {
           _pageState = 'success';
-          setState(() {});
+          if (mounted) {
+            setState(() {});
+          }
           return;
         }
         Map<String, dynamic> data = result.data as Map<String, dynamic>;
         _text = data['text'];
         _speechUrl = data['speech_url'];
         _pageState = 'success';
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       },
       onError: (code, msg) {
         Log.d('get example fail:msg=$msg', tag: '获取示例');
         _pageState = 'fail';
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       },
     );
   }
