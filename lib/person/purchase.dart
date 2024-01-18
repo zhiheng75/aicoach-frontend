@@ -2,6 +2,8 @@
 
 import 'dart:io';
 
+import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -392,7 +394,7 @@ class _PurchasePageState extends State<PurchasePage>
         const SizedBox(
           width: 16.0,
         ),
-        payItem('applepay'),
+        // payItem('applepay'),
       ];
 
       content = SingleChildScrollView(
@@ -484,7 +486,11 @@ class _PurchasePageState extends State<PurchasePage>
                           fontWeight: FontWeight.w400,
                           color: Color(0xFF0047FF),
                         ),
-                        recognizer: TapGestureRecognizer()..onTap = () {},
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            NavigatorUtils.goWebViewPage(context, "会员协议",
+                                "http://www.shenmo-ai.com/tos/");
+                          },
                       ),
                       const TextSpan(
                         text: '和',
@@ -501,7 +507,11 @@ class _PurchasePageState extends State<PurchasePage>
                           fontWeight: FontWeight.w400,
                           color: Color(0xFF0047FF),
                         ),
-                        recognizer: TapGestureRecognizer()..onTap = () {},
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            NavigatorUtils.goWebViewPage(context, "续费规则",
+                                "http://www.shenmo-ai.com/agreements");
+                          },
                       ),
                     ],
                   ),
@@ -522,7 +532,7 @@ class _PurchasePageState extends State<PurchasePage>
         padding: const EdgeInsets.symmetric(
           horizontal: 16.0,
         ),
-        child: Column(
+        child: MyScrollView(
           children: <Widget>[
             SizedBox(
               height: _screenUtil.statusBarHeight,
@@ -532,6 +542,9 @@ class _PurchasePageState extends State<PurchasePage>
               height: 16.0,
             ),
             content,
+            const SizedBox(
+              height: 20.0,
+            ),
           ],
         ),
       ),

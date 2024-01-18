@@ -1,11 +1,10 @@
 import 'package:Bubble/entity/result_entity.dart';
-import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/net/net.dart';
+import 'package:Bubble/person/entity/permission_bean.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
 import '../mvp/base_page.dart';
 import '../report/report_router.dart';
@@ -32,6 +31,9 @@ class _PersonPageState extends State<PersonPage>
   late PersonPagePresenter _personPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
   StudyEntity _study = StudyEntity();
+  late PermissionBean permissionBeanData;
+
+  late bool islog = true;
 
   void init() {
     getStudyInfo();
@@ -42,7 +44,7 @@ class _PersonPageState extends State<PersonPage>
         url: HttpApi.studyInfo,
         isShow: false,
         isClose: false, onSuccess: (result) {
-      Log.e("==============");
+      Log.e("来了==============");
 
       Log.e(result.toString());
       Log.e("==============");
@@ -55,6 +57,27 @@ class _PersonPageState extends State<PersonPage>
     }, onError: (code, msg) {});
   }
 
+  // Future getAvailableTime() async {
+  //   String deviceId = await Device.getDeviceId();
+  //   _personPagePresenter.requestNetwork<ResultData>(Method.get,
+  //       url: HttpApi.permission,
+  //       queryParameters: {
+  //         'device_id': deviceId,
+  //       }, onSuccess: (result) {
+  //     Log.e("这里==============");
+
+  //     Log.e(result.toString());
+  //     Log.e("==============");
+  //     // Map<String, dynamic> data = {
+  //     //   'left_time': 0,
+  //     //   'is_member': 0,
+  //     // };
+  //     // if (result != null && result.code == 200 && result.data != null) {
+  //     //   data = result.data as Map<String, dynamic>;
+  //     // }
+  //   });
+  // }
+
   void tapMenu(String path) {
     NavigatorUtils.push(context, path);
   }
@@ -64,6 +87,14 @@ class _PersonPageState extends State<PersonPage>
     super.initState();
 
     init();
+    // getAvailableTime();
+  }
+
+//  加载中
+  Widget get _loadingView {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
   }
 
   @override
@@ -76,20 +107,9 @@ class _PersonPageState extends State<PersonPage>
       color: Colors.white,
     );
     // HomeProvider provider = Provider.of<HomeProvider>(context);
-    HomeProvider provider = Provider.of<HomeProvider>(context, listen: false);
+    // HomeProvider provider = Provider.of<HomeProvider>(context, listen: false);
 
     Map<String, dynamic> user = LoginManager.getUserInfo();
-
-    Log.e("==============");
-    Log.e(user['name']);
-    Log.e(user['nickname']);
-    Log.e(user['phone']);
-
-    Log.e(user.toString());
-
-    Log.e(provider.vipState.toString());
-    Log.e(provider.expDay.toString());
-    Log.e("==============");
 
     Widget bg = Container(
       width: _screenUtil.screenWidth,
@@ -143,9 +163,6 @@ class _PersonPageState extends State<PersonPage>
                           ? '用户${user['phone'].toString().substring(7, 11)}'
                           : user['nickname'])
                       : user['name'],
-                  //  ??
-                  //     user['nickname'] ??
-                  //     '用户${user['phone'].toString().substring(7, 11)}',
                   style: const TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w500,
@@ -257,9 +274,11 @@ class _PersonPageState extends State<PersonPage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    provider.vipState == 1
-                        ? '会员权益至${provider.expireDate}'
-                        : '升级会员 为学习提速',
+                    islog
+                        ? ""
+                        : permissionBeanData.data.isMember == 1
+                            ? '会员权益至${permissionBeanData.data.membershipExpiryDate}'
+                            : '升级会员 为学习提速',
                     style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w500,
@@ -267,7 +286,7 @@ class _PersonPageState extends State<PersonPage>
                       height: 23.0 / 16.0,
                     ),
                   ),
-                  if (provider.vipState == 1)
+                  if (islog ? true : permissionBeanData.data.isMember == 1)
                     RichText(
                       text: TextSpan(
                         children: [
@@ -281,8 +300,10 @@ class _PersonPageState extends State<PersonPage>
                             ),
                           ),
                           TextSpan(
-                            text:
-                                '${provider.usageTime > 60 ? provider.usageTime ~/ 60 : 1}分钟',
+                            text: islog
+                                ? ""
+                                : '${permissionBeanData.data.allLeftTime > 60 ? permissionBeanData.data.allLeftTime ~/ 60 : 1}分钟',
+                            // text: '${permissionBeanData.data.isMember} 分钟',
                             style: const TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.w500,
@@ -324,7 +345,11 @@ class _PersonPageState extends State<PersonPage>
                 vertical: 7.0,
               ),
               child: Text(
-                provider.vipState == 1 ? '续费' : '立即开通',
+                islog
+                    ? ""
+                    : permissionBeanData.data.isMember == 1
+                        ? '续费'
+                        : '立即开通',
                 style: const TextStyle(
                   fontSize: 15.0,
                   fontWeight: FontWeight.w400,
@@ -341,7 +366,10 @@ class _PersonPageState extends State<PersonPage>
     Widget experience = Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        if (provider.vipState == 0 && provider.expDay > 0)
+        if (islog
+            ? true
+            : permissionBeanData.data.isMember == 0 &&
+                permissionBeanData.data.expDay > 0)
           Container(
             width: width,
             decoration: decoration,
@@ -389,8 +417,9 @@ class _PersonPageState extends State<PersonPage>
                             letterSpacing: 0.05,
                           )),
                       TextSpan(
-                          text:
-                              '${provider.usageTime > 60 ? provider.usageTime ~/ 60 : 1}分钟',
+                          text: islog
+                              ? ""
+                              : '${permissionBeanData.data.allLeftTime > 60 ? permissionBeanData.data.allLeftTime ~/ 60 : 1}分钟',
                           style: const TextStyle(
                             fontSize: 13.0,
                             fontWeight: FontWeight.w400,
@@ -485,48 +514,50 @@ class _PersonPageState extends State<PersonPage>
     );
 
     return Material(
-      child: Stack(
-        children: <Widget>[
-          bg,
-          Container(
-            width: _screenUtil.screenWidth,
-            height: _screenUtil.screenHeight,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
+      child: islog
+          ? _loadingView
+          : Stack(
+              children: <Widget>[
+                bg,
+                Container(
+                  width: _screenUtil.screenWidth,
+                  height: _screenUtil.screenHeight,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        const SizedBox(
+                          height: 60.0,
+                        ),
+                        navbar,
+                        const SizedBox(
+                          height: 16.0,
+                        ),
+                        userInfo,
+                        const SizedBox(
+                          height: 16.0,
+                        ),
+                        studyInfo,
+                        const SizedBox(
+                          height: 16.0,
+                        ),
+                        vipInfo,
+                        const SizedBox(
+                          height: 16.0,
+                        ),
+                        experience,
+                        menu,
+                        SizedBox(
+                          height: _screenUtil.bottomBarHeight + 16.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  const SizedBox(
-                    height: 60.0,
-                  ),
-                  navbar,
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  userInfo,
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  studyInfo,
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  vipInfo,
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  experience,
-                  menu,
-                  SizedBox(
-                    height: _screenUtil.bottomBarHeight + 16.0,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -538,4 +569,17 @@ class _PersonPageState extends State<PersonPage>
 
   @override
   bool get wantKeepAlive => false;
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+  }
+
+  @override
+  void sendSuccess(PermissionBean permissionBean) {
+    // TODO: implement sendSuccess
+    setState(() {});
+    islog = false;
+    permissionBeanData = permissionBean;
+  }
 }
