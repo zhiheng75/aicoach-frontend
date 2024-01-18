@@ -16,11 +16,11 @@ class TopicEntity {
     if (json['title'] != null) {
       entity.title = json['title'];
     }
-    if (json['title_image'] != null) {
-      entity.cover = json['title_image'];
+    if (json['detail_image'] != null) {
+      entity.cover = json['detail_image'];
     }
-    if (json['context'] != null) {
-      entity.desc = json['context'];
+    if (json['desc'] != null) {
+      entity.desc = json['desc'];
     }
     return entity;
   }
@@ -29,8 +29,8 @@ class TopicEntity {
     return {
       'id': id,
       'title': title,
-      'title_image': cover,
-      'context': desc,
+      'detail_image': cover,
+      'desc': desc,
     };
   }
 
