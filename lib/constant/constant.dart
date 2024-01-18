@@ -2,20 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:jverify/jverify.dart';
 
-
-
 class Constant {
-
   /// App运行在Release环境时，inProduction为true；当App运行在Debug和Profile环境时，inProduction为false
-  static const bool inProduction  = kReleaseMode;
+  static const bool inProduction = kReleaseMode;
 
-  static bool isDriverTest  = false;
-  static bool isUnitTest  = false;
-  
+  static bool isDriverTest = false;
+  static bool isUnitTest = false;
+
   static const String data = 'data';
   static const String message = 'message';
   static const String code = 'code';
-  
+
   static const String agreement = 'agreement';
   static const String phone = 'phone';
   static const String accessToken = 'accessToken';
@@ -40,13 +37,11 @@ class Constant {
 
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
-  static const String jgResultKey = "result";//极光result
+  static const String jgResultKey = "result"; //极光result
 
-  static const String jgCodeKey = "code";//极光code
+  static const String jgCodeKey = "code"; //极光code
 
   static const String jgMsgKey = "message";
 
-
-  static Jverify jverify =  Jverify();
-
+  static Jverify jverify = Jverify();
 }

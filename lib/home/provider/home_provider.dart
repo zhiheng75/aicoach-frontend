@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_final_fields, unnecessary_getters_setters, slash_for_doc_comments
+import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../chat/entity/character_entity.dart';
@@ -12,7 +13,6 @@ import '../../scene/entity/scene_entity.dart';
 import '../../util/device_utils.dart';
 
 class HomeProvider extends ChangeNotifier {
-
   /** 对话 */
   // 使用时间
   int _usageTime = 0;
@@ -60,16 +60,19 @@ class HomeProvider extends ChangeNotifier {
     _sessionType = 'normal';
     notifyListeners();
   }
+
   set topic(TopicEntity? topic) {
     _topic = topic;
     _sessionType = 'topic';
     notifyListeners();
   }
+
   set scene(SceneEntity? scene) {
     _scene = scene;
     _sessionType = 'scene';
     notifyListeners();
   }
+
   set sessionId(String sessionId) {
     _sessionId = sessionId;
     if (sessionId == '') {
@@ -81,33 +84,35 @@ class HomeProvider extends ChangeNotifier {
   Future<void> getUsageTime() async {
     String deviceId = await Device.getDeviceId();
     await DioUtils.instance.requestNetwork<ResultData>(
-      Method.get,
-      HttpApi.permission,
-      queryParameters: {
-        'device_id': deviceId,
-      },
-      onSuccess: (result) {
-        if (result == null) {
-          return;
-        }
-        if (result.data == null) {
-          return;
-        }
-        Map<String, dynamic> data = result.data! as Map<String, dynamic>;
-        if (data.containsKey('left_time')) {
-          _usageTime = data['left_time'];
-        }
-        if (data.containsKey('is_member')) {
-          _vipState = data['is_member'];
-        }
-        if (data.containsKey('exp_day')) {
-          _expDay = data['exp_day'];
-        }
-        if (data.containsKey('membership_expiry_date')) {
-          _expireDate = data['membership_expiry_date'] ?? '';
-        }
+        Method.get, HttpApi.permission,
+        queryParameters: {
+          'device_id': deviceId,
+        }, onSuccess: (result) {
+      Log.e("这里=============================");
+
+      Log.e(result.toString());
+      Log.e("=============================");
+
+      if (result == null) {
+        return;
       }
-    );
+      if (result.data == null) {
+        return;
+      }
+      Map<String, dynamic> data = result.data! as Map<String, dynamic>;
+      if (data.containsKey('left_time')) {
+        _usageTime = data['left_time'];
+      }
+      if (data.containsKey('is_member')) {
+        _vipState = data['is_member'];
+      }
+      if (data.containsKey('exp_day')) {
+        _expDay = data['exp_day'];
+      }
+      if (data.containsKey('membership_expiry_date')) {
+        _expireDate = data['membership_expiry_date'] ?? '';
+      }
+    });
   }
 
   void clearMessageList() {
@@ -229,7 +234,8 @@ class HomeProvider extends ChangeNotifier {
 
     normalMessage.showTranslation = true;
 
-    if (normalMessage.translateState == 1 || normalMessage.translateState == 2) {
+    if (normalMessage.translateState == 1 ||
+        normalMessage.translateState == 2) {
       notifyListeners();
       return;
     }
@@ -266,5 +272,4 @@ class HomeProvider extends ChangeNotifier {
   void notify() {
     notifyListeners();
   }
-
 }

@@ -8,6 +8,7 @@ import 'package:Bubble/login/page/check_code_page.dart';
 import 'package:Bubble/login/page/new_bind_phone_page.dart';
 import 'package:Bubble/login/page/new_one_key_phone_page.dart';
 import 'package:Bubble/login/page/one_key_login_page.dart';
+import 'package:Bubble/login/page/xxx.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,6 +42,8 @@ class LoginRouter implements IRouterProvider {
   static String newOneKeyPhonePage = "/login/NewOneKeyPhonePage";
 
   static String newBindPhonePage = "/login/NewBindPhonePage";
+
+  static String myApp = "/login/MyApp";
 
   @override
   void initRouter(FluroRouter router) {
@@ -126,6 +129,8 @@ class LoginRouter implements IRouterProvider {
 
       return NewBindPhonePage(wechatData: entity);
     }));
+
+    router.define(myApp, handler: Handler(handlerFunc: (_, __) => MyApp()));
 
     // router.define(resetPasswordPage, handler: Handler(handlerFunc: (_, __) => const ResetPasswordPage()));
     // router.define(updatePasswordPage, handler: Handler(handlerFunc: (_, __) => const UpdatePasswordPage()));

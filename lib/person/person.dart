@@ -2,6 +2,7 @@ import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/net/net.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -41,6 +42,11 @@ class _PersonPageState extends State<PersonPage>
         url: HttpApi.studyInfo,
         isShow: false,
         isClose: false, onSuccess: (result) {
+      Log.e("==============");
+
+      Log.e(result.toString());
+      Log.e("==============");
+
       if (result == null || result.data == null) {
         return;
       }
@@ -56,6 +62,7 @@ class _PersonPageState extends State<PersonPage>
   @override
   void initState() {
     super.initState();
+
     init();
   }
 
@@ -68,9 +75,21 @@ class _PersonPageState extends State<PersonPage>
       borderRadius: BorderRadius.circular(20.0),
       color: Colors.white,
     );
-    HomeProvider provider = Provider.of<HomeProvider>(context);
+    // HomeProvider provider = Provider.of<HomeProvider>(context);
+    HomeProvider provider = Provider.of<HomeProvider>(context, listen: false);
 
     Map<String, dynamic> user = LoginManager.getUserInfo();
+
+    Log.e("==============");
+    Log.e(user['name']);
+    Log.e(user['nickname']);
+    Log.e(user['phone']);
+
+    Log.e(user.toString());
+
+    Log.e(provider.vipState.toString());
+    Log.e(provider.expDay.toString());
+    Log.e("==============");
 
     Widget bg = Container(
       width: _screenUtil.screenWidth,
@@ -119,9 +138,14 @@ class _PersonPageState extends State<PersonPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  user['name'] ??
-                      user['nickname'] ??
-                      '用户${user['phone'].toString().substring(7, 11)}',
+                  user['name'] == ""
+                      ? (user['nickname'] == ""
+                          ? '用户${user['phone'].toString().substring(7, 11)}'
+                          : user['nickname'])
+                      : user['name'],
+                  //  ??
+                  //     user['nickname'] ??
+                  //     '用户${user['phone'].toString().substring(7, 11)}',
                   style: const TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w500,

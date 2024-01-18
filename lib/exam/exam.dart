@@ -4,6 +4,7 @@ import 'package:Bubble/exam/view/bar_chart.dart';
 import 'package:Bubble/report/report_router.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,6 +33,11 @@ class _ExamPageState extends State<ExamPage>
   final ScreenUtil _screenUtil = ScreenUtil();
   late HomeProvider _homeProvider;
   String _type = 'ket';
+
+  late bool isExam = false;
+
+  late int number = 1;
+
   List<String> ketDescList = [
     '1V1真实还原考试全流程',
     '详细讲解考试流程和注意事项',
@@ -46,12 +52,15 @@ class _ExamPageState extends State<ExamPage>
   ];
 
   void startExam() {
+    isExam = true;
     _examPagePresenter.getExamPermission();
   }
 
   @override
   void initState() {
     super.initState();
+    // _examPagePresenter.getExamPermission();
+
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
   }
 
@@ -644,7 +653,7 @@ class _ExamPageState extends State<ExamPage>
                   ),
                   alignment: Alignment.center,
                   child: const Text(
-                    '开始考试',
+                    'KET口语模考',
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w400,
@@ -653,9 +662,54 @@ class _ExamPageState extends State<ExamPage>
                   ),
                 ),
               ),
+              Gaps.vGap10,
+              Container(
+                width: 231.0,
+                height: 60.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.0),
+                  color: Colors.black.withOpacity(0.85),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 6.0,
+                ),
+                child: Column(
+                  children: [
+                    const Text(
+                      "购买模考训练包",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "剩余训练次数：",
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          "$number次",
+                          style: const TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.color_FF71CF,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
-          Gaps.vGap20,
+          Gaps.vGap30,
         ],
       );
     }
@@ -704,17 +758,26 @@ class _ExamPageState extends State<ExamPage>
     //   );
     // } else {
     //   //_homeProvider.usageCount == 0
+    Log.e("leftTime==========");
 
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      barrierColor: Colors.transparent,
-      isScrollControlled: true,
-      isDismissible: false,
-      builder: (_) => ExamPurchasePage(
-        onPurchased: () {},
-      ),
-    );
+    Log.e(leftTime.toString());
+    setState(() {
+      number = leftTime;
+    });
+    if (isExam) {
+      isExam = false;
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        barrierColor: Colors.transparent,
+        isScrollControlled: true,
+        isDismissible: false,
+        builder: (_) => ExamPurchasePage(
+          onPurchased: () {},
+        ),
+      );
+    }
+
     // }
 
     // NavigatorUtils.push(

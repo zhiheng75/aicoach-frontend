@@ -10,6 +10,12 @@ import '../../mvp/base_page_presenter.dart';
 import '../view/exam_view.dart';
 
 class ExamPagePresenter extends BasePagePresenter<ExamView> {
+  @override
+  void afterInit() {
+    super.afterInit();
+    getExamPermission();
+  }
+
   Future getExamPermission() {
     final Map<String, String> params = <String, String>{};
 
