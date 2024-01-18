@@ -277,6 +277,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     _homeProvider.topic = topic;
     Future.delayed(Duration.zero, () {
       _homeProvider.addIntroductionMessage();
+      _homeProvider.addBackgroundMessage();
       _homeProvider.addTipMessage('Topic started！');
       _bottomBarControll.setDisabled(false);
     });

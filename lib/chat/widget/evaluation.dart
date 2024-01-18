@@ -45,6 +45,14 @@ class _EvaluationState extends State<Evaluation> {
   }
 
   void getStandardAnswer() {
+    if (widget.message.question == '') {
+      _standardAnswer = '暂无地道表达';
+      _isGetting = false;
+      if (mounted) {
+        setState(() {});
+      }
+      return;
+    }
     DioUtils.instance.requestNetwork<ResultData>(
       Method.post,
       HttpApi.suggestAnswer,

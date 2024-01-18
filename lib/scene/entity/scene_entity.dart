@@ -23,8 +23,8 @@ class SceneEntity {
     if (json['desc'] != null) {
       entity.desc = json['desc'];
     }
-    if (json['title_image'] != null) {
-      entity.cover = json['title_image'];
+    if (json['detail_image'] != null) {
+      entity.cover = json['detail_image'];
     }
     return entity;
   }
@@ -35,7 +35,7 @@ class SceneEntity {
       'title': name,
       'en_title': enName,
       'desc': desc,
-      'title_image': cover,
+      'detail_image': cover,
     };
   }
 

@@ -198,6 +198,20 @@ class _MessageItemState extends State<MessageItem> {
       );
     }
 
+    // 背景图消息
+    if (type == 'background') {
+      _message = _message as BackgroundMessage;
+      return Container(
+        width: _screenUtil.screenWidth,
+        alignment: Alignment.center,
+        child: LoadImage(
+          _message.background,
+          width: _screenUtil.screenWidth * 0.5,
+          fit: BoxFit.fitWidth,
+        ),
+      );
+    }
+
     // 报告消息
     if (type == 'report') {
       _message = _message as ReportMessage;

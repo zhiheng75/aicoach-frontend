@@ -112,6 +112,16 @@ class TopicMessage extends MessageEntity {
 
 }
 
+class BackgroundMessage extends MessageEntity {
+
+  String background = '';
+
+  BackgroundMessage() {
+    type = 'background';
+  }
+
+}
+
 class ReportMessage extends MessageEntity {
 
   double accuracyScore = 0.0;

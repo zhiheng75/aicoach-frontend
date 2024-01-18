@@ -207,6 +207,16 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
+  // 渲染背景图消息到列表
+  void addBackgroundMessage([bool update = true]) {
+    BackgroundMessage backgroundMessage = BackgroundMessage();
+    backgroundMessage.background = _topic?.cover ?? '';
+    _messageList.add(backgroundMessage);
+    if (update == true) {
+      notifyListeners();
+    }
+  }
+
   // 渲染报告消息到列表
   void addReportMessage(dynamic report, [bool update = true]) {
     report = report as Map<String, dynamic>;
