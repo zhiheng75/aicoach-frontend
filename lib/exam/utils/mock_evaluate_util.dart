@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:Bubble/chat/utils/xunfei_util.dart';
+import 'package:Bubble/exam/entity/mock_message_entity.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
@@ -14,132 +16,35 @@ import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
 import '../../util/device_utils.dart';
 import '../../util/log_utils.dart';
-import '../entity/message_entity.dart';
-import 'xunfei_util.dart';
 
-class EvaluateUtil {
-  EvaluateUtil();
+class MockEvaluateUtil {
+  MockEvaluateUtil();
 
   WebSocketChannel? _websocket;
-  final String _key = 'evaluate_task';
   final String _oss = 'evaluate_oss';
-  bool _running = false;
 
-  void evaluate(NormalMessage message, Function() onSuccess) {
-    String cacheId = '${message.sessionId}${message.id}';
-    Map<String, dynamic> cacheMap = _getCacheMap();
-    if (cacheMap.containsKey(cacheId)) {
-      EvaluateCache cache = EvaluateCache.fromJson(cacheMap[cacheId]);
-      if (cache.evaluating) {
-        return;
-      }
-      try {
-        _evaluate(
-          cache: cache,
-          onSuccess: onSuccess,
-        );
-      } catch (e) {
-        cache.evaluating = false;
-        _saveCache(cache);
-      }
-      return;
-    }
-    _createCache(message).then((cache) {
-      _saveCache(cache);
-      try {
-        _evaluate(
-          cache: cache,
-          onSuccess: onSuccess,
-        );
-      } catch (e) {
-        cache.evaluating = false;
-        _saveCache(cache);
-      }
-    });
-  }
-
-  /** 缓存 */
-  Future<EvaluateCache> _createCache(NormalMessage message) async {
-    EvaluateCache cache = EvaluateCache();
-    cache.id = '${message.sessionId}${message.id}';
-    cache.deviceId = await Device.getDeviceId();
-    cache.message = message;
-    return cache;
-  }
-
-  void _saveCache(EvaluateCache cache) {
-    Map<String, dynamic> cacheMap = _getCacheMap();
-    cacheMap[cache.id] = cache.toJson();
-    SpUtil.putObject(_key, cacheMap);
-  }
-
-  void _removeCache(EvaluateCache cache) {
-    Map<String, dynamic> cacheMap = _getCacheMap();
-    cacheMap.remove(cache.id);
-    SpUtil.putObject(_key, cacheMap);
-  }
-
-  Map<String, dynamic> _getCacheMap() {
-    Map<dynamic, dynamic>? cacheMap = SpUtil.getObject(_key);
-    if (cacheMap == null) {
-      return {};
-    }
-    return cacheMap as Map<String, dynamic>;
-  }
-
-  Future<void> _runTask() async {
-    Map<String, dynamic> cacheMap = _getCacheMap();
-    Map<String, dynamic>? cache = cacheMap.values.elementAtOrNull(0);
-    if (cache == null) {
-      return;
-    }
-    try {
-      _running = true;
-      EvaluateCache evaluateCache = EvaluateCache.fromJson(cache);
-      _evaluate(
-        cache: evaluateCache,
-        onSuccess: () {
-          _running = false;
-          _runTask();
-        },
-      );
-    } catch (e) {
-      _running = false;
-      _runTask();
-    }
+  void evaluate(MockMessageEntity message, Function() onSuccess) {
+    _evaluate(
+      message: message,
+      onSuccess: onSuccess,
+    );
   }
 
   /** 评测 */
   Future<void> _evaluate({
-    required EvaluateCache cache,
+    required MockMessageEntity message,
     required Function() onSuccess,
   }) async {
     try {
-      NormalMessage message = cache.message;
-      // 已评测未保存
-      if (message.evaluation.isNotEmpty) {
-        _saveEvaluation(
-          message: message,
-          onSuccess: () {
-            _removeCache(cache);
-            onSuccess();
-          },
-        );
-        return;
-      }
       _connectWebsocket((evaluation) {
-        cache.message.evaluation = evaluation;
-        _saveCache(cache);
         _saveEvaluation(
           message: message,
           evaluation: evaluation,
           onSuccess: () {
-            _removeCache(cache);
             onSuccess();
           },
         );
       });
-      _sendData(message.text, [...message.audio]);
     } catch (e) {
       rethrow;
     }
@@ -183,37 +88,6 @@ class EvaluateUtil {
         WebSocketStatus.internalServerError, 'Unknow Error');
   }
 
-  void _sendData(String text, List<Uint8List> bufferList) async {
-    // 发送首帧
-    Map<String, dynamic> firstData =
-        XunfeiUtil.createFrameDataForEvaluation(0, text: text);
-    _websocket!.sink.add(jsonEncode(firstData));
-    await Future.delayed(const Duration(milliseconds: 20));
-    int total = bufferList.length;
-    while (true) {
-      if (bufferList.isEmpty) {
-        break;
-      }
-      int frame = 1;
-      int audioFrame = 2;
-      if (bufferList.length == total) {
-        audioFrame = 1;
-      }
-      if (bufferList.length == 1) {
-        frame = 2;
-        audioFrame = 4;
-      }
-      Uint8List buffer = bufferList.removeAt(0);
-      Map<String, dynamic> data = XunfeiUtil.createFrameDataForEvaluation(
-        frame,
-        audioFrame: audioFrame,
-        audio: buffer,
-      );
-      _websocket!.sink.add(jsonEncode(data));
-      await Future.delayed(const Duration(milliseconds: 20));
-    }
-  }
-
   Future<void> _disconnectWebsocket(int code, String reason) async {
     if (_websocket != null) {
       await _websocket!.sink.close(code, reason);
@@ -222,11 +96,12 @@ class EvaluateUtil {
 
   /** 保存评测 */
   Map<String, dynamic> _getParams(
-      NormalMessage message, Map<String, dynamic> evaluation) {
+      MockMessageEntity message, Map<String, dynamic> evaluation) {
     return {
       'session_id': message.sessionId,
-      'message_id': message.id,
+      'message_id': message.messageId,
       'message': message.text,
+      'type': message.type,
       'accuracy_score': evaluation['accuracy_score'],
       'fluency_score': evaluation['fluency_score'],
       'integrity_score': evaluation['integrity_score'],
@@ -236,13 +111,12 @@ class EvaluateUtil {
   }
 
   void _saveEvaluation({
-    required NormalMessage message,
-    Map<String, dynamic>? evaluation,
+    required MockMessageEntity message,
+    required Map<String, dynamic> evaluation,
     required Function() onSuccess,
   }) {
     try {
-      Map<String, dynamic> params =
-          _getParams(message, evaluation ?? message.evaluation);
+      Map<String, dynamic> params = _getParams(message, evaluation);
       DioUtils.instance.requestNetwork<ResultData>(
         Method.post,
         HttpApi.addScore,
@@ -389,37 +263,5 @@ class EvaluateUtil {
         Log.d('upload audio error:${e.toString()}', tag: '_uploadAudio');
       }
     });
-  }
-}
-
-class EvaluateCache {
-  EvaluateCache();
-
-  String id = '';
-  String deviceId = '';
-  bool evaluating = true;
-  NormalMessage message = NormalMessage();
-
-  factory EvaluateCache.fromJson(dynamic json) {
-    json = json as Map<String, dynamic>;
-    EvaluateCache cache = EvaluateCache();
-    if (json['id'] != null) {
-      cache.id = json['id'];
-    }
-    if (json['device_id'] != null) {
-      cache.deviceId = json['device_id'];
-    }
-    if (json['message'] != null) {
-      cache.message = NormalMessage.fromJson(json['message']);
-    }
-    return cache;
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'device_id': deviceId,
-      'message': message.toJson(),
-    };
   }
 }

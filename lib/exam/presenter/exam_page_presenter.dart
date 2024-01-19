@@ -10,11 +10,11 @@ import '../../mvp/base_page_presenter.dart';
 import '../view/exam_view.dart';
 
 class ExamPagePresenter extends BasePagePresenter<ExamView> {
-  @override
-  void afterInit() {
-    super.afterInit();
-    getExamPermission();
-  }
+  // @override
+  // void afterInit() {
+  //   super.afterInit();
+  //   getExamPermission();
+  // }
 
   Future getExamPermission() {
     final Map<String, String> params = <String, String>{};
@@ -22,7 +22,7 @@ class ExamPagePresenter extends BasePagePresenter<ExamView> {
     return requestNetwork<ResultData>(Method.get,
         url: HttpApi.examPermission,
         queryParameters: params,
-        isShow: true, onSuccess: (result) {
+        isShow: false, onSuccess: (result) {
       Map<String, dynamic> examPermissionMap = json.decode(result.toString());
       ExamPermissionBean examPermissioBean =
           ExamPermissionBean.fromJson(examPermissionMap);
@@ -31,7 +31,8 @@ class ExamPagePresenter extends BasePagePresenter<ExamView> {
       Log.e("=============");
 
       if (examPermissioBean != null) {
-        view.sendSuccess(examPermissioBean.data.leftTime);
+        view.sendSuccess(
+            examPermissioBean.data.leftTime, examPermissioBean.data.status);
       } else {
         view.sendFail("");
       }

@@ -1,9 +1,12 @@
+import 'package:Bubble/exam/entity/exam_step_bean.dart';
 import 'package:Bubble/exam/page/mock_examination_one_page.dart';
 import 'package:Bubble/exam/page/mock_examination_two_page.dart';
 import 'package:Bubble/exam/page/mock_examinationend_one_page.dart';
 import 'package:Bubble/exam/page/mock_examinationend_two_page.dart';
 import 'package:Bubble/exam/page/mock_test_purchase_page.dart';
+import 'package:Bubble/login/entity/login_info_entity.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter/material.dart';
 import '../routers/i_router.dart';
 import 'exam_detail.dart';
 
@@ -29,13 +32,31 @@ class ExamRouter implements IRouterProvider {
       ),
     );
 
+    // router.define(mockExaminationOnePage,
+    //     handler:
+    //         Handler(handlerFunc: (_, __) => const MockExaminationOnePage()));
+
     router.define(mockExaminationOnePage,
-        handler:
-            Handler(handlerFunc: (_, __) => const MockExaminationOnePage()));
+        handler: Handler(handlerFunc: (_, params) {
+      String state = params['state']!.first;
+
+      return MockExaminationOnePage(state: int.parse(state));
+    }));
+
+    // router.define(mockExaminationTwoPage,
+    //     handler:
+    //         Handler(handlerFunc: (_, __) => const MockExaminationTwoPage()));
 
     router.define(mockExaminationTwoPage,
-        handler:
-            Handler(handlerFunc: (_, __) => const MockExaminationTwoPage()));
+        handler: Handler(handlerFunc: (context, params) {
+      // ExamStepBean examStepBean
+
+      // if (context != null) {
+      ExamStepBean entity =
+          ModalRoute.of(context!)?.settings.arguments as ExamStepBean;
+      // }
+      return MockExaminationTwoPage(entity: entity);
+    }));
 
     router.define(mockExaminationendOnePage,
         handler:

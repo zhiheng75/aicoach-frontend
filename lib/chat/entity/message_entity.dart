@@ -6,16 +6,13 @@ import 'package:uuid/uuid.dart';
 import 'topic_entity.dart';
 
 class MessageEntity {
-
   // 消息类型 normal-普通消息 introduction-角色简介消息 tip-提示消息 topic-话题消息 report-报告消息
   String type = '';
 
   MessageEntity();
-
 }
 
 class NormalMessage extends MessageEntity {
-
   String characterId = '';
   String sessionId = '';
   String question = '';
@@ -78,52 +75,42 @@ class NormalMessage extends MessageEntity {
       'evaluation': evaluation,
     };
   }
-
 }
 
 class IntroductionMessage extends MessageEntity {
-
   String name = '';
   String desc = '';
 
   IntroductionMessage() {
     type = 'introduction';
   }
-
 }
 
 class TipMessage extends MessageEntity {
-
   String tip = '';
 
   TipMessage() {
     type = 'tip';
   }
-
 }
 
 class TopicMessage extends MessageEntity {
-
   List<TopicEntity> topicList = [];
 
   TopicMessage() {
     type = 'topic';
   }
-
 }
 
 class BackgroundMessage extends MessageEntity {
-
   String background = '';
 
   BackgroundMessage() {
     type = 'background';
   }
-
 }
 
 class ReportMessage extends MessageEntity {
-
   double accuracyScore = 0.0;
   double fluencyScore = 0.0;
   double integrityScore = 0.0;
@@ -136,6 +123,4 @@ class ReportMessage extends MessageEntity {
   ReportMessage() {
     type = 'report';
   }
-
 }
-
