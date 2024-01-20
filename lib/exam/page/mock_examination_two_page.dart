@@ -1,11 +1,22 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:Bubble/chat/entity/message_entity.dart';
+import 'package:Bubble/chat/utils/chat_websocket.dart';
+import 'package:Bubble/chat/utils/evaluate_util.dart';
+import 'package:Bubble/chat/utils/recognize_util.dart';
+import 'package:Bubble/exam/entity/exam_step_bean.dart';
+import 'package:Bubble/exam/entity/mock_message_entity.dart';
 import 'package:Bubble/exam/exam_router.dart';
+import 'package:Bubble/exam/utils/mock_evaluate_util.dart';
+import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/image_utils.dart';
+import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/media_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/dash_line.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -16,6 +27,7 @@ import 'package:Bubble/widgets/my_alert.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:intl/intl.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 // import 'dart:developer';
@@ -31,269 +43,300 @@ enum RecordPlayState {
 }
 
 class MockExaminationTwoPage extends StatefulWidget {
-  const MockExaminationTwoPage({super.key});
+  final ExamStepBean entity;
+
+  const MockExaminationTwoPage({super.key, required this.entity});
 
   @override
   State<MockExaminationTwoPage> createState() => _MockExaminationTwoPageState();
 }
 
 class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
-  late String numberType = "2";
+  late ChatWebsocket _chatWebsocket;
+  final ScreenUtil _screenUtil = ScreenUtil();
+  final MediaUtils _mediaUtils = MediaUtils();
+  final RecognizeUtil _recognizeUtil = RecognizeUtil();
+  List<Uint8List> _bufferList = [];
+  late HomeProvider _homeProvider;
 
+//是否正在答题
   late bool isTalk = false;
 
   late BuildContext bcontext;
 
-//初始化录音对象
-  FlutterSoundRecorder recorderModule = FlutterSoundRecorder();
-  //监听录音
-  StreamSubscription? _recorderSubscription;
-  var _maxLength = 180.0;
-  var _path = "";
-  RecordPlayState _state = RecordPlayState.record;
+  late List<Part1Phase1> mockPart1Phase1 = [];
+  late List<Part1Phase1> mockPart1Phase2 = [];
+  late List<Part1Phase1> mockPart2Phase1 = [];
+  late List<Part1Phase1> mockPart2Phase2 = [];
+  late String image = "";
 
-  FlutterSoundPlayer playerModule = FlutterSoundPlayer();
-  StreamSubscription? _playerSubscription;
+  //第几步
+  late int numberPle = 0;
+  // 第几道题
+  late int number = 0;
 
-//  StreamController<Food> streamController = StreamController<Food>();
-  // StreamSubscription? streamSubscription;
-  ///启动倒计时器
-  // void _startTimer() {
-  //   _seconds = 10;
-  //   // canResend = false;
-  //   _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-  //     Log.e(":111111111");
-  //     _seconds = _seconds! - 1;
+  ///计时器
+  Timer? _timer;
 
-  //     if (_seconds == 0) {
-  //       _timer?.cancel();
-  //       Navigator.pop(context);
-  //     }
-  //   });
-  // }
+  ///当前倒计时秒数
+  int? _seconds;
 
-  Future<void> init() async {
-    //开启录音
-    await recorderModule.openRecorder();
-    //设置订阅计时器
-    await recorderModule
-        .setSubscriptionDuration(const Duration(milliseconds: 10));
-  }
+  late String questionAudio;
+  late String answerAudio;
+  late String bodyType;
+  late String mockID;
+  late String questionID;
 
-  Future<bool> getPermissionStatus() async {
-    Permission permission = Permission.microphone;
-    //granted 通过，denied 被拒绝，permanentlyDenied 拒绝且不在提示
-    PermissionStatus status = await permission.status;
-    if (status.isGranted) {
-      return true;
-    } else if (status.isDenied) {
-      requestPermission(permission);
-    } else if (status.isPermanentlyDenied) {
-      openAppSettings();
-    } else if (status.isRestricted) {
-      requestPermission(permission);
-    } else {}
-    return false;
-  }
+  //启动倒计时器
+  void _startTimer() {
+    Log.e(
+        "startTimer()开始====$numberPle============$number=====================");
+    _seconds = 12;
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _seconds = _seconds! - 1;
 
-  ///申请权限
-  void requestPermission(Permission permission) async {
-    PermissionStatus status = await permission.request();
-    if (status.isPermanentlyDenied) {
-      openAppSettings();
-    }
-  }
-
-  /// 开始录音
-  _startRecorder() async {
-    try {
-      //获取麦克风权限
-      await getPermissionStatus().then((value) async {
-        if (!value) {
-          return;
+      if (_seconds == 0) {
+        _timer?.cancel();
+        if (!isTalk) {
+          nextMock();
+          Log.e(
+              "nextMock()之后====$numberPle============$number=====================");
         }
-        //用户允许使用麦克风之后开始录音
-        Directory tempDir = await getTemporaryDirectory();
-        var time = DateTime.now().millisecondsSinceEpoch;
-        String path = '${tempDir.path}/$time${ext[Codec.aacADTS.index]}';
-
-        //这里我录制的是aac格式的，还有其他格式
-        await recorderModule.startRecorder(
-          toFile: path,
-          codec: Codec.aacADTS,
-          bitRate: 8000,
-          numChannels: 1,
-          sampleRate: 8000,
-        );
-
-        /// 监听录音
-        _recorderSubscription = recorderModule.onProgress!.listen((e) {
-          var date = DateTime.fromMillisecondsSinceEpoch(
-              e.duration.inMilliseconds,
-              isUtc: true);
-          var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
-          //设置了最大录音时长
-          if (date.second >= _maxLength) {
-            _stopRecorder();
-            return;
-          }
-          // setState(() {
-          //   //更新录音时长
-          //   _recordText = txt.substring(1, 5);
-          // });
-        });
-        setState(() {
-          //更新录音状态和录音文件路径
-          _state = RecordPlayState.recording;
-          _path = path;
-        });
-      });
-    } catch (err) {
-      setState(() {
-        _stopRecorder();
-        _state = RecordPlayState.record;
-        _cancelRecorderSubscriptions();
-      });
-    }
-  }
-
-  /// 结束录音
-  _stopRecorder() async {
-    try {
-      await recorderModule.stopRecorder();
-      _cancelRecorderSubscriptions();
-      // _getDuration();
-    } catch (err) {}
-    setState(() {
-      _state = RecordPlayState.record;
-    });
-  }
-
-  /// 取消录音监听
-  void _cancelRecorderSubscriptions() {
-    if (_recorderSubscription != null) {
-      _recorderSubscription!.cancel();
-      _recorderSubscription = null;
-    }
-  }
-
-  /// 释放录音
-  Future<void> _releaseFlauto() async {
-    try {
-      await recorderModule.closeRecorder();
-    } catch (e) {}
-  }
-
-  /// 判断文件是否存在
-  Future<bool> _fileExists(String path) async {
-    return await File(path).exists();
-  }
-
-  //播放
-  void initPlayer() async {
-    await playerModule.closePlayer();
-    await playerModule.openPlayer();
-    await playerModule
-        .setSubscriptionDuration(const Duration(milliseconds: 10));
-//这块是设置音频，暂时没用到可以不用设置
-    // final session = await AudioSession.instance;
-    // await session.configure(AudioSessionConfiguration(
-    //   avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-    //   avAudioSessionCategoryOptions:
-    //       AVAudioSessionCategoryOptions.allowBluetooth |
-    //           AVAudioSessionCategoryOptions.defaultToSpeaker,
-    //   avAudioSessionMode: AVAudioSessionMode.spokenAudio,
-    //   avAudioSessionRouteSharingPolicy:
-    //       AVAudioSessionRouteSharingPolicy.defaultPolicy,
-    //   avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-    //   androidAudioAttributes: const AndroidAudioAttributes(
-    //     contentType: AndroidAudioContentType.speech,
-    //     flags: AndroidAudioFlags.none,
-    //     usage: AndroidAudioUsage.voiceCommunication,
-    //   ),
-    //   androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
-    //   androidWillPauseWhenDucked: true,
-    // ));
-  }
-
-  ///开始播放，这里做了一个播放状态的回调
-  void startPlayer() async {
-    try {
-      if (_path.contains('http')) {
-        await playerModule.startPlayer(
-            fromURI: _path,
-            codec: Codec.mp3,
-            sampleRate: 44000,
-            whenFinished: () {
-              stopPlayer();
-            });
-      } else {
-        //判断文件是否存在
-        if (await _fileExists(_path)) {
-          if (playerModule.isPlaying) {
-            playerModule.stopPlayer();
-          }
-          await playerModule.startPlayer(
-              fromURI: _path,
-              codec: Codec.aacADTS,
-              sampleRate: 44000,
-              whenFinished: () {
-                stopPlayer();
-              });
-        } else {}
       }
-      //监听播放进度
-      _playerSubscription = playerModule.onProgress!.listen((e) {});
-      // callBack(1);
-    } catch (err) {
-      // callBack(0);
-    }
+      setState(() {});
+    });
+    mockflow();
+    Log.e(
+        "mockflow()之后====$numberPle============$number===========$questionAudio==========");
   }
-
-  /// 结束播放
-  void stopPlayer() async {
-    try {
-      await playerModule.stopPlayer();
-      cancelPlayerSubscriptions();
-    } catch (err) {}
-  }
-
-  /// 取消播放监听
-  void cancelPlayerSubscriptions() {
-    if (_playerSubscription != null) {
-      _playerSubscription!.cancel();
-      // _playerSubscription = null;
-    }
-  }
-
-  ///获取播放状态
-  Future<PlayerState> getPlayState() async {
-    return await playerModule.getPlayerState();
-  }
-
-  /// 释放播放器
-  void releaseFlauto() async {
-    try {
-      await playerModule.closePlayer();
-    } catch (e) {
-      print(e);
-    }
-  }
-// /// 判断文件是否存在
-// Future<bool> _fileExists(String path) async {
-//   return await File(path).exists();
-// }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // _startTimer();
+
+    mockPart1Phase1 = widget.entity.data.part1Phase1;
+    mockPart1Phase2 = widget.entity.data.part1Phase2;
+    mockPart2Phase1 = widget.entity.data.part2Phase1.list;
+    image = widget.entity.data.part2Phase1.base.image;
+    mockPart2Phase2 = widget.entity.data.part2Phase2;
+    mockID = widget.entity.data.id.toString();
+    _startTimer();
+
     // 强制横屏
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       // DeviceOrientation.landscapeRight
     ]);
+  }
+
+  void nextMock() {
+    //第一道题
+    if (numberPle == 0) {
+      if (number < mockPart1Phase1.length) {
+        number = number + 1;
+      } else {
+        numberPle = numberPle + 1;
+        number = 0;
+      }
+    } else if (numberPle == 1) {
+      if (number < mockPart1Phase2.length) {
+        number = number + 1;
+      } else {
+        numberPle = numberPle + 1;
+        number = 0;
+      }
+    } else if (numberPle == 2) {
+      if (number < mockPart2Phase1.length) {
+        number = number + 1;
+      } else {
+        numberPle = numberPle + 1;
+        number = 0;
+      }
+    } else if (numberPle == 3) {
+      if (number < mockPart2Phase2.length) {
+        number = number + 1;
+      } else {
+        numberPle = 0;
+        number = 0;
+        //去下一个页面
+        Log.e("去下一个页面");
+        return;
+      }
+    } else {
+      //去下一个页面
+      Log.e("去下一个页面");
+      return;
+    }
+    setState(() {});
+    _startTimer();
+  }
+
+  void mockflow() {
+    if (numberPle == 0) {
+      bodyType = mockPart1Phase1[number].to;
+      questionID = mockPart1Phase1[number].id.toString();
+      //老师问
+      questionAudio = mockPart1Phase1[number].questionAudio;
+      _mediaUtils.play(
+        url: questionAudio,
+        whenFinished: () {
+          //老师问
+          Log.e("老师问完=====$bodyType=========");
+          if (bodyType == "A") {
+            Log.e("老师问完=====进来了吗=========");
+
+            answerAudio = mockPart1Phase1[number].answerAudio!;
+            Log.e("老师问完=====进来了吗$answerAudio=========");
+
+            //考伴回答
+            Log.e("考伴回答==============应该弹窗");
+            mockKlowPlay(answerAudio);
+          } else {
+            //学生回答//走到倒计时
+          }
+        },
+      );
+    } else if (numberPle == 1) {
+      bodyType = mockPart1Phase2[number].to;
+      questionID = mockPart1Phase1[number].id.toString();
+      //老师问
+      questionAudio = mockPart1Phase2[number].questionAudio;
+      _mediaUtils.play(
+        url: questionAudio,
+        whenFinished: () {
+          //老师问
+          if (bodyType == "A") {
+            answerAudio = mockPart1Phase1[number].answerAudio!;
+            //考伴回答
+            mockKlowPlay(answerAudio);
+          } else {
+            //学生回答//走到倒计时
+          }
+        },
+      );
+    } else if (numberPle == 2) {
+      bodyType = mockPart2Phase1[number].to;
+      questionID = mockPart1Phase1[number].id.toString();
+
+      //老师问
+      questionAudio = mockPart2Phase1[number].questionAudio;
+      _mediaUtils.play(
+        url: questionAudio,
+        whenFinished: () {
+          //老师问
+          if (bodyType == "A") {
+            answerAudio = mockPart1Phase1[number].answerAudio!;
+            //考伴回答
+            mockKlowPlay(answerAudio);
+          } else {
+            //学生回答//走到倒计时
+          }
+        },
+      );
+    } else if (numberPle == 3) {
+      bodyType = mockPart2Phase2[number].to;
+      questionID = mockPart1Phase1[number].id.toString();
+
+      // 学生问逻辑在按钮里面
+      // questionAudio = mockPart2Phase2[number].questionAudio;
+
+      if (bodyType == "B2A") {
+        // answerAudio = mockPart2Phase2[number].answerAudio!;
+        //考生提问,考办回答
+        // mockKlowPlay(answerAudio);
+      }
+      // else {
+      //   //学生回答//走到倒计时
+      // }
+    }
+  }
+
+  void mockKlowStartAnswer() async {
+    try {
+      // 检查权限
+      bool isRequest = await _mediaUtils.checkMicrophonePermission();
+      if (isRequest) {
+        return;
+      }
+      // 开始录音
+      _bufferList = [];
+      _mediaUtils.startRecord(onData: (buffer) {
+        _bufferList.add(buffer);
+        _recognizeUtil.pushAudioBuffer(1, buffer);
+      }, onComplete: (buffer) {
+        _recognizeUtil.pushAudioBuffer(2, buffer ?? Uint8List(0));
+      });
+      // 设置识别
+      _recognizeUtil.recognize((result) async {
+        bool shoRecord = isTalk;
+        // 录音中
+        if (shoRecord) {
+          // 识别失败
+          if (result['success'] == false) {
+            isTalk = false;
+            await _mediaUtils.stopRecord();
+            Toast.show(
+              result['message'],
+              duration: 1000,
+            );
+          }
+          return;
+        }
+        if (result['success'] == false) {
+          Toast.show(
+            result['message'],
+            duration: 1000,
+          );
+          isTalk = false;
+          return;
+        }
+        sendMessage(result['text']);
+      });
+      // widget.controller.setShowRecord(true);
+      isTalk = true;
+    } catch (e) {
+      Toast.show(
+        e.toString().substring(11),
+        duration: 1000,
+      );
+    }
+  }
+
+  void sendMessage(String text) async {
+    insertUserMessage(text, (message) {
+      MockEvaluateUtil().evaluate(message, () {});
+    });
+  }
+
+  void insertUserMessage(String text, Function(MockMessageEntity) onSuccess) {
+    MockMessageEntity message = MockMessageEntity();
+    message.text = text;
+    message.audio = [..._bufferList];
+    message.sessionId = mockID;
+    message.messageId = questionID;
+    message.speechfile = "";
+    onSuccess(message);
+  }
+
+  void mockKlowEndAnswer() async {
+    await _mediaUtils.stopRecord();
+    // 抬起按钮
+    isTalk = false;
+    _timer?.cancel();
+    nextMock();
+  }
+
+  void mockKlowPlay(String answerAudio) {
+    Log.e("考伴回答应该弹窗==============");
+    showConfirmDialog();
+    _mediaUtils.play(
+      url: answerAudio,
+      whenFinished: () {
+        showToast("考办回答完");
+        Navigator.pop(context);
+      },
+    );
   }
 
   ///销毁录音
@@ -304,15 +347,15 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
     ]);
     // TODO: implement dispose
     super.dispose();
-    _cancelRecorderSubscriptions();
-    _releaseFlauto();
+    // _cancelRecorderSubscriptions();
+    // _releaseFlauto();
   }
 
-  Widget peopleWidget(bool isVector, String name) {
+  Widget peopleWidget(String head, bool isVector, String name) {
     return Stack(
       children: [
-        const LoadAssetImage(
-          'personal_center_bg',
+        LoadAssetImage(
+          head,
           width: 140, height: 100,
           // fit: BoxFit.cover
         ),
@@ -382,7 +425,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
             },
             child: const Center(
               child: LoadAssetImage(
-                'shengbo_pink',
+                "shengbo_pink",
                 width: 147,
                 height: 56,
               ),
@@ -391,6 +434,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
         });
   }
 
+//图片的弹窗
   showImageDialog() {
     showDialog(
         context: context,
@@ -421,28 +465,28 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
               Gaps.vGap8,
               Stack(
                 children: [
-                  const Center(
+                  Center(
                     child: LoadAssetImage(
-                      'personal_center_bg',
+                      image,
                       width: 512, height: 288,
                       // fit: BoxFit.cover
                     ),
                   ),
-                  Positioned(
+                  const Positioned(
                       // top: 0,
                       // right: 0,
                       // left: 0,
                       // height: 32,
                       // width: 512,
                       child: Center(
-                    child: Container(
+                    child: SizedBox(
                       width: 512,
                       height: 32,
                       // decoration: BoxDecoration(
                       //   borderRadius: BorderRadius.circular(10),
                       //   color: Colors.white,
                       // ),
-                      child: const Center(
+                      child: Center(
                         child: Text(
                           "KET模拟考试 Part2 看图对话",
                           style: TextStyle(
@@ -507,10 +551,12 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                               Container(
                                 width: 20,
                                 height: 20,
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                   image: DecorationImage(
                                     image: AssetImage(
-                                      'assets/images/number_n_icon.png',
+                                      numberPle == 0
+                                          ? 'assets/images/number_s_icon.png'
+                                          : 'assets/images/number_n_icon.png',
                                     ),
                                     fit: BoxFit.fitHeight,
                                   ),
@@ -539,7 +585,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     image: AssetImage(
-                                      numberType == "2"
+                                      numberPle == 1
                                           ? 'assets/images/number_s_icon.png'
                                           : 'assets/images/number_n_icon.png',
                                     ),
@@ -570,9 +616,9 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     image: AssetImage(
-                                      numberType == "2"
-                                          ? 'assets/images/number_n_icon.png'
-                                          : 'assets/images/number_s_icon.png',
+                                      numberPle == 2
+                                          ? 'assets/images/number_s_icon.png'
+                                          : 'assets/images/number_n_icon.png',
                                     ),
                                     fit: BoxFit.fitHeight,
                                   ),
@@ -598,10 +644,12 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                               Container(
                                 width: 20,
                                 height: 20,
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                   image: DecorationImage(
                                     image: AssetImage(
-                                      'assets/images/number_n_icon.png',
+                                      numberPle == 3
+                                          ? 'assets/images/number_s_icon.png'
+                                          : 'assets/images/number_n_icon.png',
                                     ),
                                     fit: BoxFit.fitHeight,
                                   ),
@@ -656,9 +704,11 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                                         ),
                                       )),
                                   Gaps.vGap10,
-                                  peopleWidget(true, "口语考官：Andy老师"),
+                                  peopleWidget(
+                                      "teach_icon", false, "口语考官：Andy老师"),
                                   Gaps.vGap10,
-                                  peopleWidget(true, "计分考官：Andy老师"),
+                                  peopleWidget(
+                                      "invigilate_icon", false, "计分考官：Andy老师"),
                                 ],
                               ),
                             ),
@@ -684,9 +734,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       // Gaps.vGap10,
-                                      numberType == "2"
-                                          ? const Text("请你提问一个问题")
-                                          : Center(
+                                      numberPle == 4
+                                          ? Center(
                                               child: Column(
                                                 children: [
                                                   Container(
@@ -697,61 +746,130 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                                                             BorderRadius
                                                                 .circular(10),
                                                         color: Colors.white),
-                                                    child: const Text(
-                                                      " 倒计时: 20s ",
-                                                      style: TextStyle(
+                                                    child: Text(
+                                                      " 倒计时: ${_seconds}s ",
+                                                      style: const TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.black,
                                                       ),
                                                     ),
                                                   ),
                                                   Gaps.vGap10,
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      showImageDialog();
-                                                    },
-                                                    child: const LoadAssetImage(
-                                                      'jpgicon',
-                                                      width: 82,
-                                                      height: 100,
-                                                    ),
-                                                  ),
-                                                  Gaps.vGap10,
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 20,
-                                                            right: 20,
-                                                            top: 10,
-                                                            bottom: 10),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(25),
-                                                        color: Colors.black),
-                                                    child: const Text(
-                                                      "图片接收成功，可以点击查看大图",
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.white,
-                                                      ),
+                                                  Text(
+                                                    numberPle == 3
+                                                        ? "请提问第$number个问题"
+                                                        : "",
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.black,
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                            ),
+                                            )
+                                          : numberPle == 3
+                                              ? Center(
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            color:
+                                                                Colors.white),
+                                                        child: Text(
+                                                          " 倒计时: ${_seconds}s ",
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 14,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Gaps.vGap10,
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          showImageDialog();
+                                                        },
+                                                        child:
+                                                            const LoadAssetImage(
+                                                          "jpgicon",
+                                                          width: 82,
+                                                          height: 100,
+                                                        ),
+                                                      ),
+                                                      Gaps.vGap10,
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                left: 20,
+                                                                right: 20,
+                                                                top: 10,
+                                                                bottom: 10),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        25),
+                                                            color:
+                                                                Colors.black),
+                                                        child: const Text(
+                                                          "图片接收成功，可以点击查看大图",
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              : Center(
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        color: Colors.white),
+                                                    child: Text(
+                                                      " 倒计时: ${_seconds}s ",
+                                                      style: const TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                       const Expanded(child: Gaps.empty),
                                       Center(
                                         child: GestureDetector(
                                           onTapUp: (details) {
-                                            setState(() {
-                                              isTalk = false;
-                                            });
+                                            if (bodyType == "B" ||
+                                                bodyType == "B2A") {
+                                              mockKlowEndAnswer();
+                                              setState(() {
+                                                isTalk = false;
+                                              });
+                                            }
                                           },
                                           onTapDown: (details) {
-                                            setState(() {
-                                              isTalk = true;
-                                            });
+                                            if (bodyType == "B" ||
+                                                bodyType == "B2A") {
+                                              mockKlowStartAnswer();
+                                              setState(() {
+                                                isTalk = true;
+                                              });
+                                            } else {
+                                              showToast("请倾听..");
+                                            }
                                           },
                                           onTap: () {
                                             //点击答题
@@ -849,9 +967,9 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                                         ),
                                       )),
                                   Gaps.vGap10,
-                                  peopleWidget(true, "口语考官：Andy老师"),
+                                  peopleWidget("comittee_icon", false, "考生：小明"),
                                   Gaps.vGap10,
-                                  peopleWidget(true, "计分考官：Andy老师"),
+                                  peopleWidget("myhead_icon", false, "考办：小红"),
                                 ],
                               ),
                             ),

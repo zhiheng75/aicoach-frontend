@@ -1,6 +1,12 @@
+import 'dart:convert';
+
+import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/exam/entity/exam_permission_bean.dart';
 import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/exam/page/mock_test_purchase_page.dart';
 import 'package:Bubble/exam/view/bar_chart.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/report/report_router.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
@@ -31,12 +37,12 @@ class _ExamPageState extends State<ExamPage>
     implements ExamView {
   late ExamPagePresenter _examPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
-  late HomeProvider _homeProvider;
+  // late HomeProvider _homeProvider;
   String _type = 'ket';
 
-  late bool isExam = false;
+  // late bool isExam = true;
 
-  late int number = 1;
+  late int number = 0;
 
   List<String> ketDescList = [
     '1V1真实还原考试全流程',
@@ -51,8 +57,52 @@ class _ExamPageState extends State<ExamPage>
     '严格按照评分标准和评分体系进行评分',
   ];
 
+  // Future getExamPermission() {
+  //   final Map<String, String> params = <String, String>{};
+
+  //   return requestNetwork<ResultData>(Method.get,
+  //       url: HttpApi.examPermission,
+  //       queryParameters: params,
+  //       isShow: true, onSuccess: (result) {
+  //     Map<String, dynamic> examPermissionMap = json.decode(result.toString());
+  //     ExamPermissionBean examPermissioBean =
+  //         ExamPermissionBean.fromJson(examPermissionMap);
+  //     Log.e("=============");
+  //     Log.e(examPermissioBean.data.leftTime.toString());
+  //     Log.e("=============");
+
+  //     if (examPermissioBean != null) {
+  //       view.sendSuccess(
+  //           examPermissioBean.data.leftTime, examPermissioBean.data.status);
+  //     } else {
+  //       view.sendFail("");
+  //     }
+  //   }, onError: (code, msg) {
+  //     view.sendFail("");
+  //   });
+  // }
+
+  void getStudyInfo() {
+    final Map<String, String> params = <String, String>{};
+
+    _examPagePresenter.requestNetwork<ResultData>(Method.get,
+        url: HttpApi.examPermission,
+        queryParameters: params,
+        isShow: false,
+        isClose: false, onSuccess: (result) {
+      Map<String, dynamic> examPermissionMap = json.decode(result.toString());
+      ExamPermissionBean examPermissioBean =
+          ExamPermissionBean.fromJson(examPermissionMap);
+      Log.e("=============");
+      Log.e(examPermissioBean.data.leftTime.toString());
+      Log.e("=============");
+      number = examPermissioBean.data.leftTime;
+      setState(() {});
+    }, onError: (code, msg) {});
+  }
+
   void startExam() {
-    isExam = true;
+    // isExam = true;
     _examPagePresenter.getExamPermission();
   }
 
@@ -61,7 +111,8 @@ class _ExamPageState extends State<ExamPage>
     super.initState();
     // _examPagePresenter.getExamPermission();
 
-    _homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    // _homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    getStudyInfo();
   }
 
   @override
@@ -663,48 +714,62 @@ class _ExamPageState extends State<ExamPage>
                 ),
               ),
               Gaps.vGap10,
-              Container(
-                width: 231.0,
-                height: 60.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
-                  color: Colors.black.withOpacity(0.85),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 6.0,
-                ),
-                child: Column(
-                  children: [
-                    const Text(
-                      "购买模考训练包",
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white,
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    barrierColor: Colors.transparent,
+                    isScrollControlled: true,
+                    isDismissible: false,
+                    builder: (_) => ExamPurchasePage(
+                      onPurchased: () {},
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 231.0,
+                  height: 60.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30.0),
+                    color: Colors.black.withOpacity(0.85),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 6.0,
+                  ),
+                  child: Column(
+                    children: [
+                      const Text(
+                        "购买模考训练包",
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "剩余训练次数：",
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "剩余训练次数：",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                        Text(
-                          "$number次",
-                          style: const TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.color_FF71CF,
+                          Text(
+                            "$number次",
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w400,
+                              color: Colours.color_FF71CF,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],
@@ -749,40 +814,28 @@ class _ExamPageState extends State<ExamPage>
   }
 
   @override
-  void sendSuccess(int leftTime) {
-    // TODO: implement sendSuccess
+  void sendSuccess(int leftTime, int state) {
+    // setState(() {
+    //   number = leftTime;
+    // });
+
     // if (leftTime > 0) {
-    //   NavigatorUtils.push(
-    //     context,
-    //     ExamRouter.mockExaminationOnePage,
-    //   );
+    NavigatorUtils.push(
+      context,
+      // ExamRouter.mockExaminationOnePage,
+      "${ExamRouter.mockExaminationOnePage}?state=$state",
+    );
     // } else {
-    //   //_homeProvider.usageCount == 0
-    Log.e("leftTime==========");
-
-    Log.e(leftTime.toString());
-    setState(() {
-      number = leftTime;
-    });
-    if (isExam) {
-      isExam = false;
-      showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        barrierColor: Colors.transparent,
-        isScrollControlled: true,
-        isDismissible: false,
-        builder: (_) => ExamPurchasePage(
-          onPurchased: () {},
-        ),
-      );
-    }
-
+    //   showModalBottomSheet(
+    //     context: context,
+    //     backgroundColor: Colors.transparent,
+    //     barrierColor: Colors.transparent,
+    //     isScrollControlled: true,
+    //     isDismissible: false,
+    //     builder: (_) => ExamPurchasePage(
+    //       onPurchased: () {},
+    //     ),
+    //   );
     // }
-
-    // NavigatorUtils.push(
-    //   context,
-    //   ExamRouter.mockTestPurchasePage,
-    // );
   }
 }

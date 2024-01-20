@@ -4,6 +4,7 @@ import 'package:Bubble/exam/view/exam_purchas_view.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -227,7 +228,11 @@ class _MockTestPurchasePageState extends State<MockTestPurchasePage>
                           fontWeight: FontWeight.w400,
                           color: Color(0xFF0047FF),
                         ),
-                        recognizer: TapGestureRecognizer()..onTap = () {},
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            NavigatorUtils.goWebViewPage(context, "会员协议",
+                                "http://www.shenmo-ai.com/tos/");
+                          },
                       ),
                       const TextSpan(
                         text: '和',
@@ -244,7 +249,11 @@ class _MockTestPurchasePageState extends State<MockTestPurchasePage>
                           fontWeight: FontWeight.w400,
                           color: Color(0xFF0047FF),
                         ),
-                        recognizer: TapGestureRecognizer()..onTap = () {},
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            NavigatorUtils.goWebViewPage(context, " 续费规则",
+                                "http://www.shenmo-ai.com/agreements");
+                          },
                       ),
                     ],
                   ),

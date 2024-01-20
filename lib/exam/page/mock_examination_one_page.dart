@@ -1,26 +1,45 @@
+import 'package:Bubble/exam/entity/exam_step_bean.dart';
 import 'package:Bubble/exam/exam_router.dart';
+import 'package:Bubble/exam/presenter/mock_examination_page_presenter.dart';
+import 'package:Bubble/exam/view/mock_examination_view.dart';
+import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/change_notifier_manage.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/my_alert.dart';
 import 'package:Bubble/widgets/dash_line.dart';
 import 'package:Bubble/widgets/load_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 class MockExaminationOnePage extends StatefulWidget {
-  const MockExaminationOnePage({super.key});
+  final int state;
+  const MockExaminationOnePage({super.key, required this.state});
 
   @override
   State<MockExaminationOnePage> createState() => _MockExaminationOnePageState();
 }
 
-class _MockExaminationOnePageState extends State<MockExaminationOnePage> {
+class _MockExaminationOnePageState extends State<MockExaminationOnePage>
+    with
+        BasePageMixin<MockExaminationOnePage, ExamExaminationPagePresenter>,
+        AutomaticKeepAliveClientMixin<MockExaminationOnePage>
+    implements MockExaminationView {
+  CancelToken? _cancelToken; // 取消令牌
+
   late BuildContext bcontext;
+
+  late ExamExaminationPagePresenter _examExaminationPagePresenter;
+  late String ZHText = "";
+  late String ENText = "";
+  final MediaUtils _mediaUtils = MediaUtils();
 
   Widget numberWidget = Row(
     mainAxisAlignment: MainAxisAlignment.center,
@@ -148,7 +167,21 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _cancelToken = CancelToken(); // 创建取消令牌
+  }
+
+  @override
+  void dispose() {
+    _cancelToken!.cancel(); // 取消延迟操作
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     bcontext = context;
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.dark,
@@ -157,8 +190,8 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage> {
           body: Stack(
         children: [
           const LoadImage(
-            "_headerImg",
-            holderImg: "splash_bg",
+            "teacher",
+            holderImg: "teacher",
             // height: double.infinity,
             // width: double.infinity,
             fit: BoxFit.cover,
@@ -172,31 +205,31 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 2 - 100,
                   ),
-                  numberWidget,
+                  // numberWidget,
                 ],
               ),
-              GestureDetector(
-                onTap: () {
-                  // NavigatorUtils.push(
-                  //   context,
-                  //   replace: true,
-                  //   ExamRouter.mockExaminationendTwoPage,
+              // GestureDetector(
+              //   onTap: () {
+              //     // NavigatorUtils.push(
+              //     //   context,
+              //     //   replace: true,
+              //     //   ExamRouter.mockExaminationendTwoPage,
 
-                  // );
-                  NavigatorUtils.push(
-                    context,
-                    replace: true,
-                    ExamRouter.mockExaminationTwoPage,
-                  );
-                },
-                child: const Text(
-                  "下一步",
-                  style: TextStyle(
-                      color: Colours.color_0047FF,
-                      fontSize: 20,
-                      decoration: TextDecoration.underline),
-                ),
-              ),
+              //     // );
+              //     NavigatorUtils.push(
+              //       context,
+              //       replace: true,
+              //       ExamRouter.mockExaminationTwoPage,
+              //     );
+              //   },
+              //   child: const Text(
+              //     "下一步",
+              //     style: TextStyle(
+              //         color: Colours.color_0047FF,
+              //         fontSize: 20,
+              //         decoration: TextDecoration.underline),
+              //   ),
+              // ),
               const Expanded(child: Gaps.empty),
               Container(
                   padding: const EdgeInsets.all(25),
@@ -207,17 +240,17 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage> {
                   ),
                   child: Column(
                     children: [
-                      const Text(
-                        "Hello, Qiu Zi, I'm Teacher Andy. Now I'd like to introduce you to the KET oral exam process and matters needing attention.",
-                        style: TextStyle(
+                      Text(
+                        ENText,
+                        style: const TextStyle(
                           fontSize: 15.0,
                           color: Colours.color_FFF5BF,
                         ),
                       ),
                       Gaps.vGap8,
-                      const Text(
-                        "您好，秋子，我是Andy老师，现在向你介绍KET口语考试流程与注意事项",
-                        style: TextStyle(
+                      Text(
+                        ZHText,
+                        style: const TextStyle(
                           fontSize: 16.0,
                           color: Colors.white,
                         ),
@@ -231,4 +264,46 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage> {
       )),
     );
   }
+
+  @override
+  ExamExaminationPagePresenter createPresenter() {
+    _examExaminationPagePresenter = ExamExaminationPagePresenter();
+    return _examExaminationPagePresenter;
+  }
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+  }
+
+  @override
+  void sendSuccess(ExamStepBean examStepBean) {
+    // TODO: implement sendSuccess
+    Log.e("examStepBean.data.id.toString()");
+    Log.e(examStepBean.data.id.toString());
+    ZHText = examStepBean.data.introduction.zh;
+    ENText = examStepBean.data.introduction.en;
+    _mediaUtils.play(
+      url: examStepBean.data.introduction.audio,
+      whenFinished: () {
+        // _bottomBarControll.setDisabled(false);
+
+        showToast("恭喜你，该环节已完成，即将进入下一考试环节");
+        Future.delayed(const Duration(seconds: 2), () {
+          if (!_cancelToken!.isCancelled) {
+            NavigatorUtils.push(
+                context,
+                replace: true,
+                ExamRouter.mockExaminationTwoPage,
+                arguments: examStepBean);
+          }
+        });
+      },
+    );
+    setState(() {});
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

@@ -84,6 +84,9 @@ class HttpApi {
   //获取模考剩余使用次数
   static const String examPermission = "exam_permission";
 
-  //获取模考剩余使用次数
+  //获取模考次数商品
   static const String goodsList = "goods_list";
+
+  //获取模考流程
+  static const String examStep = "exam_step";
 }
