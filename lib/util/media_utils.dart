@@ -1,13 +1,19 @@
 // ignore_for_file: depend_on_referenced_packages, slash_for_doc_comments
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:Bubble/util/log_utils.dart';
+import 'package:ffmpeg_kit_flutter_min/ffmpeg_session.dart';
+import 'package:ffmpeg_kit_flutter_min/return_code.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
+import 'package:ffmpeg_kit_flutter_min/ffmpeg_kit.dart';
 
 List<Uint8List> _bufferList = [];
 bool _playing = false;
@@ -284,15 +290,17 @@ class MediaUtils {
     _playing = true;
     Uint8List buffer = _bufferList.removeAt(0);
     try {
-      play(
-        buffer: buffer,
-        whenFinished: () {
-          _playing = false;
-          _playLoop(
-            whenFinished: whenFinished,
-          );
-        },
-      );
+      saveMp3(buffer, (url) {
+        play(
+          url: url,
+          whenFinished: () {
+            _playing = false;
+            _playLoop(
+              whenFinished: whenFinished,
+            );
+          },
+        );
+      });
     } catch (e) {
       _playing = false;
       _playLoop(
@@ -307,6 +315,54 @@ class MediaUtils {
     }
     await _player!.closePlayer();
     _player = null;
+  }
+
+  /** 格式转换 */
+  Future<void> saveMp3(Uint8List buffer, Function(String) onSuccess) async {
+    try {
+      String dirPath = await _getTemDirPath();
+      String fileName = '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.mp3';
+      File file = File('$dirPath/$fileName');
+      if (!file.existsSync()) {
+        file.createSync();
+      }
+      file.writeAsBytesSync(buffer.toList(), flush: true);
+      onSuccess(file.path);
+    } catch (error) {
+      onSuccess('');
+    }
+  }
+
+  Future<Uint8List> convertMp3ToPcm(String mp3Path) async {
+    try {
+      File file = File(mp3Path);
+      if (!file.existsSync()) {
+        throw Exception('No File');
+      }
+      String dirPath = await _getTemDirPath();
+      String pcmPath = '$dirPath/${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.pcm';
+      FFmpegSession session = await FFmpegKit.execute('-i $mp3Path -f s16le $pcmPath');
+      ReturnCode? code = await session.getReturnCode();
+      if (code != ReturnCode.success) {
+        throw Exception('Convert Fail');
+      }
+      File pcm = File(pcmPath);
+      if (!pcm.existsSync()) {
+        throw Exception('Convert Fail');
+      }
+      return pcm.readAsBytes();
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Uint8List convertWavToPcm(Uint8List wavBuffer) {
+    return FlutterSoundHelper().waveToPCMBuffer(inputBuffer: wavBuffer);
+  }
+
+  Future<String> _getTemDirPath() async {
+    Directory dir = await getTemporaryDirectory();
+    return dir.path;
   }
 
 }
