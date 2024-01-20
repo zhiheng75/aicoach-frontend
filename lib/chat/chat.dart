@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:Bubble/widgets/load_image.dart';
+import 'package:flustars_flutter3/flustars_flutter3.dart' hide ScreenUtil;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -56,11 +58,27 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   final BottomBarController _bottomBarControll = BottomBarController();
   // 录音界面控制器
   final RecordController _recordController = RecordController();
+  // 左右滑动提示
+  bool _showSlideTip = false;
 
   void init() {
     _pageState = 'loading';
     setState(() {});
+    showSlideTip();
     getCharacterList();
+  }
+
+  void showSlideTip() {
+    String? firstUsage = SpUtil.getString('firstUsage');
+    _showSlideTip = firstUsage != 'N';
+  }
+
+  void hideSlideTip() {
+    if (_showSlideTip) {
+      SpUtil.putString('firstUsage', 'N');
+      _showSlideTip = false;
+      setState(() {});
+    }
   }
   
   void getCharacterList() {
@@ -72,19 +90,25 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       onSuccess: (result) {
         if (result == null || result.data == null) {
           _pageState = 'fail';
-          setState(() {});
+          if (mounted) {
+            setState(() {});
+          }
           return;
         }
         List<dynamic> list = result.data! as List<dynamic>;
         if (list.isEmpty) {
           _pageState = 'fail';
-          setState(() {});
+          if (mounted) {
+            setState(() {});
+          }
           return;
         }
         _homeProvider = Provider.of<HomeProvider>(context, listen: false);
         _characterList = list.map((item) => CharacterEntity.fromJson(item)).toList();
         _pageState = 'success';
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
         Future.delayed(const Duration(milliseconds: 300), () {
           changeCharacter(0);
         });
@@ -92,7 +116,9 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       onError: (code, msg) {
         Log.d('获取角色列表失败:[error]$msg', tag: '[Function]getCharacterList');
         _pageState = 'fail';
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       }
     );
   }
@@ -153,7 +179,9 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     _characterIndex = characterIndex;
     CharacterEntity character = _characterList[characterIndex];
     _character = character;
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
     startNormalChat(character);
   }
 
@@ -339,7 +367,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       );
     }
 
-    double homeTabbarHeight = 112.0;
+    double homeTabbarHeight = 445.0;
     double bottomBarHeight = _screenUtil.bottomBarHeight + 80.0;
 
     return GestureDetector(
@@ -347,6 +375,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
         if (_isCharacterChanging) {
           return;
         }
+        hideSlideTip();
         int pre = _characterIndex > 0 ? _characterIndex - 1 : _characterList.length - 1;
         int next = _characterIndex < _characterList.length - 1 ? _characterIndex + 1 : 0;
         _backgroundController.slideStart(
@@ -379,13 +408,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       },
       child: Stack(
         children: <Widget>[
-          BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: 1.0,
-              sigmaY: 1.0,
-            ),
-            child: Background(controller: _backgroundController),
-          ),
+          Background(controller: _backgroundController),
           ValueListenableBuilder(
             valueListenable: _bottomBarControll.showMessageList,
             builder: (_, showMessageList, __) {
@@ -458,6 +481,29 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
               builder: (_, show, __) => Record(show: show, controller: _recordController),
             ),
           ),
+          // 左右滑动提示
+          if (_showSlideTip)
+            Positioned(
+              top: 0,
+              left: 0,
+              child: Container(
+                width: _screenUtil.screenWidth,
+                height: _screenUtil.screenHeight,
+                color: Colors.black.withOpacity(0.6),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: _screenUtil.statusBarHeight + 113.0,
+                    ),
+                    const LoadAssetImage(
+                      'slide_tip',
+                      width: 229.0,
+                      height: 229.0,
+                    ),
+                  ],
+                ),
+              ),
+            ),
         ],
       ),
     );

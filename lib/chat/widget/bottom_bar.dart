@@ -360,7 +360,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
               builder: (_, showMessageList, __) => iconButtom(
                 onPress: () => widget.controller.setShowMessageList(!showMessageList),
                 child: LoadAssetImage(
-                  showMessageList ? 'yanjing_kai' : 'yanjing_kai',
+                  showMessageList ? 'yanjing_bi' : 'yanjing_kai',
                   width: 24.0,
                   height: 17.9,
                 ),

@@ -47,13 +47,13 @@ class _HomeTabbarState extends State<HomeTabbar> {
       TextStyle style = const TextStyle(
         fontSize: 17.0,
         fontWeight: FontWeight.w400,
-        color: Colours.color_999999,
+        color: Colors.white,
         height: 26.0 / 17.0,
       );
       if (isSelected) {
         style = const TextStyle(
           fontSize: 17.0,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w700,
           color: Colors.white,
           height: 26.0 / 17.0,
         );
@@ -65,7 +65,7 @@ class _HomeTabbarState extends State<HomeTabbar> {
             return;
           }
           // 场景则弹窗
-          if (widget.currentTab == 'chat' && value == 'scene') {
+          if (value == 'scene') {
             showModalBottomSheet(
               context: context,
               backgroundColor: Colors.transparent,

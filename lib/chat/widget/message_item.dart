@@ -1,5 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, unrelated_type_equality_checks
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -78,42 +80,50 @@ class _MessageItemState extends State<MessageItem> {
     String type = _message.type;
 
     double width = _screenUtil.screenWidth - 32.0;
-    Color blackBgColor = const Color(0xFF060B19).withOpacity(0.78);
+    Color blackBgColor = const Color(0xFF060B19).withOpacity(0.88);
 
     // 角色简介消息
     if (type == 'introduction') {
       _message = _message as IntroductionMessage;
-      return Container(
-        width: width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.0),
-          color: blackBgColor,
-        ),
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            if (_message.name != '')
-              Text(
-                _message.name,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  height: 22.0 / 16.0,
-                ),
-              ),
-            Text(
-              _message.desc,
-              style: const TextStyle(
-                fontSize: 14.0,
-                fontWeight: FontWeight.w400,
-                color: Color(0xFFC0FFFF),
-                height: 22.0 / 14.0,
-              ),
+      return ClipRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: 4.0,
+            sigmaY: 4.0,
+          ),
+          child: Container(
+            width: width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: blackBgColor,
             ),
-          ],
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                if (_message.name != '')
+                  Text(
+                    _message.name,
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                      height: 22.0 / 16.0,
+                    ),
+                  ),
+                Text(
+                  _message.desc,
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFFC0FFFF),
+                    height: 22.0 / 14.0,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       );
     }
@@ -127,7 +137,7 @@ class _MessageItemState extends State<MessageItem> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0),
-            color: blackBgColor,
+            color: Colors.black.withOpacity(0.8),
           ),
           padding: const EdgeInsets.symmetric(
             horizontal: 16.0,
@@ -172,12 +182,31 @@ class _MessageItemState extends State<MessageItem> {
                     ),
                   ),
                   Positioned(
-                    bottom: 11.0,
+                    bottom: 0,
                     child: Container(
                       width: itemSize,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(12.0),
+                          bottomRight: Radius.circular(12.0),
+                        ),
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [
+                            Colors.black.withOpacity(0.8),
+                            Colors.black.withOpacity(0.11),
+                            Colors.black.withOpacity(0.0),
+                          ],
+                          stops: const [0, 0.93, 1],
+                        ),
+                      ),
                       alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
+                      padding: const EdgeInsets.only(
+                        top: 0,
+                        bottom: 16.0,
+                        left: 16.0,
+                        right: 16.0,
                       ),
                       child: Text(
                         topic.title,
@@ -227,7 +256,7 @@ class _MessageItemState extends State<MessageItem> {
         bottomLeft: Radius.circular(_message.speaker == 'ai' ? 0 : 20.0),
         bottomRight: Radius.circular(_message.speaker == 'ai' ? 20.0 : 0),
       ),
-      color: Colors.white,
+      color: Colors.white.withOpacity(0.86),
       gradient: _message.speaker == 'ai' ? null : const LinearGradient(
         begin: Alignment.bottomLeft,
         end: Alignment.topRight,
@@ -320,30 +349,38 @@ class _MessageItemState extends State<MessageItem> {
               ],
             ),
           ),
-        Container(
-          width: width,
-          decoration: decoration,
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: Text(
-                  _message.text,
-                  style: const TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w400,
-                    color: Colours.color_001652,
-                    height: 20.0 / 15.0,
-                    letterSpacing: 0.05,
+        ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 4.0,
+              sigmaY: 4.0
+            ),
+            child: Container(
+              width: width,
+              decoration: decoration,
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      _message.text,
+                      style: const TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colours.color_001652,
+                        height: 20.0 / 15.0,
+                        letterSpacing: 0.05,
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  ext,
+                ],
               ),
-              const SizedBox(
-                width: 10.0,
-              ),
-              ext,
-            ],
+            ),
           ),
         ),
       ],

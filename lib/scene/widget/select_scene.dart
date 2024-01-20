@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../chat/entity/character_entity.dart';
 import '../../entity/result_entity.dart';
 import '../../home/provider/home_provider.dart';
 import '../../net/dio_utils.dart';
@@ -46,17 +47,46 @@ class _SelectSceneState extends State<SelectScene> {
   void init() {
     _pageState = 'loading';
     setState(() {});
-    getCategoryList();
+    String characterId = _homeProvider.character.characterId;
+    if (characterId == '') {
+      getDefaultCharacter((id) => getCategoryList(id));
+    } else {
+      getCategoryList(characterId);
+    }
   }
 
-  void getCategoryList() {
-    _pageState = 'loading';
-    setState(() {});
+  void getDefaultCharacter(Function(String) onSuccess) {
+    DioUtils.instance.requestNetwork<ResultData>(
+        Method.get,
+        HttpApi.teacherList,
+        onSuccess: (result) {
+          if (result == null || result.data == null) {
+            _pageState = 'fail';
+            setState(() {});
+            return;
+          }
+          List<dynamic> list = result.data! as List<dynamic>;
+          if (list.isEmpty) {
+            _pageState = 'fail';
+            setState(() {});
+            return;
+          }
+          onSuccess(CharacterEntity.fromJson(list.first).characterId);
+        },
+        onError: (code, msg) {
+          Log.d('获取角色列表失败:[error]$msg', tag: '[Function]getCharacterList');
+          _pageState = 'fail';
+          setState(() {});
+        }
+    );
+  }
+
+  void getCategoryList(String characterId) async {
     DioUtils.instance.requestNetwork<ResultData>(
       Method.get,
       HttpApi.topicOrScene,
       queryParameters: {
-        'character_id': _homeProvider.character.characterId,
+        'character_id': characterId,
         'type': 2,
       },
       onSuccess: (result) {
