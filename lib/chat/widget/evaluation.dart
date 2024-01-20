@@ -59,8 +59,8 @@ class _EvaluationState extends State<Evaluation> {
       params: {
         'question': widget.message.question,
         'answer': widget.message.text,
-        'session_id': _homeProvider.sessionId,
-        'message_id': widget.message.questionMessageId,
+        // 'session_id': _homeProvider.sessionId,
+        // 'message_id': widget.message.questionMessageId,
         'character_id': _homeProvider.character.characterId,
       },
       cancelToken: _cancelToken,

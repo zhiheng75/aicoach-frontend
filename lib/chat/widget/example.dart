@@ -48,8 +48,8 @@ class _ExampleState extends State<Example> {
       HttpApi.suggestAnswer,
       params: {
         'question': widget.message.text,
-        'session_id': _homeProvider.sessionId,
-        'message_id': widget.message.id,
+        // 'session_id': _homeProvider.sessionId,
+        // 'message_id': widget.message.id,
         'character_id': _homeProvider.character.characterId,
       },
       cancelToken: _cancelToken,

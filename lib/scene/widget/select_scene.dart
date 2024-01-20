@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_final_fields
 
 import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -94,7 +95,7 @@ class _SelectSceneState extends State<SelectScene> {
     _sceneList = category.sceneList;
     _sceneState = 'success';
     setState(() {});
-    Future.delayed(Duration.zero, () {
+    Future.delayed(const Duration(milliseconds: 300), () {
       _scrollController.jumpTo(0);
     });
   }
@@ -102,6 +103,10 @@ class _SelectSceneState extends State<SelectScene> {
   void selectScene(SceneEntity scene) {
     HomeProvider homeProvider = Provider.of<HomeProvider>(context, listen: false);
     if (homeProvider.scene?.id == scene.id) {
+      Toast.show(
+        '该场景正在进行对话',
+        duration: 1000,
+      );
       return;
     }
     Navigator.of(context).pop();
