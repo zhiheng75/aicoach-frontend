@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:Bubble/chat/utils/xunfei_util.dart';
@@ -23,25 +24,49 @@ class MockEvaluateUtil {
   WebSocketChannel? _websocket;
   final String _oss = 'evaluate_oss';
 
-  void evaluate(MockMessageEntity message, Function() onSuccess) {
-    _evaluate(
-      message: message,
-      onSuccess: onSuccess,
-    );
+  void evaluate(MockMessageEntity message, Function(Map params) onSuccess) {
+    String pathName =
+        '${getDate()}/${getRandom(12)}.${message.sessionId + message.messageId}';
+    _uploadAudio(pathName, message.audio, (String audiopath) {
+      message.speechfile = audiopath;
+      _evaluate(
+        message: message,
+        onSuccess: onSuccess,
+      );
+    });
+  }
+
+  /// 获取日期
+  static String getDate() {
+    DateTime now = DateTime.now();
+    return '${now.year}${now.month}${now.day}';
+  }
+
+  /*
+  * 生成固定长度的随机字符串
+  * */
+  static String getRandom(int num) {
+    String alphabet = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
+    String left = '';
+    for (var i = 0; i < num; i++) {
+//    right = right + (min + (Random().nextInt(max - min))).toString();
+      left = left + alphabet[Random().nextInt(alphabet.length)];
+    }
+    return left;
   }
 
   /** 评测 */
   Future<void> _evaluate({
     required MockMessageEntity message,
-    required Function() onSuccess,
+    required Function(Map params) onSuccess,
   }) async {
     try {
       _connectWebsocket((evaluation) {
         _saveEvaluation(
           message: message,
           evaluation: evaluation,
-          onSuccess: () {
-            onSuccess();
+          onSuccess: (Map params) {
+            onSuccess(params);
           },
         );
       });
@@ -102,6 +127,7 @@ class MockEvaluateUtil {
       'message_id': message.messageId,
       'message': message.text,
       'type': message.type,
+      'speech_file': message.speechfile,
       'accuracy_score': evaluation['accuracy_score'],
       'fluency_score': evaluation['fluency_score'],
       'integrity_score': evaluation['integrity_score'],
@@ -113,7 +139,7 @@ class MockEvaluateUtil {
   void _saveEvaluation({
     required MockMessageEntity message,
     required Map<String, dynamic> evaluation,
-    required Function() onSuccess,
+    required Function(Map params) onSuccess,
   }) {
     try {
       Map<String, dynamic> params = _getParams(message, evaluation);
@@ -123,7 +149,7 @@ class MockEvaluateUtil {
         params: params,
         onSuccess: (result) {
           if (result != null && result.code == 200) {
-            onSuccess();
+            onSuccess(params);
             return;
           }
           throw Exception();

@@ -305,7 +305,13 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
 
   void sendMessage(String text) async {
     insertUserMessage(text, (message) {
-      MockEvaluateUtil().evaluate(message, () {});
+      MockEvaluateUtil().evaluate(message, (Map map) {
+        if (bodyType == "B2A") {
+          //掉一个地道表达接口
+        }
+        //揉数据
+        Log.e(map.toString());
+      });
     });
   }
 
