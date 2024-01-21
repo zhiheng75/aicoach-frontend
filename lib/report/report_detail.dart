@@ -1,5 +1,13 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/report/widget/score.dart';
+import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/widgets/load_data.dart';
+import 'package:Bubble/widgets/load_fail.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -14,10 +22,10 @@ import 'widget/analysis.dart';
 class ReportDetailPage extends StatefulWidget {
   const ReportDetailPage({
     Key? key,
-    required this.id,
+    required this.sessionId,
   }) : super(key: key);
 
-  final int id;
+  final String sessionId;
 
   @override
   State<ReportDetailPage> createState() => _ReportDetailPageState();
@@ -30,14 +38,49 @@ class _ReportDetailPageState extends State<ReportDetailPage>
     implements ReportDetailView {
   late ReportDetailPagePresenter _reportDetailPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
+  // 状态 loading-加载中 fail-失败 success-成功
+  String _pageState = 'loading';
+  final CancelToken _cancelToken = CancelToken();
+  Map<String, dynamic> _detail = {};
   // evaluation-综合评价 advise-地道表达建议 analysis-细节解析
   String _type = 'evaluation';
 
   void init() {
+    _pageState = 'loading';
+    setState(() {});
     getReportDetail();
   }
 
-  void getReportDetail() {}
+  void getReportDetail() async {
+    DioUtils.instance.requestNetwork<ResultData>(
+      Method.get,
+      HttpApi.coinReport,
+      params: {
+        'session_id': widget.sessionId,
+        'device_id': await Device.getDeviceId(),
+      },
+      onSuccess: (result) {
+        if (result == null || result.data == null) {
+          _pageState = 'fail';
+          if (mounted) {
+            setState(() {});
+          }
+          return;
+        }
+        _detail = result.data as Map<String, dynamic>;
+        _pageState = 'success';
+        if (mounted) {
+          setState(() {});
+        }
+      },
+      onError: (code, msg) {
+        _pageState = 'fail';
+        if (mounted) {
+          setState(() {});
+        }
+      }
+    );
+  }
 
   void tapTabbar(String type) {
     _type = type;
@@ -48,6 +91,14 @@ class _ReportDetailPageState extends State<ReportDetailPage>
   void initState() {
     super.initState();
     init();
+  }
+
+  @override
+  void dispose() {
+    if (_pageState == 'loading') {
+      _cancelToken.cancel();
+    }
+    super.dispose();
   }
 
   @override
@@ -76,7 +127,7 @@ class _ReportDetailPageState extends State<ReportDetailPage>
                   fontSize: 18.0,
                   fontWeight: FontWeight.w500,
                   color: Colors.black,
-                  height: 1.0,
+                  height: 22.0 / 18.0,
                   letterSpacing: 0.05,
                 ),
               ),
@@ -89,6 +140,7 @@ class _ReportDetailPageState extends State<ReportDetailPage>
           ],
         ),
         Positioned(
+          top: 0,
           left: 0,
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
@@ -115,20 +167,20 @@ class _ReportDetailPageState extends State<ReportDetailPage>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Column(
+          Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                '94%',
-                style: TextStyle(
+                _detail['rank'] ?? '0%',
+                style: const TextStyle(
                   fontSize: 40.0,
                   fontWeight: FontWeight.w400,
                   color: Colors.white,
                   height: 19.0 / 40.0,
                 ),
               ),
-              Text(
+              const Text(
                 '超过该年龄段用户\n满分为100分',
                 style: TextStyle(
                   fontSize: 13.0,
@@ -154,20 +206,20 @@ class _ReportDetailPageState extends State<ReportDetailPage>
               ),
             ),
             alignment: Alignment.center,
-            child: const Column(
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  '${76}',
-                  style: TextStyle(
+                  '${_detail['total_score'] ?? 0}',
+                  style: const TextStyle(
                     fontSize: 32.0,
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
                     height: 37.5 / 32.0,
                   ),
                 ),
-                Text(
+                const Text(
                   '总分',
                   style: TextStyle(
                     fontSize: 12.0,
@@ -385,116 +437,58 @@ class _ReportDetailPageState extends State<ReportDetailPage>
       ],
     );
 
-    Widget evaluationItem(String icon, String label, {Widget? child}) {
-      return Container(
-        width: width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.0),
-          color: const Color(0xFFF8F8F8),
+    Widget content = const SizedBox();
+    if (_pageState != 'success') {
+      content = Expanded(
+        child: Center(
+          child: _pageState == 'fail' ? LoadFail(reload: init) : const LoadData(),
         ),
-        padding: const EdgeInsets.all(16.0),
-        margin: const EdgeInsets.only(
-          bottom: 16.0,
-        ),
-        child: Row(
-          children: <Widget>[
-            LoadAssetImage(
-              icon,
-              width: 51.0,
-              height: 51.0,
-            ),
-            const SizedBox(
-              width: 8.0,
-            ),
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    label,
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                      height: 1.0,
-                    ),
-                  ),
-                  if (child != null) ...[
-                    const SizedBox(
-                      width: 8.0,
-                    ),
-                    child,
-                  ],
-                ],
+      );
+    } else {
+      content = Expanded(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                '本次对话${_detail['session_count']}个，对话时间：${_detail['session_time'] ?? ''}',
+                style: const TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                  height: 18.0 / 14.0,
+                  letterSpacing: 0.05,
+                ),
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 16.0,
+              ),
+              score,
+              const SizedBox(
+                height: 16.0,
+              ),
+              radar,
+              const SizedBox(
+                height: 16.0,
+              ),
+              schedule,
+              const SizedBox(
+                height: 16.0,
+              ),
+              tabbar,
+              const SizedBox(
+                height: 16.0,
+              ),
+              if (_type == 'evaluation') Score(sessionId: widget.sessionId),
+              if (_type == 'advise') Advise(sessionId: widget.sessionId),
+              if (_type == 'analysis') Analysis(sessionId: widget.sessionId),
+              SizedBox(
+                height: _screenUtil.bottomBarHeight,
+              ),
+            ],
+          ),
         ),
       );
     }
-
-    Widget evaluation = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        evaluationItem(
-          'fayin',
-          '发音',
-          child: const Text(
-            '发音棒极了，超过90%同学',
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF666666),
-              height: 18.0 / 15.0,
-              letterSpacing: 0.05,
-            ),
-          ),
-        ),
-        evaluationItem(
-          'yufa',
-          '语法与用词',
-          child: const Text(
-            '语法与用词需要加强，目前得分80分，超过50%同学',
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF666666),
-              height: 18.0 / 15.0,
-              letterSpacing: 0.05,
-            ),
-          ),
-        ),
-        evaluationItem(
-          'liuchangdu',
-          '流畅度',
-          child: const Text(
-            '流畅度得分94，表现优秀，超过90%同学',
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF666666),
-              height: 18.0 / 15.0,
-              letterSpacing: 0.05,
-            ),
-          ),
-        ),
-        evaluationItem(
-          'wanzhengdu',
-          '完整度',
-          child: const Text(
-            '句子表述较完整，得分86，超过89%的同学',
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w400,
-              color: Color(0xFF666666),
-              height: 18.0 / 15.0,
-              letterSpacing: 0.05,
-            ),
-          ),
-        ),
-      ],
-    );
 
     return Scaffold(
       body: Container(
@@ -510,49 +504,7 @@ class _ReportDetailPageState extends State<ReportDetailPage>
             const SizedBox(
               height: 12.0,
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const Text(
-                      '本次对话${30}个，对话时间：${'2023-09-02'}',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                        height: 18.0 / 14.0,
-                        letterSpacing: 0.05,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                    score,
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                    radar,
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                    schedule,
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                    tabbar,
-                    const SizedBox(
-                      height: 16.0,
-                    ),
-                    if (_type == 'evaluation') evaluation,
-                    if (_type == 'advise') Advise(id: widget.id),
-                    if (_type == 'analysis') Analysis(id: widget.id),
-                    SizedBox(
-                      height: _screenUtil.bottomBarHeight,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            content,
           ],
         ),
       ),

@@ -193,25 +193,26 @@ class XunfeiUtil {
             evaluation['integrity_score'] = readChapter['integrity_score'];
             evaluation['standard_score'] = readChapter['standard_score'];
             evaluation['total_score'] = readChapter['total_score'];
-            // 单词打分
-            if (readChapter['sentence'] != null) {
-              Map<String, dynamic> sentence = readChapter['sentence'];
-              if (sentence['word'] != null && sentence['word'] is List) {
-                List<dynamic> words = sentence['word'] as List;
-                // 分数在60分以下
-                List<Map<String, dynamic>> list = [];
-                for (var word in words) {
-                  if (word['total_score'] != null && double.parse(word['total_score']) < 70) {
-                    list.add({
-                      'content': word['content'],
-                      'beg_pos': word['beg_pos'],
-                      'end_pos': word['end_pos'],
-                    });
-                  }
-                }
-                evaluation['words'] = list;
-              }
-            }
+            evaluation['score_detail'] = jsonEncode(readChapter);
+            // // 单词打分
+            // if (readChapter['sentence'] != null) {
+            //   Map<String, dynamic> sentence = readChapter['sentence'];
+            //   if (sentence['word'] != null && sentence['word'] is List) {
+            //     List<dynamic> words = sentence['word'] as List;
+            //     // 分数在60分以下
+            //     List<Map<String, dynamic>> list = [];
+            //     for (var word in words) {
+            //       if (word['total_score'] != null && double.parse(word['total_score']) < 70) {
+            //         list.add({
+            //           'content': word['content'],
+            //           'beg_pos': word['beg_pos'],
+            //           'end_pos': word['end_pos'],
+            //         });
+            //       }
+            //     }
+            //     evaluation['words'] = list;
+            //   }
+            // }
           }
         }
       }

@@ -232,6 +232,7 @@ class EvaluateUtil {
       'integrity_score': evaluation['integrity_score'],
       'standard_score': evaluation['standard_score'],
       'total_score': evaluation['total_score'],
+      'score_detail': evaluation['score_detail'],
     };
   }
 

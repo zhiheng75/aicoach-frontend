@@ -167,8 +167,10 @@ class _ReportPageState extends State<ReportPage>
     Widget listItem(dynamic item) {
       Widget content = const SizedBox();
       if (_type == 'chat') {
-        item = item as ChatReportEntity;
-        int id = item.id;
+        String sessionId = '';
+        if (item is ChatReportEntity) {
+          sessionId = item.sessionId;
+        }
         content = GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
@@ -176,7 +178,7 @@ class _ReportPageState extends State<ReportPage>
               context,
               ReportRouter.reportDetailPage,
               arguments: {
-                'id': id,
+                'sessionId': sessionId,
               },
             );
           },

@@ -1,6 +1,6 @@
 class ChatReportEntity {
 
-  int id = 0;
+  String sessionId = '';
   String topicCover = '';
   String topicName = '';
   int duration = 0;
@@ -15,8 +15,8 @@ class ChatReportEntity {
   factory ChatReportEntity.fromJson(dynamic json) {
     json = json as Map<String, dynamic>;
     ChatReportEntity entity = ChatReportEntity();
-    if (json['id'] != null) {
-      entity.id = json['id'];
+    if (json['session_id'] != null) {
+      entity.sessionId = json['session_id'];
     }
     if (json['scene_image'] != null) {
       entity.topicCover = json['scene_image'];
@@ -44,7 +44,7 @@ class ChatReportEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'session_id': sessionId,
       'scene_image': topicCover,
       'scene_title': topicName,
       'duration': duration,

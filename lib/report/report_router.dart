@@ -21,11 +21,13 @@ class ReportRouter implements IRouterProvider {
     router.define(
       reportDetailPage,
       handler: Handler(
-        handlerFunc: (_, __) {
-          print('_:$_');
-          print('__:$__');
+        handlerFunc: (context, __) {
+          String sessionId = '';
+          if (context != null && context.settings != null && context.settings!.arguments != null) {
+            sessionId = (context.settings!.arguments! as Map<String, dynamic>)['sessionId'];
+          }
           return ReportDetailPage(
-            id: 1,
+            sessionId: sessionId,
           );
         },
       ),

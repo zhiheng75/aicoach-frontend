@@ -1,7 +1,8 @@
 class AnalysisEntity {
 
-  String msgId = '';
-  String userText = '';
+  int type = 2;
+  String sentence = '';
+  num score = 0;
   List<GrammarEntity> grammar = [];
   List<PronounceEntity> pronounce = [];
 
@@ -10,11 +11,14 @@ class AnalysisEntity {
   factory AnalysisEntity.fromJson(dynamic json) {
     json = json as Map<String, dynamic>;
     AnalysisEntity entity = AnalysisEntity();
-    if (json['msg_id'] != null) {
-      entity.msgId = json['msg_id'];
+    if (json['type'] != null) {
+      entity.type = json['type'];
     }
-    if (json['user_text'] != null) {
-      entity.userText = json['user_text'];
+    if (json['sentence'] != null) {
+      entity.sentence = json['sentence'];
+    }
+    if (json['score'] != null) {
+      entity.sentence = json['score'];
     }
     if (json['grammar'] != null && json['grammar'] is List) {
       entity.grammar = (json['grammar'] as List).map((item) => GrammarEntity.fromJson(item)).toList();
@@ -27,8 +31,8 @@ class AnalysisEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'msg_id': msgId,
-      'user_text': userText,
+      'type': type,
+      'sentence': sentence,
       'grammar': grammar.map((item) => item.toJson()).toList(),
       'pronounce': pronounce.map((item) => item.toJson()).toList(),
     };
@@ -63,11 +67,19 @@ class PronounceEntity {
   factory PronounceEntity.fromJson(dynamic json) {
     json = json as Map<String, dynamic>;
     PronounceEntity entity = PronounceEntity();
+    if (json['word'] != null) {
+      entity.text = json['word'];
+    }
+    if (json['word_audio'] != null) {
+      entity.audio = json['word_audio'];
+    }
     return entity;
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'word': text,
+      'word_audio': audio,
     };
   }
 }
