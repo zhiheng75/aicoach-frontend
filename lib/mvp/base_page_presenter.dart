@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 
 import '../net/dio_utils.dart';
-import '../net/error_handle.dart';
 import 'base_presenter.dart';
 import 'mvps.dart';
 
@@ -16,6 +15,8 @@ class BasePagePresenter<V extends IMvpView> extends BasePresenter<V> {
   @override
   void dispose() {
     /// 销毁时，将请求取消
+    RequestOptions? requestOptions = _cancelToken.requestOptions;
+    print('requestOptions:$requestOptions');
     if (!_cancelToken.isCancelled) {
       _cancelToken.cancel();
     }
@@ -110,9 +111,10 @@ class BasePagePresenter<V extends IMvpView> extends BasePresenter<V> {
   void _onError(int code, String msg, NetErrorCallback? onError) {
     /// 异常时直接关闭加载圈，不受isClose影响
     view.closeProgress();
-    if (code != ExceptionHandle.cancel_error) {
-      view.showToast(msg);
-    }
+    /// 异常信息在onError由用户处理
+    // if (code != ExceptionHandle.cancel_error) {
+    //   view.showToast(msg);
+    // }
     /// 页面如果dispose，则不回调onError
     if (onError != null) {
       onError(code, msg);

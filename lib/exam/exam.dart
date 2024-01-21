@@ -722,6 +722,7 @@ class _ExamPageState extends State<ExamPage>
                     barrierColor: Colors.transparent,
                     isScrollControlled: true,
                     isDismissible: false,
+                    enableDrag: false,
                     builder: (_) => ExamPurchasePage(
                       onPurchased: () {},
                     ),

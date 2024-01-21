@@ -54,6 +54,7 @@ class _MessageItemState extends State<MessageItem> {
       barrierColor: Colors.transparent,
       isScrollControlled: true,
       isDismissible: false,
+      enableDrag: false,
       builder: (_) => Evaluation(message: widget.message as NormalMessage),
     );
   }

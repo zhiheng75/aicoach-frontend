@@ -13,6 +13,8 @@ class HttpApi {
   //微信登录
   static const String wechatLogin = "wx_login?type=1";
 
+  static const String collectInformation = 'evaluation';
+
   //获取版本号
   static const String updateApp = "version";
 

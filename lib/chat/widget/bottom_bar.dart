@@ -76,6 +76,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       isScrollControlled: true,
       isDismissible: false,
       clipBehavior: Clip.none,
+      enableDrag: false,
       builder: (_) => Example(message: message),
     );
   }

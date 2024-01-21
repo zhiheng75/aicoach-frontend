@@ -1,3 +1,7 @@
+import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/scene/collect_information.dart';
+import 'package:Bubble/util/EventBus.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:jverify/jverify.dart';
@@ -6,6 +10,7 @@ import '../chat/chat.dart';
 import '../constant/constant.dart';
 import '../exam/exam.dart';
 import '../mvp/base_page.dart';
+import '../net/http_api.dart';
 import '../widgets/double_tap_back_exit_app.dart';
 import 'presenter/home_new_page_presenter.dart';
 import 'view/home_new_view.dart';
@@ -25,11 +30,12 @@ class _HomePageState extends State<HomeNewPage>
     implements HomeNewView {
   late HomeNewPagePresenter _homeNewPagePresenter;
   // chat-对话（默认） scene-场景 exam-模考
-  String _currentTab = 'chat';
+  String _currentTab = '';
 
   void init() {
     // 初始化手机号一键登录插件
-    initPlatformState();
+    // initPlatformState();
+    initCollectInformation();
   }
 
   Future<void> initPlatformState() async {
@@ -50,10 +56,71 @@ class _HomePageState extends State<HomeNewPage>
     });
   }
 
+  void initCollectInformation() {
+    EventBus().on('COLLECT_INFORMATION', (type) {
+      _homeNewPagePresenter.requestNetwork<ResultData>(
+        Method.get,
+        url: HttpApi.collectInformation,
+        isShow: type != 'login',
+        isClose: type != 'login',
+        onSuccess: (result) {
+          if (result == null || result.data == null || (result.data as Map<String, dynamic>)['is_evaluation'] == 1) {
+            if (_currentTab == '') {
+              _currentTab = 'chat';
+              setState(() {});
+            }
+            return;
+          }
+          Map<String, dynamic> data = result.data as Map<String, dynamic>;
+          showModalBottomSheet(
+            context: context,
+            backgroundColor: Colors.transparent,
+            barrierColor: Colors.transparent,
+            isScrollControlled: true,
+            isDismissible: false,
+            clipBehavior: Clip.none,
+            enableDrag: false,
+            builder: (_) => CollectInformationPage(
+              characterId: data['character_id'],
+              sceneId: data['scene_id'],
+              sceneImage: data['scene_image'] ?? '',
+              desc: data['desc'] ?? '',
+              onEnd: () {
+                if (_currentTab == '') {
+                  _currentTab = 'chat';
+                  setState(() {});
+                  return;
+                }
+                if (_currentTab == 'chat') {
+                  EventBus().emit('COLLECT_INFORMATION_END');
+                }
+              },
+            ),
+          );
+        },
+        onError: (code, msg) {
+          if (_currentTab == '') {
+            _currentTab = 'chat';
+            setState(() {});
+          }
+        },
+      );
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    init();
+    Future.delayed(Duration.zero, () {
+      init();
+      EventBus().emit('COLLECT_INFORMATION', 'init');
+    });
+  }
+
+  @override
+  void dispose() {
+    EventBus().off('COLLECT_INFORMATION');
+    super.dispose();
   }
 
   @override

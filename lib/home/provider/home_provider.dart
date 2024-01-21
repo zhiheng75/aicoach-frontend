@@ -172,6 +172,11 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
+  void addMessage(MessageEntity message) {
+    _messageList.add(message);
+    notifyListeners();
+  }
+
   // 渲染简介消息到列表
   void addIntroductionMessage([bool update = true]) {
     IntroductionMessage introductionMessage = IntroductionMessage();
