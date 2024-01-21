@@ -5,11 +5,14 @@ import 'package:Bubble/chat/entity/message_entity.dart';
 import 'package:Bubble/chat/utils/chat_websocket.dart';
 import 'package:Bubble/chat/utils/evaluate_util.dart';
 import 'package:Bubble/chat/utils/recognize_util.dart';
+import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/exam/entity/exam_step_bean.dart';
 import 'package:Bubble/exam/entity/mock_message_entity.dart';
 import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/exam/utils/mock_evaluate_util.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
@@ -20,6 +23,7 @@ import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/dash_line.dart';
 import 'package:Bubble/widgets/load_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -308,11 +312,50 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
       MockEvaluateUtil().evaluate(message, (Map map) {
         if (bodyType == "B2A") {
           //掉一个地道表达接口
+
+          _timer?.cancel();
+
+          nextMock();
         }
         //揉数据
         Log.e(map.toString());
       });
     });
+  }
+
+  void suggestAnswer(String message) {
+    CancelToken _cancelToken = CancelToken();
+    DioUtils.instance.requestNetwork<ResultData>(
+      Method.post,
+      HttpApi.suggestAnswer,
+      params: {
+        'question': message,
+      },
+      cancelToken: _cancelToken,
+      onSuccess: (result) {
+        if (result == null || result.data == null) {
+          return;
+        }
+        Map<String, dynamic> data = result.data as Map<String, dynamic>;
+        //考伴回答
+        mockKlowTwoPlay(data['speech_url']);
+      },
+      onError: (code, msg) {},
+    );
+  }
+
+  void mockKlowTwoPlay(String answerAudio) {
+    Log.e("考伴回答应该弹窗==============");
+    showConfirmDialog();
+    _mediaUtils.play(
+      url: answerAudio,
+      whenFinished: () {
+        showToast("考办回答完");
+        Navigator.pop(context);
+        _timer?.cancel();
+        nextMock();
+      },
+    );
   }
 
   void insertUserMessage(String text, Function(MockMessageEntity) onSuccess) {
@@ -330,7 +373,10 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
     // 抬起按钮
     isTalk = false;
     _timer?.cancel();
-    nextMock();
+    if (bodyType != "B2A") {
+      //掉一个地道表达接口
+      nextMock();
+    }
   }
 
   void mockKlowPlay(String answerAudio) {
