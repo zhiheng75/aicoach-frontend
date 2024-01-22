@@ -45,7 +45,9 @@ class Data {
   int totalScore;
   int camb;
   String ket;
+  String ketNext;
   String europe;
+  int trainCount;
   String createTime;
   int duration;
 
@@ -61,7 +63,9 @@ class Data {
     required this.totalScore,
     required this.camb,
     required this.ket,
+    required this.ketNext,
     required this.europe,
+    required this.trainCount,
     required this.createTime,
     required this.duration,
   });
@@ -78,7 +82,9 @@ class Data {
         totalScore: json["total_score"],
         camb: json["Camb"],
         ket: json["KET"],
+        ketNext: json["KET_NEXT"],
         europe: json["europe"],
+        trainCount: json["train_count"],
         createTime: json["create_time"],
         duration: json["duration"],
       );
@@ -95,7 +101,9 @@ class Data {
         "total_score": totalScore,
         "Camb": camb,
         "KET": ket,
+        "KET_NEXT": ketNext,
         "europe": europe,
+        "train_count": trainCount,
         "create_time": createTime,
         "duration": duration,
       };

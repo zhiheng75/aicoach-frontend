@@ -23,8 +23,11 @@ class ReportRouter implements IRouterProvider {
       handler: Handler(
         handlerFunc: (context, __) {
           String sessionId = '';
-          if (context != null && context.settings != null && context.settings!.arguments != null) {
-            sessionId = (context.settings!.arguments! as Map<String, dynamic>)['sessionId'];
+          if (context != null &&
+              context.settings != null &&
+              context.settings!.arguments != null) {
+            sessionId = (context.settings!.arguments!
+                as Map<String, dynamic>)['sessionId'];
           }
           return ReportDetailPage(
             sessionId: sessionId,
@@ -33,11 +36,18 @@ class ReportRouter implements IRouterProvider {
       ),
     );
 
-    router.define(
-      myExaminationPage,
-      handler: Handler(
-        handlerFunc: (_, __) => const MyExaminationPage(),
-      ),
-    );
+    // router.define(
+    //   myExaminationPage,
+    //   handler: Handler(
+    //     handlerFunc: (_, __) => const MyExaminationPage(),
+    //   ),
+    // );
+
+    router.define(myExaminationPage, handler: Handler(handlerFunc: (_, params) {
+      String id = params['id']!.first;
+      return MyExaminationPage(
+        mockId: id,
+      );
+    }));
   }
 }

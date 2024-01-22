@@ -1,6 +1,11 @@
 import 'dart:math';
 
+import 'package:Bubble/exam/entity/exam_detail_bean.dart';
+import 'package:Bubble/exam/presenter/exam_detail_page_presenter.dart';
 import 'package:Bubble/exam/view/bar_chart.dart';
+import 'package:Bubble/exam/view/exam_detail_view.dart';
+import 'package:Bubble/loginManager/login_manager.dart';
+import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/report/page/my_examination_detail_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
@@ -12,14 +17,20 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
 import 'package:flutter/services.dart';
 
 class MyExaminationPage extends StatefulWidget {
-  const MyExaminationPage({super.key});
+  final String mockId;
+
+  const MyExaminationPage({super.key, required this.mockId});
 
   @override
   State<MyExaminationPage> createState() => _MyExaminationPageState();
 }
 
 class _MyExaminationPageState extends State<MyExaminationPage>
-    with TickerProviderStateMixin {
+    with
+        TickerProviderStateMixin,
+        BasePageMixin<MyExaminationPage, ExamDetailPagePresenter>,
+        AutomaticKeepAliveClientMixin<MyExaminationPage>
+    implements ExamDetailView {
   // ///当前选择tab索引
   int curTabIndex = 0;
   // String tabType = 'evaluation';
@@ -27,11 +38,25 @@ class _MyExaminationPageState extends State<MyExaminationPage>
   // late final TabController primaryTC;
   // late final TabController secondaryTC;
 
+  late ExamDetailPagePresenter _examDetailPagePresenter;
+  late ExamDetailBean _examDetailBean;
+  late bool isloading = true;
+  late List<double> _peopleData;
+
   @override
   void initState() {
     super.initState();
     // primaryTC = TabController(length: 2, vsync: this);
     // secondaryTC = TabController(length: 5, vsync: this);
+    Future.delayed(const Duration(microseconds: 200), () {
+      _examDetailPagePresenter.getExamDetail(widget.mockId);
+    });
+    _peopleData = [
+      100,
+      75,
+      45,
+      25,
+    ];
   }
 
   @override
@@ -110,151 +135,153 @@ class _MyExaminationPageState extends State<MyExaminationPage>
     );
   }
 
-  Widget score = Container(
-    // width: width,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(20.0),
-      color: Colors.black.withOpacity(0.85),
-    ),
-    padding: const EdgeInsets.symmetric(
-      vertical: 48.0,
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: Colours.color_51D6FF,
-                  ),
-                  width: 8,
-                  height: 8,
-                ),
-                Gaps.hGap6,
-                const Text(
-                  '5发音',
-                  style: TextStyle(
-                    fontSize: 13.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            Gaps.vGap2,
-            Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: Colours.color_FF71CF,
-                  ),
-                  width: 8,
-                  height: 8,
-                ),
-                Gaps.hGap6,
-                const Text(
-                  '5互动',
-                  style: TextStyle(
-                    fontSize: 13.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            Gaps.vGap2,
-            Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: Colours.color_E8CCFE,
-                  ),
-                  width: 8,
-                  height: 8,
-                ),
-                Gaps.hGap6,
-                const Text(
-                  '4语法词汇',
-                  style: TextStyle(
-                    fontSize: 13.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            Gaps.vGap2,
-            Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: Colours.color_8E30FF,
-                  ),
-                  width: 8,
-                  height: 8,
-                ),
-                Gaps.hGap6,
-                const Text(
-                  '4整体得分',
-                  style: TextStyle(
-                    fontSize: 13.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        Gaps.hGap16,
-        const SizedBox(
-          width: 20.0,
-        ),
-        Container(
-          width: 128.0,
-          height: 128.0,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                'assets/images/caihuan.png',
-              ),
-              fit: BoxFit.cover,
-            ),
-          ),
-          alignment: Alignment.center,
-          child: const Column(
+  Widget score() {
+    return Container(
+      // width: width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.0),
+        color: Colors.black.withOpacity(0.85),
+      ),
+      padding: const EdgeInsets.symmetric(
+        vertical: 48.0,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                '${76}',
-                style: TextStyle(
-                  fontSize: 32.0,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  height: 37.5 / 32.0,
-                ),
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colours.color_51D6FF,
+                    ),
+                    width: 8,
+                    height: 8,
+                  ),
+                  Gaps.hGap6,
+                  const Text(
+                    '5发音',
+                    style: TextStyle(
+                      fontSize: 13.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
-              Text(
-                '  总分',
-                style: TextStyle(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  height: 14.0 / 12.0,
-                ),
+              Gaps.vGap2,
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colours.color_FF71CF,
+                    ),
+                    width: 8,
+                    height: 8,
+                  ),
+                  Gaps.hGap6,
+                  const Text(
+                    '5互动',
+                    style: TextStyle(
+                      fontSize: 13.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              Gaps.vGap2,
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colours.color_E8CCFE,
+                    ),
+                    width: 8,
+                    height: 8,
+                  ),
+                  Gaps.hGap6,
+                  const Text(
+                    '4语法词汇',
+                    style: TextStyle(
+                      fontSize: 13.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              Gaps.vGap2,
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colours.color_8E30FF,
+                    ),
+                    width: 8,
+                    height: 8,
+                  ),
+                  Gaps.hGap6,
+                  const Text(
+                    '4整体得分',
+                    style: TextStyle(
+                      fontSize: 13.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ),
-      ],
-    ),
-  );
+          Gaps.hGap16,
+          const SizedBox(
+            width: 20.0,
+          ),
+          Container(
+            width: 128.0,
+            height: 128.0,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  'assets/images/caihuan.png',
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  _examDetailBean.data.totalScore.toString(),
+                  style: const TextStyle(
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    height: 37.5 / 32.0,
+                  ),
+                ),
+                const Text(
+                  '  总分',
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    height: 14.0 / 12.0,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget typeWidget(BuildContext context) {
     return Row(
@@ -269,32 +296,17 @@ class _MyExaminationPageState extends State<MyExaminationPage>
           width: (MediaQuery.of(context).size.width - 32.0) / 3 - 5,
           height: (MediaQuery.of(context).size.width - 32.0) / 3 - 5,
           // color: Colours.color_E8CCFE,
-          child: const Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                // crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    "B",
-                    style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    "Grade",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                      height: 2.5,
-                      // letterSpacing: 0.05,
-                    ),
-                  ),
-                ],
-              ),
               Text(
+                _examDetailBean.data.ket,
+                style: const TextStyle(
+                  fontSize: 30,
+                  color: Colors.black,
+                ),
+              ),
+              const Text(
                 "KET证书等级",
                 style: TextStyle(
                   fontSize: 12,
@@ -314,17 +326,17 @@ class _MyExaminationPageState extends State<MyExaminationPage>
           width: (MediaQuery.of(context).size.width - 32.0) / 3 - 5,
           height: (MediaQuery.of(context).size.width - 32.0) / 3 - 5,
           // color: Colours.color_E8CCFE,
-          child: const Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "121",
-                style: TextStyle(
+                _examDetailBean.data.camb.toString(),
+                style: const TextStyle(
                   fontSize: 30,
                   color: Colors.black,
                 ),
               ),
-              Text(
+              const Text(
                 "剑桥考试成绩",
                 style: TextStyle(
                   fontSize: 12,
@@ -346,17 +358,17 @@ class _MyExaminationPageState extends State<MyExaminationPage>
           width: (MediaQuery.of(context).size.width - 32.0) / 3 - 5,
           height: (MediaQuery.of(context).size.width - 32.0) / 3 - 5,
           // color: Colours.color_E8CCFE,
-          child: const Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "A2",
-                style: TextStyle(
+                _examDetailBean.data.europe,
+                style: const TextStyle(
                   fontSize: 30,
                   color: Colors.black,
                 ),
               ),
-              Text(
+              const Text(
                 "欧洲语言共同参考标准",
                 style: TextStyle(
                   fontSize: 12,
@@ -376,12 +388,12 @@ class _MyExaminationPageState extends State<MyExaminationPage>
     "互动",
     "整体得分",
   ];
-  List<double> peopleData = [
-    100,
-    75,
-    45,
-    25,
-  ];
+  // List<double> peopleData = [
+  //   100,
+  //   75,
+  //   45,
+  //   25,
+  // ];
   List<Color> colorData = [
     Colours.color_51D8FF,
     Colours.color_FF71CF,
@@ -401,19 +413,19 @@ class _MyExaminationPageState extends State<MyExaminationPage>
       padding: const EdgeInsets.all(10),
       child: Column(
         children: [
-          const Text(
-            "开始时间:2023-12-20 考试时长:10分钟",
-            style: TextStyle(
+          Text(
+            "开始时间:${_examDetailBean.data.createTime} 考试时长:${_examDetailBean.data.duration / 60}分钟",
+            style: const TextStyle(
               fontSize: 16.0,
               color: Colors.black,
             ),
           ),
           Gaps.vGap8,
-          score,
+          score(),
           Gaps.vGap8,
           typeWidget(context),
           Gaps.vGap10,
-          BarChart(xData, peopleData, colorData),
+          BarChart(xData, _peopleData, colorData),
           Gaps.vGap8,
           Container(
               padding: const EdgeInsets.all(20),
@@ -541,6 +553,36 @@ class _MyExaminationPageState extends State<MyExaminationPage>
         )),
       ),
     );
+  }
+
+  @override
+  ExamDetailPagePresenter createPresenter() {
+    _examDetailPagePresenter = ExamDetailPagePresenter();
+    return _examDetailPagePresenter;
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+  }
+
+  @override
+  void sendSuccess(ExamDetailBean examDetailBean) {
+    // TODO: implement sendSuccess
+    setState(() {
+      isloading = false;
+      _examDetailBean = examDetailBean;
+      _peopleData = [
+        _examDetailBean.data.accuracyScore.toDouble(),
+        _examDetailBean.data.standardScore.toDouble(),
+        _examDetailBean.data.interactionScore.toDouble(),
+        _examDetailBean.data.overallScore.toDouble(),
+      ];
+    });
   }
 }
 
