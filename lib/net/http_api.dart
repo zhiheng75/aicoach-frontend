@@ -100,4 +100,10 @@ class HttpApi {
 
   //获取模考流程
   static const String examStep = "exam_step";
+
+  //模考进度更新
+  static const String examUpdata = "exam_update";
+
+  //模考进度更新
+  static const String examDetail = "exam_detail";
 }

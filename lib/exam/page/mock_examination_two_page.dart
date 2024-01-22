@@ -9,8 +9,13 @@ import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/exam/entity/exam_step_bean.dart';
 import 'package:Bubble/exam/entity/mock_message_entity.dart';
 import 'package:Bubble/exam/exam_router.dart';
+import 'package:Bubble/exam/presenter/exam_page_presenter.dart';
+import 'package:Bubble/exam/presenter/mock_examination_two_page_presenter.dart';
 import 'package:Bubble/exam/utils/mock_evaluate_util.dart';
+import 'package:Bubble/exam/view/exam_detail_view.dart';
+import 'package:Bubble/exam/view/mock_examination_two_view.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
+import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/res/colors.dart';
@@ -47,21 +52,33 @@ enum RecordPlayState {
 }
 
 class MockExaminationTwoPage extends StatefulWidget {
+  final int state;
+
   final ExamStepBean entity;
 
-  const MockExaminationTwoPage({super.key, required this.entity});
+  const MockExaminationTwoPage(
+      {super.key, required this.entity, required this.state});
 
   @override
   State<MockExaminationTwoPage> createState() => _MockExaminationTwoPageState();
 }
 
-class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
+class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
+    with
+        BasePageMixin<MockExaminationTwoPage, MockExaminationTwoPagePresenter>,
+        AutomaticKeepAliveClientMixin<MockExaminationTwoPage>
+    implements MockExaminationTwoView {
   late ChatWebsocket _chatWebsocket;
   final ScreenUtil _screenUtil = ScreenUtil();
   final MediaUtils _mediaUtils = MediaUtils();
   final RecognizeUtil _recognizeUtil = RecognizeUtil();
   List<Uint8List> _bufferList = [];
   late HomeProvider _homeProvider;
+
+  late MockMessageUPEntity mockUP;
+  late MockExaminationTwoPagePresenter _mockExaminationTwoPagePresenter;
+  late Map<String, dynamic> upmap;
+  late String isOne = "1";
 
 //是否正在答题
   late bool isTalk = false;
@@ -118,7 +135,15 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    upmap = <String, dynamic>{};
+    upmap['id'] = widget.entity.data.id.toString();
+    upmap['status'] = "2";
 
+    Future.delayed(const Duration(seconds: 2), () {
+      _mockExaminationTwoPagePresenter.postExamUpdate(upmap);
+      upmap['status'] = "1";
+    });
+    // mockUP.id = widget.entity.data.id.toString();
     mockPart1Phase1 = widget.entity.data.part1Phase1;
     mockPart1Phase2 = widget.entity.data.part1Phase2;
     mockPart2Phase1 = widget.entity.data.part2Phase1.list;
@@ -165,11 +190,13 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
         number = 0;
         //去下一个页面
         Log.e("去下一个页面");
+        _mockExaminationTwoPagePresenter.postExamUpdate(upmap);
         return;
       }
     } else {
       //去下一个页面
       Log.e("去下一个页面");
+      _mockExaminationTwoPagePresenter.postExamUpdate(upmap);
       return;
     }
     setState(() {});
@@ -309,13 +336,15 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
 
   void sendMessage(String text) async {
     insertUserMessage(text, (message) {
-      MockEvaluateUtil().evaluate(message, (Map map) {
+      MockEvaluateUtil().evaluate(message, (Map<String, dynamic> map) {
         if (bodyType == "B2A") {
           //掉一个地道表达接口
-
-          _timer?.cancel();
-
-          nextMock();
+          suggestAnswer(text, map);
+          // _timer?.cancel();
+          // nextMock();
+        } else {
+          mockUP.answer.add(map);
+          upmap['answer'] = mockUP.answer;
         }
         //揉数据
         Log.e(map.toString());
@@ -323,7 +352,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
     });
   }
 
-  void suggestAnswer(String message) {
+  void suggestAnswer(String message, Map<String, dynamic> map) {
     CancelToken _cancelToken = CancelToken();
     DioUtils.instance.requestNetwork<ResultData>(
       Method.post,
@@ -337,10 +366,17 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
           return;
         }
         Map<String, dynamic> data = result.data as Map<String, dynamic>;
+        map['answer_text'] = data['text'];
+        map['answer_udio'] = data['speech_url'];
+        mockUP.answer.add(map);
+        upmap['answer'] = mockUP.answer;
         //考伴回答
         mockKlowTwoPlay(data['speech_url']);
       },
-      onError: (code, msg) {},
+      onError: (code, msg) {
+        _timer?.cancel();
+        nextMock();
+      },
     );
   }
 
@@ -1033,5 +1069,45 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage> {
                 ),
               ))),
     );
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+    if (isOne == "1") {
+      isOne = "2";
+    }
+  }
+
+  @override
+  void sendSuccess(String msg) {
+    // TODO: implement sendSuccess
+    if (isOne == "1") {
+      isOne = "2";
+    } else {
+      if (widget.state == 0) {
+        NavigatorUtils.push(
+          context,
+          replace: true,
+          "${ExamRouter.mockExaminationendOnePage}?id=${widget.entity.data.id}",
+        );
+      } else {
+        NavigatorUtils.push(
+          context,
+          replace: true,
+          "${ExamRouter.mockExaminationendTwoPage}?id=${widget.entity.data.id}",
+        );
+      }
+    }
+  }
+
+  @override
+  MockExaminationTwoPagePresenter createPresenter() {
+    _mockExaminationTwoPagePresenter = MockExaminationTwoPagePresenter();
+    return _mockExaminationTwoPagePresenter;
   }
 }

@@ -8,3 +8,9 @@ class MockMessageEntity {
   String type = '3';
   List<Uint8List> audio = [];
 }
+
+class MockMessageUPEntity {
+  // String id = '';
+  // String answer = '';
+  List<Map> answer = [];
+}

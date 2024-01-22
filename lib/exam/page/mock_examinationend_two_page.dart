@@ -1,4 +1,8 @@
+import 'package:Bubble/exam/entity/exam_detail_bean.dart';
+import 'package:Bubble/exam/presenter/exam_detail_page_presenter.dart';
 import 'package:Bubble/exam/view/bar_chart.dart';
+import 'package:Bubble/exam/view/exam_detail_view.dart';
+import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
@@ -8,14 +12,33 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MockExaminationendTwoPage extends StatefulWidget {
-  const MockExaminationendTwoPage({super.key});
+  final String mockId;
+
+  const MockExaminationendTwoPage({super.key, required this.mockId});
 
   @override
   State<MockExaminationendTwoPage> createState() =>
       _MockExaminationendTwoPageState();
 }
 
-class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage> {
+class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
+    with
+        BasePageMixin<MockExaminationendTwoPage, ExamDetailPagePresenter>,
+        AutomaticKeepAliveClientMixin<MockExaminationendTwoPage>
+    implements ExamDetailView {
+  late ExamDetailPagePresenter _examDetailPagePresenter;
+  late ExamDetailBean examDetailBean;
+  late bool isloading = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(const Duration(microseconds: 200), () {
+      _examDetailPagePresenter.getExamDetail(widget.mockId);
+    });
+  }
+
   Widget score = Container(
     // width: width,
     decoration: BoxDecoration(
@@ -506,9 +529,35 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage> {
                 width: 45,
               )),
           // Gaps.vGap10,
-          Expanded(child: SingleChildScrollView(child: body())),
+          Expanded(
+              child: SingleChildScrollView(
+                  child: isloading ? const Center() : body())),
         ]),
       ),
     );
+  }
+
+  @override
+  ExamDetailPagePresenter createPresenter() {
+    _examDetailPagePresenter = ExamDetailPagePresenter();
+    return _examDetailPagePresenter;
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+  }
+
+  @override
+  void sendSuccess(ExamDetailBean examDetailBean) {
+    // TODO: implement sendSuccess
+    setState(() {
+      isloading = false;
+      examDetailBean = examDetailBean;
+    });
   }
 }

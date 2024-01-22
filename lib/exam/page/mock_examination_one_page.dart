@@ -294,7 +294,7 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
             NavigatorUtils.push(
                 context,
                 replace: true,
-                ExamRouter.mockExaminationTwoPage,
+                "${ExamRouter.mockExaminationTwoPage}?state=${widget.state}",
                 arguments: examStepBean);
           }
         });

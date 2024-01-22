@@ -52,20 +52,39 @@ class ExamRouter implements IRouterProvider {
       // ExamStepBean examStepBean
 
       // if (context != null) {
+      String state = params['state']!.first;
+
       ExamStepBean entity =
           ModalRoute.of(context!)?.settings.arguments as ExamStepBean;
       // }
-      return MockExaminationTwoPage(entity: entity);
+      return MockExaminationTwoPage(
+        entity: entity,
+        state: int.parse(state),
+      );
     }));
 
+    // router.define(mockExaminationendOnePage,
+    //     handler:
+    //         Handler(handlerFunc: (_, __) => const MockExaminationendOnePage()));
+
     router.define(mockExaminationendOnePage,
-        handler:
-            Handler(handlerFunc: (_, __) => const MockExaminationendOnePage()));
+        handler: Handler(handlerFunc: (_, params) {
+      String id = params['id']!.first;
+      return MockExaminationendOnePage(
+        mockId: id,
+      );
+    }));
 
+    // router.define(mockExaminationendTwoPage,
+    //     handler:
+    //         Handler(handlerFunc: (_, __) => const MockExaminationendTwoPage()));
     router.define(mockExaminationendTwoPage,
-        handler:
-            Handler(handlerFunc: (_, __) => const MockExaminationendTwoPage()));
-
+        handler: Handler(handlerFunc: (_, params) {
+      String id = params['id']!.first;
+      return MockExaminationendTwoPage(
+        mockId: id,
+      );
+    }));
     router.define(mockTestPurchasePage,
         handler: Handler(handlerFunc: (_, __) => const MockTestPurchasePage()));
   }

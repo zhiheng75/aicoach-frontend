@@ -10,7 +10,9 @@ import 'package:flutter/services.dart';
 import 'package:Bubble/widgets/my_alert.dart';
 
 class MockExaminationendOnePage extends StatefulWidget {
-  const MockExaminationendOnePage({super.key});
+  final String mockId;
+
+  const MockExaminationendOnePage({super.key, required this.mockId});
 
   @override
   State<MockExaminationendOnePage> createState() =>

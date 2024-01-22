@@ -5,21 +5,20 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:Bubble/util/log_utils.dart';
-import 'package:ffmpeg_kit_flutter_min/ffmpeg_session.dart';
-import 'package:ffmpeg_kit_flutter_min/return_code.dart';
+// import 'package:ffmpeg_kit_flutter_min/ffmpeg_session.dart';
+// import 'package:ffmpeg_kit_flutter_min/return_code.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
-import 'package:ffmpeg_kit_flutter_min/ffmpeg_kit.dart';
+// import 'package:ffmpeg_kit_flutter_min/ffmpeg_kit.dart';
 
 List<Uint8List> _bufferList = [];
 bool _playing = false;
 
 class MediaUtils {
-
   factory MediaUtils() {
     return _mediaUtils;
   }
@@ -144,17 +143,19 @@ class MediaUtils {
   Future<FlutterSoundRecorder?> _createRecorder() async {
     FlutterSoundRecorder? recorder;
     try {
-      recorder = await FlutterSoundRecorder(logLevel: Level.nothing).openRecorder();
+      recorder =
+          await FlutterSoundRecorder(logLevel: Level.nothing).openRecorder();
     } catch (e) {
       rethrow;
     }
     return recorder;
   }
 
-  void _addListener(Function(Uint8List) listener, Function(Uint8List?) complete) {
+  void _addListener(
+      Function(Uint8List) listener, Function(Uint8List?) complete) {
     _controller = StreamController<Food>();
     _subscription = _controller!.stream.listen(
-          (food) {
+      (food) {
         if (food is FoodData && food.data != null) {
           listener(food.data!);
         }
@@ -200,7 +201,7 @@ class MediaUtils {
   }) async {
     try {
       if (_player == null) {
-        FlutterSoundPlayer? player  = await _createPlayer();
+        FlutterSoundPlayer? player = await _createPlayer();
         if (player == null) {
           throw Exception();
         }
@@ -321,7 +322,8 @@ class MediaUtils {
   Future<void> saveMp3(Uint8List buffer, Function(String) onSuccess) async {
     try {
       String dirPath = await _getTemDirPath();
-      String fileName = '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.mp3';
+      String fileName =
+          '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.mp3';
       File file = File('$dirPath/$fileName');
       if (!file.existsSync()) {
         file.createSync();
@@ -333,28 +335,28 @@ class MediaUtils {
     }
   }
 
-  Future<Uint8List> convertMp3ToPcm(String mp3Path) async {
-    try {
-      File file = File(mp3Path);
-      if (!file.existsSync()) {
-        throw Exception('No File');
-      }
-      String dirPath = await _getTemDirPath();
-      String pcmPath = '$dirPath/${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.pcm';
-      FFmpegSession session = await FFmpegKit.execute('-i $mp3Path -f s16le $pcmPath');
-      ReturnCode? code = await session.getReturnCode();
-      if (code != ReturnCode.success) {
-        throw Exception('Convert Fail');
-      }
-      File pcm = File(pcmPath);
-      if (!pcm.existsSync()) {
-        throw Exception('Convert Fail');
-      }
-      return pcm.readAsBytes();
-    } catch (error) {
-      rethrow;
-    }
-  }
+  // Future<Uint8List> convertMp3ToPcm(String mp3Path) async {
+  //   try {
+  //     File file = File(mp3Path);
+  //     if (!file.existsSync()) {
+  //       throw Exception('No File');
+  //     }
+  //     String dirPath = await _getTemDirPath();
+  //     String pcmPath = '$dirPath/${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.pcm';
+  //     FFmpegSession session = await FFmpegKit.execute('-i $mp3Path -f s16le $pcmPath');
+  //     ReturnCode? code = await session.getReturnCode();
+  //     if (code != ReturnCode.success) {
+  //       throw Exception('Convert Fail');
+  //     }
+  //     File pcm = File(pcmPath);
+  //     if (!pcm.existsSync()) {
+  //       throw Exception('Convert Fail');
+  //     }
+  //     return pcm.readAsBytes();
+  //   } catch (error) {
+  //     rethrow;
+  //   }
+  // }
 
   Uint8List convertWavToPcm(Uint8List wavBuffer) {
     return FlutterSoundHelper().waveToPCMBuffer(inputBuffer: wavBuffer);
@@ -364,5 +366,4 @@ class MediaUtils {
     Directory dir = await getTemporaryDirectory();
     return dir.path;
   }
-
 }

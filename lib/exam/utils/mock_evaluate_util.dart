@@ -24,7 +24,8 @@ class MockEvaluateUtil {
   WebSocketChannel? _websocket;
   final String _oss = 'evaluate_oss';
 
-  void evaluate(MockMessageEntity message, Function(Map params) onSuccess) {
+  void evaluate(MockMessageEntity message,
+      Function(Map<String, dynamic> params) onSuccess) {
     String pathName =
         '${getDate()}/${getRandom(12)}.${message.sessionId + message.messageId}';
     _uploadAudio(pathName, message.audio, (String audiopath) {
@@ -58,14 +59,14 @@ class MockEvaluateUtil {
   /** 评测 */
   Future<void> _evaluate({
     required MockMessageEntity message,
-    required Function(Map params) onSuccess,
+    required Function(Map<String, dynamic> params) onSuccess,
   }) async {
     try {
       _connectWebsocket((evaluation) {
         _saveEvaluation(
           message: message,
           evaluation: evaluation,
-          onSuccess: (Map params) {
+          onSuccess: (Map<String, dynamic> params) {
             onSuccess(params);
           },
         );
@@ -139,7 +140,7 @@ class MockEvaluateUtil {
   void _saveEvaluation({
     required MockMessageEntity message,
     required Map<String, dynamic> evaluation,
-    required Function(Map params) onSuccess,
+    required Function(Map<String, dynamic> params) onSuccess,
   }) {
     try {
       Map<String, dynamic> params = _getParams(message, evaluation);

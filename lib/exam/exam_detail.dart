@@ -1,3 +1,4 @@
+import 'package:Bubble/exam/entity/exam_detail_bean.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,8 +18,11 @@ class ExamDetailPage extends StatefulWidget {
   State<ExamDetailPage> createState() => _ExamDetailPageState();
 }
 
-class _ExamDetailPageState extends State<ExamDetailPage> with BasePageMixin<ExamDetailPage, ExamDetailPagePresenter>, AutomaticKeepAliveClientMixin<ExamDetailPage> implements ExamDetailView {
-
+class _ExamDetailPageState extends State<ExamDetailPage>
+    with
+        BasePageMixin<ExamDetailPage, ExamDetailPagePresenter>,
+        AutomaticKeepAliveClientMixin<ExamDetailPage>
+    implements ExamDetailView {
   late ExamDetailPagePresenter _examDetailPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
 
@@ -41,4 +45,14 @@ class _ExamDetailPageState extends State<ExamDetailPage> with BasePageMixin<Exam
 
   @override
   bool get wantKeepAlive => false;
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+  }
+
+  @override
+  void sendSuccess(ExamDetailBean examDetailBean) {
+    // TODO: implement sendSuccess
+  }
 }
