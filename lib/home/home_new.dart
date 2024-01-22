@@ -64,7 +64,9 @@ class _HomePageState extends State<HomeNewPage>
         isShow: type != 'login',
         isClose: type != 'login',
         onSuccess: (result) {
-          if (result == null || result.data == null || (result.data as Map<String, dynamic>)['is_evaluation'] == 1) {
+          if (result == null ||
+              result.data == null ||
+              (result.data as Map<String, dynamic>)['is_evaluation'] == 1) {
             if (_currentTab == '') {
               _currentTab = 'chat';
               setState(() {});
@@ -113,7 +115,9 @@ class _HomePageState extends State<HomeNewPage>
     super.initState();
     Future.delayed(Duration.zero, () {
       init();
-      EventBus().emit('COLLECT_INFORMATION', 'init');
+      _currentTab = "chat";
+      setState(() {});
+      // EventBus().emit('COLLECT_INFORMATION', 'init');
     });
   }
 

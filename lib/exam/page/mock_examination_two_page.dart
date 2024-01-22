@@ -367,7 +367,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
         }
         Map<String, dynamic> data = result.data as Map<String, dynamic>;
         map['answer_text'] = data['text'];
-        map['answer_udio'] = data['speech_url'];
+        map['answer_audio'] = data['speech_url'];
         mockUP.answer.add(map);
         upmap['answer'] = mockUP.answer;
         //考伴回答

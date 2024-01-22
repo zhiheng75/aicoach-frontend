@@ -221,6 +221,7 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     _examDetailBean.data.ket,
@@ -234,6 +235,7 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.black,
+                      height: 3.0,
                     ),
                   ),
                 ],
@@ -393,22 +395,23 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
                   Gaps.vGap8,
                   RichText(
                       // RichText
-                      text: const TextSpan(
+                      text: TextSpan(
                           text: '建议考前再练习',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 15.0,
                           ),
                           children: <TextSpan>[
                         TextSpan(
-                            text: '10',
-                            style: TextStyle(
+                            text: _examDetailBean.data.trainCount.toString(),
+                            style: const TextStyle(
                               color: Colours.color_FF00A8,
                               fontSize: 20.0,
                             )),
                         TextSpan(
-                            text: '次模拟考试，争取达到Grade B+水平，加油宝贝！',
-                            style: TextStyle(fontSize: 15)),
+                            text:
+                                '次模拟考试，争取达到Grade ${_examDetailBean.data.ketNext}水平，加油宝贝！',
+                            style: const TextStyle(fontSize: 15)),
                       ])),
                 ],
               )),
@@ -483,6 +486,7 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
           ),
           // color: Colours.color_F4F4F4,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
                 "如需查看详细模拟考试报告，可通过【个人中心-学习报告-模考报告】进行查阅。",
