@@ -2,6 +2,7 @@
 
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,7 @@ class _ReportPageState extends State<ReportPage>
     }
   }
 
-  void getChatReportList() {
+  void getChatReportList() async {
     if (_page == 1) {
       _list = [];
     }
@@ -62,6 +63,9 @@ class _ReportPageState extends State<ReportPage>
       url: HttpApi.studyReportList,
       isShow: false,
       isClose: false,
+      queryParameters: {
+        'device_id': await Device.getDeviceId(),
+      },
       onSuccess: (result) {
         _loading = 0;
         setState(() {});

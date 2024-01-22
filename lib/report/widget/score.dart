@@ -39,7 +39,7 @@ class _ScoreState extends State<Score> {
       Method.get,
       HttpApi.scoreAllRound,
       cancelToken: _cancelToken,
-      params: {
+      queryParameters: {
         'session_id': widget.sessionId,
       },
       onSuccess: (result) {

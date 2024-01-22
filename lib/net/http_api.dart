@@ -39,6 +39,12 @@ class HttpApi {
   //添加评分
   static const String addScore = "add_score";
 
+  //添加语音文件
+  static const String addScoreData = 'add_score_data';
+
+  //tts
+  static const String generateAudio = 'app/generate_audio';
+
   //绑定微信
   static const String bindWX = "edit_user_wx";
 

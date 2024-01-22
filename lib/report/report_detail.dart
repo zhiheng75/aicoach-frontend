@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_final_fields
 
+import 'dart:math';
+
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/report/widget/radar.dart';
 import 'package:Bubble/report/widget/score.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/widgets/load_data.dart';
@@ -55,7 +58,7 @@ class _ReportDetailPageState extends State<ReportDetailPage>
     DioUtils.instance.requestNetwork<ResultData>(
       Method.get,
       HttpApi.coinReport,
-      params: {
+      queryParameters: {
         'session_id': widget.sessionId,
         'device_id': await Device.getDeviceId(),
       },
@@ -211,7 +214,7 @@ class _ReportDetailPageState extends State<ReportDetailPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  '${_detail['total_score'] ?? 0}',
+                  '${((_detail['total_score'] ?? 0) as num).toInt()}',
                   style: const TextStyle(
                     fontSize: 32.0,
                     fontWeight: FontWeight.w500,
@@ -246,6 +249,26 @@ class _ReportDetailPageState extends State<ReportDetailPage>
           fit: BoxFit.fitHeight,
         ),
       ),
+      alignment: Alignment.center,
+      child: _detail.isNotEmpty ? Radar(
+        r: sqrt(5000),
+        top: RadarItem('完整度', _detail['integrity_score']),
+        bottom: RadarItem('流畅度', _detail['fluency_score']),
+        left: RadarItem('发音', _detail['standard_score']),
+        right: RadarItem('语法', _detail['accuracy_score']),
+        scoreStyle: const TextStyle(
+          fontSize: 22.0,
+          fontWeight: FontWeight.w700,
+          color: Colors.black,
+          height: 25.7 / 22.0,
+        ),
+        labelStyle: const TextStyle(
+          fontSize: 12.0,
+          fontWeight: FontWeight.w400,
+          color: Colors.black,
+          height: 14.0 / 12.0,
+        ),
+      ) : const SizedBox(),
     );
 
     Widget schedule = Container(

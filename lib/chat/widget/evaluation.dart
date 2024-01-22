@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_final_fields
 
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:Bubble/util/media_utils.dart';
@@ -12,7 +13,7 @@ import '../../entity/result_entity.dart';
 import '../../home/provider/home_provider.dart';
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
-import '../../report/widget/radar_map.dart';
+import '../../report/widget/radar.dart';
 import '../../util/log_utils.dart';
 import '../../widgets/load_image.dart';
 import '../entity/message_entity.dart';
@@ -36,6 +37,9 @@ class _EvaluationState extends State<Evaluation> {
   CancelToken _cancelToken = CancelToken();
   String _standardAnswer = '';
   bool _isGetting = false;
+  // tts请求取消
+  CancelToken? _ttsCancelToken;
+  String _audioType = '';
 
   void init() {
     EvaluateUtil().evaluate(widget.message, () {
@@ -92,6 +96,11 @@ class _EvaluationState extends State<Evaluation> {
   }
 
   void playVoice(String type) async {
+    _audioType = type;
+    if (_ttsCancelToken != null) {
+      _ttsCancelToken!.cancel();
+      _ttsCancelToken = null;
+    }
     await _mediaUtils.stopPlayLoop(true);
     if (type == 'user') {
       List<int> bytes = [];
@@ -104,6 +113,31 @@ class _EvaluationState extends State<Evaluation> {
         whenFinished: () {
           _mediaUtils.resumeUse();
         },
+      );
+    }
+    if (type == 'standard') {
+      _ttsCancelToken = CancelToken();
+      DioUtils.instance.requestNetwork<ResultData>(
+        Method.post,
+        HttpApi.generateAudio,
+        params: {
+          'text': widget.message.text,
+        },
+        onSuccess: (result) {
+          _ttsCancelToken = null;
+          if (result == null || result.data == null || (result.data as Map<String, dynamic>)['speech_url'] == null) {
+            return;
+          }
+          if (_audioType == 'standard') {
+            Map<String, dynamic> data = result.data as Map<String, dynamic>;
+            _mediaUtils.play(
+              url: data['speech_url'],
+            );
+          }
+        },
+        onError: (code, msg) {
+          _ttsCancelToken = null;
+        }
       );
     }
   }
@@ -152,15 +186,20 @@ class _EvaluationState extends State<Evaluation> {
     Widget evaluate = const SizedBox();
     if (widget.message.evaluation.isNotEmpty) {
       Map<String, dynamic> evaluation = widget.message.evaluation;
-      List<RadarBean> scoreList = [
-        RadarBean(double.parse(evaluation['accuracy_score']), '发音'),
-        RadarBean(double.parse(evaluation['standard_score']), '语法'),
-        RadarBean(double.parse(evaluation['integrity_score']), '完整度'),
-        RadarBean(double.parse(evaluation['fluency_score']), '流畅度'),
+      RadarItem top = RadarItem('完整度', double.parse(evaluation['integrity_score']), const Color(0xFF6195D2));
+      RadarItem bottom = RadarItem('流畅度', double.parse(evaluation['fluency_score']), const Color(0xFFFF71CF));
+      RadarItem left = RadarItem('发音', double.parse(evaluation['standard_score']), const Color(0xFFB3E3FF));
+      RadarItem right = RadarItem('语法', double.parse(evaluation['accuracy_score']), const Color(0xFFFFD076));
+      List<RadarItem> scoreList = [
+        top,
+        bottom,
+        left,
+        right,
       ];
-      evaluate = Padding(
+      evaluate = Container(
+        height: sqrt(5000) * 2.5,
         padding: const EdgeInsets.symmetric(
-          horizontal: 24.0,
+          vertical: 24.0,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,13 +220,14 @@ class _EvaluationState extends State<Evaluation> {
                           color: Colors.black,
                         ),
                         borderRadius: BorderRadius.circular(9.0),
+                        color: item.color,
                       ),
                     ),
                     const SizedBox(
                       width: 6.0,
                     ),
                     Text(
-                      item.name,
+                      item.label,
                       style: const TextStyle(
                         fontSize: 13.0,
                         fontWeight: FontWeight.w400,
@@ -199,10 +239,30 @@ class _EvaluationState extends State<Evaluation> {
                 );
               }).toList(),
             ),
-            RadarMap(
-              scoreList,
-              r: 54.8,
-            ),
+            Container(
+              width: sqrt(5000) * 3,
+              alignment: Alignment.center,
+              child: Radar(
+                r: sqrt(5000),
+                top: top,
+                bottom: bottom,
+                left: left,
+                right: right,
+                scoreStyle: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                  height: 12.0 / 16.0,
+                ),
+                labelStyle: const TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                  height: 1.0,
+                ),
+                source: 'evaluation',
+              ),
+            )
           ],
         ),
       );

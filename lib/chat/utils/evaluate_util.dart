@@ -7,6 +7,8 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../entity/result_entity.dart';
@@ -23,11 +25,12 @@ class EvaluateUtil {
   WebSocketChannel? _websocket;
   final String _key = 'evaluate_task';
   final String _oss = 'evaluate_oss';
+  final String _uploadKey = 'upload_audio_task';
   bool _running = false;
 
   void evaluate(NormalMessage message, Function() onSuccess) {
     String cacheId = '${message.sessionId}${message.id}';
-    Map<String, dynamic> cacheMap = _getCacheMap();
+    Map<String, dynamic> cacheMap = _getEvaluateCacheMap();
     if (cacheMap.containsKey(cacheId)) {
       EvaluateCache cache = EvaluateCache.fromJson(cacheMap[cacheId]);
       if (cache.evaluating) {
@@ -40,12 +43,12 @@ class EvaluateUtil {
         );
       } catch (e) {
         cache.evaluating = false;
-        _saveCache(cache);
+        _saveEvaluateCache(cache);
       }
       return;
     }
-    _createCache(message).then((cache) {
-      _saveCache(cache);
+    _createEvaluateCache(message).then((cache) {
+      _saveEvaluateCache(cache);
       try {
         _evaluate(
           cache: cache,
@@ -53,13 +56,13 @@ class EvaluateUtil {
         );
       } catch (e) {
         cache.evaluating = false;
-        _saveCache(cache);
+        _saveEvaluateCache(cache);
       }
     });
   }
 
-  /** 缓存 */
-  Future<EvaluateCache> _createCache(NormalMessage message) async {
+  /** 评测缓存 */
+  Future<EvaluateCache> _createEvaluateCache(NormalMessage message) async {
     EvaluateCache cache = EvaluateCache();
     cache.id = '${message.sessionId}${message.id}';
     cache.deviceId = await Device.getDeviceId();
@@ -67,19 +70,19 @@ class EvaluateUtil {
     return cache;
   }
 
-  void _saveCache(EvaluateCache cache) {
-    Map<String, dynamic> cacheMap = _getCacheMap();
+  void _saveEvaluateCache(EvaluateCache cache) {
+    Map<String, dynamic> cacheMap = _getEvaluateCacheMap();
     cacheMap[cache.id] = cache.toJson();
     SpUtil.putObject(_key, cacheMap);
   }
 
-  void _removeCache(EvaluateCache cache) {
-    Map<String, dynamic> cacheMap = _getCacheMap();
+  void _removeEvaluateCache(EvaluateCache cache) {
+    Map<String, dynamic> cacheMap = _getEvaluateCacheMap();
     cacheMap.remove(cache.id);
     SpUtil.putObject(_key, cacheMap);
   }
 
-  Map<String, dynamic> _getCacheMap() {
+  Map<String, dynamic> _getEvaluateCacheMap() {
     Map<dynamic, dynamic>? cacheMap = SpUtil.getObject(_key);
     if (cacheMap == null) {
       return {};
@@ -88,7 +91,7 @@ class EvaluateUtil {
   }
 
   Future<void> _runTask() async {
-    Map<String, dynamic> cacheMap = _getCacheMap();
+    Map<String, dynamic> cacheMap = _getEvaluateCacheMap();
     Map<String, dynamic>? cache = cacheMap.values.elementAtOrNull(0);
     if (cache == null) {
       return;
@@ -120,8 +123,8 @@ class EvaluateUtil {
       if (message.evaluation.isNotEmpty) {
         _saveEvaluation(
           message: message,
-          onSuccess: () {
-            _removeCache(cache);
+          onSuccess: (_) {
+            _removeEvaluateCache(cache);
             onSuccess();
           },
         );
@@ -129,12 +132,16 @@ class EvaluateUtil {
       }
       _connectWebsocket((evaluation) {
         cache.message.evaluation = evaluation;
-        _saveCache(cache);
+        _saveEvaluateCache(cache);
         _saveEvaluation(
           message: message,
           evaluation: evaluation,
-          onSuccess: () {
-            _removeCache(cache);
+          onSuccess: (result) {
+            // 初次上传
+            if (result['id'] != null) {
+              _upload(result['id'], [...message.audio]);
+            }
+            _removeEvaluateCache(cache);
             onSuccess();
           },
         );
@@ -239,7 +246,7 @@ class EvaluateUtil {
   void _saveEvaluation({
     required NormalMessage message,
     Map<String, dynamic>? evaluation,
-    required Function() onSuccess,
+    required Function(Map<String, dynamic>) onSuccess,
   }) {
     try {
       Map<String, dynamic> params =
@@ -250,7 +257,7 @@ class EvaluateUtil {
         params: params,
         onSuccess: (result) {
           if (result != null && result.code == 200) {
-            onSuccess();
+            onSuccess((result.data ?? {}) as Map<String, dynamic>);
             return;
           }
           throw Exception();
@@ -317,6 +324,34 @@ class EvaluateUtil {
     ]);
   }
 
+  /** 上传缓存 */
+  UploadCache _createUploadCache(int evaluationId, List<Uint8List> audio) {
+    UploadCache cache = UploadCache();
+    cache.evaluationId = evaluationId;
+    cache.audio = audio;
+    return cache;
+  }
+
+  void _saveUploadCache(UploadCache cache) {
+    Map<String, dynamic> cacheMap = _getUploadCacheMap();
+    cacheMap[cache.evaluationId.toString()] = cache.toJson();
+    SpUtil.putObject(_uploadKey, cacheMap);
+  }
+
+  void _removeUploadCache(UploadCache cache) {
+    Map<dynamic, dynamic> cacheMap = _getUploadCacheMap();
+    cacheMap.remove(cache.evaluationId.toString());
+    SpUtil.putObject(_uploadKey, cacheMap);
+  }
+
+  Map<String, dynamic> _getUploadCacheMap() {
+    Map<dynamic, dynamic>? cacheMap = SpUtil.getObject(_key);
+    if (cacheMap == null) {
+      return {};
+    }
+    return cacheMap as Map<String, dynamic>;
+  }
+
   void _getOssToken(Function(Map<String, dynamic>) onSuccess) {
     Map<dynamic, dynamic>? evaluateOss = SpUtil.getObject(_oss);
     // 未获取或者已过期
@@ -343,53 +378,84 @@ class EvaluateUtil {
     onSuccess(evaluateOss as Map<String, dynamic>);
   }
 
-  void _uploadAudio(String filename, List<Uint8List> audio,
-      Function(String) onSuccess) async {
-    _getOssToken((evaluateOss) async {
-      String host = 'https://shenmo-statics.oss-cn-beijing.aliyuncs.com';
-      String key = 'audio/$filename';
+  void _upload(int evaluationId, List<Uint8List> audio) {
+    UploadCache cache = _createUploadCache(evaluationId, audio);
+    _saveUploadCache(cache);
+    _uploadAudio(cache);
+  }
 
-      // 获取签名
-      Map<String, dynamic> policyParams = {
-        'expiration': evaluateOss['Expiration'],
-        'conditions': [
-          ['content-length-range', 0, 1048576000]
-        ],
-      };
-      // String policy = base64Encode(utf8.encode('{\"expiration\": \"${}\",\"conditions\": [[\"content-length-range\", 0, 104857600]]}'));
-      String policy = base64Encode(utf8.encode(jsonEncode(policyParams)));
-      Digest digest = Hmac(sha1, utf8.encode(evaluateOss['AccessKeySecret']))
-          .convert(utf8.encode(policy));
-      String signature = base64Encode(digest.bytes);
+  void _uploadAudio(UploadCache cache) async {
+    if (cache.url != '') {
+      _saveUrl(cache);
+    } else {
+      _getOssToken((evaluateOss) async {
+        String fileName = '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}';
+        String host = 'https://shenmo-statics.oss-cn-beijing.aliyuncs.com';
+        String key = 'audio/$fileName.wav';
 
-      List<int> buffer = [];
-      for (Uint8List item in audio) {
-        buffer.addAll(item);
-      }
-      FormData formData = FormData.fromMap({
-        'key': key,
-        'success_action_status': '200',
-        'OSSAccessKeyId': evaluateOss['AccessKeyId'],
-        'x-oss-security-token': evaluateOss['SecurityToken'],
-        'policy': policy,
-        'signature': signature,
-        'Content-Type': 'audio/x-wave',
-        'file': MultipartFile.fromBytes(toWav(buffer)),
-      });
+        // 获取签名
+        Map<String, dynamic> policyParams = {
+          'expiration': evaluateOss['Expiration'],
+          'conditions': [
+            ['content-length-range', 0, 1048576000]
+          ],
+        };
+        String policy = base64Encode(utf8.encode(jsonEncode(policyParams)));
+        Digest digest = Hmac(sha1, utf8.encode(evaluateOss['AccessKeySecret']))
+            .convert(utf8.encode(policy));
+        String signature = base64Encode(digest.bytes);
 
-      try {
-        Response response = await Dio().post(
-          host,
-          data: formData,
-        );
-        if (response.statusCode == 200) {
-          Log.d('upload audio success:url=${'$host/$key'}', tag: '上传音频');
-          onSuccess('$host/$key');
+        List<int> buffer = [];
+        for (Uint8List item in cache.audio) {
+          buffer.addAll(item);
         }
-      } catch (e) {
-        Log.d('upload audio error:${e.toString()}', tag: '_uploadAudio');
-      }
-    });
+        FormData formData = FormData.fromMap({
+          'key': key,
+          'success_action_status': '200',
+          'OSSAccessKeyId': evaluateOss['AccessKeyId'],
+          'x-oss-security-token': evaluateOss['SecurityToken'],
+          'policy': policy,
+          'signature': signature,
+          'Content-Type': 'audio/x-wave',
+          // 'file': MultipartFile.fromBytes(toWav(buffer)),
+          'file': FlutterSoundHelper().pcmToWaveBuffer(inputBuffer: Uint8List.fromList(buffer)),
+        });
+
+        try {
+          Response response = await Dio().post(
+            host,
+            data: formData,
+          );
+          if (response.statusCode == 200) {
+            Log.d('upload audio success:url=${'$host/$key'}', tag: '上传音频');
+            cache.url = '$key';
+            _saveUploadCache(cache);
+            _saveUrl(cache);
+          }
+        } catch (e) {
+          Log.d('upload audio error:${e.toString()}', tag: '_uploadAudio');
+        }
+      });
+    }
+  }
+
+  void _saveUrl(UploadCache cache) {
+    DioUtils.instance.requestNetwork<ResultData>(
+      Method.post,
+      HttpApi.addScoreData,
+      params: {
+        'id': cache.evaluationId,
+        'speech_name': cache.url,
+      },
+      onSuccess: (result) {
+        if (result != null && result.code == 200) {
+          _removeUploadCache(cache);
+        }
+      },
+      onError: (code, msg) {
+        Log.d('保存语音失败:[code=$code][msg=$msg]', tag: '保存语音');
+      },
+    );
   }
 }
 
@@ -421,6 +487,39 @@ class EvaluateCache {
       'id': id,
       'device_id': deviceId,
       'message': message.toJson(),
+    };
+  }
+}
+
+class UploadCache {
+  UploadCache();
+
+  int evaluationId = 0;
+  String url = '';
+  List<Uint8List> audio = [];
+
+  factory UploadCache.fromJson(dynamic json) {
+    json = json as Map<String, dynamic>;
+    UploadCache cache = UploadCache();
+    if (json['evaluation_id'] != null) {
+      cache.evaluationId = json['evaluation_id'];
+    }
+    if (json['url'] != null) {
+      cache.url = json['url'];
+    }
+    if (json['audio'] != null) {
+      List<dynamic> list = jsonDecode(json['message']);
+      List<Uint8List> audio = list.map((item) => Uint8List.fromList(item.map((subItem) => subItem as int))).toList();
+      cache.audio = audio;
+    }
+    return cache;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'evaluation_id': evaluationId,
+      'url': url,
+      'audio': jsonEncode(audio),
     };
   }
 }
