@@ -43,11 +43,9 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
     super.initState();
 
     Map<String, dynamic> user = LoginManager.getUserInfo();
-    name = user['name'] == ""
-        ? (user['nickname'] == ""
-            ? '用户${user['phone'].toString().substring(7, 11)}'
-            : user['nickname'])
-        : user['name'];
+    name = user['name'] ??
+        user['nickname'] ??
+        '用户${user['phone'].toString().substring(7, 11)}';
 
     Future.delayed(const Duration(microseconds: 200), () {
       _examDetailPagePresenter.getExamDetail(widget.mockId);
