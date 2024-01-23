@@ -113,6 +113,10 @@ class _HomePageState extends State<HomeNewPage>
   @override
   void initState() {
     super.initState();
+    final Jverify jverify = Jverify();
+    jverify.setup(
+        appKey: "d213d60b209d0807dc4146f4", //"你自己应用的 AppKey",
+        channel: "devloper-default");
     Future.delayed(Duration.zero, () {
       init();
       _currentTab = "chat";

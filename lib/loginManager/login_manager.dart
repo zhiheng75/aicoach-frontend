@@ -36,95 +36,94 @@ class LoginManager {
       //跳转登录()
       LoadingDialog.show(context);
       int type = 1; //0 一键登录  1 其他登录
-      // final Jverify jverify = Jverify();
-      // jverify.setup(
-      //     appKey: "d213d60b209d0807dc4146f4", //"你自己应用的 AppKey",
-      //     channel: "devloper-default");
-      // jverify.isInitSuccess().then((map) {
-      //   Log.e("==================");
-      //   Log.e(map.toString());
-      //   Log.e("==================");
+      final Jverify jverify = Jverify();
+      jverify.setup(
+          appKey: "d213d60b209d0807dc4146f4", //"你自己应用的 AppKey",
+          channel: "devloper-default");
+      jverify.isInitSuccess().then((map) {
+        Log.e("==================");
+        Log.e(map.toString());
+        Log.e("==================");
+        bool result = map[Constant.jgResultKey];
+        if (result) {
+          // _result = "sdk 初始换成功";
+          jverify.checkVerifyEnable().then((map) {
+            bool result = map[Constant.jgResultKey];
+            if (result) {
+              jverify.getToken().then((map) {
+                int code = map[Constant.jgCodeKey];
 
-      //   bool result = map[Constant.jgResultKey];
-      //   if (result) {
-      //     // _result = "sdk 初始换成功";
-      //     jverify.checkVerifyEnable().then((map) {
-      //       bool result = map[Constant.jgResultKey];
-      //       if (result) {
-      //         jverify.getToken().then((map) {
-      //           int code = map[Constant.jgCodeKey];
-
-      //           ///6000
-      //           String token = map[Constant.jgMsgKey];
-      //           if (code == 2000 && token != null && token.isNotEmpty) {
-      //             loginAuth(context);
-      //           } else {
-      //             LoadingDialog.hidden();
-      //             NavigatorUtils.push(
-      //               context,
-      //               "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
-      //             );
-      //           }
-      //         });
-      //       } else {
-      //         LoadingDialog.hidden();
-      //         NavigatorUtils.push(
-      //           context,
-      //           "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
-      //         );
-      //       }
-      //     });
-      //   } else {
-      //     LoadingDialog.hidden();
-      //     NavigatorUtils.push(
-      //       context,
-      //       "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
-      //     );
-      //   }
-      // });
-
-      isInitSuccess().then((value) => {
-            if (value)
-              {
-                checkVerifyEnable().then((value) => {
-                      if (value)
-                        {
-                          getToken().then((value) => {
-                                LoadingDialog.hidden(),
-                                if (value)
-                                  {
-                                    type = 0,
-                                    loginAuth(context),
-                                  }
-                                else
-                                  {
-                                    type = 1,
-                                    NavigatorUtils.push(
-                                      context,
-                                      "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
-                                    ),
-                                  },
-                              })
-                        }
-                      else
-                        {
-                          LoadingDialog.hidden(),
-                          NavigatorUtils.push(
-                            context,
-                            "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
-                          ),
-                        }
-                    })
-              }
-            else
-              {
-                LoadingDialog.hidden(),
-                NavigatorUtils.push(
-                  context,
-                  "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
-                ),
-              }
+                ///6000
+                String token = map[Constant.jgMsgKey];
+                if (code == 2000 && token != null && token.isNotEmpty) {
+                  loginAuth(context);
+                } else {
+                  LoadingDialog.hidden();
+                  NavigatorUtils.push(
+                    context,
+                    "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+                  );
+                }
+              });
+            } else {
+              LoadingDialog.hidden();
+              NavigatorUtils.push(
+                context,
+                "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+              );
+            }
           });
+        } else {
+          LoadingDialog.hidden();
+          NavigatorUtils.push(
+            context,
+            "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+          );
+        }
+      });
+
+      // isInitSuccess().then((value) => {
+      //       if (value)
+      //         {
+      //           checkVerifyEnable().then((value) => {
+      //                 if (value)
+      //                   {
+      //                     getToken().then((value) => {
+      //                           LoadingDialog.hidden(),
+      //                           if (value)
+      //                             {
+      //                               type = 0,
+      //                               loginAuth(context),
+      //                             }
+      //                           else
+      //                             {
+      //                               type = 1,
+      //                               NavigatorUtils.push(
+      //                                 context,
+      //                                 "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+      //                               ),
+      //                             },
+      //                         })
+      //                   }
+      //                 else
+      //                   {
+      //                     LoadingDialog.hidden(),
+      //                     NavigatorUtils.push(
+      //                       context,
+      //                       "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+      //                     ),
+      //                   }
+      //               })
+      //         }
+      //       else
+      //         {
+      //           LoadingDialog.hidden(),
+      //           NavigatorUtils.push(
+      //             context,
+      //             "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+      //           ),
+      //         }
+      //     });
     }
   }
 
