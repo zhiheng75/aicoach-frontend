@@ -55,34 +55,29 @@ class _ReportDetailPageState extends State<ReportDetailPage>
   }
 
   void getReportDetail() async {
-    DioUtils.instance.requestNetwork<ResultData>(
-      Method.get,
-      HttpApi.coinReport,
-      queryParameters: {
-        'session_id': widget.sessionId,
-        'device_id': await Device.getDeviceId(),
-      },
-      onSuccess: (result) {
-        if (result == null || result.data == null) {
-          _pageState = 'fail';
-          if (mounted) {
-            setState(() {});
-          }
-          return;
-        }
-        _detail = result.data as Map<String, dynamic>;
-        _pageState = 'success';
-        if (mounted) {
-          setState(() {});
-        }
-      },
-      onError: (code, msg) {
+    DioUtils.instance.requestNetwork<ResultData>(Method.get, HttpApi.coinReport,
+        queryParameters: {
+          'session_id': widget.sessionId,
+          'device_id': await Device.getDeviceId(),
+        }, onSuccess: (result) {
+      if (result == null || result.data == null) {
         _pageState = 'fail';
         if (mounted) {
           setState(() {});
         }
+        return;
       }
-    );
+      _detail = result.data as Map<String, dynamic>;
+      _pageState = 'success';
+      if (mounted) {
+        setState(() {});
+      }
+    }, onError: (code, msg) {
+      _pageState = 'fail';
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   void tapTabbar(String type) {
@@ -250,25 +245,27 @@ class _ReportDetailPageState extends State<ReportDetailPage>
         ),
       ),
       alignment: Alignment.center,
-      child: _detail.isNotEmpty ? Radar(
-        r: sqrt(5000),
-        top: RadarItem('完整度', _detail['integrity_score']),
-        bottom: RadarItem('流畅度', _detail['fluency_score']),
-        left: RadarItem('发音', _detail['standard_score']),
-        right: RadarItem('语法', _detail['accuracy_score']),
-        scoreStyle: const TextStyle(
-          fontSize: 22.0,
-          fontWeight: FontWeight.w700,
-          color: Colors.black,
-          height: 25.7 / 22.0,
-        ),
-        labelStyle: const TextStyle(
-          fontSize: 12.0,
-          fontWeight: FontWeight.w400,
-          color: Colors.black,
-          height: 14.0 / 12.0,
-        ),
-      ) : const SizedBox(),
+      child: _detail.isNotEmpty
+          ? Radar(
+              r: sqrt(5000),
+              top: RadarItem('完整度', _detail['integrity_score']),
+              bottom: RadarItem('流畅度', _detail['fluency_score']),
+              left: RadarItem('发音', _detail['standard_score']),
+              right: RadarItem('语法', _detail['accuracy_score']),
+              scoreStyle: const TextStyle(
+                fontSize: 22.0,
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+                height: 25.7 / 22.0,
+              ),
+              labelStyle: const TextStyle(
+                fontSize: 12.0,
+                fontWeight: FontWeight.w400,
+                color: Colors.black,
+                height: 14.0 / 12.0,
+              ),
+            )
+          : const SizedBox(),
     );
 
     Widget schedule = Container(
@@ -464,7 +461,8 @@ class _ReportDetailPageState extends State<ReportDetailPage>
     if (_pageState != 'success') {
       content = Expanded(
         child: Center(
-          child: _pageState == 'fail' ? LoadFail(reload: init) : const LoadData(),
+          child:
+              _pageState == 'fail' ? LoadFail(reload: init) : const LoadData(),
         ),
       );
     } else {

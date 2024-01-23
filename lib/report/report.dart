@@ -73,7 +73,8 @@ class _ReportPageState extends State<ReportPage>
           return;
         }
         List<dynamic> data = result.data as List<dynamic>;
-        List<ChatReportEntity> list = data.map((item) => ChatReportEntity.fromJson(item)).toList();
+        List<ChatReportEntity> list =
+            data.map((item) => ChatReportEntity.fromJson(item)).toList();
         _list.addAll(list);
       },
       onError: (code, msg) {
@@ -164,7 +165,7 @@ class _ReportPageState extends State<ReportPage>
         const SizedBox(
           width: 8.0,
         ),
-        barItem('模考报告', 'exam'),
+        // barItem('模考报告', 'exam'),
       ],
     );
 

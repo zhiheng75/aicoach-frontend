@@ -38,7 +38,6 @@ class _HomeTabbarState extends State<HomeTabbar> {
 
   @override
   Widget build(BuildContext context) {
-
     Widget tabbarItem({
       required String text,
       required String value,
@@ -97,15 +96,12 @@ class _HomeTabbarState extends State<HomeTabbar> {
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              LoginManager.checkLogin(
-                context,
-                () {
-                  NavigatorUtils.push(
-                    context,
-                    PersonalRouter.person,
-                  );
-                }
-              );
+              LoginManager.checkLogin(context, () {
+                NavigatorUtils.push(
+                  context,
+                  PersonalRouter.person,
+                );
+              });
             },
             child: const LoadAssetImage(
               'gerenzhongxin',
@@ -116,14 +112,20 @@ class _HomeTabbarState extends State<HomeTabbar> {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              tabbarItem(text: '对话', value: 'chat', isSelected: widget.currentTab == 'chat'),
+              tabbarItem(
+                  text: '对话',
+                  value: 'chat',
+                  isSelected: widget.currentTab == 'chat'),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24.0,
                 ),
-                child: tabbarItem(text: '场景', value: 'scene', isSelected: widget.currentTab == 'scene'),
+                child: tabbarItem(
+                    text: '场景',
+                    value: 'scene',
+                    isSelected: widget.currentTab == 'scene'),
               ),
-              tabbarItem(text: '模考', value: 'exam', isSelected: widget.currentTab == 'exam'),
+              // tabbarItem(text: '模考', value: 'exam', isSelected: widget.currentTab == 'exam'),
             ],
           ),
           GestureDetector(
@@ -143,9 +145,8 @@ class _HomeTabbarState extends State<HomeTabbar> {
               width: 36.0,
               height: 36.0,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(18.0),
-                color: Colours.color_001652.withOpacity(0.23)
-              ),
+                  borderRadius: BorderRadius.circular(18.0),
+                  color: Colours.color_001652.withOpacity(0.23)),
               alignment: Alignment.center,
               child: const LoadAssetImage(
                 'baogao',
