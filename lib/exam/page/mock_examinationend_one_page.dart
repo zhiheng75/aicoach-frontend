@@ -43,8 +43,9 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
     super.initState();
 
     Map<String, dynamic> user = LoginManager.getUserInfo();
-    name = user['name'] ??
-        user['nickname'] ??
+
+    name = user['nickname'] ??
+        user['name'] ??
         '用户${user['phone'].toString().substring(7, 11)}';
 
     Future.delayed(const Duration(microseconds: 200), () {
