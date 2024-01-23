@@ -197,16 +197,18 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                       ),
                     ),
                     const Expanded(child: Gaps.empty),
-                    GestureDetector(
-                      onTap: () {
-                        _isSelect = !_isSelect;
-                        setState(() {});
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            _isSelect = !_isSelect;
+                            setState(() {});
+                          },
+                          child: Container(
+                            width: 30,
+                            height: 30,
                             alignment: Alignment.center,
                             child: LoadAssetImage(
                               _isSelect ? "select_img2" : "unselect_img2",
@@ -214,45 +216,44 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                               height: 11,
                             ),
                           ),
-                          Gaps.hGap10,
-                          Text(
-                            "我已阅读并同意",
-                            style: TextStyle(
-                                fontSize: Dimens.font_sp12,
-                                color: Colours.black),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              NavigatorUtils.goWebViewPage(context, "隐私政策",
-                                  "http://www.shenmo-ai.com/privacy_policy/");
-                            },
-                            child: Text("隐私政策",
-                                style: TextStyle(
-                                    fontSize: Dimens.font_sp12,
-                                    color: Colours.color_0047FF,
-                                    decoration: TextDecoration.underline)),
-                          ),
-                          Text(
-                            "和",
-                            style: TextStyle(
-                                fontSize: Dimens.font_sp12,
-                                color: Colours.color_546092),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              NavigatorUtils.goWebViewPage(context, "服务协议",
-                                  "http://www.shenmo-ai.com/tos/");
-                            },
-                            child: Text(
-                              "服务协议",
+                        ),
+                        // Gaps.hGap10,
+                        Text(
+                          "我已阅读并同意",
+                          style: TextStyle(
+                              fontSize: Dimens.font_sp12, color: Colours.black),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            NavigatorUtils.goWebViewPage(context, "隐私政策",
+                                "http://www.shenmo-ai.com/privacy_policy/");
+                          },
+                          child: Text("隐私政策",
                               style: TextStyle(
-                                  color: Colours.color_0047FF,
                                   fontSize: Dimens.font_sp12,
-                                  decoration: TextDecoration.underline),
-                            ),
+                                  color: Colours.color_0047FF,
+                                  decoration: TextDecoration.underline)),
+                        ),
+                        Text(
+                          "和",
+                          style: TextStyle(
+                              fontSize: Dimens.font_sp12,
+                              color: Colours.color_546092),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            NavigatorUtils.goWebViewPage(context, "服务协议",
+                                "http://www.shenmo-ai.com/tos/");
+                          },
+                          child: Text(
+                            "服务协议",
+                            style: TextStyle(
+                                color: Colours.color_0047FF,
+                                fontSize: Dimens.font_sp12,
+                                decoration: TextDecoration.underline),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     Gaps.vGap24,
                     widget.typeLogin == "1"
@@ -376,21 +377,21 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                             height: 40,
                           ),
                         ),
-                        Gaps.hGap16,
-                        GestureDetector(
-                          onTap: () {
-                            // NavigatorUtils.push(
-                            //   context,
-                            //   clearStack: true,
-                            //   "${LoginRouter.newBindPhonePage}?needKeyLogin=1",
-                            // );
-                          },
-                          child: const LoadAssetImage(
-                            "qq_login_img",
-                            width: 40,
-                            height: 40,
-                          ),
-                        ),
+                        // Gaps.hGap16,
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     // NavigatorUtils.push(
+                        //     //   context,
+                        //     //   clearStack: true,
+                        //     //   "${LoginRouter.newBindPhonePage}?needKeyLogin=1",
+                        //     // );
+                        //   },
+                        //   child: const LoadAssetImage(
+                        //     "qq_login_img",
+                        //     width: 40,
+                        //     height: 40,
+                        //   ),
+                        // ),
                       ],
                     ),
                     Gaps.vGap50,

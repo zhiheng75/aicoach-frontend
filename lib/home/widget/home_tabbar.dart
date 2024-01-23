@@ -1,3 +1,4 @@
+import 'package:Bubble/res/gaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -110,24 +111,38 @@ class _HomeTabbarState extends State<HomeTabbar> {
             ),
           ),
           Row(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               tabbarItem(
                   text: '对话',
                   value: 'chat',
                   isSelected: widget.currentTab == 'chat'),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                ),
-                child: tabbarItem(
-                    text: '场景',
-                    value: 'scene',
-                    isSelected: widget.currentTab == 'scene'),
-              ),
-              // tabbarItem(text: '模考', value: 'exam', isSelected: widget.currentTab == 'exam'),
+              Gaps.hGap32,
+              tabbarItem(
+                  text: '场景',
+                  value: 'scene',
+                  isSelected: widget.currentTab == 'scene')
             ],
           ),
+          // Row(
+          //   mainAxisSize: MainAxisSize.min,
+          //   children: <Widget>[
+          //     tabbarItem(
+          //         text: '对话',
+          //         value: 'chat',
+          //         isSelected: widget.currentTab == 'chat'),
+          //     Padding(
+          //       padding: const EdgeInsets.symmetric(
+          //         horizontal: 24.0,
+          //       ),
+          //       child: tabbarItem(
+          //           text: '场景',
+          //           value: 'scene',
+          //           isSelected: widget.currentTab == 'scene'),
+          //     ),
+          //     // tabbarItem(text: '模考', value: 'exam', isSelected: widget.currentTab == 'exam'),
+          //   ],
+          // ),
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
