@@ -176,7 +176,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
-  camera_avfoundation: 8b8d780bcfb6a4a02b0fbe2b4bd17b5b71946e68
+  camera_avfoundation: 3125e8cd1a4387f6f31c6c63abb8a55892a9eeeb
   device_identity: ad27231cb8754e5bc63ce2225e2e1d95d374ca88
   device_info_plus: 7545d84d8d1b896cb16a4ff98c19f07ec4b298ea
   ffmpeg-kit-ios-min: 4e9a088f4ee9629435960b9d68e54848975f1931
@@ -187,28 +187,28 @@ SPEC CHECKSUMS:
   flutter_sound_core: 26c10e5832e76aaacfae252d8925232281c486ae
   fluwx: 4e01cbba9403c95cd973d5d8f8b9db5244f09446
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  image_picker_ios: 99dfe1854b4fa34d0364e74a78448a0151025425
-  in_app_purchase_storekit: 9e9931234f0adcf71ae323f8c83785b96030edf1
+  image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  in_app_purchase_storekit: 4fb7ee9e824b1f09107fbfbbce8c4b276366dc43
   JCore: 0cb4fc5892bc97af4f27283875369ead3eaa3067
   JVerification: 750dc6b4ce55e53d1095958267cfd2e9eb4398a1
   jverify: 1245a818edcaf6054c9bd1c776f100344ff9c08e
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
-  path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
+  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
   photo_manager: 4f6810b7dfc4feb03b461ac1a70dacf91fba7604
   qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
-  quick_actions_ios: d24571db7345d2e48d094db8d077a015a568002d
+  quick_actions_ios: 9e80dcfadfbc5d47d9cf8f47bcf428b11cf383d4
   sensors_plus: 42b9de1b8237675fa8d8121e4bb93be0f79fa61d
-  shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
+  shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   tobias: 22f69183b14af82a2ac8ff698af084c352744e5f
-  url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
+  url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
   vibration: 7d883d141656a1c1a6d8d238616b2042a51a1241
   video_player_avfoundation: e9e6f9cae7d7a6d9b43519b0aab382bca60fcfd1
-  webview_flutter_wkwebview: 4f3e50f7273d31e5500066ed267e3ae4309c5ae4
+  webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
   WechatOpenSDK-XCFramework: acdeeda129efbef9532bca8a10c24e1b4b8c7d69
 
 PODFILE CHECKSUM: 0f123c3d319e59188306be832acde6d9551962d5
 
-COCOAPODS: 1.13.0
+COCOAPODS: 1.14.3

@@ -147,18 +147,17 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         url: HttpApi.wechatInfo,
         queryParameters: params,
         isShow: true, onSuccess: (result) {
-      Log.e("=============");
+      Log.e("微信登陆成功回调=============");
 
       Log.e(result.toString());
 
-      Map<String, dynamic> data = result?.data! as Map<String, dynamic>;
-      Log.e(data.toString());
+      // Map<String, dynamic> data = result?.data! as Map<String, dynamic>;
 
       Map<String, dynamic> newWxInfoMap = json.decode(result.toString());
       NewWxInfoBean newWxInfoBean = NewWxInfoBean.fromJson(newWxInfoMap);
-      Log.e("=============");
-      Log.e(newWxInfoBean.data.openid);
-      Log.e("=============");
+      // Log.e("=============");
+      // Log.e(newWxInfoBean.data.openid);
+      // Log.e("=============");
 
       // Map<String, dynamic> data = result?.data! as Map<String, dynamic>;
 
@@ -169,11 +168,13 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
       // Log.e(loginModel.openid);
       // Log.e("=============");
 
+      // ignore: unnecessary_null_comparison
       if (newWxInfoBean != null) {
-        if (newWxInfoBean.data.token != null &&
-            newWxInfoBean.data.token.isNotEmpty) {
+        Log.e("======进来了吗=======");
+        if (newWxInfoBean.data.token.isNotEmpty) {
           SpUtil.putObject(Constant.userInfoKey, newWxInfoBean.data.toJson());
           SpUtil.putString(Constant.accessToken, newWxInfoBean.data.token);
+          Log.e("======进来了吗=======");
           view.hadBindWechat();
         } else {
           //没绑定

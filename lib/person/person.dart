@@ -158,11 +158,9 @@ class _PersonPageState extends State<PersonPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  user['name'] == ""
-                      ? (user['nickname'] == ""
-                          ? '用户${user['phone'].toString().substring(7, 11)}'
-                          : user['nickname'])
-                      : user['name'],
+                  user['name'] ??
+                      user['nickname'] ??
+                      '用户${user['phone'].toString().substring(7, 11)}',
                   style: const TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w500,
