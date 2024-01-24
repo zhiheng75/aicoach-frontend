@@ -68,8 +68,11 @@ class MyApp extends StatelessWidget {
 
     /// 适配数据(根据自己的数据结构，可自行选择添加)
     interceptors.add(AdapterInterceptor());
+    String urlStr = 'https://api.demo.shenmo-ai.net/';
+    // String urlStr = 'https://api.demo.shenmo-ai.com/';
+
     configDio(
-      baseUrl: 'https://api.demo.shenmo-ai.net/',
+      baseUrl: urlStr,
       interceptors: interceptors,
     );
   }

@@ -91,10 +91,10 @@ class _PersonPageState extends State<PersonPage>
     init();
     // getAvailableTime();
     Map<String, dynamic> user = LoginManager.getUserInfo();
-    userName = user['nickname'] ??
-        user['name'] ??
-        "用户${user['phone'].toString().substring(7, 11)}" ??
-        "";
+
+    userName = user['nickname'] != ""
+        ? user['nickname']
+        : "用户${user['phone'].toString().substring(7, 11)}";
     headimgurl = user['headimgurl'] ?? '';
     Log.e("个人中心=============================");
 

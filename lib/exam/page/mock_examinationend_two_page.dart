@@ -49,9 +49,9 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
       25,
     ];
     Map<String, dynamic> user = LoginManager.getUserInfo();
-    name = user['nickname'] ??
-        user['name'] ??
-        '用户${user['phone'].toString().substring(7, 11)}';
+    name = user['nickname'] != ""
+        ? user['nickname']
+        : "用户${user['phone'].toString().substring(7, 11)}";
   }
 
   Widget score() {

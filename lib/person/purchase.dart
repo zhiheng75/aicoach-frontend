@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_final_fields
 
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:Bubble/person/entity/basec_onfig_bean.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/gestures.dart';
@@ -47,10 +49,40 @@ class _PurchasePageState extends State<PurchasePage>
   String _pay = 'wxpay';
   bool _checked = false;
 
+  late String title = "";
+  late String contentTit = "";
+
   void init() {
     _pageState = 'loading';
     setState(() {});
-    getGoodList();
+    getBaseConfig();
+  }
+
+  void getBaseConfig() {
+    _purchasePagePresenter.requestNetwork<ResultData>(Method.get,
+        url: HttpApi.baseConfig, isShow: false, onSuccess: (result) {
+      Log.e(result.toString());
+      Map<String, dynamic> ebasecOnfigBeanMap = json.decode(result.toString());
+      BasecOnfigBean basecOnfigBean =
+          BasecOnfigBean.fromJson(ebasecOnfigBeanMap);
+      if (basecOnfigBean != null || basecOnfigBean.data.length != 0) {
+        for (int i = 0; i < basecOnfigBean.data.length; i++) {
+          Datum datum = basecOnfigBean.data[i];
+          if (datum.key == "rechargeTitle") {
+            title = datum.value;
+          }
+          if (datum.key == "rechargeSlogan") {
+            contentTit = datum.value;
+          }
+        }
+
+        getGoodList();
+      } else {
+        _pageState = 'fail';
+        setState(() {});
+        return;
+      }
+    });
   }
 
   void getGoodList() {
@@ -133,41 +165,42 @@ class _PurchasePageState extends State<PurchasePage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    Widget navbar = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () => Navigator.of(context).pop(),
-          child: const LoadAssetImage(
-            'navbar_back',
-            width: 18.2,
-            height: 22.0,
+    Widget navbar() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => Navigator.of(context).pop(),
+            child: const LoadAssetImage(
+              'navbar_back',
+              width: 18.2,
+              height: 22.0,
+            ),
           ),
-        ),
-        const Expanded(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                '进阶会员服务',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                  height: 18.0 / 20.0,
-                  letterSpacing: 0.05,
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                    height: 18.0 / 20.0,
+                    letterSpacing: 0.05,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 16.0,
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    '专属口语教练，科学测评，个性化定制',
-                    style: TextStyle(
+                const SizedBox(
+                  height: 16.0,
+                ),
+                SizedBox(
+                  width: 220,
+                  child: Text(
+                    contentTit,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w400,
                       color: Color(0xFF666666),
@@ -175,32 +208,22 @@ class _PurchasePageState extends State<PurchasePage>
                       letterSpacing: 0.05,
                     ),
                   ),
-                  Text(
-                    ' 每天低至1.28块钱',
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFF666666),
-                      height: 18.0 / 14.0,
-                      letterSpacing: 0.05,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
-        ),
-        GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: openIllustration,
-          child: const LoadAssetImage(
-            'wenhao',
-            width: 24,
-            height: 24.0,
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: openIllustration,
+            child: const LoadAssetImage(
+              'wenhao',
+              width: 24,
+              height: 24.0,
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    }
 
     Widget goodsItem(GoodEntity goods) {
       bool isSelected = _goodsId == goods.id;
@@ -532,12 +555,12 @@ class _PurchasePageState extends State<PurchasePage>
         padding: const EdgeInsets.symmetric(
           horizontal: 16.0,
         ),
-        child: MyScrollView(
+        child: Column(
           children: <Widget>[
             SizedBox(
               height: _screenUtil.statusBarHeight,
             ),
-            navbar,
+            navbar(),
             const SizedBox(
               height: 16.0,
             ),
