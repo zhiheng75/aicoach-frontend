@@ -87,7 +87,8 @@ class _ReportPageState extends State<ReportPage>
           return;
         }
         List<dynamic> data = result.data as List<dynamic>;
-        List<ChatReportEntity> list = data.map((item) => ChatReportEntity.fromJson(item)).toList();
+        List<ChatReportEntity> list =
+            data.map((item) => ChatReportEntity.fromJson(item)).toList();
         _list.addAll(list);
         _loading = 0;
         _state = 'success';
@@ -193,6 +194,10 @@ class _ReportPageState extends State<ReportPage>
         // ),
         // barItem('模考报告', 'exam'),
         barItem('口语课报告', 'chat'),
+        const SizedBox(
+          width: 8.0,
+        ),
+        barItem('模考报告', 'exam'),
       ],
     );
 
@@ -253,7 +258,7 @@ class _ReportPageState extends State<ReportPage>
                           height: 8.0,
                         ),
                         Text(
-                          '时长：${item.duration > 60 ? '${item.duration ~/ 60}min' : '${item.duration}s'}',
+                          '时长：${item.duration ~/ 60}min',
                           style: const TextStyle(
                             fontSize: 14.0,
                             fontWeight: FontWeight.w400,
@@ -376,7 +381,7 @@ class _ReportPageState extends State<ReportPage>
                       height: 8.0,
                     ),
                     Text(
-                      '时长：${item.duration > 60 ? '${item.duration ~/ 60}min' : '${item.duration}s'}',
+                      '时长：${item.duration ~/ 60}min',
                       style: const TextStyle(
                         fontSize: 14.0,
                         fontWeight: FontWeight.w400,

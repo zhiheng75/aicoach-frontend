@@ -34,6 +34,8 @@ class _PersonPageState extends State<PersonPage>
   late PermissionBean permissionBeanData;
 
   late bool islog = true;
+  late String userName;
+  late String headimgurl;
 
   void init() {
     getStudyInfo();
@@ -88,6 +90,16 @@ class _PersonPageState extends State<PersonPage>
 
     init();
     // getAvailableTime();
+    Map<String, dynamic> user = LoginManager.getUserInfo();
+
+    userName = user['nickname'] != ""
+        ? user['nickname']
+        : "用户${user['phone'].toString().substring(7, 11)}";
+    headimgurl = user['headimgurl'] ?? '';
+    Log.e("个人中心=============================");
+
+    Log.e(user.toString());
+    setState(() {});
   }
 
 //  加载中
@@ -108,8 +120,6 @@ class _PersonPageState extends State<PersonPage>
     );
     // HomeProvider provider = Provider.of<HomeProvider>(context);
     // HomeProvider provider = Provider.of<HomeProvider>(context, listen: false);
-
-    Map<String, dynamic> user = LoginManager.getUserInfo();
 
     Widget bg = Container(
       width: _screenUtil.screenWidth,
@@ -144,7 +154,7 @@ class _PersonPageState extends State<PersonPage>
           ClipRRect(
             borderRadius: BorderRadius.circular(28.0),
             child: LoadImage(
-              user['headimgurl'] ?? '',
+              headimgurl,
               width: 56.0,
               height: 56.0,
             ),
@@ -158,11 +168,7 @@ class _PersonPageState extends State<PersonPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  user['name'] == ""
-                      ? (user['nickname'] == ""
-                          ? '用户${user['phone'].toString().substring(7, 11)}'
-                          : user['nickname'])
-                      : user['name'],
+                  userName,
                   style: const TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w500,

@@ -200,16 +200,18 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                       ),
                     ),
                     const Expanded(child: Gaps.empty),
-                    GestureDetector(
-                      onTap: () {
-                        _isSelect = !_isSelect;
-                        setState(() {});
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            _isSelect = !_isSelect;
+                            setState(() {});
+                          },
+                          child: Container(
+                            width: 30,
+                            height: 30,
                             alignment: Alignment.center,
                             child: LoadAssetImage(
                               _isSelect ? "select_img2" : "unselect_img2",
@@ -217,45 +219,44 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                               height: 11,
                             ),
                           ),
-                          Gaps.hGap10,
-                          Text(
-                            "我已阅读并同意",
-                            style: TextStyle(
-                                fontSize: Dimens.font_sp12,
-                                color: Colours.black),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              NavigatorUtils.goWebViewPage(context, "隐私政策",
-                                  "http://www.shenmo-ai.com/privacy_policy/");
-                            },
-                            child: Text("隐私政策",
-                                style: TextStyle(
-                                    fontSize: Dimens.font_sp12,
-                                    color: Colours.color_0047FF,
-                                    decoration: TextDecoration.underline)),
-                          ),
-                          Text(
-                            "和",
-                            style: TextStyle(
-                                fontSize: Dimens.font_sp12,
-                                color: Colours.color_546092),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              NavigatorUtils.goWebViewPage(context, "服务协议",
-                                  "http://www.shenmo-ai.com/tos/");
-                            },
-                            child: Text(
-                              "服务协议",
+                        ),
+                        // Gaps.hGap10,
+                        Text(
+                          "我已阅读并同意",
+                          style: TextStyle(
+                              fontSize: Dimens.font_sp12, color: Colours.black),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            NavigatorUtils.goWebViewPage(context, "隐私政策",
+                                "http://www.shenmo-ai.com/privacy_policy/");
+                          },
+                          child: Text("隐私政策",
                               style: TextStyle(
-                                  color: Colours.color_0047FF,
                                   fontSize: Dimens.font_sp12,
-                                  decoration: TextDecoration.underline),
-                            ),
+                                  color: Colours.color_0047FF,
+                                  decoration: TextDecoration.underline)),
+                        ),
+                        Text(
+                          "和",
+                          style: TextStyle(
+                              fontSize: Dimens.font_sp12,
+                              color: Colours.color_546092),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            NavigatorUtils.goWebViewPage(context, "服务协议",
+                                "http://www.shenmo-ai.com/tos/");
+                          },
+                          child: Text(
+                            "服务协议",
+                            style: TextStyle(
+                                color: Colours.color_0047FF,
+                                fontSize: Dimens.font_sp12,
+                                decoration: TextDecoration.underline),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     Gaps.vGap24,
                     widget.typeLogin == "1"
@@ -379,21 +380,21 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                             height: 40,
                           ),
                         ),
-                        Gaps.hGap16,
-                        GestureDetector(
-                          onTap: () {
-                            // NavigatorUtils.push(
-                            //   context,
-                            //   clearStack: true,
-                            //   "${LoginRouter.newBindPhonePage}?needKeyLogin=1",
-                            // );
-                          },
-                          child: const LoadAssetImage(
-                            "qq_login_img",
-                            width: 40,
-                            height: 40,
-                          ),
-                        ),
+                        // Gaps.hGap16,
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     // NavigatorUtils.push(
+                        //     //   context,
+                        //     //   clearStack: true,
+                        //     //   "${LoginRouter.newBindPhonePage}?needKeyLogin=1",
+                        //     // );
+                        //   },
+                        //   child: const LoadAssetImage(
+                        //     "qq_login_img",
+                        //     width: 40,
+                        //     height: 40,
+                        //   ),
+                        // ),
                       ],
                     ),
                     Gaps.vGap50,
@@ -410,43 +411,44 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   ///微信授权
   weChatLogin() async {
     if (_isSelect) {
-      if (Device.isAndroid) {
-        FlutterToNative.jumpToWechatLogin().then((value) => {
-              // _wechatCode = value,
-              // Log.e("===========>$_wechatCode"),
-              _registerPresenter.getWxInfo(value)
+      // if (Device.isAndroid) {
+      //   FlutterToNative.jumpToWechatLogin().then((value) => {
+      //         // _wechatCode = value,
+      //         // Log.e("===========>$_wechatCode"),
+      //         _registerPresenter.getWxInfo(value)
+      //       });
+      // } else {
+      //   Log.e("===========>");
+      Fluwx fluwx = Fluwx();
+
+      fluwx.registerApi(
+          appId: "wxfb033d09d2eecaf0",
+          universalLink: "https://demo.shenmo-ai.net/ios/");
+      if (await fluwx.isWeChatInstalled) {
+        fluwx
+            .authBy(
+                which: NormalAuth(
+                    scope: 'snsapi_userinfo', state: 'wechat_sdk_demo_test'))
+            .then((data) {});
+        fluwx.addSubscriber((response) {
+          if (response is WeChatAuthResponse) {
+            // Log.e("===========>");
+            // Log.e(response.code ?? "");
+            // Log.e("===========>");
+
+            String? result = response.code;
+            _registerPresenter.getWxInfo(response.code ?? "");
+            setState(() {
+              String result =
+                  'state :${response.state} \n code:${response.code}';
+              print(result);
             });
+          }
+        });
       } else {
-        Log.e("===========>");
-        Fluwx fluwx = Fluwx();
-
-        fluwx.registerApi(
-            appId: "wxfb033d09d2eecaf0",
-            universalLink: "https://demo.shenmo-ai.net/ios/");
-        if (await fluwx.isWeChatInstalled) {
-          fluwx
-              .authBy(
-                  which: NormalAuth(
-                      scope: 'snsapi_userinfo', state: 'wechat_sdk_demo_test'))
-              .then((data) {});
-          fluwx.addSubscriber((response) {
-            if (response is WeChatAuthResponse) {
-              Log.e("===========>");
-              Log.e(response.code ?? "");
-              Log.e("===========>");
-
-              // String? result = response.code;
-              _registerPresenter.getWxInfo(response.code ?? "");
-              // setState(() {
-              //   String result = 'state :${response.state} \n code:${response.code}';
-              //   print(result)
-              // });
-            }
-          });
-        } else {
-          Toast.show("没有安装微信");
-        }
+        Toast.show("没有安装微信");
       }
+      // }
     } else {
       Toast.show("请同意服务协议");
     }
@@ -460,11 +462,13 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
 
   @override
   void hadBindWechat() {
-    // Toast.show("登录成功");
+    Toast.show("登录成功");
     // SpUtil.putObject(Constant.userInfoKey, data);
     // SpUtil.getObj(Constant.userInfoKey, (v) => {
     //   print(v),
     // });
+    Log.e("======登录成功=======");
+    NavigatorUtils.push(context, HomeRouter.homePage, replace: true);
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();

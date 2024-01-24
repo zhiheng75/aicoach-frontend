@@ -139,6 +139,7 @@ class _MyTextFieldState extends State<MyTextField> {
         hintText: widget.hintText,
         hintStyle: widget.hintStyle,
         counterText: '',
+        border: InputBorder.none, //去掉输入框下方的下划线
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
             color: widget.underLineColor,
