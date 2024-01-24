@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_final_fields, unnecessary_getters_setters, slash_for_doc_comments
+import 'dart:async';
+
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +24,8 @@ class HomeProvider extends ChangeNotifier {
   int _vipState = 0;
   // 会员过期时间
   String _expireDate = '';
+  // 使用时间倒计时
+  Timer? _usageTimeCutdown;
   // 角色
   CharacterEntity _character = CharacterEntity();
   // 话题
@@ -115,6 +119,27 @@ class HomeProvider extends ChangeNotifier {
         }
       },
     );
+  }
+
+  void startUsageTimeCutdown(Function() onTimeEnd) {
+    if (_usageTime == 0) {
+      return;
+    }
+    _usageTimeCutdown = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (_usageTime == 0) {
+        onTimeEnd();
+        endUsageTimeCutdown();
+        return;
+      }
+      _usageTime -= 1;
+    });
+  }
+
+  void endUsageTimeCutdown() {
+    if (_usageTimeCutdown != null) {
+      _usageTimeCutdown!.cancel();
+      _usageTimeCutdown = null;
+    }
   }
 
   void resetChatParams() {

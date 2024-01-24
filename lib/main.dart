@@ -23,6 +23,9 @@ import 'home/splash_page.dart';
 import 'net/dio_utils.dart';
 import 'net/intercept.dart';
 
+// 页面切换监听
+final RouteObserver<PageRoute> routeObserver = RouteObserver();
+
 Future<void> main() async {
   /// 异常处理
   handleError(() async {
@@ -143,6 +146,7 @@ class MyApp extends StatelessWidget {
         );
       },
       restorationScopeId: 'app',
+      navigatorObservers: [routeObserver],
     );
   }
 }

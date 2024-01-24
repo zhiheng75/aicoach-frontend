@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields
+// ignore_for_file: prefer_final_fields, must_be_immutable
 
 import 'dart:typed_data';
 
@@ -95,30 +95,30 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
 
     bool isAvailable = true;
 
-    // // 新用户采集不花费使用时间
-    // if (widget.isCollectInformation != true) {
-    //   int usageTime = _homeProvider.usageTime;
-    //   int vipState = _homeProvider.vipState;
-    //   int expDay = _homeProvider.expDay;
-    //   // 是否体验到期
-    //   if (vipState == 0 && (usageTime == 0 || expDay == 0)) {
-    //     isAvailable = false;
-    //   }
-    //   // 是否会员到期
-    //   if (vipState == 2) {
-    //     isAvailable = false;
-    //   }
-    //   if (!isAvailable) {
-    //     showModalBottomSheet(
-    //       context: context,
-    //       backgroundColor: Colors.transparent,
-    //       barrierColor: Colors.transparent,
-    //       isScrollControlled: true,
-    //       isDismissible: false,
-    //       builder: (_) => ExpirationReminder(),
-    //     );
-    //   }
-    // }
+    // 新用户采集不花费使用时间
+    if (widget.isCollectInformation != true) {
+      int usageTime = _homeProvider.usageTime;
+      int vipState = _homeProvider.vipState;
+      int expDay = _homeProvider.expDay;
+      // 是否体验到期
+      if (vipState == 0 && (usageTime == 0 || expDay == 0)) {
+        isAvailable = false;
+      }
+      // 是否会员到期
+      if (vipState == 2) {
+        isAvailable = false;
+      }
+      if (!isAvailable) {
+        showModalBottomSheet(
+          context: context,
+          backgroundColor: Colors.transparent,
+          barrierColor: Colors.transparent,
+          isScrollControlled: true,
+          isDismissible: false,
+          builder: (_) => ExpirationReminder(),
+        );
+      }
+    }
     return isAvailable;
   }
 
@@ -139,6 +139,18 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       _homeProvider.sessionId = await _chatWebsocket.startChat(
         characterId: characterId,
         sceneId: sceneId,
+        onConnected: () {
+          _homeProvider.startUsageTimeCutdown(() async {
+            showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              barrierColor: Colors.transparent,
+              isScrollControlled: true,
+              isDismissible: false,
+              builder: (_) => ExpirationReminder(),
+            );
+          });
+        },
         onAnswer: onWebsocketAnswer,
         onEnd: onWebsocketEnd,
       );
@@ -181,6 +193,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   }
 
   void onWebsocketEnd(String? reason, String endType) {
+    _homeProvider.endUsageTimeCutdown();
     widget.controller.setDisabled(true);
     // 异常结束
     if (reason == 'Error') {

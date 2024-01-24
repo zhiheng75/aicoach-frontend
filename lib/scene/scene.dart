@@ -13,6 +13,7 @@ import '../chat/widget/bottom_bar.dart';
 import '../chat/widget/message_list.dart';
 import '../chat/widget/record.dart';
 import '../home/provider/home_provider.dart';
+import '../home/widget/expiration_reminder.dart';
 import '../mvp/base_page.dart';
 import '../util/EventBus.dart';
 import '../util/media_utils.dart';
@@ -74,6 +75,17 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
           _homeProvider.addTipMessage('Scene started！');
           _bottomBarControll.setDisabled(false);
           _mediaUtils.resumeUse();
+          // 倒计时
+          _homeProvider.startUsageTimeCutdown(() {
+            showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              barrierColor: Colors.transparent,
+              isScrollControlled: true,
+              isDismissible: false,
+              builder: (_) => ExpirationReminder(),
+            );
+          });
         },
         onAnswer: onWebsocketAnswer,
         onEnd: onWebsocketEnd,
@@ -116,6 +128,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
 
 
   void onWebsocketEnd(String? reason, String endType) {
+    _homeProvider.endUsageTimeCutdown();
     _bottomBarControll.setDisabled(true);
     _isConversationEnd = true;
     // 异常结束

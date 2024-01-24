@@ -251,8 +251,6 @@ class _CheckCodePageState extends State<CheckCodePage>
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    // 触发新用户信息收集
-    EventBus().emit('COLLECT_INFORMATION', 'login');
 
     NavigatorUtils.push(
       context,
@@ -509,8 +507,6 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    // 触发新用户信息收集
-    EventBus().emit('COLLECT_INFORMATION', 'login');
     NavigatorUtils.push(context, PersonalRouter.person, replace: true);
   }
 

@@ -76,6 +76,7 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
         onConnected: () {
           _pageState = 'success';
           setState(() {});
+          _homeProvider.resetChatParams();
           IntroductionMessage introductionMessage = IntroductionMessage();
           introductionMessage.desc = widget.desc;
           _homeProvider.addMessage(introductionMessage);

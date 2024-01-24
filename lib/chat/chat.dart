@@ -352,9 +352,6 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   void initState() {
     super.initState();
     init();
-    EventBus().on('COLLECT_INFORMATION_END', (_) {
-      startNormalChat(_homeProvider.character);
-    });
     EventBus().on('SELECT_SCENE', (scene) => startSceneChat(scene));
   }
 
@@ -530,7 +527,6 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
 
   @override
   void dispose() {
-    EventBus().off('COLLECT_INFORMATION_END');
     EventBus().off('SELECT_SCENE');
     super.dispose();
   }

@@ -231,7 +231,7 @@ class ExpirationReminder extends StatelessWidget {
                       desc,
                       button,
                       SizedBox(
-                        height: screenUtil.bottomBarHeight,
+                        height: screenUtil.bottomBarHeight + 16.0,
                       ),
                     ],
                   ),

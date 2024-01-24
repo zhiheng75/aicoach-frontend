@@ -1,8 +1,9 @@
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
+import 'package:Bubble/loginManager/login_manager.dart';
+import 'package:Bubble/main.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/scene/collect_information.dart';
-import 'package:Bubble/util/EventBus.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:jverify/jverify.dart';
@@ -28,17 +29,19 @@ class HomeNewPage extends StatefulWidget {
 class _HomePageState extends State<HomeNewPage>
     with
         BasePageMixin<HomeNewPage, HomeNewPagePresenter>,
-        AutomaticKeepAliveClientMixin<HomeNewPage>
+        AutomaticKeepAliveClientMixin<HomeNewPage>,
+        RouteAware
     implements HomeNewView {
   late HomeProvider _homeProvider;
   late HomeNewPagePresenter _homeNewPagePresenter;
   // chat-对话（默认） scene-场景 exam-模考
   String _currentTab = '';
+  late bool _isLogin;
 
   void init() {
     // 初始化手机号一键登录插件
     initPlatformState();
-    initCollectInformation();
+    checkCollectInformation();
     // 获取体验时间
     _homeProvider.getUsageTime();
   }
@@ -61,59 +64,53 @@ class _HomePageState extends State<HomeNewPage>
     });
   }
 
-  void initCollectInformation() {
-    EventBus().on('COLLECT_INFORMATION', (type) {
-      _homeNewPagePresenter.requestNetwork<ResultData>(
-        Method.get,
-        url: HttpApi.collectInformation,
-        isShow: type != 'login',
-        isClose: type != 'login',
-        onSuccess: (result) {
-          if (result == null ||
-              result.code != 200 ||
-              result.data == null ||
-              (result.data as Map<String, dynamic>)['is_evaluation'] == 1) {
-            if (_currentTab == '') {
-              _currentTab = 'chat';
-              setState(() {});
-            }
-            return;
-          }
-          Map<String, dynamic> data = result.data as Map<String, dynamic>;
-          showModalBottomSheet(
-            context: context,
-            backgroundColor: Colors.transparent,
-            barrierColor: Colors.transparent,
-            isScrollControlled: true,
-            isDismissible: false,
-            clipBehavior: Clip.none,
-            enableDrag: false,
-            builder: (_) => CollectInformationPage(
-              characterId: data['character_id'],
-              sceneId: data['scene_id'],
-              sceneImage: data['scene_image'] ?? '',
-              desc: data['desc'] ?? '',
-              onEnd: () {
-                if (_currentTab == '') {
-                  _currentTab = 'chat';
-                  setState(() {});
-                  return;
-                }
-                if (_currentTab == 'chat') {
-                  EventBus().emit('COLLECT_INFORMATION_END');
-                }
-              },
-            ),
-          );
-        },
-        onError: (code, msg) {
+  void checkCollectInformation() {
+    _currentTab = '';
+    setState(() {});
+    _homeNewPagePresenter.requestNetwork<ResultData>(
+      Method.get,
+      url: HttpApi.collectInformation,
+      isShow: true,
+      isClose: true,
+      onSuccess: (result) {
+        if (result == null ||
+            result.code != 200 ||
+            result.data == null ||
+            (result.data as Map<String, dynamic>)['is_evaluation'] == 1) {
           if (_currentTab == '') {
             _currentTab = 'chat';
             setState(() {});
           }
-        },
-      );
-    });
+          return;
+        }
+        Map<String, dynamic> data = result.data as Map<String, dynamic>;
+        showModalBottomSheet(
+          context: context,
+          backgroundColor: Colors.transparent,
+          barrierColor: Colors.transparent,
+          isScrollControlled: true,
+          isDismissible: false,
+          clipBehavior: Clip.none,
+          enableDrag: false,
+          builder: (_) => CollectInformationPage(
+            characterId: data['character_id'],
+            sceneId: data['scene_id'],
+            sceneImage: data['scene_image'] ?? '',
+            desc: data['desc'] ?? '',
+            onEnd: () {
+              _currentTab = 'chat';
+              setState(() {});
+            },
+          ),
+        );
+      },
+      onError: (code, msg) {
+        if (_currentTab == '') {
+          _currentTab = 'chat';
+          setState(() {});
+        }
+      },
+    );
   }
 
   @override
@@ -124,17 +121,32 @@ class _HomePageState extends State<HomeNewPage>
         appKey: "d213d60b209d0807dc4146f4", //"你自己应用的 AppKey",
         channel: "devloper-default");
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    _isLogin = LoginManager.isLogin();
     Future.delayed(Duration.zero, () {
       init();
-      _currentTab = 'chat';
-      setState(() {});
-      // EventBus().emit('COLLECT_INFORMATION', 'init');
     });
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  }
+
+  @override
+  void didPopNext() {
+    super.didPopNext();
+    // 监听从其他页面返回到首页
+    // 未登录变登录
+    if (!_isLogin && LoginManager.isLogin()) {
+      _isLogin = true;
+      checkCollectInformation();
+    }
+  }
+
+  @override
   void dispose() {
-    EventBus().off('COLLECT_INFORMATION');
+    routeObserver.unsubscribe(this);
     super.dispose();
   }
 

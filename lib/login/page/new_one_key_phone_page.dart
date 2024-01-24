@@ -471,8 +471,6 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    // 触发新用户信息收集
-    EventBus().emit('COLLECT_INFORMATION', 'login');
     NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
   }
 
