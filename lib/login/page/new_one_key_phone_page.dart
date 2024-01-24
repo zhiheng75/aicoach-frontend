@@ -468,7 +468,6 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     //   print(v),
     // });
     Log.e("======登录成功=======");
-    NavigatorUtils.push(context, HomeRouter.homePage, replace: true);
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();

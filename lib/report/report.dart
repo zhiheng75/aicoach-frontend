@@ -194,10 +194,6 @@ class _ReportPageState extends State<ReportPage>
         // ),
         // barItem('模考报告', 'exam'),
         barItem('口语课报告', 'chat'),
-        const SizedBox(
-          width: 8.0,
-        ),
-        barItem('模考报告', 'exam'),
       ],
     );
 
