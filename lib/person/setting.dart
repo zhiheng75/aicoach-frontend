@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart' hide ScreenUtil;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluwx/fluwx.dart';
 
 import '../constant/constant.dart';
 import '../entity/empty_response_entity.dart';
@@ -32,8 +33,11 @@ class SettingPage extends StatefulWidget {
   State<SettingPage> createState() => _SettingPageState();
 }
 
-class _SettingPageState extends State<SettingPage> with BasePageMixin<SettingPage, SettingPagePresenter>, AutomaticKeepAliveClientMixin<SettingPage> implements SettingView {
-
+class _SettingPageState extends State<SettingPage>
+    with
+        BasePageMixin<SettingPage, SettingPagePresenter>,
+        AutomaticKeepAliveClientMixin<SettingPage>
+    implements SettingView {
   late SettingPagePresenter _settingPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
   Map<String, dynamic> _userInfo = {};
@@ -47,7 +51,35 @@ class _SettingPageState extends State<SettingPage> with BasePageMixin<SettingPag
     setState(() {});
   }
 
-  void bindWx() {
+  void bindWx() async {
+    Fluwx fluwx = Fluwx();
+
+    fluwx.registerApi(
+        appId: "wxfb033d09d2eecaf0",
+        universalLink: "https://demo.shenmo-ai.net/ios/");
+    if (await fluwx.isWeChatInstalled) {
+      fluwx
+          .authBy(
+              which: NormalAuth(
+                  scope: 'snsapi_userinfo', state: 'wechat_sdk_demo_test'))
+          .then((data) {});
+      fluwx.addSubscriber((response) {
+        if (response is WeChatAuthResponse) {
+          String? result = response.code;
+          // _registerPresenter.getWxInfo(response.code ?? "");
+          getWxInfo(result!);
+
+          // setState(() {
+          //   String result =
+          //       'state :${response.state} \n code:${response.code}';
+          //   print(result);
+          // });
+        }
+      });
+    } else {
+      Toast.show("没有安装微信");
+    }
+
     FlutterToNative.jumpToWechatLogin().then((value) {
       getWxInfo(value);
     });
@@ -63,7 +95,7 @@ class _SettingPageState extends State<SettingPage> with BasePageMixin<SettingPag
       },
       isShow: true,
       onSuccess: (data) {
-        if(data != null) {
+        if (data != null) {
           confirmBind(data.data);
         } else {
           Toast.show(
@@ -81,7 +113,7 @@ class _SettingPageState extends State<SettingPage> with BasePageMixin<SettingPag
     );
   }
 
-  void confirmBind(LoginInfoDataData data){
+  void confirmBind(LoginInfoDataData data) {
     Options op = Options();
     op.contentType = "application/json";
     Map<String, dynamic> params = {};
@@ -132,34 +164,30 @@ class _SettingPageState extends State<SettingPage> with BasePageMixin<SettingPag
   }
 
   void unbindWx() {
-    _settingPagePresenter.requestNetwork<ResultData>(
-      Method.post,
-      url: HttpApi.unbindWX,
-      isShow: true,
-      isClose: true,
-      onSuccess: (result) {
-        if (result?.code == 200) {
-          Toast.show(
-            '解绑成功',
-            duration: 1000,
-          );
-          _userInfo['openid'] = '';
-          SpUtil.putObject(Constant.userInfoKey, _userInfo);
-          Future.delayed(const Duration(seconds: 1), init);
-        } else {
-          Toast.show(
-            result?.msg,
-            duration: 1000,
-          );
-        }
-      },
-      onError: (code, msg) {
+    _settingPagePresenter.requestNetwork<ResultData>(Method.post,
+        url: HttpApi.unbindWX,
+        isShow: true,
+        isClose: true, onSuccess: (result) {
+      if (result?.code == 200) {
         Toast.show(
-          msg,
+          '解绑成功',
+          duration: 1000,
+        );
+        _userInfo['openid'] = '';
+        SpUtil.putObject(Constant.userInfoKey, _userInfo);
+        Future.delayed(const Duration(seconds: 1), init);
+      } else {
+        Toast.show(
+          result?.msg,
           duration: 1000,
         );
       }
-    );
+    }, onError: (code, msg) {
+      Toast.show(
+        msg,
+        duration: 1000,
+      );
+    });
   }
 
   @override
@@ -172,7 +200,8 @@ class _SettingPageState extends State<SettingPage> with BasePageMixin<SettingPag
   Widget build(BuildContext context) {
     super.build(context);
 
-    Widget session(String icon, String label, {Function()? onPress, Widget? child}) {
+    Widget session(String icon, String label,
+        {Function()? onPress, Widget? child}) {
       return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
@@ -210,8 +239,7 @@ class _SettingPageState extends State<SettingPage> with BasePageMixin<SettingPag
                   ),
                 ],
               ),
-              if (child != null)
-                child,
+              if (child != null) child,
             ],
           ),
         ),
@@ -284,7 +312,7 @@ class _SettingPageState extends State<SettingPage> with BasePageMixin<SettingPag
                         'setting_wx',
                         '微信',
                         onPress: () {
-                          if(_isBindedWx) {
+                          if (_isBindedWx) {
                             ConfirmUtils.show(
                               context: context,
                               title: '要解除与微信的绑定吗？',
