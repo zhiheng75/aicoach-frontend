@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/person/entity/basec_onfig_bean.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
@@ -116,6 +117,12 @@ class _PurchasePageState extends State<PurchasePage>
   }
 
   void openIllustration() {
+    Map<String, dynamic> user = LoginManager.getUserInfo();
+
+    String userPhone = user['phone'].toString();
+    if (userPhone == "170001234567") {
+      return;
+    }
     showDialog(
       context: context,
       barrierColor: Colors.transparent,
