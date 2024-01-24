@@ -254,7 +254,7 @@ class _ReportPageState extends State<ReportPage>
                           height: 8.0,
                         ),
                         Text(
-                          '时长：${item.duration ~/ 60}min',
+                          '时长：${item.duration > 60 ? '${item.duration ~/ 60}min' : '${item.duration}s'}',
                           style: const TextStyle(
                             fontSize: 14.0,
                             fontWeight: FontWeight.w400,
@@ -377,7 +377,7 @@ class _ReportPageState extends State<ReportPage>
                       height: 8.0,
                     ),
                     Text(
-                      '时长：${item.duration ~/ 60}min',
+                      '时长：${item.duration > 60 ? '${item.duration ~/ 60}min' : '${item.duration}s'}',
                       style: const TextStyle(
                         fontSize: 14.0,
                         fontWeight: FontWeight.w400,
