@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../home/provider/home_provider.dart';
+import '../../home/widget/expiration_reminder.dart';
 import '../../loginManager/login_manager.dart';
 import '../../res/colors.dart';
 import '../../util/EventBus.dart';
@@ -22,16 +23,18 @@ import 'example.dart';
 import 'record.dart';
 
 class BottomBar extends StatefulWidget {
-  const BottomBar({
+  BottomBar({
     Key? key,
     required this.chatWebsocket,
     required this.controller,
     required this.recordController,
+    this.isCollectInformation,
   }) : super(key: key);
 
   final ChatWebsocket chatWebsocket;
   final BottomBarController controller;
   final RecordController recordController;
+  bool? isCollectInformation;
 
   @override
   State<BottomBar> createState() => _BottomBarState();
@@ -92,26 +95,29 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
 
     bool isAvailable = true;
 
-    // int usageTime = _homeProvider.usageTime;
-    // int vipState = _homeProvider.vipState;
-    // int expDay = _homeProvider.expDay;
-    // // 是否体验到期
-    // if (vipState == 0 && (usageTime == 0 || expDay == 0)) {
-    //   isAvailable = false;
-    // }
-    // // 是否会员到期
-    // if (vipState == 2) {
-    //   isAvailable = false;
-    // }
-    // if (!isAvailable) {
-    //   showModalBottomSheet(
-    //     context: context,
-    //     backgroundColor: Colors.transparent,
-    //     barrierColor: Colors.transparent,
-    //     isScrollControlled: true,
-    //     isDismissible: false,
-    //     builder: (_) => ExpirationReminder(),
-    //   );
+    // // 新用户采集不花费使用时间
+    // if (widget.isCollectInformation != true) {
+    //   int usageTime = _homeProvider.usageTime;
+    //   int vipState = _homeProvider.vipState;
+    //   int expDay = _homeProvider.expDay;
+    //   // 是否体验到期
+    //   if (vipState == 0 && (usageTime == 0 || expDay == 0)) {
+    //     isAvailable = false;
+    //   }
+    //   // 是否会员到期
+    //   if (vipState == 2) {
+    //     isAvailable = false;
+    //   }
+    //   if (!isAvailable) {
+    //     showModalBottomSheet(
+    //       context: context,
+    //       backgroundColor: Colors.transparent,
+    //       barrierColor: Colors.transparent,
+    //       isScrollControlled: true,
+    //       isDismissible: false,
+    //       builder: (_) => ExpirationReminder(),
+    //     );
+    //   }
     // }
     return isAvailable;
   }

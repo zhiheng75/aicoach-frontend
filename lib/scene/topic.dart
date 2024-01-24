@@ -1,8 +1,6 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
-import 'package:Bubble/util/confirm_utils.dart';
-import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -15,14 +13,16 @@ import '../chat/widget/record.dart';
 import '../home/provider/home_provider.dart';
 import '../mvp/base_page.dart';
 import '../util/EventBus.dart';
+import '../util/confirm_utils.dart';
 import '../util/media_utils.dart';
 import '../widgets/load_data.dart';
 import '../widgets/load_fail.dart';
-import 'presenter/scene_page_presenter.dart';
-import 'view/scene_view.dart';
+import '../widgets/load_image.dart';
+import 'presenter/topic_page_presenter.dart';
+import 'view/topic_view.dart';
 
-class ScenePage extends StatefulWidget {
-  const ScenePage({
+class TopicPage extends StatefulWidget {
+  const TopicPage({
     Key? key,
     required this.onEnd,
   }) : super(key: key);
@@ -30,14 +30,14 @@ class ScenePage extends StatefulWidget {
   final Function() onEnd;
 
   @override
-  State<ScenePage> createState() => _SceneState();
+  State<TopicPage> createState() => _TopicState();
 }
 
-class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePagePresenter>, AutomaticKeepAliveClientMixin<ScenePage>, WidgetsBindingObserver implements SceneView {
+class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPagePresenter>, AutomaticKeepAliveClientMixin<TopicPage>, WidgetsBindingObserver implements TopicView {
   final ChatWebsocket _chatWebsocket = ChatWebsocket();
   final MediaUtils _mediaUtils = MediaUtils();
   late HomeProvider _homeProvider;
-  late ScenePagePresenter _scenePagePresenter;
+  late TopicPagePresenter _topicPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
   // 状态 loading-加载中 fail-失败 success-成功
   String _pageState = 'loading';
@@ -63,7 +63,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
   void connectWebsocket() async {
     try {
       String characterId = _homeProvider.character.characterId;
-      String sceneId = _homeProvider.scene!.id.toString();
+      String sceneId = _homeProvider.topic!.id.toString();
       _homeProvider.sessionId = await _chatWebsocket.startChat(
         characterId: characterId,
         sceneId: sceneId,
@@ -71,7 +71,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
           _pageState = 'success';
           setState(() {});
           _homeProvider.addIntroductionMessage();
-          _homeProvider.addTipMessage('Scene started！');
+          _homeProvider.addTipMessage('Topic started！');
           _bottomBarControll.setDisabled(false);
           _mediaUtils.resumeUse();
         },
@@ -137,7 +137,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
     if (!_isConversationEnd) {
       ConfirmUtils.show(
         context: context,
-        title: '结束场景对话',
+        title: '结束话题对话',
         buttonDirection: 'vertical',
         confirmButtonText: '结束对话',
         cancelButtonText: '留在对话中',
@@ -146,7 +146,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
           widget.onEnd();
         },
         child: const Text(
-          '场景对话进行中，确定要结束吗？',
+          '话题对话进行中，确定要结束吗？',
           style: TextStyle(
             fontSize: 15.0,
             fontWeight: FontWeight.w400,
@@ -187,7 +187,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
           child: Column(
             children: <Widget>[
               LoadImage(
-                provider.scene?.cover ?? '',
+                provider.topic?.cover ?? '',
               ),
               Expanded(
                 child: ImageFiltered(
@@ -196,7 +196,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
                     sigmaY: 7.0,
                   ),
                   child: LoadImage(
-                    provider.scene?.cover ?? '',
+                    provider.topic?.cover ?? '',
                     fit: BoxFit.fitHeight,
                   ),
                 ),
@@ -306,9 +306,9 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
   }
 
   @override
-  ScenePagePresenter createPresenter() {
-    _scenePagePresenter = ScenePagePresenter();
-    return _scenePagePresenter;
+  TopicPagePresenter createPresenter() {
+    _topicPagePresenter = TopicPagePresenter();
+    return _topicPagePresenter;
   }
 
   @override

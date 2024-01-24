@@ -84,35 +84,37 @@ class HomeProvider extends ChangeNotifier {
   Future<void> getUsageTime() async {
     String deviceId = await Device.getDeviceId();
     await DioUtils.instance.requestNetwork<ResultData>(
-        Method.get, HttpApi.permission,
-        queryParameters: {
-          'device_id': deviceId,
-        }, onSuccess: (result) {
-      Log.e("这里=============================");
+      Method.get, HttpApi.permission,
+      queryParameters: {
+        'device_id': deviceId,
+      },
+      onSuccess: (result) {
+        Log.e("这里=============================");
 
-      Log.e(result.toString());
-      Log.e("=============================");
+        Log.e(result.toString());
+        Log.e("=============================");
 
-      if (result == null) {
-        return;
-      }
-      if (result.data == null) {
-        return;
-      }
-      Map<String, dynamic> data = result.data! as Map<String, dynamic>;
-      if (data.containsKey('left_time')) {
-        _usageTime = data['left_time'];
-      }
-      if (data.containsKey('is_member')) {
-        _vipState = data['is_member'];
-      }
-      if (data.containsKey('exp_day')) {
-        _expDay = data['exp_day'];
-      }
-      if (data.containsKey('membership_expiry_date')) {
-        _expireDate = data['membership_expiry_date'] ?? '';
-      }
-    });
+        if (result == null) {
+          return;
+        }
+        if (result.data == null) {
+          return;
+        }
+        Map<String, dynamic> data = result.data! as Map<String, dynamic>;
+        if (data.containsKey('left_time')) {
+          _usageTime = data['left_time'];
+        }
+        if (data.containsKey('is_member')) {
+          _vipState = data['is_member'];
+        }
+        if (data.containsKey('exp_day')) {
+          _expDay = data['exp_day'];
+        }
+        if (data.containsKey('membership_expiry_date')) {
+          _expireDate = data['membership_expiry_date'] ?? '';
+        }
+      },
+    );
   }
 
   void resetChatParams() {

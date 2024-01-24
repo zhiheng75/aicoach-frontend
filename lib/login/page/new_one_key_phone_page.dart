@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/dialog/agreement_dialog.dart';
+import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/login/entity/login_info_entity.dart';
 import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/login_router.dart';
@@ -14,6 +15,7 @@ import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/EventBus.dart';
 import 'package:Bubble/util/change_notifier_manage.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/image_utils.dart';
@@ -25,6 +27,7 @@ import 'package:Bubble/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:Bubble/login/presenter/register_presenter.dart';
+import 'package:provider/provider.dart';
 import '../../home/home_router.dart';
 import '../../mvp/base_page.dart';
 import 'package:fluwx/fluwx.dart';
@@ -462,6 +465,11 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     // SpUtil.getObj(Constant.userInfoKey, (v) => {
     //   print(v),
     // });
+
+    // 刷新体验时间
+    Provider.of<HomeProvider>(context, listen: false).getUsageTime();
+    // 触发新用户信息收集
+    EventBus().emit('COLLECT_INFORMATION', 'login');
     NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
   }
 

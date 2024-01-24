@@ -1,10 +1,12 @@
 import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/scene/collect_information.dart';
 import 'package:Bubble/util/EventBus.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:jverify/jverify.dart';
+import 'package:provider/provider.dart';
 
 import '../chat/chat.dart';
 import '../constant/constant.dart';
@@ -28,14 +30,17 @@ class _HomePageState extends State<HomeNewPage>
         BasePageMixin<HomeNewPage, HomeNewPagePresenter>,
         AutomaticKeepAliveClientMixin<HomeNewPage>
     implements HomeNewView {
+  late HomeProvider _homeProvider;
   late HomeNewPagePresenter _homeNewPagePresenter;
   // chat-对话（默认） scene-场景 exam-模考
   String _currentTab = '';
 
   void init() {
     // 初始化手机号一键登录插件
-    // initPlatformState();
+    initPlatformState();
     initCollectInformation();
+    // 获取体验时间
+    _homeProvider.getUsageTime();
   }
 
   Future<void> initPlatformState() async {
@@ -65,6 +70,7 @@ class _HomePageState extends State<HomeNewPage>
         isClose: type != 'login',
         onSuccess: (result) {
           if (result == null ||
+              result.code != 200 ||
               result.data == null ||
               (result.data as Map<String, dynamic>)['is_evaluation'] == 1) {
             if (_currentTab == '') {
@@ -113,9 +119,10 @@ class _HomePageState extends State<HomeNewPage>
   @override
   void initState() {
     super.initState();
+    _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     Future.delayed(Duration.zero, () {
       init();
-      _currentTab = "chat";
+      _currentTab = 'chat';
       setState(() {});
       // EventBus().emit('COLLECT_INFORMATION', 'init');
     });

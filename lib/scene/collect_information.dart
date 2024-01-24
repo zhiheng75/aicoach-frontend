@@ -264,6 +264,7 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
                     chatWebsocket: _chatWebsocket,
                     controller: _bottomBarControll,
                     recordController: _recordController,
+                    isCollectInformation: true,
                   ),
                 ),
               ],
