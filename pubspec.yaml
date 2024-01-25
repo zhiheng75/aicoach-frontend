@@ -124,11 +124,13 @@ dependencies:
   fl_chart: ^0.65.0
   extended_nested_scroll_view: ^6.2.1
   #ffmpeg_kit_flutter https://github.com/arthenica/ffmpeg-kit/issues
-  ffmpeg_kit_flutter_min: ^6.0.3
+  # ffmpeg_kit_flutter_min: ^6.0.3
+  audioplayers: ^5.2.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+    
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

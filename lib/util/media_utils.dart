@@ -34,15 +34,48 @@ class MediaUtils {
 
   bool get banUsePlayer => _banUsePlayer;
 
+  Future<bool> getPermissionStatus() async {
+    Permission permission = Permission.microphone;
+    //granted 通过，denied 被拒绝，permanentlyDenied 拒绝且不在提示
+    PermissionStatus status = await permission.status;
+    if (status.isGranted) {
+      return true;
+    } else if (status.isDenied) {
+      requestPermission(permission);
+    } else if (status.isPermanentlyDenied) {
+      openAppSettings();
+    } else if (status.isRestricted) {
+      requestPermission(permission);
+    } else {}
+    return false;
+  }
+
+  ///申请权限
+  void requestPermission(Permission permission) async {
+    PermissionStatus status = await permission.request();
+    if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
+  }
+
   /** 录音器 */
   void startRecord({
     required Function(Uint8List buffer) onData,
     required Function(Uint8List?) onComplete,
   }) async {
-    try {
+    // try {
+
+    //获取麦克风权限
+    await getPermissionStatus().then((value) async {
+      if (!value) {
+        return;
+      }
+
       _recorder = await _createRecorder();
+      // await _recorder?.openRecorder();
       if (_recorder == null) {
-        throw Exception('录音功能初始化失败，请重启App');
+        // throw Exception('录音功能初始化失败，请重启App');
+        return;
       }
       // 监听数据流
       _addListener(onData, onComplete);
@@ -52,9 +85,11 @@ class MediaUtils {
         toStream: _controller!.sink,
         audioSource: AudioSource.voice_recognition,
       );
-    } catch (e) {
-      rethrow;
-    }
+    });
+
+    // } catch (e) {
+    //   rethrow;
+    // }
   }
 
   Future<void> stopRecord() async {
