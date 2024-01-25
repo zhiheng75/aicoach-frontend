@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:Bubble/scene/topic.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart' hide ScreenUtil;
 import 'package:flutter/material.dart';
@@ -304,10 +305,24 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     _homeProvider.resetChatParams();
     _homeProvider.topic = topic;
     Future.delayed(Duration.zero, () {
-      _homeProvider.addIntroductionMessage();
-      _homeProvider.addBackgroundMessage();
-      _homeProvider.addTipMessage('Topic started！');
-      _bottomBarControll.setDisabled(false);
+      // _homeProvider.addIntroductionMessage();
+      // _homeProvider.addBackgroundMessage();
+      // _homeProvider.addTipMessage('Topic started！');
+      // _bottomBarControll.setDisabled(false);
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        barrierColor: Colors.transparent,
+        isScrollControlled: true,
+        isDismissible: false,
+        clipBehavior: Clip.none,
+        enableDrag: false,
+        builder: (_) => TopicPage(
+          onEnd: () {
+            startNormalChat(_homeProvider.character);
+          },
+        ),
+      );
     });
   }
 

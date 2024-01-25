@@ -18,7 +18,7 @@ class AnalysisEntity {
       entity.sentence = json['sentence'];
     }
     if (json['score'] != null) {
-      entity.sentence = json['score'];
+      entity.score = json['score'];
     }
     if (json['grammar'] != null && json['grammar'] is List) {
       entity.grammar = (json['grammar'] as List).map((item) => GrammarEntity.fromJson(item)).toList();

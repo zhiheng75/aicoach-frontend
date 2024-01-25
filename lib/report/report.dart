@@ -3,8 +3,10 @@
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/util/device_utils.dart';
-import 'package:Bubble/util/toast_utils.dart';
+import 'package:Bubble/widgets/load_data.dart';
+import 'package:Bubble/widgets/load_fail.dart';
 import 'package:Bubble/widgets/load_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -37,7 +39,9 @@ class _ReportPageState extends State<ReportPage>
   String _type = 'chat';
   int _page = 1;
   int _loading = 0;
+  String _state = '';
   List<dynamic> _list = [];
+  CancelToken? _cancelToken;
 
   void init() {
     _page = 1;
@@ -46,6 +50,7 @@ class _ReportPageState extends State<ReportPage>
 
   void getMore() {
     _loading = 1;
+    _state = '';
     setState(() {});
     if (_type == 'chat') {
       getChatReportList();
@@ -55,6 +60,10 @@ class _ReportPageState extends State<ReportPage>
   }
 
   void getChatReportList() async {
+    if (_cancelToken != null && _loading == 1) {
+      _cancelToken!.cancel();
+    }
+    _cancelToken = CancelToken();
     if (_page == 1) {
       _list = [];
     }
@@ -63,27 +72,37 @@ class _ReportPageState extends State<ReportPage>
       url: HttpApi.studyReportList,
       isShow: false,
       isClose: false,
+      cancelToken: _cancelToken,
       queryParameters: {
         'device_id': await Device.getDeviceId(),
       },
       onSuccess: (result) {
-        _loading = 0;
-        setState(() {});
+        _cancelToken = null;
         if (result == null || result.data == null) {
+          _loading = 0;
+          _state = 'fail';
+          if (mounted) {
+            setState(() {});
+          }
           return;
         }
         List<dynamic> data = result.data as List<dynamic>;
         List<ChatReportEntity> list =
             data.map((item) => ChatReportEntity.fromJson(item)).toList();
         _list.addAll(list);
+        _loading = 0;
+        _state = 'success';
+        if (mounted) {
+          setState(() {});
+        }
       },
       onError: (code, msg) {
+        _cancelToken = null;
         _loading = 0;
-        setState(() {});
-        Toast.show(
-          msg,
-          duration: 1000,
-        );
+        _state = 'fail';
+        if (mounted) {
+          setState(() {});
+        }
       },
     );
   }
@@ -113,6 +132,14 @@ class _ReportPageState extends State<ReportPage>
   void initState() {
     super.initState();
     init();
+  }
+
+  @override
+  void dispose() {
+    if (_cancelToken != null && _loading == 1) {
+      _cancelToken!.cancel();
+    }
+    super.dispose();
   }
 
   @override
@@ -161,11 +188,12 @@ class _ReportPageState extends State<ReportPage>
     Widget tabbar = Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        barItem('口语课报告', 'chat'),
-        const SizedBox(
-          width: 8.0,
-        ),
+        // barItem('口语课报告', 'chat'),
+        // const SizedBox(
+        //   width: 8.0,
+        // ),
         // barItem('模考报告', 'exam'),
+        barItem('口语课报告', 'chat'),
       ],
     );
 
@@ -226,7 +254,7 @@ class _ReportPageState extends State<ReportPage>
                           height: 8.0,
                         ),
                         Text(
-                          '时长：${item.duration ~/ 60}min',
+                          '时长：${item.duration > 60 ? '${item.duration ~/ 60}min' : '${item.duration}s'}',
                           style: const TextStyle(
                             fontSize: 14.0,
                             fontWeight: FontWeight.w400,
@@ -349,7 +377,7 @@ class _ReportPageState extends State<ReportPage>
                       height: 8.0,
                     ),
                     Text(
-                      '时长：${item.duration ~/ 60}min',
+                      '时长：${item.duration > 60 ? '${item.duration ~/ 60}min' : '${item.duration}s'}',
                       style: const TextStyle(
                         fontSize: 14.0,
                         fontWeight: FontWeight.w400,
@@ -444,45 +472,63 @@ class _ReportPageState extends State<ReportPage>
 
     Widget list = const SizedBox();
 
-    if (_loading == 0 && _list.isEmpty) {
-      list = Container(
-        alignment: Alignment.center,
-        child: const Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            LoadAssetImage(
-              'no_data',
-              width: 63.0,
-              height: 63.0,
-            ),
-            SizedBox(
-              height: 21.0,
-            ),
-            Text(
-              '还没有口语学习报告，\n快点开始学习吧！',
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w400,
-                color: Colours.color_999999,
-                letterSpacing: 0.05,
-              ),
-            ),
-          ],
-        ),
+    if (_loading == 1) {
+      list = const Center(
+        child: LoadData(),
       );
     }
 
-    if (_loading == 0 && _list.isNotEmpty) {
-      list = ListView.builder(
-        padding: EdgeInsets.zero,
-        itemCount: _list.length,
-        itemBuilder: (_, i) => Padding(
-          padding: EdgeInsets.only(
-            bottom: i == _list.length - 1 ? 0 : 16.0,
+    if (_loading == 0) {
+      if (_state == 'success') {
+        if (_list.isEmpty) {
+          list = Container(
+            alignment: Alignment.center,
+            child: const Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                LoadAssetImage(
+                  'no_data',
+                  width: 63.0,
+                  height: 63.0,
+                ),
+                SizedBox(
+                  height: 21.0,
+                ),
+                Text(
+                  '还没有口语学习报告，\n快点开始学习吧！',
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w400,
+                    color: Colours.color_999999,
+                    letterSpacing: 0.05,
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          list = ListView.builder(
+            padding: EdgeInsets.zero,
+            itemCount: _list.length,
+            itemBuilder: (_, i) => Padding(
+              padding: EdgeInsets.only(
+                bottom: i == _list.length - 1 ? 0 : 16.0,
+              ),
+              child: listItem(_list.elementAt(i)),
+            ),
+          );
+        }
+      }
+      if (_state == 'fail') {
+        list = Center(
+          child: LoadFail(
+            reload: () {
+              _page = 1;
+              getMore();
+            },
           ),
-          child: listItem(_list.elementAt(i)),
-        ),
-      );
+        );
+      }
     }
 
     return Scaffold(

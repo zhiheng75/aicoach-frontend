@@ -15,8 +15,11 @@ import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/my_only_img_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
+import '../../home/provider/home_provider.dart';
 import '../../mvp/base_page.dart';
+import '../../util/EventBus.dart';
 import '../../util/change_notifier_manage.dart';
 
 class CheckCodePage extends StatefulWidget {
@@ -245,6 +248,11 @@ class _CheckCodePageState extends State<CheckCodePage>
       Constant.jverify.dismissLoginAuthView();
       hideLoading();
     }
+
+    // 刷新体验时间
+    Provider.of<HomeProvider>(context, listen: false).getUsageTime();
+    // 触发新用户信息收集
+    EventBus().emit('COLLECT_INFORMATION', 'login');
 
     NavigatorUtils.push(
       context,
@@ -499,6 +507,10 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   void loginSuccess() {
     // TODO: implement loginSuccess
 
+    // 刷新体验时间
+    Provider.of<HomeProvider>(context, listen: false).getUsageTime();
+    // 触发新用户信息收集
+    EventBus().emit('COLLECT_INFORMATION', 'login');
     NavigatorUtils.push(context, PersonalRouter.person, replace: true);
   }
 
