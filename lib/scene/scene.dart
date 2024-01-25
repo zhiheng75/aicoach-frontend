@@ -74,7 +74,6 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
           _homeProvider.addIntroductionMessage();
           _homeProvider.addTipMessage('Scene started！');
           _bottomBarControll.setDisabled(false);
-          _mediaUtils.resumeUse();
           // 倒计时
           _homeProvider.startUsageTimeCutdown(() {
             showModalBottomSheet(

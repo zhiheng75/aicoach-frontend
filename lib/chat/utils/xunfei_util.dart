@@ -83,6 +83,30 @@ class XunfeiUtil {
 
     return frameData;
   }
+  static Map<String, dynamic> createFrameDataForRecognizationForCN(int frame, {Uint8List? audio}) {
+    Map<String, dynamic> frameData = {};
+
+    if (frame == 0) {
+      frameData['common'] = {
+        'app_id': RECOGNIZATION_APP_ID,
+      };
+      frameData['business'] = {
+        'language': 'zh_cn',
+        'domain': 'iat',
+        // 设为最大10s
+        'vad_eos': 10000,
+        'vinfo': 1,
+      };
+    }
+    frameData['data'] = {
+      'status': frame,
+      'format': 'audio/L16;rate=16000',
+      'encoding': 'raw',
+      'audio': base64.encode(audio ?? Uint8List(0)),
+    };
+
+    return frameData;
+  }
   static Map<String, dynamic> createFrameDataForEvaluation(int frame, {Uint8List? audio, String? text,  int audioFrame = 1}) {
     Map<String, dynamic> frameData = {};
 

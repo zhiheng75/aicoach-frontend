@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_final_fields
 
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:Bubble/util/media_utils.dart';
 import 'package:dio/dio.dart';
@@ -103,16 +102,8 @@ class _EvaluationState extends State<Evaluation> {
     }
     await _mediaUtils.stopPlayLoop(true);
     if (type == 'user') {
-      List<int> bytes = [];
-      List<Uint8List> bufferList = widget.message.audio;
-      for (Uint8List element in bufferList) {
-        bytes.addAll(element.map((item) => item).toList());
-      }
       _mediaUtils.play(
-        buffer: _mediaUtils.toWav(bytes),
-        whenFinished: () {
-          _mediaUtils.resumeUse();
-        },
+        pcmBuffer: widget.message.audio,
       );
     }
     if (type == 'standard') {

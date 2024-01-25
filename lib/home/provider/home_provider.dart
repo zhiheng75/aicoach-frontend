@@ -150,6 +150,10 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateCharacter(CharacterEntity character) {
+    _character = character;
+  }
+
   // 创建普通消息
   NormalMessage createNormalMessage([bool isUser = false]) {
     NormalMessage normalMessage = NormalMessage();

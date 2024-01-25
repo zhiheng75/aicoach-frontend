@@ -74,7 +74,6 @@ class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPa
           _homeProvider.addIntroductionMessage();
           _homeProvider.addTipMessage('Topic started！');
           _bottomBarControll.setDisabled(false);
-          _mediaUtils.resumeUse();
           // 倒计时
           _homeProvider.startUsageTimeCutdown(() {
             showModalBottomSheet(

@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:Bubble/scene/topic.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart' hide ScreenUtil;
@@ -290,7 +289,6 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       normalMessage.text = _character!.text;
       normalMessage.isTextEnd = true;
       _homeProvider.addNormalMessage(normalMessage);
-      _mediaUtils.resumeUse();
       _mediaUtils.play(
         url: _character!.audio,
         whenFinished: () {
@@ -453,6 +451,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
               chatWebsocket: _chatWebsocket,
               controller: _bottomBarControll,
               recordController: _recordController,
+              language: 'cn',
             ),
           ),
           Positioned(

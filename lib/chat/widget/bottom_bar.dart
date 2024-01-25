@@ -29,12 +29,14 @@ class BottomBar extends StatefulWidget {
     required this.controller,
     required this.recordController,
     this.isCollectInformation,
+    this.language,
   }) : super(key: key);
 
   final ChatWebsocket chatWebsocket;
   final BottomBarController controller;
   final RecordController recordController;
   bool? isCollectInformation;
+  String? language;
 
   @override
   State<BottomBar> createState() => _BottomBarState();
@@ -254,6 +256,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     _chatWebsocket = widget.chatWebsocket;
+    _recognizeUtil.setLanguage(widget.language ?? 'en');
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     // 监听App状态
     WidgetsBinding.instance.addObserver(this);

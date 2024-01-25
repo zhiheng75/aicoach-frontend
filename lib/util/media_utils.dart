@@ -4,19 +4,22 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:Bubble/util/log_utils.dart';
-// import 'package:ffmpeg_kit_flutter_min/ffmpeg_session.dart';
-// import 'package:ffmpeg_kit_flutter_min/return_code.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
-// import 'package:ffmpeg_kit_flutter_min/ffmpeg_kit.dart';
 
-List<Uint8List> _bufferList = [];
-bool _playing = false;
+// 获取临时文件夹
+Future<String> getTemDirPath() async {
+  Directory dir = await getTemporaryDirectory();
+  return dir.path;
+}
+// 列表播放
+List<Player> _playerList = [];
+Player? _currentPlayer;
 
 class MediaUtils {
   factory MediaUtils() {
@@ -26,7 +29,6 @@ class MediaUtils {
 
   static final MediaUtils _mediaUtils = MediaUtils._internal();
   FlutterSoundRecorder? _recorder;
-  FlutterSoundPlayer? _player;
   StreamSubscription? _subscription;
   StreamController<Food>? _controller;
   // 是否禁用播放器
@@ -87,59 +89,6 @@ class MediaUtils {
     return isRequest;
   }
 
-  /** 上传音频 */
-  Uint8List toWav(List<int> data) {
-    var channels = 1;
-
-    int sampleRate = 16000;
-
-    int byteRate = ((16 * sampleRate * channels) / 8).round();
-
-    var size = data.length;
-
-    var fileSize = size + 36;
-
-    return Uint8List.fromList([
-      // "RIFF"
-      82, 73, 70, 70,
-      fileSize & 0xff,
-      (fileSize >> 8) & 0xff,
-      (fileSize >> 16) & 0xff,
-      (fileSize >> 24) & 0xff,
-      // WAVE
-      87, 65, 86, 69,
-      // fmt
-      102, 109, 116, 32,
-      // fmt chunk size 16
-      16, 0, 0, 0,
-      // Type of format
-      1, 0,
-      // One channel
-      channels, 0,
-      // Sample rate
-      sampleRate & 0xff,
-      (sampleRate >> 8) & 0xff,
-      (sampleRate >> 16) & 0xff,
-      (sampleRate >> 24) & 0xff,
-      // Byte rate
-      byteRate & 0xff,
-      (byteRate >> 8) & 0xff,
-      (byteRate >> 16) & 0xff,
-      (byteRate >> 24) & 0xff,
-      // Uhm
-      ((16 * channels) / 8).round(), 0,
-      // bitsize
-      16, 0,
-      // "data"
-      100, 97, 116, 97,
-      size & 0xff,
-      (size >> 8) & 0xff,
-      (size >> 16) & 0xff,
-      (size >> 24) & 0xff,
-      ...data
-    ]);
-  }
-
   Future<FlutterSoundRecorder?> _createRecorder() async {
     FlutterSoundRecorder? recorder;
     try {
@@ -196,174 +145,314 @@ class MediaUtils {
   /** 播放器 */
   void play({
     String? url,
-    Uint8List? buffer,
+    List<Uint8List>? pcmBuffer,
+    Uint8List? mp3Buffer,
     Function()? whenFinished,
   }) async {
-    try {
-      if (_player == null) {
-        FlutterSoundPlayer? player = await _createPlayer();
-        if (player == null) {
-          throw Exception();
-        }
-        _player = player;
-      }
-      Log.d('播放语音', tag: 'play');
-      _player!.startPlayer(
-        fromURI: url,
-        fromDataBuffer: buffer,
-        whenFinished: () async {
-          Log.d('播放语音结束', tag: 'play');
-          if (whenFinished != null) {
-            whenFinished();
-          }
-        },
-      );
-    } catch (e) {
-      Log.d('播放语音出错', tag: 'play');
-      if (whenFinished != null) {
-        whenFinished();
-      }
+    whenFinished ??= () {};
+    if (url == null && pcmBuffer == null && mp3Buffer == null) {
+      whenFinished();
+      return;
     }
+    // 创建
+    if (url != null) {
+      FilePlayer filePlayerByUrl = FilePlayer(whenFinished);
+      filePlayerByUrl.url = url;
+      _playerList.add(filePlayerByUrl);
+    }
+    if (pcmBuffer != null) {
+      _playerList.add(BufferPlayer(pcmBuffer, whenFinished));
+    }
+    if (mp3Buffer != null) {
+      FilePlayer filePlayerByBuffer = FilePlayer(whenFinished);
+      filePlayerByBuffer.buffer = mp3Buffer;
+      _playerList.add(filePlayerByBuffer);
+    }
+    if (_currentPlayer != null) {
+      return;
+    }
+    _play();
   }
 
   void playLoop({
     required Uint8List buffer,
     Function()? whenFinished,
   }) async {
-    if (_banUsePlayer) {
-      Log.d('ban', tag: 'playLoop');
-      if (whenFinished != null) {
-        whenFinished();
-      }
-      return;
-    }
-    _bufferList.add(buffer);
-    if (_playing) {
-      return;
-    }
-    _playLoop(
+    play(
+      mp3Buffer: buffer,
       whenFinished: whenFinished,
     );
   }
 
   Future<void> stopPlay([bool banUsePlayer = false]) async {
-    _banUsePlayer = banUsePlayer;
-    if (_player == null) {
-      return;
+    // 备份未播放
+    List<Player> playListForUnplay = _playerList;
+    _playerList = [];
+    if (_currentPlayer != null) {
+      playListForUnplay.insert(0, _currentPlayer!);
     }
-    if (_player!.isPlaying) {
-      _player!.audioPlayerFinished(PlayerState.isPlaying.index);
-      await Future.delayed(const Duration(milliseconds: 300));
-      await _player!.stopPlayer();
-      await _destroyPlayer();
+    // 停止
+    for (Player player in playListForUnplay) {
+      if (player is BufferPlayer) {
+        await (player as BufferPlayer).stop();
+      }
+      if (player is FilePlayer) {
+        await (player as FilePlayer).stop();
+      }
     }
+    _currentPlayer = null;
   }
 
   Future<void> stopPlayLoop([bool banUsePlayer = false]) async {
     await stopPlay(banUsePlayer);
-    _playing = false;
   }
 
-  void resumeUse() {
-    _banUsePlayer = false;
-  }
-
-  Future<FlutterSoundPlayer?> _createPlayer() async {
-    FlutterSoundPlayer? player;
-    try {
-      player = await FlutterSoundPlayer(logLevel: Level.nothing).openPlayer();
-    } catch (e) {
-      rethrow;
-    }
-    return player;
-  }
-
-  void _playLoop({
-    Function()? whenFinished,
-  }) async {
-    if (_banUsePlayer || _bufferList.isEmpty) {
-      Log.d('ban or end', tag: '_playLoop');
-      if (whenFinished != null) {
-        whenFinished();
-      }
+  Future<void> _play() async {
+    if (_playerList.isEmpty) {
       return;
     }
-    _playing = true;
-    Uint8List buffer = _bufferList.removeAt(0);
-    try {
-      saveMp3(buffer, (url) {
-        play(
-          url: url,
-          whenFinished: () {
-            _playing = false;
-            _playLoop(
-              whenFinished: whenFinished,
-            );
-          },
-        );
+    Player player = _playerList.removeAt(0);
+    _currentPlayer = player;
+    if (_currentPlayer is BufferPlayer) {
+      (_currentPlayer as BufferPlayer).play(() {
+        _currentPlayer = null;
+        _play();
       });
-    } catch (e) {
-      _playing = false;
-      _playLoop(
-        whenFinished: whenFinished,
-      );
+    }
+    if (_currentPlayer is FilePlayer) {
+      (_currentPlayer as FilePlayer).play(() {
+        _currentPlayer = null;
+        _play();
+      });
+    }
+  }
+}
+
+class AudioConvertUtil {
+
+  static Future<String> saveMp3Buffer(Uint8List buffer) async {
+    String dirPath = await getTemDirPath();
+    String fileName = '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.mp3';
+    String path = '$dirPath/$fileName';
+    File file = File(path);
+    if (!file.existsSync()) {
+      file.createSync();
+    }
+    try {
+      file.writeAsBytesSync(buffer.toList(), flush: true);
+      return file.path;
+    } catch (error) {
+      return '';
     }
   }
 
-  Future<void> _destroyPlayer() async {
-    if (_player == null) {
+  static Future<String> downloadMp3(String url) async {
+    String dirPath = await getTemDirPath();
+    String fileName = '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.mp3';
+    String path = '$dirPath/$fileName';
+    try {
+      await Dio().download(url, path);
+      File file = File(path);
+      if (file.existsSync()) {
+        return file.path;
+      }
+      return '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  static Future<Uint8List> convertPcmToWav(List<Uint8List> pcm) async {
+    List<int> bytes = [];
+    for (Uint8List element in pcm) {
+      bytes.addAll(element.map((item) => item).toList());
+    }
+    try {
+      return await FlutterSoundHelper().pcmToWaveBuffer(inputBuffer: Uint8List.fromList(bytes));
+    } catch (e) {
+      return Uint8List(0);
+    }
+  }
+
+}
+
+class Player {
+
+  Player();
+  // 步骤 convert-格式转换 waitPlay-等待播放 play-播放 finished-结束
+  String step = '';
+
+}
+
+class BufferPlayer extends Player {
+
+  BufferPlayer(this.pcm, this.whenFinished);
+
+  FlutterSoundPlayer? player;
+  List<Uint8List> pcm;
+  Uint8List wav = Uint8List(0);
+  Function() whenFinished;
+
+  Future<void> play(Function() onComplete) async {
+    if (wav.isEmpty) {
+      await _convert();
+    }
+    _play(onComplete);
+  }
+
+  Future<void> stop() async {
+    if (step == 'play' && player != null) {
+      player!.audioPlayerFinished(PlayerState.isPlaying.index);
+    } else {
+      step = 'finished';
+    }
+  }
+
+  Future<void> _convert() async {
+    step = 'convert';
+    wav = await AudioConvertUtil.convertPcmToWav(pcm);
+    step = 'waitPlay';
+  }
+
+  Future<void> _play(Function() onComplete) async {
+    int maxCount = 300;
+    // 还在转换中
+    while(step == 'convert') {
+      if (maxCount == 0) {
+        break;
+      }
+      maxCount--;
+      await Future.delayed(const Duration(milliseconds: 10));
+    }
+    // 等待超时
+    if (step == 'convert' && maxCount == 0) {
+      _onCallback(onComplete);
       return;
     }
-    await _player!.closePlayer();
-    _player = null;
-  }
-
-  /** 格式转换 */
-  Future<void> saveMp3(Uint8List buffer, Function(String) onSuccess) async {
+    // 转换失败
+    if (step == 'waitPlay' && wav.isEmpty) {
+      _onCallback(onComplete);
+      return;
+    }
+    // 中途被暂停
+    if (step == 'finished') {
+      _onCallback(onComplete);
+      return;
+    }
+    // 播放
     try {
-      String dirPath = await _getTemDirPath();
-      String fileName =
-          '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.mp3';
-      File file = File('$dirPath/$fileName');
-      if (!file.existsSync()) {
-        file.createSync();
+      player = await FlutterSoundPlayer(logLevel: Level.debug).openPlayer();
+      if (player == null) {
+        throw Exception();
       }
-      file.writeAsBytesSync(buffer.toList(), flush: true);
-      onSuccess(file.path);
-    } catch (error) {
-      onSuccess('');
+      step = 'play';
+      player!.startPlayer(
+        fromDataBuffer: wav,
+        codec: Codec.pcm16WAV,
+        whenFinished: () async {
+          await player!.stopPlayer();
+          await player!.closePlayer();
+          _onCallback(onComplete);
+        },
+      );
+    } catch (e) {
+      _onCallback(onComplete);
     }
   }
 
-  // Future<Uint8List> convertMp3ToPcm(String mp3Path) async {
-  //   try {
-  //     File file = File(mp3Path);
-  //     if (!file.existsSync()) {
-  //       throw Exception('No File');
-  //     }
-  //     String dirPath = await _getTemDirPath();
-  //     String pcmPath = '$dirPath/${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.pcm';
-  //     FFmpegSession session = await FFmpegKit.execute('-i $mp3Path -f s16le $pcmPath');
-  //     ReturnCode? code = await session.getReturnCode();
-  //     if (code != ReturnCode.success) {
-  //       throw Exception('Convert Fail');
-  //     }
-  //     File pcm = File(pcmPath);
-  //     if (!pcm.existsSync()) {
-  //       throw Exception('Convert Fail');
-  //     }
-  //     return pcm.readAsBytes();
-  //   } catch (error) {
-  //     rethrow;
-  //   }
-  // }
-
-  Uint8List convertWavToPcm(Uint8List wavBuffer) {
-    return FlutterSoundHelper().waveToPCMBuffer(inputBuffer: wavBuffer);
+  void _onCallback(Function() onComplete) {
+    step = 'finished';
+    whenFinished();
+    onComplete();
   }
 
-  Future<String> _getTemDirPath() async {
-    Directory dir = await getTemporaryDirectory();
-    return dir.path;
+}
+
+class FilePlayer extends Player {
+
+  FilePlayer(this.whenFinished);
+
+  FlutterSoundPlayer? player;
+  String? url;
+  Uint8List? buffer;
+  String path = '';
+  Function() whenFinished;
+
+  Future<void> play(Function() onComplete) async {
+    if (path.isEmpty) {
+      await _convert();
+    }
+    _play(onComplete);
+  }
+
+  Future<void> stop() async {
+    if (step == 'play' && player != null) {
+      player!.audioPlayerFinished(PlayerState.isPlaying.index);
+    } else {
+      step = 'finished';
+    }
+  }
+
+  Future<void> _convert() async {
+    step = 'convert';
+    if (url != null) {
+      path = await AudioConvertUtil.downloadMp3(url!);
+    }
+    if (buffer != null && buffer!.isNotEmpty) {
+     path = await AudioConvertUtil.saveMp3Buffer(buffer!);
+    }
+    step = 'waitPlay';
+  }
+
+  Future<void> _play(Function() onComplete) async {
+    int maxCount = 300;
+    // 还在转换中
+    while(step == 'convert') {
+      if (maxCount == 0) {
+        break;
+      }
+      maxCount--;
+      await Future.delayed(const Duration(milliseconds: 10));
+    }
+    // 等待超时
+    if (step == 'convert' && maxCount == 0) {
+      _onCallback(onComplete);
+      return;
+    }
+    // 转换失败
+    if (step == 'waitPlay' && path == '') {
+      _onCallback(onComplete);
+      return;
+    }
+    // 中途被暂停
+    if (step == 'finished') {
+      _onCallback(onComplete);
+      return;
+    }
+    // 播放
+    try {
+      player = await FlutterSoundPlayer(logLevel: Level.debug).openPlayer();
+      if (player == null) {
+        throw Exception();
+      }
+      step = 'play';
+      player!.startPlayer(
+        fromURI: path,
+        codec: Codec.mp3,
+        whenFinished: () async {
+          await player!.stopPlayer();
+          await player!.closePlayer();
+          _onCallback(onComplete);
+        },
+      );
+    } catch (e) {
+      _onCallback(onComplete);
+    }
+  }
+
+  void _onCallback(Function() onComplete) {
+    step = 'finished';
+    whenFinished();
+    onComplete();
   }
 }

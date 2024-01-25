@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -11,6 +13,7 @@ class RecognizeUtil {
 
   RecognizeUtil();
 
+  String _language = 'en';
   StreamSubscription? _subscription;
   StreamController<UnRecognizedData>? _controller;
   WebSocketChannel? _websocket;
@@ -18,6 +21,10 @@ class RecognizeUtil {
   String _recognizedText = '';
   // websocket是否主动断开连接中
   bool _isDisconnecting = false;
+
+  void setLanguage(String language) {
+    _language = language;
+  }
 
   void recognize(Function(Map<String, dynamic>) onSuccess) async {
     try {
@@ -30,7 +37,7 @@ class RecognizeUtil {
             return;
           }
           if (_websocket != null) {
-            Map<String, dynamic> data = XunfeiUtil.createFrameDataForRecognization(event.frame, audio: event.buffer);
+            Map<String, dynamic> data = _language == 'cn' ? XunfeiUtil.createFrameDataForRecognizationForCN(event.frame, audio: event.buffer) : XunfeiUtil.createFrameDataForRecognization(event.frame, audio: event.buffer);
             _websocket!.sink.add(jsonEncode(data));
           }
         },
@@ -63,7 +70,7 @@ class RecognizeUtil {
       String uri = 'wss://iat-api.xfyun.cn:443/v2/iat?host=iat-api.xfyun.cn&date=$date&authorization=${XunfeiUtil.getRecognizeAuthorization(date)}';
       _websocket = WebSocketChannel.connect(Uri.parse(uri));
       // 发送首帧数（参数）
-      Map<String, dynamic> data = XunfeiUtil.createFrameDataForRecognization(0);
+      Map<String, dynamic> data = _language == 'cn' ? XunfeiUtil.createFrameDataForRecognizationForCN(0) : XunfeiUtil.createFrameDataForRecognization(0);
       _websocket!.sink.add(jsonEncode(data));
       _websocket!.stream.listen(
         (message) async {

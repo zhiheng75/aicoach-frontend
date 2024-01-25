@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:Bubble/chat/entity/character_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -76,12 +77,13 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
         onConnected: () {
           _pageState = 'success';
           setState(() {});
+          CharacterEntity character = CharacterEntity();
+          character.characterId = widget.characterId;
+          _homeProvider.character = character;
           _homeProvider.resetChatParams();
           IntroductionMessage introductionMessage = IntroductionMessage();
           introductionMessage.desc = widget.desc;
           _homeProvider.addMessage(introductionMessage);
-          _bottomBarControll.setDisabled(false);
-          _mediaUtils.resumeUse();
         },
         onAnswer: onWebsocketAnswer,
         onEnd: onWebsocketEnd,
@@ -193,6 +195,8 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
           Widget endButton = GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
+              CharacterEntity character = CharacterEntity();
+              _homeProvider.character = character;
               Navigator.of(context).pop();
               widget.onEnd();
             },
