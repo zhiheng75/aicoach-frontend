@@ -35,7 +35,7 @@ class _PersonPageState extends State<PersonPage>
 
   late bool islog = true;
   late String userName;
-  late String headimgurl;
+  late String headimgurl = "";
 
   void init() {
     getStudyInfo();
@@ -91,15 +91,27 @@ class _PersonPageState extends State<PersonPage>
     init();
     // getAvailableTime();
     Map<String, dynamic> user = LoginManager.getUserInfo();
+    Log.e(user.toString());
 
-    userName = user['nickname'] != ""
+    userName = validateInput(user['nickname'])
         ? user['nickname']
         : "用户${user['phone'].toString().substring(7, 11)}";
-    headimgurl = user['headimgurl'] ?? '';
+    // userName = "用户${user['phone'].toString().substring(7, 11)}";
     Log.e("个人中心=============================");
-
-    Log.e(user.toString());
+    headimgurl = validateInput(user['headimgurl']) ? user['headimgurl'] : "";
     setState(() {});
+  }
+
+  bool validateInput(String? input) {
+    if (input == null) {
+      return false;
+    }
+
+    if (input.isEmpty) {
+      return false;
+    }
+
+    return true;
   }
 
 //  加载中
@@ -257,117 +269,137 @@ class _PersonPageState extends State<PersonPage>
       ),
     );
 
-    Widget vipInfo = Container(
-      width: width,
-      decoration: decoration,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8.0,
-        vertical: 16.0,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const LoadAssetImage(
-                'zhuanshi',
-                width: 48.0,
-                height: 48.0,
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    islog
-                        ? ""
-                        : permissionBeanData.data.isMember == 1
-                            ? '会员权益至${permissionBeanData.data.membershipExpiryDate}'
-                            : '升级会员 为学习提速',
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF333333),
-                      height: 23.0 / 16.0,
-                    ),
-                  ),
-                  if (islog ? true : permissionBeanData.data.isMember == 1)
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          const TextSpan(
-                            text: '剩余学习时间：',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF333333),
-                              height: 23.0 / 16.0,
-                            ),
-                          ),
-                          TextSpan(
-                            text: islog
-                                ? ""
-                                : '${permissionBeanData.data.allLeftTime > 60 ? permissionBeanData.data.allLeftTime ~/ 60 : 1}分钟',
-                            // text: '${permissionBeanData.data.isMember} 分钟',
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFFA739EA),
-                              height: 23.0 / 16.0,
-                            ),
-                          ),
-                        ],
+    // ///补零
+    // String zeroFill(int i) {
+    //   return i >= 10 ? "$i" : "0$i";
+    // }
+
+    // String second2DHMS(int sec) {
+    //   String hms = "00天00时00分00秒";
+    //   if (sec > 0) {
+    //     int d = sec ~/ 86400;
+    //     int h = (sec % 86400) ~/ 3600;
+    //     int m = (sec % 3600) ~/ 60;
+    //     int s = sec % 60;
+    //     hms = "${zeroFill(d)}天${zeroFill(h)}时${zeroFill(m)}分${zeroFill(s)}秒";
+    //   }
+    //   return hms;
+    // }
+
+    Widget vipInfo() {
+      return Container(
+        width: width,
+        decoration: decoration,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 16.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const LoadAssetImage(
+                  'zhuanshi',
+                  width: 48.0,
+                  height: 48.0,
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      islog
+                          ? ""
+                          : permissionBeanData.data.isMember == 1
+                              ? '会员权益至${permissionBeanData.data.membershipExpiryDate}'
+                              : '升级会员 为学习提速',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF333333),
+                        height: 23.0 / 16.0,
                       ),
                     ),
-                  const Text(
-                    '专属口语教练，科学测评\n个性化定制，24小时 不限场景',
-                    style: TextStyle(
-                      fontSize: 13.0,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFF666666),
-                      height: 18.0 / 13.0,
+                    if (islog ? true : permissionBeanData.data.isMember == 1)
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: '剩余学习时间：',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF333333),
+                                height: 23.0 / 16.0,
+                              ),
+                            ),
+                            TextSpan(
+                              text: islog
+                                  ? ""
+                                  : '${permissionBeanData.data.allLeftTime > 60 ? permissionBeanData.data.allLeftTime ~/ 60 : 1}小时',
+                              // text: '${permissionBeanData.data.isMember} 分钟',
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFFA739EA),
+                                height: 23.0 / 16.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    const Text(
+                      '专属口语教练，科学测评\n个性化定制，24小时 不限场景',
+                      style: TextStyle(
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF666666),
+                        height: 18.0 / 13.0,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => NavigatorUtils.push(context, PersonalRouter.purchase),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40.0),
-                border: Border.all(
-                  width: 1.0,
-                  style: BorderStyle.solid,
-                  color: const Color(0xFFE49600),
+                  ],
                 ),
-                color: const Color(0xFFFFCF71),
-              ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 14.0,
-                vertical: 7.0,
-              ),
-              child: Text(
-                islog
-                    ? ""
-                    : permissionBeanData.data.isMember == 1
-                        ? '续费'
-                        : '立即开通',
-                style: const TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                  height: 20.0 / 15.0,
+              ],
+            ),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () =>
+                  NavigatorUtils.push(context, PersonalRouter.purchase),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40.0),
+                  border: Border.all(
+                    width: 1.0,
+                    style: BorderStyle.solid,
+                    color: const Color(0xFFE49600),
+                  ),
+                  color: const Color(0xFFFFCF71),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14.0,
+                  vertical: 7.0,
+                ),
+                child: Text(
+                  islog
+                      ? ""
+                      : permissionBeanData.data.isMember == 1
+                          ? '续费'
+                          : '立即开通',
+                  style: const TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                    height: 20.0 / 15.0,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    }
 
     Widget experience = Column(
       mainAxisSize: MainAxisSize.min,
@@ -549,7 +581,7 @@ class _PersonPageState extends State<PersonPage>
                         const SizedBox(
                           height: 16.0,
                         ),
-                        vipInfo,
+                        vipInfo(),
                         const SizedBox(
                           height: 16.0,
                         ),

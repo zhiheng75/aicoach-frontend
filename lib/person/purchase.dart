@@ -120,9 +120,15 @@ class _PurchasePageState extends State<PurchasePage>
     Map<String, dynamic> user = LoginManager.getUserInfo();
 
     String userPhone = user['phone'].toString();
-    if (userPhone == "170001234567") {
+    if (userPhone == "17001234567") {
       return;
     }
+    // Log.e(user.toString());
+    // String userId = user['id'].toString();
+
+    // if (userId == "2") {
+    //   return;
+    // }
     showDialog(
       context: context,
       barrierColor: Colors.transparent,
