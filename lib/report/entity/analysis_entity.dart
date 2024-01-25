@@ -2,6 +2,7 @@ class AnalysisEntity {
 
   int type = 2;
   String sentence = '';
+  String userSentence = '';
   num score = 0;
   List<GrammarEntity> grammar = [];
   List<PronounceEntity> pronounce = [];
@@ -16,6 +17,9 @@ class AnalysisEntity {
     }
     if (json['sentence'] != null) {
       entity.sentence = json['sentence'];
+    }
+    if (json['user_sentence'] != null) {
+      entity.userSentence = json['user_sentence'];
     }
     if (json['score'] != null) {
       entity.score = json['score'];
@@ -33,6 +37,7 @@ class AnalysisEntity {
     return {
       'type': type,
       'sentence': sentence,
+      'user_sentence': userSentence,
       'grammar': grammar.map((item) => item.toJson()).toList(),
       'pronounce': pronounce.map((item) => item.toJson()).toList(),
     };

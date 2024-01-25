@@ -150,6 +150,34 @@ class _ReportPageState extends State<ReportPage>
       title: '学情报告',
     );
 
+    Widget star(num score) {
+      List<Widget> children = [];
+      int count = 0;
+      if (score >= 92) {
+        count = 5;
+      } else if (score >= 80) {
+        count = 4;
+      } else if (score >= 60) {
+        count = 3;
+      } else if (score >= 50) {
+        count = 2;
+      } else {
+        count = 1;
+      }
+      while(count > 0) {
+        children.add(const LoadAssetImage(
+          'star',
+          width: 16.0,
+          height: 15.0,
+        ));
+        count--;
+      }
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: children,
+      );
+    }
+
     Widget barItem(String label, String type) {
       bool isSelected = _type == type;
       return GestureDetector(
@@ -225,14 +253,30 @@ class _ReportPageState extends State<ReportPage>
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: LoadImage(
-                        item.topicCover,
+                    if (item.topicName == '自由对话')
+                      SizedBox(
                         width: 118.0,
                         height: 118.0,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: SingleChildScrollView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            child: LoadImage(
+                              item.topicCover,
+                              width: 118.0,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    if (item.topicName != '自由对话')
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: LoadImage(
+                          item.topicCover,
+                          width: 118.0,
+                          height: 118.0,
+                        ),
+                      ),
                     const SizedBox(
                       width: 8.0,
                     ),
@@ -276,6 +320,7 @@ class _ReportPageState extends State<ReportPage>
                         const SizedBox(
                           height: 8.0,
                         ),
+                        star(item.score.toInt()),
                       ],
                     ),
                   ],
@@ -313,12 +358,18 @@ class _ReportPageState extends State<ReportPage>
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(32.0),
-                          child: LoadImage(
-                            item.topicCover,
-                            width: 32.0,
-                            height: 32.0,
+                        SizedBox(
+                          width: 32.0,
+                          height: 32.0,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(32.0),
+                            child: SingleChildScrollView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              child: LoadImage(
+                                item.topicCover,
+                                width: 32.0,
+                              ),
+                            ),
                           ),
                         ),
                         Text(

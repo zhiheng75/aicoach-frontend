@@ -47,11 +47,13 @@ class _ReportDetailPageState extends State<ReportDetailPage>
   Map<String, dynamic> _detail = {};
   // evaluation-综合评价 advise-地道表达建议 analysis-细节解析
   String _type = 'evaluation';
+  String _activeRank = '0%';
 
   void init() {
     _pageState = 'loading';
     setState(() {});
     getReportDetail();
+    getWeekActiveRank();
   }
 
   void getReportDetail() async {
@@ -78,6 +80,17 @@ class _ReportDetailPageState extends State<ReportDetailPage>
         setState(() {});
       }
     });
+  }
+
+  void getWeekActiveRank() {
+    DioUtils.instance.requestNetwork<ResultData>(Method.get, HttpApi.studyInfo, onSuccess: (result) {
+      if (result != null && result.data != null && (result.data as Map<String, dynamic>)['active_rank'] != null) {
+        _activeRank = (result.data as Map<String, dynamic>)['active_rank'];
+        if (mounted) {
+          setState(() {});
+        }
+      }
+      });
   }
 
   void tapTabbar(String type) {
@@ -283,89 +296,98 @@ class _ReportDetailPageState extends State<ReportDetailPage>
             width: 48.0,
             height: 48.0,
           ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              RichText(
-                text: const TextSpan(
-                  children: [
-                    TextSpan(
-                      text: '你当前级别为',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF333333),
-                        height: 20.0 / 16.0,
-                      ),
-                    ),
-                    TextSpan(
-                      text: '1级\n',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF9900F8),
-                        height: 20.0 / 16.0,
-                      ),
-                    ),
-                    TextSpan(
-                      text: '已经完成',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF333333),
-                        height: 26.0 / 14.0,
-                      ),
-                    ),
-                    TextSpan(
-                      text: '60%',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF0047FF),
-                        height: 26.0 / 14.0,
-                      ),
-                    ),
-                    TextSpan(
-                      text: '学习进度\n',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF333333),
-                        height: 26.0 / 14.0,
-                      ),
-                    ),
-                    TextSpan(
-                      text: '完成剩余',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF333333),
-                        height: 20.0 / 14.0,
-                      ),
-                    ),
-                    TextSpan(
-                      text: '40%',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF0047FF),
-                        height: 20.0 / 14.0,
-                      ),
-                    ),
-                    TextSpan(
-                      text: '的学习进度\n可升至2级，继续加油呀！ ',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF333333),
-                        height: 20.0 / 14.0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          // Column(
+          //   mainAxisSize: MainAxisSize.min,
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: <Widget>[
+          //     RichText(
+          //       text: const TextSpan(
+          //         children: [
+          //           TextSpan(
+          //             text: '你当前级别为',
+          //             style: TextStyle(
+          //               fontSize: 16.0,
+          //               fontWeight: FontWeight.w500,
+          //               color: Color(0xFF333333),
+          //               height: 20.0 / 16.0,
+          //             ),
+          //           ),
+          //           TextSpan(
+          //             text: '1级\n',
+          //             style: TextStyle(
+          //               fontSize: 16.0,
+          //               fontWeight: FontWeight.w500,
+          //               color: Color(0xFF9900F8),
+          //               height: 20.0 / 16.0,
+          //             ),
+          //           ),
+          //           TextSpan(
+          //             text: '已经完成',
+          //             style: TextStyle(
+          //               fontSize: 14.0,
+          //               fontWeight: FontWeight.w400,
+          //               color: Color(0xFF333333),
+          //               height: 26.0 / 14.0,
+          //             ),
+          //           ),
+          //           TextSpan(
+          //             text: '60%',
+          //             style: TextStyle(
+          //               fontSize: 14.0,
+          //               fontWeight: FontWeight.w400,
+          //               color: Color(0xFF0047FF),
+          //               height: 26.0 / 14.0,
+          //             ),
+          //           ),
+          //           TextSpan(
+          //             text: '学习进度\n',
+          //             style: TextStyle(
+          //               fontSize: 14.0,
+          //               fontWeight: FontWeight.w400,
+          //               color: Color(0xFF333333),
+          //               height: 26.0 / 14.0,
+          //             ),
+          //           ),
+          //           TextSpan(
+          //             text: '完成剩余',
+          //             style: TextStyle(
+          //               fontSize: 14.0,
+          //               fontWeight: FontWeight.w400,
+          //               color: Color(0xFF333333),
+          //               height: 20.0 / 14.0,
+          //             ),
+          //           ),
+          //           TextSpan(
+          //             text: '40%',
+          //             style: TextStyle(
+          //               fontSize: 14.0,
+          //               fontWeight: FontWeight.w400,
+          //               color: Color(0xFF0047FF),
+          //               height: 20.0 / 14.0,
+          //             ),
+          //           ),
+          //           TextSpan(
+          //             text: '的学习进度\n可升至2级，继续加油呀！ ',
+          //             style: TextStyle(
+          //               fontSize: 14.0,
+          //               fontWeight: FontWeight.w400,
+          //               color: Color(0xFF333333),
+          //               height: 20.0 / 14.0,
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          Text(
+            '你的周学习活跃指数为$_activeRank\n保持每天学习，加油赶超~',
+            style: const TextStyle(
+              fontSize: 14.0,
+              fontWeight: FontWeight.w400,
+              color: Color(0xFF333333),
+              height: 20.0 / 14.0,
+            ),
           ),
           Container(
             width: 87.0,

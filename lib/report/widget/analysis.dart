@@ -279,7 +279,7 @@ class _AnalysisState extends State<Analysis> {
           children: [
             Expanded(
               child: Text(
-                analysis.sentence,
+                analysis.userSentence,
                 style: const TextStyle(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w400,

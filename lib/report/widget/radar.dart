@@ -32,6 +32,13 @@ class Radar extends StatefulWidget {
 
 class _RadarState extends State<Radar> {
 
+  double toDouble(num value) {
+    if (value is double) {
+      return value;
+    }
+    return double.parse(value.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -60,10 +67,10 @@ class _RadarState extends State<Radar> {
 
     // 实际值
     List<Offset> pointList = [];
-    pointList.add(Offset(0 - widget.left.score, 0));
-    pointList.add(Offset(0, widget.top.score));
-    pointList.add(Offset(widget.right.score, 0));
-    pointList.add(Offset(0, 0 - widget.bottom.score));
+    pointList.add(Offset(toDouble(0 - widget.left.score), 0));
+    pointList.add(Offset(0, toDouble(widget.top.score)));
+    pointList.add(Offset(toDouble(widget.right.score), 0));
+    pointList.add(Offset(0, toDouble(0 - widget.bottom.score)));
 
     double legendHeight = 0;
     if (widget.scoreStyle.fontSize != null && widget.scoreStyle.height != null) {
@@ -212,7 +219,7 @@ class RadarItem {
   }
 
   late String label;
-  late double score;
+  late num score;
   Color color = Colors.black;
 
 }
