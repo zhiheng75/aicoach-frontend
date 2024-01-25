@@ -123,6 +123,12 @@ class _PurchasePageState extends State<PurchasePage>
     if (userPhone == "17001234567") {
       return;
     }
+    // Log.e(user.toString());
+    // String userId = user['id'].toString();
+
+    // if (userId == "2") {
+    //   return;
+    // }
     showDialog(
       context: context,
       barrierColor: Colors.transparent,

@@ -48,15 +48,15 @@ class _MyExaminationPageState extends State<MyExaminationPage>
     super.initState();
     // primaryTC = TabController(length: 2, vsync: this);
     // secondaryTC = TabController(length: 5, vsync: this);
-    Future.delayed(const Duration(microseconds: 200), () {
-      _examDetailPagePresenter.getExamDetail(widget.mockId);
-    });
     _peopleData = [
       100,
       75,
       45,
       25,
     ];
+    Future.delayed(const Duration(microseconds: 200), () {
+      _examDetailPagePresenter.getExamDetail(widget.mockId);
+    });
   }
 
   @override

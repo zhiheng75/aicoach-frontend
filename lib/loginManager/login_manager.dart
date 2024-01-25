@@ -56,6 +56,7 @@ class LoginManager {
                 ///6000
                 String token = map[Constant.jgMsgKey];
                 if (code == 2000 && token != null && token.isNotEmpty) {
+                  LoadingDialog.hidden();
                   loginAuth(context);
                 } else {
                   LoadingDialog.hidden();
