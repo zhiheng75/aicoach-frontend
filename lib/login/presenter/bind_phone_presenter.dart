@@ -11,6 +11,7 @@ import '../view/bind_phone_view.dart';
 
 class BindPhonePresenter extends BasePagePresenter<BindPhoneView> {
   late LoginInfoDataData data;
+
   static late CancelToken cancelToken;
 
   Future sendSms(String phoneNum) {

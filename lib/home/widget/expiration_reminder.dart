@@ -1,4 +1,6 @@
 import 'package:Bubble/home/provider/home_provider.dart';
+import 'package:Bubble/person/person_router.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,7 +22,6 @@ class ExpirationReminder extends StatelessWidget {
 
     return Consumer<HomeProvider>(
       builder: (_, provider, __) {
-
         int vipState = provider.vipState;
         int expDay = provider.expDay;
 
@@ -51,14 +52,16 @@ class ExpirationReminder extends StatelessWidget {
           ],
         );
 
-        List<String> descList = vipState == 2 ? [
-          '自由选择喜欢的虚拟外教老师\n多场景 多话题无障碍练习\n24小时，随时随地开始练习',
-          '地道英语口语，纯真发音，引导式对话\n全方位测评报告',
-        ] : [
-          '新用户可免费试用3天，每天15分钟\n${expDay > 0 ? '今天赠送的体验时长已经使用完成' : '赠送的体验时长已全部使用完成'}，\n升级会员后，可畅享所有功能。',
-          '24小时，随时随地开始练习\n地道英语口语，纯真发音，引导式对话\n全方位测评报告',
-          '自由选择喜欢的虚拟外教老师\n多场景 多话题无障碍练习',
-        ];
+        List<String> descList = vipState == 2
+            ? [
+                '自由选择喜欢的虚拟外教老师\n多场景 多话题无障碍练习\n24小时，随时随地开始练习',
+                '地道英语口语，纯真发音，引导式对话\n全方位测评报告',
+              ]
+            : [
+                '新用户可免费试用3天，每天15分钟\n${expDay > 0 ? '今天赠送的体验时长已经使用完成' : '赠送的体验时长已全部使用完成'}，\n升级会员后，可畅享所有功能。',
+                '24小时，随时随地开始练习\n地道英语口语，纯真发音，引导式对话\n全方位测评报告',
+                '自由选择喜欢的虚拟外教老师\n多场景 多话题无障碍练习',
+              ];
 
         Widget descItem(String desc) {
           return Container(
@@ -88,7 +91,9 @@ class ExpirationReminder extends StatelessWidget {
             height: 4.5,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4.5),
-              color: index == currentIndex ? Colours.color_FF71E0 : Colors.black.withOpacity(0.85),
+              color: index == currentIndex
+                  ? Colours.color_FF71E0
+                  : Colors.black.withOpacity(0.85),
             ),
           );
         }
@@ -134,33 +139,37 @@ class ExpirationReminder extends StatelessWidget {
           ],
         );
 
-        Widget button = Container(
-          width: 239.0,
-          height: 48.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100.0),
-            border: Border.all(
-              width: 1.0,
-              style: BorderStyle.solid,
-              color: Colours.color_001652
+        Widget button = GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => NavigatorUtils.push(context, PersonalRouter.purchase,
+              replace: true),
+          child: Container(
+            width: 239.0,
+            height: 48.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100.0),
+              border: Border.all(
+                  width: 1.0,
+                  style: BorderStyle.solid,
+                  color: Colours.color_001652),
+              gradient: const LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [
+                  Colours.color_9AC3FF,
+                  Colours.color_FF71E0,
+                ],
+              ),
             ),
-            gradient: const LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              colors: [
-                Colours.color_9AC3FF,
-                Colours.color_FF71E0,
-              ],
-            ),
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            vipState == 2 ? '会员续费' : '查看会员升级方案',
-            style: const TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.w400,
-              color: Colours.color_001652,
-              height: 21.0 / 18.0,
+            alignment: Alignment.center,
+            child: Text(
+              vipState == 2 ? '会员续费' : '查看会员升级方案',
+              style: const TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w400,
+                color: Colours.color_001652,
+                height: 21.0 / 18.0,
+              ),
             ),
           ),
         );
@@ -204,9 +213,7 @@ class ExpirationReminder extends StatelessWidget {
                   width: screenUtil.screenWidth,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(
-                        'assets/images/reminder_bg.png'
-                      ),
+                      image: AssetImage('assets/images/reminder_bg.png'),
                       fit: BoxFit.fitWidth,
                     ),
                   ),

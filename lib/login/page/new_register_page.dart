@@ -539,8 +539,9 @@ class _NewRegisterPageState extends State<NewRegisterPage>
       Constant.jverify.dismissLoginAuthView();
       hideLoading();
     }
+    NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
 
-    NavigatorUtils.push(context, PersonalRouter.person, replace: true);
+    // NavigatorUtils.push(context, PersonalRouter.person, replace: true);
   }
 
   void _showAgreement(int state) {

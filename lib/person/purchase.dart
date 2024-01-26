@@ -55,6 +55,7 @@ class _PurchasePageState extends State<PurchasePage>
 
   void init() {
     _pageState = 'loading';
+
     setState(() {});
     getBaseConfig();
   }
@@ -121,6 +122,14 @@ class _PurchasePageState extends State<PurchasePage>
 
     String userPhone = user['phone'].toString();
     if (userPhone == "17001234567") {
+      showDialog(
+        context: context,
+        barrierColor: Colors.transparent,
+        barrierDismissible: false,
+        useSafeArea: false,
+        builder: (_) => const IPhoneIllustration(),
+      );
+
       return;
     }
     // Log.e(user.toString());
@@ -240,6 +249,8 @@ class _PurchasePageState extends State<PurchasePage>
 
     Widget goodsItem(GoodEntity goods) {
       bool isSelected = _goodsId == goods.id;
+      Map<String, dynamic> user = LoginManager.getUserInfo();
+      String userPhone = user['phone'].toString();
       BoxDecoration decoration = BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         color: const Color(0xFFF5F5F5),
@@ -276,8 +287,8 @@ class _PurchasePageState extends State<PurchasePage>
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const LoadAssetImage(
-                    'vip',
+                  LoadAssetImage(
+                    userPhone == "17001234567" ? "jiangpai" : 'vip',
                     width: 56.0,
                     height: 56.0,
                   ),

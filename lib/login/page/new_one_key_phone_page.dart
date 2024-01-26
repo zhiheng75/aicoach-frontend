@@ -58,6 +58,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   late RegisterPresenter _registerPresenter;
   bool _isSelect = false;
 
+  bool isWx = false;
   void _verify() {
     final String name = _phoneController.text;
     final String vCode = _vCodeController.text;
@@ -79,6 +80,17 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   @override
   void initState() {
     super.initState();
+    isWX();
+  }
+
+  Future<void> isWX() async {
+    Fluwx fluwx = Fluwx();
+    if (await fluwx.isWeChatInstalled) {
+      isWx = true;
+    } else {
+      isWx = false;
+    }
+    setState(() {});
   }
 
   @override
@@ -353,50 +365,54 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                               ),
                             )),
                     Gaps.vGap20,
-                    Container(
-                      alignment: Alignment.center,
-                      child: const Text(
-                        "其他登录方式",
-                        style: TextStyle(
-                            color: Colours.color_001652, fontSize: 13),
-                      ),
-                    ),
+                    isWx
+                        ? Container(
+                            alignment: Alignment.center,
+                            child: const Text(
+                              "其他登录方式",
+                              style: TextStyle(
+                                  color: Colours.color_001652, fontSize: 13),
+                            ),
+                          )
+                        : Container(),
                     Gaps.vGap20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            // NavigatorUtils.push(
-                            //   context,
-                            //   clearStack: true,
-                            //   "${LoginRouter.newBindPhonePage}?needKeyLogin=0",
-                            // );
-                            weChatLogin();
-                          },
-                          child: const LoadAssetImage(
-                            "wechat_login_img",
-                            width: 40,
-                            height: 40,
-                          ),
-                        ),
-                        // Gaps.hGap16,
-                        // GestureDetector(
-                        //   onTap: () {
-                        //     // NavigatorUtils.push(
-                        //     //   context,
-                        //     //   clearStack: true,
-                        //     //   "${LoginRouter.newBindPhonePage}?needKeyLogin=1",
-                        //     // );
-                        //   },
-                        //   child: const LoadAssetImage(
-                        //     "qq_login_img",
-                        //     width: 40,
-                        //     height: 40,
-                        //   ),
-                        // ),
-                      ],
-                    ),
+                    isWx
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  // NavigatorUtils.push(
+                                  //   context,
+                                  //   clearStack: true,
+                                  //   "${LoginRouter.newBindPhonePage}?needKeyLogin=0",
+                                  // );
+                                  weChatLogin();
+                                },
+                                child: const LoadAssetImage(
+                                  "wechat_login_img",
+                                  width: 40,
+                                  height: 40,
+                                ),
+                              ),
+                              // Gaps.hGap16,
+                              // GestureDetector(
+                              //   onTap: () {
+                              //     // NavigatorUtils.push(
+                              //     //   context,
+                              //     //   clearStack: true,
+                              //     //   "${LoginRouter.newBindPhonePage}?needKeyLogin=1",
+                              //     // );
+                              //   },
+                              //   child: const LoadAssetImage(
+                              //     "qq_login_img",
+                              //     width: 40,
+                              //     height: 40,
+                              //   ),
+                              // ),
+                            ],
+                          )
+                        : Container(),
                     Gaps.vGap50,
                   ],
                 ),
@@ -479,7 +495,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
 
   @override
   void wechatFail() {
-    Toast.show("登录失败");
+    // Toast.show("登录失败");
   }
 
   @override

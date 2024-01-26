@@ -2,6 +2,8 @@
 
 import 'dart:typed_data';
 
+import 'package:Bubble/person/person_router.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,43 +59,68 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   AppLifecycleState? _appLifecycleState;
 
   void getExample() {
-    if (!LoginManager.isLogin()) {
-      Toast.show(
-        '请先登录',
-        duration: 1000,
+    LoginManager.checkLogin(context, () {
+      if (widget.controller.disabled.value) {
+        return;
+      }
+      // 判断是否需要地道表达
+      MessageEntity message = _homeProvider.messageList.lastWhere(
+          (message) =>
+              message.type == 'normal' &&
+              (message as NormalMessage).speaker == 'ai',
+          orElse: () => NormalMessage());
+      if ((message as NormalMessage).text.isEmpty) {
+        Toast.show(
+          '暂无示例',
+          duration: 1000,
+        );
+        return;
+      }
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        barrierColor: Colors.transparent,
+        isScrollControlled: true,
+        isDismissible: false,
+        clipBehavior: Clip.none,
+        enableDrag: false,
+        builder: (_) => Example(message: message),
       );
-      return;
-    }
-    if (widget.controller.disabled.value) {
-      return;
-    }
-    // 判断是否需要地道表达
-    MessageEntity message = _homeProvider.messageList.lastWhere((message) => message.type == 'normal' && (message as NormalMessage).speaker == 'ai', orElse: () => NormalMessage());
-    if ((message as NormalMessage).text.isEmpty) {
-      Toast.show(
-        '暂无示例',
-        duration: 1000,
-      );
-      return;
-    }
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      barrierColor: Colors.transparent,
-      isScrollControlled: true,
-      isDismissible: false,
-      clipBehavior: Clip.none,
-      enableDrag: false,
-      builder: (_) => Example(message: message),
-    );
+    });
   }
 
   bool isAvailable() {
     if (!LoginManager.isLogin()) {
-      Toast.show(
-        '请先登录',
-        duration: 1000,
-      );
+      LoginManager.checkLogin(context, () {
+        bool isAvailable = true;
+
+        // 新用户采集不花费使用时间
+        if (widget.isCollectInformation != true) {
+          int usageTime = _homeProvider.usageTime;
+          int vipState = _homeProvider.vipState;
+          int expDay = _homeProvider.expDay;
+          // 是否体验到期
+          if (vipState == 0 && (usageTime == 0 || expDay == 0)) {
+            isAvailable = false;
+          }
+          // 是否会员到期
+          if (vipState == 2) {
+            isAvailable = false;
+          }
+          if (!isAvailable) {
+            showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              barrierColor: Colors.transparent,
+              isScrollControlled: true,
+              isDismissible: false,
+              builder: (_) => ExpirationReminder(),
+            );
+          }
+        }
+        return isAvailable;
+      });
+
       return false;
     }
 
@@ -214,8 +241,9 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
     // 连接
     try {
       await connectWebsocket();
-    } catch(e) {
-      Log.d('connect websocket fail:[error]${e.toString()}', tag: 'sendMessage');
+    } catch (e) {
+      Log.d('connect websocket fail:[error]${e.toString()}',
+          tag: 'sendMessage');
     } finally {
       _chatWebsocket.sendMessage(
         text: text,
@@ -291,9 +319,8 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           width: 48.0,
           height: 48.0,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24.0),
-            color: const Color(0xFF001652).withOpacity(0.23)
-          ),
+              borderRadius: BorderRadius.circular(24.0),
+              color: const Color(0xFF001652).withOpacity(0.23)),
           alignment: Alignment.center,
           child: child,
         ),
@@ -335,14 +362,16 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
               color: Colours.color_001652,
             ),
             color: disabled ? const Color(0xFFF8F8F8) : null,
-            gradient: disabled ? null : const LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              colors: [
-                Colours.color_9AC3FF,
-                Colours.color_FF71E0,
-              ],
-            ),
+            gradient: disabled
+                ? null
+                : const LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: [
+                      Colours.color_9AC3FF,
+                      Colours.color_FF71E0,
+                    ],
+                  ),
           ),
           alignment: Alignment.center,
           child: const Row(
@@ -384,7 +413,8 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
             child: ValueListenableBuilder(
               valueListenable: widget.controller.showMessageList,
               builder: (_, showMessageList, __) => iconButtom(
-                onPress: () => widget.controller.setShowMessageList(!showMessageList),
+                onPress: () =>
+                    widget.controller.setShowMessageList(!showMessageList),
                 child: LoadAssetImage(
                   showMessageList ? 'yanjing_bi' : 'yanjing_kai',
                   width: 24.0,
@@ -404,21 +434,19 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                   }
                   try {
                     // 检查权限
-                    bool isRequest = await _mediaUtils.checkMicrophonePermission();
+                    bool isRequest =
+                        await _mediaUtils.checkMicrophonePermission();
                     if (isRequest) {
                       return;
                     }
                     // 开始录音
                     _bufferList = [];
-                    _mediaUtils.startRecord(
-                      onData: (buffer) {
-                        _bufferList.add(buffer);
-                        _recognizeUtil.pushAudioBuffer(1, buffer);
-                      },
-                      onComplete: (buffer) {
-                        _recognizeUtil.pushAudioBuffer(2, buffer ?? Uint8List(0));
-                      }
-                    );
+                    _mediaUtils.startRecord(onData: (buffer) {
+                      _bufferList.add(buffer);
+                      _recognizeUtil.pushAudioBuffer(1, buffer);
+                    }, onComplete: (buffer) {
+                      _recognizeUtil.pushAudioBuffer(2, buffer ?? Uint8List(0));
+                    });
                     // 设置识别
                     _recognizeUtil.recognize((result) async {
                       bool shoRecord = widget.controller.showRecord.value;
@@ -433,9 +461,10 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                             duration: 1000,
                           );
                         }
-                       return;
+                        return;
                       }
-                      bool isInSendButton = widget.recordController.isInSendButton.value;
+                      bool isInSendButton =
+                          widget.recordController.isInSendButton.value;
                       // 取消发送
                       if (!isInSendButton) {
                         return;
@@ -497,7 +526,6 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
 
 // 控制器
 class BottomBarController {
-
   BottomBarController();
 
   ValueNotifier<bool> _disabled = ValueNotifier(true);
@@ -519,5 +547,4 @@ class BottomBarController {
   void setShowMessageList(bool showMessageList) {
     _showMessageList.value = showMessageList;
   }
-
 }

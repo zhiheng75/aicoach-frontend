@@ -171,7 +171,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
       // ignore: unnecessary_null_comparison
       if (newWxInfoBean != null) {
         Log.e("======进来了吗=======");
-        if (newWxInfoBean.data.token.isNotEmpty) {
+        if (validateInput(newWxInfoBean.data.token)) {
           SpUtil.putObject(Constant.userInfoKey, newWxInfoBean.data.toJson());
           SpUtil.putString(Constant.accessToken, newWxInfoBean.data.token);
           Log.e("======进来了吗=======");
@@ -188,5 +188,21 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
     }, onError: (code, msg) {
       view.wechatFail();
     });
+  }
+
+  bool validateInput(String? input) {
+    if (input == null) {
+      return false;
+    }
+
+    if (input == "null") {
+      return false;
+    }
+
+    if (input.isEmpty) {
+      return false;
+    }
+
+    return true;
   }
 }
