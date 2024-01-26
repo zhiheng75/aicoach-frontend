@@ -168,13 +168,13 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
                           //   LoginRouter.phoneLoginPage,
                           // );
                           // judgementPhone();
+                          // _bindPhonePresenter.sendSms(_phoneController.text);
+
                           NavigatorUtils.push(
                               context,
                               arguments: widget.wechatData,
                               replace: true,
                               "${LoginRouter.keyCheckTwoCodePage}?PhoneNumber=${_phoneController.text.trim()}");
-
-                          _bindPhonePresenter.sendSms(_phoneController.text);
                         },
                         child: Container(
                           height: Dimens.h_dp40,

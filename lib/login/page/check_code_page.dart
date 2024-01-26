@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:Bubble/constant/constant.dart';
+import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/login/entity/login_info_entity.dart';
 import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/presenter/register_presenter.dart';
@@ -251,12 +252,12 @@ class _CheckCodePageState extends State<CheckCodePage>
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-
-    NavigatorUtils.push(
-      context,
-      replace: true, //应该的注释
-      PersonalRouter.person,
-    );
+    NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
+    // NavigatorUtils.push(
+    //   context,
+    //   replace: true, //应该的注释
+    //   PersonalRouter.person,
+    // );
   }
 
   @override
@@ -339,9 +340,11 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   void initState() {
     Log.e(widget.phoneNumber);
     // Log.e(widget.isKeyLogin as String);
-
-    _startTimer();
     super.initState();
+    Future.delayed(Duration(milliseconds: 200), () {
+      _registerPresenter.sendSms(widget.phoneNumber, false);
+      _startTimer();
+    });
   }
 
   void _cancelTimer() {
@@ -507,7 +510,8 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    NavigatorUtils.push(context, PersonalRouter.person, replace: true);
+    // NavigatorUtils.push(context, PersonalRouter.person, replace: true);
+    NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
   }
 
   @override

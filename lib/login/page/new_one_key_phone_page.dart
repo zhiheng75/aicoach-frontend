@@ -479,7 +479,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
 
   @override
   void wechatFail() {
-    Toast.show("登录失败");
+    // Toast.show("登录失败");
   }
 
   @override
