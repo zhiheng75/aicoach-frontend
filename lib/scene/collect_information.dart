@@ -60,6 +60,8 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
   NormalMessage? _answer;
   // app状态
   AppLifecycleState? _appLifecycleState;
+  // ai音频播放
+  ListPlayer? _listPlayer;
   // 是否对话结束
   bool _isConversationEnd = false;
 
@@ -97,11 +99,19 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
   void onWebsocketAnswer(dynamic answer) {
     if (_answer == null) {
       _answer = NormalMessage();
+      // 创建播放列表
+      _listPlayer = _mediaUtils.createListPlay(() {
+        _bottomBarControll.setDisabled(false);
+      });
       _homeProvider.addNormalMessage(_answer!);
     }
     if (answer is String) {
       if (answer.startsWith('[end')) {
         _answer!.isTextEnd = true;
+        // 音频已全部返回
+        if (_listPlayer != null) {
+          _listPlayer!.setReturnEnd();
+        }
         _homeProvider.notify();
         _answer = null;
         return;
@@ -115,12 +125,9 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
       if (_appLifecycleState == AppLifecycleState.paused) {
         return;
       }
-      _mediaUtils.playLoop(
-        buffer: answer,
-        whenFinished: () {
-          _bottomBarControll.setDisabled(false);
-        },
-      );
+      if (_listPlayer != null) {
+        _listPlayer!.play(answer);
+      }
     }
   }
 
@@ -159,7 +166,7 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     _appLifecycleState = state;
-    Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlayLoop());
+    Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
   }
 
   @override

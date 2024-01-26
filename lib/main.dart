@@ -2,6 +2,7 @@ import 'package:Bubble/conversation/provider/conversation_provider.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/provider/selecter_teacher_provider.dart';
 import 'package:Bubble/setting/provider/device_provider.dart';
+import 'package:Bubble/util/media_utils.dart';
 import 'package:device_identity/device_identity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,9 @@ Future<void> main() async {
     /// device_identity初始化
     await DeviceIdentity.register();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+    // 设置音频配置
+    await AudioConfig.addAudioConfig();
     runApp(MyApp());
   });
 

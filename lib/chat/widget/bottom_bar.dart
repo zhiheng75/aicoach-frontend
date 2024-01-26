@@ -51,6 +51,8 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   List<Uint8List> _bufferList = [];
   // ai回答消息
   NormalMessage? _answer;
+  // ai音频播放
+  ListPlayer? _listPlayer;
   // app状态
   AppLifecycleState? _appLifecycleState;
 
@@ -164,11 +166,19 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   void onWebsocketAnswer(dynamic answer) {
     if (_answer == null) {
       _answer = NormalMessage();
+      // 创建列表播放
+      _listPlayer = _mediaUtils.createListPlay(() {
+        widget.controller.setDisabled(false);
+      });
       _homeProvider.addNormalMessage(_answer!);
     }
     if (answer is String) {
       if (answer.startsWith('[end')) {
         _answer!.isTextEnd = true;
+        // 音频已全部返回
+        if (_listPlayer != null) {
+          _listPlayer!.setReturnEnd();
+        }
         _homeProvider.notify();
         return;
       }
@@ -181,16 +191,9 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       if (_appLifecycleState == AppLifecycleState.paused) {
         return;
       }
-      _mediaUtils.playLoop(
-        buffer: answer,
-        whenFinished: () {
-          // 其他播放语音操作强制结束AI语音
-          if (!_mediaUtils.banUsePlayer && !_answer!.isTextEnd) {
-            return;
-          }
-          widget.controller.setDisabled(false);
-        },
-      );
+      if (_listPlayer != null) {
+        _listPlayer!.play(answer);
+      }
     }
   }
 
@@ -266,7 +269,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     _appLifecycleState = state;
-    Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlayLoop());
+    Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
   }
 
   @override

@@ -100,7 +100,7 @@ class _EvaluationState extends State<Evaluation> {
       _ttsCancelToken!.cancel();
       _ttsCancelToken = null;
     }
-    await _mediaUtils.stopPlayLoop(true);
+    await _mediaUtils.stopPlay();
     if (type == 'user') {
       _mediaUtils.play(
         pcmBuffer: widget.message.audio,

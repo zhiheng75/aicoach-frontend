@@ -273,8 +273,8 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   }
 
   Future<void> endCurrentChat() async {
+    await _mediaUtils.stopPlay();
     await _chatWebsocket.endChat(true);
-    await _mediaUtils.stopPlayLoop(true);
   }
 
   void startNormalChat(CharacterEntity character) async {

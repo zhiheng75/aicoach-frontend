@@ -1,9 +1,11 @@
-// ignore_for_file: depend_on_referenced_packages, slash_for_doc_comments
+// ignore_for_file: depend_on_referenced_packages, slash_for_doc_comments, prefer_final_fields
 
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:Bubble/util/log_utils.dart';
+import 'package:audio_session/audio_session.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -11,15 +13,13 @@ import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:volume_controller/volume_controller.dart';
 
 // 获取临时文件夹
 Future<String> getTemDirPath() async {
   Directory dir = await getTemporaryDirectory();
   return dir.path;
 }
-// 列表播放
-List<Player> _playerList = [];
-Player? _currentPlayer;
 
 class MediaUtils {
   factory MediaUtils() {
@@ -31,10 +31,11 @@ class MediaUtils {
   FlutterSoundRecorder? _recorder;
   StreamSubscription? _subscription;
   StreamController<Food>? _controller;
-  // 是否禁用播放器
-  bool _banUsePlayer = false;
 
-  bool get banUsePlayer => _banUsePlayer;
+  // 单一播放
+  Player? _currentPlayer;
+  // 列表播放（播放多段AI语音）
+  ListPlayer? _listPlayer;
 
   /** 录音器 */
   void startRecord({
@@ -158,74 +159,85 @@ class MediaUtils {
     if (url != null) {
       FilePlayer filePlayerByUrl = FilePlayer(whenFinished);
       filePlayerByUrl.url = url;
-      _playerList.add(filePlayerByUrl);
+      _currentPlayer = filePlayerByUrl;
+      filePlayerByUrl.play(() {
+        _currentPlayer = null;
+      });
+      return;
     }
     if (pcmBuffer != null) {
-      _playerList.add(BufferPlayer(pcmBuffer, whenFinished));
+      BufferPlayer bufferPlayer = BufferPlayer(pcmBuffer, whenFinished);
+      _currentPlayer = bufferPlayer;
+      bufferPlayer.play(() {
+        _currentPlayer = null;
+      });
+      return;
     }
     if (mp3Buffer != null) {
       FilePlayer filePlayerByBuffer = FilePlayer(whenFinished);
       filePlayerByBuffer.buffer = mp3Buffer;
-      _playerList.add(filePlayerByBuffer);
-    }
-    if (_currentPlayer != null) {
-      return;
-    }
-    _play();
-  }
-
-  void playLoop({
-    required Uint8List buffer,
-    Function()? whenFinished,
-  }) async {
-    play(
-      mp3Buffer: buffer,
-      whenFinished: whenFinished,
-    );
-  }
-
-  Future<void> stopPlay([bool banUsePlayer = false]) async {
-    // 备份未播放
-    List<Player> playListForUnplay = _playerList;
-    _playerList = [];
-    if (_currentPlayer != null) {
-      playListForUnplay.insert(0, _currentPlayer!);
-    }
-    // 停止
-    for (Player player in playListForUnplay) {
-      if (player is BufferPlayer) {
-        await (player as BufferPlayer).stop();
-      }
-      if (player is FilePlayer) {
-        await (player as FilePlayer).stop();
-      }
-    }
-    _currentPlayer = null;
-  }
-
-  Future<void> stopPlayLoop([bool banUsePlayer = false]) async {
-    await stopPlay(banUsePlayer);
-  }
-
-  Future<void> _play() async {
-    if (_playerList.isEmpty) {
-      return;
-    }
-    Player player = _playerList.removeAt(0);
-    _currentPlayer = player;
-    if (_currentPlayer is BufferPlayer) {
-      (_currentPlayer as BufferPlayer).play(() {
+      _currentPlayer = filePlayerByBuffer;
+      filePlayerByBuffer.play(() {
         _currentPlayer = null;
-        _play();
-      });
-    }
-    if (_currentPlayer is FilePlayer) {
-      (_currentPlayer as FilePlayer).play(() {
-        _currentPlayer = null;
-        _play();
       });
     }
   }
+
+  ListPlayer createListPlay(Function() whenFinished) {
+    ListPlayer listPlayer = ListPlayer(whenFinished);
+    // 如果存在单一播放就不赋值
+    if (_currentPlayer == null) {
+      listPlayer.notPlaceHolder();
+      _listPlayer = listPlayer;
+    }
+    return listPlayer;
+  }
+
+  Future<void> stopPlay() async {
+    if (_currentPlayer != null) {
+      if (_currentPlayer is BufferPlayer) {
+        await (_currentPlayer as BufferPlayer).stop();
+      }
+      if (_currentPlayer is FilePlayer) {
+       await (_currentPlayer as FilePlayer).stop();
+      }
+      _currentPlayer = null;
+    }
+    if (_listPlayer != null) {
+      await _listPlayer!.stop();
+    }
+    _listPlayer = null;
+  }
+}
+
+class VolumeUtil {
+
+  static Future<double> getVolume() async {
+    return VolumeController().getVolume();
+  }
+
+}
+
+class AudioConfig {
+
+  static Future<void> addAudioConfig() async {
+    final session = await AudioSession.instance;
+    await session.configure(const AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionMode: AVAudioSessionMode.defaultMode,
+      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.speech,
+        flags: AndroidAudioFlags.none,
+        usage: AndroidAudioUsage.voiceCommunication,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+      androidWillPauseWhenDucked: true,
+    ));
+  }
+
 }
 
 class AudioConvertUtil {
@@ -279,7 +291,7 @@ class AudioConvertUtil {
 class Player {
 
   Player();
-  // 步骤 convert-格式转换 waitPlay-等待播放 play-播放 finished-结束
+  // 步骤 convert-格式转换 waitPlay-等待播放 loadPlay-加载播放 play-播放 finished-结束
   String step = '';
 
 }
@@ -292,17 +304,25 @@ class BufferPlayer extends Player {
   List<Uint8List> pcm;
   Uint8List wav = Uint8List(0);
   Function() whenFinished;
+  Function()? onPlayComplete;
+  bool isMultiple = false;
 
   Future<void> play(Function() onComplete) async {
+    onPlayComplete = onComplete;
     if (wav.isEmpty) {
       await _convert();
     }
-    _play(onComplete);
+    _play();
   }
 
   Future<void> stop() async {
-    if (step == 'play' && player != null) {
-      player!.audioPlayerFinished(PlayerState.isPlaying.index);
+    if (step == 'play' && player != null && player!.isPlaying) {
+      if (isMultiple) {
+        _onCallback();
+      }
+      step = 'finished';
+      await player!.stopPlayer();
+      await player!.closePlayer();
     } else {
       step = 'finished';
     }
@@ -311,10 +331,12 @@ class BufferPlayer extends Player {
   Future<void> _convert() async {
     step = 'convert';
     wav = await AudioConvertUtil.convertPcmToWav(pcm);
-    step = 'waitPlay';
+    if (step == 'convert') {
+      step = 'waitPlay';
+    }
   }
 
-  Future<void> _play(Function() onComplete) async {
+  Future<void> _play() async {
     int maxCount = 300;
     // 还在转换中
     while(step == 'convert') {
@@ -326,44 +348,53 @@ class BufferPlayer extends Player {
     }
     // 等待超时
     if (step == 'convert' && maxCount == 0) {
-      _onCallback(onComplete);
+      _onCallback();
       return;
     }
     // 转换失败
     if (step == 'waitPlay' && wav.isEmpty) {
-      _onCallback(onComplete);
+      _onCallback();
       return;
     }
     // 中途被暂停
     if (step == 'finished') {
-      _onCallback(onComplete);
+      _onCallback();
       return;
     }
     // 播放
     try {
-      player = await FlutterSoundPlayer(logLevel: Level.debug).openPlayer();
-      if (player == null) {
-        throw Exception();
+      step = 'loadPlay';
+      player = FlutterSoundPlayer(logLevel: Level.nothing);
+      await player!.openPlayer();
+      double volume = await VolumeUtil.getVolume();
+      await player!.setVolume(volume);
+      // 加载过程中被停止
+      if (step == 'finished') {
+        _onCallback();
+        await player!.closePlayer();
+        return;
       }
       step = 'play';
       player!.startPlayer(
         fromDataBuffer: wav,
         codec: Codec.pcm16WAV,
         whenFinished: () async {
+          step = 'finished';
           await player!.stopPlayer();
           await player!.closePlayer();
-          _onCallback(onComplete);
+          _onCallback();
         },
       );
     } catch (e) {
-      _onCallback(onComplete);
+      _onCallback();
     }
   }
 
-  void _onCallback(Function() onComplete) {
-    step = 'finished';
+  void _onCallback() {
+    if (onPlayComplete != null) {
+      onPlayComplete!();
+    }
     whenFinished();
-    onComplete();
   }
 
 }
@@ -377,17 +408,25 @@ class FilePlayer extends Player {
   Uint8List? buffer;
   String path = '';
   Function() whenFinished;
+  Function()? onPlayComplete;
+  bool isMultiple = false;
 
   Future<void> play(Function() onComplete) async {
+    onPlayComplete = onComplete;
     if (path.isEmpty) {
       await _convert();
     }
-    _play(onComplete);
+    _play();
   }
 
   Future<void> stop() async {
-    if (step == 'play' && player != null) {
-      player!.audioPlayerFinished(PlayerState.isPlaying.index);
+    if (step == 'play' && player != null && player!.isPlaying) {
+      if (isMultiple) {
+        _onCallback();
+      }
+      step = 'finished';
+      await player!.stopPlayer();
+      await player!.closePlayer();
     } else {
       step = 'finished';
     }
@@ -401,10 +440,12 @@ class FilePlayer extends Player {
     if (buffer != null && buffer!.isNotEmpty) {
      path = await AudioConvertUtil.saveMp3Buffer(buffer!);
     }
-    step = 'waitPlay';
+    if (step == 'convert') {
+      step = 'waitPlay';
+    }
   }
 
-  Future<void> _play(Function() onComplete) async {
+  Future<void> _play() async {
     int maxCount = 300;
     // 还在转换中
     while(step == 'convert') {
@@ -416,43 +457,136 @@ class FilePlayer extends Player {
     }
     // 等待超时
     if (step == 'convert' && maxCount == 0) {
-      _onCallback(onComplete);
+      _onCallback();
       return;
     }
     // 转换失败
     if (step == 'waitPlay' && path == '') {
-      _onCallback(onComplete);
+      _onCallback();
       return;
     }
     // 中途被暂停
     if (step == 'finished') {
-      _onCallback(onComplete);
+      _onCallback();
       return;
     }
     // 播放
     try {
-      player = await FlutterSoundPlayer(logLevel: Level.debug).openPlayer();
-      if (player == null) {
-        throw Exception();
+      step = 'loadPlay';
+      player = FlutterSoundPlayer(logLevel: Level.nothing);
+      await player!.openPlayer();
+      double volume = await VolumeUtil.getVolume();
+      await player!.setVolume(volume);
+      // 加载过程中被停止
+      if (step == 'finished') {
+        _onCallback();
+        await player!.closePlayer();
+        return;
       }
       step = 'play';
       player!.startPlayer(
         fromURI: path,
         codec: Codec.mp3,
         whenFinished: () async {
+          step = 'finished';
           await player!.stopPlayer();
           await player!.closePlayer();
-          _onCallback(onComplete);
+          _onCallback();
         },
       );
     } catch (e) {
-      _onCallback(onComplete);
+      _onCallback();
     }
   }
 
-  void _onCallback(Function() onComplete) {
-    step = 'finished';
+  void _onCallback() {
+    Log.d('end', tag: 'FilePlayer._onCallback');
+    if (onPlayComplete != null) {
+      onPlayComplete!();
+    }
     whenFinished();
-    onComplete();
+  }
+}
+
+class ListPlayer {
+  ListPlayer(this._whenFinished);
+
+  List<FilePlayer> _playList = [];
+  // 是否所有音频已返回
+  bool _isReturnEnd = false;
+  Function() _whenFinished;
+  FilePlayer? _currentPlayer;
+  bool _isDestroyed = false;
+  // 当单一播放在执行时，创建一个流程列表播放
+  bool _isPlaceHolder = true;
+
+  void play(Uint8List mp3Buffer) {
+    // 已销毁
+    if (_isDestroyed) {
+      return;
+    }
+    // 流程列表播放
+    if (_isPlaceHolder) {
+      return;
+    }
+    FilePlayer filePlayer = FilePlayer(() => null);
+    filePlayer.buffer = mp3Buffer;
+    filePlayer.isMultiple = true;
+    _playList.add(filePlayer);
+    if (_currentPlayer != null) {
+      return;
+    }
+    _play();
+  }
+
+  Future<void> stop() async {
+    _isDestroyed = true;
+    // 有播放
+    if (_currentPlayer != null) {
+      await _currentPlayer!.stop();
+      _playList = [];
+      // 当前播放
+      return;
+    }
+    // 全部播放完毕
+    if (_isReturnEnd && _playList.isEmpty) {
+      return;
+    }
+  }
+
+  void notPlaceHolder() {
+    _isPlaceHolder = false;
+  }
+
+  void setReturnEnd() {
+    _isReturnEnd = true;
+    // 已销毁
+    if (_isDestroyed) {
+      _whenFinished();
+      return;
+    }
+    // 没有播放
+    if (_currentPlayer == null) {
+      _whenFinished();
+    }
+  }
+
+  void _play() {
+    if (_isDestroyed) {
+      _whenFinished();
+      return;
+    }
+    if (_playList.isEmpty) {
+      _currentPlayer = null;
+      // 未返回完音频
+      if (!_isReturnEnd) {
+        return;
+      }
+      _whenFinished();
+      return;
+    }
+    FilePlayer player = _playList.removeAt(0);
+    _currentPlayer = player;
+    player.play(_play);
   }
 }

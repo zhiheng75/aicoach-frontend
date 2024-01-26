@@ -50,6 +50,8 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
   final RecordController _recordController = RecordController();
   // ai回答消息
   NormalMessage? _answer;
+  // ai音频播放
+  ListPlayer? _listPlayer;
   // app状态
   AppLifecycleState? _appLifecycleState;
   // 是否对话结束
@@ -73,7 +75,6 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
           setState(() {});
           _homeProvider.addIntroductionMessage();
           _homeProvider.addTipMessage('Scene started！');
-          _bottomBarControll.setDisabled(false);
           // 倒计时
           _homeProvider.startUsageTimeCutdown(() {
             showModalBottomSheet(
@@ -98,11 +99,19 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
   void onWebsocketAnswer(dynamic answer) {
     if (_answer == null) {
       _answer = NormalMessage();
+      // cj播放列表
+      _listPlayer = _mediaUtils.createListPlay(() {
+        _bottomBarControll.setDisabled(false);
+      });
       _homeProvider.addNormalMessage(_answer!);
     }
     if (answer is String) {
       if (answer.startsWith('[end')) {
         _answer!.isTextEnd = true;
+        // 音频已全部返回
+        if (_listPlayer != null) {
+          _listPlayer!.setReturnEnd();
+        }
         _homeProvider.notify();
         _answer = null;
         return;
@@ -116,12 +125,9 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
       if (_appLifecycleState == AppLifecycleState.paused) {
         return;
       }
-      _mediaUtils.playLoop(
-        buffer: answer,
-        whenFinished: () {
-          _bottomBarControll.setDisabled(false);
-        },
-      );
+      if (_listPlayer != null) {
+        _listPlayer!.play(answer);
+      }
     }
   }
 
@@ -186,7 +192,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     _appLifecycleState = state;
-    Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlayLoop());
+    Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
   }
 
   @override
