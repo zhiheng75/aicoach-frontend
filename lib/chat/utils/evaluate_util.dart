@@ -49,6 +49,19 @@ class EvaluateUtil {
     }
     _createEvaluateCache(message).then((cache) {
       _saveEvaluateCache(cache);
+      // 用户语音有中文直接评测为0
+      if (RegExp(r'[\u4e00-\u9fa5]').hasMatch(cache.message.text)) {
+        Map<String, dynamic> defaultEvaluation = {
+          'accuracy_score': '0.0',
+          'fluency_score': '0.0',
+          'integrity_score': '0.0',
+          'standard_score': '0.0',
+          'total_score': '0.0',
+          'score_detail': '{"sentence":{"word_count":0,"word":[]}}',
+        };
+        cache.message.evaluation = defaultEvaluation;
+        _saveEvaluateCache(cache);
+      }
       try {
         _evaluate(
           cache: cache,
@@ -123,7 +136,11 @@ class EvaluateUtil {
       if (message.evaluation.isNotEmpty) {
         _saveEvaluation(
           message: message,
-          onSuccess: (_) {
+          onSuccess: (result) {
+            // 初次上传
+            if (result['id'] != null) {
+              _upload(result['id'], [...message.audio]);
+            }
             _removeEvaluateCache(cache);
             onSuccess();
           },
