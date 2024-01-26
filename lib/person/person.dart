@@ -304,8 +304,8 @@ class _PersonPageState extends State<PersonPage>
             Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const LoadAssetImage(
-                  'zhuanshi',
+                LoadAssetImage(
+                  phone == "17001234567" ? "jiangpai" : 'zhuanshi',
                   width: 48.0,
                   height: 48.0,
                 ),
