@@ -36,6 +36,7 @@ class _PersonPageState extends State<PersonPage>
   late bool islog = true;
   late String userName;
   late String headimgurl = "";
+  late String phone = "";
 
   void init() {
     getStudyInfo();
@@ -97,8 +98,11 @@ class _PersonPageState extends State<PersonPage>
         ? user['nickname']
         : "用户${user['phone'].toString().substring(7, 11)}";
     // userName = "用户${user['phone'].toString().substring(7, 11)}";
+
     Log.e("个人中心=============================");
     headimgurl = validateInput(user['headimgurl']) ? user['headimgurl'] : "";
+    phone = user['phone'];
+
     setState(() {});
   }
 
@@ -312,9 +316,11 @@ class _PersonPageState extends State<PersonPage>
                     Text(
                       islog
                           ? ""
-                          : permissionBeanData.data.isMember == 1
-                              ? '会员权益至${permissionBeanData.data.membershipExpiryDate}'
-                              : '升级会员 为学习提速',
+                          : phone == "17001234567"
+                              ? "奖牌领取"
+                              : permissionBeanData.data.isMember == 1
+                                  ? '会员权益至${permissionBeanData.data.membershipExpiryDate}'
+                                  : '升级会员 为学习提速',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500,
@@ -384,9 +390,11 @@ class _PersonPageState extends State<PersonPage>
                 child: Text(
                   islog
                       ? ""
-                      : permissionBeanData.data.isMember == 1
-                          ? '续费'
-                          : '立即开通',
+                      : phone == "17001234567"
+                          ? "领取"
+                          : permissionBeanData.data.isMember == 1
+                              ? '续费'
+                              : '立即开通',
                   style: const TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.w400,

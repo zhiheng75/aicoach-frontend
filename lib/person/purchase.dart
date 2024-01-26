@@ -121,6 +121,14 @@ class _PurchasePageState extends State<PurchasePage>
 
     String userPhone = user['phone'].toString();
     if (userPhone == "17001234567") {
+      showDialog(
+        context: context,
+        barrierColor: Colors.transparent,
+        barrierDismissible: false,
+        useSafeArea: false,
+        builder: (_) => const IPhoneIllustration(),
+      );
+
       return;
     }
     // Log.e(user.toString());
