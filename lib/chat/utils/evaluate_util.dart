@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:Bubble/util/media_utils.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -288,59 +288,6 @@ class EvaluateUtil {
     }
   }
 
-  /** 上传音频 */
-  Uint8List toWav(List<int> data) {
-    var channels = 1;
-
-    int sampleRate = 16000;
-
-    int byteRate = ((16 * sampleRate * channels) / 8).round();
-
-    var size = data.length;
-
-    var fileSize = size + 36;
-
-    return Uint8List.fromList([
-      // "RIFF"
-      82, 73, 70, 70,
-      fileSize & 0xff,
-      (fileSize >> 8) & 0xff,
-      (fileSize >> 16) & 0xff,
-      (fileSize >> 24) & 0xff,
-      // WAVE
-      87, 65, 86, 69,
-      // fmt
-      102, 109, 116, 32,
-      // fmt chunk size 16
-      16, 0, 0, 0,
-      // Type of format
-      1, 0,
-      // One channel
-      channels, 0,
-      // Sample rate
-      sampleRate & 0xff,
-      (sampleRate >> 8) & 0xff,
-      (sampleRate >> 16) & 0xff,
-      (sampleRate >> 24) & 0xff,
-      // Byte rate
-      byteRate & 0xff,
-      (byteRate >> 8) & 0xff,
-      (byteRate >> 16) & 0xff,
-      (byteRate >> 24) & 0xff,
-      // Uhm
-      ((16 * channels) / 8).round(), 0,
-      // bitsize
-      16, 0,
-      // "data"
-      100, 97, 116, 97,
-      size & 0xff,
-      (size >> 8) & 0xff,
-      (size >> 16) & 0xff,
-      (size >> 24) & 0xff,
-      ...data
-    ]);
-  }
-
   /** 上传缓存 */
   UploadCache _createUploadCache(int evaluationId, List<Uint8List> audio) {
     UploadCache cache = UploadCache();
@@ -421,11 +368,7 @@ class EvaluateUtil {
         Digest digest = Hmac(sha1, utf8.encode(evaluateOss['AccessKeySecret']))
             .convert(utf8.encode(policy));
         String signature = base64Encode(digest.bytes);
-
-        List<int> buffer = [];
-        for (Uint8List item in cache.audio) {
-          buffer.addAll(item);
-        }
+        Uint8List wav = await AudioConvertUtil.convertPcmToWav(cache.audio);
         FormData formData = FormData.fromMap({
           'key': key,
           'success_action_status': '200',
@@ -435,7 +378,7 @@ class EvaluateUtil {
           'signature': signature,
           'Content-Type': 'audio/x-wave',
           // 'file': MultipartFile.fromBytes(toWav(buffer)),
-          'file': FlutterSoundHelper().pcmToWaveBuffer(inputBuffer: Uint8List.fromList(buffer)),
+          'file': MultipartFile.fromBytes(wav),
         });
 
         try {

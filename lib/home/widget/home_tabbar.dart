@@ -1,4 +1,5 @@
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/util/EventBus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -98,6 +99,7 @@ class _HomeTabbarState extends State<HomeTabbar> {
             behavior: HitTestBehavior.opaque,
             onTap: () {
               LoginManager.checkLogin(context, () {
+                EventBus().emit('LEAVECHATPAGE');
                 NavigatorUtils.push(
                   context,
                   PersonalRouter.person,
@@ -149,6 +151,7 @@ class _HomeTabbarState extends State<HomeTabbar> {
               LoginManager.checkLogin(
                 context,
                 () {
+                  EventBus().emit('LEAVECHATPAGE');
                   NavigatorUtils.push(
                     context,
                     ReportRouter.reportPage,

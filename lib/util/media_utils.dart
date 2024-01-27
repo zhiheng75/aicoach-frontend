@@ -154,26 +154,20 @@ class MediaUtils {
       FilePlayer filePlayerByUrl = FilePlayer(whenFinished);
       filePlayerByUrl.url = url;
       _currentPlayer = filePlayerByUrl;
-      filePlayerByUrl.play(() {
-        _currentPlayer = null;
-      });
+      filePlayerByUrl.play(() => null);
       return;
     }
     if (pcmBuffer != null) {
       BufferPlayer bufferPlayer = BufferPlayer(pcmBuffer, whenFinished);
       _currentPlayer = bufferPlayer;
-      bufferPlayer.play(() {
-        _currentPlayer = null;
-      });
+      bufferPlayer.play(() => null);
       return;
     }
     if (mp3Buffer != null) {
       FilePlayer filePlayerByBuffer = FilePlayer(whenFinished);
       filePlayerByBuffer.buffer = mp3Buffer;
       _currentPlayer = filePlayerByBuffer;
-      filePlayerByBuffer.play(() {
-        _currentPlayer = null;
-      });
+      filePlayerByBuffer.play(() => null);
     }
   }
 
@@ -189,18 +183,20 @@ class MediaUtils {
 
   Future<void> stopPlay() async {
     if (_currentPlayer != null) {
-      if (_currentPlayer is BufferPlayer) {
-        await (_currentPlayer as BufferPlayer).stop();
-      }
-      if (_currentPlayer is FilePlayer) {
-       await (_currentPlayer as FilePlayer).stop();
-      }
+      Player player = _currentPlayer!;
       _currentPlayer = null;
+      if (player is BufferPlayer) {
+        await player.stop();
+      }
+      if (player is FilePlayer) {
+       await player.stop();
+      }
     }
     if (_listPlayer != null) {
-      await _listPlayer!.stop();
+      ListPlayer listPlayer = _listPlayer!;
+      _listPlayer = null;
+      await listPlayer.stop();
     }
-    _listPlayer = null;
   }
 }
 
@@ -271,13 +267,18 @@ class AudioConvertUtil {
   static Future<Uint8List> convertPcmToWav(List<Uint8List> pcm) async {
     List<int> bytes = [];
     for (Uint8List element in pcm) {
-      bytes.addAll(element.map((item) => item).toList());
+      bytes.addAll(element.toList());
     }
     try {
-      return await FlutterSoundHelper().pcmToWaveBuffer(inputBuffer: Uint8List.fromList(bytes));
+      Uint8List wav = await FlutterSoundHelper().pcmToWaveBuffer(inputBuffer: Uint8List.fromList(bytes));
+      return wav;
     } catch (e) {
       return Uint8List(0);
     }
+  }
+
+  static Uint8List convertWavToPcm(Uint8List wavBytes) {
+    return FlutterSoundHelper().waveToPCMBuffer(inputBuffer: wavBytes);
   }
 
 }
@@ -310,16 +311,19 @@ class BufferPlayer extends Player {
   }
 
   Future<void> stop() async {
-    if (step == 'play' && player != null && player!.isPlaying) {
+    if (step == 'finished') {
+      return;
+    }
+    if (step == 'play') {
+      step = 'finished';
       if (isMultiple) {
         _onCallback();
       }
-      step = 'finished';
       await player!.stopPlayer();
       await player!.closePlayer();
-    } else {
-      step = 'finished';
+      return;
     }
+    step = 'finished';
   }
 
   Future<void> _convert() async {
@@ -352,23 +356,17 @@ class BufferPlayer extends Player {
     }
     // 中途被暂停
     if (step == 'finished') {
-      _onCallback();
+      if (isMultiple) {
+        _onCallback();
+      }
       return;
     }
     // 播放
     try {
-      step = 'loadPlay';
       player = FlutterSoundPlayer(logLevel: Level.nothing);
       await player!.openPlayer();
       double volume = await VolumeUtil.getVolume();
       await player!.setVolume(volume);
-      // 加载过程中被停止
-      if (step == 'finished') {
-        _onCallback();
-        await player!.closePlayer();
-        return;
-      }
-      step = 'play';
       player!.startPlayer(
         fromDataBuffer: wav,
         codec: Codec.pcm16WAV,
@@ -379,6 +377,7 @@ class BufferPlayer extends Player {
           _onCallback();
         },
       );
+      step = 'play';
     } catch (e) {
       _onCallback();
     }
@@ -407,6 +406,10 @@ class FilePlayer extends Player {
 
   Future<void> play(Function() onComplete) async {
     onPlayComplete = onComplete;
+    // 本地文件
+    if (url != null && !RegExp(r'^(http|https)').hasMatch(url!)) {
+      path = url!;
+    }
     if (path.isEmpty) {
       await _convert();
     }
@@ -414,16 +417,19 @@ class FilePlayer extends Player {
   }
 
   Future<void> stop() async {
-    if (step == 'play' && player != null && player!.isPlaying) {
+    if (step == 'finished') {
+      return;
+    }
+    if (step == 'play') {
+      step = 'finished';
       if (isMultiple) {
         _onCallback();
       }
-      step = 'finished';
       await player!.stopPlayer();
       await player!.closePlayer();
-    } else {
-      step = 'finished';
+      return;
     }
+    step = 'finished';
   }
 
   Future<void> _convert() async {
@@ -461,23 +467,17 @@ class FilePlayer extends Player {
     }
     // 中途被暂停
     if (step == 'finished') {
-      _onCallback();
+      if (isMultiple) {
+        _onCallback();
+      }
       return;
     }
     // 播放
     try {
-      step = 'loadPlay';
       player = FlutterSoundPlayer(logLevel: Level.nothing);
       await player!.openPlayer();
       double volume = await VolumeUtil.getVolume();
       await player!.setVolume(volume);
-      // 加载过程中被停止
-      if (step == 'finished') {
-        _onCallback();
-        await player!.closePlayer();
-        return;
-      }
-      step = 'play';
       player!.startPlayer(
         fromURI: path,
         codec: Codec.mp3,
@@ -488,6 +488,7 @@ class FilePlayer extends Player {
           _onCallback();
         },
       );
+      step = 'play';
     } catch (e) {
       _onCallback();
     }

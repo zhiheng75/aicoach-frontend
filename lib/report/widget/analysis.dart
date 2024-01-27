@@ -2,7 +2,6 @@
 
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/net/dio_utils.dart';
-import 'package:Bubble/util/media_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,12 +27,12 @@ class Analysis extends StatefulWidget {
 
 class _AnalysisState extends State<Analysis> {
 
-  final MediaUtils _mediaUtils = MediaUtils();
   final ScreenUtil _screenUtil = ScreenUtil();
   // 状态 loading-加载中 fail-失败 success-成功
   String _state = 'loading';
   final CancelToken _cancelToken = CancelToken();
   List<AnalysisEntity> _analysisList = [];
+  PronounceEntity? _pronounceEntityInPlay;
 
   void init() {
     _state = 'loading';
@@ -67,6 +66,9 @@ class _AnalysisState extends State<Analysis> {
               List<PronounceEntity> pronounceList = [];
               for(dynamic pronounceItem in item['list']) {
                 PronounceEntity pronounce = PronounceEntity.fromJson(pronounceItem);
+                if (item['speech_url'] != null && item['speech_url'] != '') {
+                  pronounce.audio = item['speech_url'];
+                }
                 pronounceList.add(pronounce);
               }
               analysis.pronounce = pronounceList;
@@ -88,15 +90,6 @@ class _AnalysisState extends State<Analysis> {
         return;
       },
     );
-  }
-
-  void playAudio(String audioUrl) {
-    try {
-      _mediaUtils.stopPlay();
-      _mediaUtils.play(
-        url: audioUrl,
-      );
-    } catch (error) {}
   }
 
   @override
@@ -220,53 +213,66 @@ class _AnalysisState extends State<Analysis> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: analysis.pronounce.map((item) {
-                    return GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        if (item.audio == '') {
-                          return;
-                        }
-                        playAudio(item.audio);
-                      },
-                      child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100.0),
-                            color: Colors.white,
-                          ),
-                          padding: const EdgeInsets.all(16.0),
-                          margin: const EdgeInsets.only(
-                            bottom: 16.0,
-                          ),
-                          child: Row(
-                            children: [
-                              const LoadAssetImage(
-                                'laba_lan',
-                                width: 17.6,
-                                height: 16.0,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0,
-                                ),
-                                child: Text(
-                                  item.text,
-                                  style: const TextStyle(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black,
-                                    height: 20.0 / 15.0,
-                                    letterSpacing: 0.05,
-                                  ),
-                                ),
-                              ),
-                              const LoadAssetImage(
-                                'laba_lan',
-                                width: 17.6,
-                                height: 16.0,
-                              ),
-                            ],
-                          )
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100.0),
+                        color: Colors.white,
                       ),
+                      padding: const EdgeInsets.all(16.0),
+                      margin: const EdgeInsets.only(
+                        bottom: 16.0,
+                      ),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () async {
+                              // 点击其他的
+                              if (_pronounceEntityInPlay != null && item != _pronounceEntityInPlay) {
+                                await _pronounceEntityInPlay!.stopAll();
+                              }
+                              item.playUserVoice();
+                              _pronounceEntityInPlay ??= item;
+                            },
+                            child: const LoadAssetImage(
+                              'laba_lan',
+                              width: 17.6,
+                              height: 16.0,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                            ),
+                            child: Text(
+                              '${item.text}发音不清晰，应该这样读',
+                              style: const TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black,
+                                height: 20.0 / 15.0,
+                                letterSpacing: 0.05,
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () async {
+                              // 点击其他的
+                              if (_pronounceEntityInPlay != null && item != _pronounceEntityInPlay) {
+                                await _pronounceEntityInPlay!.stopAll();
+                              }
+                              item.playStandardVoice();
+                              _pronounceEntityInPlay ??= item;
+                            },
+                            child: const LoadAssetImage(
+                              'laba_lan',
+                              width: 17.6,
+                              height: 16.0,
+                            ),
+                          ),
+                        ],
+                      )
                     );
                   }).toList(),
                 ),

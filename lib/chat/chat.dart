@@ -350,6 +350,10 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   void initState() {
     super.initState();
     init();
+    EventBus().on('LEAVECHATPAGE', (_) async {
+      await _mediaUtils.stopPlay();
+      _bottomBarControll.setDisabled(false);
+    });
     EventBus().on('SELECT_SCENE', (scene) => startSceneChat(scene));
   }
 
@@ -526,6 +530,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
 
   @override
   void dispose() {
+    EventBus().off('LEAVECHATPAGE');
     EventBus().off('SELECT_SCENE');
     super.dispose();
   }

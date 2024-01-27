@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../home/provider/home_provider.dart';
-import '../../util/log_utils.dart';
 import '../../widgets/load_image.dart';
 
 class Background extends StatefulWidget {
@@ -90,7 +89,6 @@ class BackgroundController {
     required String leftImage,
     required String rightImage,
   }) {
-    Log.d('slideStart:position=$position leftImage=$leftImage rightImage=$rightImage}');
     initialPosition = position;
     leftImageUrl= leftImage;
     rightImageUrl = rightImage;
