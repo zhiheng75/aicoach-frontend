@@ -98,6 +98,10 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
 
   void onWebsocketAnswer(dynamic answer) {
     if (_answer == null) {
+      // 结束标记
+      if (answer is String && (answer.contains('[end_session]') || RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
+        return;
+      }
       _answer = NormalMessage();
       // 创建播放列表
       _listPlayer = _mediaUtils.createListPlay(() {
@@ -143,7 +147,7 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
       insertTipMessage('Please switch to new roles, topics, or scene');
     }
     // 正常结束
-    if (reason == 'Session End' && endType == 'normal') {
+    if (reason == 'Session End' && endType != 'force') {
       insertTipMessage('Conversation finished！');
     }
   }
