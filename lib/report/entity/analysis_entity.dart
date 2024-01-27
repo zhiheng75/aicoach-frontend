@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:Bubble/util/path_utils.dart';
+import 'package:dio/dio.dart';
+
 class AnalysisEntity {
 
   int type = 2;
@@ -66,25 +71,48 @@ class GrammarEntity {
 class PronounceEntity {
   String text = '';
   String audio = '';
+  int begin = 0;
+  int end = 0;
+  CancelToken? cancelToken;
 
   PronounceEntity();
 
   factory PronounceEntity.fromJson(dynamic json) {
     json = json as Map<String, dynamic>;
     PronounceEntity entity = PronounceEntity();
-    if (json['word'] != null) {
-      entity.text = json['word'];
+    if (json['content'] != null) {
+      entity.text = json['content'];
     }
-    if (json['word_audio'] != null) {
-      entity.audio = json['word_audio'];
+    if (json['beg_pos'] != null) {
+      entity.begin = json['beg_pos'] is int ? json['beg_pos'] : int.parse((json['beg_pos']).toString());
+    }
+    if (json['end_pos'] != null) {
+      entity.end = json['end_pos'] is int ? json['end_pos'] : int.parse((json['end_pos']).toString());
     }
     return entity;
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'word': text,
-      'word_audio': audio,
+      'content': text,
+      'beg_pos': begin,
+      'end_pos': end,
     };
   }
+
+  void playUserVoice() {}
+
+  void playStandardVoice() async {
+    // 判断本地有没有，没有就下载
+    String documentDirPath = await PathUtils.getDocumentFolderPath();
+    String path = '$documentDirPath/$text.mp3';
+    File file = File(path);
+    if (!file.existsSync()) {
+      await _download();
+    }
+  }
+
+  Future<void> _download() async {
+  }
+
 }

@@ -4,22 +4,16 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:Bubble/util/log_utils.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:logger/logger.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:volume_controller/volume_controller.dart';
 
-// 获取临时文件夹
-Future<String> getTemDirPath() async {
-  Directory dir = await getTemporaryDirectory();
-  return dir.path;
-}
+import 'path_utils.dart';
 
 class MediaUtils {
   factory MediaUtils() {
@@ -243,7 +237,7 @@ class AudioConfig {
 class AudioConvertUtil {
 
   static Future<String> saveMp3Buffer(Uint8List buffer) async {
-    String dirPath = await getTemDirPath();
+    String dirPath = await PathUtils.getTemporaryFolderPath();
     String fileName = '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.mp3';
     String path = '$dirPath/$fileName';
     File file = File(path);
@@ -259,7 +253,7 @@ class AudioConvertUtil {
   }
 
   static Future<String> downloadMp3(String url) async {
-    String dirPath = await getTemDirPath();
+    String dirPath = await PathUtils.getTemporaryFolderPath();
     String fileName = '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.mp3';
     String path = '$dirPath/$fileName';
     try {
@@ -500,7 +494,6 @@ class FilePlayer extends Player {
   }
 
   void _onCallback() {
-    Log.d('end', tag: 'FilePlayer._onCallback');
     if (onPlayComplete != null) {
       onPlayComplete!();
     }
