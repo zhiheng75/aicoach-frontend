@@ -450,16 +450,20 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
             },
           ),
           Positioned(
-            bottom: _screenUtil.bottomBarHeight + 16.0,
-            child: BottomBar(
-              chatWebsocket: _chatWebsocket,
-              controller: _bottomBarControll,
-              recordController: _recordController,
-              language: 'cn',
+            top: 103.0,
+            left: 16.0,
+            child: Consumer<HomeProvider>(
+              builder: (_, provider, __) {
+                return LoadAssetImage(
+                  provider.character.stage,
+                  width: 59.0,
+                  height: 45.0,
+                );
+              },
             ),
           ),
           Positioned(
-            top: 216.0,
+            top: 225.0,
             right: 0,
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
@@ -490,6 +494,15 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
                   ),
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            bottom: _screenUtil.bottomBarHeight + 16.0,
+            child: BottomBar(
+              chatWebsocket: _chatWebsocket,
+              controller: _bottomBarControll,
+              recordController: _recordController,
+              language: 'cn',
             ),
           ),
           Positioned(

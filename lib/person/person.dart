@@ -94,14 +94,31 @@ class _PersonPageState extends State<PersonPage>
     Map<String, dynamic> user = LoginManager.getUserInfo();
     Log.e(user.toString());
 
-    userName = validateInput(user['nickname'])
-        ? user['nickname']
-        : "用户${user['phone'].toString().substring(7, 11)}";
-    // userName = "用户${user['phone'].toString().substring(7, 11)}";
+    // userName = validateInput(user['nickname'])
+    //     ? user['nickname']
+    //     : "用户${user['phone'].toString().substring(7, 11)}";
+    // // userName = "用户${user['phone'].toString().substring(7, 11)}";
+    //
+    // Log.e("个人中心=============================");
+    // headimgurl = validateInput(user['headimgurl']) ? user['headimgurl'] : "";
+    // phone = user['phone'];
 
-    Log.e("个人中心=============================");
-    headimgurl = validateInput(user['headimgurl']) ? user['headimgurl'] : "";
+    // 用户名显示规则 name > nickname > phone
     phone = user['phone'];
+    String name = '';
+    if (validateInput(user['name'])) {
+      name = user['name'];
+    } else if (validateInput(user['nickname'])) {
+      name = user['nickname'];
+    } else {
+      name = '${phone.substring(0, 3)}****${phone.substring(7)}';
+    }
+    userName = name;
+    String headImg = '';
+    if (validateInput(user['headimgurl'])) {
+      headImg = user['headimgurl'];
+    }
+    headimgurl = headImg;
 
     setState(() {});
   }
@@ -169,8 +186,12 @@ class _PersonPageState extends State<PersonPage>
         children: <Widget>[
           ClipRRect(
             borderRadius: BorderRadius.circular(28.0),
-            child: LoadImage(
+            child: headimgurl != '' ? LoadImage(
               headimgurl,
+              width: 56.0,
+              height: 56.0,
+            ) : const LoadAssetImage(
+              'default_head_img',
               width: 56.0,
               height: 56.0,
             ),

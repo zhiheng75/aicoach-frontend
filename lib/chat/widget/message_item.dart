@@ -273,6 +273,10 @@ class _MessageItemState extends State<MessageItem> {
       onTap: () {
         NormalMessage message = widget.message as NormalMessage;
         if (message.speaker != 'user') {
+          if (message.showTranslation) {
+            closeTranslate();
+            return;
+          }
           openTranslate();
           return;
         }
@@ -308,48 +312,48 @@ class _MessageItemState extends State<MessageItem> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        if (_message.showTranslation)
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              color: Colors.black.withOpacity(0.8),
-            ),
-            padding: const EdgeInsets.only(
-              top: 4.0,
-              bottom: 4.0,
-              left: 16.0,
-              right: 8.0,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    _message.translateState == 1 ? '翻译中...' : (_message.translation == 3 ? '翻译失败' : _message.translation),
-                    style: const TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                      height: 15.0 / 12.0,
-                      letterSpacing: 0.05,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 4.0,
-                ),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: closeTranslate,
-                  child: const LoadAssetImage(
-                    'fanyi_close',
-                    width: 16.0,
-                    height: 16.0,
-                  ),
-                ),
-              ],
-            ),
-          ),
+        // if (_message.showTranslation)
+        //   Container(
+        //     decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(20.0),
+        //       color: Colors.black.withOpacity(0.8),
+        //     ),
+        //     padding: const EdgeInsets.only(
+        //       top: 4.0,
+        //       bottom: 4.0,
+        //       left: 16.0,
+        //       right: 8.0,
+        //     ),
+        //     child: Row(
+        //       mainAxisSize: MainAxisSize.min,
+        //       children: <Widget>[
+        //         Expanded(
+        //           child: Text(
+        //             _message.translateState == 1 ? '翻译中...' : (_message.translation == 3 ? '翻译失败' : _message.translation),
+        //             style: const TextStyle(
+        //               fontSize: 12.0,
+        //               fontWeight: FontWeight.w400,
+        //               color: Colors.white,
+        //               height: 15.0 / 12.0,
+        //               letterSpacing: 0.05,
+        //             ),
+        //           ),
+        //         ),
+        //         const SizedBox(
+        //           width: 4.0,
+        //         ),
+        //         GestureDetector(
+        //           behavior: HitTestBehavior.opaque,
+        //           onTap: closeTranslate,
+        //           child: const LoadAssetImage(
+        //             'fanyi_close',
+        //             width: 16.0,
+        //             height: 16.0,
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
         ClipRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(
@@ -364,17 +368,46 @@ class _MessageItemState extends State<MessageItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
-                    child: Text(
-                      _message.text,
-                      style: const TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w400,
-                        color: Colours.color_001652,
-                        height: 20.0 / 15.0,
-                        letterSpacing: 0.05,
-                      ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          _message.text,
+                          style: const TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.color_001652,
+                            height: 20.0 / 15.0,
+                            letterSpacing: 0.05,
+                          ),
+                        ),
+                        if (_message.showTranslation)
+                          Text(
+                            _message.translateState == 1 ? '翻译中...' : (_message.translation == 3 ? '翻译失败' : _message.translation),
+                            style: const TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w400,
+                              color: Colours.color_001652,
+                              height: 20.0 / 15.0,
+                              letterSpacing: 0.05,
+                            ),
+                          ),
+                      ],
                     ),
                   ),
+                  // Expanded(
+                  //   child: Text(
+                  //     _message.text,
+                  //     style: const TextStyle(
+                  //       fontSize: 15.0,
+                  //       fontWeight: FontWeight.w400,
+                  //       color: Colours.color_001652,
+                  //       height: 20.0 / 15.0,
+                  //       letterSpacing: 0.05,
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(
                     width: 10.0,
                   ),
