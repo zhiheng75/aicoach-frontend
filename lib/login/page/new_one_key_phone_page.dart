@@ -278,7 +278,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                                 if (_phoneController.text.length == 11) {
                                   NavigatorUtils.push(
                                     context,
-                                    replace: true, //应该的注释
+                                    replace: true,
                                     "${LoginRouter.keyCheckCodePage}?PhoneNumber=${_phoneController.text.trim()}&typeLogin=${widget.typeLogin}",
                                   );
                                   _registerPresenter.sendSms(
