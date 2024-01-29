@@ -28,6 +28,7 @@ class MockEvaluateUtil {
       Function(Map<String, dynamic> params) onSuccess) {
     String pathName =
         '${getDate()}/${getRandom(12)}.${message.sessionId + message.messageId}';
+
     _uploadAudio(pathName, message.audio, (String audiopath) {
       message.speechfile = audiopath;
       _evaluate(
@@ -71,8 +72,40 @@ class MockEvaluateUtil {
           },
         );
       });
+      _sendData(message.text, [...message.audio]);
     } catch (e) {
       rethrow;
+    }
+  }
+
+  void _sendData(String text, List<Uint8List> bufferList) async {
+    // 发送首帧
+    Map<String, dynamic> firstData =
+        XunfeiUtil.createFrameDataForEvaluation(0, text: text);
+    _websocket!.sink.add(jsonEncode(firstData));
+    await Future.delayed(const Duration(milliseconds: 20));
+    int total = bufferList.length;
+    while (true) {
+      if (bufferList.isEmpty) {
+        break;
+      }
+      int frame = 1;
+      int audioFrame = 2;
+      if (bufferList.length == total) {
+        audioFrame = 1;
+      }
+      if (bufferList.length == 1) {
+        frame = 2;
+        audioFrame = 4;
+      }
+      Uint8List buffer = bufferList.removeAt(0);
+      Map<String, dynamic> data = XunfeiUtil.createFrameDataForEvaluation(
+        frame,
+        audioFrame: audioFrame,
+        audio: buffer,
+      );
+      _websocket!.sink.add(jsonEncode(data));
+      await Future.delayed(const Duration(milliseconds: 20));
     }
   }
 

@@ -75,9 +75,10 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   List<Uint8List> _bufferList = [];
   late HomeProvider _homeProvider;
 
-  late MockMessageUPEntity mockUP;
+  // late MockMessageUPEntity mockUP;
   late MockExaminationTwoPagePresenter _mockExaminationTwoPagePresenter;
   late Map<String, dynamic> upmap;
+  late List mockUP = [];
   late String isOne = "1";
 
 //是否正在答题
@@ -322,6 +323,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
           isTalk = false;
           return;
         }
+        Log.e("录音后识别的文字${result['text']}");
         sendMessage(result['text']);
       });
       // widget.controller.setShowRecord(true);
@@ -343,11 +345,11 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
           // _timer?.cancel();
           // nextMock();
         } else {
-          mockUP.answer.add(map);
-          upmap['answer'] = mockUP.answer;
+          mockUP.add(map);
+          upmap['answer'] = mockUP;
         }
         //揉数据
-        Log.e(map.toString());
+        Log.e("完成后的数据=====${map.toString()}======${upmap.toString()}===");
       });
     });
   }
@@ -368,8 +370,10 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
         Map<String, dynamic> data = result.data as Map<String, dynamic>;
         map['answer_text'] = data['text'];
         map['answer_audio'] = data['speech_url'];
-        mockUP.answer.add(map);
-        upmap['answer'] = mockUP.answer;
+        mockUP.add(map);
+        upmap['answer'] = mockUP;
+        // mockUP.answer.add(map);
+        // upmap['answer'] = mockUP.answer;
         //考伴回答
         mockKlowTwoPlay(data['speech_url']);
       },
@@ -919,21 +923,39 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                                   ),
                                                 )
                                               : Center(
-                                                  child: Container(
-                                                    padding:
-                                                        const EdgeInsets.all(8),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        color: Colors.white),
-                                                    child: Text(
-                                                      " 倒计时: ${_seconds}s ",
-                                                      style: const TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.black,
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            color:
+                                                                Colors.white),
+                                                        child: Text(
+                                                          " 倒计时: ${_seconds}s ",
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 14,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
+                                                      Gaps.vGap10,
+                                                      Text(
+                                                        bodyType == "A"
+                                                            ? "考办回答"
+                                                            : "考生回答",
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                       const Expanded(child: Gaps.empty),
