@@ -4,6 +4,7 @@ class CharacterEntity {
   String name = '';
   String imageUrl = '';
   String stage = '';
+  String stageImg = '';
   String slogan = '';
   String text = '';
   String audio = '';
@@ -25,6 +26,9 @@ class CharacterEntity {
     }
     if (json['stage'] != null) {
       entity.stage = json['stage'];
+    }
+    if (json['stage_img'] != null) {
+      entity.stageImg = json['stage_img'];
     }
     if (json['slogan'] != null) {
       entity.slogan = json['slogan'];
@@ -48,6 +52,7 @@ class CharacterEntity {
       'name': name,
       'image_url': imageUrl,
       'stage': stage,
+      'stage_img': stageImg,
       'slogan': slogan,
       'greeting_text': text,
       'greeting_audio': audio,

@@ -454,8 +454,8 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
             left: 16.0,
             child: Consumer<HomeProvider>(
               builder: (_, provider, __) {
-                return LoadAssetImage(
-                  provider.character.stage,
+                return LoadImage(
+                  provider.character.stageImg,
                   width: 59.0,
                   height: 45.0,
                 );
