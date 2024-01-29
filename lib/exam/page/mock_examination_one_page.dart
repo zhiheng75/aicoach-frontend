@@ -283,23 +283,24 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
     Log.e(examStepBean.data.id.toString());
     ZHText = examStepBean.data.introduction.zh;
     ENText = examStepBean.data.introduction.en;
-    _mediaUtils.play(
-      url: examStepBean.data.introduction.audio,
-      whenFinished: () {
-        // _bottomBarControll.setDisabled(false);
 
-        showToast("恭喜你，该环节已完成，即将进入下一考试环节");
-        Future.delayed(const Duration(seconds: 2), () {
-          if (!_cancelToken!.isCancelled) {
-            NavigatorUtils.push(
-                context,
-                replace: true,
-                "${ExamRouter.mockExaminationTwoPage}?state=${widget.state}",
-                arguments: examStepBean);
-          }
-        });
-      },
-    );
+    // _mediaUtils.play(
+    //   url: examStepBean.data.introduction.audio,
+    //   whenFinished: () {
+    // _bottomBarControll.setDisabled(false);
+
+    showToast("恭喜你，该环节已完成，即将进入下一考试环节");
+    Future.delayed(const Duration(seconds: 2), () {
+      if (!_cancelToken!.isCancelled) {
+        NavigatorUtils.push(
+            context,
+            replace: true,
+            "${ExamRouter.mockExaminationTwoPage}?state=${widget.state}",
+            arguments: examStepBean);
+      }
+    });
+    //   },
+    // );
     setState(() {});
   }
 

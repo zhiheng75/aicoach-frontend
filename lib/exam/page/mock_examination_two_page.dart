@@ -111,25 +111,20 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
 
   //启动倒计时器
   void _startTimer() {
-    Log.e(
-        "startTimer()开始====$numberPle============$number=====================");
     _seconds = 12;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _seconds = _seconds! - 1;
-
       if (_seconds == 0) {
         _timer?.cancel();
-        if (!isTalk) {
-          nextMock();
-          Log.e(
-              "nextMock()之后====$numberPle============$number=====================");
-        }
+        // if (!isTalk) {
+        nextMock();
+        // }
       }
       setState(() {});
     });
-    mockflow();
-    Log.e(
-        "mockflow()之后====$numberPle============$number===========$questionAudio==========");
+    setState(() {
+      mockflow();
+    });
   }
 
   @override
@@ -145,12 +140,15 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       upmap['status'] = "1";
     });
     // mockUP.id = widget.entity.data.id.toString();
-    mockPart1Phase1 = widget.entity.data.part1Phase1;
-    mockPart1Phase2 = widget.entity.data.part1Phase2;
-    mockPart2Phase1 = widget.entity.data.part2Phase1.list;
-    image = widget.entity.data.part2Phase1.base.image;
-    mockPart2Phase2 = widget.entity.data.part2Phase2;
-    mockID = widget.entity.data.id.toString();
+    setState(() {
+      mockPart1Phase1 = widget.entity.data.part1Phase1;
+      mockPart1Phase2 = widget.entity.data.part1Phase2;
+      mockPart2Phase1 = widget.entity.data.part2Phase1.list;
+      image = widget.entity.data.part2Phase1.base.image;
+      mockPart2Phase2 = widget.entity.data.part2Phase2;
+      mockID = widget.entity.data.id.toString();
+    });
+
     _startTimer();
 
     // 强制横屏
@@ -163,40 +161,45 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   void nextMock() {
     //第一道题
     if (numberPle == 0) {
-      if (number < mockPart1Phase1.length) {
+      if (number < mockPart1Phase1.length - 1) {
         number = number + 1;
       } else {
         numberPle = numberPle + 1;
         number = 0;
       }
     } else if (numberPle == 1) {
-      if (number < mockPart1Phase2.length) {
+      if (number < mockPart1Phase2.length - 1) {
         number = number + 1;
       } else {
         numberPle = numberPle + 1;
         number = 0;
       }
     } else if (numberPle == 2) {
-      if (number < mockPart2Phase1.length) {
+      if (number < mockPart2Phase1.length - 1) {
         number = number + 1;
       } else {
         numberPle = numberPle + 1;
         number = 0;
       }
     } else if (numberPle == 3) {
-      if (number < mockPart2Phase2.length) {
+      if (number < mockPart2Phase2.length - 1) {
         number = number + 1;
       } else {
         numberPle = 0;
         number = 0;
         //去下一个页面
         Log.e("去下一个页面");
+        Log.e("去下一个页面==========${upmap.toString()}===");
+        _timer?.cancel();
+
         _mockExaminationTwoPagePresenter.postExamUpdate(upmap);
         return;
       }
     } else {
       //去下一个页面
       Log.e("去下一个页面");
+      Log.e("去下一个页面==========${upmap.toString()}===");
+      _timer?.cancel();
       _mockExaminationTwoPagePresenter.postExamUpdate(upmap);
       return;
     }
@@ -214,15 +217,9 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
         url: questionAudio,
         whenFinished: () {
           //老师问
-          Log.e("老师问完=====$bodyType=========");
           if (bodyType == "A") {
-            Log.e("老师问完=====进来了吗=========");
-
             answerAudio = mockPart1Phase1[number].answerAudio!;
-            Log.e("老师问完=====进来了吗$answerAudio=========");
-
             //考伴回答
-            Log.e("考伴回答==============应该弹窗");
             mockKlowPlay(answerAudio);
           } else {
             //学生回答//走到倒计时
@@ -336,6 +333,20 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
     }
   }
 
+  void mockKlowEndAnswer() async {
+    await _mediaUtils.stopRecord();
+    isTalk = false;
+    _timer?.cancel();
+    Future.delayed(const Duration(seconds: 1), () {
+// 抬起按钮
+
+      if (bodyType != "B2A") {
+        //掉一个地道表达接口
+        nextMock();
+      }
+    });
+  }
+
   void sendMessage(String text) async {
     insertUserMessage(text, (message) {
       MockEvaluateUtil().evaluate(message, (Map<String, dynamic> map) {
@@ -385,7 +396,6 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   }
 
   void mockKlowTwoPlay(String answerAudio) {
-    Log.e("考伴回答应该弹窗==============");
     showConfirmDialog();
     _mediaUtils.play(
       url: answerAudio,
@@ -408,19 +418,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
     onSuccess(message);
   }
 
-  void mockKlowEndAnswer() async {
-    await _mediaUtils.stopRecord();
-    // 抬起按钮
-    isTalk = false;
-    _timer?.cancel();
-    if (bodyType != "B2A") {
-      //掉一个地道表达接口
-      nextMock();
-    }
-  }
-
   void mockKlowPlay(String answerAudio) {
-    Log.e("考伴回答应该弹窗==============");
     showConfirmDialog();
     _mediaUtils.play(
       url: answerAudio,
@@ -826,7 +824,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                         CrossAxisAlignment.start,
                                     children: [
                                       // Gaps.vGap10,
-                                      numberPle == 4
+                                      numberPle == 3
                                           ? Center(
                                               child: Column(
                                                 children: [
@@ -859,7 +857,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                                 ],
                                               ),
                                             )
-                                          : numberPle == 3
+                                          : numberPle == 2
                                               ? Center(
                                                   child: Column(
                                                     children: [
@@ -948,7 +946,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                                       Gaps.vGap10,
                                                       Text(
                                                         bodyType == "A"
-                                                            ? "考办回答"
+                                                            ? "考伴回答"
                                                             : "考生回答",
                                                         style: const TextStyle(
                                                           fontSize: 14,

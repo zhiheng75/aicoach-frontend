@@ -44,9 +44,22 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
 
     Map<String, dynamic> user = LoginManager.getUserInfo();
 
-    name = user['nickname'] != ""
-        ? user['nickname']
-        : "用户${user['phone'].toString().substring(7, 11)}";
+    String userName = '';
+    if (validateInput(user['name'])) {
+      userName = user['name'];
+    } else if (validateInput(user['nickname'])) {
+      userName = user['nickname'];
+    } else {
+      String phone = '';
+      if (validateInput(user['phone'])) {
+        phone = user['phone'];
+      }
+      userName = "用户${phone.toString().substring(7, 11)}";
+    }
+    name = userName;
+    // name = user['nickname'] != ""
+    //     ? user['nickname']
+    //     : "用户${user['phone'].toString().substring(7, 11)}";
 
     Future.delayed(const Duration(microseconds: 200), () {
       _examDetailPagePresenter.getExamDetail(widget.mockId);
@@ -54,6 +67,18 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+  }
+
+  bool validateInput(String? input) {
+    if (input == null) {
+      return false;
+    }
+
+    if (input.isEmpty) {
+      return false;
+    }
+
+    return true;
   }
 
   Widget numberWidget = Row(

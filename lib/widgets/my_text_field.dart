@@ -237,10 +237,10 @@ class _MyTextFieldState extends State<MyTextField> {
             child: Column(
           children: [
             textField,
-            const Divider(
-              color: Colors.white,
-              thickness: 0.4,
-            ),
+            // const Divider(
+            //   color: Colors.white,
+            //   thickness: 0.4,
+            // ),
           ],
         )),
         Row(

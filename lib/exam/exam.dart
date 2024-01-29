@@ -5,12 +5,14 @@ import 'package:Bubble/exam/entity/exam_permission_bean.dart';
 import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/exam/page/mock_test_purchase_page.dart';
 import 'package:Bubble/exam/view/bar_chart.dart';
+import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/report/report_router.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -103,7 +105,11 @@ class _ExamPageState extends State<ExamPage>
 
   void startExam() {
     // isExam = true;
-    _examPagePresenter.getExamPermission();
+    if (LoginManager.isLogin()) {
+      _examPagePresenter.getExamPermission();
+    } else {
+      Toast.show("请登录");
+    }
   }
 
   @override
@@ -716,17 +722,21 @@ class _ExamPageState extends State<ExamPage>
               Gaps.vGap10,
               GestureDetector(
                 onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    backgroundColor: Colors.transparent,
-                    barrierColor: Colors.transparent,
-                    isScrollControlled: true,
-                    isDismissible: false,
-                    enableDrag: false,
-                    builder: (_) => ExamPurchasePage(
-                      onPurchased: () {},
-                    ),
-                  );
+                  if (LoginManager.isLogin()) {
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      barrierColor: Colors.transparent,
+                      isScrollControlled: true,
+                      isDismissible: false,
+                      enableDrag: false,
+                      builder: (_) => ExamPurchasePage(
+                        onPurchased: () {},
+                      ),
+                    );
+                  } else {
+                    Toast.show("请登录");
+                  }
                 },
                 child: Container(
                   width: 231.0,
