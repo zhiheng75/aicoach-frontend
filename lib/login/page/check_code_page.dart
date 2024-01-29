@@ -255,7 +255,7 @@ class _CheckCodePageState extends State<CheckCodePage>
     NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
     // NavigatorUtils.push(
     //   context,
-    //   replace: true, //应该的注释
+    //   replace: true,
     //   PersonalRouter.person,
     // );
   }

@@ -12,5 +12,5 @@ class MockMessageEntity {
 class MockMessageUPEntity {
   // String id = '';
   // String answer = '';
-  List<Map> answer = [];
+  List<Map<String, dynamic>> answer = [];
 }
