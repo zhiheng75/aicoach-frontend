@@ -269,7 +269,6 @@ class _PurchasePageState extends State<PurchasePage>
       bool isSelected = _goodsId == goods.id;
       Map<String, dynamic> user = LoginManager.getUserInfo();
       // String userPhone = user['phone'].toString();
-
       String userPhone = '';
       if (validateInput(user['phone'])) {
         userPhone = user['phone'].toString();

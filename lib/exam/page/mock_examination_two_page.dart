@@ -140,12 +140,15 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       upmap['status'] = "1";
     });
     // mockUP.id = widget.entity.data.id.toString();
-    mockPart1Phase1 = widget.entity.data.part1Phase1;
-    mockPart1Phase2 = widget.entity.data.part1Phase2;
-    mockPart2Phase1 = widget.entity.data.part2Phase1.list;
-    image = widget.entity.data.part2Phase1.base.image;
-    mockPart2Phase2 = widget.entity.data.part2Phase2;
-    mockID = widget.entity.data.id.toString();
+    setState(() {
+      mockPart1Phase1 = widget.entity.data.part1Phase1;
+      mockPart1Phase2 = widget.entity.data.part1Phase2;
+      mockPart2Phase1 = widget.entity.data.part2Phase1.list;
+      image = widget.entity.data.part2Phase1.base.image;
+      mockPart2Phase2 = widget.entity.data.part2Phase2;
+      mockID = widget.entity.data.id.toString();
+    });
+
     _startTimer();
 
     // 强制横屏

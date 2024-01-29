@@ -52,7 +52,21 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
     // name = user['nickname'] != ""
     //     ? user['nickname']
     //     : "用户${user['phone'].toString().substring(7, 11)}";
-    name = "用户${user['phone'].toString().substring(7, 11)}";
+
+    String userName = '';
+    if (validateInput(user['name'])) {
+      userName = user['name'];
+    } else if (validateInput(user['nickname'])) {
+      userName = user['nickname'];
+    } else {
+      String phone = '';
+      if (validateInput(user['phone'])) {
+        phone = user['phone'];
+      }
+      userName = "用户${phone.toString().substring(7, 11)}";
+    }
+    name = userName;
+    // name = "用户${user['phone'].toString().substring(7, 11)}";
   }
 
   bool validateInput(String? input) {

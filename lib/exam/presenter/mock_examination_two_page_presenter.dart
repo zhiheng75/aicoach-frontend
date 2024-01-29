@@ -9,7 +9,7 @@ class MockExaminationTwoPagePresenter
   Future postExamUpdate(Map<String, dynamic> map) {
     return requestNetwork<ResultData>(Method.post,
         url: HttpApi.examUpdata,
-        queryParameters: map,
+        params: map,
         isShow: false, onSuccess: (result) {
       // Map<String, dynamic> examPermissionMap = json.decode(result.toString());
       // ExamPermissionBean examPermissioBean =
