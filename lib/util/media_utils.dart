@@ -174,7 +174,7 @@ class MediaUtils {
   ListPlayer createListPlay(Function() whenFinished) {
     ListPlayer listPlayer = ListPlayer(whenFinished);
     // 如果存在单一播放就不赋值
-    if (_currentPlayer == null) {
+    if (_currentPlayer == null || (_currentPlayer != null && _currentPlayer!.step == 'finished')) {
       listPlayer.notPlaceHolder();
       _listPlayer = listPlayer;
     }
