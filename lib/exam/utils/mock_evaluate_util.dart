@@ -280,7 +280,7 @@ class MockEvaluateUtil {
       Function(String) onSuccess) async {
     _getOssToken((evaluateOss) async {
       String host = 'https://shenmo-statics.oss-cn-beijing.aliyuncs.com';
-      String key = 'audio/$filename';
+      String key = 'audio/$filename.wav';
 
       // 获取签名
       Map<String, dynamic> policyParams = {

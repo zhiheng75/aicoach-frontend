@@ -104,7 +104,10 @@ class _PersonPageState extends State<PersonPage>
     // phone = user['phone'];
 
     // 用户名显示规则 name > nickname > phone
-    phone = user['phone'];
+    if (validateInput(user['phone'])) {
+      phone = user['phone'];
+    }
+
     String name = '';
     if (validateInput(user['name'])) {
       name = user['name'];
@@ -186,15 +189,17 @@ class _PersonPageState extends State<PersonPage>
         children: <Widget>[
           ClipRRect(
             borderRadius: BorderRadius.circular(28.0),
-            child: headimgurl != '' ? LoadImage(
-              headimgurl,
-              width: 56.0,
-              height: 56.0,
-            ) : const LoadAssetImage(
-              'default_head_img',
-              width: 56.0,
-              height: 56.0,
-            ),
+            child: headimgurl != ''
+                ? LoadImage(
+                    headimgurl,
+                    width: 56.0,
+                    height: 56.0,
+                  )
+                : const LoadAssetImage(
+                    'default_head_img',
+                    width: 56.0,
+                    height: 56.0,
+                  ),
           ),
           const SizedBox(
             width: 8.0,

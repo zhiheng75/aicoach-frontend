@@ -44,6 +44,21 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
 
     Map<String, dynamic> user = LoginManager.getUserInfo();
 
+    String userName = '';
+    if (validateInput(user['name'])) {
+      userName = user['name'];
+    } else if (validateInput(user['nickname'])) {
+      userName = user['nickname'];
+    } else {
+      String phone = '';
+
+      if (validateInput(user['phone'])) {
+        phone = user['phone'];
+      }
+      userName = '${phone.substring(0, 3)}****${phone.substring(7)}';
+    }
+    userName = name;
+
     name = user['nickname'] != ""
         ? user['nickname']
         : "用户${user['phone'].toString().substring(7, 11)}";

@@ -120,8 +120,14 @@ class _PurchasePageState extends State<PurchasePage>
   void openIllustration() {
     Map<String, dynamic> user = LoginManager.getUserInfo();
 
-    String userPhone = user['phone'].toString();
-    if (userPhone == "17001234567") {
+    // String userPhone = user['phone'].toString();
+
+    String phone = '';
+    if (validateInput(user['phone'])) {
+      phone = user['phone'];
+    }
+
+    if (phone == "17001234567") {
       showDialog(
         context: context,
         barrierColor: Colors.transparent,
@@ -145,6 +151,18 @@ class _PurchasePageState extends State<PurchasePage>
       useSafeArea: false,
       builder: (_) => const Illustration(),
     );
+  }
+
+  bool validateInput(String? input) {
+    if (input == null) {
+      return false;
+    }
+
+    if (input.isEmpty) {
+      return false;
+    }
+
+    return true;
   }
 
   void payGoods() {
@@ -250,7 +268,13 @@ class _PurchasePageState extends State<PurchasePage>
     Widget goodsItem(GoodEntity goods) {
       bool isSelected = _goodsId == goods.id;
       Map<String, dynamic> user = LoginManager.getUserInfo();
-      String userPhone = user['phone'].toString();
+      // String userPhone = user['phone'].toString();
+
+      String userPhone = '';
+      if (validateInput(user['phone'])) {
+        userPhone = user['phone'].toString();
+      }
+
       BoxDecoration decoration = BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         color: const Color(0xFFF5F5F5),

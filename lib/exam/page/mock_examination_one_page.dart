@@ -283,6 +283,7 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
     Log.e(examStepBean.data.id.toString());
     ZHText = examStepBean.data.introduction.zh;
     ENText = examStepBean.data.introduction.en;
+
     _mediaUtils.play(
       url: examStepBean.data.introduction.audio,
       whenFinished: () {
