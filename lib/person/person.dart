@@ -114,7 +114,11 @@ class _PersonPageState extends State<PersonPage>
     } else if (validateInput(user['nickname'])) {
       name = user['nickname'];
     } else {
-      name = '${phone.substring(0, 3)}****${phone.substring(7)}';
+      String phone = '';
+      if (validateInput(user['phone'])) {
+        phone = user['phone'];
+      }
+      name = "用户${phone.toString().substring(7, 11)}";
     }
     userName = name;
     String headImg = '';

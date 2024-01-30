@@ -161,12 +161,14 @@ class MockEvaluateUtil {
       'message_id': message.messageId,
       'message': message.text,
       'type': message.type,
-      'speech_file': message.speechfile,
+      'speech_name': message.speechfile,
+      'server_message': message.serverMessage,
       'accuracy_score': evaluation['accuracy_score'],
       'fluency_score': evaluation['fluency_score'],
       'integrity_score': evaluation['integrity_score'],
       'standard_score': evaluation['standard_score'],
       'total_score': evaluation['total_score'],
+      'score_detail': evaluation['score_detail'],
     };
   }
 

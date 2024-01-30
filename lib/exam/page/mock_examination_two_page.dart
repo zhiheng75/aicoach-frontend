@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:Bubble/chat/entity/message_entity.dart';
@@ -15,6 +16,7 @@ import 'package:Bubble/exam/utils/mock_evaluate_util.dart';
 import 'package:Bubble/exam/view/exam_detail_view.dart';
 import 'package:Bubble/exam/view/mock_examination_two_view.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
+import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
@@ -108,6 +110,20 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   late String bodyType;
   late String mockID;
   late String questionID;
+  late String nameName = "";
+  late String serverMessage = "";
+
+  bool validateInput(String? input) {
+    if (input == null) {
+      return false;
+    }
+
+    if (input.isEmpty) {
+      return false;
+    }
+
+    return true;
+  }
 
   //启动倒计时器
   void _startTimer() {
@@ -140,6 +156,22 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       upmap['status'] = "1";
     });
     // mockUP.id = widget.entity.data.id.toString();
+    Map<String, dynamic> user = LoginManager.getUserInfo();
+
+    String username = '';
+    if (validateInput(user['name'])) {
+      username = user['name'];
+    } else if (validateInput(user['nickname'])) {
+      username = user['nickname'];
+    } else {
+      String phone = '';
+      if (validateInput(user['phone'])) {
+        phone = user['phone'];
+      }
+      username = "用户${phone.toString().substring(7, 11)}";
+    }
+    nameName = username;
+
     setState(() {
       mockPart1Phase1 = widget.entity.data.part1Phase1;
       mockPart1Phase2 = widget.entity.data.part1Phase2;
@@ -191,6 +223,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
         Log.e("去下一个页面");
         Log.e("去下一个页面==========${upmap.toString()}===");
         _timer?.cancel();
+        upmap["answer"] = json.encode(upmap["answer"]);
 
         _mockExaminationTwoPagePresenter.postExamUpdate(upmap);
         return;
@@ -200,6 +233,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       Log.e("去下一个页面");
       Log.e("去下一个页面==========${upmap.toString()}===");
       _timer?.cancel();
+      upmap["answer"] = json.encode(upmap["answer"]);
+
       _mockExaminationTwoPagePresenter.postExamUpdate(upmap);
       return;
     }
@@ -213,6 +248,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       questionID = mockPart1Phase1[number].id.toString();
       //老师问
       questionAudio = mockPart1Phase1[number].questionAudio;
+      serverMessage = mockPart1Phase1[number].question;
       _mediaUtils.play(
         url: questionAudio,
         whenFinished: () {
@@ -231,6 +267,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       questionID = mockPart1Phase1[number].id.toString();
       //老师问
       questionAudio = mockPart1Phase2[number].questionAudio;
+      serverMessage = mockPart1Phase2[number].question;
+
       _mediaUtils.play(
         url: questionAudio,
         whenFinished: () {
@@ -250,6 +288,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
 
       //老师问
       questionAudio = mockPart2Phase1[number].questionAudio;
+      serverMessage = mockPart2Phase1[number].question;
+
       _mediaUtils.play(
         url: questionAudio,
         whenFinished: () {
@@ -266,6 +306,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
     } else if (numberPle == 3) {
       bodyType = mockPart2Phase2[number].to;
       questionID = mockPart1Phase1[number].id.toString();
+      serverMessage = "";
 
       // 学生问逻辑在按钮里面
       // questionAudio = mockPart2Phase2[number].questionAudio;
@@ -415,6 +456,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
     message.sessionId = mockID;
     message.messageId = questionID;
     message.speechfile = "";
+    message.serverMessage = serverMessage;
     onSuccess(message);
   }
 
@@ -556,7 +598,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
               Stack(
                 children: [
                   Center(
-                    child: LoadAssetImage(
+                    child: LoadImage(
                       image,
                       width: 512, height: 288,
                       // fit: BoxFit.cover
@@ -847,7 +889,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                                   Gaps.vGap10,
                                                   Text(
                                                     numberPle == 3
-                                                        ? "请提问第$number个问题"
+                                                        ? "请提问第${number + 1}个问题"
                                                         : "",
                                                     style: const TextStyle(
                                                       fontSize: 14,
@@ -909,12 +951,29 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                                                         25),
                                                             color:
                                                                 Colors.black),
-                                                        child: const Text(
-                                                          "图片接收成功，可以点击查看大图",
-                                                          style: TextStyle(
-                                                            fontSize: 12,
-                                                            color: Colors.white,
-                                                          ),
+                                                        child: Column(
+                                                          children: [
+                                                            const Text(
+                                                              "图片接收成功，可以点击查看大图",
+                                                              style: TextStyle(
+                                                                fontSize: 12,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                            Gaps.vGap2,
+                                                            Text(
+                                                              bodyType == "A"
+                                                                  ? "考伴回答"
+                                                                  : "考生回答",
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 14,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ),
                                                     ],
@@ -1075,7 +1134,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                         ),
                                       )),
                                   Gaps.vGap10,
-                                  peopleWidget("comittee_icon", false, "考生：小明"),
+                                  peopleWidget(
+                                      "comittee_icon", false, "考生：$nameName"),
                                   Gaps.vGap10,
                                   peopleWidget("myhead_icon", false, "考办：小红"),
                                 ],
