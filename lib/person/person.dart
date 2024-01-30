@@ -85,6 +85,11 @@ class _PersonPageState extends State<PersonPage>
     NavigatorUtils.push(context, path);
   }
 
+  void tapSignOUTMenu() {
+    NavigatorUtils.goWebViewPage(
+        context, "注销账号", "http://www.shenmo-ai.com/account_cancellation/");
+  }
+
   @override
   void initState() {
     super.initState();
@@ -575,6 +580,11 @@ class _PersonPageState extends State<PersonPage>
             'person_fankui',
             '意见反馈',
             onPress: () => tapMenu(PersonalRouter.personalSuggestion),
+          ),
+          menuItem(
+            'person_guanyu',
+            '注销账号',
+            onPress: () => tapSignOUTMenu(),
           ),
           menuItem(
             'person_guanyu',
