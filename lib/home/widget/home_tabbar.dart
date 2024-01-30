@@ -113,42 +113,42 @@ class _HomeTabbarState extends State<HomeTabbar> {
             ),
           ),
           //隐藏
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: <Widget>[
-          //     tabbarItem(
-          //         text: '对话',
-          //         value: 'chat',
-          //         isSelected: widget.currentTab == 'chat'),
-          //     Gaps.hGap32,
-          //     tabbarItem(
-          //         text: '场景',
-          //         value: 'scene',
-          //         isSelected: widget.currentTab == 'scene')
-          //   ],
-          // ),
           Row(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               tabbarItem(
                   text: '对话',
                   value: 'chat',
                   isSelected: widget.currentTab == 'chat'),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                ),
-                child: tabbarItem(
-                    text: '场景',
-                    value: 'scene',
-                    isSelected: widget.currentTab == 'scene'),
-              ),
+              Gaps.hGap32,
               tabbarItem(
-                  text: '模考',
-                  value: 'exam',
-                  isSelected: widget.currentTab == 'exam'),
+                  text: '场景',
+                  value: 'scene',
+                  isSelected: widget.currentTab == 'scene')
             ],
           ),
+          // Row(
+          //   mainAxisSize: MainAxisSize.min,
+          //   children: <Widget>[
+          //     tabbarItem(
+          //         text: '对话',
+          //         value: 'chat',
+          //         isSelected: widget.currentTab == 'chat'),
+          //     Padding(
+          //       padding: const EdgeInsets.symmetric(
+          //         horizontal: 24.0,
+          //       ),
+          //       child: tabbarItem(
+          //           text: '场景',
+          //           value: 'scene',
+          //           isSelected: widget.currentTab == 'scene'),
+          //     ),
+          //     tabbarItem(
+          //         text: '模考',
+          //         value: 'exam',
+          //         isSelected: widget.currentTab == 'exam'),
+          //   ],
+          // ),
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
