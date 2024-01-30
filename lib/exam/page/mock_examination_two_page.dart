@@ -104,6 +104,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   int? _seconds;
 
   late String questionAudio;
+  late String questionTeacher;
+
   late String answerAudio;
   late String bodyType;
   late String mockID;
@@ -213,6 +215,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       questionID = mockPart1Phase1[number].id.toString();
       //老师问
       questionAudio = mockPart1Phase1[number].questionAudio;
+      questionTeacher = mockPart1Phase1[number].question;
       _mediaUtils.play(
         url: questionAudio,
         whenFinished: () {
@@ -231,6 +234,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       questionID = mockPart1Phase1[number].id.toString();
       //老师问
       questionAudio = mockPart1Phase2[number].questionAudio;
+      questionTeacher = mockPart1Phase2[number].question;
+
       _mediaUtils.play(
         url: questionAudio,
         whenFinished: () {
@@ -250,6 +255,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
 
       //老师问
       questionAudio = mockPart2Phase1[number].questionAudio;
+      questionTeacher = mockPart2Phase1[number].question;
+
       _mediaUtils.play(
         url: questionAudio,
         whenFinished: () {
@@ -266,6 +273,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
     } else if (numberPle == 3) {
       bodyType = mockPart2Phase2[number].to;
       questionID = mockPart1Phase1[number].id.toString();
+      questionTeacher = "";
 
       // 学生问逻辑在按钮里面
       // questionAudio = mockPart2Phase2[number].questionAudio;
@@ -379,8 +387,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
           return;
         }
         Map<String, dynamic> data = result.data as Map<String, dynamic>;
-        map['answer_text'] = data['text'];
-        map['answer_audio'] = data['speech_url'];
+        // map['answer_text'] = data['text'];
+        // map['answer_audio'] = data['speech_url'];
         mockUP.add(map);
         upmap['answer'] = mockUP;
         // mockUP.answer.add(map);
@@ -415,6 +423,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
     message.sessionId = mockID;
     message.messageId = questionID;
     message.speechfile = "";
+    message.serverMessage = questionTeacher;
     onSuccess(message);
   }
 

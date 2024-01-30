@@ -159,9 +159,11 @@ class MockEvaluateUtil {
     return {
       'session_id': message.sessionId,
       'message_id': message.messageId,
+      'server_message': message.serverMessage,
       'message': message.text,
       'type': message.type,
-      'speech_file': message.speechfile,
+      'speech_name': message.speechfile,
+      '"score_detail': message.toString(),
       'accuracy_score': evaluation['accuracy_score'],
       'fluency_score': evaluation['fluency_score'],
       'integrity_score': evaluation['integrity_score'],
@@ -179,7 +181,7 @@ class MockEvaluateUtil {
       Map<String, dynamic> params = _getParams(message, evaluation);
       DioUtils.instance.requestNetwork<ResultData>(
         Method.post,
-        HttpApi.addScore,
+        HttpApi.addExamScore,
         params: params,
         onSuccess: (result) {
           if (result != null && result.code == 200) {
