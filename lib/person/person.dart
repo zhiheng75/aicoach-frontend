@@ -87,7 +87,7 @@ class _PersonPageState extends State<PersonPage>
 
   void tapSignOUTMenu() {
     NavigatorUtils.goWebViewPage(
-        context, "注销账号", "http://www.shenmo-ai.com/logoff/");
+        context, "注销账号", "http://www.shenmo-ai.com/account_cancellation/");
   }
 
   @override
