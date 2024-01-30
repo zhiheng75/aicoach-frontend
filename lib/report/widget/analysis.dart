@@ -215,64 +215,105 @@ class _AnalysisState extends State<Analysis> {
                   children: analysis.pronounce.map((item) {
                     return Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100.0),
+                        borderRadius: BorderRadius.circular(20.0),
                         color: Colors.white,
                       ),
                       padding: const EdgeInsets.all(16.0),
                       margin: const EdgeInsets.only(
                         bottom: 16.0,
                       ),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () async {
-                              // 点击其他的
-                              if (_pronounceEntityInPlay != null && item != _pronounceEntityInPlay) {
-                                await _pronounceEntityInPlay!.stopAll();
-                              }
-                              item.playUserVoice();
-                              _pronounceEntityInPlay ??= item;
-                            },
-                            child: const LoadAssetImage(
-                              'laba_lan',
-                              width: 17.6,
-                              height: 16.0,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            '${item.text}发音不正确',
+                            style: const TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                              height: 20.0 / 15.0,
+                              letterSpacing: 0.05,
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                            ),
-                            child: Text(
-                              '${item.text}发音不清晰，应该这样读',
-                              style: const TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                                height: 20.0 / 15.0,
-                                letterSpacing: 0.05,
+                          const SizedBox(
+                            height: 16.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () async {
+                                  // 点击其他的
+                                  if (_pronounceEntityInPlay != null && item != _pronounceEntityInPlay) {
+                                    await _pronounceEntityInPlay!.stopAll();
+                                  }
+                                  item.playUserVoice();
+                                  _pronounceEntityInPlay ??= item;
+                                },
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      '你是这样读',
+                                      style: TextStyle(
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                        height: 20.0 / 15.0,
+                                        letterSpacing: 0.05,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8.0,
+                                    ),
+                                    LoadAssetImage(
+                                      'laba_lan',
+                                      width: 17.6,
+                                      height: 16.0,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ),
-                          GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () async {
-                              // 点击其他的
-                              if (_pronounceEntityInPlay != null && item != _pronounceEntityInPlay) {
-                                await _pronounceEntityInPlay!.stopAll();
-                              }
-                              item.playStandardVoice();
-                              _pronounceEntityInPlay ??= item;
-                            },
-                            child: const LoadAssetImage(
-                              'laba_lan',
-                              width: 17.6,
-                              height: 16.0,
-                            ),
+                              GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () async {
+                                  // 点击其他的
+                                  if (_pronounceEntityInPlay != null && item != _pronounceEntityInPlay) {
+                                    await _pronounceEntityInPlay!.stopAll();
+                                  }
+                                  item.playStandardVoice();
+                                  _pronounceEntityInPlay ??= item;
+                                },
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      '正确这样读',
+                                      style: TextStyle(
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                        height: 20.0 / 15.0,
+                                        letterSpacing: 0.05,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8.0,
+                                    ),
+                                    LoadAssetImage(
+                                      'laba_lan',
+                                      width: 17.6,
+                                      height: 16.0,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ],
-                      )
+                      ),
                     );
                   }).toList(),
                 ),
