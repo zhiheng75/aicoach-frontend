@@ -84,12 +84,17 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   }
 
   Future<void> isWX() async {
-    Fluwx fluwx = Fluwx();
-    if (await fluwx.isWeChatInstalled) {
+    if (Device.isAndroid) {
       isWx = true;
     } else {
-      isWx = false;
+      Fluwx fluwx = Fluwx();
+      if (await fluwx.isWeChatInstalled) {
+        isWx = true;
+      } else {
+        isWx = false;
+      }
     }
+
     setState(() {});
   }
 
