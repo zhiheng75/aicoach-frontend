@@ -2,8 +2,6 @@
 
 import 'dart:typed_data';
 
-import 'package:Bubble/person/person_router.dart';
-import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -245,8 +243,9 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       Log.d('connect websocket fail:[error]${e.toString()}',
           tag: 'sendMessage');
     } finally {
+      NormalMessage message = createUserNormalMessage(text);
       _chatWebsocket.sendMessage(
-        text: text,
+        text: '[message_id=${message.id}]$text',
         onUninited: () {
           Toast.show(
             '发送失败，请稍后再试',
@@ -254,7 +253,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           );
         },
         onSuccess: () {
-          insertUserMessage(text, (message) {
+          insertUserMessage(message, () {
             EvaluateUtil().evaluate(message, () {
               _homeProvider.updateNormalMessage(message);
             });
@@ -272,15 +271,19 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
     EventBus().emit('SCROLL_MESSAGE_LIST');
   }
 
-  void insertUserMessage(String text, Function(NormalMessage) onSuccess) {
+  NormalMessage createUserNormalMessage(String text) {
     NormalMessage message = _homeProvider.createNormalMessage(true);
     message.text = text;
     message.audio = [..._bufferList];
     message.speaker = 'user';
+    return message;
+  }
+
+  void insertUserMessage(NormalMessage message, Function() onSuccess) {
     _homeProvider.addNormalMessage(message);
     EventBus().emit('SCROLL_MESSAGE_LIST');
     _answer = null;
-    onSuccess(message);
+    onSuccess();
   }
 
   @override
