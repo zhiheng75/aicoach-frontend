@@ -376,7 +376,7 @@ class _PersonPageState extends State<PersonPage>
                             TextSpan(
                               text: islog
                                   ? ""
-                                  : '${permissionBeanData.data.allLeftTime > 60 ? permissionBeanData.data.allLeftTime ~/ 60 : 1}小时',
+                                  : '${permissionBeanData.data.allLeftTime > 60 ? permissionBeanData.data.allLeftTime ~/ 60 : 1}分钟',
                               // text: '${permissionBeanData.data.isMember} 分钟',
                               style: const TextStyle(
                                 fontSize: 16.0,
