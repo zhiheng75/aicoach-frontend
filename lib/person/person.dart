@@ -114,9 +114,9 @@ class _PersonPageState extends State<PersonPage>
     }
 
     String name = '';
-    if (validateInput(user['name'])) {
+    if (validateInput(user['name']) && user['name'] != '微信用户') {
       name = user['name'];
-    } else if (validateInput(user['nickname'])) {
+    } else if (validateInput(user['nickname']) && user['nickname'] != '微信用户') {
       name = user['nickname'];
     } else {
       name = '${phone.substring(0, 3)}****${phone.substring(7)}';
