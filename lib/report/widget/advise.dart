@@ -2,7 +2,6 @@
 
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/net/dio_utils.dart';
-import 'package:Bubble/util/media_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,12 +26,12 @@ class Advise extends StatefulWidget {
 }
 
 class _AdviseState extends State<Advise> {
-  final MediaUtils _mediaUtils = MediaUtils();
   final ScreenUtil _screenUtil = ScreenUtil();
   // 状态 loading-加载中 fail-失败 success-成功
   String _state = 'loading';
   final CancelToken _cancelToken = CancelToken();
   List<AdviseEntity> _adviseList = [];
+  AdviseEntity? _adviseEntityInPlay;
 
   void init() {
     _state = 'loading';
@@ -78,15 +77,6 @@ class _AdviseState extends State<Advise> {
         }
       }
     );
-  }
-
-  void playAudio(String audioUrl) {
-    try {
-      _mediaUtils.stopPlay();
-      _mediaUtils.play(
-        url: audioUrl,
-      );
-    } catch (error) {}
   }
 
   @override
@@ -168,7 +158,7 @@ class _AdviseState extends State<Advise> {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    advise.userSentence,
+                    advise.sentence,
                     style: const TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w400,
@@ -199,20 +189,24 @@ class _AdviseState extends State<Advise> {
               children: <Widget>[
                 button(
                   '你的回答',
-                  onPress: () {
-                    if (advise.userAudio == '') {
-                      return;
+                  onPress: () async {
+                    // 点击其他的
+                    if (_adviseEntityInPlay != null && advise != _adviseEntityInPlay) {
+                      await _adviseEntityInPlay!.stopAll();
                     }
-                    playAudio(advise.userAudio);
+                    advise.playUserVoice();
+                    _adviseEntityInPlay ??= advise;
                   },
                 ),
                 button(
                   '试一下这样说',
-                  onPress: () {
-                    if (advise.sentenceAudio == '') {
-                      return;
+                  onPress: () async {
+                    // 点击其他的
+                    if (_adviseEntityInPlay != null && advise != _adviseEntityInPlay) {
+                      await _adviseEntityInPlay!.stopAll();
                     }
-                    playAudio(advise.sentenceAudio);
+                    advise.playStandardVoice();
+                    _adviseEntityInPlay ??= advise;
                   },
                 )
               ],

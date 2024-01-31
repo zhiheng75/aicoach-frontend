@@ -106,6 +106,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   int? _seconds;
 
   late String questionAudio;
+
   late String answerAudio;
   late String bodyType;
   late String mockID;
@@ -420,8 +421,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
           return;
         }
         Map<String, dynamic> data = result.data as Map<String, dynamic>;
-        map['answer_text'] = data['text'];
-        map['answer_audio'] = data['speech_url'];
+        // map['answer_text'] = data['text'];
+        // map['answer_audio'] = data['speech_url'];
         mockUP.add(map);
         upmap['answer'] = mockUP;
         // mockUP.answer.add(map);

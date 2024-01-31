@@ -95,6 +95,10 @@ class _EvaluationState extends State<Evaluation> {
   }
 
   void playVoice(String type) async {
+    // 重复点击
+    if (_audioType == type) {
+      return;
+    }
     _audioType = type;
     if (_ttsCancelToken != null) {
       _ttsCancelToken!.cancel();
@@ -104,6 +108,9 @@ class _EvaluationState extends State<Evaluation> {
     if (type == 'user') {
       _mediaUtils.play(
         pcmBuffer: widget.message.audio,
+        whenFinished: () {
+          _audioType = '';
+        },
       );
     }
     if (type == 'standard') {
@@ -123,6 +130,9 @@ class _EvaluationState extends State<Evaluation> {
             Map<String, dynamic> data = result.data as Map<String, dynamic>;
             _mediaUtils.play(
               url: data['speech_url'],
+              whenFinished: () {
+                _audioType = '';
+              },
             );
           }
         },

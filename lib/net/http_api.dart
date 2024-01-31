@@ -39,6 +39,9 @@ class HttpApi {
   //添加评分
   static const String addScore = "add_score";
 
+  //添加评分
+  static const String addExamScore = "add_exam_score";
+
   //添加语音文件
   static const String addScoreData = 'add_score_data';
 

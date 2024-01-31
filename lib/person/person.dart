@@ -85,6 +85,11 @@ class _PersonPageState extends State<PersonPage>
     NavigatorUtils.push(context, path);
   }
 
+  void tapSignOUTMenu() {
+    NavigatorUtils.goWebViewPage(
+        context, "注销账号", "http://www.shenmo-ai.com/account_cancellation/");
+  }
+
   @override
   void initState() {
     super.initState();
@@ -109,9 +114,9 @@ class _PersonPageState extends State<PersonPage>
     }
 
     String name = '';
-    if (validateInput(user['name'])) {
+    if (validateInput(user['name']) && user['name'] != '微信用户') {
       name = user['name'];
-    } else if (validateInput(user['nickname'])) {
+    } else if (validateInput(user['nickname']) && user['nickname'] != '微信用户') {
       name = user['nickname'];
     } else {
       String phone = '';
@@ -335,7 +340,7 @@ class _PersonPageState extends State<PersonPage>
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 LoadAssetImage(
-                  phone == "17001234567" ? "jiangpai" : 'zhuanshi',
+                  phone == "17001234567" ? "jinpai" : 'zhuanshi',
                   width: 48.0,
                   height: 48.0,
                 ),
@@ -362,9 +367,10 @@ class _PersonPageState extends State<PersonPage>
                       RichText(
                         text: TextSpan(
                           children: [
-                            const TextSpan(
-                              text: '剩余学习时间：',
-                              style: TextStyle(
+                            TextSpan(
+                              text:
+                                  phone == "17001234567" ? "完成学习:" : '剩余学习时间：',
+                              style: const TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xFF333333),
@@ -374,7 +380,7 @@ class _PersonPageState extends State<PersonPage>
                             TextSpan(
                               text: islog
                                   ? ""
-                                  : '${permissionBeanData.data.allLeftTime > 60 ? permissionBeanData.data.allLeftTime ~/ 60 : 1}小时',
+                                  : '${permissionBeanData.data.allLeftTime > 60 ? permissionBeanData.data.allLeftTime ~/ 60 : 1}分钟',
                               // text: '${permissionBeanData.data.isMember} 分钟',
                               style: const TextStyle(
                                 fontSize: 16.0,
@@ -579,6 +585,11 @@ class _PersonPageState extends State<PersonPage>
             'person_fankui',
             '意见反馈',
             onPress: () => tapMenu(PersonalRouter.personalSuggestion),
+          ),
+          menuItem(
+            'person_guanyu',
+            '注销账号',
+            onPress: () => tapSignOUTMenu(),
           ),
           menuItem(
             'person_guanyu',

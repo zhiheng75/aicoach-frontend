@@ -523,6 +523,10 @@ class ListPlayer {
     if (_isPlaceHolder) {
       return;
     }
+    // 空音频
+    if (mp3Buffer.isEmpty) {
+      return;
+    }
     FilePlayer filePlayer = FilePlayer(() => null);
     filePlayer.buffer = mp3Buffer;
     filePlayer.isMultiple = true;

@@ -12,7 +12,6 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-
   final ScreenUtil _screenUtil = ScreenUtil();
   String version = 'V1.1';
 
@@ -28,7 +27,6 @@ class _AboutPageState extends State<AboutPage> {
 
   @override
   Widget build(BuildContext context) {
-
     Widget aboutUs = Container(
       width: _screenUtil.screenWidth - 32.0,
       decoration: BoxDecoration(
