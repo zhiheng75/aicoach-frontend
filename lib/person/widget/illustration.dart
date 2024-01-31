@@ -307,7 +307,6 @@ class IPhoneIllustration extends StatelessWidget {
                       // const SizedBox(
                       //   height: 16.0,
                       // ),
-                      // session('权益包内的学习时长月包，每个月畅学900分钟；年包可在一年内畅学10800分钟，不进行月度管控。'),
                       const SizedBox(
                         height: 16.0,
                       ),
@@ -328,8 +327,8 @@ class IPhoneIllustration extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            sessionChild('1）全年畅学，多角色、多话题、多场景任意可选；'),
-                            sessionChild('2）年度奖牌线下邮寄到家。'),
+                            sessionChild('1）年度奖牌线下邮寄到家。'),
+                            // sessionChild('2）客服邮箱:help@shenmo-ai.com'),
                           ],
                         ),
                       ),
@@ -353,11 +352,15 @@ class IPhoneIllustration extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            sessionChild('1）全月畅学，多角色、多话题、多场景任意可选；'),
-                            sessionChild('2）月度奖牌线下邮寄到家。'),
+                            sessionChild('1）月度奖牌线下邮寄到家。'),
+                            // sessionChild('2）客服邮箱:help@shenmo-ai.com'),
                           ],
                         ),
                       ),
+                      const SizedBox(
+                        height: 12.0,
+                      ),
+                      session('客服邮箱:help@shenmo-ai.com'),
                     ],
                   ),
                 ),

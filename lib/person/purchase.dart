@@ -52,10 +52,15 @@ class _PurchasePageState extends State<PurchasePage>
 
   late String title = "";
   late String contentTit = "";
+  String userPhone = '';
 
   void init() {
     _pageState = 'loading';
-
+    Map<String, dynamic> user = LoginManager.getUserInfo();
+    // String userPhone = user['phone'].toString();
+    if (validateInput(user['phone'])) {
+      userPhone = user['phone'].toString();
+    }
     setState(() {});
     getBaseConfig();
   }
@@ -265,14 +270,8 @@ class _PurchasePageState extends State<PurchasePage>
       );
     }
 
-    Widget goodsItem(GoodEntity goods) {
+    Widget goodsItem(GoodEntity goods, int i) {
       bool isSelected = _goodsId == goods.id;
-      Map<String, dynamic> user = LoginManager.getUserInfo();
-      // String userPhone = user['phone'].toString();
-      String userPhone = '';
-      if (validateInput(user['phone'])) {
-        userPhone = user['phone'].toString();
-      }
 
       BoxDecoration decoration = BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
@@ -304,14 +303,18 @@ class _PurchasePageState extends State<PurchasePage>
         child: Container(
           width: _screenUtil.screenWidth - 32.0,
           decoration: decoration,
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             children: <Widget>[
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   LoadAssetImage(
-                    userPhone == "17001234567" ? "jiangpai" : 'vip',
+                    userPhone == "17001234567"
+                        ? i == 0
+                            ? "jinpai"
+                            : "yinpai"
+                        : 'vip',
                     width: 56.0,
                     height: 56.0,
                   ),
@@ -357,21 +360,25 @@ class _PurchasePageState extends State<PurchasePage>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    '原价：¥${goods.originalPrice}/${goods.unit}',
-                    style: const TextStyle(
+                    userPhone == "17001234567"
+                        ? "支付后累计完成可获得相应奖牌"
+                        : '原价：¥${goods.originalPrice}/${goods.unit}',
+                    style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xFF666666),
+                      color: const Color(0xFF666666),
                       height: 18.75 / 16.0,
-                      decoration: TextDecoration.lineThrough,
+                      decoration: userPhone == "17001234567"
+                          ? TextDecoration.none
+                          : TextDecoration.lineThrough,
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       children: [
-                        const TextSpan(
-                          text: '尝鲜价：',
-                          style: TextStyle(
+                        TextSpan(
+                          text: userPhone == "17001234567" ? "" : '尝鲜价：',
+                          style: const TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.w400,
                             color: Color(0xFF666666),
@@ -379,7 +386,9 @@ class _PurchasePageState extends State<PurchasePage>
                           ),
                         ),
                         TextSpan(
-                          text: '¥${goods.price}/${goods.unit}',
+                          text: userPhone == "17001234567"
+                              ? "¥${goods.price}"
+                              : '¥${goods.price}/${goods.unit}',
                           style: const TextStyle(
                             fontSize: 22.0,
                             fontWeight: FontWeight.w500,
@@ -448,7 +457,7 @@ class _PurchasePageState extends State<PurchasePage>
       List<Widget> goodsChildren = [];
       for (int i = 0; i < _goodList.length; i++) {
         GoodEntity goods = _goodList.elementAt(i);
-        goodsChildren.add(goodsItem(goods));
+        goodsChildren.add(goodsItem(goods, i));
         if (i < _goodList.length - 1) {
           goodsChildren.add(const SizedBox(
             height: 16.0,
@@ -550,7 +559,7 @@ class _PurchasePageState extends State<PurchasePage>
                         ),
                       ),
                       TextSpan(
-                        text: '会员协议',
+                        text: userPhone == "17001234567" ? '服务协议' : '会员协议',
                         style: const TextStyle(
                           fontSize: 12.0,
                           fontWeight: FontWeight.w400,

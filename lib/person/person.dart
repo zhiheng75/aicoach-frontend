@@ -336,7 +336,7 @@ class _PersonPageState extends State<PersonPage>
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 LoadAssetImage(
-                  phone == "17001234567" ? "jiangpai" : 'zhuanshi',
+                  phone == "17001234567" ? "jinpai" : 'zhuanshi',
                   width: 48.0,
                   height: 48.0,
                 ),
@@ -363,9 +363,10 @@ class _PersonPageState extends State<PersonPage>
                       RichText(
                         text: TextSpan(
                           children: [
-                            const TextSpan(
-                              text: '剩余学习时间：',
-                              style: TextStyle(
+                            TextSpan(
+                              text:
+                                  phone == "17001234567" ? "完成学习:" : '剩余学习时间：',
+                              style: const TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w500,
                                 color: Color(0xFF333333),
