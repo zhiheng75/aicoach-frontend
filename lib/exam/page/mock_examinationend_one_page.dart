@@ -36,6 +36,7 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
   late ExamDetailBean _examDetailBean;
   late bool isloading = true;
   late String name = "";
+  late String phone = '';
 
   @override
   void initState() {
@@ -50,7 +51,6 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
     } else if (validateInput(user['nickname'])) {
       userName = user['nickname'];
     } else {
-      String phone = '';
       if (validateInput(user['phone'])) {
         phone = user['phone'];
       }
@@ -274,52 +274,58 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
                                       ),
                                     ),
                                     Gaps.vGap10,
-                                    GestureDetector(
-                                      behavior: HitTestBehavior.opaque,
-                                      onTap: () {
-                                        showModalBottomSheet(
-                                          context: context,
-                                          backgroundColor: Colors.transparent,
-                                          barrierColor: Colors.transparent,
-                                          isScrollControlled: true,
-                                          isDismissible: false,
-                                          enableDrag: false,
-                                          builder: (_) => ExamPurchasePage(
-                                            onPurchased: () {},
+                                    phone == "17001234567"
+                                        ? Container()
+                                        : GestureDetector(
+                                            behavior: HitTestBehavior.opaque,
+                                            onTap: () {
+                                              showModalBottomSheet(
+                                                context: context,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                barrierColor:
+                                                    Colors.transparent,
+                                                isScrollControlled: true,
+                                                isDismissible: false,
+                                                enableDrag: false,
+                                                builder: (_) =>
+                                                    ExamPurchasePage(
+                                                  onPurchased: () {},
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 231.0,
+                                              height: 48.0,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        100.0),
+                                                border: Border.all(
+                                                  width: 1.0,
+                                                  style: BorderStyle.solid,
+                                                  color: Colours.color_001652,
+                                                ),
+                                                gradient: const LinearGradient(
+                                                  begin: Alignment.bottomLeft,
+                                                  end: Alignment.topRight,
+                                                  colors: [
+                                                    Colours.color_9AC3FF,
+                                                    Colours.color_FF71E0,
+                                                  ],
+                                                ),
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: const Text(
+                                                '点击购买模考训练包',
+                                                style: TextStyle(
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colours.color_001652,
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                        );
-                                      },
-                                      child: Container(
-                                        width: 231.0,
-                                        height: 48.0,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(100.0),
-                                          border: Border.all(
-                                            width: 1.0,
-                                            style: BorderStyle.solid,
-                                            color: Colours.color_001652,
-                                          ),
-                                          gradient: const LinearGradient(
-                                            begin: Alignment.bottomLeft,
-                                            end: Alignment.topRight,
-                                            colors: [
-                                              Colours.color_9AC3FF,
-                                              Colours.color_FF71E0,
-                                            ],
-                                          ),
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: const Text(
-                                          '点击购买模考训练包',
-                                          style: TextStyle(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colours.color_001652,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
                                   ],
                                 ),
                               )),
