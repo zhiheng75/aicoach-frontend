@@ -10,7 +10,6 @@ import '../../loginManager/login_manager.dart';
 import '../../util/device_utils.dart';
 
 class ChatWebsocket {
-
   factory ChatWebsocket() {
     return _chatWebsocket;
   }
@@ -51,7 +50,10 @@ class ChatWebsocket {
     _websocket!.stream.listen(
       (data) {
         // 心跳
-        if (data is String && data.contains('[heartbeat]') && _websocket != null && _status == 'opened') {
+        if (data is String &&
+            data.contains('[heartbeat]') &&
+            _websocket != null &&
+            _status == 'opened') {
           _websocket!.sink.add('[heartbeat]pong');
           return;
         }
@@ -67,7 +69,8 @@ class ChatWebsocket {
       onError: (error) async {
         _status = 'closed';
         _endHeartBeat();
-        await _websocket!.sink.close(WebSocketStatus.internalServerError, 'Error');
+        await _websocket!.sink
+            .close(WebSocketStatus.internalServerError, 'Error');
       },
       cancelOnError: false,
     );
@@ -105,16 +108,17 @@ class ChatWebsocket {
     String deviceId = await Device.getDeviceId();
     String token = LoginManager.getUserToken();
     // 测试
-    // String uri = 'wss://api.demo.shenmo-ai.net/ws/$sessionId?platform=app&device_id=$deviceId&character_id=$characterId&language=en-US&token=$token&use_search=false&use_quivr=false&use_multion=false';
+    // String uri = 'wss://api.bubble.shenmo-ai.net/ws/$sessionId?platform=app&device_id=$deviceId&character_id=$characterId&language=en-US&token=$token&use_search=false&use_quivr=false&use_multion=false';
     // 正式
-    String uri = 'wss://api.demo.shenmo-ai.com/ws/$sessionId?platform=app&device_id=$deviceId&character_id=$characterId&language=en-US&token=$token&use_search=false&use_quivr=false&use_multion=false';
+    String uri =
+        'wss://api.bubble.shenmo-ai.com/ws/$sessionId?platform=app&device_id=$deviceId&character_id=$characterId&language=en-US&token=$token&use_search=false&use_quivr=false&use_multion=false';
     if (sceneId != null) {
       uri = '$uri&scene_id=$sceneId';
     }
     try {
       _websocket = WebSocketChannel.connect(Uri.parse(uri));
       return sessionId;
-    } catch(e) {
+    } catch (e) {
       rethrow;
     }
   }
@@ -135,5 +139,4 @@ class ChatWebsocket {
       _heartbeat = null;
     }
   }
-
 }
