@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
     configDio(
       // 测试
       // baseUrl: 'https://api.demo.shenmo-ai.net/',
-      // // 正式
+      // 正式
       baseUrl: 'https://api.demo.shenmo-ai.com/',
       interceptors: interceptors,
     );
