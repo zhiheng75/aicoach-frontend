@@ -2,6 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart' hide ScreenUtil;
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluwx/fluwx.dart';
@@ -343,6 +344,49 @@ class _SettingPageState extends State<SettingPage>
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: '会员协议',
+                              style: const TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF0047FF),
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  NavigatorUtils.goWebViewPage(context, "会员协议",
+                                      "http://www.shenmo-ai.com/tos/");
+                                },
+                            ),
+                            const TextSpan(
+                              text: ' 和 ',
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF333333),
+                              ),
+                            ),
+                            TextSpan(
+                              text: '续费规则',
+                              style: const TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF0047FF),
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  NavigatorUtils.goWebViewPage(context, "续费规则",
+                                      "http://www.shenmo-ai.com/agreements");
+                                },
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
                       GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
