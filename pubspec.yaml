@@ -121,7 +121,6 @@ dependencies:
   #fluwx https://github.com/OpenFlutter/fluwx
   fluwx: ^4.4.8
     # fluwx: ^3.12.2
-
   tobias: ^3.2.2
   json_annotation: ^4.4.0
   #fl_chart https://github.com/imaNNeo/fl_chart
@@ -134,6 +133,9 @@ dependencies:
   #audio_session https://github.com/ryanheise/audio_session/issues
   audio_session: ^0.1.18
   package_info_plus: ^4.2.0
+  umeng_common_sdk: ^1.2.7
+  flutter_bugly: ^0.4.4
+
 
 dev_dependencies:
   flutter_test:
