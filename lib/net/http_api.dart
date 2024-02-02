@@ -69,6 +69,9 @@ class HttpApi {
   //学习报告的集合
   static const String studyReportList = "app/conversations";
 
+  //模考报告列表
+  static const String examReportList = "exam_list";
+
   //口语报告详情-综合评价
   static const String scoreAllRound = "score_allround";
 
@@ -77,6 +80,15 @@ class HttpApi {
 
   //口语报告详情-细节解析
   static const String scoreAnalysis = "score_analysis";
+
+  //模考报告详情-综合评价
+  static const String examScoreAllRound = "exam_score_allround";
+
+  //模考报告详情-地道表达
+  static const String examScoreSuggestion = "exam_score_suggestion";
+
+  //模考报告详情-细节解析
+  static const String examScoreAnalysis = "exam_score_analysis";
 
   //意见反馈
   static const String suggestion = "reviews";

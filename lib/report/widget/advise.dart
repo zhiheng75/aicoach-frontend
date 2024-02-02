@@ -17,9 +17,11 @@ class Advise extends StatefulWidget {
   const Advise({
     Key? key,
     required this.sessionId,
+    this.type,
   }) : super(key: key);
 
   final String sessionId;
+  final String? type;
 
   @override
   State<Advise> createState() => _AdviseState();
@@ -42,7 +44,7 @@ class _AdviseState extends State<Advise> {
   void getAdviseList() {
     DioUtils.instance.requestNetwork<ResultData>(
       Method.get,
-      HttpApi.scoreSuggestion,
+      widget.type == 'exam' ? HttpApi.examScoreSuggestion : HttpApi.scoreSuggestion,
       cancelToken: _cancelToken,
       queryParameters: {
         'session_id': widget.sessionId,

@@ -7,9 +7,13 @@ import 'package:Bubble/exam/view/exam_detail_view.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/report/page/my_examination_detail_page.dart';
+import 'package:Bubble/report/widget/advise.dart';
+import 'package:Bubble/report/widget/analysis.dart';
+import 'package:Bubble/report/widget/score.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
+import 'package:Bubble/widgets/load_data.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
@@ -473,6 +477,13 @@ class _MyExaminationPageState extends State<MyExaminationPage>
 
   @override
   Widget build(BuildContext context) {
+    if (isloading) {
+      return const Scaffold(
+        body: Center(
+          child: LoadData(),
+        ),
+      );
+    }
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -538,28 +549,22 @@ class _MyExaminationPageState extends State<MyExaminationPage>
               Expanded(
                 child: IndexedStack(
                   index: curTabIndex,
-                  children: const [
+                  children: [
                     //                 extended.NestedScrollViewInnerScrollPositionKeyWidget(
                     //   Key('Tab0'),
                     //   MyReceivePage(),
                     // ),
                     extended.ExtendedVisibilityDetector(
-                      uniqueKey: Key('Tab0'),
-                      child: MyExaminationDetailPage(
-                        idStr: 'Tab0',
-                      ),
+                      uniqueKey: const Key('Tab0'),
+                      child: Score(sessionId: widget.mockId, type: 'exam'),
                     ),
                     extended.ExtendedVisibilityDetector(
-                      uniqueKey: Key('Tab1'),
-                      child: MyExaminationDetailPage(
-                        idStr: 'Tab1',
-                      ),
+                      uniqueKey: const Key('Tab1'),
+                      child: Advise(sessionId: widget.mockId, type: 'exam'),
                     ),
                     extended.ExtendedVisibilityDetector(
-                      uniqueKey: Key('Tab2'),
-                      child: MyExaminationDetailPage(
-                        idStr: 'Tab2',
-                      ),
+                      uniqueKey: const Key('Tab2'),
+                      child: Analysis(sessionId: widget.mockId, type: 'exam'),
                     )
                   ],
                 ),

@@ -5,7 +5,6 @@ class ExamReportEntity {
   int duration = 0;
   int score = 0;
   String examinerAvatar = '';
-  String examinerName = '';
   String createTime = '';
 
   ExamReportEntity();
@@ -16,8 +15,8 @@ class ExamReportEntity {
     if (json['id'] != null) {
       entity.id = json['id'];
     }
-    if (json['name'] != null) {
-      entity.name = json['name'];
+    if (json['title'] != null) {
+      entity.name = json['title'];
     }
     if (json['duration'] != null) {
       entity.duration = json['duration'];
@@ -25,15 +24,11 @@ class ExamReportEntity {
     if (json['score'] != null) {
       entity.score = json['score'];
     }
-    if (json['examiner_avatar'] != null) {
-      entity.examinerAvatar = json['examiner_avatar'];
+    if (json['character_avatar'] != null) {
+      entity.examinerAvatar = json['character_avatar'];
     }
-    if (json['examiner_name'] != null) {
-      entity.examinerName = json['examiner_name'];
-    }
-
-    if (json['create_time'] != null) {
-      entity.createTime = json['create_time'];
+    if (json['created_at'] != null) {
+      entity.createTime = json['created_at'];
     }
     return entity;
   }
@@ -41,12 +36,11 @@ class ExamReportEntity {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'name': name,
+      'title': name,
       'duration': duration,
       'score': score,
-      'examiner_avatar': examinerAvatar,
-      'examiner_name': examinerName,
-      'create_time': createTime,
+      'character_avatar': examinerAvatar,
+      'created_at': createTime,
     };
   }
 
