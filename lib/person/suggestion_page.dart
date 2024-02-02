@@ -14,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../util/EventBus.dart';
 import '../widgets/jh_asset_picker.dart';
@@ -185,8 +186,8 @@ class _SuggestionPageState extends State<SuggestionPage>
                                   }
                                 }
                                 Log.e("============");
-                                Log.e(mlist as String);
-                                Log.e(selectImgAmount as String);
+                                // Log.e(mlist as String);
+                                // Log.e(selectImgAmount as String);
 
                                 Log.e("============");
 
@@ -273,8 +274,12 @@ class _SuggestionPageState extends State<SuggestionPage>
                                     fontSize: Dimens.font_sp18), () {
                               if (_controller.text.isNotEmpty &&
                                   _contactController.text.isNotEmpty) {
-                                _presenter.getOssToken(mlist, _controller.text,
-                                    _contactController.text);
+                                _presenter.getOssToken(
+                                    mlist,
+                                    _controller.text,
+                                    _contactController.text,
+                                    (String audiopath) {});
+                                ;
                                 // _presenter.pushSuggest(
                                 //     _controller.text, _contactController.text);
                                 //    _presenter.getOssToken();
@@ -296,6 +301,29 @@ class _SuggestionPageState extends State<SuggestionPage>
             ),
           ),
         ));
+  }
+
+  ///读取本地图片路径
+  Future _selectImage() async {
+    final ImagePicker _picker = ImagePicker();
+
+    var image = await _picker.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      // LogUtils.i(image.path);
+      // String filePath = image.path ?? "";
+      // UploadPicModel uploadPicModel = UploadPicModel();
+      // uploadPicModel.id = picsGet.length == 0 ? 0 : picsGet.length;
+      // uploadPicModel.uri = filePath;
+      // picsGet.add(uploadPicModel);
+      // // String _picBase64 = await EncodeUtil.image2Base64(uploadPicModel.uri);
+      // // saveData("send_announce_pic_${uploadPicModel.id}", _picBase64);
+      // saveData("send_announce_pic_${uploadPicModel.id}", uploadPicModel.uri!);
+      // saveData("send_announce_pic_size", picsGet.length.toString());
+      // publishBtnStatus();
+      // if (mounted) {
+      //   setState(() {});
+      // }
+    }
   }
 
   @override

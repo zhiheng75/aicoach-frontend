@@ -201,15 +201,20 @@ class _MockTestPurchasePageState extends State<MockTestPurchasePage>
                     _checked = !_checked;
                     setState(() {});
                   },
-                  child: LoadAssetImage(
-                    _checked ? 'yigouxuan' : 'weigouxuan',
-                    width: 10.0,
-                    height: 10.0,
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    padding: const EdgeInsets.all(10),
+                    child: LoadAssetImage(
+                      _checked ? 'yigouxuan' : 'weigouxuan',
+                      width: 15.0,
+                      height: 15.0,
+                    ),
                   ),
                 ),
-                const SizedBox(
-                  width: 8.0,
-                ),
+                // const SizedBox(
+                //   width: 8.0,
+                // ),
                 RichText(
                   text: TextSpan(
                     children: [

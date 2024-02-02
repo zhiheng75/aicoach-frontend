@@ -47,7 +47,7 @@ dependencies:
   # 启动URL的插件（支持Web） https://github.com/flutter/packages/tree/main/packages/url_launcher
   url_launcher: 6.1.8
   # 图片选择插件 https://github.com/flutter/packages/tree/main/packages/image_picker
-  image_picker: 1.0.4
+  image_picker: ^1.0.7
   # 图片视频选择器(微信UI) https://pub.flutter-io.cn/packages/wechat_assets_picker
   wechat_assets_picker: ^8.8.0
   # 拍照与录像(微信UI) https://pub.flutter-io.cn/packages/wechat_camera_picker
