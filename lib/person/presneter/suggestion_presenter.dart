@@ -117,7 +117,14 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
         .convert(utf8.encode(policy));
     String signature = base64Encode(digest.bytes);
     String fileName = getRandom(12);
-    String key = '/feedback/$fileName.jpg';
+    // String key = 'feedback/$fileName.jpg';
+    String key = 'feedback/$fileName.jpg';
+//  filename/
+//  feedback/
+//  feedback/filename/
+
+//   audio/
+
     FormData formData = FormData.fromMap({
       'key': key,
       'success_action_status': '200',
@@ -126,10 +133,11 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
       'policy': policy,
       'signature': signature,
       'Content-Type': 'image/jpeg',
+      // 'Content-Type': 'audio/x-wave',
       'file': MultipartFile.fromFile(imgFile.path),
     });
 
-    String urlStr = "";
+    String urlStr = "null";
     try {
       Response response = await Dio().post(
         host,
@@ -150,11 +158,11 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
       Function(String) onSuccess) {
     _getOssToken((evaluateOss) async {
       String imagesStr = "";
-      for (int i = 0; i < mlist.length; i++) {
-        Future<String> url = upLoadImage(mlist[i], evaluateOss);
-        imagesStr = "$imagesStr,$url";
-      }
-      Log.e(imagesStr);
+      // for (int i = 0; i < mlist.length; i++) {
+      //   Future<String> url = upLoadImage(mlist[i], evaluateOss);
+      //   imagesStr = "$imagesStr,$url";
+      // }
+      // Log.e(imagesStr);
       pushSuggest(message, contact, imagesStr, onSuccess);
     });
   }
