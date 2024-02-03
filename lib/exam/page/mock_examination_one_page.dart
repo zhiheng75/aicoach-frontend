@@ -290,7 +290,13 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
         // _bottomBarControll.setDisabled(false);
 
         showToast("恭喜你，该环节已完成，即将进入下一考试环节");
+
         Future.delayed(const Duration(seconds: 2), () {
+          // // 强制横屏
+          // SystemChrome.setPreferredOrientations([
+          //   DeviceOrientation.landscapeLeft,
+          //   // DeviceOrientation.landscapeRight
+          // ]);
           if (!_cancelToken!.isCancelled) {
             NavigatorUtils.push(
                 context,
