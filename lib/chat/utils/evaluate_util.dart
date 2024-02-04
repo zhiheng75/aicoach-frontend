@@ -250,6 +250,7 @@ class EvaluateUtil {
     return {
       'session_id': message.sessionId,
       'message': message.text,
+      'message_id': message.id,
       'accuracy_score': evaluation['accuracy_score'],
       'fluency_score': evaluation['fluency_score'],
       'integrity_score': evaluation['integrity_score'],
