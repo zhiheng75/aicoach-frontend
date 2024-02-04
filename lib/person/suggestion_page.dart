@@ -6,6 +6,7 @@ import 'package:Bubble/person/view/suggestion_view.dart';
 import 'package:Bubble/res/resources.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/string_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/btn_bg_widget.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
@@ -272,24 +273,32 @@ class _SuggestionPageState extends State<SuggestionPage>
                                 txtStyle: TextStyle(
                                     color: Colours.color_001652,
                                     fontSize: Dimens.font_sp18), () {
-                              if (_controller.text.isNotEmpty &&
-                                  _contactController.text.isNotEmpty) {
-                                _presenter.getOssToken(
-                                    mlist,
-                                    _controller.text,
-                                    _contactController.text,
-                                    (String audiopath) {});
-                                ;
-                                // _presenter.pushSuggest(
-                                //     _controller.text, _contactController.text);
-                                //    _presenter.getOssToken();
-                              } else {
-                                if (_controller.text.isEmpty) {
-                                  Toast.show("请输入问题和意见");
-                                } else if (_contactController.text.isEmpty) {
-                                  Toast.show("请输入联系方式");
-                                }
+                              if (!StringUtils.isChinaEmailLegal(
+                                      _contactController.text) &&
+                                  !StringUtils.isChinaPhoneLegal(
+                                      _contactController.text)) {
+                                Toast.show("请输入正确联系方式");
+                                return;
                               }
+
+                              // if (_controller.text.isNotEmpty &&
+                              //     _contactController.text.isNotEmpty) {
+                              //   _presenter.getOssToken(
+                              //       mlist,
+                              //       _controller.text,
+                              //       _contactController.text,
+                              //       (String audiopath) {});
+                              //   ;
+                              //   // _presenter.pushSuggest(
+                              //   //     _controller.text, _contactController.text);
+                              //   //    _presenter.getOssToken();
+                              // } else {
+                              //   if (_controller.text.isEmpty) {
+                              //     Toast.show("请输入问题和意见");
+                              //   } else if (_contactController.text.isEmpty) {
+                              //     Toast.show("请输入联系方式");
+                              //   }
+                              // }
                             }),
                           ),
                         ),

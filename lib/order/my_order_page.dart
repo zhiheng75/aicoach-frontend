@@ -28,9 +28,6 @@ class _MyOrderPageState extends State<MyOrderPage>
     implements MyOrderView {
   late MyOrderPresenter _myOrderPresenter;
 
-
-
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -55,40 +52,41 @@ class _MyOrderPageState extends State<MyOrderPage>
           child: Column(
             children: [
               const MyAppBar(
-                centerTitle: "购买记录",
+                centerTitle: "购买记录1",
                 backImgColor: Colors.white,
                 backgroundColor: Colours.transflate,
               ),
               Expanded(
-                  child: _myOrderPresenter.mList.isNotEmpty?
-
-                  Container(
-                    width: ScreenUtil.getScreenW(context),
-                    padding:const EdgeInsets.only(left: Dimens.gap_dp28,right:Dimens.gap_dp28),
-                    decoration:const BoxDecoration(
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight:  Radius.circular(20)),
-                        color: Colors.white
-                    ),
-                    child: ListView.builder(
-                        shrinkWrap:true,
-                        itemCount: _myOrderPresenter.mList.length,
-                        itemBuilder: (context,index){
-                          return MyOrderItem( _myOrderPresenter.mList[index],(){
-                            // ClipboardTool.getData().then((value) => {
-                            //
-                            // }).catchError((e){
-                            //   Toast.show(e.toString());
-                            // });
-                            ClipboardTool.setDataToastMsg(_myOrderPresenter.mList[index].orderNo);
-
-                          });
-
-                        }),
-                  ) :const StateLayout(
-                    type: StateType.empty,
-                    hintText: "   你还没有购买记录\n现在开始升级体验吧~",
-                  ))
-              ,
+                  child: _myOrderPresenter.mList.isNotEmpty
+                      ? Container(
+                          width: ScreenUtil.getScreenW(context),
+                          padding: const EdgeInsets.only(
+                              left: Dimens.gap_dp28, right: Dimens.gap_dp28),
+                          decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20)),
+                              color: Colors.white),
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: _myOrderPresenter.mList.length,
+                              itemBuilder: (context, index) {
+                                return MyOrderItem(
+                                    _myOrderPresenter.mList[index], () {
+                                  // ClipboardTool.getData().then((value) => {
+                                  //
+                                  // }).catchError((e){
+                                  //   Toast.show(e.toString());
+                                  // });
+                                  ClipboardTool.setDataToastMsg(
+                                      _myOrderPresenter.mList[index].orderNo);
+                                });
+                              }),
+                        )
+                      : const StateLayout(
+                          type: StateType.empty,
+                          hintText: "   你还没有购买记录\n现在开始升级体验吧~",
+                        )),
             ],
           ),
         )));
@@ -105,8 +103,6 @@ class _MyOrderPageState extends State<MyOrderPage>
 
   @override
   void goodListData(List<OrderListDataData> data) {
-    setState(() {
-
-    });
+    setState(() {});
   }
 }

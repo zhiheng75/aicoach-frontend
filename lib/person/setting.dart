@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart' hide ScreenUtil;
 import 'package:flutter/gestures.dart';
@@ -255,12 +256,22 @@ class _SettingPageState extends State<SettingPage>
         ),
         child: Column(
           children: <Widget>[
-            const SizedBox(
-              height: 60.0,
+            const XTCupertinoNavigationBar(
+              backgroundColor: Color(0xFFFFFFFF),
+              border: null,
+              padding: EdgeInsetsDirectional.zero,
+              leading: NavigationBackWidget(),
+              middle: Text(
+                "设置",
+                style: TextStyle(fontWeight: FontWeight.normal),
+              ),
             ),
-            const Navbar(
-              title: '设置',
-            ),
+            // const SizedBox(
+            //   height: 60.0,
+            // ),
+            // const Navbar(
+            //   title: '设置',
+            // ),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

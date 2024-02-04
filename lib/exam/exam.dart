@@ -12,6 +12,7 @@ import 'package:Bubble/report/report_router.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
@@ -104,9 +105,27 @@ class _ExamPageState extends State<ExamPage>
     }, onError: (code, msg) {});
   }
 
+// 防止二次点击
+  late DateTime _lastTime;
+  preventDoubleTap({required int interval}) {
+    DateTime _nowTime = DateTime.now();
+    if (_lastTime == null ||
+        _nowTime.difference(_lastTime) > Duration(seconds: interval)) {
+      _lastTime = _nowTime;
+      return true;
+    } else {
+      _lastTime = _nowTime;
+      return false;
+    }
+  }
+
   void startExam() {
     // isExam = true;
     if (LoginManager.isLogin()) {
+      if (!preventDoubleTap(interval: 2)) {
+        return;
+      }
+      stopVoice();
       _examPagePresenter.getExamPermission();
     } else {
       Toast.show("请登录");
@@ -132,6 +151,10 @@ class _ExamPageState extends State<ExamPage>
 
     // _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     getStudyInfo();
+  }
+
+  void stopVoice() async {
+    await MediaUtils().stopPlay();
   }
 
   bool validateInput(String? input) {

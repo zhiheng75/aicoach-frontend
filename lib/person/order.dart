@@ -1,4 +1,7 @@
 // ignore_for_file: prefer_final_fields
+import 'package:Bubble/loginManager/login_manager.dart';
+import 'package:Bubble/person/person_router.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,14 +25,18 @@ class OrderPage extends StatefulWidget {
   State<OrderPage> createState() => _OrderPageState();
 }
 
-class _OrderPageState extends State<OrderPage> with BasePageMixin<OrderPage, OrderPagePresenter>, AutomaticKeepAliveClientMixin<OrderPage> implements OrderView {
-
+class _OrderPageState extends State<OrderPage>
+    with
+        BasePageMixin<OrderPage, OrderPagePresenter>,
+        AutomaticKeepAliveClientMixin<OrderPage>
+    implements OrderView {
   late OrderPagePresenter _orderPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
   int _loadFailed = 0;
   int _page = 1;
   int _loading = 0;
   List<OrderEntity> _orderList = [];
+  late String phone = "";
 
   void init() {
     getMore();
@@ -52,7 +59,8 @@ class _OrderPageState extends State<OrderPage> with BasePageMixin<OrderPage, Ord
           return;
         }
         List<dynamic> data = result.data as List<dynamic>;
-        List<OrderEntity> list = data.map((item) => OrderEntity.fromJson(item)).toList();
+        List<OrderEntity> list =
+            data.map((item) => OrderEntity.fromJson(item)).toList();
         _orderList.addAll(list);
         _loading = 0;
         setState(() {});
@@ -68,16 +76,33 @@ class _OrderPageState extends State<OrderPage> with BasePageMixin<OrderPage, Ord
     );
   }
 
+  bool validateInput(String? input) {
+    if (input == null) {
+      return false;
+    }
+
+    if (input.isEmpty) {
+      return false;
+    }
+
+    return true;
+  }
+
   @override
   void initState() {
     super.initState();
+    Map<String, dynamic> user = LoginManager.getUserInfo();
+    if (validateInput(user['phone'])) {
+      phone = user['phone'];
+    }
+
     Future.delayed(Duration.zero, init);
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    
+
     Widget orderItem(OrderEntity order) {
       return Container(
         decoration: BoxDecoration(
@@ -152,61 +177,94 @@ class _OrderPageState extends State<OrderPage> with BasePageMixin<OrderPage, Ord
     Widget list = const SizedBox();
 
     if (_loading == 0) {
-      list = _orderList.isNotEmpty ? Padding(
-        padding: EdgeInsets.only(
-          top: 16.0,
-          bottom: _screenUtil.bottomBarHeight,
-        ),
-        child: ListView.builder(
-          padding: EdgeInsets.zero,
-          itemCount: _orderList.length,
-          itemBuilder: (_, i) => Padding(
-            padding: EdgeInsets.only(
-              bottom: i == _orderList.length - 1 ? 0 : 16.0,
-            ),
-            child: orderItem(_orderList.elementAt(i)),
-          ),
-        ),
-      ) : const Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            LoadAssetImage(
-              'no_data',
-              width: 63.0,
-              height: 63.0,
-            ),
-            SizedBox(
-              height: 24.0,
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  '您还没有购买记录',
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w400,
-                    color: Colours.color_999999,
-                    height: 20.0 / 15.0,
-                    letterSpacing: 0.05,
+      list = _orderList.isNotEmpty
+          ? Padding(
+              padding: EdgeInsets.only(
+                top: 16.0,
+                bottom: _screenUtil.bottomBarHeight,
+              ),
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: _orderList.length,
+                itemBuilder: (_, i) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: i == _orderList.length - 1 ? 0 : 16.0,
                   ),
+                  child: orderItem(_orderList.elementAt(i)),
                 ),
-                Text(
-                    '现在开始升级体验吧！',
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w400,
-                    color: Colours.color_999999,
-                    height: 20.0 / 15.0,
-                    letterSpacing: 0.05,
+              ),
+            )
+          : Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const LoadAssetImage(
+                    'no_data',
+                    width: 63.0,
+                    height: 63.0,
                   ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
+                  const SizedBox(
+                    height: 24.0,
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const Text(
+                        '您还没有购买记录',
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colours.color_999999,
+                          height: 20.0 / 15.0,
+                          letterSpacing: 0.05,
+                        ),
+                      ),
+                      const Text(
+                        '现在开始升级体验吧！',
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colours.color_999999,
+                          height: 20.0 / 15.0,
+                          letterSpacing: 0.05,
+                        ),
+                      ),
+                      phone == "17001234567"
+                          ? Container()
+                          : GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () => NavigatorUtils.push(
+                                  context, PersonalRouter.purchase),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40.0),
+                                  border: Border.all(
+                                    width: 1.0,
+                                    style: BorderStyle.solid,
+                                    color: const Color(0xFFE49600),
+                                  ),
+                                  color: const Color(0xFFFFCF71),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14.0,
+                                  vertical: 7.0,
+                                ),
+                                child: const Text(
+                                  '升级会员',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                    height: 20.0 / 15.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                    ],
+                  ),
+                ],
+              ),
+            );
     }
 
     if (_loadFailed == 1) {
@@ -216,7 +274,7 @@ class _OrderPageState extends State<OrderPage> with BasePageMixin<OrderPage, Ord
         ),
       );
     }
-    
+
     return Scaffold(
       body: Container(
         width: _screenUtil.screenWidth,

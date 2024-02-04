@@ -778,7 +778,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                           ],
                         )),
                   ),
-                  Gaps.vGap10,
+                  Gaps.vGap3,
                   Expanded(
                     child: SizedBox(
                       height: double.infinity,
@@ -796,14 +796,14 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                             // margin: const EdgeInsets.all(10),
                             child: Column(
                               children: [
-                                Gaps.vGap20,
+                                Gaps.vGap5,
                                 Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       color: Colours.color_E8CCFE,
                                     ),
                                     padding: const EdgeInsets.only(
-                                        left: 12, right: 12, top: 8, bottom: 8),
+                                        left: 8, right: 8, top: 4, bottom: 4),
                                     child: const Text(
                                       "考官",
                                       style: TextStyle(
@@ -811,10 +811,10 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                         color: Colors.black,
                                       ),
                                     )),
-                                Gaps.vGap10,
+                                Gaps.vGap5,
                                 peopleWidget(
                                     "teach_icon", false, "口语考官：Andy老师"),
-                                Gaps.vGap10,
+                                Gaps.vGap5,
                                 peopleWidget(
                                     "invigilate_icon", false, "计分考官：Andy老师"),
                               ],
@@ -822,7 +822,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                           ),
                           Gaps.hGap5,
                           Container(
-                            padding: const EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
@@ -913,8 +913,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                                           const EdgeInsets.only(
                                                               left: 20,
                                                               right: 20,
-                                                              top: 10,
-                                                              bottom: 10),
+                                                              top: 6,
+                                                              bottom: 6),
                                                       decoration: BoxDecoration(
                                                           borderRadius:
                                                               BorderRadius
@@ -939,7 +939,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                                                 const TextStyle(
                                                               fontSize: 14,
                                                               color:
-                                                                  Colors.black,
+                                                                  Colors.white,
                                                             ),
                                                           ),
                                                         ],
@@ -1026,8 +1026,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                                   BorderRadius.circular(24),
                                               color: Colours.color_examination,
                                             ),
-                                            width: 207,
-                                            height: 48,
+                                            width: 180,
+                                            height: 40,
                                             // color: Colours.color_examination,
                                             child: const Center(
                                               child: Text(
@@ -1080,14 +1080,14 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                             height: double.infinity,
                             child: Column(
                               children: [
-                                Gaps.vGap20,
+                                Gaps.vGap5,
                                 Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       color: Colours.color_C1EBF7,
                                     ),
                                     padding: const EdgeInsets.only(
-                                        left: 12, right: 12, top: 8, bottom: 8),
+                                        left: 8, right: 8, top: 4, bottom: 4),
                                     child: const Text(
                                       "学生",
                                       style: TextStyle(
@@ -1095,10 +1095,10 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                         color: Colors.black,
                                       ),
                                     )),
-                                Gaps.vGap10,
+                                Gaps.vGap5,
                                 peopleWidget(
                                     "comittee_icon", false, "考生：$nameName"),
-                                Gaps.vGap10,
+                                Gaps.vGap5,
                                 peopleWidget("myhead_icon", false, "考办：小红"),
                               ],
                             ),
