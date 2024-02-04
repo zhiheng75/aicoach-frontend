@@ -454,9 +454,9 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   ///销毁录音
   void dispose() {
     // 强制横屏
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitUp,
+    // ]);
     // TODO: implement dispose
     super.dispose();
     // _cancelRecorderSubscriptions();

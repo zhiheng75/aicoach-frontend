@@ -106,11 +106,12 @@ class _ExamPageState extends State<ExamPage>
   }
 
 // 防止二次点击
-  late DateTime _lastTime;
+  DateTime? _lastTime;
   preventDoubleTap({required int interval}) {
     DateTime _nowTime = DateTime.now();
     if (_lastTime == null ||
-        _nowTime.difference(_lastTime) > Duration(seconds: interval)) {
+        _nowTime.difference(_lastTime!) >
+            Duration(milliseconds: interval ?? 6000)) {
       _lastTime = _nowTime;
       return true;
     } else {
@@ -122,7 +123,8 @@ class _ExamPageState extends State<ExamPage>
   void startExam() {
     // isExam = true;
     if (LoginManager.isLogin()) {
-      if (!preventDoubleTap(interval: 2)) {
+      if (!preventDoubleTap(interval: 10000)) {
+        //  toast('请勿重复点击');
         return;
       }
       stopVoice();

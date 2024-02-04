@@ -73,7 +73,7 @@ class JhAssetPicker extends StatefulWidget {
 
 class _JhAssetPickerState extends State<JhAssetPicker> {
   List<AssetEntity> _selectedAssets = [];
-  Color _themeColor = Colours.kThemeColor;
+  Color _themeColor = Colours.color_0EF4D1;
 
   int maxAmount = 0;
   @override
@@ -272,7 +272,7 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
         maxAssets: widget.maxAssets,
         selectedAssets: _selectedAssets,
         requestType: RequestType.image,
-        // themeColor: _themeColor,
+        themeColor: _themeColor,
         // textDelegate: const EnglishAssetPickerTextDelegate(),
       ),
     );
@@ -331,12 +331,12 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
     //   context,
     // );
     if (result != null) {
-      // setState(() {
-      _selectedAssets.clear();
-      _selectedAssets.add(result);
-      // 相机回调
-      widget.callBack?.call(_selectedAssets);
-      // });
+      setState(() {
+        _selectedAssets.clear();
+        _selectedAssets.add(result);
+        // 相机回调
+        widget.callBack?.call(_selectedAssets);
+      });
     }
   }
 

@@ -42,7 +42,9 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitUp,
+    // ]);
     Map<String, dynamic> user = LoginManager.getUserInfo();
 
     String userName = '';
@@ -64,9 +66,6 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
     Future.delayed(const Duration(microseconds: 200), () {
       _examDetailPagePresenter.getExamDetail(widget.mockId);
     });
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
   }
 
   bool validateInput(String? input) {
