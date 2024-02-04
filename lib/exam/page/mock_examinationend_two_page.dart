@@ -39,6 +39,9 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
   void initState() {
     // TODO: implement initState
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     Future.delayed(const Duration(microseconds: 200), () {
       _examDetailPagePresenter.getExamDetail(widget.mockId);
     });

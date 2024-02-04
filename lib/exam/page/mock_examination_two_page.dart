@@ -52,6 +52,7 @@ class MockExaminationTwoPage extends StatefulWidget {
 class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
     with
         BasePageMixin<MockExaminationTwoPage, MockExaminationTwoPagePresenter>,
+        RouteAware,
         AutomaticKeepAliveClientMixin<MockExaminationTwoPage>
     implements MockExaminationTwoView {
   final MediaUtils _mediaUtils = MediaUtils();
@@ -133,6 +134,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       DeviceOrientation.landscapeLeft,
       // DeviceOrientation.landscapeRight
     ]);
+    // OrientationPlugin.forceOrientation(DeviceOrientation.landscapeRight);
 
     upmap = <String, dynamic>{};
     upmap['id'] = widget.entity.data.id.toString();
@@ -169,6 +171,32 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
     });
 
     _startTimer();
+  }
+
+  @override
+  void didPush() {
+    // TODO: implement didPush
+    super.didPush();
+    // 强制横屏
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      // DeviceOrientation.landscapeRight
+    ]);
+  }
+
+  @override
+  void didPushNext() {
+    // TODO: implement didPushNext
+    super.didPushNext();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
+  @override
+  void didPop() {
+    // TODO: implement didPop
+    super.didPop();
   }
 
   void nextMock() {
