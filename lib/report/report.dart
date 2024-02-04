@@ -576,20 +576,20 @@ class _ReportPageState extends State<ReportPage>
         if (_list.isEmpty) {
           list = Container(
             alignment: Alignment.center,
-            child: const Column(
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                LoadAssetImage(
+                const LoadAssetImage(
                   'no_data',
                   width: 63.0,
                   height: 63.0,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 21.0,
                 ),
                 Text(
-                  '还没有口语学习报告，\n快点开始学习吧！',
-                  style: TextStyle(
+                  _type == 'exam' ? '还没有模考报告，\n快点开始模考吧！' : '还没有口语学习报告，\n快点开始学习吧！',
+                  style: const TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.w400,
                     color: Colours.color_999999,
