@@ -13,7 +13,7 @@ class AboutPage extends StatefulWidget {
 
 class _AboutPageState extends State<AboutPage> {
   final ScreenUtil _screenUtil = ScreenUtil();
-  String version = 'V1.0.0';
+  String version = 'V1.0.1';
 
   @override
   void initState() {
