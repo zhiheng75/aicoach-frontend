@@ -14,7 +14,6 @@ import '../chat/widget/record.dart';
 import '../home/provider/home_provider.dart';
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
-import '../util/EventBus.dart';
 import '../util/media_utils.dart';
 import '../widgets/load_data.dart';
 import '../widgets/load_fail.dart';
@@ -51,7 +50,7 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
   // 状态 loading-加载中 fail-失败 success-成功
   String _pageState = 'loading';
   // 消息列表滚动控制器
-  final ScrollController _listScrollController = ScrollController();
+  final MessageListController _listScrollController = MessageListController();
   // 底部按钮控制器
   final BottomBarController _bottomBarControll = BottomBarController();
   // 录音界面控制器
@@ -122,7 +121,7 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
       }
       _answer!.text += answer;
       _homeProvider.notify();
-      EventBus().emit('SCROLL_MESSAGE_LIST');
+      _listScrollController.scrollToEnd();
       return;
     }
     if (answer is Uint8List) {
@@ -154,7 +153,7 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
 
   void insertTipMessage(String tip) {
     _homeProvider.addTipMessage(tip);
-    EventBus().emit('SCROLL_MESSAGE_LIST');
+    _listScrollController.scrollToEnd();
   }
 
   @override
@@ -281,6 +280,9 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
                     controller: _bottomBarControll,
                     recordController: _recordController,
                     isCollectInformation: true,
+                    onScrollEnd: () {
+                      _listScrollController.scrollToEnd();
+                    },
                   ),
                 ),
               ],

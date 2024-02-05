@@ -53,7 +53,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   // 背景控制器
   final BackgroundController _backgroundController = BackgroundController();
   // 消息列表滚动控制器
-  final ScrollController _listScrollController = ScrollController();
+  final MessageListController _listScrollController = MessageListController();
   // 底部按钮控制器
   final BottomBarController _bottomBarControll = BottomBarController();
   // 录音界面控制器
@@ -191,7 +191,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     if (sessionType == 'normal' && checkTopicShouldOpen()) {
       getTopicList((topicList) {
         _homeProvider.addTopicMessage(topicList);
-        EventBus().emit('SCROLL_MESSAGE_LIST');
+        _listScrollController.scrollToEnd();
       });
     }
     // 话题对话或者场景对话
@@ -205,7 +205,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
         onConfirm: () {
           getTopicList((topicList) {
             _homeProvider.addTopicMessage(topicList);
-            EventBus().emit('SCROLL_MESSAGE_LIST');
+            _listScrollController.scrollToEnd();
           });
         },
         child: const Text(
@@ -503,6 +503,9 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
               controller: _bottomBarControll,
               recordController: _recordController,
               language: 'cn',
+              onScrollEnd: () {
+                _listScrollController.scrollToEnd();
+              },
             ),
           ),
           Positioned(

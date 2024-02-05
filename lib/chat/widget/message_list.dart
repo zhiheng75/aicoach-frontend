@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../home/provider/home_provider.dart';
-import '../../util/EventBus.dart';
 import '../entity/topic_entity.dart';
 import 'message_item.dart';
 
@@ -14,7 +13,7 @@ class MessageList extends StatefulWidget {
     required this.onSelectTopic,
   }) : super(key: key);
 
-  final ScrollController controller;
+  final MessageListController controller;
   final Function(TopicEntity) onSelectTopic;
 
   @override
@@ -23,33 +22,13 @@ class MessageList extends StatefulWidget {
 
 class _MessageListState extends State<MessageList> {
 
-  bool _needScroll = false;
-
-  void scrollToEnd() {
-    _needScroll = false;
-    double maxScrollExtent = widget.controller.position.maxScrollExtent;
-    if (maxScrollExtent > widget.controller.offset) {
-      widget.controller.animateTo(maxScrollExtent, duration: const Duration(milliseconds: 200), curve: Curves.ease);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    EventBus().on('SCROLL_MESSAGE_LIST', (_) => _needScroll = true);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      WidgetsBinding.instance.addPersistentFrameCallback((__) {
-        if (!_needScroll) {
-          return;
-        }
-        scrollToEnd();
-      });
-    });
   }
 
   @override
   void dispose() {
-    EventBus().off('SCROLL_MESSAGE_LIST');
     super.dispose();
   }
 
@@ -58,7 +37,7 @@ class _MessageListState extends State<MessageList> {
     return Consumer<HomeProvider>(
       builder: (_, provider, __) {
         return ListView.builder(
-          controller: widget.controller,
+          controller: widget.controller.scrollController,
           itemCount: provider.messageList.length,
           itemBuilder: (_, i) => Padding(
             padding: EdgeInsets.only(
@@ -73,5 +52,21 @@ class _MessageListState extends State<MessageList> {
         );
       },
     );
+  }
+}
+
+class MessageListController {
+  MessageListController();
+
+  final ScrollController _scrollController = ScrollController();
+
+  ScrollController get scrollController => _scrollController;
+
+  void scrollToEnd() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    double maxScrollExtent = _scrollController.position.maxScrollExtent;
+    if (maxScrollExtent > _scrollController.offset) {
+      _scrollController.animateTo(maxScrollExtent, duration: const Duration(milliseconds: 200), curve: Curves.ease);
+    }
   }
 }

@@ -573,7 +573,7 @@ class _PersonPageState extends State<PersonPage>
         children: <Widget>[
           menuItem(
             'person_baogao',
-            '学习报告',
+            '学情报告',
             onPress: () => tapMenu(ReportRouter.reportPage),
           ),
           menuItem(
