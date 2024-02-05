@@ -42,9 +42,9 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
   void initState() {
     // TODO: implement initState
     super.initState();
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.portraitUp,
-    // ]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     Map<String, dynamic> user = LoginManager.getUserInfo();
 
     String userName = '';
