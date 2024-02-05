@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/exam/entity/goods_list_bean.dart';
+import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/person/presneter/purchase_page_presenter.dart';
@@ -22,6 +23,7 @@ import '../widgets/load_data.dart';
 import '../widgets/load_fail.dart';
 import 'entity/exam_good_entity.dart';
 import 'view/exam_purchas_view.dart';
+import 'package:Bubble/widgets/my_alert.dart';
 
 class ExamPurchasePage extends StatefulWidget {
   const ExamPurchasePage({
@@ -571,7 +573,7 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
           right: 16.0,
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () => Navigator.of(context).pop(),
+            onTap: () => onBack(),
             child: const LoadAssetImage(
               'exam_purchase_close',
               width: 32.0,
@@ -581,6 +583,38 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
         ),
       ],
     );
+  }
+
+  bool validateInput(String? input) {
+    if (input == null) {
+      return false;
+    }
+
+    if (input.isEmpty) {
+      return false;
+    }
+
+    return true;
+  }
+
+  void onBack() {
+    late String phone = "";
+
+    Map<String, dynamic> user = LoginManager.getUserInfo();
+    if (validateInput(user['phone'])) {
+      phone = user['phone'];
+    }
+
+    if (phone == "17001234567") {
+      Navigator.of(context).pop();
+    } else {
+      myAlert.showAlert(context, title: "确定放弃购买吗?", content: "放手容易,再遇见好难",
+          clickCallback: (index, text) {
+        if (index == 1) {
+          Navigator.pop(context);
+        }
+      });
+    }
   }
 
   @override

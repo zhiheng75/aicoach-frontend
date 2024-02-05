@@ -99,7 +99,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                     leading: NavigationBackWidget(),
                     middle: Text(
                       "意见反馈",
-                      style: TextStyle(fontWeight: FontWeight.normal),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                   // const MyAppBar(
@@ -138,20 +138,19 @@ class _SuggestionPageState extends State<SuggestionPage>
                                 color: Colours.color_F8F8F8),
                             child: Semantics(
                               multiline: true,
-                              maxValueLength: _maxLength,
+                              // maxValueLength: _maxLength,
                               child: TextField(
                                 cursorColor: Colours.color_333333,
                                 style: const TextStyle(
                                     color: Colours.color_546092, fontSize: 13),
-                                maxLength: _maxLength,
+                                // maxLength: _maxLength,
                                 maxLines: 5,
                                 autofocus: false,
                                 focusNode: _nodeText1,
                                 controller: _controller,
                                 inputFormatters: _inputFormatters,
                                 decoration: const InputDecoration(
-                                  hintText:
-                                      "和智能语音老师用英语交流真是非常不错的体验！希望开发出更好用的英语学习APP。",
+                                  hintText: "在这里输入您的具体问题和建议",
                                   hintStyle:
                                       TextStyle(color: Colours.color_B7BFD9),
                                   border: InputBorder.none,
@@ -293,24 +292,24 @@ class _SuggestionPageState extends State<SuggestionPage>
                                   return;
                                 }
 
-                                // if (_controller.text.isNotEmpty &&
-                                //     _contactController.text.isNotEmpty) {
-                                //   _presenter.getOssToken(
-                                //       mlist,
-                                //       _controller.text,
-                                //       _contactController.text,
-                                //       (String audiopath) {});
-                                //   ;
-                                //   // _presenter.pushSuggest(
-                                //   //     _controller.text, _contactController.text);
-                                //   //    _presenter.getOssToken();
-                                // } else {
-                                //   if (_controller.text.isEmpty) {
-                                //     Toast.show("请输入问题和意见");
-                                //   } else if (_contactController.text.isEmpty) {
-                                //     Toast.show("请输入联系方式");
-                                //   }
-                                // }
+                                if (_controller.text.isNotEmpty &&
+                                    _contactController.text.isNotEmpty) {
+                                  _presenter.getOssToken(
+                                      mlist,
+                                      _controller.text,
+                                      _contactController.text,
+                                      (String audiopath) {});
+                                  ;
+                                  // _presenter.pushSuggest(
+                                  //     _controller.text, _contactController.text);
+                                  //    _presenter.getOssToken();
+                                } else {
+                                  if (_controller.text.isEmpty) {
+                                    Toast.show("请输入问题和意见");
+                                  } else if (_contactController.text.isEmpty) {
+                                    Toast.show("请输入联系方式");
+                                  }
+                                }
                               }),
                             ),
                           ),
