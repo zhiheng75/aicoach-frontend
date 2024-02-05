@@ -283,6 +283,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     _homeProvider.character = character;
     Future.delayed(Duration.zero, () {
       _isCharacterChanging = false;
+      _bottomBarControll.setDisabled(true);
       _homeProvider.addIntroductionMessage();
       _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
