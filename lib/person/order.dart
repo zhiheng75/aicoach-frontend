@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_final_fields
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/person/person_router.dart';
+import 'package:Bubble/res/resources.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/image_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -231,35 +233,31 @@ class _OrderPageState extends State<OrderPage>
                       ),
                       phone == "17001234567"
                           ? Container()
+                          : const SizedBox(
+                              height: 100.0,
+                            ),
+                      phone == "17001234567"
+                          ? Container()
                           : GestureDetector(
                               behavior: HitTestBehavior.opaque,
                               onTap: () => NavigatorUtils.push(
                                   context, PersonalRouter.purchase),
                               child: Container(
+                                height: Dimens.h_dp40,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(40.0),
-                                  border: Border.all(
-                                    width: 1.0,
-                                    style: BorderStyle.solid,
-                                    color: const Color(0xFFE49600),
-                                  ),
-                                  color: const Color(0xFFFFCF71),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 14.0,
-                                  vertical: 7.0,
-                                ),
-                                child: const Text(
-                                  '升级会员',
-                                  style: TextStyle(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black,
-                                    height: 20.0 / 15.0,
+                                    image: DecorationImage(
+                                        image: ImageUtils.getAssetImage(
+                                            "btn_bg_img"),
+                                        fit: BoxFit.fill)),
+                                child: Center(
+                                  child: Text(
+                                    "升级会员",
+                                    style: TextStyle(
+                                        color: Colours.color_001652,
+                                        fontSize: Dimens.font_sp18),
                                   ),
                                 ),
-                              ),
-                            ),
+                              )),
                     ],
                   ),
                 ],

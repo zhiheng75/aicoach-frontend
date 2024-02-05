@@ -73,7 +73,7 @@ class JhAssetPicker extends StatefulWidget {
 
 class _JhAssetPickerState extends State<JhAssetPicker> {
   List<AssetEntity> _selectedAssets = [];
-  Color _themeColor = Colours.color_0EF4D1;
+  final Color _themeColor = Colours.color_0E90FF;
 
   int maxAmount = 0;
   @override
@@ -93,9 +93,9 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
   }
 
   _body() {
-    final provider = Provider.of<ThemeProvider>(context);
-    _themeColor = Colours.dynamicColor(
-        context, provider.getThemeColor(), Colours.kThemeColor);
+    // final provider = Provider.of<ThemeProvider>(context);
+    // _themeColor = Colours.dynamicColor(
+    // context, provider.getThemeColor(), Colours.color_0EF4D1);
 
     var allCount = _selectedAssets.length + 1;
 
@@ -332,7 +332,7 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
     // );
     if (result != null) {
       setState(() {
-        _selectedAssets.clear();
+        // _selectedAssets.clear();
         _selectedAssets.add(result);
         // 相机回调
         widget.callBack?.call(_selectedAssets);
