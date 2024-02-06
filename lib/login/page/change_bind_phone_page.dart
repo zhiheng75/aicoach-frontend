@@ -114,7 +114,7 @@ class _ChangeBindPhonePageState extends State<ChangeBindPhonePage>
               child: Column(
                 children: [
                   const MyAppBar(
-                    centerTitle: "绑定手机号",
+                    centerTitle: "绑定手机号224933",
                     backImgColor: Colors.white,
                     backgroundColor: Colours.transflate,
                   ),

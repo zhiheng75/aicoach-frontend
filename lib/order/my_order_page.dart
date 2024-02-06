@@ -52,7 +52,7 @@ class _MyOrderPageState extends State<MyOrderPage>
           child: Column(
             children: [
               const MyAppBar(
-                centerTitle: "购买记录1",
+                centerTitle: "购买记录",
                 backImgColor: Colors.white,
                 backgroundColor: Colours.transflate,
               ),
