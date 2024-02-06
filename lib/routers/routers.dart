@@ -1,4 +1,5 @@
 import 'package:Bubble/exam/exam_router.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -31,6 +32,7 @@ class Routes {
     );
 
     router.define(webViewPage, handler: Handler(handlerFunc: (_, params) {
+      Log.e(params.toString());
       final String title = params['title']?.first ?? '';
       final String url = params['url']?.first ?? '';
       return WebViewPage(title: title, url: url);
