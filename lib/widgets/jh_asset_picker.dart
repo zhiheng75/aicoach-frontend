@@ -247,24 +247,24 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
 
   // 相册选择
   Future<void> _openAlbum(context) async {
-    if (Device.isAndroid) {
-      if (!Device.isMobile) {
-        return;
-      }
-      //相册权限
-      bool isGrantedPhotos = await JhPermissionUtils.photos();
-      if (isGrantedPhotos) {
-        return;
-      }
+    // if (Device.isAndroid) {
+    //   if (!Device.isMobile) {
+    //     return;
+    //   }
+    //   //相册权限
+    //   bool isGrantedPhotos = await JhPermissionUtils.photos();
+    //   if (isGrantedPhotos) {
+    //     return;
+    //   }
 
-      RequestType requestType = RequestType.image;
-      if (widget.assetType == AssetType.video) {
-        requestType = RequestType.video;
-      }
-      if (widget.assetType == AssetType.imageAndVideo) {
-        requestType = RequestType.common;
-      }
-    }
+    //   RequestType requestType = RequestType.image;
+    //   if (widget.assetType == AssetType.video) {
+    //     requestType = RequestType.video;
+    //   }
+    //   if (widget.assetType == AssetType.imageAndVideo) {
+    //     requestType = RequestType.common;
+    //   }
+    // }
 
     final List<AssetEntity>? result = await AssetPicker.pickAssets(
       context,
@@ -298,30 +298,30 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
 
   // 拍照或录像
   Future<void> _openCamera(context) async {
-    if (Device.isAndroid) {
-      if (!Device.isMobile) {
-        return;
-      }
-      //相机权限
-      bool isGrantedCamera = await JhPermissionUtils.camera();
-      if (!isGrantedCamera) {
-        return;
-      }
+    // if (Device.isAndroid) {
+    //   if (!Device.isMobile) {
+    //     return;
+    //   }
+    //   //相机权限
+    //   bool isGrantedCamera = await JhPermissionUtils.camera();
+    //   if (!isGrantedCamera) {
+    //     return;
+    //   }
 
-      if (widget.assetType != AssetType.image) {
-        // 麦克风权限
-        bool isGrantedMicrophone = await JhPermissionUtils.microphone();
-        if (!isGrantedMicrophone) {
-          return;
-        }
-      }
+    //   if (widget.assetType != AssetType.image) {
+    //     // 麦克风权限
+    //     bool isGrantedMicrophone = await JhPermissionUtils.microphone();
+    //     if (!isGrantedMicrophone) {
+    //       return;
+    //     }
+    //   }
 
-      // 相册权限
-      bool isGrantedPhotos = await JhPermissionUtils.photos();
-      if (!isGrantedPhotos) {
-        return;
-      }
-    }
+    //   // 相册权限
+    //   bool isGrantedPhotos = await JhPermissionUtils.photos();
+    //   if (!isGrantedPhotos) {
+    //     return;
+    //   }
+    // }
 
     final AssetEntity? result = await CameraPicker.pickFromCamera(
       context,

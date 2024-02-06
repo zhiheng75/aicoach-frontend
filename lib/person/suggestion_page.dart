@@ -150,7 +150,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                                 controller: _controller,
                                 inputFormatters: _inputFormatters,
                                 decoration: const InputDecoration(
-                                  hintText: "在这里输入您的具体问题和建议",
+                                  hintText: "在这里输入您的具体问题和建议 最多个输入260个字",
                                   hintStyle:
                                       TextStyle(color: Colours.color_B7BFD9),
                                   border: InputBorder.none,

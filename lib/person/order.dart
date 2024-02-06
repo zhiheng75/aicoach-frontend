@@ -196,72 +196,78 @@ class _OrderPageState extends State<OrderPage>
                 ),
               ),
             )
-          : Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const LoadAssetImage(
-                    'no_data',
-                    width: 63.0,
-                    height: 63.0,
-                  ),
-                  const SizedBox(
-                    height: 24.0,
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      const Text(
-                        '您还没有购买记录',
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colours.color_999999,
-                          height: 20.0 / 15.0,
-                          letterSpacing: 0.05,
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const SizedBox(
+                  height: 250.0,
+                ),
+
+                // const SizedBox(
+                //   height: 24.0,
+                // ),
+
+                const Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    LoadAssetImage(
+                      'no_data',
+                      width: 63.0,
+                      height: 63.0,
+                    ),
+                    Text(
+                      '您还没有购买记录',
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colours.color_999999,
+                        height: 20.0 / 15.0,
+                        letterSpacing: 0.05,
+                      ),
+                    ),
+                    Text(
+                      '现在开始升级体验吧！',
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colours.color_999999,
+                        height: 20.0 / 15.0,
+                        letterSpacing: 0.05,
+                      ),
+                    ),
+                  ],
+                ),
+                phone == "17001234567"
+                    ? Container()
+                    : const Expanded(child: Gaps.empty),
+
+                // phone == "17001234567"
+                //     ? Container()
+                //     :
+                GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () =>
+                        NavigatorUtils.push(context, PersonalRouter.purchase),
+                    child: Container(
+                      width: 200,
+                      height: Dimens.h_dp40,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: ImageUtils.getAssetImage("btn_bg_img"),
+                              fit: BoxFit.fill)),
+                      child: Center(
+                        child: Text(
+                          "升级会员",
+                          style: TextStyle(
+                              color: Colours.color_001652,
+                              fontSize: Dimens.font_sp18),
                         ),
                       ),
-                      const Text(
-                        '现在开始升级体验吧！',
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colours.color_999999,
-                          height: 20.0 / 15.0,
-                          letterSpacing: 0.05,
-                        ),
-                      ),
-                      phone == "17001234567"
-                          ? Container()
-                          : const SizedBox(
-                              height: 100.0,
-                            ),
-                      phone == "17001234567"
-                          ? Container()
-                          : GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () => NavigatorUtils.push(
-                                  context, PersonalRouter.purchase),
-                              child: Container(
-                                height: Dimens.h_dp40,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: ImageUtils.getAssetImage(
-                                            "btn_bg_img"),
-                                        fit: BoxFit.fill)),
-                                child: Center(
-                                  child: Text(
-                                    "升级会员",
-                                    style: TextStyle(
-                                        color: Colours.color_001652,
-                                        fontSize: Dimens.font_sp18),
-                                  ),
-                                ),
-                              )),
-                    ],
-                  ),
-                ],
-              ),
+                    )),
+                const SizedBox(
+                  height: 50.0,
+                ),
+              ],
             );
     }
 
