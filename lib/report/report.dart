@@ -132,7 +132,7 @@ class _ReportPageState extends State<ReportPage>
         }
         List<dynamic> data = result.data as List<dynamic>;
         List<ExamReportEntity> list =
-        data.map((item) => ExamReportEntity.fromJson(item)).toList();
+            data.map((item) => ExamReportEntity.fromJson(item)).toList();
         _list.addAll(list);
         _loading = 0;
         _state = 'success';
@@ -262,7 +262,7 @@ class _ReportPageState extends State<ReportPage>
         // const SizedBox(
         //   width: 8.0,
         // ),
-        barItem('模考报告', 'exam'), //隐藏
+        // barItem('模考报告', 'exam'), //隐藏
         barItem('口语课报告', 'chat'),
       ],
     );
@@ -502,7 +502,8 @@ class _ReportPageState extends State<ReportPage>
                           style: TextStyle(
                             fontSize: 24.0,
                             fontWeight: FontWeight.w400,
-                            color: getColorByScore(double.parse(item.score.toString())),
+                            color: getColorByScore(
+                                double.parse(item.score.toString())),
                             letterSpacing: 0.05,
                           ),
                         ),
@@ -588,7 +589,9 @@ class _ReportPageState extends State<ReportPage>
                   height: 21.0,
                 ),
                 Text(
-                  _type == 'exam' ? '还没有模考报告，\n快点开始模考吧！' : '还没有口语学习报告，\n快点开始学习吧！',
+                  _type == 'exam'
+                      ? '还没有模考报告，\n快点开始模考吧！'
+                      : '还没有口语学习报告，\n快点开始学习吧！',
                   style: const TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.w400,
