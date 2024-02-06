@@ -127,4 +127,7 @@ class HttpApi {
 
   //模考进度更新
   static const String examDetail = "exam_detail";
+
+  //获取oss上传
+  static const String version = "version";
 }

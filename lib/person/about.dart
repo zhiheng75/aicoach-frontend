@@ -1,6 +1,18 @@
+import 'dart:convert';
+
+import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/person/entity/version_bean.dart';
+import 'package:Bubble/person/widget/illustration.dart';
+import 'package:Bubble/setting/entity/updata_info_entity.dart';
+import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/other_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:package_info/package_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../res/colors.dart';
 import '../widgets/navbar.dart';
@@ -27,7 +39,71 @@ class _AboutPageState extends State<AboutPage> {
   void initState() {
     super.initState();
     _initPackageInfo();
+    Future.delayed(const Duration(milliseconds: 300), () {
+      getStandardAnswer();
+    });
   }
+
+  void getStandardAnswer() {
+    String platformStr = "android";
+
+    if (Device.isAndroid) {
+      platformStr = "android";
+    } else {
+      platformStr = "ios";
+    }
+    DioUtils.instance.requestNetwork<ResultData>(
+      Method.get,
+      HttpApi.version,
+      queryParameters: {
+        'platform': platformStr,
+      },
+      onSuccess: (result) {
+        Map<String, dynamic> versionBeanMap = json.decode(result.toString());
+        VersionBean versionBean = VersionBean.fromJson(versionBeanMap);
+        // Log.e("====================${_packageInfo.buildNumber}");
+        if (versionBean.data.versionCode >
+            int.parse(_packageInfo.buildNumber)) {
+          showDialog(
+            context: context,
+            barrierColor: Colors.transparent,
+            barrierDismissible: false,
+            useSafeArea: false,
+            builder: (_) => UpDataView(
+              versionBean: versionBean,
+              onSuccess: () {
+                // String url = "https://www.baidu.com";
+                // Utils.launchWebURL(url);
+
+                Utils.launchWebURL(versionBean.data.package);
+                // openUrl(versionBean.data.package);
+              },
+            ),
+          );
+        }
+      },
+      onError: (code, msg) {},
+    );
+  }
+
+  void openUrl(String url) async {
+    // ignore: deprecated_member_use
+    if (await canLaunch(url)) {
+      // ignore: deprecated_member_use
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  // Future<void> _launchInBrowser(Uri url) async {
+  //   if (!await launchUrl(
+  //     url,
+  //     mode: LaunchMode.externalApplication,
+  //   )) {
+  //     throw Exception('Could not launch $url');
+  //   }
+  // }
 
   Future<void> _initPackageInfo() async {
     final info = await PackageInfo.fromPlatform();
@@ -196,6 +272,18 @@ class _AboutPageState extends State<AboutPage> {
                 const SizedBox(
                   height: 16.0,
                 ),
+                // GestureDetector(
+                //     onTap: () {
+                //       Log.e("msg");
+                //       showDialog(
+                //         context: context,
+                //         barrierColor: Colors.transparent,
+                //         barrierDismissible: false,
+                //         useSafeArea: false,
+                //         builder: (_) => const UpDataView(),
+                //       );
+                //     },
+                //     child: const Text("点这里")),
                 aboutUs,
                 const SizedBox(
                   height: 16.0,

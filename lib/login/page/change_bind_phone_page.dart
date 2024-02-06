@@ -69,20 +69,20 @@ class _ChangeBindPhonePageState extends State<ChangeBindPhonePage>
   }
 
   void _verify() {
-    final String name = _phoneController.text;
-    final String vCode = _vCodeController.text;
-    bool clickable = true;
-    if (name.isEmpty || name.length < 11) {
-      clickable = false;
-    }
-    if (vCode.isEmpty || vCode.length != 4) {
-      clickable = false;
-    }
-    if (clickable != _clickable) {
-      setState(() {
-        _clickable = clickable;
-      });
-    }
+    // final String name = _phoneController.text;
+    // final String vCode = _vCodeController.text;
+    // bool clickable = true;
+    // if (name.isEmpty || name.length < 11) {
+    //   clickable = false;
+    // }
+    // if (vCode.isEmpty) {
+    //   clickable = false;
+    // }
+    // if (clickable != _clickable) {
+    //   setState(() {
+    //     _clickable = clickable;
+    //   });
+    // }
   }
 
   void _bind() {
@@ -114,7 +114,7 @@ class _ChangeBindPhonePageState extends State<ChangeBindPhonePage>
               child: Column(
                 children: [
                   const MyAppBar(
-                    centerTitle: "绑定手机号224933",
+                    centerTitle: "绑定手机号",
                     backImgColor: Colors.white,
                     backgroundColor: Colours.transflate,
                   ),
@@ -201,11 +201,11 @@ class _ChangeBindPhonePageState extends State<ChangeBindPhonePage>
       const Expanded(child: Gaps.empty),
       GestureDetector(
         onTap: () {
-          if (_clickable) {
-            _bind();
-          } else {
-            Toast.show("输入内容有误");
-          }
+          // if (_clickable) {
+          _bind();
+          // } else {
+          //   Toast.show("输入内容有误");
+          // }
         },
         child: Container(
           alignment: Alignment.center,

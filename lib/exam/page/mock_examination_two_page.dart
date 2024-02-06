@@ -109,7 +109,11 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
 
   //启动倒计时器
   void _startTimer() {
-    _seconds = 12;
+    if (numberPle == 2) {
+      _seconds = 24;
+    } else {
+      _seconds = 12;
+    }
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _seconds = _seconds! - 1;
       if (_seconds == 0) {
