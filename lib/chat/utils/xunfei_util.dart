@@ -25,30 +25,42 @@ String TRANSLATION_API_SECRET = 'ZTRjOTZlNThjN2JiMGY1YThhMWFlNjM5';
 String TRANSLATION_API_KEY = '17c4ac9b72497e7fb815100ef2067f22';
 
 class XunfeiUtil {
-
   // 获取鉴权参数
-  static String getRecognizeAuthorization(String date) {  // 鉴权请参考：https://www.xfyun.cn/doc/asr/voicedictation/API.html
-    String stringNeedSigned = 'host: iat-api.xfyun.cn\ndate: $date\nGET /v2/iat HTTP/1.1';
-    Digest digest = Hmac(sha256, utf8.encode(RECOGNIZATION_API_SECRET)).convert(utf8.encode(stringNeedSigned));
+  static String getRecognizeAuthorization(String date) {
+    // 鉴权请参考：https://www.xfyun.cn/doc/asr/voicedictation/API.html
+    String stringNeedSigned =
+        'host: iat-api.xfyun.cn\ndate: $date\nGET /v2/iat HTTP/1.1';
+    Digest digest = Hmac(sha256, utf8.encode(RECOGNIZATION_API_SECRET))
+        .convert(utf8.encode(stringNeedSigned));
     String signature = base64.encode(digest.bytes);
-    String stringNeedAuthed = 'api_key="$RECOGNIZATION_API_KEY", algorithm="hmac-sha256", headers="host date request-line", signature="$signature"';
+    String stringNeedAuthed =
+        'api_key="$RECOGNIZATION_API_KEY", algorithm="hmac-sha256", headers="host date request-line", signature="$signature"';
     return base64.encode(stringNeedAuthed.codeUnits);
   }
-  static String getEvaluateAuthorization(String date) {  // 鉴权请参考：https://www.xfyun.cn/doc/Ise/IseAPI.html
-    String stringNeedSigned = 'host: ise-api.xfyun.cn\ndate: $date\nGET /v2/open-ise HTTP/1.1';
-    Digest digest = Hmac(sha256, utf8.encode(RECOGNIZATION_API_SECRET)).convert(utf8.encode(stringNeedSigned));
+
+  static String getEvaluateAuthorization(String date) {
+    // 鉴权请参考：https://www.xfyun.cn/doc/Ise/IseAPI.html
+    String stringNeedSigned =
+        'host: ise-api.xfyun.cn\ndate: $date\nGET /v2/open-ise HTTP/1.1';
+    Digest digest = Hmac(sha256, utf8.encode(RECOGNIZATION_API_SECRET))
+        .convert(utf8.encode(stringNeedSigned));
     String signature = base64.encode(digest.bytes);
-    String stringNeedAuthed = 'api_key="$RECOGNIZATION_API_KEY", algorithm="hmac-sha256", headers="host date request-line", signature="$signature"';
+    String stringNeedAuthed =
+        'api_key="$RECOGNIZATION_API_KEY", algorithm="hmac-sha256", headers="host date request-line", signature="$signature"';
     return base64.encode(stringNeedAuthed.codeUnits);
   }
+
   static String getBodySignatureForTranslation(Map<String, dynamic> body) {
     String bodyJson = jsonEncode(body);
     Digest digest = sha256.convert(utf8.encode(bodyJson));
     return base64.encode(digest.bytes);
   }
+
   static String getTranslateAuthorization(String date, String bodySignature) {
-    String stringNeedSigned = 'host: itrans.xfyun.cn\ndate: $date\nPOST /v2/its HTTP/1.1\ndigest: SHA-256=$bodySignature';
-    Digest signatureDigest = Hmac(sha256, utf8.encode(TRANSLATION_API_SECRET)).convert(utf8.encode(stringNeedSigned));
+    String stringNeedSigned =
+        'host: itrans.xfyun.cn\ndate: $date\nPOST /v2/its HTTP/1.1\ndigest: SHA-256=$bodySignature';
+    Digest signatureDigest = Hmac(sha256, utf8.encode(TRANSLATION_API_SECRET))
+        .convert(utf8.encode(stringNeedSigned));
     String signature = base64.encode(signatureDigest.bytes);
     return 'api_key="$TRANSLATION_API_KEY", algorithm="hmac-sha256", headers="host date request-line digest", signature="$signature"';
   }
@@ -59,7 +71,8 @@ class XunfeiUtil {
    * @param audio 语音数据
    * @param text 语音评测文本
    */
-  static Map<String, dynamic> createFrameDataForRecognization(int frame, {Uint8List? audio}) {
+  static Map<String, dynamic> createFrameDataForRecognization(int frame,
+      {Uint8List? audio}) {
     Map<String, dynamic> frameData = {};
 
     if (frame == 0) {
@@ -83,7 +96,9 @@ class XunfeiUtil {
 
     return frameData;
   }
-  static Map<String, dynamic> createFrameDataForRecognizationForCN(int frame, {Uint8List? audio}) {
+
+  static Map<String, dynamic> createFrameDataForRecognizationForCN(int frame,
+      {Uint8List? audio}) {
     Map<String, dynamic> frameData = {};
 
     if (frame == 0) {
@@ -91,7 +106,8 @@ class XunfeiUtil {
         'app_id': RECOGNIZATION_APP_ID,
       };
       frameData['business'] = {
-        'language': 'zh_cn',
+        'language': 'en_cn',
+        // 'language': 'zh_cn',
         'domain': 'iat',
         // 设为最大10s
         'vad_eos': 10000,
@@ -107,7 +123,9 @@ class XunfeiUtil {
 
     return frameData;
   }
-  static Map<String, dynamic> createFrameDataForEvaluation(int frame, {Uint8List? audio, String? text,  int audioFrame = 1}) {
+
+  static Map<String, dynamic> createFrameDataForEvaluation(int frame,
+      {Uint8List? audio, String? text, int audioFrame = 1}) {
     Map<String, dynamic> frameData = {};
 
     if (frame == 0) {
@@ -122,7 +140,8 @@ class XunfeiUtil {
         'text': '[content]$text',
         'ttp_skip': true,
         // 'extra_ability': 'multi_dimension',
-        'extra_ability': 'add("extra_ability","syll_phone_err_msg;pitch;multi_dimension")',
+        'extra_ability':
+            'add("extra_ability","syll_phone_err_msg;pitch;multi_dimension")',
         'aue': 'raw',
         'auf': 'audio/L16;rate=16000',
         'ise_unite': '1',
@@ -140,6 +159,7 @@ class XunfeiUtil {
 
     return frameData;
   }
+
   static Map<String, dynamic> createBodyForTranslation(String text) {
     return {
       'common': {
@@ -156,7 +176,8 @@ class XunfeiUtil {
   }
 
   // 格式化结果
-  static Map<String, dynamic> getRecognizeResult(Map<String, dynamic> response) {
+  static Map<String, dynamic> getRecognizeResult(
+      Map<String, dynamic> response) {
     Map<String, dynamic> result = {
       'code': response['code'],
       'message': response['message'],
@@ -193,6 +214,7 @@ class XunfeiUtil {
     }
     return result;
   }
+
   // 获取评测结果（base64解密->xml转json->json转map）
   static Map<String, dynamic> getEvaluateResult(String xmlString) {
     Map<String, dynamic> evaluation = {};
@@ -244,5 +266,4 @@ class XunfeiUtil {
 
     return evaluation;
   }
-
 }
