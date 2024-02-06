@@ -48,12 +48,14 @@ class _ReportDetailPageState extends State<ReportDetailPage>
   // evaluation-综合评价 advise-地道表达建议 analysis-细节解析
   String _type = 'evaluation';
   String _activeRank = '0%';
+  bool _isVip = false;
 
   void init() {
     _pageState = 'loading';
     setState(() {});
     getReportDetail();
     getWeekActiveRank();
+    getVipStatus();
   }
 
   void getReportDetail() async {
@@ -91,6 +93,23 @@ class _ReportDetailPageState extends State<ReportDetailPage>
         }
       }
       });
+  }
+
+  void getVipStatus() async {
+    String deviceId = await Device.getDeviceId();
+    DioUtils.instance.requestNetwork<ResultData>(
+      Method.get, HttpApi.permission,
+      queryParameters: {
+        'device_id': deviceId,
+      },
+      onSuccess: (result) {
+        if (result != null && result.data != null) {
+          Map<String, dynamic> data = result.data! as Map<String, dynamic>;
+          _isVip = data['is_member'] == 1;
+          setState(() {});
+        }
+      },
+    );
   }
 
   void tapTabbar(String type) {
@@ -156,10 +175,14 @@ class _ReportDetailPageState extends State<ReportDetailPage>
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () => Navigator.of(context).pop(),
-            child: const LoadAssetImage(
-              'navbar_back',
-              width: 18.2,
-              height: 22.0,
+            child: Container(
+              width: 40.0,
+              alignment: Alignment.centerLeft,
+              child: const LoadAssetImage(
+                'navbar_back',
+                width: 18.2,
+                height: 22.0,
+              ),
             ),
           ),
         ),
@@ -402,9 +425,9 @@ class _ReportDetailPageState extends State<ReportDetailPage>
               color: const Color(0xFFFFCF71),
             ),
             alignment: Alignment.center,
-            child: const Text(
-              '升级会员',
-              style: TextStyle(
+            child: Text(
+              _isVip ? '会员续费' : '升级会员',
+              style: const TextStyle(
                 fontSize: 15.0,
                 fontWeight: FontWeight.w400,
                 color: Colors.black,

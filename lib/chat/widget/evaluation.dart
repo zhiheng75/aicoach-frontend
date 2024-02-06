@@ -56,6 +56,8 @@ class _EvaluationState extends State<Evaluation> {
       }
       return;
     }
+    _isGetting = true;
+    setState(() {});
     DioUtils.instance.requestNetwork<ResultData>(
       Method.post,
       HttpApi.suggestAnswer,
@@ -77,7 +79,7 @@ class _EvaluationState extends State<Evaluation> {
           return;
         }
         Map<String, dynamic> data = result.data as Map<String, dynamic>;
-        _standardAnswer = data['text'];
+        _standardAnswer = data['text'] != null && data['text'] != '' ? data['text'] : '暂无地道表达';
         _isGetting = false;
         if (mounted) {
           setState(() {});
