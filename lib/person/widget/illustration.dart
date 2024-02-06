@@ -1,3 +1,5 @@
+import 'package:Bubble/person/entity/version_bean.dart';
+import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -361,6 +363,211 @@ class IPhoneIllustration extends StatelessWidget {
                         height: 12.0,
                       ),
                       session('客服邮箱:help@shenmo-ai.com'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class UpDataView extends StatelessWidget {
+  final VersionBean versionBean;
+  final Function() onSuccess;
+  const UpDataView(
+      {Key? key, required this.versionBean, required this.onSuccess})
+      : super(key: key);
+  // const MockExaminationOnePage({super.key, required this.state});
+
+  @override
+  Widget build(BuildContext context) {
+    ScreenUtil screenUtil = ScreenUtil();
+
+    Widget session(String content, {Widget? child}) {
+      Color color = const Color(0xFF3C4074);
+
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            width: 4.0,
+            height: 4.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              color: color,
+            ),
+            margin: const EdgeInsets.only(
+              top: 7.0,
+            ),
+          ),
+          const SizedBox(
+            width: 16.0,
+          ),
+          Expanded(
+              child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                content,
+                style: TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w500,
+                  color: color,
+                  height: 18.0 / 14.0,
+                  letterSpacing: 0.05,
+                ),
+              ),
+              if (child != null) child,
+            ],
+          )),
+        ],
+      );
+    }
+
+    Widget sessionChild(String content) {
+      return Container(
+        margin: const EdgeInsets.only(
+          top: 16.0,
+        ),
+        child: Text(
+          content,
+          style: const TextStyle(
+            fontSize: 13.0,
+            fontWeight: FontWeight.w400,
+            color: Color(0xFF333333),
+            height: 18.0 / 13.0,
+            letterSpacing: 0.05,
+          ),
+        ),
+      );
+    }
+
+    return Material(
+      color: Colors.transparent,
+      child: Stack(
+        children: <Widget>[
+          Container(
+            width: screenUtil.screenWidth,
+            height: screenUtil.screenHeight,
+            color: Colors.black.withOpacity(0.6),
+          ),
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                // GestureDetector(
+                //   behavior: HitTestBehavior.opaque,
+                //   onTap: () => Navigator.of(context).pop(),
+                //   child: const Padding(
+                //     padding: EdgeInsets.only(
+                //       right: 16.0,
+                //     ),
+                //     child: LoadAssetImage(
+                //       'exam_purchase_close',
+                //       width: 32.0,
+                //       height: 32.0,
+                //     ),
+                //   ),
+                // ),
+                const SizedBox(
+                  height: 8.0,
+                ),
+                Container(
+                  width: screenUtil.screenWidth - 32.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: Colors.white.withOpacity(0.92),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 32.0,
+                  ),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      const Text(
+                        '发现新版本',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF333333),
+                          height: 14.0 / 20.0,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      sessionChild(versionBean.msg),
+                      const SizedBox(
+                        height: 26.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          versionBean.data.forceUpdate
+                              ? Container()
+                              : GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () => Navigator.of(context).pop(),
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(24),
+                                        color: Colours.color_666666,
+                                      ),
+                                      width: 100,
+                                      height: 40,
+                                      child: const Center(
+                                        child: Text(
+                                          "不再提示",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      )),
+                                ),
+                          versionBean.data.forceUpdate
+                              ? Container()
+                              : const SizedBox(
+                                  width: 60.0,
+                                ),
+                          GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              //去外部界面
+                              onSuccess();
+                            },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(24),
+                                  color: Colours.color_examination,
+                                ),
+                                width: 100,
+                                height: 40,
+                                child: const Center(
+                                  child: Text(
+                                    "立即升级",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )),
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),
