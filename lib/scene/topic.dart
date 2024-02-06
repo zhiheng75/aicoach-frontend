@@ -199,7 +199,7 @@ class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPa
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     _appLifecycleState = state;
-    Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
+    // Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
   }
 
   @override

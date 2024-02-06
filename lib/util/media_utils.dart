@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:Bubble/util/log_utils.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -198,6 +199,24 @@ class MediaUtils {
       await listPlayer.stop();
     }
   }
+
+  Future<void> stopPlayByAppPaused() async {
+    if (_currentPlayer != null) {
+      Player player = _currentPlayer!;
+      _currentPlayer = null;
+      if (player is BufferPlayer) {
+        await player.stopByAppPaused();
+      }
+      if (player is FilePlayer) {
+        await player.stopByAppPaused();
+      }
+    }
+    if (_listPlayer != null) {
+      ListPlayer listPlayer = _listPlayer!;
+      _listPlayer = null;
+      await listPlayer.stopByAppPaused();
+    }
+  }
 }
 
 class VolumeUtil {
@@ -326,6 +345,11 @@ class BufferPlayer extends Player {
     step = 'finished';
   }
 
+  Future<void> stopByAppPaused() async {
+    whenFinished();
+    await stop();
+  }
+
   Future<void> _convert() async {
     step = 'convert';
     wav = await AudioConvertUtil.convertPcmToWav(pcm);
@@ -384,6 +408,7 @@ class BufferPlayer extends Player {
   }
 
   void _onCallback() {
+    Log.d('结束触发回调');
     if (onPlayComplete != null) {
       onPlayComplete!();
     }
@@ -430,6 +455,11 @@ class FilePlayer extends Player {
       return;
     }
     step = 'finished';
+  }
+
+  Future<void> stopByAppPaused() async {
+    whenFinished();
+    await stop();
   }
 
   Future<void> _convert() async {
@@ -550,6 +580,11 @@ class ListPlayer {
     if (_isReturnEnd && _playList.isEmpty) {
       return;
     }
+  }
+
+  Future<void> stopByAppPaused() async {
+    _whenFinished();
+    await stop();
   }
 
   void notPlaceHolder() {
