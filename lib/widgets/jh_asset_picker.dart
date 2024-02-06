@@ -215,7 +215,7 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
 
   void _deleteAsset(index) {
     setState(() {
-      // _selectedAssets.removeAt(index);
+      _selectedAssets.removeAt(index);
       // widget.callBack?.call(_selectedAssets);
       // 选择回调
       widget.deleteCallBack?.call(index);
@@ -289,6 +289,8 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
     // );
     if (result != null) {
       setState(() {
+        // _selectedAssets.add(result);
+        // _selectedAssets.addAll(result);
         _selectedAssets = result;
       });
       // 相册选择回调

@@ -103,7 +103,6 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
   }
 
   String host = 'https://shenmo-statics.oss-cn-beijing.aliyuncs.com';
-
   Future<String> upLoadImage(File imgFile, evaluateOss) async {
     // 获取签名
     Map<String, dynamic> policyParams = {
@@ -119,12 +118,6 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
     String fileName = getRandom(12);
     // String key = 'feedback/$fileName.jpg';
     String key = 'feedback/$fileName.jpg';
-//  filename/
-//  feedback/
-//  feedback/filename/
-
-//   audio/
-
     FormData formData = FormData.fromMap({
       'key': key,
       'success_action_status': '200',
@@ -133,10 +126,8 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
       'policy': policy,
       'signature': signature,
       'Content-Type': 'image/jpeg',
-      // 'Content-Type': 'audio/x-wave',
       'file': MultipartFile.fromFile(imgFile.path),
     });
-
     String urlStr = "null";
     try {
       Response response = await Dio().post(
@@ -158,11 +149,12 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
       Function(String) onSuccess) {
     _getOssToken((evaluateOss) async {
       String imagesStr = "";
-      // for (int i = 0; i < mlist.length; i++) {
-      //   Future<String> url = upLoadImage(mlist[i], evaluateOss);
-      //   imagesStr = "$imagesStr,$url";
-      // }
-      // Log.e(imagesStr);
+      for (int i = 0; i < mlist.length; i++) {
+        // Future<String> url = upLoadImage(mlist[i], evaluateOss);
+        String url = await upLoadImage(mlist[i], evaluateOss);
+        imagesStr = "$imagesStr,$url";
+      }
+      Log.e(imagesStr);
       pushSuggest(message, contact, imagesStr, onSuccess);
     });
   }
