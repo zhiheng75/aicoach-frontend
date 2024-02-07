@@ -106,7 +106,7 @@ class XunfeiUtil {
         'app_id': RECOGNIZATION_APP_ID,
       };
       frameData['business'] = {
-        'language': 'en_cn',
+        'language': 'en_us',
         // 'language': 'zh_cn',
         'domain': 'iat',
         // 设为最大10s
