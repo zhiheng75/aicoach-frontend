@@ -132,7 +132,7 @@ class _ReportPageState extends State<ReportPage>
         }
         List<dynamic> data = result.data as List<dynamic>;
         List<ExamReportEntity> list =
-        data.map((item) => ExamReportEntity.fromJson(item)).toList();
+            data.map((item) => ExamReportEntity.fromJson(item)).toList();
         _list.addAll(list);
         _loading = 0;
         _state = 'success';
@@ -502,7 +502,8 @@ class _ReportPageState extends State<ReportPage>
                           style: TextStyle(
                             fontSize: 24.0,
                             fontWeight: FontWeight.w400,
-                            color: getColorByScore(double.parse(item.score.toString())),
+                            color: getColorByScore(
+                                double.parse(item.score.toString())),
                             letterSpacing: 0.05,
                           ),
                         ),
