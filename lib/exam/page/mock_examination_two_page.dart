@@ -473,14 +473,16 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   }
 
   void mockKlowPlay(String answerAudio) {
-    showConfirmDialog();
-    _mediaUtils.play(
-      url: answerAudio,
-      whenFinished: () {
-        showToast("考办回答完");
-        Navigator.pop(context);
-      },
-    );
+    Future.delayed(const Duration(seconds: 2), () {
+      showConfirmDialog();
+      _mediaUtils.play(
+        url: answerAudio,
+        whenFinished: () {
+          showToast("考办回答完");
+          Navigator.pop(context);
+        },
+      );
+    });
   }
 
   ///销毁录音

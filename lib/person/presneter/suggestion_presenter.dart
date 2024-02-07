@@ -117,7 +117,7 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
     String signature = base64Encode(digest.bytes);
     String fileName = getRandom(12);
     // String key = 'feedback/$fileName.jpg';
-    String key = 'feedback/$fileName.jpg';
+    String key = 'feedback/${imgFile.path}';
     FormData formData = FormData.fromMap({
       'key': key,
       'success_action_status': '200',
@@ -136,7 +136,9 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
       );
       if (response.statusCode == 200) {
         Log.d('upload img success:url=${'$host/$key'}', tag: '上传图片');
-        urlStr = '$host/$key';
+        // urlStr = '$host/$key';
+        urlStr = key;
+
         // return urlStr;
       }
     } catch (e) {
