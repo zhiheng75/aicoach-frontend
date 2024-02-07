@@ -169,7 +169,7 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     _appLifecycleState = state;
-    // Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
+    Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
   }
 
   @override

@@ -170,8 +170,8 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
         characterId: characterId,
         sceneId: sceneId,
         onConnected: () {
-          // 刷新使用时间
-          _homeProvider.getUsageTime();
+          // // 刷新使用时间
+          // _homeProvider.getUsageTime();
           _homeProvider.startUsageTimeCutdown(() async {
             showModalBottomSheet(
               context: context,
@@ -228,8 +228,8 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   }
 
   void onWebsocketEnd(String? reason, String endType) {
-    // 刷新使用时间
-    _homeProvider.getUsageTime();
+    // // 刷新使用时间
+    // _homeProvider.getUsageTime();
     _homeProvider.endUsageTimeCutdown();
     widget.controller.setDisabled(true);
     // 异常结束
@@ -311,9 +311,9 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     _appLifecycleState = state;
-    // Future.delayed(Duration.zero, () async {
-    //   await _mediaUtils.stopPlay();
-    // });
+    Future.delayed(Duration.zero, () async {
+      await _mediaUtils.stopPlay();
+    });
   }
 
   @override

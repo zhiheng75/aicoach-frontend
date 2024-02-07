@@ -49,18 +49,18 @@ Future<void> main() async {
         // 设置音频配置
         await AudioConfig.addAudioConfig();
 
-        // 全局监听App状态
-        SystemChannels.lifecycle.setMessageHandler((message) async {
-
-          // 退到后台
-          if (_appLifecycleState == 'AppLifecycleState.inactive' && message == 'AppLifecycleState.paused') {
-            await MediaUtils().stopPlayByAppPaused();
-          }
-
-          _appLifecycleState = message;
-
-          return message;
-        });
+        // // 全局监听App状态
+        // SystemChannels.lifecycle.setMessageHandler((message) async {
+        //
+        //   // 退到后台
+        //   if (_appLifecycleState == 'AppLifecycleState.inactive' && message == 'AppLifecycleState.paused') {
+        //     await MediaUtils().stopPlayByAppPaused();
+        //   }
+        //
+        //   _appLifecycleState = message;
+        //
+        //   return message;
+        // });
 
         runApp(MyApp());
         FlutterBugly.init(

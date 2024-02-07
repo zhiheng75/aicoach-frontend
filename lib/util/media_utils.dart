@@ -200,23 +200,23 @@ class MediaUtils {
     }
   }
 
-  Future<void> stopPlayByAppPaused() async {
-    if (_currentPlayer != null) {
-      Player player = _currentPlayer!;
-      _currentPlayer = null;
-      if (player is BufferPlayer) {
-        await player.stopByAppPaused();
-      }
-      if (player is FilePlayer) {
-        await player.stopByAppPaused();
-      }
-    }
-    if (_listPlayer != null) {
-      ListPlayer listPlayer = _listPlayer!;
-      _listPlayer = null;
-      await listPlayer.stopByAppPaused();
-    }
-  }
+  // Future<void> stopPlayByAppPaused() async {
+  //   if (_currentPlayer != null) {
+  //     Player player = _currentPlayer!;
+  //     _currentPlayer = null;
+  //     if (player is BufferPlayer) {
+  //       await player.stopByAppPaused();
+  //     }
+  //     if (player is FilePlayer) {
+  //       await player.stopByAppPaused();
+  //     }
+  //   }
+  //   if (_listPlayer != null) {
+  //     ListPlayer listPlayer = _listPlayer!;
+  //     _listPlayer = null;
+  //     await listPlayer.stopByAppPaused();
+  //   }
+  // }
 }
 
 class VolumeUtil {
@@ -345,10 +345,10 @@ class BufferPlayer extends Player {
     step = 'finished';
   }
 
-  Future<void> stopByAppPaused() async {
-    whenFinished();
-    await stop();
-  }
+  // Future<void> stopByAppPaused() async {
+  //   whenFinished();
+  //   await stop();
+  // }
 
   Future<void> _convert() async {
     step = 'convert';
@@ -457,10 +457,10 @@ class FilePlayer extends Player {
     step = 'finished';
   }
 
-  Future<void> stopByAppPaused() async {
-    whenFinished();
-    await stop();
-  }
+  // Future<void> stopByAppPaused() async {
+  //   whenFinished();
+  //   await stop();
+  // }
 
   Future<void> _convert() async {
     step = 'convert';
@@ -582,10 +582,10 @@ class ListPlayer {
     }
   }
 
-  Future<void> stopByAppPaused() async {
-    _whenFinished();
-    await stop();
-  }
+  // Future<void> stopByAppPaused() async {
+  //   _whenFinished();
+  //   await stop();
+  // }
 
   void notPlaceHolder() {
     _isPlaceHolder = false;
