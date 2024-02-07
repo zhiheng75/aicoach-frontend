@@ -11,7 +11,6 @@ import '../../home/provider/home_provider.dart';
 import '../../home/widget/expiration_reminder.dart';
 import '../../loginManager/login_manager.dart';
 import '../../res/colors.dart';
-import '../../util/EventBus.dart';
 import '../../util/media_utils.dart';
 import '../../util/toast_utils.dart';
 import '../../widgets/load_image.dart';
@@ -30,6 +29,7 @@ class BottomBar extends StatefulWidget {
     required this.recordController,
     this.isCollectInformation,
     this.language,
+    this.onScrollEnd,
   }) : super(key: key);
 
   final ChatWebsocket chatWebsocket;
@@ -37,6 +37,7 @@ class BottomBar extends StatefulWidget {
   final RecordController recordController;
   bool? isCollectInformation;
   String? language;
+  final Function()? onScrollEnd;
 
   @override
   State<BottomBar> createState() => _BottomBarState();
@@ -209,7 +210,9 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       }
       _answer!.text += answer;
       _homeProvider.notify();
-      EventBus().emit('SCROLL_MESSAGE_LIST');
+      if (widget.onScrollEnd != null) {
+        widget.onScrollEnd!();
+      }
       return;
     }
     if (answer is Uint8List) {
@@ -254,6 +257,9 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
         },
         onSuccess: () {
           insertUserMessage(message, () {
+            if (widget.onScrollEnd != null) {
+              widget.onScrollEnd!();
+            }
             EvaluateUtil().evaluate(message, () {
               _homeProvider.updateNormalMessage(message);
             });
@@ -268,7 +274,9 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
 
   void insertTipMessage(String tip) {
     _homeProvider.addTipMessage(tip);
-    EventBus().emit('SCROLL_MESSAGE_LIST');
+    if (widget.onScrollEnd != null) {
+      widget.onScrollEnd!();
+    }
   }
 
   NormalMessage createUserNormalMessage(String text) {
@@ -281,7 +289,6 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
 
   void insertUserMessage(NormalMessage message, Function() onSuccess) {
     _homeProvider.addNormalMessage(message);
-    EventBus().emit('SCROLL_MESSAGE_LIST');
     _answer = null;
     onSuccess();
   }
@@ -416,8 +423,14 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
             child: ValueListenableBuilder(
               valueListenable: widget.controller.showMessageList,
               builder: (_, showMessageList, __) => iconButtom(
-                onPress: () =>
-                    widget.controller.setShowMessageList(!showMessageList),
+                onPress: () {
+                  if (!showMessageList) {
+                    if (widget.onScrollEnd != null) {
+                      widget.onScrollEnd!();
+                    }
+                  }
+                  widget.controller.setShowMessageList(!showMessageList);
+                },
                 child: LoadAssetImage(
                   showMessageList ? 'yanjing_bi' : 'yanjing_kai',
                   width: 24.0,

@@ -8,6 +8,7 @@ class MockMessageEntity {
 
   String speechfile = '';
   String type = '3';
+
   List<Uint8List> audio = [];
 }
 

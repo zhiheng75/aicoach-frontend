@@ -163,12 +163,12 @@ class MockEvaluateUtil {
       'message': message.text,
       'type': message.type,
       'speech_name': message.speechfile,
-      '"score_detail': message.toString(),
       'accuracy_score': evaluation['accuracy_score'],
       'fluency_score': evaluation['fluency_score'],
       'integrity_score': evaluation['integrity_score'],
       'standard_score': evaluation['standard_score'],
       'total_score': evaluation['total_score'],
+      'score_detail': evaluation['score_detail'],
     };
   }
 

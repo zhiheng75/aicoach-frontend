@@ -12,6 +12,7 @@ import 'package:Bubble/report/report_router.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,7 @@ class _ExamPageState extends State<ExamPage>
     '全方位展示和练习真实考试的各种情况',
     '严格按照评分标准和评分体系进行评分',
   ];
+  late String phone = "";
 
   // Future getExamPermission() {
   //   final Map<String, String> params = <String, String>{};
@@ -103,9 +105,29 @@ class _ExamPageState extends State<ExamPage>
     }, onError: (code, msg) {});
   }
 
+// 防止二次点击
+  DateTime? _lastTime;
+  preventDoubleTap({required int interval}) {
+    DateTime _nowTime = DateTime.now();
+    if (_lastTime == null ||
+        _nowTime.difference(_lastTime!) >
+            Duration(milliseconds: interval ?? 6000)) {
+      _lastTime = _nowTime;
+      return true;
+    } else {
+      _lastTime = _nowTime;
+      return false;
+    }
+  }
+
   void startExam() {
     // isExam = true;
     if (LoginManager.isLogin()) {
+      if (!preventDoubleTap(interval: 10000)) {
+        //  toast('请勿重复点击');
+        return;
+      }
+      stopVoice();
       _examPagePresenter.getExamPermission();
     } else {
       Toast.show("请登录");
@@ -115,10 +137,38 @@ class _ExamPageState extends State<ExamPage>
   @override
   void initState() {
     super.initState();
+
+    setState(() {
+      if (LoginManager.isLogin()) {
+        Map<String, dynamic> user = LoginManager.getUserInfo();
+        if (validateInput(user['phone'])) {
+          phone = user['phone'];
+        }
+      } else {
+        phone = "17001234567";
+      }
+    });
+
     // _examPagePresenter.getExamPermission();
 
     // _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     getStudyInfo();
+  }
+
+  void stopVoice() async {
+    await MediaUtils().stopPlay();
+  }
+
+  bool validateInput(String? input) {
+    if (input == null) {
+      return false;
+    }
+
+    if (input.isEmpty) {
+      return false;
+    }
+
+    return true;
   }
 
   @override
@@ -738,50 +788,52 @@ class _ExamPageState extends State<ExamPage>
                     Toast.show("请登录");
                   }
                 },
-                child: Container(
-                  width: 231.0,
-                  height: 60.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: Colors.black.withOpacity(0.85),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 6.0,
-                  ),
-                  child: Column(
-                    children: [
-                      const Text(
-                        "购买模考训练包",
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
+                child: phone == "17001234567"
+                    ? Container()
+                    : Container(
+                        width: 231.0,
+                        height: 60.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.0),
+                          color: Colors.black.withOpacity(0.85),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 6.0,
+                        ),
+                        child: Column(
+                          children: [
+                            const Text(
+                              "购买模考训练包",
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "剩余训练次数：",
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  "$number次",
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colours.color_FF71CF,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "剩余训练次数：",
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(
-                            "$number次",
-                            style: const TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400,
-                              color: Colours.color_FF71CF,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
               )
             ],
           ),

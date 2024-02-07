@@ -39,6 +39,7 @@ class _ExampleState extends State<Example> {
   String _pageState = 'loading';
   String _text = '';
   String _speechUrl = '';
+  bool _isPlayAudio = false;
 
   void init() {
     _pageState = 'loading';
@@ -80,8 +81,13 @@ class _ExampleState extends State<Example> {
   }
 
   void playAudio() {
+    if (_isPlayAudio) {
+      return;
+    }
+    _isPlayAudio = true;
     _mediaUtils.play(
       url: _speechUrl,
+      whenFinished: () => _isPlayAudio = false,
     );
   }
 

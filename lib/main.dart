@@ -7,6 +7,7 @@ import 'package:device_identity/device_identity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bugly/flutter_bugly.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,7 @@ import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/handle_error_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/theme_utils.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 import 'home/splash_page.dart';
 import 'net/dio_utils.dart';
@@ -28,22 +30,34 @@ import 'net/intercept.dart';
 final RouteObserver<PageRoute> routeObserver = RouteObserver();
 
 Future<void> main() async {
-  /// 异常处理
-  handleError(() async {
-    /// 确保初始化完成
-    WidgetsFlutterBinding.ensureInitialized();
+  FlutterBugly.postCatchedException(
+    () {
+      /// 异常处理
+      handleError(() async {
+        /// 确保初始化完成
+        WidgetsFlutterBinding.ensureInitialized();
 
-    /// sp初始化
-    await SpUtil.getInstance();
+        /// sp初始化
+        await SpUtil.getInstance();
 
-    /// device_identity初始化
-    await DeviceIdentity.register();
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+        /// device_identity初始化
+        await DeviceIdentity.register();
+        SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    // 设置音频配置
-    await AudioConfig.addAudioConfig();
-    runApp(MyApp());
-  });
+        // 设置音频配置
+        await AudioConfig.addAudioConfig();
+        runApp(MyApp());
+        FlutterBugly.init(
+          androidAppId: "1461f76ac6",
+          iOSAppId: "2cd012b035",
+        );
+      });
+    },
+    debugUpload: false,
+    // handler: (details) {
+    //   LogUtils.i('error====>${details.toString()}');
+    // }
+  );
 
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
 }
@@ -82,6 +96,19 @@ class MyApp extends StatelessWidget {
       baseUrl: 'https://api.bubble.shenmo-ai.com/',
       interceptors: interceptors,
     );
+  }
+
+  void initUM() {
+    // janalytics.setup(
+    //   appKey: jPushAppKey,
+    //   channel: "xuetang",
+    // );
+    // janalytics.initCrashHandler();
+    // janalytics.setAnalyticsReportPeriod(1800);
+    // FlutterBugly.init(androidAppId: "6ed208e8cc", iOSAppId: "f33f7e1ef8");
+    UmengCommonSdk.initCommon(
+        '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', 'Umeng');
+    UmengCommonSdk.setPageCollectionModeManual();
   }
 
   @override

@@ -71,22 +71,22 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        accuracyScore: json["accuracy_score"],
-        accuracyScoreHundred: json["accuracy_score_hundred"],
-        standardScore: json["standard_score"],
-        standardScoreHundred: json["standard_score_hundred"],
-        interactionScore: json["interaction_score"],
-        interactionScoreHundred: json["interaction_score_hundred"],
-        overallScore: json["overall_score"],
-        overallScoreHundred: json["overall_score__hundred"],
-        totalScore: json["total_score"],
-        camb: json["Camb"],
-        ket: json["KET"],
-        ketNext: json["KET_NEXT"],
-        europe: json["europe"],
-        trainCount: json["train_count"],
-        createTime: json["create_time"],
-        duration: json["duration"],
+        accuracyScore: json["accuracy_score"] ?? 0,
+        accuracyScoreHundred: json["accuracy_score_hundred"] ?? 0,
+        standardScore: json["standard_score"] ?? 0,
+        standardScoreHundred: json["standard_score_hundred"] ?? 0,
+        interactionScore: json["interaction_score"] ?? 0,
+        interactionScoreHundred: json["interaction_score_hundred"] ?? 0,
+        overallScore: json["overall_score"] ?? 0,
+        overallScoreHundred: json["overall_score__hundred"] ?? 0,
+        totalScore: json["total_score"] ?? 0,
+        camb: json["Camb"] ?? 0,
+        ket: json["KET"] ?? '',
+        ketNext: json["KET_NEXT"] ?? '',
+        europe: json["europe"] ?? '',
+        trainCount: json["train_count"] ?? 0,
+        createTime: json["create_time"] ?? '',
+        duration: json["duration"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {

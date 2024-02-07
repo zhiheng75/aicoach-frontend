@@ -420,14 +420,16 @@ class _NewRegisterPageState extends State<NewRegisterPage>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              alignment: Alignment.center,
+              width: 30,
+              height: 30,
+              padding: const EdgeInsets.all(10),
               child: LoadAssetImage(
                 _isSelect ? "select_img2" : "unselect_img2",
-                width: 11,
-                height: 11,
+                width: 15.0,
+                height: 15.0,
               ),
             ),
-            Gaps.hGap10,
+            // Gaps.hGap10,
             Text(
               "我已阅读并同意 ",
               style:

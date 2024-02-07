@@ -102,15 +102,23 @@ class _JhBottomSheetViewState extends State<JhBottomSheetView> {
       titleHeight = 0.0;
       titleLineHeight = 0.0;
     }
-    var bgHeight =
-        _cellHeight * (_dataArr.length + 1) + (_dataArr.length - 1) * 1 + _spaceHeight + titleHeight + titleLineHeight;
+    var bgHeight = _cellHeight * (_dataArr.length + 1) +
+        (_dataArr.length - 1) * 1 +
+        _spaceHeight +
+        titleHeight +
+        titleLineHeight;
 
     // 默认颜色
-    var redTextColor = Colours.dynamicColor(context, Colours.kPickerRedTextDarkColor);
-    var bgColor = Colours.dynamicColor(context, Colours.kPickerBgColor, Colours.kPickerBgDarkColor);
-    var titleColor = Colours.dynamicColor(context, Colours.kPickerTitleColor, Colours.kPickerTitleDarkColor);
-    var textColor = Colours.dynamicColor(context, Colours.kPickerTextColor, Colours.kPickerTextDarkColor);
-    var lineColor = Colours.dynamicColor(context, Colours.kLineColor, Colours.kLineDarkColor);
+    var redTextColor =
+        Colours.dynamicColor(context, Colours.kPickerRedTextDarkColor);
+    var bgColor = Colours.dynamicColor(
+        context, Colours.kPickerBgColor, Colours.kPickerBgDarkColor);
+    var titleColor = Colours.dynamicColor(
+        context, Colours.kPickerTitleColor, Colours.kPickerTitleDarkColor);
+    var textColor = Colours.dynamicColor(
+        context, Colours.kPickerTextColor, Colours.kPickerTextDarkColor);
+    var lineColor = Colours.dynamicColor(
+        context, Colours.kLineColor, Colours.kLineDarkColor);
 
     return Container(
       color: bgColor,
@@ -136,7 +144,9 @@ class _JhBottomSheetViewState extends State<JhBottomSheetView> {
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
               Color btnTextColor =
-                  (widget.redBtnTitle != null && index == _dataArr.length - 1) ? redTextColor : textColor;
+                  (widget.redBtnTitle != null && index == _dataArr.length - 1)
+                      ? redTextColor
+                      : textColor;
 
               return GestureDetector(
                 child: Container(
@@ -145,18 +155,20 @@ class _JhBottomSheetViewState extends State<JhBottomSheetView> {
                   child: Center(
                     child: Text(
                       _dataArr[index],
-                      style: TextStyle(fontSize: _textFontSize, color: btnTextColor),
+                      style: TextStyle(
+                          fontSize: _textFontSize, color: btnTextColor),
                       textAlign: TextAlign.center,
                     ),
                   ),
                 ),
                 onTap: () {
-                  widget.clickCallBack?.call(index + 1, _dataArr[index]);
                   Navigator.of(context).pop();
+                  widget.clickCallBack?.call(index + 1, _dataArr[index]);
                 },
               );
             },
-            separatorBuilder: (context, index) => Divider(height: 1, color: lineColor),
+            separatorBuilder: (context, index) =>
+                Divider(height: 1, color: lineColor),
           ),
           SizedBox(height: _spaceHeight, child: Container(color: lineColor)),
           GestureDetector(

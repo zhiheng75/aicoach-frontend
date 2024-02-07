@@ -3,6 +3,7 @@ PODS:
     - Flutter
   - audio_session (0.0.1):
     - Flutter
+  - Bugly (2.5.93)
   - camera_avfoundation (0.0.1):
     - Flutter
   - device_identity (0.0.1):
@@ -17,6 +18,9 @@ PODS:
     - ffmpeg-kit-ios-min (= 6.0)
     - Flutter
   - Flutter (1.0.0)
+  - flutter_bugly (0.0.1):
+    - Bugly
+    - Flutter
   - flutter_keychain (0.0.1):
     - Flutter
   - flutter_sound (9.2.13):
@@ -47,6 +51,8 @@ PODS:
   - MTBBarcodeScanner (5.0.11)
   - package_info (0.0.1):
     - Flutter
+  - package_info_plus (0.4.5):
+    - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -73,6 +79,13 @@ PODS:
     - tobias/normal (= 0.0.1)
   - tobias/normal (0.0.1):
     - Flutter
+  - UMCommon (7.4.4):
+    - UMDevice
+  - UMDevice (3.3.0)
+  - umeng_common_sdk (0.0.1):
+    - Flutter
+    - UMCommon
+    - UMDevice
   - url_launcher_ios (0.0.1):
     - Flutter
   - vibration (1.7.5):
@@ -94,6 +107,7 @@ DEPENDENCIES:
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - ffmpeg_kit_flutter_min (from `.symlinks/plugins/ffmpeg_kit_flutter_min/ios`)
   - Flutter (from `Flutter`)
+  - flutter_bugly (from `.symlinks/plugins/flutter_bugly/ios`)
   - flutter_keychain (from `.symlinks/plugins/flutter_keychain/ios`)
   - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
   - fluwx (from `.symlinks/plugins/fluwx/ios`)
@@ -101,6 +115,7 @@ DEPENDENCIES:
   - in_app_purchase_storekit (from `.symlinks/plugins/in_app_purchase_storekit/darwin`)
   - jverify (from `.symlinks/plugins/jverify/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - photo_manager (from `.symlinks/plugins/photo_manager/ios`)
@@ -110,6 +125,7 @@ DEPENDENCIES:
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - tobias (from `.symlinks/plugins/tobias/ios`)
+  - umeng_common_sdk (from `.symlinks/plugins/umeng_common_sdk/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - vibration (from `.symlinks/plugins/vibration/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
@@ -118,12 +134,15 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Bugly
     - ffmpeg-kit-ios-min
     - flutter_sound_core
     - FMDB
     - JCore
     - JVerification
     - MTBBarcodeScanner
+    - UMCommon
+    - UMDevice
     - WechatOpenSDK-XCFramework
 
 EXTERNAL SOURCES:
@@ -141,6 +160,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/ffmpeg_kit_flutter_min/ios"
   Flutter:
     :path: Flutter
+  flutter_bugly:
+    :path: ".symlinks/plugins/flutter_bugly/ios"
   flutter_keychain:
     :path: ".symlinks/plugins/flutter_keychain/ios"
   flutter_sound:
@@ -155,6 +176,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/jverify/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
@@ -173,6 +196,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
   tobias:
     :path: ".symlinks/plugins/tobias/ios"
+  umeng_common_sdk:
+    :path: ".symlinks/plugins/umeng_common_sdk/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   vibration:
@@ -187,12 +212,14 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
+  Bugly: b8715e6ec4004b7f7fbffab0643ba80545aee3da
   camera_avfoundation: 8b8d780bcfb6a4a02b0fbe2b4bd17b5b71946e68
   device_identity: ad27231cb8754e5bc63ce2225e2e1d95d374ca88
   device_info_plus: 7545d84d8d1b896cb16a4ff98c19f07ec4b298ea
   ffmpeg-kit-ios-min: 4e9a088f4ee9629435960b9d68e54848975f1931
   ffmpeg_kit_flutter_min: 5eff47f4965bf9d1150e98961eb6129f5ae3f28c
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_bugly: c9800f4d5bc5bdc27ffdde3417a26ba44266e0c3
   flutter_keychain: 01aabf894ffe8b01adfda1d9df21c210c1b4b452
   flutter_sound: c60effa2a350fb977885f0db2fbc4c1ad5160900
   flutter_sound_core: 26c10e5832e76aaacfae252d8925232281c486ae
@@ -205,6 +232,7 @@ SPEC CHECKSUMS:
   jverify: 1245a818edcaf6054c9bd1c776f100344ff9c08e
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
+  package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
   permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
   photo_manager: 4f6810b7dfc4feb03b461ac1a70dacf91fba7604
@@ -214,6 +242,9 @@ SPEC CHECKSUMS:
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   tobias: 22f69183b14af82a2ac8ff698af084c352744e5f
+  UMCommon: f31de941d59c172708978ead53396f5b1c29820e
+  UMDevice: f67106f8f1a8bc465ba20d376d896e178be66ba7
+  umeng_common_sdk: a8abd7f86dfd013dbbeeae587ee143760c6582f2
   url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
   vibration: 7d883d141656a1c1a6d8d238616b2042a51a1241
   video_player_avfoundation: e9e6f9cae7d7a6d9b43519b0aab382bca60fcfd1

@@ -27,6 +27,7 @@ import 'entity/good_entity.dart';
 import 'presneter/purchase_page_presenter.dart';
 import 'view/purchase_view.dart';
 import 'widget/illustration.dart';
+import 'package:Bubble/widgets/my_alert.dart';
 
 class PurchasePage extends StatefulWidget {
   const PurchasePage({Key? key}) : super(key: key);
@@ -206,6 +207,26 @@ class _PurchasePageState extends State<PurchasePage>
     init();
   }
 
+  void onBack() {
+    late String phone = "";
+
+    Map<String, dynamic> user = LoginManager.getUserInfo();
+    if (validateInput(user['phone'])) {
+      phone = user['phone'];
+    }
+
+    if (phone == "17001234567") {
+      Navigator.of(context).pop();
+    } else {
+      myAlert.showAlert(context, title: "确定放弃购买吗?", content: "放手容易,再遇见好难",
+          clickCallback: (index, text) {
+        if (index == 1) {
+          Navigator.pop(context);
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -216,7 +237,7 @@ class _PurchasePageState extends State<PurchasePage>
         children: <Widget>[
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () => Navigator.of(context).pop(),
+            onTap: () => onBack(),
             child: const LoadAssetImage(
               'navbar_back',
               width: 18.2,
@@ -538,15 +559,20 @@ class _PurchasePageState extends State<PurchasePage>
                     _checked = !_checked;
                     setState(() {});
                   },
-                  child: LoadAssetImage(
-                    _checked ? 'yigouxuan' : 'weigouxuan',
-                    width: 10.0,
-                    height: 10.0,
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    padding: const EdgeInsets.all(10),
+                    child: LoadAssetImage(
+                      _checked ? 'yigouxuan' : 'weigouxuan',
+                      width: 15.0,
+                      height: 15.0,
+                    ),
                   ),
                 ),
-                const SizedBox(
-                  width: 8.0,
-                ),
+                // const SizedBox(
+                //   width: 8.0,
+                // ),
                 RichText(
                   text: TextSpan(
                     children: [

@@ -3,7 +3,9 @@
 ///  Created by iotjin on 2022/09/10.
 ///  description: 基于微信UI的图片/视频选择器(支持拍照及录制视频) 封装wechat_assets_picker、wechat_camera_picker
 
+import 'package:Bubble/main.dart';
 import 'package:Bubble/res/dimens.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +21,7 @@ import '../util/jh_permission_utils.dart';
 import 'jh_bottom_sheet.dart';
 
 // 最大数量
-const int _maxAssets = 9;
+const int _maxAssets = 4;
 // 录制视频最长时长, 默认为 15 秒，可以使用 `null` 来设置无限制的视频录制
 const Duration _maximumRecordingDuration = Duration(seconds: 15);
 // 一行显示几个
@@ -71,7 +73,7 @@ class JhAssetPicker extends StatefulWidget {
 
 class _JhAssetPickerState extends State<JhAssetPicker> {
   List<AssetEntity> _selectedAssets = [];
-  Color _themeColor = Colours.kThemeColor;
+  final Color _themeColor = Colours.color_0E90FF;
 
   int maxAmount = 0;
   @override
@@ -91,9 +93,9 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
   }
 
   _body() {
-    final provider = Provider.of<ThemeProvider>(context);
-    _themeColor = Colours.dynamicColor(
-        context, provider.getThemeColor(), Colours.kThemeColor);
+    // final provider = Provider.of<ThemeProvider>(context);
+    // _themeColor = Colours.dynamicColor(
+    // context, provider.getThemeColor(), Colours.color_0EF4D1);
 
     var allCount = _selectedAssets.length + 1;
 
@@ -245,36 +247,50 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
 
   // 相册选择
   Future<void> _openAlbum(context) async {
-    if (!Device.isMobile) {
-      return;
-    }
-    // 相册权限
-    bool isGrantedPhotos = await JhPermissionUtils.photos();
-    if (!isGrantedPhotos) {
-      return;
-    }
+    // if (Device.isAndroid) {
+    //   if (!Device.isMobile) {
+    //     return;
+    //   }
+    //   //相册权限
+    //   bool isGrantedPhotos = await JhPermissionUtils.photos();
+    //   if (isGrantedPhotos) {
+    //     return;
+    //   }
 
-    RequestType requestType = RequestType.image;
-    if (widget.assetType == AssetType.video) {
-      requestType = RequestType.video;
-    }
-    if (widget.assetType == AssetType.imageAndVideo) {
-      requestType = RequestType.common;
-    }
+    //   RequestType requestType = RequestType.image;
+    //   if (widget.assetType == AssetType.video) {
+    //     requestType = RequestType.video;
+    //   }
+    //   if (widget.assetType == AssetType.imageAndVideo) {
+    //     requestType = RequestType.common;
+    //   }
+    // }
+
     final List<AssetEntity>? result = await AssetPicker.pickAssets(
       context,
       pickerConfig: AssetPickerConfig(
         maxAssets: widget.maxAssets,
-        requestType: requestType,
-        // selectedAssets: _selectedAssets,
+        selectedAssets: _selectedAssets,
+        requestType: RequestType.image,
         themeColor: _themeColor,
         // textDelegate: const EnglishAssetPickerTextDelegate(),
       ),
     );
+
+    // final List<AssetEntity>? result = await AssetPicker.pickAssets(
+    //   context,
+    // pickerConfig: AssetPickerConfig(
+    //   maxAssets: widget.maxAssets,
+    //   requestType: requestType,
+    //   // selectedAssets: _selectedAssets,
+    //   themeColor: _themeColor,
+    //   // textDelegate: const EnglishAssetPickerTextDelegate(),
+    // ),
+    // );
     if (result != null) {
-      // setState(() {
-      //   _selectedAssets = result;
-      // });
+      setState(() {
+        _selectedAssets = result;
+      });
       // 相册选择回调
       widget.callBack?.call(result);
     }
@@ -282,46 +298,45 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
 
   // 拍照或录像
   Future<void> _openCamera(context) async {
-    if (!Device.isMobile) {
-      return;
-    }
-    // 相机权限
-    bool isGrantedCamera = await JhPermissionUtils.camera();
-    if (!isGrantedCamera) {
-      return;
-    }
+    // if (Device.isAndroid) {
+    //   if (!Device.isMobile) {
+    //     return;
+    //   }
+    //   //相机权限
+    //   bool isGrantedCamera = await JhPermissionUtils.camera();
+    //   if (!isGrantedCamera) {
+    //     return;
+    //   }
 
-    if (widget.assetType != AssetType.image) {
-      // 麦克风权限
-      bool isGrantedMicrophone = await JhPermissionUtils.microphone();
-      if (!isGrantedMicrophone) {
-        return;
-      }
-    }
+    //   if (widget.assetType != AssetType.image) {
+    //     // 麦克风权限
+    //     bool isGrantedMicrophone = await JhPermissionUtils.microphone();
+    //     if (!isGrantedMicrophone) {
+    //       return;
+    //     }
+    //   }
 
-    // 相册权限
-    bool isGrantedPhotos = await JhPermissionUtils.photos();
-    if (!isGrantedPhotos) {
-      return;
-    }
+    //   // 相册权限
+    //   bool isGrantedPhotos = await JhPermissionUtils.photos();
+    //   if (!isGrantedPhotos) {
+    //     return;
+    //   }
+    // }
 
     final AssetEntity? result = await CameraPicker.pickFromCamera(
       context,
-      pickerConfig: CameraPickerConfig(
-        // 是否可以录像
-        enableRecording: widget.assetType != AssetType.image,
-        // 录制视频最长时长
-        maximumRecordingDuration: widget.maximumRecordingDuration,
-        // textDelegate: const EnglishCameraPickerTextDelegate(),
-      ),
+      pickerConfig: const CameraPickerConfig(),
     );
+    // final AssetEntity? result = await CameraPicker.pickFromCamera(
+    //   context,
+    // );
     if (result != null) {
-      // setState(() {
-      _selectedAssets.clear();
-      _selectedAssets.add(result);
-      // 相机回调
-      widget.callBack?.call(_selectedAssets);
-      // });
+      setState(() {
+        // _selectedAssets.clear();
+        _selectedAssets.add(result);
+        // 相机回调
+        widget.callBack?.call(_selectedAssets);
+      });
     }
   }
 

@@ -127,7 +127,7 @@ class HomeProvider extends ChangeNotifier {
     }
     _usageTimeCutdown = Timer.periodic(const Duration(seconds: 1), (_) {
       if (_usageTime == 0) {
-        onTimeEnd();
+        // onTimeEnd();
         endUsageTimeCutdown();
         return;
       }

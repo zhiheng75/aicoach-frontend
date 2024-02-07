@@ -249,8 +249,8 @@ class EvaluateUtil {
       NormalMessage message, Map<String, dynamic> evaluation) {
     return {
       'session_id': message.sessionId,
-      'message_id': message.id,
       'message': message.text,
+      'message_id': message.id,
       'accuracy_score': evaluation['accuracy_score'],
       'fluency_score': evaluation['fluency_score'],
       'integrity_score': evaluation['integrity_score'],
@@ -353,7 +353,8 @@ class EvaluateUtil {
       _saveUrl(cache);
     } else {
       _getOssToken((evaluateOss) async {
-        String fileName = '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}';
+        String fileName =
+            '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}';
         String host = 'https://shenmo-statics.oss-cn-beijing.aliyuncs.com';
         String key = 'audio/$fileName.wav';
 
@@ -469,7 +470,10 @@ class UploadCache {
     }
     if (json['audio'] != null) {
       List<dynamic> list = jsonDecode(json['message']);
-      List<Uint8List> audio = list.map((item) => Uint8List.fromList(item.map((subItem) => subItem as int))).toList();
+      List<Uint8List> audio = list
+          .map((item) =>
+              Uint8List.fromList(item.map((subItem) => subItem as int)))
+          .toList();
       cache.audio = audio;
     }
     return cache;

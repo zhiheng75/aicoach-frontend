@@ -13,9 +13,11 @@ class Score extends StatefulWidget {
   const Score({
     Key? key,
     required this.sessionId,
+    this.type,
   }) : super(key: key);
 
   final String sessionId;
+  final String? type;
 
   @override
   State<Score> createState() => _ScoreState();
@@ -37,7 +39,7 @@ class _ScoreState extends State<Score> {
   void getScore() {
     DioUtils.instance.requestNetwork<ResultData>(
       Method.get,
-      HttpApi.scoreAllRound,
+      widget.type == 'exam' ? HttpApi.examScoreAllRound : HttpApi.scoreAllRound,
       cancelToken: _cancelToken,
       queryParameters: {
         'session_id': widget.sessionId,

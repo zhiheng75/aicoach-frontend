@@ -8,7 +8,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 #version: 2.0.0+1
 
 # ios version
-version: 1.0.1+35
+
+version: 1.0.2+36
 
 environment:
   sdk: '>=3.1.3 <4.0.0'
@@ -47,7 +48,7 @@ dependencies:
   # 启动URL的插件（支持Web） https://github.com/flutter/packages/tree/main/packages/url_launcher
   url_launcher: 6.1.8
   # 图片选择插件 https://github.com/flutter/packages/tree/main/packages/image_picker
-  image_picker: 1.0.4
+  image_picker: ^1.0.7
   # 图片视频选择器(微信UI) https://pub.flutter-io.cn/packages/wechat_assets_picker
   wechat_assets_picker: ^8.8.0
   # 拍照与录像(微信UI) https://pub.flutter-io.cn/packages/wechat_camera_picker
@@ -121,7 +122,6 @@ dependencies:
   #fluwx https://github.com/OpenFlutter/fluwx
   fluwx: ^4.4.8
     # fluwx: ^3.12.2
-
   tobias: ^3.2.2
   json_annotation: ^4.4.0
   #fl_chart https://github.com/imaNNeo/fl_chart
@@ -133,6 +133,10 @@ dependencies:
   volume_controller: ^2.0.7
   #audio_session https://github.com/ryanheise/audio_session/issues
   audio_session: ^0.1.18
+  package_info_plus: ^4.2.0
+  umeng_common_sdk: ^1.2.7
+  flutter_bugly: ^0.4.4
+
 
 dev_dependencies:
   flutter_test:

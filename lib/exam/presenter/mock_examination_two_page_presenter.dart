@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/exam/view/mock_examination_two_view.dart';
 import 'package:Bubble/mvp/base_page_presenter.dart';
@@ -7,6 +9,8 @@ import 'package:Bubble/net/http_api.dart';
 class MockExaminationTwoPagePresenter
     extends BasePagePresenter<MockExaminationTwoView> {
   Future postExamUpdate(Map<String, dynamic> map) {
+    // map["answer"] = map["answer"].toString();
+
     return requestNetwork<ResultData>(Method.post,
         url: HttpApi.examUpdata,
         params: map,

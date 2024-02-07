@@ -17,9 +17,11 @@ class Analysis extends StatefulWidget {
   const Analysis({
     Key? key,
     required this.sessionId,
+    this.type,
   }) : super(key: key);
 
   final String sessionId;
+  final String? type;
 
   @override
   State<Analysis> createState() => _AnalysisState();
@@ -43,7 +45,7 @@ class _AnalysisState extends State<Analysis> {
   void getAnalysisList() {
     DioUtils.instance.requestNetwork<ResultData>(
       Method.get,
-      HttpApi.scoreAnalysis,
+      widget.type == 'exam' ? HttpApi.examScoreAnalysis : HttpApi.scoreAnalysis,
       cancelToken: _cancelToken,
       queryParameters: {
         'session_id': widget.sessionId,

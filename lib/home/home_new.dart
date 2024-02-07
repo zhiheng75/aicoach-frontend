@@ -4,6 +4,7 @@ import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/main.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/scene/collect_information.dart';
+import 'package:Bubble/util/media_utils.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:jverify/jverify.dart';
@@ -150,6 +151,10 @@ class _HomePageState extends State<HomeNewPage>
     super.dispose();
   }
 
+  void stopVoice() async {
+    await MediaUtils().stopPlay();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -165,6 +170,9 @@ class _HomePageState extends State<HomeNewPage>
                 currentTab: _currentTab,
                 changeTab: (tab) {
                   _currentTab = tab;
+                  if (tab == 'exam') {
+                    stopVoice();
+                  }
                   setState(() {});
                 },
               ),

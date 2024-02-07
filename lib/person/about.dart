@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:package_info/package_info.dart';
 
 import '../res/colors.dart';
 import '../widgets/navbar.dart';
@@ -15,9 +16,25 @@ class _AboutPageState extends State<AboutPage> {
   final ScreenUtil _screenUtil = ScreenUtil();
   String version = 'V1.0.1';
 
+  PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+  );
+
   @override
   void initState() {
     super.initState();
+    _initPackageInfo();
+  }
+
+  Future<void> _initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
+    version = "V${_packageInfo.version}";
   }
 
   @override

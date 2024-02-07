@@ -116,10 +116,14 @@ class _PersonPageState extends State<PersonPage>
     String name = '';
     if (validateInput(user['name']) && user['name'] != '微信用户') {
       name = user['name'];
-    } else if (validateInput(user['nickname']) && user['nickname'] != '微信用户') {
+    } else if (validateInput(user['nickname'])) {
       name = user['nickname'];
     } else {
-      name = '${phone.substring(0, 3)}****${phone.substring(7)}';
+      String phone = '';
+      if (validateInput(user['phone'])) {
+        phone = user['phone'];
+        name = "用户${phone.toString().substring(7, 11)}";
+      }
     }
     userName = name;
     String headImg = '';
@@ -569,7 +573,7 @@ class _PersonPageState extends State<PersonPage>
         children: <Widget>[
           menuItem(
             'person_baogao',
-            '学习报告',
+            '学情报告',
             onPress: () => tapMenu(ReportRouter.reportPage),
           ),
           menuItem(
