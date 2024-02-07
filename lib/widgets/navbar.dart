@@ -43,10 +43,14 @@ class Navbar extends StatelessWidget {
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () => Navigator.of(context).pop(),
-              child: const LoadAssetImage(
-                'navbar_back',
-                width: 18.2,
-                height: 22.0,
+              child: Container(
+                width: 40.0,
+                alignment: Alignment.centerLeft,
+                child: const LoadAssetImage(
+                  'navbar_back',
+                  width: 18.2,
+                  height: 22.0,
+                ),
               ),
             ),
           ),

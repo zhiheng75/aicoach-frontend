@@ -57,7 +57,7 @@ class _SuggestionPageState extends State<SuggestionPage>
     super.initState();
     _controller.text = '';
     _contactController.text = '';
-    _maxLength = 500;
+    _maxLength = 260;
     _inputFormatters = null;
   }
 
@@ -138,7 +138,7 @@ class _SuggestionPageState extends State<SuggestionPage>
                                 color: Colours.color_F8F8F8),
                             child: Semantics(
                               multiline: true,
-                              // maxValueLength: _maxLength,
+                              maxValueLength: _maxLength,
                               child: TextField(
                                 cursorColor: Colours.color_333333,
                                 style: const TextStyle(

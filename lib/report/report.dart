@@ -589,9 +589,7 @@ class _ReportPageState extends State<ReportPage>
                   height: 21.0,
                 ),
                 Text(
-                  _type == 'exam'
-                      ? '还没有模考报告，\n快点开始模考吧！'
-                      : '还没有口语学习报告，\n快点开始学习吧！',
+                  _type == 'exam' ? '还没有模考报告喔！' : '还没有口语学习报告，\n快点开始学习吧！',
                   style: const TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.w400,

@@ -15,7 +15,6 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
 import '../../util/toast_utils.dart';
-import '../entity/oss_token_entity.dart';
 import '../entity/send_img_result_entity.dart';
 import '../view/suggestion_view.dart';
 
@@ -76,6 +75,11 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
     return left;
   }
 
+  String getImageNameByPath(String filePath) {
+    // ignore: null_aware_before_operator
+    return filePath.substring(filePath.lastIndexOf("/") + 1, filePath.length);
+  }
+
   void _getOssToken(Function(Map<String, dynamic>) onSuccess) {
     Map<dynamic, dynamic>? evaluateOss = SpUtil.getObject(_oss);
     // 未获取或者已过期
@@ -103,7 +107,6 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
   }
 
   String host = 'https://shenmo-statics.oss-cn-beijing.aliyuncs.com';
-
   Future<String> upLoadImage(File imgFile, evaluateOss) async {
     // 获取签名
     Map<String, dynamic> policyParams = {
@@ -116,15 +119,16 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
     Digest digest = Hmac(sha1, utf8.encode(evaluateOss['AccessKeySecret']))
         .convert(utf8.encode(policy));
     String signature = base64Encode(digest.bytes);
-    String fileName = getRandom(12);
-    // String key = 'feedback/$fileName.jpg';
-    String key = 'feedback/$fileName.jpg';
-//  filename/
-//  feedback/
-//  feedback/filename/
+    // String fileName = getRandom(12);
+    List<String> list = imgFile.path.split("/");
+    String fileName = list.last;
 
-//   audio/
+    String key = 'feedback/$fileName';
+    // String key = 'feedback${imgFile.path}';
 
+    final MultipartFile multipartFile = await MultipartFile.fromFile(
+      imgFile.path,
+    );
     FormData formData = FormData.fromMap({
       'key': key,
       'success_action_status': '200',
@@ -132,9 +136,8 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
       'x-oss-security-token': evaluateOss['SecurityToken'],
       'policy': policy,
       'signature': signature,
-      'Content-Type': 'image/jpeg',
-      // 'Content-Type': 'audio/x-wave',
-      'file': MultipartFile.fromFile(imgFile.path),
+      // 'Content-Type': 'image/jpeg',
+      'file': multipartFile,
     });
 
     String urlStr = "null";
@@ -145,7 +148,9 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
       );
       if (response.statusCode == 200) {
         Log.d('upload img success:url=${'$host/$key'}', tag: '上传图片');
-        urlStr = '$host/$key';
+        // urlStr = '$host/$key';
+        urlStr = key;
+
         // return urlStr;
       }
     } catch (e) {
@@ -158,11 +163,16 @@ class SuggestionPresenter extends BasePagePresenter<SuggestionView> {
       Function(String) onSuccess) {
     _getOssToken((evaluateOss) async {
       String imagesStr = "";
-      // for (int i = 0; i < mlist.length; i++) {
-      //   Future<String> url = upLoadImage(mlist[i], evaluateOss);
-      //   imagesStr = "$imagesStr,$url";
-      // }
-      // Log.e(imagesStr);
+      for (int i = 0; i < mlist.length; i++) {
+        // Future<String> url = upLoadImage(mlist[i], evaluateOss);
+        String url = await upLoadImage(mlist[i], evaluateOss);
+        if (i == 0) {
+          imagesStr = url;
+        } else {
+          imagesStr = "$imagesStr,$url";
+        }
+      }
+      Log.e(imagesStr);
       pushSuggest(message, contact, imagesStr, onSuccess);
     });
   }

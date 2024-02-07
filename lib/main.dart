@@ -28,6 +28,8 @@ import 'net/intercept.dart';
 
 // 页面切换监听
 final RouteObserver<PageRoute> routeObserver = RouteObserver();
+// App状态
+String? _appLifecycleState;
 
 Future<void> main() async {
   FlutterBugly.postCatchedException(
@@ -46,6 +48,20 @@ Future<void> main() async {
 
         // 设置音频配置
         await AudioConfig.addAudioConfig();
+
+        // // 全局监听App状态
+        // SystemChannels.lifecycle.setMessageHandler((message) async {
+        //
+        //   // 退到后台
+        //   if (_appLifecycleState == 'AppLifecycleState.inactive' && message == 'AppLifecycleState.paused') {
+        //     await MediaUtils().stopPlayByAppPaused();
+        //   }
+        //
+        //   _appLifecycleState = message;
+        //
+        //   return message;
+        // });
+
         runApp(MyApp());
         FlutterBugly.init(
           androidAppId: "1461f76ac6",

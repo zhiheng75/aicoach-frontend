@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -7,26 +8,23 @@ import '../res/gaps.dart';
 import '../widgets/my_app_bar.dart';
 
 class WebViewPage extends StatefulWidget {
-
   const WebViewPage({
     super.key,
     required this.title,
-
     required this.url,
-    
   });
 
   final String title;
   final String url;
-  
+
   @override
   _WebViewPageState createState() => _WebViewPageState();
 }
 
 class _WebViewPageState extends State<WebViewPage> {
-
   late final WebViewController _controller;
   int _progressValue = 0;
+  bool finished = false;
 
   @override
   void initState() {
@@ -35,6 +33,10 @@ class _WebViewPageState extends State<WebViewPage> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
+          onPageFinished: (url) {
+            finished = true;
+            setState(() {});
+          },
           onProgress: (int progress) {
             if (!mounted) {
               return;
@@ -62,24 +64,24 @@ class _WebViewPageState extends State<WebViewPage> {
         return Future.value(true);
       },
       child: Scaffold(
-        appBar: MyAppBar(
-          centerTitle: widget.title,
-            backImgColor:Colors.black
-        ),
+        appBar:
+            MyAppBar(centerTitle: widget.title, centerTitleColor: Colors.black),
         body: Stack(
           children: [
             WebViewWidget(
               controller: _controller,
             ),
-            if (_progressValue != 100) LinearProgressIndicator(
-              value: _progressValue / 100,
-              backgroundColor: Colors.transparent,
-              minHeight: 2,
-            ) else Gaps.empty,
+            if (_progressValue != 100)
+              LinearProgressIndicator(
+                value: _progressValue / 100,
+                backgroundColor: Colors.transparent,
+                minHeight: 2,
+              )
+            else
+              Gaps.empty,
           ],
         ),
       ),
     );
   }
-
 }
