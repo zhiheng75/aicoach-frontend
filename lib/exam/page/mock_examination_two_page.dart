@@ -453,7 +453,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
     _mediaUtils.play(
       url: answerAudio,
       whenFinished: () {
-        showToast("考办回答完");
+        showToast("考伴回答完");
         Navigator.pop(context);
         _timer?.cancel();
         nextMock();
@@ -478,7 +478,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       _mediaUtils.play(
         url: answerAudio,
         whenFinished: () {
-          showToast("考办回答完");
+          showToast("考伴回答完");
           Navigator.pop(context);
         },
       );
@@ -1133,7 +1133,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                 peopleWidget(
                                     "comittee_icon", false, "考生：$nameName"),
                                 Gaps.vGap5,
-                                peopleWidget("myhead_icon", false, "考办：小红"),
+                                peopleWidget("myhead_icon", false, "考伴：小红"),
                               ],
                             ),
                           ),

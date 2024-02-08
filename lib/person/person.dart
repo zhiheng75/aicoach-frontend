@@ -4,6 +4,7 @@ import 'package:Bubble/net/net.dart';
 import 'package:Bubble/person/entity/permission_bean.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../mvp/base_page.dart';
@@ -93,6 +94,10 @@ class _PersonPageState extends State<PersonPage>
   @override
   void initState() {
     super.initState();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
 
     init();
     // getAvailableTime();

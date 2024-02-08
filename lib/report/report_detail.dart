@@ -5,8 +5,10 @@ import 'dart:math';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/report/widget/radar.dart';
 import 'package:Bubble/report/widget/score.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/widgets/load_data.dart';
 import 'package:Bubble/widgets/load_fail.dart';
@@ -85,20 +87,24 @@ class _ReportDetailPageState extends State<ReportDetailPage>
   }
 
   void getWeekActiveRank() {
-    DioUtils.instance.requestNetwork<ResultData>(Method.get, HttpApi.studyInfo, onSuccess: (result) {
-      if (result != null && result.data != null && (result.data as Map<String, dynamic>)['active_rank'] != null) {
+    DioUtils.instance.requestNetwork<ResultData>(Method.get, HttpApi.studyInfo,
+        onSuccess: (result) {
+      if (result != null &&
+          result.data != null &&
+          (result.data as Map<String, dynamic>)['active_rank'] != null) {
         _activeRank = (result.data as Map<String, dynamic>)['active_rank'];
         if (mounted) {
           setState(() {});
         }
       }
-      });
+    });
   }
 
   void getVipStatus() async {
     String deviceId = await Device.getDeviceId();
     DioUtils.instance.requestNetwork<ResultData>(
-      Method.get, HttpApi.permission,
+      Method.get,
+      HttpApi.permission,
       queryParameters: {
         'device_id': deviceId,
       },
@@ -412,26 +418,30 @@ class _ReportDetailPageState extends State<ReportDetailPage>
               height: 20.0 / 14.0,
             ),
           ),
-          Container(
-            width: 87.0,
-            height: 34.0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(40.0),
-              border: Border.all(
-                width: 1.0,
-                style: BorderStyle.solid,
-                color: const Color(0xFFE49600),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => NavigatorUtils.push(context, PersonalRouter.purchase),
+            child: Container(
+              width: 87.0,
+              height: 34.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40.0),
+                border: Border.all(
+                  width: 1.0,
+                  style: BorderStyle.solid,
+                  color: const Color(0xFFE49600),
+                ),
+                color: const Color(0xFFFFCF71),
               ),
-              color: const Color(0xFFFFCF71),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              _isVip ? '会员续费' : '升级会员',
-              style: const TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
-                letterSpacing: 0.05,
+              alignment: Alignment.center,
+              child: Text(
+                _isVip ? '会员续费' : '升级会员',
+                style: const TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                  letterSpacing: 0.05,
+                ),
               ),
             ),
           ),
