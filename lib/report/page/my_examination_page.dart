@@ -418,7 +418,7 @@ class _MyExaminationPageState extends State<MyExaminationPage>
       child: Column(
         children: [
           Text(
-            "开始时间:${_examDetailBean.data.createTime} 考试时长:${_examDetailBean.data.duration / 60}分钟",
+            "开始时间:${_examDetailBean.data.createTime} 考试时长:${(_examDetailBean.data.duration / 60).toStringAsFixed(1)}分钟",
             style: const TextStyle(
               fontSize: 16.0,
               color: Colors.black,
