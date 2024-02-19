@@ -136,7 +136,6 @@ dependencies:
   umeng_common_sdk: ^1.2.7
   flutter_bugly: ^0.4.4
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -6,6 +6,7 @@ import 'package:Bubble/exam/view/exam_detail_view.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/util/EventBus.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
@@ -413,33 +414,42 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
               child: Column(
                 children: [
                   Text(
-                    "您的成绩还不错，口语模考达到了剑桥KET考试的Grade ${_examDetailBean.data.ket}水平。",
+                    "您的成绩还不错，口语模考达到了剑桥KET考试的Grade【${_examDetailBean.data.ket}】水平。",
                     style: const TextStyle(
                       fontSize: 15.0,
                       color: Colors.black,
                     ),
                   ),
                   Gaps.vGap8,
-                  RichText(
-                      // RichText
-                      text: TextSpan(
-                          text: '建议考前再练习',
-                          style: const TextStyle(
-                            color: Colors.black,
+                  _examDetailBean.data.ket == "卓越A"
+                      ? const Text(
+                          "建议考前继续练习，保持住优异成绩，加油宝贝！",
+                          style: TextStyle(
                             fontSize: 15.0,
+                            color: Colors.black,
                           ),
-                          children: <TextSpan>[
-                        TextSpan(
-                            text: _examDetailBean.data.trainCount.toString(),
-                            style: const TextStyle(
-                              color: Colours.color_FF00A8,
-                              fontSize: 20.0,
-                            )),
-                        TextSpan(
-                            text:
-                                '次模拟考试，争取达到Grade ${_examDetailBean.data.ketNext}水平，加油宝贝！',
-                            style: const TextStyle(fontSize: 15)),
-                      ])),
+                        )
+                      : RichText(
+                          // RichText
+                          text: TextSpan(
+                              text: '建议考前再练习',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 15.0,
+                              ),
+                              children: <TextSpan>[
+                              TextSpan(
+                                  text: _examDetailBean.data.trainCount
+                                      .toString(),
+                                  style: const TextStyle(
+                                    color: Colours.color_FF00A8,
+                                    fontSize: 20.0,
+                                  )),
+                              TextSpan(
+                                  text:
+                                      '次模拟考试，争取达到Grade【${_examDetailBean.data.ketNext}】水平，加油宝贝！',
+                                  style: const TextStyle(fontSize: 15)),
+                            ])),
                 ],
               )),
           Gaps.vGap8,
@@ -469,7 +479,9 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
                         isDismissible: false,
                         enableDrag: false,
                         builder: (_) => ExamPurchasePage(
-                          onPurchased: () {},
+                          onPurchased: () {
+                            EventBus().emit('PAY');
+                          },
                         ),
                       );
                     },
@@ -540,6 +552,19 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
     );
   }
 
+  ///返回事件
+  void onBack() {
+    // myAlert.showAlert(bcontext,
+    //     title: "离开考场",
+    //     content: "模拟考试进行中,\n请尽可能一次性完成整场模拟考试", clickCallback: (index, text) {
+    //   if (index == 1) {
+    //   }
+    // });\
+    Navigator.pop(context);
+
+    EventBus().emit('PAY');
+  }
+
   @override
   Widget build(BuildContext context) {
     // ScreenUtil screenUtil = ScreenUtil();
@@ -549,10 +574,10 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
       child: Scaffold(
         body: Column(children: [
           XTCupertinoNavigationBar(
-              backgroundColor: Color(0xFFFFFFFF),
+              backgroundColor: const Color(0xFFFFFFFF),
               border: null,
               padding: EdgeInsetsDirectional.zero,
-              leading: NavigationBackWidget(),
+              leading: NavigationBackWidget(onBack: onBack),
               middle: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

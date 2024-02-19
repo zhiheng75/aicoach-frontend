@@ -440,7 +440,7 @@ class _MyExaminationPageState extends State<MyExaminationPage>
               child: Column(
                 children: [
                   Text(
-                    "您的成绩还不错，口语模考达到了剑桥KET考试的Grade ${_examDetailBean.data.ket}水平。",
+                    "您的成绩还不错，口语模考达到了剑桥KET考试的Grade【${_examDetailBean.data.ket}】水平。",
                     style: const TextStyle(
                       fontSize: 15.0,
                       color: Colors.black,
@@ -464,7 +464,7 @@ class _MyExaminationPageState extends State<MyExaminationPage>
                             )),
                         TextSpan(
                             text:
-                                '次模拟考试，争取达到Grade ${_examDetailBean.data.ketNext}水平，加油宝贝！',
+                                '次模拟考试，争取达到Grade【${_examDetailBean.data.ketNext}】水平，加油宝贝！',
                             style: const TextStyle(fontSize: 15)),
                       ])),
                 ],

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:Bubble/entity/result_entity.dart';
@@ -11,6 +12,7 @@ import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/report/report_router.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/EventBus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
@@ -36,6 +38,7 @@ class ExamPage extends StatefulWidget {
 class _ExamPageState extends State<ExamPage>
     with
         BasePageMixin<ExamPage, ExamPagePresenter>,
+        RouteAware,
         AutomaticKeepAliveClientMixin<ExamPage>
     implements ExamView {
   late ExamPagePresenter _examPagePresenter;
@@ -86,6 +89,14 @@ class _ExamPageState extends State<ExamPage>
   //   });
   // }
 
+  @override
+  void didPop() {
+    ///从B退回到A的是调用
+    print("didPop");
+    super.didPop();
+    getStudyInfo();
+  }
+
   void getStudyInfo() {
     final Map<String, String> params = <String, String>{};
 
@@ -135,8 +146,17 @@ class _ExamPageState extends State<ExamPage>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    EventBus().off('PAY');
+  }
+
+  @override
   void initState() {
     super.initState();
+    EventBus().on('PAY', (_) {
+      getStudyInfo();
+    });
 
     setState(() {
       if (LoginManager.isLogin()) {
@@ -784,7 +804,9 @@ class _ExamPageState extends State<ExamPage>
                       isDismissible: false,
                       enableDrag: false,
                       builder: (_) => ExamPurchasePage(
-                        onPurchased: () {},
+                        onPurchased: () {
+                          getStudyInfo();
+                        },
                       ),
                     );
                   } else {

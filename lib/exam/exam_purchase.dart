@@ -165,6 +165,7 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
           } else {
             ten.icon = 'qizhi';
           }
+          ten.id = goodsListBean.data[i].id;
           ten.name = goodsListBean.data[i].name!;
           ten.desc = goodsListBean.data[i].desc;
           ten.originalPrice = goodsListBean.data[i].originalPrice!;
