@@ -46,6 +46,8 @@ class Data {
   int camb;
   String ket;
   String ketNext;
+  String KetShort;
+
   String europe;
   int trainCount;
   String createTime;
@@ -64,6 +66,7 @@ class Data {
     required this.camb,
     required this.ket,
     required this.ketNext,
+    required this.KetShort,
     required this.europe,
     required this.trainCount,
     required this.createTime,
@@ -83,6 +86,7 @@ class Data {
         camb: json["Camb"] ?? 0,
         ket: json["KET"] ?? '',
         ketNext: json["KET_NEXT"] ?? '',
+        KetShort: json["KET_SHORT"] ?? '',
         europe: json["europe"] ?? '',
         trainCount: json["train_count"] ?? 0,
         createTime: json["create_time"] ?? '',
@@ -102,6 +106,7 @@ class Data {
         "Camb": camb,
         "KET": ket,
         "KET_NEXT": ketNext,
+        "KET_SHORT": KetShort,
         "europe": europe,
         "train_count": trainCount,
         "create_time": createTime,

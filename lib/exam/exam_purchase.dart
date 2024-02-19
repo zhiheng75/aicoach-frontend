@@ -168,7 +168,7 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
           ten.id = goodsListBean.data[i].id;
           ten.name = goodsListBean.data[i].name!;
           ten.desc = goodsListBean.data[i].desc;
-          ten.originalPrice = goodsListBean.data[i].originalPrice!;
+          ten.originalPrice = goodsListBean.data[i].price!;
           ten.price = goodsListBean.data[i].price!;
 
           _goodsList.add(ten);

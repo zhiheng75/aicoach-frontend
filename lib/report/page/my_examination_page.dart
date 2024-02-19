@@ -304,7 +304,7 @@ class _MyExaminationPageState extends State<MyExaminationPage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                _examDetailBean.data.ket,
+                _examDetailBean.data.KetShort,
                 style: const TextStyle(
                   fontSize: 30,
                   color: Colors.black,
