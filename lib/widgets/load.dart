@@ -33,13 +33,14 @@ class _LoadingDialog extends Dialog {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child:  Material(
+      child: Material(
         ///背景透明
         color: Colors.black54,
+
         ///保证控件居中效果
-        child:  Center(
+        child: Center(
           ///弹框大小
-          child:    Container(
+          child: Container(
             ///弹框背景和圆角
             height: 88.0,
             width: 120.0,
@@ -49,7 +50,7 @@ class _LoadingDialog extends Dialog {
                 borderRadius: BorderRadius.all(Radius.circular(8.0)),
               ),
             ),
-            child:  Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -64,7 +65,10 @@ class _LoadingDialog extends Dialog {
                 ),
 
                 Gaps.vGap8,
-                const Text("正在加载...", style:  TextStyle(color: Colors.white),)
+                const Text(
+                  "正在加载...",
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                )
               ],
             ),
           ),

@@ -167,7 +167,9 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
           }
           ten.name = goodsListBean.data[i].name!;
           ten.desc = goodsListBean.data[i].desc;
-          ten.price = goodsListBean.data[i].originalPrice!.toInt();
+          ten.originalPrice = goodsListBean.data[i].originalPrice!;
+          ten.price = goodsListBean.data[i].price!;
+
           _goodsList.add(ten);
         }
         _pageState = 'success';
@@ -304,7 +306,7 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
                 ],
               ),
               Text(
-                '¥${goods.price}',
+                '¥${goods.originalPrice}',
                 style: const TextStyle(
                   fontSize: 22.0,
                   fontWeight: FontWeight.w500,

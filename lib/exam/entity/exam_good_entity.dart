@@ -1,10 +1,10 @@
 class ExamGoodEntity {
-
   int id = 0;
   String icon = '';
   String name = '';
   String desc = '';
-  int price = 0;
+  double price = 0;
+  double originalPrice = 0;
 
   ExamGoodEntity();
 
@@ -26,6 +26,9 @@ class ExamGoodEntity {
     if (json['price'] != null) {
       entity.price = json['price'];
     }
+    if (json['originalPrice'] != null) {
+      entity.price = json['originalPrice'];
+    }
     return entity;
   }
 
@@ -36,7 +39,7 @@ class ExamGoodEntity {
       'name': name,
       'desc': desc,
       'price': price,
+      'originalPrice': originalPrice,
     };
   }
-
 }

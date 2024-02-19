@@ -1074,7 +1074,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                             )),
                                       ),
                                     ),
-                                    // Gaps.vGap20,
+                                    Gaps.vGap24,
                                   ],
                                 ),
                                 isTalk

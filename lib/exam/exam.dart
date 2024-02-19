@@ -97,7 +97,7 @@ class _ExamPageState extends State<ExamPage>
       Map<String, dynamic> examPermissionMap = json.decode(result.toString());
       ExamPermissionBean examPermissioBean =
           ExamPermissionBean.fromJson(examPermissionMap);
-      Log.e("=============");
+      Log.e("还有几次=============");
       Log.e(examPermissioBean.data.leftTime.toString());
       Log.e("=============");
       number = examPermissioBean.data.leftTime;
@@ -152,7 +152,10 @@ class _ExamPageState extends State<ExamPage>
     // _examPagePresenter.getExamPermission();
 
     // _homeProvider = Provider.of<HomeProvider>(context, listen: false);
-    getStudyInfo();
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      getStudyInfo();
+    });
   }
 
   void stopVoice() async {
@@ -878,27 +881,29 @@ class _ExamPageState extends State<ExamPage>
 
   @override
   void sendSuccess(int leftTime, int state) {
-    // setState(() {
-    //   number = leftTime;
-    // });
+    setState(() {
+      number = leftTime;
+    });
 
-    // if (leftTime > 0) {
-    NavigatorUtils.push(
-      context,
-      // ExamRouter.mockExaminationOnePage,
-      "${ExamRouter.mockExaminationOnePage}?state=$state",
-    );
-    // } else {
-    //   showModalBottomSheet(
-    //     context: context,
-    //     backgroundColor: Colors.transparent,
-    //     barrierColor: Colors.transparent,
-    //     isScrollControlled: true,
-    //     isDismissible: false,
-    //     builder: (_) => ExamPurchasePage(
-    //       onPurchased: () {},
-    //     ),
-    //   );
-    // }
+    if (leftTime > 0) {
+      NavigatorUtils.push(
+        context,
+        // ExamRouter.mockExaminationOnePage,
+        "${ExamRouter.mockExaminationOnePage}?state=$state",
+      );
+    } else {
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        barrierColor: Colors.transparent,
+        isScrollControlled: true,
+        isDismissible: false,
+        builder: (_) => ExamPurchasePage(
+          onPurchased: () {
+            getStudyInfo();
+          },
+        ),
+      );
+    }
   }
 }
