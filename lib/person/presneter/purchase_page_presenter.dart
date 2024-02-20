@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:Bubble/home/entity/base_config_entity.dart';
 import 'package:Bubble/person/entity/good_entity.dart';
+import 'package:dio/dio.dart';
 import 'package:fluwx/fluwx.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:tobias/tobias.dart';

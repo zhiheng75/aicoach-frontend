@@ -65,9 +65,9 @@ class _HomeTabbarState extends State<HomeTabbar> {
           if (isSelected) {
             return;
           }
-          // 场景则弹窗
-          if (value == 'scene') {
-            LoginManager.checkLogin(context, () {
+          LoginManager.checkLogin(context, () {
+            // 场景则弹窗
+            if (value == 'scene') {
               showModalBottomSheet(
                 context: context,
                 backgroundColor: Colors.transparent,
@@ -77,11 +77,11 @@ class _HomeTabbarState extends State<HomeTabbar> {
                 enableDrag: false,
                 builder: (_) => const SelectScene(),
               );
-            });
 
-            return;
-          }
-          widget.changeTab(value);
+              return;
+            }
+            widget.changeTab(value);
+          });
         },
         child: Text(
           text,

@@ -287,7 +287,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
         whenFinished: () {
           //老师问
           if (bodyType == "A") {
-            answerAudio = mockPart1Phase1[number].answerAudio!;
+            answerAudio = mockPart1Phase2[number].answerAudio!;
             //考伴回答
             mockKlowPlay(answerAudio);
           } else {
@@ -308,7 +308,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
         whenFinished: () {
           //老师问
           if (bodyType == "A") {
-            answerAudio = mockPart1Phase1[number].answerAudio!;
+            answerAudio = mockPart2Phase1[number].answerAudio!;
             //考伴回答
             mockKlowPlay(answerAudio);
           } else {

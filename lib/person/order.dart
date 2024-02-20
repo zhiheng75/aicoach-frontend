@@ -63,6 +63,7 @@ class _OrderPageState extends State<OrderPage>
         List<dynamic> data = result.data as List<dynamic>;
         List<OrderEntity> list =
             data.map((item) => OrderEntity.fromJson(item)).toList();
+        Log.e(list.toString());
         _orderList.addAll(list);
         _loading = 0;
         setState(() {});
@@ -159,16 +160,18 @@ class _OrderPageState extends State<OrderPage>
                     letterSpacing: 0.05,
                   ),
                 ),
-                Text(
-                  '/${order.unit}',
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                    height: 18.7 / 16.0,
-                    letterSpacing: 0.05,
-                  ),
-                ),
+                order.type == 1
+                    ? Text(
+                        '/${order.unit}',
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                          height: 18.7 / 16.0,
+                          letterSpacing: 0.05,
+                        ),
+                      )
+                    : Container(),
               ],
             ),
           ],

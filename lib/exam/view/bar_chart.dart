@@ -73,7 +73,7 @@ class BarPainter extends CustomPainter {
   double xStep = 0; // x 间隔
   double yStep = 0; // y 间隔
 
-  double maxData = 100; // 数据最大值
+  double maxData = 5; // 数据最大值
 
   BarPainter(
     this.xData,
@@ -136,24 +136,24 @@ class BarPainter extends CustomPainter {
   ///绘制y轴文字
   void drawYText(Canvas canvas, Size size) {
     canvas.save();
-    double numStep = maxData / 2 / 2;
-    for (int i = 0; i <= 4; i++) {
-      // if (i == 0) {
-      //   // _drawAxisText(canvas, '0', offset: Offset(-5, 2));
-      //   canvas.translate(0, -yStep);
-      //   continue;
-      // }
+    // double numStep = maxData / 2 / 2;
+    // for (int i = 0; i <= 4; i++) {
+    //   // if (i == 0) {
+    //   //   // _drawAxisText(canvas, '0', offset: Offset(-5, 2));
+    //   //   canvas.translate(0, -yStep);
+    //   //   continue;
+    //   // }
 
-      canvas.drawLine(
-          Offset(0, 0), Offset(size.width - _kScaleHeight, 0), gridPaint);
-      // canvas.drawLine(Offset(0, 0), Offset(0, 0), gridPaint);
+    //   canvas.drawLine(
+    //       Offset(0, 0), Offset(size.width - _kScaleHeight, 0), gridPaint);
+    //   // canvas.drawLine(Offset(0, 0), Offset(0, 0), gridPaint);
 
-      String str = '${(numStep * i).toStringAsFixed(0)}';
-      _drawAxisText(canvas, str, offset: Offset(-5, 2));
-      // _drawAxisText(canvas, "45", offset: Offset(-5, 2));
+    //   String str = '${(numStep * i).toStringAsFixed(0)}';
+    //   _drawAxisText(canvas, str, offset: Offset(-5, 2));
+    //   // _drawAxisText(canvas, "45", offset: Offset(-5, 2));
 
-      canvas.translate(0, -yStep);
-    }
+    //   canvas.translate(0, -yStep);
+    // }
     canvas.restore();
   }
 
@@ -179,7 +179,7 @@ class BarPainter extends CustomPainter {
           unknowPaint);
       String str = (peopleData[i]).toStringAsFixed(0);
       _drawAxisText(canvas, str,
-          offset: Offset(-xStep + barWidth - 10, y - 15),
+          offset: Offset(-xStep + barWidth - 14, y - 15),
           color: Color(0xFF656A72));
 
       canvas.translate(xStep, 0);

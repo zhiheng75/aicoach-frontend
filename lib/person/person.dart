@@ -86,6 +86,12 @@ class _PersonPageState extends State<PersonPage>
     NavigatorUtils.push(context, path);
   }
 
+  void tapInvitationcCodeMenu(String path) {
+    // NavigatorUtils.goWebViewPage(
+    //     context, "注销账号", "http://www.shenmo-ai.com/account_cancellation/");
+    NavigatorUtils.push(context, path);
+  }
+
   void tapSignOUTMenu() {
     NavigatorUtils.goWebViewPage(
         context, "注销账号", "http://www.shenmo-ai.com/account_cancellation/");
@@ -590,6 +596,12 @@ class _PersonPageState extends State<PersonPage>
             'person_fankui',
             '意见反馈',
             onPress: () => tapMenu(PersonalRouter.personalSuggestion),
+          ),
+          menuItem(
+            'person_yaoqing',
+            '邀请码',
+            onPress: () =>
+                tapInvitationcCodeMenu(PersonalRouter.personalInvitationcCode),
           ),
           menuItem(
             'person_guanyu',

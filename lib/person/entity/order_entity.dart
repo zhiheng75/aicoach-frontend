@@ -1,5 +1,4 @@
 class OrderEntity {
-
   int id = 0;
   String name = '';
   String no = '';
@@ -8,6 +7,7 @@ class OrderEntity {
   String payType = '';
   num price = 0;
   String unit = '';
+  int type = 1;
 
   OrderEntity();
 
@@ -38,6 +38,9 @@ class OrderEntity {
     if (json['unit'] != null) {
       entity.unit = json['unit'];
     }
+    if (json['type'] != null) {
+      entity.type = json['type'];
+    }
     return entity;
   }
 
@@ -51,7 +54,7 @@ class OrderEntity {
       'payment_method': payType,
       'goods_price': price,
       'unit': unit,
+      'type': type,
     };
   }
-
 }

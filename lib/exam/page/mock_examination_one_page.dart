@@ -32,7 +32,7 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
         BasePageMixin<MockExaminationOnePage, ExamExaminationPagePresenter>,
         AutomaticKeepAliveClientMixin<MockExaminationOnePage>
     implements MockExaminationView {
-  CancelToken? _cancelToken; // 取消令牌
+  // CancelToken? _cancelToken; // 取消令牌
 
   late BuildContext bcontext;
 
@@ -40,6 +40,7 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
   late String ZHText = "";
   late String ENText = "";
   final MediaUtils _mediaUtils = MediaUtils();
+  int next = 1;
 
   Widget numberWidget = Row(
     mainAxisAlignment: MainAxisAlignment.center,
@@ -161,6 +162,7 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
         title: "离开考场",
         content: "模拟考试进行中,\n请尽可能一次性完成整场模拟考试", clickCallback: (index, text) {
       if (index == 1) {
+        next = 2;
         Navigator.pop(context);
       }
     });
@@ -170,12 +172,13 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _cancelToken = CancelToken(); // 创建取消令牌
+    next = 1;
+    // _cancelToken = CancelToken(); // 创建取消令牌
   }
 
   @override
   void dispose() {
-    _cancelToken!.cancel(); // 取消延迟操作
+    // _cancelToken!.cancel(); // 取消延迟操作
     super.dispose();
   }
 
@@ -287,25 +290,28 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
     _mediaUtils.play(
       url: examStepBean.data.introduction.audio,
       whenFinished: () {
-        // _bottomBarControll.setDisabled(false);
-        if (!_cancelToken!.isCancelled) {
-          showToast("恭喜你，该环节已完成，即将进入下一考试环节");
+        if (next == 2) {
+          return;
         }
+        // _bottomBarControll.setDisabled(false);
+        // if (!_cancelToken!.isCancelled) {
+        showToast("恭喜你，该环节已完成，即将进入下一考试环节");
+        // }
 
-        Future.delayed(const Duration(seconds: 2), () {
-          // // 强制横屏
-          // SystemChrome.setPreferredOrientations([
-          //   DeviceOrientation.landscapeLeft,
-          //   // DeviceOrientation.landscapeRight
-          // ]);
-          if (!_cancelToken!.isCancelled) {
-            NavigatorUtils.push(
-                context,
-                replace: true,
-                "${ExamRouter.mockExaminationTwoPage}?state=${widget.state}",
-                arguments: examStepBean);
-          }
-        });
+        // Future.delayed(const Duration(seconds: 2), () {
+        //   // // 强制横屏
+        //   // SystemChrome.setPreferredOrientations([
+        //   //   DeviceOrientation.landscapeLeft,
+        //   //   // DeviceOrientation.landscapeRight
+        //   // ]);
+        // if (!_cancelToken!.isCancelled) {
+        NavigatorUtils.push(
+            context,
+            replace: true,
+            "${ExamRouter.mockExaminationTwoPage}?state=${widget.state}",
+            arguments: examStepBean);
+        // }
+        // });
       },
     );
     setState(() {});

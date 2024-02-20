@@ -134,10 +134,9 @@ class _ExamPageState extends State<ExamPage>
   void startExam() {
     // isExam = true;
     if (LoginManager.isLogin()) {
-      if (!preventDoubleTap(interval: 10000)) {
-        //  toast('请勿重复点击');
-        return;
-      }
+      // if (!preventDoubleTap(interval: 10000)) {
+      //   return;
+      // }
       stopVoice();
       _examPagePresenter.getExamPermission();
     } else {
@@ -644,10 +643,10 @@ class _ExamPageState extends State<ExamPage>
       "整体得分",
     ];
     List<double> peopleData = [
-      85,
-      45,
-      65,
-      25,
+      2,
+      4,
+      2,
+      3,
     ];
     List<Color> colorData = [
       Colours.color_51D8FF,

@@ -1,3 +1,4 @@
+import 'package:Bubble/person/invitation_code_page.dart';
 import 'package:fluro/fluro.dart';
 
 import '../routers/i_router.dart';
@@ -8,11 +9,11 @@ import 'purchase.dart';
 import 'setting.dart';
 import 'suggestion_page.dart';
 
-class PersonalRouter implements IRouterProvider{
-
+class PersonalRouter implements IRouterProvider {
   static String purchase = '/purchase';
   static String setting = '/setting';
   static String personalSuggestion = '/personal/Suggestion';
+  static String personalInvitationcCode = '/personal/InvitationcCode';
 
   static String person = '/person';
   static String order = '/order';
@@ -20,12 +21,19 @@ class PersonalRouter implements IRouterProvider{
 
   @override
   void initRouter(FluroRouter router) {
-    router.define(person, handler: Handler(handlerFunc: (_, __) => const PersonPage()));
-    router.define(setting, handler: Handler(handlerFunc: (_, __) => const SettingPage()));
-    router.define(purchase, handler: Handler(handlerFunc: (_, __) => const PurchasePage()));
-    router.define(order, handler: Handler(handlerFunc: (_, __) => const OrderPage()));
-    router.define(personalSuggestion, handler: Handler(handlerFunc: (_, __) => const SuggestionPage()));
-    router.define(about, handler: Handler(handlerFunc: (_, __) => const AboutPage()));
+    router.define(person,
+        handler: Handler(handlerFunc: (_, __) => const PersonPage()));
+    router.define(setting,
+        handler: Handler(handlerFunc: (_, __) => const SettingPage()));
+    router.define(purchase,
+        handler: Handler(handlerFunc: (_, __) => const PurchasePage()));
+    router.define(order,
+        handler: Handler(handlerFunc: (_, __) => const OrderPage()));
+    router.define(personalSuggestion,
+        handler: Handler(handlerFunc: (_, __) => const SuggestionPage()));
+    router.define(personalInvitationcCode,
+        handler: Handler(handlerFunc: (_, __) => const InvitationCodePage()));
+    router.define(about,
+        handler: Handler(handlerFunc: (_, __) => const AboutPage()));
   }
-
 }

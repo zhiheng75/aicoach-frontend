@@ -167,9 +167,9 @@ class _MyExaminationPageState extends State<MyExaminationPage>
                     height: 8,
                   ),
                   Gaps.hGap6,
-                  const Text(
-                    '5发音',
-                    style: TextStyle(
+                  Text(
+                    '发音 ${_peopleData[1]}分',
+                    style: const TextStyle(
                       fontSize: 13.0,
                       color: Colors.white,
                     ),
@@ -188,9 +188,9 @@ class _MyExaminationPageState extends State<MyExaminationPage>
                     height: 8,
                   ),
                   Gaps.hGap6,
-                  const Text(
-                    '5互动',
-                    style: TextStyle(
+                  Text(
+                    '互动 ${_peopleData[2]}分',
+                    style: const TextStyle(
                       fontSize: 13.0,
                       color: Colors.white,
                     ),
@@ -209,9 +209,9 @@ class _MyExaminationPageState extends State<MyExaminationPage>
                     height: 8,
                   ),
                   Gaps.hGap6,
-                  const Text(
-                    '4语法词汇',
-                    style: TextStyle(
+                  Text(
+                    '语法词汇 ${_peopleData[0]}分',
+                    style: const TextStyle(
                       fontSize: 13.0,
                       color: Colors.white,
                     ),
@@ -230,9 +230,9 @@ class _MyExaminationPageState extends State<MyExaminationPage>
                     height: 8,
                   ),
                   Gaps.hGap6,
-                  const Text(
-                    '4整体得分',
-                    style: TextStyle(
+                  Text(
+                    '整体得分 ${_peopleData[3]}分',
+                    style: const TextStyle(
                       fontSize: 13.0,
                       color: Colors.white,
                     ),
