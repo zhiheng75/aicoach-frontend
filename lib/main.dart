@@ -82,6 +82,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key, this.home, this.theme}) {
     Log.init();
     initDio();
+    initUM();
     Routes.initRoutes();
   }
 
@@ -115,13 +116,6 @@ class MyApp extends StatelessWidget {
   }
 
   void initUM() {
-    // janalytics.setup(
-    //   appKey: jPushAppKey,
-    //   channel: "xuetang",
-    // );
-    // janalytics.initCrashHandler();
-    // janalytics.setAnalyticsReportPeriod(1800);
-    // FlutterBugly.init(androidAppId: "6ed208e8cc", iOSAppId: "f33f7e1ef8");
     UmengCommonSdk.initCommon(
         '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', 'Umeng');
     UmengCommonSdk.setPageCollectionModeManual();
