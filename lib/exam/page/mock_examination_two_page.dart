@@ -277,7 +277,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       );
     } else if (numberPle == 1) {
       bodyType = mockPart1Phase2[number].to;
-      questionID = mockPart1Phase1[number].id.toString();
+      questionID = mockPart1Phase2[number].id.toString();
       //老师问
       questionAudio = mockPart1Phase2[number].questionAudio;
       serverMessage = mockPart1Phase2[number].question;
@@ -297,7 +297,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       );
     } else if (numberPle == 2) {
       bodyType = mockPart2Phase1[number].to;
-      questionID = mockPart1Phase1[number].id.toString();
+      questionID = mockPart2Phase1[number].id.toString();
 
       //老师问
       questionAudio = mockPart2Phase1[number].questionAudio;
@@ -318,7 +318,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       );
     } else if (numberPle == 3) {
       bodyType = mockPart2Phase2[number].to;
-      questionID = mockPart1Phase1[number].id.toString();
+      questionID = mockPart2Phase2[number].id.toString();
       serverMessage = "";
 
       // 学生问逻辑在按钮里面
