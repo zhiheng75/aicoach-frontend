@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/person/entity/basec_onfig_bean.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/confirm_utils.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -218,13 +219,26 @@ class _PurchasePageState extends State<PurchasePage>
     if (phone == "17001234567") {
       Navigator.of(context).pop();
     } else {
-      myAlert.showAlert(context, title: "确定放弃购买吗?", content: "放手容易,再遇见好难",
-          clickCallback: (index, text) {
-        if (index == 1) {
-          Navigator.pop(context);
-        }
-      });
+      ConfirmUtils.show(
+        context: context,
+        title: '   确定放弃购买吗?\n放手容易,再遇见好难',
+        buttonDirection: 'vertical',
+        cancelButtonText: '立即购买',
+        confirmButtonText: "狠心离开",
+        onConfirm: onConfirm,
+      );
+
+      // myAlert.showAlert(context, title: "确定放弃购买吗?", content: "放手容易,再遇见好难",
+      //     clickCallback: (index, text) {
+      //   if (index == 1) {
+      //     Navigator.pop(context);
+      //   }
+      // });
     }
+  }
+
+  void onConfirm() {
+    Navigator.pop(context);
   }
 
   @override

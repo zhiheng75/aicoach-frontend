@@ -593,25 +593,25 @@ class _PersonPageState extends State<PersonPage>
             onPress: () => tapMenu(PersonalRouter.order),
           ),
           menuItem(
-            'person_fankui',
-            '意见反馈',
-            onPress: () => tapMenu(PersonalRouter.personalSuggestion),
-          ),
-          menuItem(
             'person_yaoqing',
             '邀请码',
             onPress: () =>
                 tapInvitationcCodeMenu(PersonalRouter.personalInvitationcCode),
           ),
           menuItem(
-            'person_guanyu',
-            '注销账号',
-            onPress: () => tapSignOUTMenu(),
+            'person_fankui',
+            '意见反馈',
+            onPress: () => tapMenu(PersonalRouter.personalSuggestion),
           ),
           menuItem(
             'person_guanyu',
             '关于我们',
             onPress: () => tapMenu(PersonalRouter.about),
+          ),
+          menuItem(
+            'vector_icon',
+            '注销账号',
+            onPress: () => tapSignOUTMenu(),
           ),
         ],
       ),
