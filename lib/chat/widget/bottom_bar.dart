@@ -2,6 +2,7 @@
 
 import 'dart:typed_data';
 
+import 'package:Bubble/chat/widget/background.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -199,7 +200,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       // 创建列表播放
       _listPlayer = _mediaUtils.createListPlay(() {
         widget.controller.setDisabled(false);
-      }, widget.isNormalChat);
+      }, widget.isNormalChat  );
       _homeProvider.addNormalMessage(_answer!);
     }
     if (answer is String) {
@@ -370,49 +371,57 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           }
           onEnd(_);
         },
-        child: Container(
-          height: 50.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100.0),
-            border: Border.all(
-              width: 1.0,
-              style: BorderStyle.solid,
-              color: Colours.color_001652,
-            ),
-            color: disabled ? const Color(0xFFF8F8F8) : null,
-            gradient: disabled
-                ? null
-                : const LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    colors: [
-                      Colours.color_9AC3FF,
-                      Colours.color_FF71E0,
-                    ],
-                  ),
-          ),
-          alignment: Alignment.center,
-          child: const Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              LoadAssetImage(
-                'maikefeng',
-                width: 24.0,
-                height: 24.0,
-              ),
-              SizedBox(
-                width: 10.0,
-              ),
-              Text(
-                '按住说话',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w400,
+        child: StreamBuilder(
+          stream: AvatarController().getStream(),
+          builder: (_, snapshot) {
+            dynamic data = snapshot.data;
+            return Container(
+              height: 50.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100.0),
+                border: Border.all(
+                  width: 1.0,
+                  style: BorderStyle.solid,
                   color: Colours.color_001652,
                 ),
+                color: data == true ? null : disabled ? const Color(0xFFF8F8F8) : null,
+                gradient: data == true || !disabled ? const LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  colors: [
+                    Colours.color_9AC3FF,
+                    Colours.color_FF71E0,
+                  ],
+                ) : null,
               ),
-            ],
-          ),
+              alignment: Alignment.center,
+              child: data == true ? const LoadAssetImage(
+                'shengwen',
+                height: 10.0,
+                fit: BoxFit.fitHeight,
+              ) : const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  LoadAssetImage(
+                    'maikefeng',
+                    width: 24.0,
+                    height: 24.0,
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(
+                    '按住说话',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colours.color_001652,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       );
     }

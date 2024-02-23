@@ -300,6 +300,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       _homeProvider.addNormalMessage(normalMessage);
       _mediaUtils.play(
         url: _character!.audio,
+        useAvatar: true,
         whenFinished: () {
           _bottomBarControll.setDisabled(false);
         },
@@ -543,7 +544,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
                     const LoadAssetImage(
                       'slide_tip',
                       width: 229.0,
-                      height: 229.0,
+                      height: 406.0,
                     ),
                   ],
                 ),
