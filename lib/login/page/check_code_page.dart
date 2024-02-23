@@ -308,7 +308,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   Timer? _timer;
 
   ///当前倒计时秒数
-  int? _seconds;
+  int? _seconds = 30;
 
   ///能否重新发送
   bool canResend = false;

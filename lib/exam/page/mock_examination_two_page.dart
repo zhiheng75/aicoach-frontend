@@ -74,6 +74,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   late List<Part1Phase1> mockPart2Phase1 = [];
   late List<Part1Phase1> mockPart2Phase2 = [];
   late String image = "";
+  late String teacherEn = "";
+  late String teacherAudio = "";
 
   //第几步
   late int numberPle = 0;
@@ -95,6 +97,11 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   late String nameName = "";
   late String serverMessage = "";
 
+  //1老师2考伴3考生
+  late int soundPrintType = 0;
+
+  late int first = 0;
+
   bool validateInput(String? input) {
     if (input == null) {
       return false;
@@ -109,10 +116,10 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
 
   //启动倒计时器
   void _startTimer() {
-    if (numberPle == 2) {
-      _seconds = 24;
+    if (numberPle == 2 || numberPle == 3) {
+      _seconds = 40;
     } else {
-      _seconds = 12;
+      _seconds = 30;
     }
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _seconds = _seconds! - 1;
@@ -170,7 +177,9 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       mockPart1Phase2 = widget.entity.data.part1Phase2;
       mockPart2Phase1 = widget.entity.data.part2Phase1.list;
       image = widget.entity.data.part2Phase1.base.image;
-      mockPart2Phase2 = widget.entity.data.part2Phase2;
+      mockPart2Phase2 = widget.entity.data.part2Phase2.list;
+      teacherEn = widget.entity.data.part2Phase2.base.en;
+      teacherAudio == widget.entity.data.part2Phase2.base.audio;
       mockID = widget.entity.data.id.toString();
     });
 
@@ -201,6 +210,9 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   void didPop() {
     // TODO: implement didPop
     super.didPop();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
   }
 
   void nextMock() {
@@ -209,6 +221,10 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       if (number < mockPart1Phase1.length - 1) {
         number = number + 1;
       } else {
+        showToast(
+          "恭喜你，该环节已完成，即将进入下一考试环节",
+        );
+
         numberPle = numberPle + 1;
         number = 0;
       }
@@ -216,6 +232,10 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       if (number < mockPart1Phase2.length - 1) {
         number = number + 1;
       } else {
+        showToast(
+          "恭喜你，该环节已完成，即将进入下一考试环节",
+        );
+
         numberPle = numberPle + 1;
         number = 0;
       }
@@ -223,6 +243,9 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       if (number < mockPart2Phase1.length - 1) {
         number = number + 1;
       } else {
+        showToast(
+          "恭喜你，该环节已完成，即将进入下一考试环节",
+        );
         numberPle = numberPle + 1;
         number = 0;
       }
@@ -262,9 +285,15 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       //老师问
       questionAudio = mockPart1Phase1[number].questionAudio;
       serverMessage = mockPart1Phase1[number].question;
+      setState(() {
+        soundPrintType = 1;
+      });
       _mediaUtils.play(
         url: questionAudio,
         whenFinished: () {
+          setState(() {
+            soundPrintType = 0;
+          });
           //老师问
           if (bodyType == "A") {
             answerAudio = mockPart1Phase1[number].answerAudio!;
@@ -281,11 +310,15 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       //老师问
       questionAudio = mockPart1Phase2[number].questionAudio;
       serverMessage = mockPart1Phase2[number].question;
-
+      setState(() {
+        soundPrintType = 1;
+      });
       _mediaUtils.play(
         url: questionAudio,
         whenFinished: () {
-          //老师问
+          setState(() {
+            soundPrintType = 0;
+          }); //老师问
           if (bodyType == "A") {
             answerAudio = mockPart1Phase2[number].answerAudio!;
             //考伴回答
@@ -302,11 +335,15 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       //老师问
       questionAudio = mockPart2Phase1[number].questionAudio;
       serverMessage = mockPart2Phase1[number].question;
-
+      setState(() {
+        soundPrintType = 1;
+      });
       _mediaUtils.play(
         url: questionAudio,
         whenFinished: () {
-          //老师问
+          setState(() {
+            soundPrintType = 0;
+          }); //老师问
           if (bodyType == "A") {
             answerAudio = mockPart2Phase1[number].answerAudio!;
             //考伴回答
@@ -319,19 +356,27 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
     } else if (numberPle == 3) {
       bodyType = mockPart2Phase2[number].to;
       questionID = mockPart2Phase2[number].id.toString();
-      serverMessage = "";
 
-      // 学生问逻辑在按钮里面
-      // questionAudio = mockPart2Phase2[number].questionAudio;
+      questionAudio = teacherAudio;
+      serverMessage = teacherEn;
 
-      if (bodyType == "B2A") {
-        // answerAudio = mockPart2Phase2[number].answerAudio!;
-        //考生提问,考办回答
-        // mockKlowPlay(answerAudio);
+      if (first == 0) {
+        setState(() {
+          soundPrintType = 1;
+        });
+        _mediaUtils.play(
+          url: teacherAudio,
+          whenFinished: () {
+            setState(() {
+              first = 1;
+              soundPrintType = 0;
+            }); //老师问
+            if (bodyType == "B2A") {}
+          },
+        );
+      } else {
+        if (bodyType == "B2A") {}
       }
-      // else {
-      //   //学生回答//走到倒计时
-      // }
     }
   }
 
@@ -439,7 +484,9 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
         // mockUP.answer.add(map);
         // upmap['answer'] = mockUP.answer;
         //考伴回答
-        mockKlowTwoPlay(data['speech_url']);
+        setState(() {
+          mockKlowTwoPlay(data['speech_url']);
+        });
       },
       onError: (code, msg) {
         _timer?.cancel();
@@ -450,10 +497,12 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
 
   void mockKlowTwoPlay(String answerAudio) {
     showConfirmDialog();
+    soundPrintType = 2;
     _mediaUtils.play(
       url: answerAudio,
       whenFinished: () {
         showToast("考伴回答完");
+        soundPrintType = 0;
         Navigator.pop(context);
         _timer?.cancel();
         nextMock();
@@ -475,10 +524,16 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   void mockKlowPlay(String answerAudio) {
     Future.delayed(const Duration(seconds: 2), () {
       showConfirmDialog();
+      setState(() {
+        soundPrintType = 2;
+      });
       _mediaUtils.play(
         url: answerAudio,
         whenFinished: () {
           showToast("考伴回答完");
+          setState(() {
+            soundPrintType = 0;
+          });
           Navigator.pop(context);
         },
       );
@@ -665,484 +720,510 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
     });
   }
 
+  Future<bool> _requestPop() async {
+    // 调用原生返回，返回原生页面，根据自身场景自己定义处理函数
+    try {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);
+      // Navigator.of(context).pop();
+      Navigator.pop(context);
+      Navigator.pop(context);
+    } on PlatformException catch (e) {
+      print(e);
+    }
+    return Future.value(false);
+  }
+
   @override
   Widget build(BuildContext context) {
     bcontext = context;
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.dark,
-      child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: ImageUtils.getAssetImage("splash_bg"),
-                      fit: BoxFit.fill)),
-              child: Column(
-                children: [
-                  XTCupertinoNavigationBar(
-                    backgroundColor: const Color(0xFFFFFFFF),
-                    border: null,
-                    padding: EdgeInsetsDirectional.zero,
-                    leading: NavigationBackWidget(onBack: onBack),
-                    middle: const Text(
-                      "KET考试模拟现场",
-                      style: TextStyle(fontWeight: FontWeight.normal),
+      child: WillPopScope(
+        onWillPop: _requestPop,
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: ImageUtils.getAssetImage("splash_bg"),
+                        fit: BoxFit.fill)),
+                child: Column(
+                  children: [
+                    XTCupertinoNavigationBar(
+                      backgroundColor: const Color(0xFFFFFFFF),
+                      border: null,
+                      padding: EdgeInsetsDirectional.zero,
+                      leading: NavigationBackWidget(onBack: onBack),
+                      middle: const Text(
+                        "KET考试模拟现场",
+                        style: TextStyle(fontWeight: FontWeight.normal),
+                      ),
+                      trailing: SizedBox(
+                          width: 120,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      numberPle == 0
+                                          ? 'assets/images/number_s_icon.png'
+                                          : 'assets/images/number_n_icon.png',
+                                    ),
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "1",
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 12,
+                                child: DashLine(
+                                  width: 1,
+                                  direction: Axis.horizontal,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      numberPle == 1
+                                          ? 'assets/images/number_s_icon.png'
+                                          : 'assets/images/number_n_icon.png',
+                                    ),
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "2",
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 12,
+                                child: DashLine(
+                                  width: 1,
+                                  direction: Axis.horizontal,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      numberPle == 2
+                                          ? 'assets/images/number_s_icon.png'
+                                          : 'assets/images/number_n_icon.png',
+                                    ),
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "3",
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 12,
+                                child: DashLine(
+                                  width: 1,
+                                  direction: Axis.horizontal,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      numberPle == 3
+                                          ? 'assets/images/number_s_icon.png'
+                                          : 'assets/images/number_n_icon.png',
+                                    ),
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "4",
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
                     ),
-                    trailing: SizedBox(
-                        width: 120,
+                    Gaps.vGap3,
+                    Expanded(
+                      child: SizedBox(
+                        height: double.infinity,
+                        width: double.infinity,
                         child: Row(
                           children: [
                             Container(
-                              width: 20,
-                              height: 20,
                               decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    numberPle == 0
-                                        ? 'assets/images/number_s_icon.png'
-                                        : 'assets/images/number_n_icon.png',
-                                  ),
-                                  fit: BoxFit.fitHeight,
-                                ),
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  "1",
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 12,
-                              child: DashLine(
-                                width: 1,
-                                direction: Axis.horizontal,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Container(
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    numberPle == 1
-                                        ? 'assets/images/number_s_icon.png'
-                                        : 'assets/images/number_n_icon.png',
-                                  ),
-                                  fit: BoxFit.fitHeight,
-                                ),
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  "2",
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 12,
-                              child: DashLine(
-                                width: 1,
-                                direction: Axis.horizontal,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Container(
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    numberPle == 2
-                                        ? 'assets/images/number_s_icon.png'
-                                        : 'assets/images/number_n_icon.png',
-                                  ),
-                                  fit: BoxFit.fitHeight,
-                                ),
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  "3",
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 12,
-                              child: DashLine(
-                                width: 1,
-                                direction: Axis.horizontal,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Container(
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    numberPle == 3
-                                        ? 'assets/images/number_s_icon.png'
-                                        : 'assets/images/number_n_icon.png',
-                                  ),
-                                  fit: BoxFit.fitHeight,
-                                ),
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  "4",
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
-                  ),
-                  Gaps.vGap3,
-                  Expanded(
-                    child: SizedBox(
-                      height: double.infinity,
-                      width: double.infinity,
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                            ),
-                            // color: Colors.white,
-                            width: 188,
-                            height: double.infinity,
-                            // margin: const EdgeInsets.all(10),
-                            child: Column(
-                              children: [
-                                Gaps.vGap5,
-                                Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colours.color_E8CCFE,
-                                    ),
-                                    padding: const EdgeInsets.only(
-                                        left: 8, right: 8, top: 4, bottom: 4),
-                                    child: const Text(
-                                      "考官",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black,
-                                      ),
-                                    )),
-                                Gaps.vGap5,
-                                peopleWidget(
-                                    "teach_icon", false, "口语考官：Andy老师"),
-                                Gaps.vGap5,
-                                peopleWidget(
-                                    "invigilate_icon", false, "计分考官：Andy老师"),
-                              ],
-                            ),
-                          ),
-                          Gaps.hGap5,
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
-                                    image:
-                                        ImageUtils.getAssetImage("splash_bg"),
-                                    fit: BoxFit.fill)),
-                            width: MediaQuery.of(context).size.width -
-                                188 * 2 -
-                                6.w * 2,
-                            // width: double.infinity,
+                                color: Colors.white,
+                              ),
+                              // color: Colors.white,
+                              width: 188,
+                              height: double.infinity,
+                              // margin: const EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  Gaps.vGap5,
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colours.color_E8CCFE,
+                                      ),
+                                      padding: const EdgeInsets.only(
+                                          left: 8, right: 8, top: 4, bottom: 4),
+                                      child: const Text(
+                                        "考官",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                        ),
+                                      )),
+                                  Gaps.vGap5,
+                                  peopleWidget(
+                                      "teach_icon",
+                                      soundPrintType == 1 ? true : false,
+                                      "口语考官：Andy老师"),
+                                  Gaps.vGap5,
+                                  peopleWidget(
+                                      "invigilate_icon", false, "计分考官：Andy老师"),
+                                ],
+                              ),
+                            ),
+                            Gaps.hGap5,
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
+                                      image:
+                                          ImageUtils.getAssetImage("splash_bg"),
+                                      fit: BoxFit.fill)),
+                              width: MediaQuery.of(context).size.width -
+                                  188 * 2 -
+                                  6.w * 2,
+                              // width: double.infinity,
 
-                            height: double.infinity,
-                            child: Stack(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Gaps.vGap10,
-                                    numberPle == 3
-                                        ? Center(
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  padding:
-                                                      const EdgeInsets.all(8),
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      color: Colors.white),
-                                                  child: Text(
-                                                    " 倒计时: ${_seconds}s ",
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Gaps.vGap10,
-                                                Text(
-                                                  numberPle == 3
-                                                      ? "请提问第${number + 1}个问题"
-                                                      : "",
-                                                  style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        : numberPle == 2
-                                            ? Center(
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8),
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          color: Colors.white),
-                                                      child: Text(
-                                                        " 倒计时: ${_seconds}s ",
-                                                        style: const TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Gaps.vGap10,
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        showImageDialog();
-                                                      },
-                                                      child:
-                                                          const LoadAssetImage(
-                                                        "jpgicon",
-                                                        width: 82,
-                                                        height: 100,
-                                                      ),
-                                                    ),
-                                                    Gaps.vGap10,
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 20,
-                                                              right: 20,
-                                                              top: 6,
-                                                              bottom: 6),
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(25),
-                                                          color: Colors.black),
-                                                      child: Column(
-                                                        children: [
-                                                          const Text(
-                                                            "图片接收成功，可以点击查看大图",
-                                                            style: TextStyle(
-                                                              fontSize: 12,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ),
-                                                          Gaps.vGap2,
-                                                          Text(
-                                                            bodyType == "A"
-                                                                ? "考伴回答"
-                                                                : "考生回答",
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 14,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            : Center(
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8),
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          color: Colors.white),
-                                                      child: Text(
-                                                        " 倒计时: ${_seconds}s ",
-                                                        style: const TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Gaps.vGap10,
-                                                    Text(
-                                                      bodyType == "A"
-                                                          ? "考伴回答"
-                                                          : "考生回答",
+                              height: double.infinity,
+                              child: Stack(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Gaps.vGap10,
+                                      // numberPle == 3
+                                      //     ? Center(
+                                      //         child: Column(
+                                      //           children: [
+                                      //             Container(
+                                      //               padding:
+                                      //                   const EdgeInsets.all(8),
+                                      //               decoration: BoxDecoration(
+                                      //                   borderRadius:
+                                      //                       BorderRadius.circular(
+                                      //                           10),
+                                      //                   color: Colors.white),
+                                      //               child: Text(
+                                      //                 " 倒计时: ${_seconds}s ",
+                                      //                 style: const TextStyle(
+                                      //                   fontSize: 14,
+                                      //                   color: Colors.black,
+                                      //                 ),
+                                      //               ),
+                                      //             ),
+                                      //             Gaps.vGap10,
+                                      //             Text(
+                                      //               numberPle == 3
+                                      //                   ? "请提问第${number + 1}个问题"
+                                      //                   : "",
+                                      //               style: const TextStyle(
+                                      //                 fontSize: 14,
+                                      //                 color: Colors.black,
+                                      //               ),
+                                      //             ),
+                                      //           ],
+                                      //         ),
+                                      //       )
+                                      //     :
+                                      numberPle == 2 || numberPle == 3
+                                          ? Center(
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        color: Colors.white),
+                                                    child: Text(
+                                                      " 倒计时: ${_seconds}s ",
                                                       style: const TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.black,
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                  Gaps.vGap10,
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      showImageDialog();
+                                                    },
+                                                    child: LoadImage(
+                                                      image,
+                                                      fit: BoxFit.fill,
+                                                      width: 200,
+                                                      height: 100,
+                                                    ),
+                                                  ),
+                                                  Gaps.vGap10,
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 20,
+                                                            right: 20,
+                                                            top: 6,
+                                                            bottom: 6),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(25),
+                                                        color: Colors.black),
+                                                    child: Column(
+                                                      children: [
+                                                        const Text(
+                                                          "图片接收成功，可以点击查看大图",
+                                                          style: TextStyle(
+                                                            fontSize: 12,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                        Gaps.vGap2,
+                                                        Text(
+                                                          bodyType == "A"
+                                                              ? "考伴回答"
+                                                              : "考生回答",
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 14,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                    const Expanded(child: Gaps.empty),
-                                    Center(
-                                      child: GestureDetector(
-                                        onTapUp: (details) {
-                                          if (bodyType == "B" ||
-                                              bodyType == "B2A") {
-                                            mockKlowEndAnswer();
-                                            setState(() {
-                                              isTalk = false;
-                                            });
-                                          }
-                                        },
-                                        onTapDown: (details) {
-                                          if (bodyType == "B" ||
-                                              bodyType == "B2A") {
-                                            mockKlowStartAnswer();
-                                            setState(() {
-                                              isTalk = true;
-                                            });
-                                          } else {
-                                            showToast("请倾听..");
-                                          }
-                                        },
-                                        onTap: () {
-                                          //点击答题
-                                          // showConfirmDialog();
-
-                                          // NavigatorUtils.push(
-                                          //   context,
-                                          //   replace: true,
-                                          //   ExamRouter.mockExaminationendOnePage,
-                                          // );
-
-                                          // NavigatorUtils.push(
-                                          //   context,
-                                          //   replace: true,
-                                          //   ExamRouter.mockExaminationendTwoPage,
-                                          // );
-                                        },
-                                        child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(24),
-                                              color: Colours.color_examination,
-                                            ),
-                                            width: 180,
-                                            height: 40,
-                                            // color: Colours.color_examination,
-                                            child: const Center(
-                                              child: Text(
-                                                "长按答题",
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.white,
-                                                ),
+                                            )
+                                          : Center(
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        color: Colors.white),
+                                                    child: Text(
+                                                      " 倒计时: ${_seconds}s ",
+                                                      style: const TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Gaps.vGap10,
+                                                  Text(
+                                                    bodyType == "A"
+                                                        ? "考伴回答"
+                                                        : "考生回答",
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            )),
-                                      ),
-                                    ),
-                                    Gaps.vGap24,
-                                  ],
-                                ),
-                                isTalk
-                                    ? Center(
-                                        child: Container(
-                                            padding: const EdgeInsets.only(
-                                                left: 40,
-                                                right: 40,
-                                                top: 8,
-                                                bottom: 8),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                              color: Colors.black,
                                             ),
-                                            width: 160,
-                                            height: 56,
-                                            child: Image.asset(
-                                              'assets/images/shengbo.gif',
-                                              width: 30,
-                                              height: 18,
-                                              // fit: BoxFit.fill,
-                                            )),
-                                      )
-                                    : const Center(),
-                              ],
-                            ),
-                          ),
-                          Gaps.hGap5,
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                            ),
-                            // color: Colors.white,
-                            width: 188,
-                            height: double.infinity,
-                            child: Column(
-                              children: [
-                                Gaps.vGap5,
-                                Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colours.color_C1EBF7,
-                                    ),
-                                    padding: const EdgeInsets.only(
-                                        left: 8, right: 8, top: 4, bottom: 4),
-                                    child: const Text(
-                                      "学生",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black,
+                                      const Expanded(child: Gaps.empty),
+                                      Center(
+                                        child: GestureDetector(
+                                          onTapUp: (details) {
+                                            if (bodyType == "B" ||
+                                                bodyType == "B2A") {
+                                              mockKlowEndAnswer();
+                                              setState(() {
+                                                soundPrintType = 0;
+                                                isTalk = false;
+                                              });
+                                            }
+                                          },
+                                          onTapDown: (details) {
+                                            if (bodyType == "B" ||
+                                                bodyType == "B2A") {
+                                              mockKlowStartAnswer();
+                                              setState(() {
+                                                soundPrintType = 3;
+                                                isTalk = true;
+                                              });
+                                            } else {
+                                              showToast("请倾听..");
+                                            }
+                                          },
+                                          onTap: () {
+                                            //点击答题
+                                            // showConfirmDialog();
+
+                                            // NavigatorUtils.push(
+                                            //   context,
+                                            //   replace: true,
+                                            //   ExamRouter.mockExaminationendOnePage,
+                                            // );
+
+                                            // NavigatorUtils.push(
+                                            //   context,
+                                            //   replace: true,
+                                            //   ExamRouter.mockExaminationendTwoPage,
+                                            // );
+                                          },
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(24),
+                                                color:
+                                                    Colours.color_examination,
+                                              ),
+                                              width: 180,
+                                              height: 40,
+                                              // color: Colours.color_examination,
+                                              child: const Center(
+                                                child: Text(
+                                                  "长按答题",
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              )),
+                                        ),
                                       ),
-                                    )),
-                                Gaps.vGap5,
-                                peopleWidget(
-                                    "comittee_icon", false, "考生：$nameName"),
-                                Gaps.vGap5,
-                                peopleWidget("myhead_icon", false, "考伴：小红"),
-                              ],
+                                      Gaps.vGap24,
+                                    ],
+                                  ),
+                                  isTalk
+                                      ? Center(
+                                          child: Container(
+                                              padding: const EdgeInsets.only(
+                                                  left: 40,
+                                                  right: 40,
+                                                  top: 8,
+                                                  bottom: 8),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                color: Colors.black,
+                                              ),
+                                              width: 160,
+                                              height: 56,
+                                              child: Image.asset(
+                                                'assets/images/shengbo.gif',
+                                                width: 30,
+                                                height: 18,
+                                                // fit: BoxFit.fill,
+                                              )),
+                                        )
+                                      : const Center(),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                            Gaps.hGap5,
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
+                              // color: Colors.white,
+                              width: 188,
+                              height: double.infinity,
+                              child: Column(
+                                children: [
+                                  Gaps.vGap5,
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colours.color_C1EBF7,
+                                      ),
+                                      padding: const EdgeInsets.only(
+                                          left: 8, right: 8, top: 4, bottom: 4),
+                                      child: const Text(
+                                        "学生",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                        ),
+                                      )),
+                                  Gaps.vGap5,
+                                  peopleWidget(
+                                      "comittee_icon",
+                                      soundPrintType == 3 ? true : false,
+                                      "考生：$nameName"),
+                                  Gaps.vGap5,
+                                  peopleWidget(
+                                      "myhead_icon",
+                                      soundPrintType == 2 ? true : false,
+                                      "考伴：小红"),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ))),
+                  ],
+                ))),
+      ),
     );
   }
 

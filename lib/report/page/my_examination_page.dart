@@ -311,9 +311,9 @@ class _MyExaminationPageState extends State<MyExaminationPage>
                 ),
               ),
               const Text(
-                "KET证书等级",
+                "Pass at",
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   color: Colors.black,
                 ),
               ),
@@ -341,9 +341,9 @@ class _MyExaminationPageState extends State<MyExaminationPage>
                 ),
               ),
               const Text(
-                "剑桥考试成绩",
+                "Overall score",
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   color: Colors.black,
                 ),
               ),
@@ -373,9 +373,9 @@ class _MyExaminationPageState extends State<MyExaminationPage>
                 ),
               ),
               const Text(
-                "欧洲语言共同参考标准",
+                "CEFR",
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   color: Colors.black,
                 ),
               ),

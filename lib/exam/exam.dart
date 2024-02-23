@@ -562,9 +562,9 @@ class _ExamPageState extends State<ExamPage>
                 ],
               ),
               Text(
-                "KET证书等级",
+                "Pass at",
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   color: Colors.black,
                 ),
               ),
@@ -592,9 +592,9 @@ class _ExamPageState extends State<ExamPage>
                 ),
               ),
               Text(
-                "剑桥考试成绩",
+                "Overall score",
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   color: Colors.black,
                 ),
               ),
@@ -624,9 +624,9 @@ class _ExamPageState extends State<ExamPage>
                 ),
               ),
               Text(
-                "欧洲语言共同参考标准",
+                "CEFR",
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   color: Colors.black,
                 ),
               ),
@@ -737,7 +737,7 @@ class _ExamPageState extends State<ExamPage>
                                 fontSize: 20.0,
                               )),
                           TextSpan(
-                              text: '次模拟考试，争取达到Grade B+水平，加油宝贝！',
+                              text: '次模拟考试，争取达到Grade A水平，加油宝贝！',
                               style: TextStyle(fontSize: 15)),
                         ])),
                   ],

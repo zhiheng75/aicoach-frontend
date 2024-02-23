@@ -39,6 +39,8 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
   late ExamExaminationPagePresenter _examExaminationPagePresenter;
   late String ZHText = "";
   late String ENText = "";
+  late String instructionsAudio = "";
+
   final MediaUtils _mediaUtils = MediaUtils();
   int next = 1;
 
@@ -286,31 +288,60 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
     Log.e(examStepBean.data.id.toString());
     ZHText = examStepBean.data.introduction.zh;
     ENText = examStepBean.data.introduction.en;
+    instructionsAudio = examStepBean.data.introduction.instructions;
 
     _mediaUtils.play(
       url: examStepBean.data.introduction.audio,
       whenFinished: () {
-        if (next == 2) {
-          return;
-        }
-        // _bottomBarControll.setDisabled(false);
-        // if (!_cancelToken!.isCancelled) {
-        showToast("恭喜你，该环节已完成，即将进入下一考试环节");
+        _mediaUtils.play(
+          url: examStepBean.data.introduction.instructionsAudio,
+          whenFinished: () {
+            if (next == 2) {
+              return;
+            }
+            // _bottomBarControll.setDisabled(false);
+            // if (!_cancelToken!.isCancelled) {
+            showToast("恭喜你，该环节已完成，即将进入下一考试环节");
+            // }
+
+            Future.delayed(const Duration(seconds: 2), () {
+              //   // // 强制横屏
+              //   // SystemChrome.setPreferredOrientations([
+              //   //   DeviceOrientation.landscapeLeft,
+              //   //   // DeviceOrientation.landscapeRight
+              //   // ]);
+              // if (!_cancelToken!.isCancelled) {
+              NavigatorUtils.push(
+                  context,
+                  replace: true,
+                  "${ExamRouter.mockExaminationTwoPage}?state=${widget.state}",
+                  arguments: examStepBean);
+              // }
+            });
+          },
+        );
+
+        // if (next == 2) {
+        //   return;
         // }
+        // // _bottomBarControll.setDisabled(false);
+        // // if (!_cancelToken!.isCancelled) {
+        // showToast("恭喜你，该环节已完成，即将进入下一考试环节");
+        // // }
 
         // Future.delayed(const Duration(seconds: 2), () {
-        //   // // 强制横屏
-        //   // SystemChrome.setPreferredOrientations([
-        //   //   DeviceOrientation.landscapeLeft,
-        //   //   // DeviceOrientation.landscapeRight
-        //   // ]);
-        // if (!_cancelToken!.isCancelled) {
-        NavigatorUtils.push(
-            context,
-            replace: true,
-            "${ExamRouter.mockExaminationTwoPage}?state=${widget.state}",
-            arguments: examStepBean);
-        // }
+        //   //   // // 强制横屏
+        //   //   // SystemChrome.setPreferredOrientations([
+        //   //   //   DeviceOrientation.landscapeLeft,
+        //   //   //   // DeviceOrientation.landscapeRight
+        //   //   // ]);
+        //   // if (!_cancelToken!.isCancelled) {
+        //   NavigatorUtils.push(
+        //       context,
+        //       replace: true,
+        //       "${ExamRouter.mockExaminationTwoPage}?state=${widget.state}",
+        //       arguments: examStepBean);
+        //   // }
         // });
       },
     );

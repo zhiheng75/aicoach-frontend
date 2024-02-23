@@ -46,6 +46,7 @@ class Data {
   int camb;
   String ket;
   String ketNext;
+  // ignore: non_constant_identifier_names
   String KetShort;
 
   String europe;

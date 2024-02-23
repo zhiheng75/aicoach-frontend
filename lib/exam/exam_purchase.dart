@@ -11,6 +11,7 @@ import 'package:Bubble/person/presneter/purchase_page_presenter.dart';
 import 'package:Bubble/person/view/purchase_view.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/gestures.dart';
@@ -41,6 +42,8 @@ class ExamPurchasePage extends StatefulWidget {
 class _ExamPurchasePageState extends State<ExamPurchasePage>
     with
         BasePageMixin<ExamPurchasePage, PurchasePagePresenter>,
+        RouteAware,
+        WidgetsBindingObserver,
         AutomaticKeepAliveClientMixin<ExamPurchasePage>
     implements PurchaseView {
   late PurchasePagePresenter _purchasePagePresenter;
@@ -52,6 +55,15 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
   num _goodPrice = 0;
   String _pay = 'wxpay';
   bool _checked = false;
+  // int payInt = 0;
+// app状态
+  // AppLifecycleState? _appLifecycleState;
+
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   super.didChangeAppLifecycleState(state);
+  //   _appLifecycleState = state;
+  // }
 
   void init() {
     // getGoodsList();
@@ -86,6 +98,7 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
 
   void pay() {
     if (_pay == 'wxpay') {
+      // payInt = 1;
       _purchasePagePresenter.wxChatPay(_goodsId, _goodPrice, true);
     }
     if (_pay == 'alipay') {
@@ -115,7 +128,61 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
     pay();
   }
 
-  // void initData() {
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   Log.e('YM----->didChangeDependencies');
+
+  //   // routeObserver.subscribe(this, ModalRoute.of(context));
+  // }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // WidgetsBinding.instance.removeObserver(this);
+
+    // routeObserver.unsubscribe(this);
+  }
+
+  // @override
+  // void didPushNext() {
+  //   Log.e('YM----->didPushNext');
+  // }
+
+  // @override
+  // void didPop() {
+  //   Log.e('YM----->didPop');
+  // }
+
+  // @override
+  // void didPush() {
+  //   Log.e('YM----->didPush');
+  // }
+
+  // @override
+  // void didPopNext() {
+  //   Log.e('YM----->didPopNext');
+  // }
+
+  /// WidgetBindingObserver: 是一个Widget绑定观察器，通过它我们可以监听应用的生命周期
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   super.didChangeAppLifecycleState(state);
+
+  //   Log.e('state = $state');
+  //   if (state == AppLifecycleState.resumed) {
+  //     if (payInt == 1) {
+  //       // if (Device.isAndroid) {
+  //       //   Navigator.of(context).pop();
+  //       //   // EventBus().emit('PAY');
+  //       //   if (widget.onPurchased != null) {
+  //       //     widget.onPurchased!();
+  //       //   }
+  //       // }
+  //     }
+  //   }
+  // }
+
   //   _pageState = 'loading';
   //   setState(() {});
   //   CancelToken cancelToken = CancelToken();
@@ -217,6 +284,8 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
     getGoodList();
     // init();
     // Future.delayed(const Duration(milliseconds: 20), () {
@@ -616,6 +685,7 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
       myAlert.showAlert(context, title: "确定放弃购买吗?", content: "放手容易,再遇见好难",
           clickCallback: (index, text) {
         if (index == 1) {
+          EventBus().emit('PAY');
           Navigator.pop(context);
         }
       });

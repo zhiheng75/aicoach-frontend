@@ -41,58 +41,58 @@ class PurchasePagePresenter extends BasePagePresenter<PurchaseView> {
         params: params, onSuccess: (data) async {
       if (data != null) {
         WxPayDataData payData = data.data;
-        if (Device.isAndroid) {
-          FlutterToNative.jumpToWechatPay(json.encode(payData)).then((value) {
-            if (value == 0) {
-              Toast.show("支付成功");
-              getOrderStatus(payData.order_no, "WXPAY");
-            } else {
-              Toast.show("支付失败");
-            }
-          });
+        // if (Device.isAndroid) {
+        //   FlutterToNative.jumpToWechatPay(json.encode(payData)).then((value) {
+        //     if (value == 0) {
+        //       Toast.show("支付成功");
+        //       getOrderStatus(payData.order_no, "WXPAY");
+        //     } else {
+        //       Toast.show("支付失败");
+        //     }
+        //   });
+        // }
+        // if (Device.isIOS) {
+        Fluwx fluwx = Fluwx();
+        bool isRegistered = await fluwx.registerApi(
+          appId: payData.appid,
+          doOnAndroid: true,
+          doOnIOS: true,
+          universalLink: 'https://demo.shenmo-ai.net/ios/',
+        );
+        if (!isRegistered) {
+          Toast.show('支付失败');
+          return;
         }
-        if (Device.isIOS) {
-          Fluwx fluwx = Fluwx();
-          bool isRegistered = await fluwx.registerApi(
+        bool isInstalledWx = await fluwx.isWeChatInstalled;
+        if (!isInstalledWx) {
+          Toast.show('请先安装微信');
+          return;
+        }
+        // 设置监听
+        fluwx.addSubscriber((response) {
+          fluwx.clearSubscribers();
+          if (response.errCode == 0) {
+            Toast.show("支付成功");
+            getOrderStatus(payData.order_no, "WXPAY");
+          } else if (response.errCode == -2) {
+            Toast.show('取消支付');
+          } else {
+            Toast.show('支付失败:${response.errStr}');
+          }
+        });
+        fluwx.pay(
+          which: Payment(
             appId: payData.appid,
-            doOnAndroid: false,
-            doOnIOS: true,
-            universalLink: 'https://demo.shenmo-ai.net/ios/',
-          );
-          if (!isRegistered) {
-            Toast.show('支付失败');
-            return;
-          }
-          bool isInstalledWx = await fluwx.isWeChatInstalled;
-          if (!isInstalledWx) {
-            Toast.show('请先安装微信');
-            return;
-          }
-          // 设置监听
-          fluwx.addSubscriber((response) {
-            fluwx.clearSubscribers();
-            if (response.errCode == 0) {
-              Toast.show("支付成功");
-              getOrderStatus(payData.order_no, "WXPAY");
-            } else if (response.errCode == -2) {
-              Toast.show('取消支付');
-            } else {
-              Toast.show('支付失败:${response.errStr}');
-            }
-          });
-          fluwx.pay(
-            which: Payment(
-              appId: payData.appid,
-              partnerId: payData.partnerid,
-              packageValue: payData.package,
-              prepayId: payData.prepayId,
-              nonceStr: payData.noncestr,
-              timestamp: int.parse(payData.timestamp),
-              sign: payData.sign,
-            ),
-          );
-        }
+            partnerId: payData.partnerid,
+            packageValue: payData.package,
+            prepayId: payData.prepayId,
+            nonceStr: payData.noncestr,
+            timestamp: int.parse(payData.timestamp),
+            sign: payData.sign,
+          ),
+        );
       }
+      // }
     });
   }
 

@@ -252,7 +252,7 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    _examDetailBean.data.ket,
+                    _examDetailBean.data.KetShort,
                     style: const TextStyle(
                       fontSize: 30,
                       color: Colors.black,
@@ -269,9 +269,9 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
                 ],
               ),
               const Text(
-                "KET证书等级",
+                "Pass at",
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   color: Colors.black,
                 ),
               ),
@@ -299,9 +299,9 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
                 ),
               ),
               const Text(
-                "剑桥考试成绩",
+                "Overall score",
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   color: Colors.black,
                 ),
               ),
@@ -331,9 +331,9 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
                 ),
               ),
               const Text(
-                "欧洲语言共同参考标准",
+                "CEFR",
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   color: Colors.black,
                 ),
               ),
@@ -506,7 +506,7 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
                       ),
                       alignment: Alignment.center,
                       child: const Text(
-                        '点击购买模考训练包',
+                        '剩余训练10次,点击购买更多',
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w400,

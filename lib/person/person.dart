@@ -477,7 +477,7 @@ class _PersonPageState extends State<PersonPage>
                   text: const TextSpan(
                     children: [
                       TextSpan(
-                          text: '免费体验3天，每天',
+                          text: '免费体验',
                           style: TextStyle(
                             fontSize: 13.0,
                             fontWeight: FontWeight.w400,
@@ -486,7 +486,7 @@ class _PersonPageState extends State<PersonPage>
                             letterSpacing: 0.05,
                           )),
                       TextSpan(
-                          text: '15分钟',
+                          text: '45分钟',
                           style: TextStyle(
                             fontSize: 13.0,
                             fontWeight: FontWeight.w400,

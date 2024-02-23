@@ -126,6 +126,9 @@ class _MyTextFieldState extends State<MyTextField> {
       onTapOutside: (e) => {
         widget.focusNode?.unfocus(),
       },
+      onSubmitted: (e) => {
+        widget.focusNode?.unfocus(),
+      },
       onEditingComplete: () => {
         FocusScope.of(context).requestFocus(widget.focusNode),
       },
