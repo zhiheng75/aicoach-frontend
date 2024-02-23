@@ -176,6 +176,14 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   void confirmChangeCharacter(int characterIndex) {
     _isCharacterChanging = true;
     _bottomBarControll.setDisabled(true);
+
+    // 左右两侧图片
+    int pre = characterIndex > 0 ? characterIndex - 1 : _characterList.length - 1;
+    int next = characterIndex < _characterList.length - 1 ? characterIndex + 1 : 0;
+    String leftImage = _characterList.elementAt(pre).imageUrl;
+    String rightImage = _characterList.elementAt(next).imageUrl;
+    _backgroundController.setSideImage(leftImage, rightImage);
+
     _characterIndex = characterIndex;
     CharacterEntity character = _characterList[characterIndex];
     _character = character;
@@ -395,12 +403,12 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
           return;
         }
         hideSlideTip();
-        int pre = _characterIndex > 0 ? _characterIndex - 1 : _characterList.length - 1;
-        int next = _characterIndex < _characterList.length - 1 ? _characterIndex + 1 : 0;
+        // int pre = _characterIndex > 0 ? _characterIndex - 1 : _characterList.length - 1;
+        // int next = _characterIndex < _characterList.length - 1 ? _characterIndex + 1 : 0;
         _backgroundController.slideStart(
           position: details.globalPosition,
-          leftImage: _characterList.elementAt(pre).imageUrl,
-          rightImage: _characterList.elementAt(next).imageUrl,
+          // leftImage: _characterList.elementAt(pre).imageUrl,
+          // rightImage: _characterList.elementAt(next).imageUrl,
         );
       },
       onHorizontalDragUpdate: (details) {
@@ -504,6 +512,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
               controller: _bottomBarControll,
               recordController: _recordController,
               language: 'cn',
+              isNormalChat: true,
               onScrollEnd: () {
                 _listScrollController.scrollToEnd();
               },

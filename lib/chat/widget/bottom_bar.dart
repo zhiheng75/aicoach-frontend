@@ -29,6 +29,7 @@ class BottomBar extends StatefulWidget {
     required this.recordController,
     this.isCollectInformation,
     this.language,
+    this.isNormalChat = false,
     this.onScrollEnd,
   }) : super(key: key);
 
@@ -38,6 +39,7 @@ class BottomBar extends StatefulWidget {
   bool? isCollectInformation;
   String? language;
   final Function()? onScrollEnd;
+  final bool isNormalChat;
 
   @override
   State<BottomBar> createState() => _BottomBarState();
@@ -197,7 +199,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       // 创建列表播放
       _listPlayer = _mediaUtils.createListPlay(() {
         widget.controller.setDisabled(false);
-      });
+      }, widget.isNormalChat);
       _homeProvider.addNormalMessage(_answer!);
     }
     if (answer is String) {

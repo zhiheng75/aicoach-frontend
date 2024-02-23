@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:Bubble/chat/widget/background.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:dio/dio.dart';
@@ -144,6 +145,7 @@ class MediaUtils {
     List<Uint8List>? pcmBuffer,
     Uint8List? mp3Buffer,
     Function()? whenFinished,
+    bool useAvatar = false,
   }) async {
     whenFinished ??= () {};
     if (url == null && pcmBuffer == null && mp3Buffer == null) {
@@ -152,28 +154,28 @@ class MediaUtils {
     }
     // 创建
     if (url != null) {
-      FilePlayer filePlayerByUrl = FilePlayer(whenFinished);
+      FilePlayer filePlayerByUrl = FilePlayer(whenFinished, useAvatar);
       filePlayerByUrl.url = url;
       _currentPlayer = filePlayerByUrl;
       filePlayerByUrl.play(() => null);
       return;
     }
     if (pcmBuffer != null) {
-      BufferPlayer bufferPlayer = BufferPlayer(pcmBuffer, whenFinished);
+      BufferPlayer bufferPlayer = BufferPlayer(pcmBuffer, whenFinished, useAvatar);
       _currentPlayer = bufferPlayer;
       bufferPlayer.play(() => null);
       return;
     }
     if (mp3Buffer != null) {
-      FilePlayer filePlayerByBuffer = FilePlayer(whenFinished);
+      FilePlayer filePlayerByBuffer = FilePlayer(whenFinished, useAvatar);
       filePlayerByBuffer.buffer = mp3Buffer;
       _currentPlayer = filePlayerByBuffer;
       filePlayerByBuffer.play(() => null);
     }
   }
 
-  ListPlayer createListPlay(Function() whenFinished) {
-    ListPlayer listPlayer = ListPlayer(whenFinished);
+  ListPlayer createListPlay(Function() whenFinished, [bool isNormalChat = false]) {
+    ListPlayer listPlayer = ListPlayer(whenFinished, isNormalChat);
     // 如果存在单一播放就不赋值
     if (_currentPlayer == null || (_currentPlayer != null && _currentPlayer!.step == 'finished')) {
       listPlayer.notPlaceHolder();
@@ -198,6 +200,7 @@ class MediaUtils {
       _listPlayer = null;
       await listPlayer.stop();
     }
+    AvatarController().stopSpeak();
   }
 
   // Future<void> stopPlayByAppPaused() async {
@@ -312,7 +315,7 @@ class Player {
 
 class BufferPlayer extends Player {
 
-  BufferPlayer(this.pcm, this.whenFinished);
+  BufferPlayer(this.pcm, this.whenFinished, this.useAvatar);
 
   FlutterSoundPlayer? player;
   List<Uint8List> pcm;
@@ -320,6 +323,7 @@ class BufferPlayer extends Player {
   Function() whenFinished;
   Function()? onPlayComplete;
   bool isMultiple = false;
+  bool useAvatar;
 
   Future<void> play(Function() onComplete) async {
     onPlayComplete = onComplete;
@@ -402,12 +406,16 @@ class BufferPlayer extends Player {
         },
       );
       step = 'play';
+      if (useAvatar) {
+        AvatarController().startSpeak();
+      }
     } catch (e) {
       _onCallback();
     }
   }
 
   void _onCallback() {
+    AvatarController().stopSpeak();
     Log.d('结束触发回调');
     if (onPlayComplete != null) {
       onPlayComplete!();
@@ -419,7 +427,7 @@ class BufferPlayer extends Player {
 
 class FilePlayer extends Player {
 
-  FilePlayer(this.whenFinished);
+  FilePlayer(this.whenFinished, this.useAvatar);
 
   FlutterSoundPlayer? player;
   String? url;
@@ -428,6 +436,8 @@ class FilePlayer extends Player {
   Function() whenFinished;
   Function()? onPlayComplete;
   bool isMultiple = false;
+  // 是否使用语音头像
+  bool useAvatar;
 
   Future<void> play(Function() onComplete) async {
     onPlayComplete = onComplete;
@@ -519,6 +529,9 @@ class FilePlayer extends Player {
         },
       );
       step = 'play';
+      if (useAvatar) {
+        AvatarController().startSpeak();
+      }
     } catch (e) {
       _onCallback();
     }
@@ -533,7 +546,7 @@ class FilePlayer extends Player {
 }
 
 class ListPlayer {
-  ListPlayer(this._whenFinished);
+  ListPlayer(this._whenFinished, this._isNormalChat);
 
   List<FilePlayer> _playList = [];
   // 是否所有音频已返回
@@ -543,6 +556,9 @@ class ListPlayer {
   bool _isDestroyed = false;
   // 当单一播放在执行时，创建一个流程列表播放
   bool _isPlaceHolder = true;
+  // 是否是自由对话
+  bool _isNormalChat;
+  AvatarController _avatarController = AvatarController();
 
   void play(Uint8List mp3Buffer) {
     // 已销毁
@@ -557,7 +573,7 @@ class ListPlayer {
     if (mp3Buffer.isEmpty) {
       return;
     }
-    FilePlayer filePlayer = FilePlayer(() => null);
+    FilePlayer filePlayer = FilePlayer(() => null, _isNormalChat);
     filePlayer.buffer = mp3Buffer;
     filePlayer.isMultiple = true;
     _playList.add(filePlayer);
@@ -596,17 +612,20 @@ class ListPlayer {
     // 已销毁
     if (_isDestroyed) {
       _whenFinished();
+      _avatarController.stopSpeak();
       return;
     }
     // 没有播放
     if (_currentPlayer == null) {
       _whenFinished();
+      _avatarController.stopSpeak();
     }
   }
 
   void _play() {
     if (_isDestroyed) {
       _whenFinished();
+      _avatarController.stopSpeak();
       return;
     }
     if (_playList.isEmpty) {
@@ -616,6 +635,7 @@ class ListPlayer {
         return;
       }
       _whenFinished();
+      _avatarController.stopSpeak();
       return;
     }
     FilePlayer player = _playList.removeAt(0);
