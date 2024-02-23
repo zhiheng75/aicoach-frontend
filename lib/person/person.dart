@@ -462,7 +462,7 @@ class _PersonPageState extends State<PersonPage>
         if (islog
             ? true
             : permissionBeanData.data.isMember == 0 &&
-                permissionBeanData.data.expDay > 0)
+                permissionBeanData.data.leftTime > 0)
           Container(
             width: width,
             decoration: decoration,
