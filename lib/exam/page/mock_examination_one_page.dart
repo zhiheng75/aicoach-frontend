@@ -13,6 +13,7 @@ import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/my_alert.dart';
 import 'package:Bubble/widgets/dash_line.dart';
 import 'package:Bubble/widgets/load_image.dart';
+import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -165,6 +166,7 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
         content: "模拟考试进行中,\n请尽可能一次性完成整场模拟考试", clickCallback: (index, text) {
       if (index == 1) {
         next = 2;
+        _mediaUtils.stopPlay();
         Navigator.pop(context);
       }
     });
@@ -239,11 +241,12 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
               Container(
                   padding: const EdgeInsets.all(25),
                   width: double.infinity,
+                  height: 250,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.0),
                     color: Colors.black.withOpacity(0.85),
                   ),
-                  child: Column(
+                  child: MyScrollView(
                     children: [
                       Text(
                         ENText,
@@ -255,6 +258,14 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
                       Gaps.vGap8,
                       Text(
                         ZHText,
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Gaps.vGap8,
+                      Text(
+                        instructionsAudio,
                         style: const TextStyle(
                           fontSize: 16.0,
                           color: Colors.white,

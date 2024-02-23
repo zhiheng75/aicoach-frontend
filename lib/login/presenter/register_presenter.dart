@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/entity/user_info_entity.dart';
+import 'package:Bubble/util/EventBus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:dio/dio.dart';
@@ -63,6 +64,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         params: params,
         options: op,
         isShow: true, onSuccess: (data) {
+      EventBus().emit('ERROR');
       if (data != null) {
         if (data.code == 200) {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
@@ -85,6 +87,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         url: HttpApi.phoneLogin,
         queryParameters: params,
         isShow: isShowLoading, onSuccess: (data) {
+      EventBus().emit('ERROR');
       if (data != null) {
         if (data.code == 200) {
           Toast.show("登录成功");

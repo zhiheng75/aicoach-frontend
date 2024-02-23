@@ -1,6 +1,7 @@
 library flutter_verification_box;
 
 // import 'package:flutter/cupertino.dart';
+import 'package:Bubble/util/EventBus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -134,6 +135,20 @@ class _VerificationBox extends State<VerificationBox> {
     _controller = TextEditingController();
     _focusNode = FocusNode();
     super.initState();
+
+    EventBus().on('ERROR', (_) {
+      setState(() {
+        _controller?.text = "";
+        // _contentList = [];
+        // List.generate(widget.count, (index) {
+        //   _contentList.add('');
+        // });
+        List.generate(widget.count, (index) {
+          _contentList[index] = "";
+          // _contentList.add('');
+        });
+      });
+    });
   }
 
   @override
