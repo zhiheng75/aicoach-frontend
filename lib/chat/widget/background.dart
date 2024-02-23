@@ -2,7 +2,6 @@
 
 import 'dart:async';
 
-import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -78,16 +77,23 @@ class _BackgroundState extends State<Background> {
           StreamBuilder(
             stream: _avatarController.getStream(),
             builder: (_, snapshot) {
+              String stillImage = provider.character.imageUrl;
+              String motionImage = provider.character.imageUrl;
+              if (provider.character.stillImage != '') {
+                stillImage = provider.character.stillImage;
+              }
+              if (provider.character.motionImage != '') {
+                motionImage = provider.character.motionImage;
+              }
               dynamic data = snapshot.data;
-              Log.d('data=$data');
               return Stack(
                 children: [
                   Container(
                     width: width,
                     height: height,
                     alignment: Alignment.center,
-                    child: Image.asset(
-                      "assets/images/speaking.gif",
+                    child: LoadImage(
+                      motionImage,
                       height: height,
                       fit: BoxFit.fitHeight,
                     ),
@@ -98,31 +104,13 @@ class _BackgroundState extends State<Background> {
                     alignment: Alignment.center,
                     color: Colors.white,
                     child: LoadImage(
-                      provider.chatBackground!,
+                      stillImage,
                       height: height,
                       fit: BoxFit.fitHeight,
                     ),
                   ),
                 ],
               );
-
-              // if (data == true) {
-              //   return Container(
-              //     width: width,
-              //     height: height,
-              //     alignment: Alignment.center,
-              //     child: Image.asset(
-              //       "assets/images/speaking.gif",
-              //       height: height,
-              //       fit: BoxFit.fitHeight,
-              //     ),
-              //   );
-              // }
-              // return LoadImage(
-              //   provider.chatBackground!,
-              //   width: width,
-              //   height: height,
-              // );
             },
           ),
           LoadImage(

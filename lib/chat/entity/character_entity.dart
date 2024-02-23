@@ -3,6 +3,8 @@ class CharacterEntity {
   String characterId = '';
   String name = '';
   String imageUrl = '';
+  String stillImage = '';
+  String motionImage = '';
   String stage = '';
   String stageImg = '';
   String slogan = '';
@@ -23,6 +25,12 @@ class CharacterEntity {
     }
     if (json['image_url'] != null) {
       entity.imageUrl = json['image_url'];
+    }
+    if (json['still_image'] != null) {
+      entity.stillImage = json['still_image'];
+    }
+    if (json['motion_image'] != null) {
+      entity.motionImage = json['motion_image'];
     }
     if (json['stage'] != null) {
       entity.stage = json['stage'];
@@ -51,6 +59,8 @@ class CharacterEntity {
       'character_id': characterId,
       'name': name,
       'image_url': imageUrl,
+      'still_image': stillImage,
+      'motion_image': motionImage,
       'stage': stage,
       'stage_img': stageImg,
       'slogan': slogan,

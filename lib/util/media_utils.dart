@@ -5,7 +5,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:Bubble/chat/widget/background.dart';
-import 'package:Bubble/util/log_utils.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -416,7 +415,6 @@ class BufferPlayer extends Player {
 
   void _onCallback() {
     AvatarController().stopSpeak();
-    Log.d('结束触发回调');
     if (onPlayComplete != null) {
       onPlayComplete!();
     }
@@ -538,6 +536,7 @@ class FilePlayer extends Player {
   }
 
   void _onCallback() {
+    AvatarController().stopSpeak();
     if (onPlayComplete != null) {
       onPlayComplete!();
     }
