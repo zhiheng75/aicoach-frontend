@@ -200,7 +200,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       // 创建列表播放
       _listPlayer = _mediaUtils.createListPlay(() {
         widget.controller.setDisabled(false);
-      }, widget.isNormalChat  );
+      }, widget.isNormalChat);
       _homeProvider.addNormalMessage(_answer!);
     }
     if (answer is String) {

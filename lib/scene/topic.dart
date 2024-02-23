@@ -107,7 +107,7 @@ class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPa
       // 创建播放列表
       _listPlayer = _mediaUtils.createListPlay(() {
         _bottomBarControll.setDisabled(false);
-      });
+      }, true);
       _homeProvider.addNormalMessage(_answer!);
     }
     if (answer is String) {
@@ -265,10 +265,7 @@ class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPa
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16.0,
                       ),
-                      child: MessageList(
-                        controller: _listScrollController        ,
-                        onSelectTopic: (_) => null,
-                      ),
+                      child: MessageList(controller: _listScrollController),
                     );
                   },
                 ),

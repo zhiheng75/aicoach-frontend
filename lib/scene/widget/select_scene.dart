@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_final_fields
 
-import 'package:Bubble/util/EventBus.dart';
-import 'package:Bubble/util/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -131,31 +129,28 @@ class _SelectSceneState extends State<SelectScene> {
   }
 
   void selectScene(SceneEntity scene) {
+    Navigator.of(context).pop();
     HomeProvider homeProvider = Provider.of<HomeProvider>(context, listen: false);
-    if (homeProvider.scene?.id == scene.id) {
-      Toast.show(
-        '该场景正在进行对话',
-        duration: 1000,
+    if (homeProvider.sessionType == 'chat') {
+      ConfirmUtils.show(
+        context: context,
+        title: '你要切换场景吗？',
+        onConfirm: () {
+          _homeProvider.sceneStreamController.add({'type': 'scene', 'data': scene.toJson()});
+        },
+        child: const Text(
+          '场景切换会结束当前对话',
+          style: TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.w400,
+            color: Color(0xFF333333),
+            height: 18.0 / 15.0,
+          ),
+        ),
       );
       return;
     }
-    Navigator.of(context).pop();
-    ConfirmUtils.show(
-      context: context,
-      title: '你要切换场景吗？',
-      onConfirm: () {
-        EventBus().emit('SELECT_SCENE', scene);
-      },
-      child: const Text(
-        '场景切换会结束当前对话',
-        style: TextStyle(
-          fontSize: 15.0,
-          fontWeight: FontWeight.w400,
-          color: Color(0xFF333333),
-          height: 18.0 / 15.0,
-        ),
-      ),
-    );
+    _homeProvider.sceneStreamController.add({'type': 'scene', 'data': scene.toJson()});
   }
 
   @override

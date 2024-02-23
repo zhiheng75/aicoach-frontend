@@ -11,18 +11,15 @@ import '../../res/colors.dart';
 import '../../util/toast_utils.dart';
 import '../../widgets/load_image.dart';
 import '../entity/message_entity.dart';
-import '../entity/topic_entity.dart';
 import 'evaluation.dart';
 
 class MessageItem extends StatefulWidget {
   const MessageItem({
     Key? key,
     required this.message,
-    required this.onSelectTopic,
   }) : super(key: key);
 
   final MessageEntity message;
-  final Function(TopicEntity) onSelectTopic;
 
   @override
   State<MessageItem> createState() => _MessageItemState();
@@ -170,7 +167,7 @@ class _MessageItemState extends State<MessageItem> {
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                widget.onSelectTopic(topic);
+                _homeProvider.sceneStreamController.add({'type': 'topic', 'data': topic.toJson()});
               },
               child: Stack(
                 children: <Widget>[
@@ -312,48 +309,6 @@ class _MessageItemState extends State<MessageItem> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        // if (_message.showTranslation)
-        //   Container(
-        //     decoration: BoxDecoration(
-        //       borderRadius: BorderRadius.circular(20.0),
-        //       color: Colors.black.withOpacity(0.8),
-        //     ),
-        //     padding: const EdgeInsets.only(
-        //       top: 4.0,
-        //       bottom: 4.0,
-        //       left: 16.0,
-        //       right: 8.0,
-        //     ),
-        //     child: Row(
-        //       mainAxisSize: MainAxisSize.min,
-        //       children: <Widget>[
-        //         Expanded(
-        //           child: Text(
-        //             _message.translateState == 1 ? '翻译中...' : (_message.translation == 3 ? '翻译失败' : _message.translation),
-        //             style: const TextStyle(
-        //               fontSize: 12.0,
-        //               fontWeight: FontWeight.w400,
-        //               color: Colors.white,
-        //               height: 15.0 / 12.0,
-        //               letterSpacing: 0.05,
-        //             ),
-        //           ),
-        //         ),
-        //         const SizedBox(
-        //           width: 4.0,
-        //         ),
-        //         GestureDetector(
-        //           behavior: HitTestBehavior.opaque,
-        //           onTap: closeTranslate,
-        //           child: const LoadAssetImage(
-        //             'fanyi_close',
-        //             width: 16.0,
-        //             height: 16.0,
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
         ClipRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(
