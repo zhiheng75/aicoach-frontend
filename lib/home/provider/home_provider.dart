@@ -38,6 +38,8 @@ class HomeProvider extends ChangeNotifier {
   List<MessageEntity> _messageList = [];
   // 对话背景
   String? _chatBackground;
+  // 场景对话流控制器
+  StreamController _sceneStreamController = StreamController.broadcast();
 
   /** 模考 */
   // 使用次数
@@ -56,6 +58,7 @@ class HomeProvider extends ChangeNotifier {
   String? get chatBackground => _chatBackground;
   List<MessageEntity> get messageList => _messageList;
   int get usageCount => _usageCount;
+  StreamController get sceneStreamController => _sceneStreamController;
 
   /// set
   set character(CharacterEntity character) {

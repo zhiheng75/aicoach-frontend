@@ -1,5 +1,3 @@
-import 'package:Bubble/scene/topic.dart';
-import 'package:Bubble/widgets/load_image.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart' hide ScreenUtil;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,8 +8,6 @@ import '../home/provider/home_provider.dart';
 import '../mvp/base_page.dart';
 import '../net/dio_utils.dart';
 import '../net/http_api.dart';
-import '../scene/entity/scene_entity.dart';
-import '../scene/scene.dart';
 import '../util/EventBus.dart';
 import '../util/confirm_utils.dart';
 import '../util/log_utils.dart';
@@ -19,6 +15,7 @@ import '../util/media_utils.dart';
 import '../util/toast_utils.dart';
 import '../widgets/load_data.dart';
 import '../widgets/load_fail.dart';
+import '../widgets/load_image.dart';
 import 'entity/character_entity.dart';
 import 'entity/message_entity.dart';
 import 'entity/topic_entity.dart';
@@ -110,7 +107,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
           setState(() {});
         }
         Future.delayed(const Duration(milliseconds: 300), () {
-          changeCharacter(0);
+          confirmChangeCharacter(0);
         });
       },
       onError: (code, msg) {
@@ -129,26 +126,6 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     }
     if (_characterIndex == characterIndex) {
       _isCharacterChanging = false;
-      return;
-    }
-    String sessionType = _homeProvider.sessionType;
-    if (sessionType == 'topic' || sessionType == 'scene') {
-      ConfirmUtils.show(
-        context: context,
-        title: '你要切换角色吗？',
-        onConfirm: () {
-          confirmChangeCharacter(characterIndex);
-        },
-        child: const Text(
-          '切换角色会结束当前对话',
-          style: TextStyle(
-            fontSize: 15.0,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF333333),
-            height: 18.0 / 15.0,
-          ),
-        ),
-      );
       return;
     }
     if (_homeProvider.sessionId != '') {
@@ -194,39 +171,11 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   }
 
   void openTopic() {
-    String sessionType = _homeProvider.sessionType;
-    // 自由对话
-    if (sessionType == 'normal' && checkTopicShouldOpen()) {
+    if (checkTopicShouldOpen()) {
       getTopicList((topicList) {
         _homeProvider.addTopicMessage(topicList);
         _listScrollController.scrollToEnd();
       });
-    }
-    // 话题对话或者场景对话
-    if (sessionType != 'normal') {
-      ConfirmUtils.show(
-        context: context,
-        title: '切换话题',
-        buttonDirection: 'vertical',
-        confirmButtonText: '切换主题',
-        cancelButtonText: '留在对话中',
-        onConfirm: () {
-          getTopicList((topicList) {
-            _homeProvider.addTopicMessage(topicList);
-            _listScrollController.scrollToEnd();
-          });
-        },
-        child: const Text(
-          '主题对话进行中，确定要切换新主题吗？',
-          style: TextStyle(
-            fontSize: 15.0,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF333333),
-            height: 18.0 / 15.0,
-          ),
-        ),
-      );
-      return;
     }
   }
 
@@ -275,18 +224,9 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     );
   }
 
-  void selectTopic(TopicEntity topic) {
-    _bottomBarControll.setDisabled(true);
-    startTopicChat(topic);
-  }
-
-  Future<void> endCurrentChat() async {
+  void startNormalChat(CharacterEntity character) async {
     await _mediaUtils.stopPlay();
     await _chatWebsocket.endChat(true);
-  }
-
-  void startNormalChat(CharacterEntity character) async {
-    await endCurrentChat();
     _homeProvider.resetChatParams();
     _homeProvider.character = character;
     Future.delayed(Duration.zero, () {
@@ -308,54 +248,6 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     });
   }
 
-  void startTopicChat(TopicEntity topic) async {
-    await endCurrentChat();
-    _homeProvider.resetChatParams();
-    _homeProvider.topic = topic;
-    Future.delayed(Duration.zero, () {
-      // _homeProvider.addIntroductionMessage();
-      // _homeProvider.addBackgroundMessage();
-      // _homeProvider.addTipMessage('Topic started！');
-      // _bottomBarControll.setDisabled(false);
-      showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        barrierColor: Colors.transparent,
-        isScrollControlled: true,
-        isDismissible: false,
-        clipBehavior: Clip.none,
-        enableDrag: false,
-        builder: (_) => TopicPage(
-          onEnd: () {
-            startNormalChat(_homeProvider.character);
-          },
-        ),
-      );
-    });
-  }
-
-  void startSceneChat(SceneEntity scene) async {
-    await endCurrentChat();
-    _homeProvider.resetChatParams();
-    _homeProvider.scene = scene;
-    Future.delayed(Duration.zero, () {
-      showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        barrierColor: Colors.transparent,
-        isScrollControlled: true,
-        isDismissible: false,
-        clipBehavior: Clip.none,
-        enableDrag: false,
-        builder: (_) => ScenePage(
-          onEnd: () {
-            startNormalChat(_homeProvider.character);
-          },
-        ),
-      );
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -364,7 +256,6 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       await _mediaUtils.stopPlay();
       _bottomBarControll.setDisabled(false);
     });
-    EventBus().on('SELECT_SCENE', (scene) => startSceneChat(scene));
   }
 
   @override
@@ -404,12 +295,8 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
           return;
         }
         hideSlideTip();
-        // int pre = _characterIndex > 0 ? _characterIndex - 1 : _characterList.length - 1;
-        // int next = _characterIndex < _characterList.length - 1 ? _characterIndex + 1 : 0;
         _backgroundController.slideStart(
           position: details.globalPosition,
-          // leftImage: _characterList.elementAt(pre).imageUrl,
-          // rightImage: _characterList.elementAt(next).imageUrl,
         );
       },
       onHorizontalDragUpdate: (details) {
@@ -452,10 +339,7 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
                   left: 16.0,
                   right: 16.0,
                 ),
-                child: MessageList(
-                  controller: _listScrollController        ,
-                  onSelectTopic: selectTopic,
-                ),
+                child: MessageList(controller: _listScrollController),
               );
             },
           ),
@@ -558,7 +442,6 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   @override
   void dispose() {
     EventBus().off('LEAVECHATPAGE');
-    EventBus().off('SELECT_SCENE');
     super.dispose();
   }
 

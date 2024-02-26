@@ -105,7 +105,7 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
       // 创建播放列表
       _listPlayer = _mediaUtils.createListPlay(() {
         _bottomBarControll.setDisabled(false);
-      });
+      }, true);
       _homeProvider.addNormalMessage(_answer!);
     }
     if (answer is String) {
@@ -263,10 +263,7 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16.0,
                         ),
-                        child: MessageList(
-                          controller: _listScrollController        ,
-                          onSelectTopic: (_) => null,
-                        ),
+                        child: MessageList(controller: _listScrollController),
                       );
                     },
                   ),

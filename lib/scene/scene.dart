@@ -107,7 +107,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
       // cj播放列表
       _listPlayer = _mediaUtils.createListPlay(() {
         _bottomBarControll.setDisabled(false);
-      });
+      }, true);
       _homeProvider.addNormalMessage(_answer!);
     }
     if (answer is String) {
@@ -265,10 +265,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16.0,
                       ),
-                      child: MessageList(
-                        controller: _listScrollController        ,
-                        onSelectTopic: (_) => null,
-                      ),
+                      child: MessageList(controller: _listScrollController),
                     );
                   },
                 ),

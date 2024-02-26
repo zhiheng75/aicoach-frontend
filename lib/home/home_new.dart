@@ -1,9 +1,13 @@
+import 'dart:async';
+
+import 'package:Bubble/chat/entity/topic_entity.dart';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/main.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/scene/collect_information.dart';
+import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +15,13 @@ import 'package:jverify/jverify.dart';
 import 'package:provider/provider.dart';
 
 import '../chat/chat.dart';
+import '../chat/utils/chat_websocket.dart';
 import '../constant/constant.dart';
 import '../exam/exam.dart';
 import '../mvp/base_page.dart';
 import '../net/http_api.dart';
+import '../scene/scene.dart';
+import '../scene/topic.dart';
 import '../widgets/double_tap_back_exit_app.dart';
 import 'presenter/home_new_page_presenter.dart';
 import 'view/home_new_view.dart';
@@ -38,6 +45,7 @@ class _HomePageState extends State<HomeNewPage>
   // chat-对话（默认） scene-场景 exam-模考
   String _currentTab = '';
   late bool _isLogin;
+  late StreamSubscription _streamSubscription;
 
   void init() {
     // 初始化手机号一键登录插件
@@ -114,6 +122,14 @@ class _HomePageState extends State<HomeNewPage>
     );
   }
 
+  void changeTab(String tab) {
+    _currentTab = tab;
+    if (tab == 'exam') {
+      stopVoice();
+    }
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -125,6 +141,35 @@ class _HomePageState extends State<HomeNewPage>
     _isLogin = LoginManager.isLogin();
     Future.delayed(Duration.zero, () {
       init();
+    });
+    // 设置场景对话流控制器
+    _streamSubscription = _homeProvider.sceneStreamController.stream.listen((value) async {
+      await MediaUtils().stopPlay();
+      await ChatWebsocket().endChat(true);
+      _homeProvider.resetChatParams();
+      String type = value['type'];
+      if (type == 'topic') {
+        TopicEntity topic = TopicEntity.fromJson(value['data']);
+        _homeProvider.topic = topic;
+      }
+      if (type == 'scene') {
+        SceneEntity scene = SceneEntity.fromJson(value['data']);
+        _homeProvider.scene = scene;
+      }
+      Future.delayed(Duration.zero, () {
+        showModalBottomSheet(
+          context: context,
+          backgroundColor: Colors.transparent,
+          barrierColor: Colors.transparent,
+          isScrollControlled: true,
+          isDismissible: false,
+          clipBehavior: Clip.none,
+          enableDrag: false,
+          builder: (_) => type == 'topic' ? TopicPage(onEnd: () => changeTab('chat')) : ScenePage(onEnd: () => changeTab('chat')),
+        );
+        // 重置tab
+        changeTab('');
+      });
     });
   }
 
@@ -148,6 +193,7 @@ class _HomePageState extends State<HomeNewPage>
   @override
   void dispose() {
     routeObserver.unsubscribe(this);
+    _streamSubscription.cancel();
     super.dispose();
   }
 
@@ -168,13 +214,7 @@ class _HomePageState extends State<HomeNewPage>
               top: 60.0,
               child: HomeTabbar(
                 currentTab: _currentTab,
-                changeTab: (tab) {
-                  _currentTab = tab;
-                  if (tab == 'exam') {
-                    stopVoice();
-                  }
-                  setState(() {});
-                },
+                changeTab: changeTab,
               ),
             ),
           ],

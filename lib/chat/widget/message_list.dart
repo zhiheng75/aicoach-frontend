@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../home/provider/home_provider.dart';
-import '../entity/topic_entity.dart';
 import 'message_item.dart';
 
 class MessageList extends StatefulWidget {
@@ -10,11 +9,9 @@ class MessageList extends StatefulWidget {
   const MessageList({
     Key? key,
     required this.controller,
-    required this.onSelectTopic,
   }) : super(key: key);
 
   final MessageListController controller;
-  final Function(TopicEntity) onSelectTopic;
 
   @override
   State<MessageList> createState() => _MessageListState();
@@ -43,10 +40,7 @@ class _MessageListState extends State<MessageList> {
             padding: EdgeInsets.only(
               bottom: i < provider.messageList.length - 1 ? 16.0 : 0,
             ),
-            child: MessageItem(
-              message: provider.messageList.elementAt(i),
-              onSelectTopic: widget.onSelectTopic,
-            ),
+            child: MessageItem(message: provider.messageList.elementAt(i)),
           ),
           padding: const EdgeInsets.all(0),
         );
