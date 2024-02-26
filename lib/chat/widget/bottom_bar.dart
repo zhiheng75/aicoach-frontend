@@ -395,9 +395,9 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                 ) : null,
               ),
               alignment: Alignment.center,
-              child: data == true ? const LoadAssetImage(
-                'shengwen',
-                height: 10.0,
+              child: data == true ? Image.asset(
+                'assets/images/shengwen.gif',
+                height: 50.0,
                 fit: BoxFit.fitHeight,
               ) : const Row(
                 mainAxisSize: MainAxisSize.min,
