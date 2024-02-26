@@ -92,7 +92,6 @@ class _ExamPageState extends State<ExamPage>
   @override
   void didPop() {
     ///从B退回到A的是调用
-    print("didPop");
     super.didPop();
     getStudyInfo();
   }
@@ -748,6 +747,37 @@ class _ExamPageState extends State<ExamPage>
       );
     }
 
+    final MediaUtils _mediaUtils = MediaUtils();
+
+    void checkMicrophonePermission() async {
+      try {
+        // 检查权限
+        bool isRequest = await _mediaUtils.checkMicrophonePermission();
+        if (isRequest) {
+          return;
+        }
+        // ignore: use_build_context_synchronously
+        showModalBottomSheet(
+          context: context,
+          backgroundColor: Colors.transparent,
+          barrierColor: Colors.transparent,
+          isScrollControlled: true,
+          isDismissible: false,
+          enableDrag: false,
+          builder: (_) => ExamPurchasePage(
+            onPurchased: () {
+              getStudyInfo();
+            },
+          ),
+        );
+      } catch (e) {
+        Toast.show(
+          e.toString().substring(11),
+          duration: 1000,
+        );
+      }
+    }
+
     Widget body() {
       return Column(
         children: [
@@ -795,19 +825,20 @@ class _ExamPageState extends State<ExamPage>
               GestureDetector(
                 onTap: () {
                   if (LoginManager.isLogin()) {
-                    showModalBottomSheet(
-                      context: context,
-                      backgroundColor: Colors.transparent,
-                      barrierColor: Colors.transparent,
-                      isScrollControlled: true,
-                      isDismissible: false,
-                      enableDrag: false,
-                      builder: (_) => ExamPurchasePage(
-                        onPurchased: () {
-                          getStudyInfo();
-                        },
-                      ),
-                    );
+                    checkMicrophonePermission();
+                    // showModalBottomSheet(
+                    //   context: context,
+                    //   backgroundColor: Colors.transparent,
+                    //   barrierColor: Colors.transparent,
+                    //   isScrollControlled: true,
+                    //   isDismissible: false,
+                    //   enableDrag: false,
+                    //   builder: (_) => ExamPurchasePage(
+                    //     onPurchased: () {
+                    //       getStudyInfo();
+                    //     },
+                    //   ),
+                    // );
                   } else {
                     Toast.show("请登录");
                   }

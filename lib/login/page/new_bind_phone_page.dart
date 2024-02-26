@@ -170,11 +170,15 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
                           // judgementPhone();
                           // _bindPhonePresenter.sendSms(_phoneController.text);
 
-                          NavigatorUtils.push(
-                              context,
-                              arguments: widget.wechatData,
-                              replace: true,
-                              "${LoginRouter.keyCheckTwoCodePage}?PhoneNumber=${_phoneController.text.trim()}");
+                          if (_phoneController.text.length == 11) {
+                            NavigatorUtils.push(
+                                context,
+                                arguments: widget.wechatData,
+                                replace: true,
+                                "${LoginRouter.keyCheckTwoCodePage}?PhoneNumber=${_phoneController.text.trim()}");
+                          } else {
+                            Toast.show("手机号无效");
+                          }
                         },
                         child: Container(
                           height: Dimens.h_dp40,

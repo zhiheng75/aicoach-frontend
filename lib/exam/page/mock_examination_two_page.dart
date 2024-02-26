@@ -950,41 +950,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                         CrossAxisAlignment.start,
                                     children: [
                                       // Gaps.vGap10,
-                                      // numberPle == 3
-                                      //     ? Center(
-                                      //         child: Column(
-                                      //           children: [
-                                      //             Container(
-                                      //               padding:
-                                      //                   const EdgeInsets.all(8),
-                                      //               decoration: BoxDecoration(
-                                      //                   borderRadius:
-                                      //                       BorderRadius.circular(
-                                      //                           10),
-                                      //                   color: Colors.white),
-                                      //               child: Text(
-                                      //                 " 倒计时: ${_seconds}s ",
-                                      //                 style: const TextStyle(
-                                      //                   fontSize: 14,
-                                      //                   color: Colors.black,
-                                      //                 ),
-                                      //               ),
-                                      //             ),
-                                      //             Gaps.vGap10,
-                                      //             Text(
-                                      //               numberPle == 3
-                                      //                   ? "请提问第${number + 1}个问题"
-                                      //                   : "",
-                                      //               style: const TextStyle(
-                                      //                 fontSize: 14,
-                                      //                 color: Colors.black,
-                                      //               ),
-                                      //             ),
-                                      //           ],
-                                      //         ),
-                                      //       )
-                                      //     :
-                                      numberPle == 2 || numberPle == 3
+                                      numberPle == 3
                                           ? Center(
                                               child: Column(
                                                 children: [
@@ -1004,7 +970,17 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                                       ),
                                                     ),
                                                   ),
-                                                  Gaps.vGap10,
+                                                  Gaps.vGap4,
+                                                  Text(
+                                                    numberPle == 3
+                                                        ? "请提问第${number + 1}个问题"
+                                                        : "",
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  Gaps.vGap4,
                                                   GestureDetector(
                                                     onTap: () {
                                                       showImageDialog();
@@ -1029,64 +1005,133 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                                             BorderRadius
                                                                 .circular(25),
                                                         color: Colors.black),
-                                                    child: Column(
-                                                      children: [
-                                                        const Text(
-                                                          "图片接收成功，可以点击查看大图",
-                                                          style: TextStyle(
-                                                            fontSize: 12,
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                        Gaps.vGap2,
-                                                        Text(
-                                                          bodyType == "A"
-                                                              ? "考伴回答"
-                                                              : "考生回答",
-                                                          style:
-                                                              const TextStyle(
-                                                            fontSize: 14,
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      ],
+                                                    child: const Text(
+                                                      "图片接收成功，可以点击查看大图",
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.white,
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
                                               ),
                                             )
-                                          : Center(
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.all(8),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        color: Colors.white),
-                                                    child: Text(
-                                                      " 倒计时: ${_seconds}s ",
-                                                      style: const TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.black,
+                                          : numberPle == 2
+                                              ? Center(
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            color:
+                                                                Colors.white),
+                                                        child: Text(
+                                                          " 倒计时: ${_seconds}s ",
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 14,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
+                                                      Gaps.vGap10,
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          showImageDialog();
+                                                        },
+                                                        child: LoadImage(
+                                                          image,
+                                                          fit: BoxFit.fill,
+                                                          width: 200,
+                                                          height: 100,
+                                                        ),
+                                                      ),
+                                                      Gaps.vGap10,
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                left: 20,
+                                                                right: 20,
+                                                                top: 6,
+                                                                bottom: 6),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        25),
+                                                            color:
+                                                                Colors.black),
+                                                        child: Column(
+                                                          children: [
+                                                            const Text(
+                                                              "图片接收成功，可以点击查看大图",
+                                                              style: TextStyle(
+                                                                fontSize: 12,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                            Gaps.vGap2,
+                                                            Text(
+                                                              bodyType == "A"
+                                                                  ? "考伴回答"
+                                                                  : "考生回答",
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 14,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  Gaps.vGap10,
-                                                  Text(
-                                                    bodyType == "A"
-                                                        ? "考伴回答"
-                                                        : "考生回答",
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.black,
-                                                    ),
+                                                )
+                                              : Center(
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            color:
+                                                                Colors.white),
+                                                        child: Text(
+                                                          " 倒计时: ${_seconds}s ",
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 14,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Gaps.vGap10,
+                                                      Text(
+                                                        bodyType == "A"
+                                                            ? "考伴回答"
+                                                            : "考生回答",
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ],
-                                              ),
-                                            ),
+                                                ),
                                       const Expanded(child: Gaps.empty),
                                       Center(
                                         child: GestureDetector(
@@ -1213,7 +1258,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                   peopleWidget(
                                       "myhead_icon",
                                       soundPrintType == 2 ? true : false,
-                                      "考伴：小红"),
+                                      "考伴：peter"),
                                 ],
                               ),
                             ),

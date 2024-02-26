@@ -1,8 +1,12 @@
+import 'package:Bubble/mvp/base_page.dart';
+import 'package:Bubble/person/presneter/invitation_code_presenter.dart';
+import 'package:Bubble/person/view/invitation_code_view.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/image_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/btn_bg_widget.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -18,9 +22,14 @@ class InvitationCodePage extends StatefulWidget {
   State<InvitationCodePage> createState() => _InvitationCodePageState();
 }
 
-class _InvitationCodePageState extends State<InvitationCodePage> {
+class _InvitationCodePageState extends State<InvitationCodePage>
+    with
+        BasePageMixin<InvitationCodePage, InvitationCodePresenter>,
+        AutomaticKeepAliveClientMixin<InvitationCodePage>
+    implements InvitationCodeView {
   final TextEditingController _phoneController = TextEditingController();
   final FocusNode _nodeText1 = FocusNode();
+  late InvitationCodePresenter _invitationCodePresenter;
 
   void onBack() {
     _nodeText1.unfocus();
@@ -29,6 +38,7 @@ class _InvitationCodePageState extends State<InvitationCodePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return AnnotatedRegion(
         value: SystemUiOverlayStyle.light,
         child: Scaffold(
@@ -55,7 +65,7 @@ class _InvitationCodePageState extends State<InvitationCodePage> {
                     //       NavigatorUtils.goBack(context);
                     //     }),
                     XTCupertinoNavigationBar(
-                      backgroundColor: Color.fromRGBO(1, 1, 1, 0),
+                      backgroundColor: const Color.fromRGBO(1, 1, 1, 0),
                       border: null,
                       padding: EdgeInsetsDirectional.zero,
                       leading: NavigationBackWidget(onBack: onBack),
@@ -150,20 +160,53 @@ class _InvitationCodePageState extends State<InvitationCodePage> {
                     Expanded(
                       child: Gaps.vGap50,
                     ),
-                    SizedBox(
-                      width: 260,
-                      child: BtnWidget(
-                          "btn_bg_img",
-                          "提交",
-                          txtStyle: TextStyle(
-                              color: Colours.color_001652,
-                              fontSize: Dimens.font_sp18),
-                          () {}),
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        if (_phoneController.text.isNotEmpty) {
+                          _invitationCodePresenter
+                              .getInviteCode(_phoneController.text);
+                        } else {
+                          Toast.show("请输入邀请码");
+                        }
+                      },
+                      child: SizedBox(
+                        width: 260,
+                        child: BtnWidget(
+                            "btn_bg_img",
+                            "提交",
+                            txtStyle: TextStyle(
+                                color: Colours.color_001652,
+                                fontSize: Dimens.font_sp18),
+                            () {}),
+                      ),
                     ),
                     Gaps.vGap50,
                   ]),
             ),
           ),
         ));
+  }
+
+  @override
+  InvitationCodePresenter createPresenter() {
+    _invitationCodePresenter = InvitationCodePresenter();
+    return _invitationCodePresenter;
+  }
+
+  @override
+  bool get wantKeepAlive => false;
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+    Toast.show(msg);
+  }
+
+  @override
+  void sendSuccess(String ms) {
+    // TODO: implement sendSuccess
+    Toast.show(ms);
+    onBack();
   }
 }

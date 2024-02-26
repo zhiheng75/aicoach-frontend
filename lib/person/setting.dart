@@ -359,7 +359,7 @@ class _SettingPageState extends State<SettingPage>
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: '会员协议',
+                              text: '用户服务条款',
                               style: const TextStyle(
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.w400,
@@ -367,7 +367,9 @@ class _SettingPageState extends State<SettingPage>
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  NavigatorUtils.goWebViewPage(context, "会员协议",
+                                  NavigatorUtils.goWebViewPage(
+                                      context,
+                                      "用户服务条款",
                                       "http://www.shenmo-ai.com/tos/");
                                 },
                             ),
@@ -380,7 +382,7 @@ class _SettingPageState extends State<SettingPage>
                               ),
                             ),
                             TextSpan(
-                              text: '续费规则',
+                              text: '隐私政策',
                               style: const TextStyle(
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.w400,
@@ -388,7 +390,7 @@ class _SettingPageState extends State<SettingPage>
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  NavigatorUtils.goWebViewPage(context, "续费规则",
+                                  NavigatorUtils.goWebViewPage(context, "隐私政策",
                                       "http://www.shenmo-ai.com/agreements");
                                 },
                             ),

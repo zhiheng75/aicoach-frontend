@@ -130,4 +130,7 @@ class HttpApi {
 
   //获取oss上传
   static const String version = "version";
+
+  //获取会话时长
+  static const String inviteCode = 'invite_code';
 }

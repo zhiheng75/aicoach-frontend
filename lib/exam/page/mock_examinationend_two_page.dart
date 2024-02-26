@@ -1,9 +1,15 @@
+import 'dart:convert';
+
+import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/exam/entity/exam_detail_bean.dart';
+import 'package:Bubble/exam/entity/exam_permission_bean.dart';
 import 'package:Bubble/exam/exam_purchase.dart';
 import 'package:Bubble/exam/presenter/exam_detail_page_presenter.dart';
 import 'package:Bubble/exam/view/bar_chart.dart';
 import 'package:Bubble/exam/view/exam_detail_view.dart';
 import 'package:Bubble/mvp/base_page.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/EventBus.dart';
@@ -36,6 +42,9 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
   late List<double> _peopleData;
   late String name = "";
   late String phone = "";
+
+  late int number = 0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -505,9 +514,9 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
                         ),
                       ),
                       alignment: Alignment.center,
-                      child: const Text(
-                        '剩余训练10次,点击购买更多',
-                        style: TextStyle(
+                      child: Text(
+                        '剩余训练$number次,点击购买更多',
+                        style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w400,
                           color: Colours.color_001652,
@@ -645,5 +654,22 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
         _examDetailBean.data.overallScore.toDouble(),
       ];
     });
+  }
+
+  void getStudyInfo() {
+    final Map<String, String> params = <String, String>{};
+
+    _examDetailPagePresenter.requestNetwork<ResultData>(Method.get,
+        url: HttpApi.examPermission,
+        queryParameters: params,
+        isShow: false,
+        isClose: false, onSuccess: (result) {
+      Map<String, dynamic> examPermissionMap = json.decode(result.toString());
+      ExamPermissionBean examPermissioBean =
+          ExamPermissionBean.fromJson(examPermissionMap);
+
+      number = examPermissioBean.data.leftTime;
+      setState(() {});
+    }, onError: (code, msg) {});
   }
 }

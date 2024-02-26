@@ -87,7 +87,6 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         url: HttpApi.phoneLogin,
         queryParameters: params,
         isShow: isShowLoading, onSuccess: (data) {
-      EventBus().emit('ERROR');
       if (data != null) {
         if (data.code == 200) {
           Toast.show("登录成功");
@@ -120,6 +119,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
       } else {
         Toast.show("登录失败");
       }
+      EventBus().emit('ERROR');
     });
   }
 
