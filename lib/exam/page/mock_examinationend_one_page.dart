@@ -9,6 +9,7 @@ import 'package:Bubble/res/resources.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/EventBus.dart';
 import 'package:Bubble/util/image_utils.dart';
+import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/dash_line.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -29,6 +30,7 @@ class MockExaminationendOnePage extends StatefulWidget {
 class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
     with
         BasePageMixin<MockExaminationendOnePage, ExamDetailPagePresenter>,
+        RouteAware,
         AutomaticKeepAliveClientMixin<MockExaminationendOnePage>
     implements ExamDetailView {
   late BuildContext bcontext;
@@ -38,6 +40,15 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
   late bool isloading = true;
   late String name = "";
   late String phone = '';
+
+  late String drtailStr = '';
+
+  @override
+  void didPop() {
+    // TODO: implement didPop
+    super.didPop();
+    MediaUtils().stopPlay();
+  }
 
   @override
   void initState() {
@@ -251,7 +262,6 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
                       // ),
                     ],
                   ),
-
                   Gaps.vGap168,
                   // const Expanded(child: Gaps.empty),
                   isloading
@@ -268,9 +278,7 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
                                 child: Column(
                                   children: [
                                     Text(
-                                      _examDetailBean.data.ket == "卓越A"
-                                          ? "Congratulations, your free trial of the KET Speaking simulated exam has come to an end.\n$name，恭喜你，完成了KET模拟考试。\nOur KET PET simulated exams accurately replicate the entire exam process, providing a comprehensive demonstration and practice of various scenarios that occur in real exams. We strictly adhere to the scoring criteria and grading system, predicting the overall score and level, thus providing meticulous support and precise improvement for your exam preparation.\n我们的KET PET模拟考试可以真实还原考试全流程，\n全方位展示和练习真实考试中出现的各种情况，我们会严格按照评分标准和评分体系进行评分，并预测整卷成绩和级别，为您的考试周密护航，精准提升。\nSimulated exam training is a continuous process that allows you to achieve excellent results in your exams.\n模拟考试训练是一项需要持续进行的训练，这样您才可以在考试中取得优异的成绩。\nYour performance is quite good, and your speaking mock exam has reached the Grade B level of the Cambridge KET exam. I suggest practicing 10 more mock exams before the actual test to aim for a Grade B+ level. Keep up the good work, and best of luck!\n您的成绩还不错，口语模考达到了剑桥KET考试的Grade【${_examDetailBean.data.ket}】水平。\n建议考前继续练习，保持住优异成绩，加油宝贝！"
-                                          : "Congratulations, your free trial of the KET Speaking simulated exam has come to an end.\n$name，恭喜你，完成了KET模拟考试。\nOur KET PET simulated exams accurately replicate the entire exam process, providing a comprehensive demonstration and practice of various scenarios that occur in real exams. We strictly adhere to the scoring criteria and grading system, predicting the overall score and level, thus providing meticulous support and precise improvement for your exam preparation.\n我们的KET PET模拟考试可以真实还原考试全流程，\n全方位展示和练习真实考试中出现的各种情况，我们会严格按照评分标准和评分体系进行评分，并预测整卷成绩和级别，为您的考试周密护航，精准提升。\nSimulated exam training is a continuous process that allows you to achieve excellent results in your exams.\n模拟考试训练是一项需要持续进行的训练，这样您才可以在考试中取得优异的成绩。\nYour performance is quite good, and your speaking mock exam has reached the Grade B level of the Cambridge KET exam. I suggest practicing 10 more mock exams before the actual test to aim for a Grade B+ level. Keep up the good work, and best of luck!\n您的成绩还不错，口语模考达到了剑桥KET考试的Grade【${_examDetailBean.data.ket}】水平。\n建议考前再练习${_examDetailBean.data.trainCount}次模拟考试，争取达到Grade【${_examDetailBean.data.ketNext}】水平，加油宝贝！",
+                                      drtailStr,
                                       style: const TextStyle(
                                         fontSize: 15.0,
                                         color: Colours.color_FFF5BF,
@@ -363,6 +371,19 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
     setState(() {
       isloading = false;
       _examDetailBean = examDetailBean;
+      drtailStr = _examDetailBean.data.ket == "卓越A"
+          ? "Congratulations, your free trial of the KET Speaking simulated exam has come to an end.\n恭喜你，完成了KET模拟考试。\nOur KET PET simulated exams accurately replicate the entire exam process, providing a comprehensive demonstration and practice of various scenarios that occur in real exams. We strictly adhere to the scoring criteria and grading system, predicting the overall score and level, thus providing meticulous support and precise improvement for your exam preparation.\n我们的KET PET模拟考试可以真实还原考试全流程，\n全方位展示和练习真实考试中出现的各种情况，我们会严格按照评分标准和评分体系进行评分，并预测整卷成绩和级别，为您的考试周密护航，精准提升。\nSimulated exam training is a continuous process that allows you to achieve excellent results in your exams.\n模拟考试训练是一项需要持续进行的训练，这样您才可以在考试中取得优异的成绩。\nYour performance is quite good, and your speaking mock exam has reached the Grade B level of the Cambridge KET exam. I suggest practicing 10 more mock exams before the actual test to aim for a Grade A level. Keep up the good work, and best of luck!\n您的成绩还不错，口语模考达到了剑桥KET考试的Grade【${_examDetailBean.data.ket}】水平。\n建议考前继续练习，保持住优异成绩，加油宝贝！"
+          : "Congratulations, your free trial of the KET Speaking simulated exam has come to an end.\n恭喜你，完成了KET模拟考试。\nOur KET PET simulated exams accurately replicate the entire exam process, providing a comprehensive demonstration and practice of various scenarios that occur in real exams. We strictly adhere to the scoring criteria and grading system, predicting the overall score and level, thus providing meticulous support and precise improvement for your exam preparation.\n我们的KET PET模拟考试可以真实还原考试全流程，\n全方位展示和练习真实考试中出现的各种情况，我们会严格按照评分标准和评分体系进行评分，并预测整卷成绩和级别，为您的考试周密护航，精准提升。\nSimulated exam training is a continuous process that allows you to achieve excellent results in your exams.\n模拟考试训练是一项需要持续进行的训练，这样您才可以在考试中取得优异的成绩。\nYour performance is quite good, and your speaking mock exam has reached the Grade B level of the Cambridge KET exam. I suggest practicing 10 more mock exams before the actual test to aim for a Grade A level. Keep up the good work, and best of luck!\n您的成绩还不错，口语模考达到了剑桥KET考试的Grade【${_examDetailBean.data.ket}】水平。\n建议考前再练习${_examDetailBean.data.trainCount}次模拟考试，争取达到Grade【${_examDetailBean.data.ketNext}】水平，加油宝贝！";
     });
+    _examDetailPagePresenter.getGenerateAudio(drtailStr);
+  }
+
+  @override
+  void playAendSuccess(String msg) {
+    // TODO: implement playAendSuccess
+    MediaUtils().play(
+      url: msg,
+      whenFinished: () {},
+    );
   }
 }
