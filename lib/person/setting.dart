@@ -391,7 +391,7 @@ class _SettingPageState extends State<SettingPage>
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   NavigatorUtils.goWebViewPage(context, "隐私政策",
-                                      "http://www.shenmo-ai.com/agreements");
+                                      "http://www.shenmo-ai.com/privacy_policy/");
                                 },
                             ),
                           ],
