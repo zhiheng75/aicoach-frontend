@@ -161,7 +161,7 @@ class Part2Phase1 {
 }
 
 class Part2Phase2 {
-  BaseTeacher base;
+  Part2Phase2Base base;
   List<Part1Phase1> list;
 
   Part2Phase2({
@@ -170,7 +170,7 @@ class Part2Phase2 {
   });
 
   factory Part2Phase2.fromJson(Map<String, dynamic> json) => Part2Phase2(
-        base: BaseTeacher.fromJson(json["base"]),
+        base: Part2Phase2Base.fromJson(json["base"]),
         list: List<Part1Phase1>.from(
             json["list"].map((x) => Part1Phase1.fromJson(x))),
       );
@@ -201,18 +201,19 @@ class Base {
       };
 }
 
-class BaseTeacher {
+class Part2Phase2Base {
   String zh;
   String en;
   String audio;
 
-  BaseTeacher({
+  Part2Phase2Base({
     required this.zh,
     required this.en,
     required this.audio,
   });
 
-  factory BaseTeacher.fromJson(Map<String, dynamic> json) => BaseTeacher(
+  factory Part2Phase2Base.fromJson(Map<String, dynamic> json) =>
+      Part2Phase2Base(
         zh: json["zh"],
         en: json["en"],
         audio: json["audio"],

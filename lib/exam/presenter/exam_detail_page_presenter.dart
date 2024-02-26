@@ -34,12 +34,12 @@ class ExamDetailPagePresenter extends BasePagePresenter<ExamDetailView> {
     });
   }
 
-  Future getGenerateAudio(String text) {
+  Future postGenerateAudio(String text) {
     final Map<String, String> params = <String, String>{};
     params["text"] = text;
-    return requestNetwork<ResultData>(Method.get,
+    return requestNetwork<ResultData>(Method.post,
         url: HttpApi.generateAudio,
-        queryParameters: params,
+        params: params,
         isShow: false, onSuccess: (result) {
       if (result == null ||
           result.data == null ||

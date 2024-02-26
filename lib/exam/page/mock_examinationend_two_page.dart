@@ -528,7 +528,7 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
                       child: Text(
                         '剩余训练$number次,点击购买更多',
                         style: const TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 15.0,
                           fontWeight: FontWeight.w400,
                           color: Colours.color_001652,
                         ),
@@ -686,7 +686,7 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
 
       number = examPermissioBean.data.leftTime;
       setState(() {});
-      _examDetailPagePresenter.getGenerateAudio(drtailStr);
+      _examDetailPagePresenter.postGenerateAudio(drtailStr);
     }, onError: (code, msg) {});
   }
 
