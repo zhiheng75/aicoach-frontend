@@ -33,4 +33,27 @@ class ExamDetailPagePresenter extends BasePagePresenter<ExamDetailView> {
       view.sendFail("");
     });
   }
+
+  Future postGenerateAudio(String text) {
+    final Map<String, String> params = <String, String>{};
+    params["text"] = text;
+    return requestNetwork<ResultData>(Method.post,
+        url: HttpApi.generateAudio,
+        params: params,
+        isShow: false, onSuccess: (result) {
+      if (result == null ||
+          result.data == null ||
+          (result.data as Map<String, dynamic>)['speech_url'] == null) {
+        return;
+      }
+      Map<String, dynamic> data = result.data as Map<String, dynamic>;
+      if (result.code == 200) {
+        view.playAendSuccess(data['speech_url']);
+      } else {
+        view.sendFail("");
+      }
+    }, onError: (code, msg) {
+      view.sendFail("");
+    });
+  }
 }

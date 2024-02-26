@@ -55,4 +55,9 @@ class _ExamDetailPageState extends State<ExamDetailPage>
   void sendSuccess(ExamDetailBean examDetailBean) {
     // TODO: implement sendSuccess
   }
+
+  @override
+  void playAendSuccess(String msg) {
+    // TODO: implement playAendSuccess
+  }
 }

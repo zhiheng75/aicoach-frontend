@@ -605,6 +605,11 @@ class _MyExaminationPageState extends State<MyExaminationPage>
       ];
     });
   }
+
+  @override
+  void playAendSuccess(String msg) {
+    // TODO: implement playAendSuccess
+  }
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {

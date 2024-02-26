@@ -179,7 +179,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       image = widget.entity.data.part2Phase1.base.image;
       mockPart2Phase2 = widget.entity.data.part2Phase2.list;
       teacherEn = widget.entity.data.part2Phase2.base.en;
-      teacherAudio == widget.entity.data.part2Phase2.base.audio;
+      teacherAudio = widget.entity.data.part2Phase2.base.audio;
       mockID = widget.entity.data.id.toString();
     });
 
@@ -363,12 +363,12 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       if (first == 0) {
         setState(() {
           soundPrintType = 1;
+          first = 1;
         });
         _mediaUtils.play(
           url: teacherAudio,
           whenFinished: () {
             setState(() {
-              first = 1;
               soundPrintType = 0;
             }); //老师问
             if (bodyType == "B2A") {}

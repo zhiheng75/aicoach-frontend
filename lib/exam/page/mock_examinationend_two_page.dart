@@ -13,6 +13,7 @@ import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,7 @@ class MockExaminationendTwoPage extends StatefulWidget {
 class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
     with
         BasePageMixin<MockExaminationendTwoPage, ExamDetailPagePresenter>,
+        RouteAware,
         AutomaticKeepAliveClientMixin<MockExaminationendTwoPage>
     implements ExamDetailView {
   late ExamDetailPagePresenter _examDetailPagePresenter;
@@ -44,6 +46,15 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
   late String phone = "";
 
   late int number = 0;
+
+  late String drtailStr = '';
+
+  @override
+  void didPop() {
+    // TODO: implement didPop
+    super.didPop();
+    MediaUtils().stopPlay();
+  }
 
   @override
   void initState() {
@@ -389,17 +400,17 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
             // color: Colours.color_F4F4F4,
             child: Column(
               children: [
-                Text(
-                  "$name, your ket oral mock exam is over. Let's sum it up together.",
-                  style: const TextStyle(
+                const Text(
+                  "your ket oral mock exam is over. Let's sum it up together.",
+                  style: TextStyle(
                     fontSize: 15.0,
                     color: Colors.black,
                   ),
                 ),
                 Gaps.vGap8,
-                Text(
-                  "$name，你的KET口语模拟考试结束了，我们一起总结一下吧。",
-                  style: const TextStyle(
+                const Text(
+                  "你的KET口语模拟考试结束了，我们一起总结一下吧。",
+                  style: TextStyle(
                     fontSize: 15.0,
                     color: Colors.black,
                   ),
@@ -517,7 +528,7 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
                       child: Text(
                         '剩余训练$number次,点击购买更多',
                         style: const TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 15.0,
                           fontWeight: FontWeight.w400,
                           color: Colours.color_001652,
                         ),
@@ -653,7 +664,12 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
         _examDetailBean.data.interactionScore.toDouble(),
         _examDetailBean.data.overallScore.toDouble(),
       ];
+
+      drtailStr = _examDetailBean.data.ket == "卓越A"
+          ? "your ket oral mock exam is over. Let's sum it up together. 你的KET口语模拟考试结束了，我们一起总结一下吧。您的成绩还不错，口语模考达到了剑桥KET考试的Grade${_examDetailBean.data.ket}水平。建议考前继续练习，保持住优异成绩，加油宝贝！"
+          : "your ket oral mock exam is over. Let's sum it up together. 你的KET口语模拟考试结束了，我们一起总结一下吧。您的成绩还不错，口语模考达到了剑桥KET考试的Grade${_examDetailBean.data.ket}水平。建议考前再练习${_examDetailBean.data.trainCount}次模拟考试，争取达到Grade${_examDetailBean.data.ketNext}水平，加油宝贝！";
     });
+    getStudyInfo();
   }
 
   void getStudyInfo() {
@@ -670,6 +686,16 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
 
       number = examPermissioBean.data.leftTime;
       setState(() {});
+      _examDetailPagePresenter.postGenerateAudio(drtailStr);
     }, onError: (code, msg) {});
+  }
+
+  @override
+  void playAendSuccess(String msg) {
+    // TODO: implement playAendSuccess
+    MediaUtils().play(
+      url: msg,
+      whenFinished: () {},
+    );
   }
 }
