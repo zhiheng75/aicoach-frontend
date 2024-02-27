@@ -464,14 +464,14 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   }
 
   void suggestAnswer(String message, Map<String, dynamic> map) {
-    CancelToken _cancelToken = CancelToken();
+    CancelToken cancelToken = CancelToken();
     DioUtils.instance.requestNetwork<ResultData>(
       Method.post,
       HttpApi.suggestAnswer,
+      cancelToken: cancelToken,
       params: {
         'question': message,
       },
-      cancelToken: _cancelToken,
       onSuccess: (result) {
         if (result == null || result.data == null) {
           return;
@@ -543,11 +543,12 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   ///销毁录音
   void dispose() {
     // 强制横屏
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.portraitUp,
-    // ]);
+
     // TODO: implement dispose
     super.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     // _cancelRecorderSubscriptions();
     // _releaseFlauto();
   }
@@ -726,8 +727,6 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
       ]);
-      // Navigator.of(context).pop();
-      // Navigator.pop(context);
       Navigator.pop(context);
     } on PlatformException catch (e) {
       print(e);
@@ -737,11 +736,16 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     bcontext = context;
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.dark,
       child: WillPopScope(
-        onWillPop: _requestPop,
+        onWillPop: () async {
+          //这里可以响应物理返回键
+          onBack();
+          return false;
+        },
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             body: Container(

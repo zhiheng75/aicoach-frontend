@@ -17,6 +17,7 @@ import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -89,6 +90,8 @@ class _ExamPageState extends State<ExamPage>
   //   });
   // }
 
+  final MediaUtils _mediaUtils = MediaUtils();
+
   @override
   void didPop() {
     ///从B退回到A的是调用
@@ -130,14 +133,76 @@ class _ExamPageState extends State<ExamPage>
     }
   }
 
-  void startExam() {
+  void suggestAnswer() {
+    final Map<String, String> params = <String, String>{};
+    CancelToken cancelToken = CancelToken();
+    _examPagePresenter.requestNetwork<ResultData>(Method.post,
+        url: HttpApi.suggestAnswer,
+        params: {
+          'question': "message",
+        },
+        cancelToken: cancelToken,
+        isShow: false,
+        isClose: false, onSuccess: (result) {
+      // Map<String, dynamic> examPermissionMap = json.decode(result.toString());
+      // ExamPermissionBean examPermissioBean =
+      //     ExamPermissionBean.fromJson(examPermissionMap);
+      Log.e(result.toString());
+      // Log.e(examPermissioBean.data.leftTime.toString());
+      // Log.e("=============");
+      // number = examPermissioBean.data.leftTime;
+      // setState(() {});
+    }, onError: (code, msg) {
+      Log.e(msg);
+    });
+
+    // CancelToken cancelToken = CancelToken();
+    // DioUtils.instance.requestNetwork<ResultData>(
+    //   Method.post,
+    //   HttpApi.suggestAnswer,
+    //   cancelToken: cancelToken,
+    // params: {
+    //   'question': "message",
+    // },
+    //   onSuccess: (result) {
+    //     if (result == null || result.data == null) {
+    //       return;
+    //     }
+    //     Map<String, dynamic> data = result.data as Map<String, dynamic>;
+    //     // map['answer_text'] = data['text'];
+    //     // map['answer_audio'] = data['speech_url'];
+    //   },
+    //   onError: (code, msg) {
+
+    //   },
+    // );
+  }
+
+  void startExam() async {
     // isExam = true;
+
+    // suggestAnswer();
+    // return;
     if (LoginManager.isLogin()) {
       // if (!preventDoubleTap(interval: 10000)) {
       //   return;
       // }
-      stopVoice();
-      _examPagePresenter.getExamPermission();
+
+      try {
+        // 检查权限
+        bool isRequest = await _mediaUtils.checkMicrophonePermission();
+        if (isRequest) {
+          return;
+        }
+        // ignore: use_build_context_synchronously
+        stopVoice();
+        _examPagePresenter.getExamPermission();
+      } catch (e) {
+        Toast.show(
+          e.toString().substring(11),
+          duration: 1000,
+        );
+      }
     } else {
       Toast.show("请登录");
     }
@@ -747,8 +812,6 @@ class _ExamPageState extends State<ExamPage>
       );
     }
 
-    final MediaUtils _mediaUtils = MediaUtils();
-
     void checkMicrophonePermission() async {
       try {
         // 检查权限
@@ -825,20 +888,20 @@ class _ExamPageState extends State<ExamPage>
               GestureDetector(
                 onTap: () {
                   if (LoginManager.isLogin()) {
-                    checkMicrophonePermission();
-                    // showModalBottomSheet(
-                    //   context: context,
-                    //   backgroundColor: Colors.transparent,
-                    //   barrierColor: Colors.transparent,
-                    //   isScrollControlled: true,
-                    //   isDismissible: false,
-                    //   enableDrag: false,
-                    //   builder: (_) => ExamPurchasePage(
-                    //     onPurchased: () {
-                    //       getStudyInfo();
-                    //     },
-                    //   ),
-                    // );
+                    // checkMicrophonePermission();
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      barrierColor: Colors.transparent,
+                      isScrollControlled: true,
+                      isDismissible: false,
+                      enableDrag: false,
+                      builder: (_) => ExamPurchasePage(
+                        onPurchased: () {
+                          getStudyInfo();
+                        },
+                      ),
+                    );
                   } else {
                     Toast.show("请登录");
                   }

@@ -491,6 +491,9 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
+                      SystemChrome.setPreferredOrientations([
+                        DeviceOrientation.portraitUp,
+                      ]);
                       showModalBottomSheet(
                         context: context,
                         backgroundColor: Colors.transparent,

@@ -177,6 +177,9 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
     // TODO: implement initState
     super.initState();
     next = 1;
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     // _cancelToken = CancelToken(); // 创建取消令牌
   }
 

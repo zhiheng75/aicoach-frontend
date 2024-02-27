@@ -290,6 +290,10 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
                                         : GestureDetector(
                                             behavior: HitTestBehavior.opaque,
                                             onTap: () {
+                                              SystemChrome
+                                                  .setPreferredOrientations([
+                                                DeviceOrientation.portraitUp,
+                                              ]);
                                               showModalBottomSheet(
                                                 context: context,
                                                 backgroundColor:

@@ -35,7 +35,7 @@ class _PersonPageState extends State<PersonPage>
   late PermissionBean permissionBeanData;
 
   late bool islog = true;
-  late String userName;
+  late String userName = "";
   late String headimgurl = "";
   late String phone = "";
 
