@@ -72,7 +72,8 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           // view.wechatLoginSuccess("登录成功");
           view.loginSuccess();
         } else {
-          // view.wechatLoginFail(data.msg);
+          // view.loginError(data.msg);
+          Toast.show(data.msg);
         }
       }
     });

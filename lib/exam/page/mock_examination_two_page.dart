@@ -727,7 +727,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
         DeviceOrientation.portraitUp,
       ]);
       // Navigator.of(context).pop();
-      Navigator.pop(context);
+      // Navigator.pop(context);
       Navigator.pop(context);
     } on PlatformException catch (e) {
       print(e);
