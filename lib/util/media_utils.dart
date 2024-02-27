@@ -207,23 +207,9 @@ class MediaUtils {
     AvatarController().stopSpeak();
   }
 
-  // Future<void> stopPlayByAppPaused() async {
-  //   if (_currentPlayer != null) {
-  //     Player player = _currentPlayer!;
-  //     _currentPlayer = null;
-  //     if (player is BufferPlayer) {
-  //       await player.stopByAppPaused();
-  //     }
-  //     if (player is FilePlayer) {
-  //       await player.stopByAppPaused();
-  //     }
-  //   }
-  //   if (_listPlayer != null) {
-  //     ListPlayer listPlayer = _listPlayer!;
-  //     _listPlayer = null;
-  //     await listPlayer.stopByAppPaused();
-  //   }
-  // }
+  Future<void> stopPlayByAppPaused() async {
+    await stopPlay();
+  }
 }
 
 class VolumeUtil {
@@ -549,9 +535,10 @@ class AudioPlayController {
         await _player!.closePlayer();
         AvatarController().stopSpeak();
       }
-      if (_isMultiple) {
-        _whenFinished();
-      }
+      // if (_isMultiple) {
+      //   _whenFinished();
+      // }
+      _whenFinished();
       if (_loadingStreamController != null) {
         _loadingStreamController!.add(false);
       }
