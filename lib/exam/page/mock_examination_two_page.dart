@@ -1255,12 +1255,12 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                       )),
                                   Gaps.vGap5,
                                   peopleWidget(
-                                      "comittee_icon",
+                                      "myhead_icon",
                                       soundPrintType == 3 ? true : false,
                                       "考生：$nameName"),
                                   Gaps.vGap5,
                                   peopleWidget(
-                                      "myhead_icon",
+                                      "comittee_icon",
                                       soundPrintType == 2 ? true : false,
                                       "考伴：peter"),
                                 ],
