@@ -160,26 +160,19 @@ class _InvitationCodePageState extends State<InvitationCodePage>
                     Expanded(
                       child: Gaps.vGap50,
                     ),
-                    GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
+                    SizedBox(
+                      width: 260,
+                      child: BtnWidget("btn_bg_img", "提交",
+                          txtStyle: TextStyle(
+                              color: Colours.color_001652,
+                              fontSize: Dimens.font_sp18), () {
                         if (_phoneController.text.isNotEmpty) {
                           _invitationCodePresenter
                               .getInviteCode(_phoneController.text);
                         } else {
                           Toast.show("请输入邀请码");
                         }
-                      },
-                      child: SizedBox(
-                        width: 260,
-                        child: BtnWidget(
-                            "btn_bg_img",
-                            "提交",
-                            txtStyle: TextStyle(
-                                color: Colours.color_001652,
-                                fontSize: Dimens.font_sp18),
-                            () {}),
-                      ),
+                      }),
                     ),
                     Gaps.vGap50,
                   ]),

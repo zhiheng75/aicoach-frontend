@@ -537,4 +537,9 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   void newwechatSuccess(NewWxInfoBeanData data) {
     // TODO: implement newwechatSuccess
   }
+
+  @override
+  void loginError(String msg) {
+    // TODO: implement loginError
+  }
 }
