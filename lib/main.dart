@@ -2,6 +2,7 @@ import 'package:Bubble/conversation/provider/conversation_provider.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/provider/selecter_teacher_provider.dart';
 import 'package:Bubble/setting/provider/device_provider.dart';
+import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:device_identity/device_identity.dart';
 import 'package:dio/dio.dart';
@@ -116,8 +117,8 @@ class MyApp extends StatelessWidget {
   }
 
   void initUM() {
-    UmengCommonSdk.initCommon(
-        '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', 'Umeng');
+    UmengCommonSdk.initCommon('65bc5ac795b14f599d216dd6',
+        '65bc5a9595b14f599d216d93', Channel.channelios);
     UmengCommonSdk.setPageCollectionModeManual();
   }
 
