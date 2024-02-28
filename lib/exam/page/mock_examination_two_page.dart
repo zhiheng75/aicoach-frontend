@@ -435,7 +435,9 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   void mockKlowEndAnswer() async {
     await _mediaUtils.stopRecord();
     isTalk = false;
-    _timer?.cancel();
+    if (bodyType != "B2A") {
+      _timer?.cancel();
+    }
     Future.delayed(const Duration(seconds: 1), () {
 // 抬起按钮
       if (bodyType != "B2A") {
