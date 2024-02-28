@@ -38,7 +38,7 @@ class _PersonPageState extends State<PersonPage>
   late String userName = "";
   late String headimgurl = "";
   late String phone = "";
-
+  late int totalTime = 0;
   void init() {
     getStudyInfo();
   }
@@ -474,9 +474,9 @@ class _PersonPageState extends State<PersonPage>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     children: [
-                      TextSpan(
+                      const TextSpan(
                           text: '免费体验',
                           style: TextStyle(
                             fontSize: 13.0,
@@ -486,8 +486,8 @@ class _PersonPageState extends State<PersonPage>
                             letterSpacing: 0.05,
                           )),
                       TextSpan(
-                          text: '45分钟',
-                          style: TextStyle(
+                          text: '${totalTime / 60}分钟',
+                          style: const TextStyle(
                             fontSize: 13.0,
                             fontWeight: FontWeight.w400,
                             color: Color(0xFF0047FF),
@@ -682,8 +682,9 @@ class _PersonPageState extends State<PersonPage>
   @override
   void sendSuccess(PermissionBean permissionBean) {
     // TODO: implement sendSuccess
-    setState(() {});
     islog = false;
     permissionBeanData = permissionBean;
+    totalTime = permissionBean.data.totalTime;
+    setState(() {});
   }
 }
