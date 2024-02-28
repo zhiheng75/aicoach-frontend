@@ -51,9 +51,9 @@ Future<void> main() async {
 
         // 全局监听App状态
         SystemChannels.lifecycle.setMessageHandler((message) async {
-
           // 退到后台
-          if (_appLifecycleState == 'AppLifecycleState.inactive' && message == 'AppLifecycleState.paused') {
+          if (_appLifecycleState == 'AppLifecycleState.inactive' &&
+              message == 'AppLifecycleState.paused') {
             await MediaUtils().stopPlayByAppPaused();
           }
 
@@ -108,9 +108,9 @@ class MyApp extends StatelessWidget {
     interceptors.add(AdapterInterceptor());
     configDio(
       // 测试
-      baseUrl: 'https://api.bubble.shenmo-ai.net/',
+      // baseUrl: 'https://api.bubble.shenmo-ai.net/',
       // 正式
-      // baseUrl: 'https://api.bubble.shenmo-ai.com/',
+      baseUrl: 'https://api.bubble.shenmo-ai.com/',
       interceptors: interceptors,
     );
   }
