@@ -2,6 +2,7 @@ import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/net/net.dart';
 import 'package:Bubble/person/entity/permission_bean.dart';
+import 'package:Bubble/util/EventBus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -98,8 +99,20 @@ class _PersonPageState extends State<PersonPage>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    EventBus().off("YQM");
+  }
+
+  @override
   void initState() {
     super.initState();
+
+    EventBus().on('YQM', (_) {
+      Log.e("进来了");
+      _personPagePresenter.getUsageTime();
+      ;
+    });
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
