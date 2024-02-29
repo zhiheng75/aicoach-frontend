@@ -45,12 +45,14 @@
 			</array>
 		</dict>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDefault</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-        <string>https</string>
-         <string>http</string>
+		<string>https</string>
+		<string>http</string>
 		<string>wechat</string>
 		<string>alipay-sdk</string>
 		<string>alipays</string>
