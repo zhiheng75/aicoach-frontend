@@ -9,8 +9,7 @@ import '../constant/constant.dart';
 class Device {
   static bool get isMobile => isAndroid || isIOS;
 
-
-  static bool get isAndroid =>  Platform.isAndroid;
+  static bool get isAndroid => Platform.isAndroid;
   static bool get isIOS => Platform.isIOS;
 
   static late AndroidDeviceInfo _androidInfo;
@@ -45,7 +44,8 @@ class Device {
       // iOS，IDFA（需要同意追踪权限） > IDFV
       if (Platform.isIOS) {
         // 是否允许追踪权限
-        if (await AppTrackingTransparency.trackingAuthorizationStatus == TrackingStatus.authorized) {
+        if (await AppTrackingTransparency.trackingAuthorizationStatus ==
+            TrackingStatus.authorized) {
           deviceId = await AppTrackingTransparency.getAdvertisingIdentifier();
         } else {
           deviceId = _iosInfo.identifierForVendor;
