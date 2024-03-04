@@ -38,6 +38,8 @@ class Data {
   int allLeftTime;
   int isMember;
   int expDay;
+  int totalTime;
+
   String membershipExpiryDate;
 
   Data({
@@ -45,6 +47,7 @@ class Data {
     required this.allLeftTime,
     required this.isMember,
     required this.expDay,
+    required this.totalTime,
     required this.membershipExpiryDate,
   });
 
@@ -53,6 +56,7 @@ class Data {
         allLeftTime: json["all_left_time"] ?? 0,
         isMember: json["is_member"] ?? 0,
         expDay: json["exp_day"] ?? 0,
+        totalTime: json["total_time"] ?? 0,
         membershipExpiryDate: json["membership_expiry_date"] ?? "",
       );
 
@@ -61,6 +65,7 @@ class Data {
         "all_left_time": allLeftTime,
         "is_member": isMember,
         "exp_day": expDay,
+        "total_time": totalTime,
         "membership_expiry_date": membershipExpiryDate,
       };
 }

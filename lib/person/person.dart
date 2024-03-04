@@ -2,6 +2,7 @@ import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/net/net.dart';
 import 'package:Bubble/person/entity/permission_bean.dart';
+import 'package:Bubble/util/EventBus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,7 +39,7 @@ class _PersonPageState extends State<PersonPage>
   late String userName = "";
   late String headimgurl = "";
   late String phone = "";
-
+  late int totalTime = 0;
   void init() {
     getStudyInfo();
   }
@@ -98,8 +99,20 @@ class _PersonPageState extends State<PersonPage>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    EventBus().off("YQM");
+  }
+
+  @override
   void initState() {
     super.initState();
+
+    EventBus().on('YQM', (_) {
+      Log.e("进来了");
+      _personPagePresenter.getUsageTime();
+      ;
+    });
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -474,9 +487,9 @@ class _PersonPageState extends State<PersonPage>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     children: [
-                      TextSpan(
+                      const TextSpan(
                           text: '免费体验',
                           style: TextStyle(
                             fontSize: 13.0,
@@ -486,8 +499,8 @@ class _PersonPageState extends State<PersonPage>
                             letterSpacing: 0.05,
                           )),
                       TextSpan(
-                          text: '45分钟',
-                          style: TextStyle(
+                          text: '${totalTime / 60}分钟',
+                          style: const TextStyle(
                             fontSize: 13.0,
                             fontWeight: FontWeight.w400,
                             color: Color(0xFF0047FF),
@@ -682,8 +695,9 @@ class _PersonPageState extends State<PersonPage>
   @override
   void sendSuccess(PermissionBean permissionBean) {
     // TODO: implement sendSuccess
-    setState(() {});
     islog = false;
     permissionBeanData = permissionBean;
+    totalTime = permissionBean.data.totalTime;
+    setState(() {});
   }
 }

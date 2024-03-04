@@ -6,6 +6,7 @@ import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/person/entity/version_bean.dart';
 import 'package:Bubble/person/widget/illustration.dart';
 import 'package:Bubble/setting/entity/updata_info_entity.dart';
+import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/other_utils.dart';
@@ -48,9 +49,9 @@ class _AboutPageState extends State<AboutPage> {
     String platformStr = "android";
 
     if (Device.isAndroid) {
-      platformStr = "android";
+      platformStr = Channel.channelyingyongbao;
     } else {
-      platformStr = "ios";
+      platformStr = Channel.channelios;
     }
     DioUtils.instance.requestNetwork<ResultData>(
       Method.get,

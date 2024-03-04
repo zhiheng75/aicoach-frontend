@@ -2,6 +2,7 @@ import 'package:Bubble/conversation/provider/conversation_provider.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/provider/selecter_teacher_provider.dart';
 import 'package:Bubble/setting/provider/device_provider.dart';
+import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:device_identity/device_identity.dart';
 import 'package:dio/dio.dart';
@@ -51,9 +52,9 @@ Future<void> main() async {
 
         // 全局监听App状态
         SystemChannels.lifecycle.setMessageHandler((message) async {
-
           // 退到后台
-          if (_appLifecycleState == 'AppLifecycleState.inactive' && message == 'AppLifecycleState.paused') {
+          if (_appLifecycleState == 'AppLifecycleState.inactive' &&
+              message == 'AppLifecycleState.paused') {
             await MediaUtils().stopPlayByAppPaused();
           }
 
@@ -108,16 +109,16 @@ class MyApp extends StatelessWidget {
     interceptors.add(AdapterInterceptor());
     configDio(
       // 测试
-      // baseUrl: 'https://api.bubble.shenmo-ai.net/',
+      baseUrl: 'https://api.bubble.shenmo-ai.net/',
       // 正式
-      baseUrl: 'https://api.bubble.shenmo-ai.com/',
+      // baseUrl: 'https://api.bubble.shenmo-ai.com/',
       interceptors: interceptors,
     );
   }
 
   void initUM() {
-    UmengCommonSdk.initCommon(
-        '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', 'Umeng');
+    UmengCommonSdk.initCommon('65bc5ac795b14f599d216dd6',
+        '65bc5a9595b14f599d216d93', Channel.channelios);
     UmengCommonSdk.setPageCollectionModeManual();
   }
 

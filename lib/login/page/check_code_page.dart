@@ -17,6 +17,7 @@ import 'package:Bubble/widgets/my_only_img_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:sp_util/sp_util.dart';
 
 import '../../home/provider/home_provider.dart';
 import '../../mvp/base_page.dart';
@@ -507,6 +508,9 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   @override
   void loginSuccess() {
     // TODO: implement loginSuccess
+    SpUtil.putObject(Constant.userInfoKey, widget.wechatData.toJson());
+    SpUtil.putString(Constant.accessToken, widget.wechatData.token);
+    SpUtil.putString(Constant.phone, widget.phoneNumber);
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
