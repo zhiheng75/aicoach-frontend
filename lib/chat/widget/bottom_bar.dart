@@ -173,18 +173,31 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
         characterId: characterId,
         sceneId: sceneId,
         onConnected: () {
-          // // 刷新使用时间
-          // _homeProvider.getUsageTime();
-          _homeProvider.startUsageTimeCutdown(() async {
-            showModalBottomSheet(
-              context: context,
-              backgroundColor: Colors.transparent,
-              barrierColor: Colors.transparent,
-              isScrollControlled: true,
-              isDismissible: false,
-              builder: (_) => ExpirationReminder(),
-            );
+          // 刷新使用时间
+          _homeProvider.getUsageTime(() {
+            // 倒计时
+            _homeProvider.startUsageTimeCutdown(() async {
+              showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                barrierColor: Colors.transparent,
+                isScrollControlled: true,
+                isDismissible: false,
+                builder: (_) => ExpirationReminder(),
+              );
+            });
           });
+          // // 倒计时
+          // _homeProvider.startUsageTimeCutdown(() async {
+          //   showModalBottomSheet(
+          //     context: context,
+          //     backgroundColor: Colors.transparent,
+          //     barrierColor: Colors.transparent,
+          //     isScrollControlled: true,
+          //     isDismissible: false,
+          //     builder: (_) => ExpirationReminder(),
+          //   );
+          // });
         },
         onAnswer: onWebsocketAnswer,
         onEnd: onWebsocketEnd,
@@ -231,8 +244,6 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   }
 
   void onWebsocketEnd(String? reason, String endType) {
-    // // 刷新使用时间
-    // _homeProvider.getUsageTime();
     _homeProvider.endUsageTimeCutdown();
     widget.controller.setDisabled(true);
     // 异常结束

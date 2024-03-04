@@ -88,7 +88,7 @@ class HomeProvider extends ChangeNotifier {
   }
 
   // 获取使用时间、体验天数
-  Future<void> getUsageTime() async {
+  Future<void> getUsageTime([Function()? callback]) async {
     String deviceId = await Device.getDeviceId();
     await DioUtils.instance.requestNetwork<ResultData>(
       Method.get, HttpApi.permission,
@@ -119,6 +119,14 @@ class HomeProvider extends ChangeNotifier {
         }
         if (data.containsKey('membership_expiry_date')) {
           _expireDate = data['membership_expiry_date'] ?? '';
+        }
+        if (callback != null) {
+          callback();
+        }
+      },
+      onError: (code, msg) {
+        if (callback != null) {
+          callback();
         }
       },
     );

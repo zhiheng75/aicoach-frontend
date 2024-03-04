@@ -74,19 +74,31 @@ class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPa
           setState(() {});
           _homeProvider.addIntroductionMessage();
           _homeProvider.addTipMessage('Topic started！');
-          // // 刷新使用时间
-          // _homeProvider.getUsageTime();
-          // 倒计时
-          _homeProvider.startUsageTimeCutdown(() {
-            showModalBottomSheet(
-              context: context,
-              backgroundColor: Colors.transparent,
-              barrierColor: Colors.transparent,
-              isScrollControlled: true,
-              isDismissible: false,
-              builder: (_) => ExpirationReminder(),
-            );
+          // 刷新使用时间
+          _homeProvider.getUsageTime(() {
+            // 倒计时
+            _homeProvider.startUsageTimeCutdown(() {
+              showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                barrierColor: Colors.transparent,
+                isScrollControlled: true,
+                isDismissible: false,
+                builder: (_) => ExpirationReminder(),
+              );
+            });
           });
+          // // 倒计时
+          // _homeProvider.startUsageTimeCutdown(() {
+          //   showModalBottomSheet(
+          //     context: context,
+          //     backgroundColor: Colors.transparent,
+          //     barrierColor: Colors.transparent,
+          //     isScrollControlled: true,
+          //     isDismissible: false,
+          //     builder: (_) => ExpirationReminder(),
+          //   );
+          // });
         },
         onAnswer: onWebsocketAnswer,
         onEnd: onWebsocketEnd,
@@ -138,8 +150,6 @@ class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPa
 
 
   void onWebsocketEnd(String? reason, String endType) {
-    // // 刷新使用时间
-    // _homeProvider.getUsageTime();
     _homeProvider.endUsageTimeCutdown();
     _bottomBarControll.setDisabled(true);
     _isConversationEnd = true;
