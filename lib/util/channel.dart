@@ -6,4 +6,8 @@ class Channel {
   static String channelyingyongbao = "android";
   static String channelhuawei = "huawei";
   static String channelios = "ios";
+  static String channeloppo = "oppo";
+  static String channelvivo = "vivo";
+  static String channelhonor = "honor";
+  static String channelali = "ali";
 }
