@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 
+import 'package:Bubble/util/media_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,8 @@ class MessageItem extends StatefulWidget {
 class _MessageItemState extends State<MessageItem> {
   late HomeProvider _homeProvider;
   final ScreenUtil _screenUtil = ScreenUtil();
+  final MediaUtils _mediaUtils = MediaUtils();
+  String _audioType = '';
 
   void openTranslate() {
     if (!(widget.message as NormalMessage).isTextEnd) {
@@ -54,6 +57,41 @@ class _MessageItemState extends State<MessageItem> {
       enableDrag: false,
       builder: (_) => Evaluation(message: widget.message as NormalMessage),
     );
+  }
+
+  void openExample() {
+    if (!(widget.message as NormalMessage).isTextEnd) {
+      Toast.show(
+        '回答中，请稍后再试',
+        duration: 1000,
+      );
+      return;
+    }
+    _homeProvider.openExample(widget.message as NormalMessage);
+  }
+
+  void closeExample() {
+    _homeProvider.closeExample(widget.message as NormalMessage);
+  }
+
+  void playAudio(String type) async {
+    if (_audioType == type) {
+      return;
+    }
+    _audioType = type;
+    await _mediaUtils.stopPlay();
+    if (type == 'user') {
+      _mediaUtils.play(
+        pcmBuffer: (widget.message as NormalMessage).audio,
+        whenFinished: () => _audioType = '',
+      );
+    }
+    if (type == 'example') {
+      _mediaUtils.play(
+        url: (widget.message as NormalMessage).exampleAudio,
+        whenFinished: () => _audioType = '',
+      );
+    }
   }
 
   String formatScore(dynamic score) {
@@ -265,115 +303,353 @@ class _MessageItemState extends State<MessageItem> {
       ),
     );
 
-    Widget ext = GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        NormalMessage message = widget.message as NormalMessage;
-        if (message.speaker != 'user') {
-          if (message.showTranslation) {
-            closeTranslate();
-            return;
-          }
-          openTranslate();
-          return;
-        }
-        openEvaluation();
-      },
-      child: _message.speaker == 'user' ? Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          const LoadAssetImage(
-            'jiexi',
-            width: 20.0,
-            height: 20.0,
-          ),
-          Text(
-            _message.evaluation['total_score'] != null ? formatScore(_message.evaluation['total_score']) : '',
-            style: const TextStyle(
-              fontSize: 13.0,
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
-              height: 24.0 / 13.0,
-              letterSpacing: 0.05,
-            ),
-          ),
-        ],
-      ) : const LoadAssetImage(
-        'fanyi',
-        width: 20.0,
-        height: 20.0,
-      ),
-    );
+    // Widget ext = GestureDetector(
+    //   behavior: HitTestBehavior.opaque,
+    //   onTap: () {
+    //     NormalMessage message = widget.message as NormalMessage;
+    //     if (message.speaker != 'user') {
+    //       if (message.showTranslation) {
+    //         closeTranslate();
+    //         return;
+    //       }
+    //       openTranslate();
+    //       return;
+    //     }
+    //     openEvaluation();
+    //   },
+    //   child: _message.speaker == 'user' ? Column(
+    //     mainAxisSize: MainAxisSize.min,
+    //     children: <Widget>[
+    //       const LoadAssetImage(
+    //         'jiexi',
+    //         width: 20.0,
+    //         height: 20.0,
+    //       ),
+    //       Text(
+    //         _message.evaluation['total_score'] != null ? formatScore(_message.evaluation['total_score']) : '',
+    //         style: const TextStyle(
+    //           fontSize: 13.0,
+    //           fontWeight: FontWeight.w400,
+    //           color: Colors.black,
+    //           height: 24.0 / 13.0,
+    //           letterSpacing: 0.05,
+    //         ),
+    //       ),
+    //     ],
+    //   ) : const LoadAssetImage(
+    //     'fanyi',
+    //     width: 20.0,
+    //     height: 20.0,
+    //   ),
+    // );
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: 4.0,
-              sigmaY: 4.0
-            ),
-            child: Container(
-              width: width,
-              decoration: decoration,
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          _message.text,
-                          style: const TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.color_001652,
-                            height: 20.0 / 15.0,
-                            letterSpacing: 0.05,
-                          ),
-                        ),
-                        if (_message.showTranslation)
-                          Text(
-                            _message.translateState == 1 ? '翻译中...' : (_message.translation == 3 ? '翻译失败' : _message.translation),
-                            style: const TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w400,
-                              color: Colours.color_001652,
-                              height: 20.0 / 15.0,
-                              letterSpacing: 0.05,
-                            ),
-                          ),
-                      ],
+    Widget createExtWidget(NormalMessage message) {
+      return Row(
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                if (message.speaker == 'user' && message.evaluation['total_score'] != null)
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: openEvaluation,
+                    child: Text(
+                      '${formatScore(message.evaluation['total_score'])} 解析优化',
+                      style: const TextStyle(
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                        height: 24.0 / 13.0,
+                        letterSpacing: 0.05,
+                      ),
                     ),
                   ),
-                  // Expanded(
-                  //   child: Text(
-                  //     _message.text,
-                  //     style: const TextStyle(
-                  //       fontSize: 15.0,
-                  //       fontWeight: FontWeight.w400,
-                  //       color: Colours.color_001652,
-                  //       height: 20.0 / 15.0,
-                  //       letterSpacing: 0.05,
-                  //     ),
-                  //   ),
-                  // ),
-                  const SizedBox(
-                    width: 10.0,
+              ],
+            ),
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (message.speaker == 'ai')
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 16,
                   ),
-                  ext,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      if (message.showTranslation) {
+                        closeTranslate();
+                        return;
+                      }
+                      openTranslate();
+                    },
+                    child: const LoadAssetImage(
+                      'fanyi_hei',
+                      width: 18,
+                      height: 16,
+                    ),
+                  ),
+                ),
+              if (message.speaker == 'ai')
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    if (message.showExample) {
+                      closeExample();
+                      return;
+                    }
+                    openExample();
+                  },
+                  child: const LoadAssetImage(
+                    'shili_zhi',
+                    width: 20,
+                    height: 19,
+                  ),
+                ),
+              if (message.speaker == 'user')
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                  ),
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => playAudio('user'),
+                    child: const LoadAssetImage(
+                      'laba_lan',
+                      width: 17.6,
+                      height: 16,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ],
+      );
+    }
+
+    Widget createTranslationWidget(NormalMessage message) {
+      if (!message.showTranslation) {
+        return const SizedBox();
+      }
+      return Padding(
+        padding: const EdgeInsets.only(
+          top: 16,
+        ),
+        child: Text(
+          message.translateState == 1 ? '翻译中...' : (message.translation == 3 ? '翻译失败' : message.translation),
+          style: const TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.w400,
+            color: Colours.color_001652,
+            height: 20.0 / 15.0,
+            letterSpacing: 0.05,
+          ),
+        ),
+      );
+    }
+
+    Widget createExample(NormalMessage message) {
+      if (!message.showExample) {
+        return const SizedBox();
+      }
+      return Padding(
+        padding: const EdgeInsets.only(
+          top: 16,
+        ),
+        child: message.exampleState != 2 ? Text(
+          message.exampleState == 1 ? '获取示例中...' : '获取示例失败',
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+            color: Color(0xFF890073),
+            height: 20 / 15,
+            letterSpacing: 0.05,
+          ),
+        ) : Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 0.8,
+              style: BorderStyle.solid,
+              color: const Color(0xFF3400A2),
+            ),
+            borderRadius: BorderRadius.circular(8),
+            color: Colors.white,
+          ),
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                message.exampleText,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF890073),
+                  height: 20 / 15,
+                  letterSpacing: 0.05,
+                ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => playAudio('example'),
+                    child: const LoadAssetImage(
+                      'laba_lan',
+                      width: 17.6,
+                      height: 16,
+                    ),
+                  ),
                 ],
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (_message.speaker == 'ai')
+          Padding(
+            padding: const EdgeInsets.only(
+              right: 8,
+            ),
+            child: SizedBox(
+              width: 48.0,
+              height: 48.0,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(48.0),
+                child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: LoadImage(
+                    _message.imageUrl,
+                    width: 48.0,
+                  ),
+                ),
               ),
             ),
           ),
+        Expanded(
+          child: Container(
+            width: width,
+            decoration: decoration,
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _message.text,
+                  style: const TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w400,
+                    color: Colours.color_001652,
+                    height: 20.0 / 15.0,
+                    letterSpacing: 0.05,
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                createExtWidget(_message),
+                createTranslationWidget(_message),
+                createExample(_message),
+              ],
+            ),
+          ),
         ),
+        if (_message.speaker == 'user')
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 8,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(48.0),
+              child: LoadImage(
+                _message.imageUrl,
+                width: 48,
+                height: 48,
+              ),
+            ),
+          ),
       ],
     );
+
+    // return Column(
+    //   mainAxisSize: MainAxisSize.min,
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children: <Widget>[
+    //     ClipRect(
+    //       child: BackdropFilter(
+    //         filter: ImageFilter.blur(
+    //           sigmaX: 4.0,
+    //           sigmaY: 4.0
+    //         ),
+    //         child: Container(
+    //           width: width,
+    //           decoration: decoration,
+    //           padding: const EdgeInsets.all(16.0),
+    //           child: Row(
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             children: <Widget>[
+    //               Expanded(
+    //                 child: Column(
+    //                   mainAxisSize: MainAxisSize.min,
+    //                   crossAxisAlignment: CrossAxisAlignment.start,
+    //                   children: <Widget>[
+    //                     Text(
+    //                       _message.text,
+    //                       style: const TextStyle(
+    //                         fontSize: 15.0,
+    //                         fontWeight: FontWeight.w400,
+    //                         color: Colours.color_001652,
+    //                         height: 20.0 / 15.0,
+    //                         letterSpacing: 0.05,
+    //                       ),
+    //                     ),
+    //                     if (_message.showTranslation)
+    //                       Text(
+    //                         _message.translateState == 1 ? '翻译中...' : (_message.translation == 3 ? '翻译失败' : _message.translation),
+    //                         style: const TextStyle(
+    //                           fontSize: 15.0,
+    //                           fontWeight: FontWeight.w400,
+    //                           color: Colours.color_001652,
+    //                           height: 20.0 / 15.0,
+    //                           letterSpacing: 0.05,
+    //                         ),
+    //                       ),
+    //                   ],
+    //                 ),
+    //               ),
+    //               // Expanded(
+    //               //   child: Text(
+    //               //     _message.text,
+    //               //     style: const TextStyle(
+    //               //       fontSize: 15.0,
+    //               //       fontWeight: FontWeight.w400,
+    //               //       color: Colours.color_001652,
+    //               //       height: 20.0 / 15.0,
+    //               //       letterSpacing: 0.05,
+    //               //     ),
+    //               //   ),
+    //               // ),
+    //               const SizedBox(
+    //                 width: 10.0,
+    //               ),
+    //               ext,
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //   ],
+    // );
 
   }
 }

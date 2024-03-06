@@ -24,7 +24,13 @@ class NormalMessage extends MessageEntity {
   // 翻译状态 0-未翻译 1-翻译中 2-翻译成功 3-翻译失败
   int translateState = 0;
   String translation = '';
+  bool showExample = false;
+  // 示例状态 0-未获取 1-获取中 2-获取成功 3-获取失败
+  int exampleState = 0;
+  String exampleText = '';
+  String exampleAudio = '';
   String speaker = 'ai';
+  String imageUrl = '';
   Map<String, dynamic> evaluation = {};
   // 是否文本已全部返回
   bool isTextEnd = false;

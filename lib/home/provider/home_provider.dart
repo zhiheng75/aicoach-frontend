@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_final_fields, unnecessary_getters_setters, slash_for_doc_comments
 import 'dart:async';
 
+import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -168,6 +169,7 @@ class HomeProvider extends ChangeNotifier {
   // 创建普通消息
   NormalMessage createNormalMessage([bool isUser = false]) {
     NormalMessage normalMessage = NormalMessage();
+    normalMessage.imageUrl = isUser ? LoginManager.getUserAvatar() : _character.imageUrl;
     if (isUser) {
       normalMessage.characterId = _character.characterId;
       normalMessage.sessionId = _sessionId;
@@ -317,6 +319,61 @@ class HomeProvider extends ChangeNotifier {
 
   void closeTranslate(NormalMessage normalMessage) {
     normalMessage.showTranslation = false;
+    notifyListeners();
+  }
+
+  // 示例
+  void openExample(NormalMessage normalMessage) {
+    if (normalMessage.showExample) {
+      return;
+    }
+
+    normalMessage.showExample = true;
+
+    if (normalMessage.exampleState == 1 ||
+        normalMessage.exampleState == 2) {
+      notifyListeners();
+      return;
+    }
+
+    DioUtils.instance.requestNetwork<ResultData>(
+      Method.post,
+      HttpApi.suggestAnswer,
+      params: {
+        'question': normalMessage.text,
+        'character_id': _character.characterId,
+      },
+      onSuccess: (result) {
+        if (result == null || result.data == null) {
+          normalMessage.exampleState = 3;
+          if (normalMessage.showExample) {
+            notifyListeners();
+          }
+          return;
+        }
+        Map<String, dynamic> data = result.data as Map<String, dynamic>;
+        normalMessage.exampleText = data['text'];
+        normalMessage.exampleAudio = data['speech_url'];
+        normalMessage.exampleState = 2;
+        if (normalMessage.showExample) {
+          notifyListeners();
+        }
+      },
+      onError: (code, msg) {
+        normalMessage.exampleState = 3;
+        if (normalMessage.showExample) {
+          notifyListeners();
+        }
+        Log.d('get example fail:msg=$msg', tag: '获取示例');
+      },
+    );
+
+    normalMessage.exampleState = 1;
+    notifyListeners();
+  }
+
+  void closeExample(NormalMessage normalMessage) {
+    normalMessage.showExample = false;
     notifyListeners();
   }
 

@@ -115,7 +115,8 @@ class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPa
       if (answer is String && (answer.contains('[end_session]') || RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
         return;
       }
-      _answer = NormalMessage();
+      // _answer = NormalMessage();
+      _answer = _homeProvider.createNormalMessage();
       // 创建播放列表
       _listPlayer = _mediaUtils.createListPlay(() {
         _bottomBarControll.setDisabled(false);
