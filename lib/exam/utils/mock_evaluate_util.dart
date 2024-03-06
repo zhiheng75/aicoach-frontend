@@ -319,7 +319,7 @@ class MockEvaluateUtil {
         );
         if (response.statusCode == 200) {
           Log.d('upload audio success:url=${'$host/$key'}', tag: '上传音频');
-          onSuccess('$host/$key');
+          onSuccess(key);
         }
       } catch (e) {
         Log.d('upload audio error:${e.toString()}', tag: '_uploadAudio');
