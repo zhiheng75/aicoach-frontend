@@ -440,4 +440,9 @@ class LoginManager {
     Map<dynamic, dynamic>? userInfo = SpUtil.getObject(Constant.userInfoKey);
     return (userInfo ?? {}) as Map<String, dynamic>;
   }
+
+  static String getUserAvatar() {
+    Map<String, dynamic> userInfo = getUserInfo();
+    return userInfo['headimgurl'] ?? '';
+  }
 }

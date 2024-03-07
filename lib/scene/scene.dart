@@ -74,19 +74,31 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
           setState(() {});
           _homeProvider.addIntroductionMessage();
           _homeProvider.addTipMessage('Scene started！');
-          // // 刷新使用时间
-          // _homeProvider.getUsageTime();
-          // 倒计时
-          _homeProvider.startUsageTimeCutdown(() {
-            showModalBottomSheet(
-              context: context,
-              backgroundColor: Colors.transparent,
-              barrierColor: Colors.transparent,
-              isScrollControlled: true,
-              isDismissible: false,
-              builder: (_) => ExpirationReminder(),
-            );
+          // 刷新使用时间
+          _homeProvider.getUsageTime(() {
+            // 倒计时
+            _homeProvider.startUsageTimeCutdown(() {
+              showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                barrierColor: Colors.transparent,
+                isScrollControlled: true,
+                isDismissible: false,
+                builder: (_) => ExpirationReminder(),
+              );
+            });
           });
+          // // 倒计时
+          // _homeProvider.startUsageTimeCutdown(() {
+          //   showModalBottomSheet(
+          //     context: context,
+          //     backgroundColor: Colors.transparent,
+          //     barrierColor: Colors.transparent,
+          //     isScrollControlled: true,
+          //     isDismissible: false,
+          //     builder: (_) => ExpirationReminder(),
+          //   );
+          // });
         },
         onAnswer: onWebsocketAnswer,
         onEnd: onWebsocketEnd,
@@ -103,8 +115,9 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
       if (answer is String && (answer.contains('[end_session]') || RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
         return;
       }
-      _answer = NormalMessage();
-      // cj播放列表
+      // _answer = NormalMessage();
+      _answer = _homeProvider.createNormalMessage();
+      // 创建播放列表
       _listPlayer = _mediaUtils.createListPlay(() {
         _bottomBarControll.setDisabled(false);
       }, true);
@@ -138,8 +151,6 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
 
 
   void onWebsocketEnd(String? reason, String endType) {
-    // // 刷新使用时间
-    // _homeProvider.getUsageTime();
     _homeProvider.endUsageTimeCutdown();
     _bottomBarControll.setDisabled(true);
     _isConversationEnd = true;
