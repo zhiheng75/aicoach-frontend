@@ -117,8 +117,14 @@ class MyApp extends StatelessWidget {
   }
 
   void initUM() {
-    UmengCommonSdk.initCommon('65bc5ac795b14f599d216dd6',
-        '65bc5a9595b14f599d216d93', Channel.channelios);
+    String platformStr = Channel.channelios;
+    if (Device.isAndroid) {
+      platformStr = Channel.channelyingyongbao;
+    } else {
+      platformStr = Channel.channelios;
+    }
+    UmengCommonSdk.initCommon(
+        '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', platformStr);
     UmengCommonSdk.setPageCollectionModeManual();
   }
 

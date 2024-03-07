@@ -509,7 +509,7 @@ class UpDataView extends StatelessWidget {
                       const SizedBox(
                         height: 16.0,
                       ),
-                      sessionChild(versionBean.msg),
+                      sessionChild(versionBean.data.message),
                       const SizedBox(
                         height: 26.0,
                       ),
