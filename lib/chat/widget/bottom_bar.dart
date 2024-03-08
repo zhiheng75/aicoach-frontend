@@ -235,6 +235,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       return;
     }
     if (answer is Uint8List) {
+      _answer!.audio.add(answer);
       if (_appLifecycleState == AppLifecycleState.paused) {
         return;
       }

@@ -140,6 +140,7 @@ class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPa
       return;
     }
     if (answer is Uint8List) {
+      _answer!.audio.add(answer);
       if (_appLifecycleState == AppLifecycleState.paused) {
         return;
       }

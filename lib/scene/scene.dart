@@ -140,6 +140,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
       return;
     }
     if (answer is Uint8List) {
+      _answer!.audio.add(answer);
       if (_appLifecycleState == AppLifecycleState.paused) {
         return;
       }
