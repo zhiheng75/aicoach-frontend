@@ -261,6 +261,7 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
                       }
                       return Container(
                         width: _screenUtil.screenWidth,
+                        color: Colors.transparent,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16.0,
                         ),

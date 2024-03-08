@@ -286,12 +286,6 @@ class _MessageItemState extends State<MessageItem> {
     // 普通消息
     _message = _message as NormalMessage;
     BoxDecoration decoration = BoxDecoration(
-      borderRadius: BorderRadius.only(
-        topLeft: const Radius.circular(20.0),
-        topRight: const Radius.circular(20.0),
-        bottomLeft: Radius.circular(_message.speaker == 'ai' ? 0 : 20.0),
-        bottomRight: Radius.circular(_message.speaker == 'ai' ? 20.0 : 0),
-      ),
       color: Colors.white.withOpacity(0.86),
       gradient: _message.speaker == 'ai' ? null : const LinearGradient(
         begin: Alignment.bottomLeft,
@@ -537,30 +531,38 @@ class _MessageItemState extends State<MessageItem> {
             ),
           ),
         Expanded(
-          child: Container(
-            width: width,
-            decoration: decoration,
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _message.text,
-                  style: const TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w400,
-                    color: Colours.color_001652,
-                    height: 20.0 / 15.0,
-                    letterSpacing: 0.05,
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20.0),
+              topRight: const Radius.circular(20.0),
+              bottomLeft: Radius.circular(_message.speaker == 'ai' ? 0 : 20.0),
+              bottomRight: Radius.circular(_message.speaker == 'ai' ? 20.0 : 0),
+            ),
+            child: Container(
+              width: width,
+              decoration: decoration,
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _message.text,
+                    style: const TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colours.color_001652,
+                      height: 20.0 / 15.0,
+                      letterSpacing: 0.05,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                createExtWidget(_message),
-                createTranslationWidget(_message),
-                createExample(_message),
-              ],
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  createExtWidget(_message),
+                  createTranslationWidget(_message),
+                  createExample(_message),
+                ],
+              ),
             ),
           ),
         ),

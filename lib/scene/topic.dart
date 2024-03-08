@@ -273,6 +273,7 @@ class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPa
                     }
                     return Container(
                       width: _screenUtil.screenWidth,
+                      color: Colors.transparent,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16.0,
                       ),

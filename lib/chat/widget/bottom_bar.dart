@@ -550,18 +550,22 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
+          const Padding(
+            padding: EdgeInsets.only(
               left: 8.0,
             ),
-            child: iconButtom(
-              onPress: getExample,
-              child: const LoadAssetImage(
-                'tishi',
-                width: 17.5,
-                height: 24.0,
-              ),
+            child: SizedBox(
+              width: 17.5,
+              height: 24.0,
             ),
+            // child: iconButtom(
+            //   onPress: getExample,
+            //   child: const LoadAssetImage(
+            //     'tishi',
+            //     width: 17.5,
+            //     height: 24.0,
+            //   ),
+            // ),
           ),
         ],
       ),
