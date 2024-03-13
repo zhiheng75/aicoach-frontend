@@ -6,8 +6,10 @@
 import 'package:Bubble/main.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:wechat_camera_picker/wechat_camera_picker.dart';
@@ -266,6 +268,15 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
     //   }
     // }
 
+    if (Device.isAndroid) {
+      // 相机权限
+      var isGrantedCamera = await Permission.photos.request().isGranted;
+      if (!isGrantedCamera) {
+        Toast.show("相机相册使用说明:用于用户意见反馈场景", duration: 5000);
+        return;
+      }
+    }
+
     final List<AssetEntity>? result = await AssetPicker.pickAssets(
       context,
       pickerConfig: AssetPickerConfig(
@@ -305,7 +316,7 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
     //     return;
     //   }
     //   //相机权限
-    //   bool isGrantedCamera = await JhPermissionUtils.camera();
+    // bool isGrantedCamera = await JhPermissionUtils.camera();
     //   if (!isGrantedCamera) {
     //     return;
     //   }
@@ -324,6 +335,14 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
     //     return;
     //   }
     // }
+    if (Device.isAndroid) {
+      // 相机权限
+      var isGrantedCamera = await Permission.camera.request().isGranted;
+      if (!isGrantedCamera) {
+        Toast.show("相机相册使用说明:用于用户意见反馈场景", duration: 5000);
+        return;
+      }
+    }
 
     final AssetEntity? result = await CameraPicker.pickFromCamera(
       context,

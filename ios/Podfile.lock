@@ -10,13 +10,6 @@ PODS:
     - Flutter
   - device_info_plus (0.0.1):
     - Flutter
-  - ffmpeg-kit-ios-min (6.0)
-  - ffmpeg_kit_flutter_min (6.0.3):
-    - ffmpeg_kit_flutter_min/min (= 6.0.3)
-    - Flutter
-  - ffmpeg_kit_flutter_min/min (6.0.3):
-    - ffmpeg-kit-ios-min (= 6.0)
-    - Flutter
   - Flutter (1.0.0)
   - flutter_bugly (0.0.1):
     - Bugly
@@ -105,7 +98,6 @@ DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
   - device_identity (from `.symlinks/plugins/device_identity/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
-  - ffmpeg_kit_flutter_min (from `.symlinks/plugins/ffmpeg_kit_flutter_min/ios`)
   - Flutter (from `Flutter`)
   - flutter_bugly (from `.symlinks/plugins/flutter_bugly/ios`)
   - flutter_keychain (from `.symlinks/plugins/flutter_keychain/ios`)
@@ -135,7 +127,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Bugly
-    - ffmpeg-kit-ios-min
     - flutter_sound_core
     - FMDB
     - JCore
@@ -156,8 +147,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/device_identity/ios"
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
-  ffmpeg_kit_flutter_min:
-    :path: ".symlinks/plugins/ffmpeg_kit_flutter_min/ios"
   Flutter:
     :path: Flutter
   flutter_bugly:
@@ -216,8 +205,6 @@ SPEC CHECKSUMS:
   camera_avfoundation: 8b8d780bcfb6a4a02b0fbe2b4bd17b5b71946e68
   device_identity: ad27231cb8754e5bc63ce2225e2e1d95d374ca88
   device_info_plus: 7545d84d8d1b896cb16a4ff98c19f07ec4b298ea
-  ffmpeg-kit-ios-min: 4e9a088f4ee9629435960b9d68e54848975f1931
-  ffmpeg_kit_flutter_min: 5eff47f4965bf9d1150e98961eb6129f5ae3f28c
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_bugly: c9800f4d5bc5bdc27ffdde3417a26ba44266e0c3
   flutter_keychain: 01aabf894ffe8b01adfda1d9df21c210c1b4b452
