@@ -397,42 +397,50 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                   style: BorderStyle.solid,
                   color: Colours.color_001652,
                 ),
-                color: data == true ? null : disabled ? const Color(0xFFF8F8F8) : null,
-                gradient: data == true || !disabled ? const LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  colors: [
-                    Colours.color_9AC3FF,
-                    Colours.color_FF71E0,
-                  ],
-                ) : null,
+                color: data == true
+                    ? null
+                    : disabled
+                        ? const Color(0xFFF8F8F8)
+                        : null,
+                gradient: data == true || !disabled
+                    ? const LinearGradient(
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                        colors: [
+                          Colours.color_9AC3FF,
+                          Colours.color_FF71E0,
+                        ],
+                      )
+                    : null,
               ),
               alignment: Alignment.center,
-              child: data == true ? Image.asset(
-                'assets/images/shengwen.gif',
-                height: 50.0,
-                fit: BoxFit.fitHeight,
-              ) : const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  LoadAssetImage(
-                    'maikefeng',
-                    width: 24.0,
-                    height: 24.0,
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(
-                    '按住说话',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colours.color_001652,
+              child: data == true
+                  ? Image.asset(
+                      'assets/images/shengwen.gif',
+                      height: 50.0,
+                      fit: BoxFit.fitHeight,
+                    )
+                  : const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        LoadAssetImage(
+                          'maikefeng',
+                          width: 24.0,
+                          height: 24.0,
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(
+                          '按住说话',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.color_001652,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
             );
           },
         ),
@@ -483,6 +491,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                     bool isRequest =
                         await _mediaUtils.checkMicrophonePermission();
                     if (isRequest) {
+                      Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
                       return;
                     }
                     // 开始录音

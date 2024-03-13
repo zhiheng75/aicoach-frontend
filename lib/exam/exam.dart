@@ -192,6 +192,7 @@ class _ExamPageState extends State<ExamPage>
         // 检查权限
         bool isRequest = await _mediaUtils.checkMicrophonePermission();
         if (isRequest) {
+          Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
           return;
         }
         // ignore: use_build_context_synchronously
@@ -817,6 +818,7 @@ class _ExamPageState extends State<ExamPage>
         // 检查权限
         bool isRequest = await _mediaUtils.checkMicrophonePermission();
         if (isRequest) {
+          Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
           return;
         }
         // ignore: use_build_context_synchronously
