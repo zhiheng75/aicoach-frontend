@@ -1,12 +1,14 @@
 // ignore_for_file: prefer_final_fields
 
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
+import 'package:Bubble/widgets/switch_button.dart';
 import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart' hide ScreenUtil;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluwx/fluwx.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../constant/constant.dart';
 import '../entity/empty_response_entity.dart';
@@ -38,7 +40,8 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage>
     with
         BasePageMixin<SettingPage, SettingPagePresenter>,
-        AutomaticKeepAliveClientMixin<SettingPage>
+        AutomaticKeepAliveClientMixin<SettingPage>,
+        WidgetsBindingObserver
     implements SettingView {
   late SettingPagePresenter _settingPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
@@ -46,11 +49,24 @@ class _SettingPageState extends State<SettingPage>
   bool _isBindedPhone = false;
   bool _isBindedWx = false;
 
+  bool _isAccessNotice = false;
+
   void init() async {
     _userInfo = LoginManager.getUserInfo();
     _isBindedPhone = _userInfo['phone'] != null && _userInfo['phone'] != '';
     _isBindedWx = _userInfo['openid'] != null && _userInfo['openid'] != '';
     setState(() {});
+  }
+
+  ///获取通知权限状态
+  void getPermissionNoticeStatus() async {
+    try {
+      PermissionStatus permission = await Permission.notification.status;
+      _isAccessNotice = permission == PermissionStatus.granted;
+      if (mounted) setState(() {});
+    } catch (e) {
+      print(e);
+    }
   }
 
   void bindWx() async {
@@ -165,6 +181,11 @@ class _SettingPageState extends State<SettingPage>
     );
   }
 
+  ///隐私设置
+  void _goAppSetting() {
+    openAppSettings();
+  }
+
   void unbindWx() {
     _settingPagePresenter.requestNetwork<ResultData>(Method.post,
         url: HttpApi.unbindWX,
@@ -196,6 +217,22 @@ class _SettingPageState extends State<SettingPage>
   void initState() {
     super.initState();
     init();
+    WidgetsBinding.instance.addObserver(this);
+    getPermissionNoticeStatus();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      getPermissionNoticeStatus();
+    }
+    super.didChangeAppLifecycleState(state);
   }
 
   @override
@@ -346,6 +383,18 @@ class _SettingPageState extends State<SettingPage>
                             letterSpacing: 0.05,
                           ),
                         ),
+                      ),
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      SwitchButton(
+                        key: ValueKey("_isAccessNotice: $_isAccessNotice"),
+                        hint: "通知权限",
+                        isChecked: _isAccessNotice,
+                        isCloseChange: false,
+                        onChange: (bool isChecked) {
+                          _goAppSetting();
+                        },
                       ),
                       const SizedBox(
                         height: 16.0,
