@@ -20,6 +20,7 @@ class NormalMessage extends MessageEntity {
   String id = '';
   String text = '';
   List<Uint8List> audio = [];
+  String? audioUrl;
   bool showTranslation = false;
   // 翻译状态 0-未翻译 1-翻译中 2-翻译成功 3-翻译失败
   int translateState = 0;
@@ -32,7 +33,7 @@ class NormalMessage extends MessageEntity {
   String speaker = 'ai';
   String imageUrl = '';
   Map<String, dynamic> evaluation = {};
-  // 是否文本已全部返回
+  // 是否文本（音频）已全部返回
   bool isTextEnd = false;
 
   NormalMessage() {

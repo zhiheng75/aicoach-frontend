@@ -127,7 +127,7 @@ dependencies:
   fl_chart: ^0.65.0
   extended_nested_scroll_view: ^6.2.1
   #ffmpeg_kit_flutter https://github.com/arthenica/ffmpeg-kit/issues
-  ffmpeg_kit_flutter_min: ^6.0.3
+  #ffmpeg_kit_flutter_min: ^6.0.3
   #volume_controller https://github.com/kurenai7968/volume_controller/issues
   volume_controller: ^2.0.7
   #audio_session https://github.com/ryanheise/audio_session/issues

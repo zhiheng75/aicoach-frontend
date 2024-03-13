@@ -1,5 +1,6 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, unrelated_type_equality_checks
 
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:Bubble/util/media_utils.dart';
@@ -79,16 +80,39 @@ class _MessageItemState extends State<MessageItem> {
       return;
     }
     _audioType = type;
+    NormalMessage normalMessage = widget.message as NormalMessage;
     await _mediaUtils.stopPlay();
+    if (type == 'ai') {
+      // url方式
+      if (normalMessage.audioUrl != null) {
+        _mediaUtils.play(
+          url: normalMessage.audioUrl,
+          whenFinished: () => _audioType = '',
+        );
+      } else {
+        // 未返回完音频
+        if (!normalMessage.isTextEnd) {
+          Toast.show("请稍后再试", duration: 1000);
+          return;
+        }
+        ListPlayer listPlayer = _mediaUtils.createListPlay(() {
+          _audioType = '';
+        }, false);
+        for (Uint8List buffer in normalMessage.audio) {
+          listPlayer.play(buffer);
+        }
+        listPlayer.setReturnEnd();
+      }
+    }
     if (type == 'user') {
       _mediaUtils.play(
-        pcmBuffer: (widget.message as NormalMessage).audio,
+        pcmBuffer: normalMessage.audio,
         whenFinished: () => _audioType = '',
       );
     }
     if (type == 'example') {
       _mediaUtils.play(
-        url: (widget.message as NormalMessage).exampleAudio,
+        url: normalMessage.exampleAudio,
         whenFinished: () => _audioType = '',
       );
     }
@@ -286,12 +310,6 @@ class _MessageItemState extends State<MessageItem> {
     // 普通消息
     _message = _message as NormalMessage;
     BoxDecoration decoration = BoxDecoration(
-      borderRadius: BorderRadius.only(
-        topLeft: const Radius.circular(20.0),
-        topRight: const Radius.circular(20.0),
-        bottomLeft: Radius.circular(_message.speaker == 'ai' ? 0 : 20.0),
-        bottomRight: Radius.circular(_message.speaker == 'ai' ? 20.0 : 0),
-      ),
       color: Colors.white.withOpacity(0.86),
       gradient: _message.speaker == 'ai' ? null : const LinearGradient(
         begin: Alignment.bottomLeft,
@@ -302,46 +320,6 @@ class _MessageItemState extends State<MessageItem> {
         ],
       ),
     );
-
-    // Widget ext = GestureDetector(
-    //   behavior: HitTestBehavior.opaque,
-    //   onTap: () {
-    //     NormalMessage message = widget.message as NormalMessage;
-    //     if (message.speaker != 'user') {
-    //       if (message.showTranslation) {
-    //         closeTranslate();
-    //         return;
-    //       }
-    //       openTranslate();
-    //       return;
-    //     }
-    //     openEvaluation();
-    //   },
-    //   child: _message.speaker == 'user' ? Column(
-    //     mainAxisSize: MainAxisSize.min,
-    //     children: <Widget>[
-    //       const LoadAssetImage(
-    //         'jiexi',
-    //         width: 20.0,
-    //         height: 20.0,
-    //       ),
-    //       Text(
-    //         _message.evaluation['total_score'] != null ? formatScore(_message.evaluation['total_score']) : '',
-    //         style: const TextStyle(
-    //           fontSize: 13.0,
-    //           fontWeight: FontWeight.w400,
-    //           color: Colors.black,
-    //           height: 24.0 / 13.0,
-    //           letterSpacing: 0.05,
-    //         ),
-    //       ),
-    //     ],
-    //   ) : const LoadAssetImage(
-    //     'fanyi',
-    //     width: 20.0,
-    //     height: 20.0,
-    //   ),
-    // );
 
     Widget createExtWidget(NormalMessage message) {
       return Row(
@@ -407,21 +385,20 @@ class _MessageItemState extends State<MessageItem> {
                     height: 19,
                   ),
                 ),
-              if (message.speaker == 'user')
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 16,
-                  ),
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () => playAudio('user'),
-                    child: const LoadAssetImage(
-                      'laba_lan',
-                      width: 17.6,
-                      height: 16,
-                    ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                ),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => playAudio(message.speaker),
+                  child: LoadAssetImage(
+                    message.speaker == 'user' ? 'laba_lan' : 'laba_hei',
+                    width: 17.6,
+                    height: 16,
                   ),
                 ),
+              ),
             ],
           ),
         ],
@@ -537,30 +514,38 @@ class _MessageItemState extends State<MessageItem> {
             ),
           ),
         Expanded(
-          child: Container(
-            width: width,
-            decoration: decoration,
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _message.text,
-                  style: const TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w400,
-                    color: Colours.color_001652,
-                    height: 20.0 / 15.0,
-                    letterSpacing: 0.05,
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20.0),
+              topRight: const Radius.circular(20.0),
+              bottomLeft: Radius.circular(_message.speaker == 'ai' ? 0 : 20.0),
+              bottomRight: Radius.circular(_message.speaker == 'ai' ? 20.0 : 0),
+            ),
+            child: Container(
+              width: width,
+              decoration: decoration,
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _message.text,
+                    style: const TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colours.color_001652,
+                      height: 20.0 / 15.0,
+                      letterSpacing: 0.05,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                createExtWidget(_message),
-                createTranslationWidget(_message),
-                createExample(_message),
-              ],
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  createExtWidget(_message),
+                  createTranslationWidget(_message),
+                  createExample(_message),
+                ],
+              ),
             ),
           ),
         ),
