@@ -3,6 +3,9 @@
 import 'dart:typed_data';
 
 import 'package:Bubble/chat/widget/background.dart';
+import 'package:Bubble/login/login_router.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/EventBus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -321,6 +324,16 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     // 监听App状态
     WidgetsBinding.instance.addObserver(this);
+
+    EventBus().on('LOGINOUT', (_) {
+      setState(() {
+        LoginManager.toLoginOut();
+        NavigatorUtils.push(
+          context,
+          "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+        );
+      });
+    });
   }
 
   @override

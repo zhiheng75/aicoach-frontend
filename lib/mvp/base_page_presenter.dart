@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/util/EventBus.dart';
 import 'package:dio/dio.dart';
 
 import '../net/dio_utils.dart';
@@ -5,7 +9,6 @@ import 'base_presenter.dart';
 import 'mvps.dart';
 
 class BasePagePresenter<V extends IMvpView> extends BasePresenter<V> {
-
   BasePagePresenter() {
     _cancelToken = CancelToken();
   }
@@ -22,8 +25,8 @@ class BasePagePresenter<V extends IMvpView> extends BasePresenter<V> {
     }
   }
 
-
-  Future<dynamic> requestNetwork<T>(Method method, {
+  Future<dynamic> requestNetwork<T>(
+    Method method, {
     required String url,
     bool isShow = true,
     bool isClose = true,
@@ -37,12 +40,20 @@ class BasePagePresenter<V extends IMvpView> extends BasePresenter<V> {
     if (isShow) {
       view.showProgress();
     }
-    return DioUtils.instance.requestNetwork<T>(method, url,
+    return DioUtils.instance.requestNetwork<T>(
+      method,
+      url,
       params: params,
       queryParameters: queryParameters,
       options: options,
-      cancelToken: cancelToken?? _cancelToken,
+      cancelToken: cancelToken ?? _cancelToken,
       onSuccess: (data) {
+        Map<String, dynamic> user = json.decode(data.toString());
+        ResultData resultData = ResultData.fromJson(user);
+        if (resultData.code == 401) {
+          EventBus().emit('LOGINOUT');
+        }
+
         if (isClose) {
           view.closeProgress();
         }
@@ -54,7 +65,8 @@ class BasePagePresenter<V extends IMvpView> extends BasePresenter<V> {
     );
   }
 
-  void asyncRequestNetwork<T>(Method method, {
+  void asyncRequestNetwork<T>(
+    Method method, {
     required String url,
     bool isShow = true,
     bool isClose = true,
@@ -68,11 +80,13 @@ class BasePagePresenter<V extends IMvpView> extends BasePresenter<V> {
     if (isShow) {
       view.showProgress();
     }
-    DioUtils.instance.asyncRequestNetwork<T>(method, url,
+    DioUtils.instance.asyncRequestNetwork<T>(
+      method,
+      url,
       params: params,
       queryParameters: queryParameters,
       options: options,
-      cancelToken: cancelToken?? _cancelToken,
+      cancelToken: cancelToken ?? _cancelToken,
       onSuccess: (data) {
         if (isClose) {
           view.closeProgress();
@@ -111,6 +125,7 @@ class BasePagePresenter<V extends IMvpView> extends BasePresenter<V> {
   void _onError(int code, String msg, NetErrorCallback? onError) {
     /// 异常时直接关闭加载圈，不受isClose影响
     view.closeProgress();
+
     /// 异常信息在onError由用户处理
     // if (code != ExceptionHandle.cancel_error) {
     //   view.showToast(msg);
