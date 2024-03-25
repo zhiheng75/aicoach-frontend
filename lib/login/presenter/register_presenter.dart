@@ -112,6 +112,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
 
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
+          SpUtil.putString(Constant.phone, phoneNum);
 
           view.loginSuccess();
         } else {

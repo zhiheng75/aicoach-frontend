@@ -508,9 +508,6 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   @override
   void loginSuccess() {
     // TODO: implement loginSuccess
-    SpUtil.putObject(Constant.userInfoKey, widget.wechatData.toJson());
-    SpUtil.putString(Constant.accessToken, widget.wechatData.token);
-    SpUtil.putString(Constant.phone, widget.phoneNumber);
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
