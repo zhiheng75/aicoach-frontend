@@ -69,6 +69,8 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         if (data.code == 200) {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
+          SpUtil.putString(Constant.phone, phoneNum);
+
           // view.wechatLoginSuccess("登录成功");
           view.loginSuccess();
         } else {
