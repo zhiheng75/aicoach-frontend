@@ -1,7 +1,8 @@
-
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:Bubble/util/device_utils.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:sprintf/sprintf.dart';
@@ -19,39 +20,63 @@ class AuthInterceptor extends Interceptor {
     if (accessToken.isNotEmpty) {
       options.headers['Authorization'] = "Bearer $accessToken";
     }
-    if (Device.isAndroid){
-      options.headers['X-Source'] =  "android";
-    }else{
-      options.headers['X-Source'] =  "ios";
+    if (Device.isAndroid) {
+      options.headers['X-Source'] = "android";
+    } else {
+      options.headers['X-Source'] = "ios";
     }
-
+    AndroidDeviceInfo? androidInfo;
+    IosDeviceInfo? iosInfo;
+    options.headers['brand'] = Platform.isIOS
+        // ignore: dead_code
+        ? iosInfo?.utsname.machine
+        // ignore: dead_code
+        : "${androidInfo?.brand} ${androidInfo?.model}";
+    options.headers['systemVersion'] = Platform.isIOS
+        // ignore: dead_code
+        ? iosInfo?.systemVersion
+        // ignore: dead_code
+        : androidInfo?.version.release;
+    options.headers['isPhysicalDevice'] = Platform.isIOS
+        // ignore: dead_code
+        ? iosInfo?.isPhysicalDevice
+        // ignore: dead_code
+        : androidInfo?.isPhysicalDevice;
+    options.headers['incremental'] = Platform.isIOS
+        // ignore: dead_code
+        ? iosInfo?.systemVersion
+        // ignore: dead_code
+        : androidInfo?.version.incremental;
+    options.headers['version'] = "1.0.8";
+    options.headers['buildNumber'] = "75";
     super.onRequest(options, handler);
   }
 }
 
 class TokenInterceptor extends QueuedInterceptor {
-
   Dio? _tokenDio;
 
   Future<String?> getToken() async {
-
     final Map<String, String> params = <String, String>{};
     params['refresh_token'] = SpUtil.getString(Constant.refreshToken).nullSafe;
     try {
       _tokenDio ??= Dio();
       _tokenDio!.options = DioUtils.instance.dio.options;
-      final Response<dynamic> response = await _tokenDio!.post<dynamic>('lgn/refreshToken', data: params);
+      final Response<dynamic> response =
+          await _tokenDio!.post<dynamic>('lgn/refreshToken', data: params);
       if (response.statusCode == ExceptionHandle.success) {
-        return (json.decode(response.data.toString()) as Map<String, dynamic>)['access_token'] as String;
+        return (json.decode(response.data.toString())
+            as Map<String, dynamic>)['access_token'] as String;
       }
-    } catch(e) {
+    } catch (e) {
       Log.e('刷新Token失败！');
     }
     return null;
   }
 
   @override
-  Future<void> onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) async {
+  Future<void> onResponse(
+      Response<dynamic> response, ResponseInterceptorHandler handler) async {
     //401代表token过期
     if (response.statusCode == ExceptionHandle.unauthorized) {
       Log.d('-----------自动刷新Token------------');
@@ -71,8 +96,10 @@ class TokenInterceptor extends QueuedInterceptor {
 
         try {
           Log.e('----------- 重新请求接口 ------------');
+
           /// 避免重复执行拦截器，使用tokenDio
-          final Response<dynamic> response = await _tokenDio!.request<dynamic>(request.path,
+          final Response<dynamic> response = await _tokenDio!.request<dynamic>(
+            request.path,
             data: request.data,
             queryParameters: request.queryParameters,
             cancelToken: request.cancelToken,
@@ -89,11 +116,10 @@ class TokenInterceptor extends QueuedInterceptor {
   }
 }
 
-class LoggingInterceptor extends Interceptor{
-
+class LoggingInterceptor extends Interceptor {
   late DateTime _startTime;
   late DateTime _endTime;
-  
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     _startTime = DateTime.now();
@@ -101,7 +127,8 @@ class LoggingInterceptor extends Interceptor{
     if (options.queryParameters.isEmpty) {
       Log.d('RequestUrl: ${options.baseUrl}${options.path}');
     } else {
-      Log.d('RequestUrl: ${options.baseUrl}${options.path}?${Transformer.urlEncodeMap(options.queryParameters)}');
+      Log.d(
+          'RequestUrl: ${options.baseUrl}${options.path}?${Transformer.urlEncodeMap(options.queryParameters)}');
     }
     Log.d('RequestMethod: ${options.method}');
     Log.d('RequestHeaders:${options.headers}');
@@ -109,9 +136,10 @@ class LoggingInterceptor extends Interceptor{
     Log.d('RequestData: ${options.data}');
     super.onRequest(options, handler);
   }
-  
+
   @override
-  void onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) {
+  void onResponse(
+      Response<dynamic> response, ResponseInterceptorHandler handler) {
     _endTime = DateTime.now();
     final int duration = _endTime.difference(_startTime).inMilliseconds;
     if (response.statusCode == ExceptionHandle.success) {
@@ -124,7 +152,7 @@ class LoggingInterceptor extends Interceptor{
     Log.d('----------End: $duration 毫秒----------');
     super.onResponse(response, handler);
   }
-  
+
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     Log.d('----------Error-----------');
@@ -132,8 +160,7 @@ class LoggingInterceptor extends Interceptor{
   }
 }
 
-class AdapterInterceptor extends Interceptor{
-
+class AdapterInterceptor extends Interceptor {
   static const String _kMsg = 'msg';
   static const String _kSlash = "'";
   static const String _kMessage = 'message';
@@ -143,13 +170,14 @@ class AdapterInterceptor extends Interceptor{
 
   static const String _kFailureFormat = '{"code":%d,"message":"%s"}';
   static const String _kSuccessFormat = '{"code":0,"data":%s,"message":""}';
-  
+
   @override
-  void onResponse(Response<dynamic> response, ResponseInterceptorHandler handler) {
+  void onResponse(
+      Response<dynamic> response, ResponseInterceptorHandler handler) {
     final Response<dynamic> r = adapterData(response);
     super.onResponse(r, handler);
   }
-  
+
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     if (err.response != null) {
@@ -161,8 +189,10 @@ class AdapterInterceptor extends Interceptor{
   Response<dynamic> adapterData(Response<dynamic> response) {
     String result;
     String content = response.data?.toString() ?? '';
+
     /// 成功时，直接格式化返回
-    if (response.statusCode == ExceptionHandle.success || response.statusCode == ExceptionHandle.success_not_content) {
+    if (response.statusCode == ExceptionHandle.success ||
+        response.statusCode == ExceptionHandle.success_not_content) {
       if (content.isEmpty) {
         content = _kDefaultText;
       }
@@ -184,7 +214,8 @@ class AdapterInterceptor extends Interceptor{
             if (_kSlash == content.substring(0, 1)) {
               content = content.substring(1, content.length - 1);
             }
-            final Map<String, dynamic> map = json.decode(content) as Map<String, dynamic>;
+            final Map<String, dynamic> map =
+                json.decode(content) as Map<String, dynamic>;
             if (map.containsKey(_kMessage)) {
               msg = map[_kMessage] as String;
             } else if (map.containsKey(_kMsg)) {
@@ -202,7 +233,8 @@ class AdapterInterceptor extends Interceptor{
           } catch (e) {
 //            Log.d('异常信息：$e');
             // 解析异常直接按照返回原数据处理（一般为返回500,503 HTML页面代码）
-            result = sprintf(_kFailureFormat, [response.statusCode, '服务器异常(${response.statusCode})']);
+            result = sprintf(_kFailureFormat,
+                [response.statusCode, '服务器异常(${response.statusCode})']);
           }
         }
       }

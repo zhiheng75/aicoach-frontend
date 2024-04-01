@@ -119,7 +119,7 @@ class MyApp extends StatelessWidget {
   void initUM() {
     String platformStr = Channel.channelios;
     if (Device.isAndroid) {
-      platformStr = Channel.channelyingyongbao;
+      platformStr = Channel.channelhuawei;
     } else {
       platformStr = Channel.channelios;
     }

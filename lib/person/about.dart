@@ -10,6 +10,9 @@ import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/other_utils.dart';
+import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
+import 'package:Bubble/widgets/load_image.dart';
+import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:package_info/package_info.dart';
@@ -49,7 +52,7 @@ class _AboutPageState extends State<AboutPage> {
     String platformStr = "android";
 
     if (Device.isAndroid) {
-      platformStr = Channel.channelyingyongbao;
+      platformStr = Channel.channelhuawei;
     } else {
       platformStr = Channel.channelios;
     }
@@ -161,9 +164,9 @@ class _AboutPageState extends State<AboutPage> {
           const SizedBox(
             height: 16.0,
           ),
-          Text(
-            '是一款基于人工智能的个性化教育APP。$version版本我们首先推出的是英语口语学习功能，通过与孩子们喜欢的IP绘本角色智能体对话，完成有趣且高效的个性化口语学习。\n\n我们致力于使用人工智能技术创作一款有趣的、符合个性化学习规律的APP。AI科技的浪潮里，希望与您和孩子一路同行。欢迎加入Bubble AI 金种子用户社群，与我们一起见证AI时代的未来教育！',
-            style: const TextStyle(
+          const Text(
+            'Bubble AI是一款基于生成式人工智能的英语口语训练平台。通过与自主研发的AI智能体英语老师实景对话模式，让同学们在有趣且高效的氛围中获得口语能力快速提升。\n Bubble AI用科技与创新探索语言学习提高的无尽可能。结合多年教育科技行业研发经验，创造性地将广受欢迎的海量IP形象、英语语法与句型教学体系、英语升级阅读引擎、大语言模型与自适应学习系统等多个领域的成功实践，整合为一套启发式兴趣对话的英语“口语学习黑科技”。提供家长式陪伴，为学英语的孩子营造出一个沉浸式的语言学习环境。进入Bubble AI的英语对话世界，孩子们一开口说英语，就“完全停不下来”。\nAI时代浪潮下，我们希望与您一路同行。欢迎加入Bubble AI金种子用户社群，与我们一起见证AI时代的未来教育！',
+            style: TextStyle(
               fontSize: 13.0,
               fontWeight: FontWeight.w400,
               color: Color(0xFF333333),
@@ -184,8 +187,22 @@ class _AboutPageState extends State<AboutPage> {
       padding: const EdgeInsets.all(24.0),
       child: const Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          LoadImage(
+            "http://statics.shenmo-ai.com/qywxkf.jpg",
+            width: 180,
+            height: 180,
+          ),
+          Text(
+            '欢迎添加客服微信',
+            style: TextStyle(
+              fontSize: 15.0,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF333333),
+              height: 24.0 / 15.0,
+            ),
+          ),
           Text(
             '欢迎添加客服微信',
             style: TextStyle(
@@ -209,6 +226,7 @@ class _AboutPageState extends State<AboutPage> {
     );
 
     Widget footer = const Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           '客服邮箱：help@shenmo-ai.com',
@@ -259,47 +277,66 @@ class _AboutPageState extends State<AboutPage> {
           horizontal: 16.0,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const SizedBox(
-                  height: 60.0,
-                ),
-                const Navbar(
-                  title: '关于我们',
-                ),
-                const SizedBox(
-                  height: 16.0,
-                ),
-                // GestureDetector(
-                //     onTap: () {
-                //       Log.e("msg");
-                //       showDialog(
-                //         context: context,
-                //         barrierColor: Colors.transparent,
-                //         barrierDismissible: false,
-                //         useSafeArea: false,
-                //         builder: (_) => const UpDataView(),
-                //       );
-                //     },
-                //     child: const Text("点这里")),
-                aboutUs,
-                const SizedBox(
-                  height: 16.0,
-                ),
-                customerService,
-              ],
+          children: [
+            // const Text("data"),
+            // const Text("data"),
+            // const Text("data"),
+            // const Text("data"),
+            const XTCupertinoNavigationBar(
+              backgroundColor: Color(0xFFFFFFFF),
+              border: null,
+              padding: EdgeInsetsDirectional.zero,
+              leading: NavigationBackWidget(),
+              middle: Text(
+                "关于我们",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                footer,
-                SizedBox(
-                  height: _screenUtil.bottomBarHeight + 30.0,
-                ),
-              ],
+            SizedBox(
+              height: _screenUtil.screenHeight - 100,
+              child: MyScrollView(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  // const SizedBox(
+                  //   height: 60.0,
+                  // ),
+                  // const Navbar(
+                  //   title: '关于我们',
+                  // ),
+                  const SizedBox(
+                    height: 16.0,
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      // GestureDetector(
+                      //     onTap: () {
+                      //       Log.e("msg");
+                      //       showDialog(
+                      //         context: context,
+                      //         barrierColor: Colors.transparent,
+                      //         barrierDismissible: false,
+                      //         useSafeArea: false,
+                      //         builder: (_) => const UpDataView(),
+                      //       );
+                      //     },
+                      //     child: const Text("点这里")),
+                      aboutUs,
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      customerService,
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      footer,
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
