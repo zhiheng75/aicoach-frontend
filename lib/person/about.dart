@@ -189,10 +189,25 @@ class _AboutPageState extends State<AboutPage> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          Text(
+            '加入Bubble AI 金种子用户社群',
+            style: TextStyle(
+              fontSize: 15.0,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF333333),
+              height: 24.0 / 15.0,
+            ),
+          ),
+          SizedBox(
+            height: 6.0,
+          ),
           LoadImage(
             "http://statics.shenmo-ai.com/qywxkf.jpg",
-            width: 180,
-            height: 180,
+            width: 200,
+            height: 200,
+          ),
+          SizedBox(
+            height: 6.0,
           ),
           Text(
             '欢迎添加客服微信',
@@ -203,17 +218,11 @@ class _AboutPageState extends State<AboutPage> {
               height: 24.0 / 15.0,
             ),
           ),
-          Text(
-            '欢迎添加客服微信',
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF333333),
-              height: 24.0 / 15.0,
-            ),
+          SizedBox(
+            height: 6.0,
           ),
           Text(
-            '加入Bubble AI 金种子用户社群\n客服微信：Bubble AI',
+            '客服微信：bubbleapp',
             style: TextStyle(
               fontSize: 13.0,
               fontWeight: FontWeight.w400,
