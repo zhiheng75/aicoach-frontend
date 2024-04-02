@@ -10,6 +10,8 @@ import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/intercept.dart';
 import 'package:Bubble/scene/collect_information.dart';
 import 'package:Bubble/scene/entity/scene_entity.dart';
+import 'package:Bubble/util/channel.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -17,6 +19,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jverify/jverify.dart';
 import 'package:provider/provider.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 import '../chat/chat.dart';
 import '../chat/utils/chat_websocket.dart';
@@ -53,12 +56,25 @@ class _HomePageState extends State<HomeNewPage>
 
   void init() {
     initDio();
+    initUM();
 
     // 初始化手机号一键登录插件
     initPlatformState();
     checkCollectInformation();
     // 获取体验时间
     _homeProvider.getUsageTime();
+  }
+
+  void initUM() {
+    String platformStr = Channel.channelios;
+    if (Device.isAndroid) {
+      platformStr = Channel.channelhuawei;
+    } else {
+      platformStr = Channel.channelios;
+    }
+    UmengCommonSdk.initCommon(
+        '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', platformStr);
+    UmengCommonSdk.setPageCollectionModeManual();
   }
 
   void initDio() {

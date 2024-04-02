@@ -42,7 +42,7 @@ Future<void> main() async {
       await SpUtil.getInstance();
 
       /// device_identity初始化
-      await DeviceIdentity.register();
+      // await DeviceIdentity.register();
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
       // 设置音频配置
@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key, this.home, this.theme}) {
     Log.init();
     initDio();
-    initUM();
+    // initUM();
     Routes.initRoutes();
   }
 

@@ -24,11 +24,11 @@
     <!-- <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/> -->
     <!-- 拍照权限，允许访问摄像头进行拍照 -->
     <uses-permission android:name="android.permission.CAMERA" />
-    应用安装
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- 应用安装 -->
+    <!-- <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> -->
     <!--    应用列表 -->
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
-        tools:ignore="QueryAllPackagesPermission" />
+    <!-- <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" /> -->
 
     <!-- Android 13 (API 33) 权限配置，如果不需要拍照或录像，可以考虑将对应权限移除 -->
     <!-- 如果需要获取图片，添加该权限 -->

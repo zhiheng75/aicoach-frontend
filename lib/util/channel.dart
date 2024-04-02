@@ -10,4 +10,6 @@ class Channel {
   static String channelvivo = "vivo";
   static String channelhonor = "honor";
   static String channelali = "ali";
+  static String channelsanxing = "sanxing";
+  static String channelmeizu = "meizu";
 }
