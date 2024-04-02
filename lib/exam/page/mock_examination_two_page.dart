@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:Bubble/chat/utils/recognize_util.dart';
+import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/exam/entity/exam_step_bean.dart';
 import 'package:Bubble/exam/entity/mock_message_entity.dart';
@@ -29,6 +30,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:Bubble/widgets/my_alert.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:sp_util/sp_util.dart';
 
 enum RecordPlayState {
   record,
@@ -382,6 +384,13 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
 
   void mockKlowStartAnswer() async {
     try {
+      bool hasAgree =
+          SpUtil.getBool(Constant.mediaUtils, defValue: false) ?? false;
+      if (!hasAgree) {
+        Toast.show("录音音频使用说明:用于对话场景", duration: 6000);
+        SpUtil.putBool(Constant.mediaUtils, true);
+      }
+
       // 检查权限
       bool isRequest = await _mediaUtils.checkMicrophonePermission();
       if (isRequest) {

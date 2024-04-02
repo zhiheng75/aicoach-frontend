@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/exam/entity/exam_permission_bean.dart';
 import 'package:Bubble/exam/exam_router.dart';
@@ -21,6 +22,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:sp_util/sp_util.dart';
 
 import '../home/provider/home_provider.dart';
 import '../mvp/base_page.dart';
@@ -189,6 +191,13 @@ class _ExamPageState extends State<ExamPage>
       // }
 
       try {
+        bool hasAgree =
+            SpUtil.getBool(Constant.mediaUtils, defValue: false) ?? false;
+        if (!hasAgree) {
+          Toast.show("录音音频使用说明:用于对话场景", duration: 6000);
+          SpUtil.putBool(Constant.mediaUtils, true);
+        }
+
         // 检查权限
         bool isRequest = await _mediaUtils.checkMicrophonePermission();
         if (isRequest) {

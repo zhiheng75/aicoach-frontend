@@ -3,6 +3,7 @@
 import 'dart:typed_data';
 
 import 'package:Bubble/chat/widget/background.dart';
+import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/EventBus.dart';
@@ -10,6 +11,7 @@ import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:sp_util/sp_util.dart';
 
 import '../../home/provider/home_provider.dart';
 import '../../home/widget/expiration_reminder.dart';
@@ -500,6 +502,14 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                     return;
                   }
                   try {
+                    bool hasAgree =
+                        SpUtil.getBool(Constant.mediaUtils, defValue: false) ??
+                            false;
+                    if (!hasAgree) {
+                      Toast.show("录音音频使用说明:用于对话场景", duration: 6000);
+                      SpUtil.putBool(Constant.mediaUtils, true);
+                    }
+
                     // 检查权限
                     bool isRequest =
                         await _mediaUtils.checkMicrophonePermission();

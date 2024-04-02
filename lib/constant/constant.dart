@@ -9,6 +9,10 @@ class Constant {
   static bool isDriverTest = false;
   static bool isUnitTest = false;
 
+  static const String mediaUtils = 'mediaUtils';
+  static const String camera = 'camera';
+  static const String photos = 'photos';
+
   static const String data = 'data';
   static const String message = 'message';
   static const String code = 'code';

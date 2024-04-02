@@ -3,6 +3,7 @@
 ///  Created by iotjin on 2022/09/10.
 ///  description: 基于微信UI的图片/视频选择器(支持拍照及录制视频) 封装wechat_assets_picker、wechat_camera_picker
 
+import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/main.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/util/log_utils.dart';
@@ -11,6 +12,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:sp_util/sp_util.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:wechat_camera_picker/wechat_camera_picker.dart';
 
@@ -269,6 +271,12 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
     // }
 
     if (Device.isAndroid) {
+      bool hasAgree = SpUtil.getBool(Constant.photos, defValue: false) ?? false;
+      if (!hasAgree) {
+        Toast.show("相机相册使用说明:用于用户意见反馈场景", duration: 6000);
+        SpUtil.putBool(Constant.photos, true);
+      }
+
       // 相机权限
       var isGrantedCamera = await Permission.photos.request().isGranted;
       if (!isGrantedCamera) {
@@ -336,6 +344,12 @@ class _JhAssetPickerState extends State<JhAssetPicker> {
     //   }
     // }
     if (Device.isAndroid) {
+      bool hasAgree = SpUtil.getBool(Constant.camera, defValue: false) ?? false;
+      if (!hasAgree) {
+        Toast.show("相机相册使用说明:用于用户意见反馈场景", duration: 6000);
+        SpUtil.putBool(Constant.camera, true);
+      }
+
       // 相机权限
       var isGrantedCamera = await Permission.camera.request().isGranted;
       if (!isGrantedCamera) {
