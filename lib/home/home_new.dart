@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:Bubble/chat/entity/topic_entity.dart';
 import 'package:Bubble/entity/result_entity.dart';
@@ -6,10 +7,13 @@ import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/main.dart';
 import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/intercept.dart';
 import 'package:Bubble/scene/collect_information.dart';
 import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jverify/jverify.dart';
 import 'package:provider/provider.dart';
@@ -48,11 +52,41 @@ class _HomePageState extends State<HomeNewPage>
   late StreamSubscription _streamSubscription;
 
   void init() {
+    initDio();
+
     // 初始化手机号一键登录插件
     initPlatformState();
     checkCollectInformation();
     // 获取体验时间
     _homeProvider.getUsageTime();
+  }
+
+  void initDio() {
+    // DioUtils.instance.dio.options.headers
+    AndroidDeviceInfo? androidInfo;
+    IosDeviceInfo? iosInfo;
+    DioUtils.instance.dio.options.headers['brand'] = Platform.isIOS
+        // ignore: dead_code
+        ? iosInfo?.utsname.machine
+        // ignore: dead_code
+        : "${androidInfo?.brand} ${androidInfo?.model}";
+    DioUtils.instance.dio.options.headers['systemVersion'] = Platform.isIOS
+        // ignore: dead_code
+        ? iosInfo?.systemVersion
+        // ignore: dead_code
+        : androidInfo?.version.release;
+    DioUtils.instance.dio.options.headers['isPhysicalDevice'] = Platform.isIOS
+        // ignore: dead_code
+        ? iosInfo?.isPhysicalDevice
+        // ignore: dead_code
+        : androidInfo?.isPhysicalDevice;
+    DioUtils.instance.dio.options.headers['incremental'] = Platform.isIOS
+        // ignore: dead_code
+        ? iosInfo?.systemVersion
+        // ignore: dead_code
+        : androidInfo?.version.incremental;
+    DioUtils.instance.dio.options.headers['version'] = "1.0.8";
+    DioUtils.instance.dio.options.headers['buildNumber'] = "75";
   }
 
   Future<void> initPlatformState() async {
@@ -143,7 +177,8 @@ class _HomePageState extends State<HomeNewPage>
       init();
     });
     // 设置场景对话流控制器
-    _streamSubscription = _homeProvider.sceneStreamController.stream.listen((value) async {
+    _streamSubscription =
+        _homeProvider.sceneStreamController.stream.listen((value) async {
       await MediaUtils().stopPlay();
       await ChatWebsocket().endChat(true);
       _homeProvider.resetChatParams();
@@ -165,7 +200,9 @@ class _HomePageState extends State<HomeNewPage>
           isDismissible: false,
           clipBehavior: Clip.none,
           enableDrag: false,
-          builder: (_) => type == 'topic' ? TopicPage(onEnd: () => changeTab('chat')) : ScenePage(onEnd: () => changeTab('chat')),
+          builder: (_) => type == 'topic'
+              ? TopicPage(onEnd: () => changeTab('chat'))
+              : ScenePage(onEnd: () => changeTab('chat')),
         );
         // 重置tab
         changeTab('');

@@ -25,30 +25,31 @@ class AuthInterceptor extends Interceptor {
     } else {
       options.headers['X-Source'] = "ios";
     }
-    AndroidDeviceInfo? androidInfo;
-    IosDeviceInfo? iosInfo;
-    options.headers['brand'] = Platform.isIOS
-        // ignore: dead_code
-        ? iosInfo?.utsname.machine
-        // ignore: dead_code
-        : "${androidInfo?.brand} ${androidInfo?.model}";
-    options.headers['systemVersion'] = Platform.isIOS
-        // ignore: dead_code
-        ? iosInfo?.systemVersion
-        // ignore: dead_code
-        : androidInfo?.version.release;
-    options.headers['isPhysicalDevice'] = Platform.isIOS
-        // ignore: dead_code
-        ? iosInfo?.isPhysicalDevice
-        // ignore: dead_code
-        : androidInfo?.isPhysicalDevice;
-    options.headers['incremental'] = Platform.isIOS
-        // ignore: dead_code
-        ? iosInfo?.systemVersion
-        // ignore: dead_code
-        : androidInfo?.version.incremental;
-    options.headers['version'] = "1.0.8";
-    options.headers['buildNumber'] = "75";
+    // AndroidDeviceInfo? androidInfo;
+    // IosDeviceInfo? iosInfo;
+    // options.headers['brand'] = Platform.isIOS
+    //     // ignore: dead_code
+    //     ? iosInfo?.utsname.machine
+    //     // ignore: dead_code
+    //     : "${androidInfo?.brand} ${androidInfo?.model}";
+    // options.headers['systemVersion'] = Platform.isIOS
+    //     // ignore: dead_code
+    //     ? iosInfo?.systemVersion
+    //     // ignore: dead_code
+    //     : androidInfo?.version.release;
+    // options.headers['isPhysicalDevice'] = Platform.isIOS
+    //     // ignore: dead_code
+    //     ? iosInfo?.isPhysicalDevice
+    //     // ignore: dead_code
+    //     : androidInfo?.isPhysicalDevice;
+    // options.headers['incremental'] = Platform.isIOS
+    //     // ignore: dead_code
+    //     ? iosInfo?.systemVersion
+    //     // ignore: dead_code
+    //     : androidInfo?.version.incremental;
+    // options.headers['version'] = "1.0.8";
+    // options.headers['buildNumber'] = "75";
+
     super.onRequest(options, handler);
   }
 }
@@ -88,6 +89,7 @@ class TokenInterceptor extends QueuedInterceptor {
         // 重新请求失败接口
         final RequestOptions request = response.requestOptions;
         request.headers['Authorization'] = 'Bearer $accessToken';
+        request.headers['jibouxe'] = 'jibouxe';
 
         final Options options = Options(
           headers: request.headers,

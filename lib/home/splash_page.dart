@@ -1,6 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:Bubble/home/home_router.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/intercept.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -62,13 +67,43 @@ class _SplashPageState extends State<SplashPage> {
         context: context,
         barrierDismissible: false,
         builder: (_) => AgreementDialog(() {
-          SpUtil.putBool(Constant.agreement,true);
+              SpUtil.putBool(Constant.agreement, true);
               _gotoHome();
             }));
   }
 
   void _gotoHome() {
+    initDio();
+
     NavigatorUtils.push(context, HomeRouter.homePage, replace: true);
+  }
+
+  void initDio() {
+    // DioUtils.instance.dio.options.headers
+    AndroidDeviceInfo? androidInfo;
+    IosDeviceInfo? iosInfo;
+    DioUtils.instance.dio.options.headers['brand'] = Platform.isIOS
+        // ignore: dead_code
+        ? iosInfo?.utsname.machine
+        // ignore: dead_code
+        : "${androidInfo?.brand} ${androidInfo?.model}";
+    DioUtils.instance.dio.options.headers['systemVersion'] = Platform.isIOS
+        // ignore: dead_code
+        ? iosInfo?.systemVersion
+        // ignore: dead_code
+        : androidInfo?.version.release;
+    DioUtils.instance.dio.options.headers['isPhysicalDevice'] = Platform.isIOS
+        // ignore: dead_code
+        ? iosInfo?.isPhysicalDevice
+        // ignore: dead_code
+        : androidInfo?.isPhysicalDevice;
+    DioUtils.instance.dio.options.headers['incremental'] = Platform.isIOS
+        // ignore: dead_code
+        ? iosInfo?.systemVersion
+        // ignore: dead_code
+        : androidInfo?.version.incremental;
+    DioUtils.instance.dio.options.headers['version'] = "1.0.8";
+    DioUtils.instance.dio.options.headers['buildNumber'] = "75";
   }
 
   @override
