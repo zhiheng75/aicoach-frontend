@@ -37,7 +37,6 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await SpUtil.getInstance();
-      await Device.initDeviceInfo();
       _initSplash();
     });
   }
@@ -72,9 +71,11 @@ class _SplashPageState extends State<SplashPage> {
             }));
   }
 
-  void _gotoHome() {
+  void _gotoHome() async {
     initDio();
+    await Device.initDeviceInfo();
 
+    // ignore: use_build_context_synchronously
     NavigatorUtils.push(context, HomeRouter.homePage, replace: true);
   }
 

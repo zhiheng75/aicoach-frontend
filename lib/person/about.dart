@@ -174,6 +174,19 @@ class _AboutPageState extends State<AboutPage> {
               letterSpacing: 0.05,
             ),
           ),
+          const SizedBox(
+            height: 16.0,
+          ),
+          const Text(
+            "联系客服举报\n客服邮箱:help@shenmo-ai.com",
+            style: TextStyle(
+              fontSize: 13.0,
+              fontWeight: FontWeight.w400,
+              color: Color(0xFF333333),
+              height: 18.0 / 13.0,
+              letterSpacing: 0.05,
+            ),
+          ),
         ],
       ),
     );

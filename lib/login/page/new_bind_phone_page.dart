@@ -169,15 +169,18 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
                           // );
                           // judgementPhone();
                           // _bindPhonePresenter.sendSms(_phoneController.text);
-
-                          if (_phoneController.text.length == 11) {
-                            NavigatorUtils.push(
-                                context,
-                                arguments: widget.wechatData,
-                                replace: true,
-                                "${LoginRouter.keyCheckTwoCodePage}?PhoneNumber=${_phoneController.text.trim()}");
+                          if (_isSelect) {
+                            if (_phoneController.text.length == 11) {
+                              NavigatorUtils.push(
+                                  context,
+                                  arguments: widget.wechatData,
+                                  replace: true,
+                                  "${LoginRouter.keyCheckTwoCodePage}?PhoneNumber=${_phoneController.text.trim()}");
+                            } else {
+                              Toast.show("手机号无效");
+                            }
                           } else {
-                            Toast.show("手机号无效");
+                            Toast.show("请同意服务协议");
                           }
                         },
                         child: Container(
