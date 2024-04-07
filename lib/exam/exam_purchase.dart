@@ -14,6 +14,7 @@ import 'package:Bubble/util/EventBus.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
+import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -455,47 +456,52 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
         width: _screenUtil.screenWidth,
         height: _screenUtil.screenHeight,
         color: Colors.white,
-        child: Column(
+        child: MyScrollView(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             SizedBox(
               height: _screenUtil.statusBarHeight + 16.0,
             ),
-            const Text(
-              '模考练习包',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-                letterSpacing: 0.05,
+            const Center(
+              child: Text(
+                '模考练习包',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                  letterSpacing: 0.05,
+                ),
               ),
             ),
             const SizedBox(
               height: 16.0,
             ),
-            const Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  '1V1真实还原考试全流程',
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF666666),
-                    height: 18.0 / 14.0,
-                    letterSpacing: 0.05,
+            const Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    '1V1真实还原考试全流程',
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF666666),
+                      height: 18.0 / 14.0,
+                      letterSpacing: 0.05,
+                    ),
                   ),
-                ),
-                Text(
-                  '严格按照评分标准和评分体系进行评分',
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF666666),
-                    height: 18.0 / 14.0,
-                    letterSpacing: 0.05,
+                  Text(
+                    '严格按照评分标准和评分体系进行评分',
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF666666),
+                      height: 18.0 / 14.0,
+                      letterSpacing: 0.05,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             const SizedBox(
               height: 16.0,

@@ -511,24 +511,25 @@ class _PurchasePageState extends State<PurchasePage>
         // payItem('applepay'),
       ];
 
-      content = SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: goodsChildren,
-            ),
-            const SizedBox(
-              height: 34.0,
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: payChildren,
-            ),
-            const SizedBox(
-              height: 32.0,
-            ),
-            GestureDetector(
+      content = MyScrollView(
+        children: <Widget>[
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: goodsChildren,
+          ),
+          const SizedBox(
+            height: 34.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            // mainAxisSize: MainAxisSize.min,
+            children: payChildren,
+          ),
+          const SizedBox(
+            height: 32.0,
+          ),
+          Center(
+            child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: payGoods,
               child: Container(
@@ -561,87 +562,88 @@ class _PurchasePageState extends State<PurchasePage>
                 ),
               ),
             ),
-            const SizedBox(
-              height: 16.0,
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    _checked = !_checked;
-                    setState(() {});
-                  },
-                  child: Container(
-                    width: 30,
-                    height: 30,
-                    padding: const EdgeInsets.all(10),
-                    child: LoadAssetImage(
-                      _checked ? 'yigouxuan' : 'weigouxuan',
-                      width: 15.0,
-                      height: 15.0,
+          ),
+          const SizedBox(
+            height: 16.0,
+          ),
+          Row(
+            // mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  _checked = !_checked;
+                  setState(() {});
+                },
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  padding: const EdgeInsets.all(10),
+                  child: LoadAssetImage(
+                    _checked ? 'yigouxuan' : 'weigouxuan',
+                    width: 15.0,
+                    height: 15.0,
+                  ),
+                ),
+              ),
+              // const SizedBox(
+              //   width: 8.0,
+              // ),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: '我已阅读并同意',
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF333333),
+                      ),
                     ),
-                  ),
+                    TextSpan(
+                      text: userPhone == "17001234567" ? '服务协议' : '会员协议',
+                      style: const TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF0047FF),
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          NavigatorUtils.goWebViewPage(
+                              context, "会员协议", "http://www.shenmo-ai.com/tos/");
+                        },
+                    ),
+                    const TextSpan(
+                      text: '和',
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF333333),
+                      ),
+                    ),
+                    TextSpan(
+                      text: '续费规则',
+                      style: const TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF0047FF),
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          NavigatorUtils.goWebViewPage(context, "续费规则",
+                              "http://www.shenmo-ai.com/agreements");
+                        },
+                    ),
+                  ],
                 ),
-                // const SizedBox(
-                //   width: 8.0,
-                // ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      const TextSpan(
-                        text: '我已阅读并同意',
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF333333),
-                        ),
-                      ),
-                      TextSpan(
-                        text: userPhone == "17001234567" ? '服务协议' : '会员协议',
-                        style: const TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF0047FF),
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            NavigatorUtils.goWebViewPage(context, "会员协议",
-                                "http://www.shenmo-ai.com/tos/");
-                          },
-                      ),
-                      const TextSpan(
-                        text: '和',
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF333333),
-                        ),
-                      ),
-                      TextSpan(
-                        text: '续费规则',
-                        style: const TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF0047FF),
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            NavigatorUtils.goWebViewPage(context, "续费规则",
-                                "http://www.shenmo-ai.com/agreements");
-                          },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: _screenUtil.bottomBarHeight + 16.0,
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: _screenUtil.bottomBarHeight + 16.0,
+          ),
+        ],
       );
     }
 
@@ -660,7 +662,7 @@ class _PurchasePageState extends State<PurchasePage>
             const SizedBox(
               height: 16.0,
             ),
-            content,
+            SizedBox(height: _screenUtil.screenHeight - 160, child: content),
             const SizedBox(
               height: 20.0,
             ),
