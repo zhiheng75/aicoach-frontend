@@ -103,8 +103,8 @@ class _SplashPageState extends State<SplashPage> {
         ? iosInfo?.systemVersion
         // ignore: dead_code
         : androidInfo?.version.incremental;
-    DioUtils.instance.dio.options.headers['version'] = "1.0.8";
-    DioUtils.instance.dio.options.headers['buildNumber'] = "75";
+    DioUtils.instance.dio.options.headers['version'] = "1.0.9";
+    DioUtils.instance.dio.options.headers['buildNumber'] = "85";
   }
 
   @override

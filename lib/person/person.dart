@@ -1,4 +1,5 @@
 import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/net/net.dart';
 import 'package:Bubble/person/entity/permission_bean.dart';
@@ -107,6 +108,16 @@ class _PersonPageState extends State<PersonPage>
   @override
   void initState() {
     super.initState();
+
+    EventBus().on('LOGINOUT', (_) {
+      setState(() {
+        LoginManager.toLoginOut();
+        NavigatorUtils.push(
+          context,
+          "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
+        );
+      });
+    });
 
     EventBus().on('YQM', (_) {
       Log.e("进来了");

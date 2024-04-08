@@ -258,39 +258,37 @@ class _PurchasePageState extends State<PurchasePage>
               height: 22.0,
             ),
           ),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  title,
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                  height: 18.0 / 20.0,
+                  letterSpacing: 0.05,
+                ),
+              ),
+              const SizedBox(
+                height: 16.0,
+              ),
+              SizedBox(
+                width: 220,
+                child: Text(
+                  contentTit,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                    height: 18.0 / 20.0,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF666666),
+                    height: 18.0 / 14.0,
                     letterSpacing: 0.05,
                   ),
                 ),
-                const SizedBox(
-                  height: 16.0,
-                ),
-                SizedBox(
-                  width: 220,
-                  child: Text(
-                    contentTit,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFF666666),
-                      height: 18.0 / 14.0,
-                      letterSpacing: 0.05,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
           GestureDetector(
             behavior: HitTestBehavior.opaque,
@@ -479,14 +477,12 @@ class _PurchasePageState extends State<PurchasePage>
     Widget content;
 
     if (_pageState != 'success') {
-      content = Expanded(
-        child: Center(
-          child: _pageState == 'fail'
-              ? LoadFail(
-                  reload: init,
-                )
-              : const LoadData(),
-        ),
+      content = Center(
+        child: _pageState == 'fail'
+            ? LoadFail(
+                reload: init,
+              )
+            : const LoadData(),
       );
     } else {
       List<Widget> goodsChildren = [];
@@ -662,7 +658,7 @@ class _PurchasePageState extends State<PurchasePage>
             const SizedBox(
               height: 16.0,
             ),
-            SizedBox(height: _screenUtil.screenHeight - 160, child: content),
+            SizedBox(height: _screenUtil.screenHeight - 180, child: content),
             const SizedBox(
               height: 20.0,
             ),

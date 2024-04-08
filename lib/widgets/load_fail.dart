@@ -3,10 +3,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 
 class LoadFail extends StatelessWidget {
-  const LoadFail({
-    Key? key,
-    required this.reload
-  }) : super(key: key);
+  const LoadFail({Key? key, required this.reload}) : super(key: key);
 
   final Function() reload;
 
