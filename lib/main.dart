@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key, this.home, this.theme}) {
     Log.init();
     initDio();
-    // initUM();
+    initUM();
     Routes.initRoutes();
   }
 
@@ -101,9 +101,9 @@ class MyApp extends StatelessWidget {
     interceptors.add(AdapterInterceptor());
     configDio(
       // 测试
-      baseUrl: 'https://api.bubble.shenmo-ai.net/',
+      // baseUrl: 'https://api.bubble.shenmo-ai.net/',
       // 正式
-      // baseUrl: 'https://api.bubble.shenmo-ai.com/',
+      baseUrl: 'https://api.bubble.shenmo-ai.com/',
       interceptors: interceptors,
     );
   }

@@ -28,7 +28,7 @@ class _AgreementDialogState extends State<AgreementDialog> {
             padding:
                 const EdgeInsets.only(top: 30, bottom: 15, left: 20, right: 20),
             // width: 330,
-            height: 180,
+            height: 190,
             decoration: BoxDecoration(
               image: DecorationImage(
                   image: ImageUtils.getAssetImage("agreement_dialog_bg"),
