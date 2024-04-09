@@ -86,8 +86,8 @@ class _SplashPageState extends State<SplashPage> {
     final allInfo = deviceInfo.data;
 //手机品牌加型号
     DioUtils.instance.dio.options.headers['BubbleAI'] = allInfo.toString();
-    DioUtils.instance.dio.options.headers['version'] = "1.0.9";
-    DioUtils.instance.dio.options.headers['buildNumber'] = "85";
+    DioUtils.instance.dio.options.headers['version'] = "1.1.0";
+    DioUtils.instance.dio.options.headers['buildNumber'] = "90";
   }
 
   @override
