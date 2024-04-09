@@ -65,23 +65,23 @@ class _HomeTabbarState extends State<HomeTabbar> {
           if (isSelected) {
             return;
           }
-          LoginManager.checkLogin(context, () {
-            // 场景则弹窗
-            if (value == 'scene') {
-              showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                barrierColor: Colors.transparent,
-                isScrollControlled: true,
-                isDismissible: false,
-                enableDrag: false,
-                builder: (_) => const SelectScene(),
-              );
+          // LoginManager.checkLogin(context, () {
+          // 场景则弹窗
+          if (value == 'scene') {
+            showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              barrierColor: Colors.transparent,
+              isScrollControlled: true,
+              isDismissible: false,
+              enableDrag: false,
+              builder: (_) => const SelectScene(),
+            );
 
-              return;
-            }
-            widget.changeTab(value);
-          });
+            return;
+          }
+          widget.changeTab(value);
+          // });
         },
         child: Text(
           text,

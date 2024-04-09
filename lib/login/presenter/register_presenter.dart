@@ -63,7 +63,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         url: HttpApi.wechatLogin,
         params: params,
         options: op,
-        isShow: true, onSuccess: (data) {
+        isShow: false, onSuccess: (data) {
       EventBus().emit('ERROR');
       if (data != null) {
         if (data.code == 200) {

@@ -482,7 +482,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
     print(code);
     RegisterPresenter.disHttpKeySendSms();
 
-    _registerPresenter.register(widget.phoneNumber, code, true);
+    _registerPresenter.register(widget.phoneNumber, code, false);
   }
 
   void _bind(String code) {

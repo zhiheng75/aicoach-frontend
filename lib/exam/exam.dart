@@ -181,41 +181,43 @@ class _ExamPageState extends State<ExamPage>
   }
 
   void startExam() async {
-    // isExam = true;
+    LoginManager.checkLogin(context, () async {
+      // isExam = true;
 
-    // suggestAnswer();
-    // return;
-    if (LoginManager.isLogin()) {
-      // if (!preventDoubleTap(interval: 10000)) {
-      //   return;
-      // }
+      // suggestAnswer();
+      // return;
+      if (LoginManager.isLogin()) {
+        // if (!preventDoubleTap(interval: 10000)) {
+        //   return;
+        // }
 
-      try {
-        bool hasAgree =
-            SpUtil.getBool(Constant.mediaUtils, defValue: false) ?? false;
-        if (!hasAgree) {
-          Toast.show("录音音频使用说明:用于对话场景", duration: 6000);
-          SpUtil.putBool(Constant.mediaUtils, true);
+        try {
+          bool hasAgree =
+              SpUtil.getBool(Constant.mediaUtils, defValue: false) ?? false;
+          if (!hasAgree) {
+            Toast.show("录音音频使用说明:用于对话场景", duration: 6000);
+            SpUtil.putBool(Constant.mediaUtils, true);
+          }
+
+          // 检查权限
+          bool isRequest = await _mediaUtils.checkMicrophonePermission();
+          if (isRequest) {
+            Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
+            return;
+          }
+          // ignore: use_build_context_synchronously
+          stopVoice();
+          _examPagePresenter.getExamPermission();
+        } catch (e) {
+          Toast.show(
+            e.toString().substring(11),
+            duration: 1000,
+          );
         }
-
-        // 检查权限
-        bool isRequest = await _mediaUtils.checkMicrophonePermission();
-        if (isRequest) {
-          Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
-          return;
-        }
-        // ignore: use_build_context_synchronously
-        stopVoice();
-        _examPagePresenter.getExamPermission();
-      } catch (e) {
-        Toast.show(
-          e.toString().substring(11),
-          duration: 1000,
-        );
+      } else {
+        Toast.show("请登录");
       }
-    } else {
-      Toast.show("请登录");
-    }
+    });
   }
 
   @override

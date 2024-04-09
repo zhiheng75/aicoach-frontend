@@ -315,7 +315,7 @@ class _AboutPageState extends State<AboutPage> {
               ),
             ),
             SizedBox(
-              height: _screenUtil.screenHeight - 100,
+              height: _screenUtil.screenHeight - 120,
               child: MyScrollView(
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[

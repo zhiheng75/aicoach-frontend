@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +29,6 @@ class SelectScene extends StatefulWidget {
 }
 
 class _SelectSceneState extends State<SelectScene> {
-
   late HomeProvider _homeProvider;
   final ScreenUtil _screenUtil = ScreenUtil();
   // 状态 loading-加载中 fail-失败 success-成功
@@ -55,60 +55,53 @@ class _SelectSceneState extends State<SelectScene> {
 
   void getDefaultCharacter(Function(String) onSuccess) {
     DioUtils.instance.requestNetwork<ResultData>(
-        Method.get,
-        HttpApi.teacherList,
-        onSuccess: (result) {
-          if (result == null || result.data == null) {
-            _pageState = 'fail';
-            setState(() {});
-            return;
-          }
-          List<dynamic> list = result.data! as List<dynamic>;
-          if (list.isEmpty) {
-            _pageState = 'fail';
-            setState(() {});
-            return;
-          }
-          onSuccess(CharacterEntity.fromJson(list.first).characterId);
-        },
-        onError: (code, msg) {
-          Log.d('获取角色列表失败:[error]$msg', tag: '[Function]getCharacterList');
-          _pageState = 'fail';
-          setState(() {});
-        }
-    );
+        Method.get, HttpApi.teacherList, onSuccess: (result) {
+      if (result == null || result.data == null) {
+        _pageState = 'fail';
+        setState(() {});
+        return;
+      }
+      List<dynamic> list = result.data! as List<dynamic>;
+      if (list.isEmpty) {
+        _pageState = 'fail';
+        setState(() {});
+        return;
+      }
+      onSuccess(CharacterEntity.fromJson(list.first).characterId);
+    }, onError: (code, msg) {
+      Log.d('获取角色列表失败:[error]$msg', tag: '[Function]getCharacterList');
+      _pageState = 'fail';
+      setState(() {});
+    });
   }
 
   void getCategoryList(String characterId) async {
     DioUtils.instance.requestNetwork<ResultData>(
-      Method.get,
-      HttpApi.topicOrScene,
-      queryParameters: {
-        'character_id': characterId,
-        'type': 2,
-      },
-      onSuccess: (result) {
-        if (result == null || result.data == null) {
-          _pageState = 'fail';
-          setState(() {});
-          return;
-        }
-        List<dynamic> data = result.data as List<dynamic>;
-        List<CategoryEntity> list = data.map((item) => CategoryEntity.fromJson(item)).toList();
-        _pageState = 'success';
-        _categoryList = list;
-        setState(() {});
-
-        if (_categoryList.isNotEmpty) {
-          changeCategory(0);
-        }
-      },
-      onError: (code, msg) {
-        Log.d('getCategoryList fail:[reason]$msg', tag: '获取场景分类');
+        Method.get, HttpApi.topicOrScene,
+        queryParameters: {
+          'character_id': characterId,
+          'type': 2,
+        }, onSuccess: (result) {
+      if (result == null || result.data == null) {
         _pageState = 'fail';
         setState(() {});
+        return;
       }
-    );
+      List<dynamic> data = result.data as List<dynamic>;
+      List<CategoryEntity> list =
+          data.map((item) => CategoryEntity.fromJson(item)).toList();
+      _pageState = 'success';
+      _categoryList = list;
+      setState(() {});
+
+      if (_categoryList.isNotEmpty) {
+        changeCategory(0);
+      }
+    }, onError: (code, msg) {
+      Log.d('getCategoryList fail:[reason]$msg', tag: '获取场景分类');
+      _pageState = 'fail';
+      setState(() {});
+    });
   }
 
   void changeCategory(int index) {
@@ -129,28 +122,34 @@ class _SelectSceneState extends State<SelectScene> {
   }
 
   void selectScene(SceneEntity scene) {
-    Navigator.of(context).pop();
-    HomeProvider homeProvider = Provider.of<HomeProvider>(context, listen: false);
-    if (homeProvider.sessionType == 'chat') {
-      ConfirmUtils.show(
-        context: context,
-        title: '你要切换场景吗？',
-        onConfirm: () {
-          _homeProvider.sceneStreamController.add({'type': 'scene', 'data': scene.toJson()});
-        },
-        child: const Text(
-          '场景切换会结束当前对话',
-          style: TextStyle(
-            fontSize: 15.0,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF333333),
-            height: 18.0 / 15.0,
+    LoginManager.checkLogin(context, () {
+      Navigator.of(context).pop();
+      HomeProvider homeProvider =
+          Provider.of<HomeProvider>(context, listen: false);
+      if (homeProvider.sessionType == 'chat') {
+        ConfirmUtils.show(
+          context: context,
+          title: '你要切换场景吗？',
+          onConfirm: () {
+            _homeProvider.sceneStreamController
+                .add({'type': 'scene', 'data': scene.toJson()});
+          },
+          child: const Text(
+            '场景切换会结束当前对话',
+            style: TextStyle(
+              fontSize: 15.0,
+              fontWeight: FontWeight.w400,
+              color: Color(0xFF333333),
+              height: 18.0 / 15.0,
+            ),
           ),
-        ),
-      );
-      return;
-    }
-    _homeProvider.sceneStreamController.add({'type': 'scene', 'data': scene.toJson()});
+        );
+
+        return;
+      }
+      _homeProvider.sceneStreamController
+          .add({'type': 'scene', 'data': scene.toJson()});
+    });
   }
 
   @override
@@ -167,7 +166,6 @@ class _SelectSceneState extends State<SelectScene> {
 
   @override
   Widget build(BuildContext context) {
-
     if (_pageState != 'success') {
       return Container(
         width: _screenUtil.screenWidth,
@@ -187,9 +185,11 @@ class _SelectSceneState extends State<SelectScene> {
                 horizontal: 16.0,
               ),
               alignment: Alignment.center,
-              child: _pageState == 'fail' ? LoadFail(
-                reload: init,
-              ) : const LoadData(),
+              child: _pageState == 'fail'
+                  ? LoadFail(
+                      reload: init,
+                    )
+                  : const LoadData(),
             ),
           ],
         ),
@@ -197,7 +197,7 @@ class _SelectSceneState extends State<SelectScene> {
     }
 
     // 各个组件的高度
-    double titleHeight = _screenUtil.statusBarHeight +  80.0;
+    double titleHeight = _screenUtil.statusBarHeight + 80.0;
     double categoryHeight = 30.0;
 
     Widget categoryItem(int index, int currentIndex) {
@@ -262,7 +262,9 @@ class _SelectSceneState extends State<SelectScene> {
             for (int i = 0; i < _categoryList.length; i++) {
               children.add(categoryItem(i, index));
               if (i < _categoryList.length - 1) {
-                children.add(const SizedBox(width: 24.0,));
+                children.add(const SizedBox(
+                  width: 24.0,
+                ));
               }
             }
             return Row(
@@ -361,7 +363,11 @@ class _SelectSceneState extends State<SelectScene> {
       }
 
       double width = _screenUtil.screenWidth;
-      double height = _screenUtil.screenHeight - titleHeight - categoryHeight - 12 - _screenUtil.bottomBarHeight;
+      double height = _screenUtil.screenHeight -
+          titleHeight -
+          categoryHeight -
+          12 -
+          _screenUtil.bottomBarHeight;
       scene = GestureDetector(
         onHorizontalDragStart: (details) {
           _initialPosition = details.globalPosition;
@@ -375,7 +381,8 @@ class _SelectSceneState extends State<SelectScene> {
         },
         onHorizontalDragEnd: (_) {
           if (_offset.abs() > 50) {
-            int index = _offset < 0 ? _currentIndex.value + 1 : _currentIndex.value - 1;
+            int index =
+                _offset < 0 ? _currentIndex.value + 1 : _currentIndex.value - 1;
             if (index < 0 || index == _categoryList.length) {
               return;
             }
