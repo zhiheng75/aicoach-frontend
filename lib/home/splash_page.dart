@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:Bubble/home/home_router.dart';
@@ -79,30 +80,12 @@ class _SplashPageState extends State<SplashPage> {
     NavigatorUtils.push(context, HomeRouter.homePage, replace: true);
   }
 
-  void initDio() {
-    // DioUtils.instance.dio.options.headers
-    AndroidDeviceInfo? androidInfo;
-    IosDeviceInfo? iosInfo;
-    DioUtils.instance.dio.options.headers['brand'] = Platform.isIOS
-        // ignore: dead_code
-        ? iosInfo?.utsname.machine
-        // ignore: dead_code
-        : "${androidInfo?.brand} ${androidInfo?.model}";
-    DioUtils.instance.dio.options.headers['systemVersion'] = Platform.isIOS
-        // ignore: dead_code
-        ? iosInfo?.systemVersion
-        // ignore: dead_code
-        : androidInfo?.version.release;
-    DioUtils.instance.dio.options.headers['isPhysicalDevice'] = Platform.isIOS
-        // ignore: dead_code
-        ? iosInfo?.isPhysicalDevice
-        // ignore: dead_code
-        : androidInfo?.isPhysicalDevice;
-    DioUtils.instance.dio.options.headers['incremental'] = Platform.isIOS
-        // ignore: dead_code
-        ? iosInfo?.systemVersion
-        // ignore: dead_code
-        : androidInfo?.version.incremental;
+  void initDio() async {
+    final deviceInfoPlugin = DeviceInfoPlugin();
+    BaseDeviceInfo deviceInfo = await deviceInfoPlugin.deviceInfo;
+    final allInfo = deviceInfo.data;
+//手机品牌加型号
+    DioUtils.instance.dio.options.headers['BubbleAI'] = allInfo.toString();
     DioUtils.instance.dio.options.headers['version'] = "1.0.9";
     DioUtils.instance.dio.options.headers['buildNumber'] = "85";
   }

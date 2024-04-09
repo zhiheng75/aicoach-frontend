@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:Bubble/chat/entity/topic_entity.dart';
 import 'package:Bubble/entity/result_entity.dart';
@@ -12,6 +14,7 @@ import 'package:Bubble/scene/collect_information.dart';
 import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -33,6 +36,7 @@ import '../widgets/double_tap_back_exit_app.dart';
 import 'presenter/home_new_page_presenter.dart';
 import 'view/home_new_view.dart';
 import 'widget/home_tabbar.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class HomeNewPage extends StatefulWidget {
   const HomeNewPage({Key? key}) : super(key: key);
@@ -77,30 +81,12 @@ class _HomePageState extends State<HomeNewPage>
     UmengCommonSdk.setPageCollectionModeManual();
   }
 
-  void initDio() {
-    // DioUtils.instance.dio.options.headers
-    AndroidDeviceInfo? androidInfo;
-    IosDeviceInfo? iosInfo;
-    DioUtils.instance.dio.options.headers['brand'] = Platform.isIOS
-        // ignore: dead_code
-        ? iosInfo?.utsname.machine
-        // ignore: dead_code
-        : "${androidInfo?.brand} ${androidInfo?.model}";
-    DioUtils.instance.dio.options.headers['systemVersion'] = Platform.isIOS
-        // ignore: dead_code
-        ? iosInfo?.systemVersion
-        // ignore: dead_code
-        : androidInfo?.version.release;
-    DioUtils.instance.dio.options.headers['isPhysicalDevice'] = Platform.isIOS
-        // ignore: dead_code
-        ? iosInfo?.isPhysicalDevice
-        // ignore: dead_code
-        : androidInfo?.isPhysicalDevice;
-    DioUtils.instance.dio.options.headers['incremental'] = Platform.isIOS
-        // ignore: dead_code
-        ? iosInfo?.systemVersion
-        // ignore: dead_code
-        : androidInfo?.version.incremental;
+  void initDio() async {
+    final deviceInfoPlugin = DeviceInfoPlugin();
+    BaseDeviceInfo deviceInfo = await deviceInfoPlugin.deviceInfo;
+    final allInfo = deviceInfo.data;
+//手机品牌加型号
+    DioUtils.instance.dio.options.headers['BubbleAI'] = allInfo.toString();
     DioUtils.instance.dio.options.headers['version'] = "1.0.9";
     DioUtils.instance.dio.options.headers['buildNumber'] = "85";
   }
