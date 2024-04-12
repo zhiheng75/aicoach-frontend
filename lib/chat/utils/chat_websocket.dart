@@ -108,11 +108,11 @@ class ChatWebsocket {
     String deviceId = await Device.getDeviceId();
     String token = LoginManager.getUserToken();
     // 测试
-    String uri =
-        'wss://api.bubble.shenmo-ai.net/ws/$sessionId?platform=app&device_id=$deviceId&character_id=$characterId&language=en-US&token=$token&use_search=false&use_quivr=false&use_multion=false';
-    // 正式
     // String uri =
-    //     'wss://api.bubble.shenmo-ai.com/ws/$sessionId?platform=app&device_id=$deviceId&character_id=$characterId&language=en-US&token=$token&use_search=false&use_quivr=false&use_multion=false';
+    //     'wss://api.bubble.shenmo-ai.net/ws/$sessionId?platform=app&device_id=$deviceId&character_id=$characterId&language=en-US&token=$token&use_search=false&use_quivr=false&use_multion=false';
+    // 正式
+    String uri =
+        'wss://api.bubble.shenmo-ai.com/ws/$sessionId?platform=app&device_id=$deviceId&character_id=$characterId&language=en-US&token=$token&use_search=false&use_quivr=false&use_multion=false';
     if (sceneId != null) {
       uri = '$uri&scene_id=$sceneId';
     }
