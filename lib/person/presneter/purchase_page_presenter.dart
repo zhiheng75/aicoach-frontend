@@ -35,64 +35,74 @@ class PurchasePagePresenter extends BasePagePresenter<PurchaseView> {
     params["goods_id"] = goodId.toString();
     params["goods_price"] = goodPrice.toString();
     params["payment_method"] = "WXPAY"; //0=WXPAY 1=ALIPAY
-    return requestNetwork<WxPayData>(Method.post,
+    return requestNetwork<ResultData>(Method.post,
         url: HttpApi.wxOrder,
         isShow: showLoading,
         params: params, onSuccess: (data) async {
       if (data != null) {
-        WxPayDataData payData = data.data;
-        // if (Device.isAndroid) {
-        //   FlutterToNative.jumpToWechatPay(json.encode(payData)).then((value) {
-        //     if (value == 0) {
-        //       Toast.show("支付成功");
-        //       getOrderStatus(payData.order_no, "WXPAY");
-        //     } else {
-        //       Toast.show("支付失败");
-        //     }
-        //   });
-        // }
-        // if (Device.isIOS) {
-        Fluwx fluwx = Fluwx();
-        bool isRegistered = await fluwx.registerApi(
-          appId: payData.appid,
-          doOnAndroid: true,
-          doOnIOS: true,
-          universalLink: 'https://demo.shenmo-ai.net/ios/',
-        );
-        if (!isRegistered) {
-          Toast.show('支付失败');
-          return;
-        }
-        bool isInstalledWx = await fluwx.isWeChatInstalled;
-        if (!isInstalledWx) {
-          Toast.show('请先安装微信');
-          return;
-        }
-        // 设置监听
-        fluwx.addSubscriber((response) {
-          fluwx.clearSubscribers();
-          if (response.errCode == 0) {
-            Toast.show("支付成功");
-            getOrderStatus(payData.order_no, "WXPAY");
-          } else if (response.errCode == -2) {
-            Toast.show('取消支付');
-          } else {
-            Toast.show('支付失败:${response.errStr}');
-          }
-        });
-        fluwx.pay(
-          which: Payment(
+        if (data.code == 200) {
+          Map<String, dynamic> examStepBeanMap = json.decode(data.toString());
+          WxPayData wxPayData = WxPayData.fromJson(examStepBeanMap);
+          // WxPayData
+          WxPayDataData payData = wxPayData.data;
+          // if (Device.isAndroid) {
+          //   FlutterToNative.jumpToWechatPay(json.encode(payData)).then((value) {
+          //     if (value == 0) {
+          //       Toast.show("支付成功");
+          //       getOrderStatus(payData.order_no, "WXPAY");
+          //     } else {
+          //       Toast.show("支付失败");
+          //     }
+          //   });
+          // }
+          // if (Device.isIOS) {
+          Fluwx fluwx = Fluwx();
+          bool isRegistered = await fluwx.registerApi(
             appId: payData.appid,
-            partnerId: payData.partnerid,
-            packageValue: payData.package,
-            prepayId: payData.prepayId,
-            nonceStr: payData.noncestr,
-            timestamp: int.parse(payData.timestamp),
-            sign: payData.sign,
-          ),
-        );
+            doOnAndroid: true,
+            doOnIOS: true,
+            universalLink: 'https://demo.shenmo-ai.net/ios/',
+          );
+          if (!isRegistered) {
+            Toast.show('支付失败');
+            return;
+          }
+          bool isInstalledWx = await fluwx.isWeChatInstalled;
+          if (!isInstalledWx) {
+            Toast.show('请先安装微信');
+            return;
+          }
+          // 设置监听
+          fluwx.addSubscriber((response) {
+            fluwx.clearSubscribers();
+            if (response.errCode == 0) {
+              Toast.show("支付成功");
+              getOrderStatus(payData.order_no, "WXPAY");
+            } else if (response.errCode == -2) {
+              Toast.show('取消支付');
+            } else {
+              Toast.show('支付失败:${response.errStr}');
+            }
+          });
+          fluwx.pay(
+            which: Payment(
+              appId: payData.appid,
+              partnerId: payData.partnerid,
+              packageValue: payData.package,
+              prepayId: payData.prepayId,
+              nonceStr: payData.noncestr,
+              timestamp: int.parse(payData.timestamp),
+              sign: payData.sign,
+            ),
+          );
+        } else {
+          Toast.show(data.msg);
+        }
       }
+
       // }
+    }, onError: (code, msg) {
+      Toast.show(msg);
     });
   }
 
@@ -102,51 +112,60 @@ class PurchasePagePresenter extends BasePagePresenter<PurchaseView> {
     params["goods_price"] = goodPrice.toString();
     params["payment_method"] = "ALIPAY"; //0=WXPAY 1=ALIPAY
 
-    return requestNetwork<AliPayData>(Method.post,
+    return requestNetwork<ResultData>(Method.post,
         url: HttpApi.wxOrder,
         isShow: showLoading,
         params: params, onSuccess: (data) async {
       if (data != null) {
-        AliPayDataData payData = data.data;
-        if (Device.isAndroid) {
-          FlutterToNative.jumpToALiPay(json.encode(payData)).then((value) {
-            if (value == 0) {
-              Toast.show("支付成功");
-              getOrderStatus(payData.orderNo, "ALIPAY");
-            } else {
-              Toast.show("支付失败");
-            }
-          });
-        }
-        if (Device.isIOS) {
-          Tobias tobias = Tobias();
-          bool isInstalledAlipay = await tobias.isAliPayInstalled;
-          if (!isInstalledAlipay) {
-            Toast.show('请先安装支付宝');
-            return;
-          }
-          tobias.pay(payData.prepayUrl).then(
-            (result) {
-              Log.d('支付结果:$result');
-              String code = result['resultStatus'];
-              if (code == '9000') {
+        if (data.code == 200) {
+          Map<String, dynamic> examStepBeanMap = json.decode(data.toString());
+          AliPayData aliPayData = AliPayData.fromJson(examStepBeanMap);
+          // WxPayData
+          // WxPayDataData payData = wxPayData.data;
+          // AliPayData
+          AliPayDataData payData = aliPayData.data;
+          if (Device.isAndroid) {
+            FlutterToNative.jumpToALiPay(json.encode(payData)).then((value) {
+              if (value == 0) {
                 Toast.show("支付成功");
                 getOrderStatus(payData.orderNo, "ALIPAY");
-              } else if (code == '6001') {
-                Toast.show("取消支付");
-              } else if (code == '8000') {
-                Toast.show("支付处理中，请在购买记录页确认是否开通成功");
-              } else if (code == '6004') {
-                Toast.show("支付处理中，请在购买记录页确认是否开通成功");
               } else {
-                Toast.show(result['memo']);
+                Toast.show("支付失败");
               }
-            },
-            onError: (_) {
-              Toast.show('支付失败');
-              Log.d('iOS支付宝支付异常:error:$_');
-            },
-          );
+            });
+          }
+          if (Device.isIOS) {
+            Tobias tobias = Tobias();
+            bool isInstalledAlipay = await tobias.isAliPayInstalled;
+            if (!isInstalledAlipay) {
+              Toast.show('请先安装支付宝');
+              return;
+            }
+            tobias.pay(payData.prepayUrl).then(
+              (result) {
+                Log.d('支付结果:$result');
+                String code = result['resultStatus'];
+                if (code == '9000') {
+                  Toast.show("支付成功");
+                  getOrderStatus(payData.orderNo, "ALIPAY");
+                } else if (code == '6001') {
+                  Toast.show("取消支付");
+                } else if (code == '8000') {
+                  Toast.show("支付处理中，请在购买记录页确认是否开通成功");
+                } else if (code == '6004') {
+                  Toast.show("支付处理中，请在购买记录页确认是否开通成功");
+                } else {
+                  Toast.show(result['memo']);
+                }
+              },
+              onError: (_) {
+                Toast.show('支付失败');
+                Log.d('iOS支付宝支付异常:error:$_');
+              },
+            );
+          }
+        } else {
+          Toast.show(data.msg);
         }
       }
     });

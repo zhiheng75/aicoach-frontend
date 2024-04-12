@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/person/entity/basec_onfig_bean.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/EventBus.dart';
 import 'package:Bubble/util/confirm_utils.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/gestures.dart';
@@ -410,7 +411,7 @@ class _PurchasePageState extends State<PurchasePage>
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: userPhone == "17001234567" ? "" : '尝鲜价：',
+                          text: userPhone == "17001234567" ? "" : '尝鲜价:',
                           style: const TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.w400,
@@ -423,7 +424,7 @@ class _PurchasePageState extends State<PurchasePage>
                               ? "¥${goods.price}"
                               : '¥${goods.price}/${goods.unit}',
                           style: const TextStyle(
-                            fontSize: 22.0,
+                            fontSize: 20.0,
                             fontWeight: FontWeight.w500,
                             color: Color(0xFF333333),
                             height: 25.75 / 22.0,
@@ -681,6 +682,7 @@ class _PurchasePageState extends State<PurchasePage>
   paySuccess() {
     // 刷新使用时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
+    EventBus().emit("YQM");
     Future.delayed(const Duration(seconds: 1), () {
       Navigator.of(context).pop();
     });
