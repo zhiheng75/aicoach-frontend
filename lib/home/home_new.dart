@@ -87,8 +87,8 @@ class _HomePageState extends State<HomeNewPage>
     final allInfo = deviceInfo.data;
 //手机品牌加型号
     DioUtils.instance.dio.options.headers['BubbleAI'] = allInfo.toString();
-    DioUtils.instance.dio.options.headers['version'] = "1.1.0";
-    DioUtils.instance.dio.options.headers['buildNumber'] = "90";
+    DioUtils.instance.dio.options.headers['version'] = "1.1.1";
+    DioUtils.instance.dio.options.headers['buildNumber'] = "105";
   }
 
   Future<void> initPlatformState() async {
