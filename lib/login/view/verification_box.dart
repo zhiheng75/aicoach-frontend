@@ -1,7 +1,7 @@
 library flutter_verification_box;
 
 // import 'package:flutter/cupertino.dart';
-import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/entity/user_info_entity.dart';
-import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:dio/dio.dart';

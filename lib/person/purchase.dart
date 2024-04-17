@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/person/entity/basec_onfig_bean.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
-import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/confirm_utils.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/gestures.dart';

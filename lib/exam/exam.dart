@@ -13,11 +13,13 @@ import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/report/report_router.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
-import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
+import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
+import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -855,140 +857,166 @@ class _ExamPageState extends State<ExamPage>
     }
 
     Widget body() {
-      return Column(
-        children: [
-          const SizedBox(
-            height: 60,
-          ),
-          desc,
-          Gaps.vGap10,
-          contentBar(),
-          Gaps.vGap10,
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: startExam,
-                child: Container(
-                  width: 231.0,
-                  height: 48.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100.0),
-                    border: Border.all(
-                      width: 1.0,
-                      style: BorderStyle.solid,
-                      color: Colours.color_001652,
+      return Expanded(
+        child: MyScrollView(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // const SizedBox(
+            //   height: 60,
+            // ),
+            desc,
+            Gaps.vGap10,
+            contentBar(),
+            Gaps.vGap10,
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: startExam,
+                  child: Container(
+                    width: 231.0,
+                    height: 48.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100.0),
+                      border: Border.all(
+                        width: 1.0,
+                        style: BorderStyle.solid,
+                        color: Colours.color_001652,
+                      ),
+                      gradient: const LinearGradient(
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                        colors: [
+                          Colours.color_9AC3FF,
+                          Colours.color_FF71E0,
+                        ],
+                      ),
                     ),
-                    gradient: const LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      colors: [
-                        Colours.color_9AC3FF,
-                        Colours.color_FF71E0,
-                      ],
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'KET口语模考',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colours.color_001652,
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'KET口语模考',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colours.color_001652,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Gaps.vGap10,
-              GestureDetector(
-                onTap: () {
-                  if (LoginManager.isLogin()) {
-                    // checkMicrophonePermission();
-                    showModalBottomSheet(
-                      context: context,
-                      backgroundColor: Colors.transparent,
-                      barrierColor: Colors.transparent,
-                      isScrollControlled: true,
-                      isDismissible: false,
-                      enableDrag: false,
-                      builder: (_) => ExamPurchasePage(
-                        onPurchased: () {
-                          getStudyInfo();
-                        },
-                      ),
-                    );
-                  } else {
-                    Toast.show("请登录");
-                  }
-                },
-                child: phone == "17001234567"
-                    ? Container()
-                    : Container(
-                        width: 231.0,
-                        height: 60.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.0),
-                          color: Colors.black.withOpacity(0.85),
+                Gaps.vGap10,
+                GestureDetector(
+                  onTap: () {
+                    if (LoginManager.isLogin()) {
+                      // checkMicrophonePermission();
+                      showModalBottomSheet(
+                        context: context,
+                        backgroundColor: Colors.transparent,
+                        barrierColor: Colors.transparent,
+                        isScrollControlled: true,
+                        isDismissible: false,
+                        enableDrag: false,
+                        builder: (_) => ExamPurchasePage(
+                          onPurchased: () {
+                            getStudyInfo();
+                          },
                         ),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 6.0,
-                        ),
-                        child: Column(
-                          children: [
-                            const Text(
-                              "购买模考训练包",
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white,
+                      );
+                    } else {
+                      Toast.show("请登录");
+                    }
+                  },
+                  child: phone == "17001234567"
+                      ? Container()
+                      : Container(
+                          width: 231.0,
+                          height: 60.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: Colors.black.withOpacity(0.85),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 6.0,
+                          ),
+                          child: Column(
+                            children: [
+                              const Text(
+                                "购买模考训练包",
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "剩余训练次数：",
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    "剩余训练次数：",
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  "$number次",
-                                  style: const TextStyle(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colours.color_FF71CF,
+                                  Text(
+                                    "$number次",
+                                    style: const TextStyle(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colours.color_FF71CF,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-              )
-            ],
-          ),
-          Gaps.vGap30,
-        ],
+                )
+              ],
+            ),
+            Gaps.vGap30,
+          ],
+        ),
       );
     }
 
-    return Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-              'assets/images/mkbg.png',
-            ),
-            fit: BoxFit.cover,
-          ),
+    return MediaQuery.removePadding(
+      context: context,
+      removeTop: false,
+      removeBottom: true,
+      child: Scaffold(
+        body: SafeArea(
+          child: Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/images/mkbg.png',
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              // color: Colours.color_001652.withOpacity(0.5),
+              // width: double.infinity,
+              // height: double.infinity,
+              child: Column(
+                children: [
+                  const XTCupertinoNavigationBar(
+                    backgroundColor: Color(0xFFFFFFFF),
+                    border: null,
+                    padding: EdgeInsetsDirectional.zero,
+                    leading: NavigationBackWidget(),
+                    middle: Text(
+                      "模考",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  body(),
+                ],
+              )),
         ),
-        // color: Colours.color_001652.withOpacity(0.5),
-        width: double.infinity,
-        height: double.infinity,
-        child: SingleChildScrollView(child: body()));
+      ),
+    );
   }
 
   @override

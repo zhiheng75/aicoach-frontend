@@ -9,7 +9,7 @@ import '../home/provider/home_provider.dart';
 import '../mvp/base_page.dart';
 import '../net/dio_utils.dart';
 import '../net/http_api.dart';
-import '../util/EventBus.dart';
+import '../util/event_bus.dart';
 import '../util/confirm_utils.dart';
 import '../util/log_utils.dart';
 import '../util/media_utils.dart';

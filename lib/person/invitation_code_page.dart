@@ -5,7 +5,7 @@ import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
-import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/btn_bg_widget.dart';

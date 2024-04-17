@@ -17,7 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../util/EventBus.dart';
+import '../util/event_bus.dart';
 import '../widgets/jh_asset_picker.dart';
 import '../widgets/my_app_bar.dart';
 import 'entity/send_img_result_entity.dart';

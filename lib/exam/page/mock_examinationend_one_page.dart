@@ -7,7 +7,7 @@ import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/resources.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
-import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';

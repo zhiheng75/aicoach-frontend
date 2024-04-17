@@ -6,7 +6,7 @@ import 'package:Bubble/home/home.dart';
 import 'package:Bubble/home/home_two_page.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/person/person.dart';
-import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,6 +55,21 @@ class _MainTabberState extends State<MainTabber> {
         _controller!.index = 0;
       });
     });
+
+    EventBus().on(NotificationUtils.taberThree, (_) {
+      setState(() {
+        currentIndex = 2;
+        _controller!.index = 2;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    EventBus().off(NotificationUtils.loginOut);
+    EventBus().off(NotificationUtils.taberThree);
+
+    super.dispose();
   }
 
   void tabSelect(int index) {

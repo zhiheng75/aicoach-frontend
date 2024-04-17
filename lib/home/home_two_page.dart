@@ -17,6 +17,8 @@ import 'package:Bubble/scene/entity/category_entity.dart';
 import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/scene/widget/select_scene.dart';
 import 'package:Bubble/util/confirm_utils.dart';
+import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/group_avatar_widget.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -27,6 +29,7 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extended;
 import 'package:Bubble/chat/entity/character_list_bean.dart';
 import 'package:provider/provider.dart';
+import 'package:Bubble/exam/exam_router.dart';
 
 class HomeTwoPage extends StatefulWidget {
   const HomeTwoPage({super.key});
@@ -118,9 +121,20 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                   data: headData,
                   isShowNum: false,
                 ),
-                const Text("更多角色"),
+                GestureDetector(
+                    onTap: () {
+                      EventBus().emit(NotificationUtils.taberThree);
+                    },
+                    child: const Text("更多角色")),
                 const Expanded(child: Gaps.empty),
-                const Text("自由对话"),
+                GestureDetector(
+                    onTap: () {
+                      NavigatorUtils.push(
+                        context,
+                        "${HomeRouter.homePage}?index=0",
+                      );
+                    },
+                    child: const Text("自由对话")),
                 Gaps.hGap15,
               ],
             ),
@@ -129,15 +143,23 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   }
 
   Widget mokaoWidget(BuildContext context) {
-    return const SizedBox(
-        height: 120,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("KET模考"),
-            Text("实景还原考试全流程"),
-          ],
-        ));
+    return GestureDetector(
+      onTap: () {
+        NavigatorUtils.push(
+          context,
+          ExamRouter.examPage,
+        );
+      },
+      child: const SizedBox(
+          height: 120,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("KET模考"),
+              Text("实景还原考试全流程"),
+            ],
+          )),
+    );
   }
 
   // Widget barItem(String label, bool isSelected, int idx) {

@@ -6,7 +6,7 @@ import 'package:Bubble/chat/widget/background.dart';
 import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
-import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

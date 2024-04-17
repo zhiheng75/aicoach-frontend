@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:Bubble/entity/result_entity.dart';
-import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:dio/dio.dart';
 
 import '../net/dio_utils.dart';

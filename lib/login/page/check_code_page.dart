@@ -21,7 +21,7 @@ import 'package:sp_util/sp_util.dart';
 
 import '../../home/provider/home_provider.dart';
 import '../../mvp/base_page.dart';
-import '../../util/EventBus.dart';
+import '../../util/event_bus.dart';
 import '../../util/change_notifier_manage.dart';
 
 class CheckCodePage extends StatefulWidget {

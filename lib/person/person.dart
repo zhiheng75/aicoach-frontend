@@ -3,7 +3,7 @@ import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/net/net.dart';
 import 'package:Bubble/person/entity/permission_bean.dart';
-import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,4 +1,5 @@
 import 'package:Bubble/exam/entity/exam_step_bean.dart';
+import 'package:Bubble/exam/exam.dart';
 import 'package:Bubble/exam/page/mock_examination_one_page.dart';
 import 'package:Bubble/exam/page/mock_examination_two_page.dart';
 import 'package:Bubble/exam/page/mock_examinationend_one_page.dart';
@@ -19,6 +20,8 @@ class ExamRouter implements IRouterProvider {
   static String mockExaminationendTwoPage = '/MockExaminationendTwoPage';
   static String mockTestPurchasePage = '/MockTestPurchasePage';
 
+  static String examPage = '/ExamPage';
+
   @override
   void initRouter(FluroRouter router) {
     router.define(
@@ -32,9 +35,8 @@ class ExamRouter implements IRouterProvider {
       ),
     );
 
-    // router.define(mockExaminationOnePage,
-    //     handler:
-    //         Handler(handlerFunc: (_, __) => const MockExaminationOnePage()));
+    router.define(examPage,
+        handler: Handler(handlerFunc: (_, __) => const ExamPage()));
 
     router.define(mockExaminationOnePage,
         handler: Handler(handlerFunc: (_, params) {

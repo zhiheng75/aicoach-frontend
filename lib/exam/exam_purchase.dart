@@ -10,7 +10,7 @@ import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/person/presneter/purchase_page_presenter.dart';
 import 'package:Bubble/person/view/purchase_view.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
-import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';

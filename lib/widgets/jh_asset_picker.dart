@@ -19,7 +19,7 @@ import 'package:wechat_camera_picker/wechat_camera_picker.dart';
 import '../res/colors.dart';
 import '../res/gaps.dart';
 import '../setting/provider/theme_provider.dart';
-import '../util/EventBus.dart';
+import '../util/event_bus.dart';
 import '../util/device_utils.dart';
 import '../util/jh_permission_utils.dart';
 import 'jh_bottom_sheet.dart';

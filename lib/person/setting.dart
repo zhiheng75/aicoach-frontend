@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_final_fields
 
-import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/switch_button.dart';
@@ -456,7 +456,7 @@ class _SettingPageState extends State<SettingPage>
                         onTap: () {
                           LoginManager.toLoginOut();
                           NavigatorUtils.goBack(context);
-                          // EventBus().off(NotificationUtils.loginOut);
+                          //
                           EventBus().emit(NotificationUtils.loginOut);
 
                           // NavigatorUtils.push(context, HomeRouter.homePage);

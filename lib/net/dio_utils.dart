@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '../constant/constant.dart';
