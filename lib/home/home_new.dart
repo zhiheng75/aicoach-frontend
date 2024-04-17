@@ -39,7 +39,9 @@ import 'widget/home_tabbar.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
 class HomeNewPage extends StatefulWidget {
-  const HomeNewPage({Key? key}) : super(key: key);
+  final int index;
+  const HomeNewPage({Key? key, required this.index}) : super(key: key);
+  // const ChatHomeItem({super.key, required this.datum});
 
   @override
   State<HomeNewPage> createState() => _HomePageState();
@@ -60,7 +62,7 @@ class _HomePageState extends State<HomeNewPage>
 
   void init() {
     initDio();
-    // initUM();
+    initUM();
 
     // 初始化手机号一键登录插件
     initPlatformState();
@@ -72,7 +74,7 @@ class _HomePageState extends State<HomeNewPage>
   void initUM() {
     String platformStr = Channel.channelios;
     if (Device.isAndroid) {
-      platformStr = Channel.channelhuawei;
+      platformStr = Channel.channelmeizu;
     } else {
       platformStr = Channel.channelios;
     }
@@ -243,22 +245,8 @@ class _HomePageState extends State<HomeNewPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return DoubleTapBackExitApp(
-      child: Material(
-        child: Stack(
-          children: <Widget>[
-            if (_currentTab == 'chat') const ChatPage(),
-            if (_currentTab == 'exam') const ExamPage(),
-            Positioned(
-              top: 60.0,
-              child: HomeTabbar(
-                currentTab: _currentTab,
-                changeTab: changeTab,
-              ),
-            ),
-          ],
-        ),
-      ),
+    return Material(
+      child: ChatPage(index: widget.index),
     );
   }
 

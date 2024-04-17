@@ -138,9 +138,9 @@ class DioUtils {
       if (result.code == 0) {
         onSuccess?.call(result.data);
       } else {
-        if (result.code == 401) {
-          EventBus().emit('LOGINOUT');
-        }
+        // if (result.code == 401) {
+        //   EventBus().emit('LOGINOUT');
+        // }
         _onError(result.code, result.message, onError);
       }
     }, onError: (dynamic e) {

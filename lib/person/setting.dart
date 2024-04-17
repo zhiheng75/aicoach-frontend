@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:Bubble/util/EventBus.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/switch_button.dart';
 import 'package:dio/dio.dart';
@@ -453,7 +455,12 @@ class _SettingPageState extends State<SettingPage>
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
                           LoginManager.toLoginOut();
-                          NavigatorUtils.push(context, HomeRouter.homePage);
+                          NavigatorUtils.goBack(context);
+                          // EventBus().off(NotificationUtils.loginOut);
+                          EventBus().emit(NotificationUtils.loginOut);
+
+                          // NavigatorUtils.push(context, HomeRouter.homePage);
+                          //退出登录
                         },
                         child: Container(
                           width: 295.0,

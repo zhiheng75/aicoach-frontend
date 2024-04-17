@@ -135,6 +135,10 @@ dependencies:
   package_info_plus: ^4.2.0
   umeng_common_sdk: ^1.2.7
   flutter_bugly: ^0.4.4
+  # 轮播图
+  card_swiper: ^3.0.1
+  liquid_swipe: ^3.1.0
+
 
 dev_dependencies:
   flutter_test:

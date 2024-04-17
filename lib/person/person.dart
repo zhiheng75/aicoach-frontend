@@ -42,7 +42,7 @@ class _PersonPageState extends State<PersonPage>
   late String phone = "";
   late int totalTime = 0;
   void init() {
-    getStudyInfo();
+    // getStudyInfo();
   }
 
   void getStudyInfo() {
@@ -99,6 +99,10 @@ class _PersonPageState extends State<PersonPage>
         context, "注销账号", "http://www.shenmo-ai.com/account_cancellation/");
   }
 
+  void tapshezhiMenu() {
+    NavigatorUtils.push(context, PersonalRouter.setting);
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -122,7 +126,6 @@ class _PersonPageState extends State<PersonPage>
     EventBus().on('YQM', (_) {
       Log.e("进来了");
       _personPagePresenter.getUsageTime();
-      ;
     });
 
     SystemChrome.setPreferredOrientations([
@@ -637,6 +640,11 @@ class _PersonPageState extends State<PersonPage>
             '注销账号',
             onPress: () => tapSignOUTMenu(),
           ),
+          menuItem(
+            'shezhi',
+            '设置',
+            onPress: () => tapshezhiMenu(),
+          ),
         ],
       ),
     );
@@ -657,9 +665,9 @@ class _PersonPageState extends State<PersonPage>
                     child: Column(
                       children: <Widget>[
                         const SizedBox(
-                          height: 60.0,
+                          height: 50.0,
                         ),
-                        navbar,
+                        // navbar,
                         const SizedBox(
                           height: 16.0,
                         ),
@@ -709,6 +717,8 @@ class _PersonPageState extends State<PersonPage>
     islog = false;
     permissionBeanData = permissionBean;
     totalTime = permissionBean.data.totalTime;
+    getStudyInfo();
+
     setState(() {});
   }
 }

@@ -857,6 +857,9 @@ class _ExamPageState extends State<ExamPage>
     Widget body() {
       return Column(
         children: [
+          const SizedBox(
+            height: 60,
+          ),
           desc,
           Gaps.vGap10,
           contentBar(),
@@ -985,12 +988,7 @@ class _ExamPageState extends State<ExamPage>
         // color: Colours.color_001652.withOpacity(0.5),
         width: double.infinity,
         height: double.infinity,
-        child: Column(
-          children: [
-            titleBar(),
-            Expanded(child: SingleChildScrollView(child: body())),
-          ],
-        ));
+        child: SingleChildScrollView(child: body()));
   }
 
   @override

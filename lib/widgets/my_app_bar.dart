@@ -17,7 +17,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       this.centerTitle = '',
       this.centerTitleColor = Colors.white,
       this.actionName = '',
-      this.backImg = 'assets/images/ic_back_white.png',
+      this.backImg = 'assets/images/navbar_back.png',
       this.backImgColor,
       this.onPressed,
       this.isBack = true});
@@ -74,7 +74,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 await SystemNavigator.pop();
               }
             },
-            tooltip: 'Back',
+            tooltip: 'navbar_back',
             // padding: const EdgeInsets.all(12.0),
             icon: Image.asset(
               width: 10,

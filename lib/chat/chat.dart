@@ -1,3 +1,4 @@
+import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart' hide ScreenUtil;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,13 +29,20 @@ import 'widget/message_list.dart';
 import 'widget/record.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+  final int index;
+  const ChatPage({Key? key, required this.index}) : super(key: key);
+
+  // const ChatPage({Key? key}) : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatState();
 }
 
-class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePresenter>, AutomaticKeepAliveClientMixin<ChatPage> implements ChatView {
+class _ChatState extends State<ChatPage>
+    with
+        BasePageMixin<ChatPage, ChatPagePresenter>,
+        AutomaticKeepAliveClientMixin<ChatPage>
+    implements ChatView {
   final ChatWebsocket _chatWebsocket = ChatWebsocket();
   final MediaUtils _mediaUtils = MediaUtils();
   late HomeProvider _homeProvider;
@@ -77,47 +85,44 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       setState(() {});
     }
   }
-  
+
   void getCharacterList() {
-    _chatPagePresenter.requestNetwork<ResultData>(
-      Method.get,
-      url: HttpApi.teacherList,
-      isShow: false,
-      isClose: false,
-      onSuccess: (result) {
-        if (result == null || result.data == null) {
-          _pageState = 'fail';
-          if (mounted) {
-            setState(() {});
-          }
-          return;
-        }
-        List<dynamic> list = result.data! as List<dynamic>;
-        if (list.isEmpty) {
-          _pageState = 'fail';
-          if (mounted) {
-            setState(() {});
-          }
-          return;
-        }
-        _homeProvider = Provider.of<HomeProvider>(context, listen: false);
-        _characterList = list.map((item) => CharacterEntity.fromJson(item)).toList();
-        _pageState = 'success';
-        if (mounted) {
-          setState(() {});
-        }
-        Future.delayed(const Duration(milliseconds: 300), () {
-          confirmChangeCharacter(0);
-        });
-      },
-      onError: (code, msg) {
-        Log.d('获取角色列表失败:[error]$msg', tag: '[Function]getCharacterList');
+    _chatPagePresenter.requestNetwork<ResultData>(Method.get,
+        url: HttpApi.characterList,
+        isShow: false,
+        isClose: false, onSuccess: (result) {
+      if (result == null || result.data == null) {
         _pageState = 'fail';
         if (mounted) {
           setState(() {});
         }
+        return;
       }
-    );
+      List<dynamic> list = result.data! as List<dynamic>;
+      if (list.isEmpty) {
+        _pageState = 'fail';
+        if (mounted) {
+          setState(() {});
+        }
+        return;
+      }
+      _homeProvider = Provider.of<HomeProvider>(context, listen: false);
+      _characterList =
+          list.map((item) => CharacterEntity.fromJson(item)).toList();
+      _pageState = 'success';
+      if (mounted) {
+        setState(() {});
+      }
+      Future.delayed(const Duration(milliseconds: 300), () {
+        confirmChangeCharacter(widget.index);
+      });
+    }, onError: (code, msg) {
+      Log.d('获取角色列表失败:[error]$msg', tag: '[Function]getCharacterList');
+      _pageState = 'fail';
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   void changeCharacter(int characterIndex) {
@@ -155,8 +160,10 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     _bottomBarControll.setDisabled(true);
 
     // 左右两侧图片
-    int pre = characterIndex > 0 ? characterIndex - 1 : _characterList.length - 1;
-    int next = characterIndex < _characterList.length - 1 ? characterIndex + 1 : 0;
+    int pre =
+        characterIndex > 0 ? characterIndex - 1 : _characterList.length - 1;
+    int next =
+        characterIndex < _characterList.length - 1 ? characterIndex + 1 : 0;
     String leftImage = _characterList.elementAt(pre).imageUrl;
     String rightImage = _characterList.elementAt(next).imageUrl;
     _backgroundController.setSideImage(leftImage, rightImage);
@@ -180,7 +187,10 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   }
 
   bool checkTopicShouldOpen() {
-    List<String> messageTypeList = _homeProvider.messageList.where((message) => message.type == 'normal' || message.type == 'topic').map((message) => message.type).toList();
+    List<String> messageTypeList = _homeProvider.messageList
+        .where((message) => message.type == 'normal' || message.type == 'topic')
+        .map((message) => message.type)
+        .toList();
     int index = messageTypeList.indexOf('topic');
     // 已推出话题
     if (index > -1) {
@@ -212,7 +222,8 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
           return;
         }
         List<dynamic> data = result.data as List<dynamic>;
-        List<TopicEntity> list = data.map((item) => TopicEntity.fromJson(item)).toList();
+        List<TopicEntity> list =
+            data.map((item) => TopicEntity.fromJson(item)).toList();
         onSuccess(list);
       },
       onError: (code, msg) {
@@ -290,38 +301,87 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     double homeTabbarHeight = 445.0;
     double bottomBarHeight = _screenUtil.bottomBarHeight + 80.0;
 
+    void onConversationEnd() {
+      // if (!_isConversationEnd) {
+      ConfirmUtils.show(
+        context: context,
+        title: '结束对话',
+        buttonDirection: 'vertical',
+        confirmButtonText: '结束对话',
+        cancelButtonText: '留在对话中',
+        onConfirm: () async {
+          await _mediaUtils.stopPlay();
+          await _chatWebsocket.endChat(true);
+          _homeProvider.resetChatParams();
+          // ignore: use_build_context_synchronously
+          Navigator.of(context).pop();
+          // widget.onEnd();
+        },
+        child: const Text(
+          '对话进行中，确定要结束吗？',
+          style: TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.w400,
+            color: Color(0xFF333333),
+            height: 18.0 / 15.0,
+          ),
+        ),
+      );
+      //   return;
+      // }
+      // Navigator.of(context).pop();
+      // widget.onEnd();
+    }
+
+    Widget navbar = Container(
+      width: _screenUtil.screenWidth - 32.0,
+      margin: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+      ),
+      alignment: Alignment.centerRight,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onConversationEnd,
+        child: const LoadAssetImage(
+          'guanbi_yuan_bai',
+          width: 32.0,
+          height: 32.0,
+        ),
+      ),
+    );
+
     return GestureDetector(
-      onHorizontalDragStart: (details) {
-        if (_isCharacterChanging) {
-          return;
-        }
-        hideSlideTip();
-        _backgroundController.slideStart(
-          position: details.globalPosition,
-        );
-      },
-      onHorizontalDragUpdate: (details) {
-        if (_isCharacterChanging) {
-          return;
-        }
-        _backgroundController.slideMove(details.globalPosition);
-      },
-      onHorizontalDragEnd: (_) {
-        if (_isCharacterChanging) {
-          return;
-        }
-        _backgroundController.slideEnd((direction) {
-          bool isSlideLeft = direction == 'left';
-          int index = isSlideLeft ? _characterIndex + 1 : _characterIndex - 1;
-          if (index < 0) {
-            index = _characterList.length + index;
-          }
-          if (index == _characterList.length) {
-            index = 0;
-          }
-          changeCharacter(index);
-        });
-      },
+      // onHorizontalDragStart: (details) {
+      //   if (_isCharacterChanging) {
+      //     return;
+      //   }
+      //   hideSlideTip();
+      //   _backgroundController.slideStart(
+      //     position: details.globalPosition,
+      //   );
+      // },
+      // onHorizontalDragUpdate: (details) {
+      //   if (_isCharacterChanging) {
+      //     return;
+      //   }
+      //   _backgroundController.slideMove(details.globalPosition);
+      // },
+      // onHorizontalDragEnd: (_) {
+      //   if (_isCharacterChanging) {
+      //     return;
+      //   }
+      //   _backgroundController.slideEnd((direction) {
+      //     bool isSlideLeft = direction == 'left';
+      //     int index = isSlideLeft ? _characterIndex + 1 : _characterIndex - 1;
+      //     if (index < 0) {
+      //       index = _characterList.length + index;
+      //     }
+      //     if (index == _characterList.length) {
+      //       index = 0;
+      //     }
+      //     changeCharacter(index);
+      //   });
+      // },
       child: Stack(
         children: <Widget>[
           Background(controller: _backgroundController),
@@ -343,6 +403,10 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
                 child: MessageList(controller: _listScrollController),
               );
             },
+          ),
+          Positioned(
+            top: 50,
+            child: navbar,
           ),
           Positioned(
             top: 103.0,
@@ -409,7 +473,8 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
             left: 0,
             child: ValueListenableBuilder(
               valueListenable: _bottomBarControll.showRecord,
-              builder: (_, show, __) => Record(show: show, controller: _recordController),
+              builder: (_, show, __) =>
+                  Record(show: show, controller: _recordController),
             ),
           ),
           // 左右滑动提示

@@ -492,7 +492,10 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
+    // NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
+    EventBus().emit("YQM");
+
+    NavigatorUtils.goBack(context);
   }
 
   @override

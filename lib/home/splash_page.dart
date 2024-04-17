@@ -77,7 +77,10 @@ class _SplashPageState extends State<SplashPage> {
     await Device.initDeviceInfo();
 
     // ignore: use_build_context_synchronously
-    NavigatorUtils.push(context, HomeRouter.homePage, replace: true);
+    // NavigatorUtils.push(context, HomeRouter.homePage, replace: true);
+
+    // ignore: use_build_context_synchronously
+    NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
   }
 
   void initDio() async {

@@ -1,4 +1,3 @@
 import '../../mvp/mvps.dart';
 
-abstract class ChatView implements IMvpView{
-}
+abstract class ChatView implements IMvpView {}

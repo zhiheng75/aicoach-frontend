@@ -8,6 +8,9 @@ class HttpApi {
   //老师集合(人物列表)
   static const String teacherList = "app/characters";
 
+//角色列表
+  static const String characterList = "character_list";
+
   //获取微信信息
   static const String wechatInfo = "wxinfo";
   //微信登录

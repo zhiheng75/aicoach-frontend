@@ -437,8 +437,9 @@ class LoginManager {
   }
 
   static Map<String, dynamic> getUserInfo() {
-    Map<dynamic, dynamic>? userInfo = SpUtil.getObject(Constant.userInfoKey);
-    return (userInfo ?? {}) as Map<String, dynamic>;
+    Map<String, dynamic>? userInfo =
+        SpUtil.getObject(Constant.userInfoKey)?.cast<String, dynamic>();
+    return (userInfo ?? {});
   }
 
   static String getUserAvatar() {

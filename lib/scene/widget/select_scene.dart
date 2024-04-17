@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_final_fields
 
+import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/scene/scene.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -149,6 +152,18 @@ class _SelectSceneState extends State<SelectScene> {
       }
       _homeProvider.sceneStreamController
           .add({'type': 'scene', 'data': scene.toJson()});
+
+      _homeProvider.resetChatParams();
+
+      // SceneEntity scene1 = SceneEntity.fromJson(value['data']);
+      _homeProvider.scene = scene;
+      // ScenePage(onEnd: () {  },);
+      NavigatorUtils.push(
+        context,
+        HomeRouter.scenePage,
+      );
+      // scenePage
+      //homePage
     });
   }
 
