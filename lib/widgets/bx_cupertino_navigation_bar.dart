@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class XTCupertinoNavigationBar extends StatefulWidget {
+class XTCupertinoNavigationBar extends StatefulWidget
+    implements ObstructingPreferredSizeWidget {
   const XTCupertinoNavigationBar({
     Key? key,
     this.leading,

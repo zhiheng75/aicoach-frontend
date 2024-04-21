@@ -1,3 +1,4 @@
+import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:fluro/fluro.dart';
@@ -50,6 +51,7 @@ class Routes {
     _listRouter.add(ConversationRouter());
     _listRouter.add(MyOrderRouter());
     _listRouter.add(ExamRouter());
+    _listRouter.add(CourseRouter());
 
     /// 初始化路由
     void initRouter(IRouterProvider routerProvider) {

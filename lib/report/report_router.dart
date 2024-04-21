@@ -1,3 +1,4 @@
+import 'package:Bubble/person/page/course_order_page.dart';
 import 'package:Bubble/report/page/my_examination_page.dart';
 import 'package:fluro/fluro.dart';
 import '../routers/i_router.dart';
@@ -8,6 +9,7 @@ class ReportRouter implements IRouterProvider {
   static String reportPage = '/report';
   static String reportDetailPage = '/reportDetail';
   static String myExaminationPage = '/MyExaminationPage';
+  static String courseOrderPage = '/CourseOrderPage';
 
   @override
   void initRouter(FluroRouter router) {
@@ -15,6 +17,13 @@ class ReportRouter implements IRouterProvider {
       reportPage,
       handler: Handler(
         handlerFunc: (_, __) => const ReportPage(),
+      ),
+    );
+
+    router.define(
+      courseOrderPage,
+      handler: Handler(
+        handlerFunc: (_, __) => const CourseOrderPage(),
       ),
     );
 

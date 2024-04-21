@@ -1,18 +1,21 @@
 import 'dart:math';
 
+import 'package:Bubble/course/course_router.dart';
+import 'package:Bubble/course/view/course_home_item.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extended;
 
-class ClassHomePage extends StatefulWidget {
-  const ClassHomePage({super.key});
+class CourseHomePage extends StatefulWidget {
+  const CourseHomePage({super.key});
 
   @override
-  State<ClassHomePage> createState() => _ClassHomePageState();
+  State<CourseHomePage> createState() => _CourseHomePageState();
 }
 
-class _ClassHomePageState extends State<ClassHomePage> {
+class _CourseHomePageState extends State<CourseHomePage> {
   int curTabIndex = 0;
 
   Widget tabbar() {
@@ -56,7 +59,10 @@ class _ClassHomePageState extends State<ClassHomePage> {
                     minHeight: 40, //收起的高度
                     maxHeight: 40,
                     child: Container(color: Colors.white, child: tabbar()),
-                  ))
+                  )),
+              const SliverToBoxAdapter(
+                child: Center(child: Text("巴拉巴拉")),
+              ),
             ];
           },
           // pinnedHeaderSliverHeightBuilder: () {
@@ -64,8 +70,18 @@ class _ClassHomePageState extends State<ClassHomePage> {
           // },
           body: ListView.builder(
             itemBuilder: (ctx, index) {
-              return SizedBox(
-                  height: 100, child: Center(child: Text("课程$index")));
+              return GestureDetector(
+                  onTap: () {
+                    NavigatorUtils.push(
+                      context,
+                      CourseRouter.courseFlowPage,
+                    );
+                    // NavigatorUtils.push(
+                    //     context,
+                    //     "${ClassRouter.classFlowPage}?index=0",
+                    //   );
+                  },
+                  child: const CourseHomeItem());
             },
             itemCount: 100,
             shrinkWrap: true,

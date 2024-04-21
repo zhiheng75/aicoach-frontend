@@ -611,6 +611,11 @@ class _PersonPageState extends State<PersonPage>
         children: <Widget>[
           menuItem(
             'person_baogao',
+            '课程订单',
+            onPress: () => tapMenu(ReportRouter.courseOrderPage),
+          ),
+          menuItem(
+            'person_baogao',
             '学情报告',
             onPress: () => tapMenu(ReportRouter.reportPage),
           ),
@@ -633,6 +638,11 @@ class _PersonPageState extends State<PersonPage>
           menuItem(
             'person_guanyu',
             '关于我们',
+            onPress: () => tapMenu(PersonalRouter.about),
+          ),
+           menuItem(
+            'person_guanyu',
+            '加入社群',
             onPress: () => tapMenu(PersonalRouter.about),
           ),
           menuItem(

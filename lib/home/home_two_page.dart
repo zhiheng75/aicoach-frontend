@@ -72,15 +72,16 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           );
         },
         onTap: (index) {
-          showModalBottomSheet(
-            context: context,
-            backgroundColor: Colors.transparent,
-            barrierColor: Colors.transparent,
-            isScrollControlled: true,
-            isDismissible: false,
-            enableDrag: false,
-            builder: (_) => const SelectScene(),
-          );
+          NavigatorUtils.goWebViewPage(context, "百度", "https://www.baidu.com");
+          // showModalBottomSheet(
+          //   context: context,
+          //   backgroundColor: Colors.transparent,
+          //   barrierColor: Colors.transparent,
+          //   isScrollControlled: true,
+          //   isDismissible: false,
+          //   enableDrag: false,
+          //   builder: (_) => const SelectScene(),
+          // );
         },
         itemCount: 3,
         autoplay: true,
@@ -91,9 +92,19 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   }
 
   Widget classWidget(BuildContext context) {
-    return Image.network(
-      "http://t15.baidu.com/it/u=3515177818,2652149588&fm=224&app=112&f=JPEG?w=500&h=249",
-      fit: BoxFit.fill,
+    return GestureDetector(
+      onTap: () {
+        //
+        NavigatorUtils.push(
+          context,
+          HomeRouter.coursePurchasePage,
+        );
+        // NavigatorUtils.goWebViewPage(context, "百度", "https://www.baidu.com");
+      },
+      child: Image.network(
+        "http://t15.baidu.com/it/u=3515177818,2652149588&fm=224&app=112&f=JPEG?w=500&h=249",
+        fit: BoxFit.fill,
+      ),
     );
   }
 
@@ -502,6 +513,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     CategoryEntity category = _categoryList.elementAt(currentIndex);
     sceneList = category.sceneList;
     setState(() {});
+    //注释了后期看为什么
     Future.delayed(const Duration(milliseconds: 300), () {
       _scrollController.jumpTo(0);
     });
