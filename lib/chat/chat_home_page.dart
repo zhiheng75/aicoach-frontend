@@ -68,22 +68,22 @@ class _ChatHomePageState extends State<ChatHomePage>
               return GestureDetector(
                 child: ChatHomeItem(datum: characterList[index]),
                 onTap: () {
-                  if (index == 0) {
-                    NavigatorUtils.push(
-                      context,
-                      "${HomeRouter.homePage}?index=$index",
-                    );
-                  } else {
-                    showModalBottomSheet(
-                      context: context,
-                      backgroundColor: Colors.transparent,
-                      barrierColor: Colors.transparent,
-                      isScrollControlled: true,
-                      isDismissible: false,
-                      enableDrag: false,
-                      builder: (_) => const SelectScene(),
-                    );
-                  }
+                  // if (index == 0) {
+                  NavigatorUtils.push(
+                    context,
+                    "${HomeRouter.homePage}?index=$index",
+                  );
+                  // } else {
+                  //   showModalBottomSheet(
+                  //     context: context,
+                  //     backgroundColor: Colors.transparent,
+                  //     barrierColor: Colors.transparent,
+                  //     isScrollControlled: true,
+                  //     isDismissible: false,
+                  //     enableDrag: false,
+                  //     builder: (_) => const SelectScene(),
+                  //   );
+                  // }
                 },
               );
             },

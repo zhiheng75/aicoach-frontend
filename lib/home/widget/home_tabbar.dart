@@ -146,10 +146,10 @@ class _HomeTabbarState extends State<HomeTabbar> {
                     value: 'scene',
                     isSelected: widget.currentTab == 'scene'),
               ),
-              tabbarItem(
-                  text: '模考',
-                  value: 'exam',
-                  isSelected: widget.currentTab == 'exam'),
+              // tabbarItem(
+              //     text: '模考',
+              //     value: 'exam',
+              //     isSelected: widget.currentTab == 'exam'),
             ],
           ),
           GestureDetector(

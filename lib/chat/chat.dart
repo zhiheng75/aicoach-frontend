@@ -351,37 +351,37 @@ class _ChatState extends State<ChatPage>
     );
 
     return GestureDetector(
-      // onHorizontalDragStart: (details) {
-      //   if (_isCharacterChanging) {
-      //     return;
-      //   }
-      //   hideSlideTip();
-      //   _backgroundController.slideStart(
-      //     position: details.globalPosition,
-      //   );
-      // },
-      // onHorizontalDragUpdate: (details) {
-      //   if (_isCharacterChanging) {
-      //     return;
-      //   }
-      //   _backgroundController.slideMove(details.globalPosition);
-      // },
-      // onHorizontalDragEnd: (_) {
-      //   if (_isCharacterChanging) {
-      //     return;
-      //   }
-      //   _backgroundController.slideEnd((direction) {
-      //     bool isSlideLeft = direction == 'left';
-      //     int index = isSlideLeft ? _characterIndex + 1 : _characterIndex - 1;
-      //     if (index < 0) {
-      //       index = _characterList.length + index;
-      //     }
-      //     if (index == _characterList.length) {
-      //       index = 0;
-      //     }
-      //     changeCharacter(index);
-      //   });
-      // },
+      onHorizontalDragStart: (details) {
+        if (_isCharacterChanging) {
+          return;
+        }
+        hideSlideTip();
+        _backgroundController.slideStart(
+          position: details.globalPosition,
+        );
+      },
+      onHorizontalDragUpdate: (details) {
+        if (_isCharacterChanging) {
+          return;
+        }
+        _backgroundController.slideMove(details.globalPosition);
+      },
+      onHorizontalDragEnd: (_) {
+        if (_isCharacterChanging) {
+          return;
+        }
+        _backgroundController.slideEnd((direction) {
+          bool isSlideLeft = direction == 'left';
+          int index = isSlideLeft ? _characterIndex + 1 : _characterIndex - 1;
+          if (index < 0) {
+            index = _characterList.length + index;
+          }
+          if (index == _characterList.length) {
+            index = 0;
+          }
+          changeCharacter(index);
+        });
+      },
       child: Stack(
         children: <Widget>[
           Background(controller: _backgroundController),

@@ -40,7 +40,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 
 class HomeNewPage extends StatefulWidget {
   final int index;
-  const HomeNewPage({Key? key, required this.index}) : super(key: key);
+  const HomeNewPage({Key? key, this.index = 0}) : super(key: key);
   // const ChatHomeItem({super.key, required this.datum});
 
   @override
