@@ -1,3 +1,4 @@
+import 'package:Bubble/constant/constant.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart' hide ScreenUtil;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,7 +35,11 @@ class ChatPage extends StatefulWidget {
   State<ChatPage> createState() => _ChatState();
 }
 
-class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePresenter>, AutomaticKeepAliveClientMixin<ChatPage> implements ChatView {
+class _ChatState extends State<ChatPage>
+    with
+        BasePageMixin<ChatPage, ChatPagePresenter>,
+        AutomaticKeepAliveClientMixin<ChatPage>
+    implements ChatView {
   final ChatWebsocket _chatWebsocket = ChatWebsocket();
   final MediaUtils _mediaUtils = MediaUtils();
   late HomeProvider _homeProvider;
@@ -77,47 +82,70 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
       setState(() {});
     }
   }
-  
+
+  void networkfinsh() {
+    bool hasAgree = SpUtil.getBool(Constant.home, defValue: false) ?? false;
+    if (hasAgree) {
+      _pageState = 'fail';
+    } else {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        init();
+      });
+    }
+    SpUtil.putBool(Constant.home, true);
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   void getCharacterList() {
-    _chatPagePresenter.requestNetwork<ResultData>(
-      Method.get,
-      url: HttpApi.teacherList,
-      isShow: false,
-      isClose: false,
-      onSuccess: (result) {
-        if (result == null || result.data == null) {
-          _pageState = 'fail';
-          if (mounted) {
-            setState(() {});
-          }
-          return;
-        }
-        List<dynamic> list = result.data! as List<dynamic>;
-        if (list.isEmpty) {
-          _pageState = 'fail';
-          if (mounted) {
-            setState(() {});
-          }
-          return;
-        }
-        _homeProvider = Provider.of<HomeProvider>(context, listen: false);
-        _characterList = list.map((item) => CharacterEntity.fromJson(item)).toList();
-        _pageState = 'success';
-        if (mounted) {
-          setState(() {});
-        }
-        Future.delayed(const Duration(milliseconds: 300), () {
-          confirmChangeCharacter(0);
-        });
-      },
-      onError: (code, msg) {
-        Log.d('获取角色列表失败:[error]$msg', tag: '[Function]getCharacterList');
-        _pageState = 'fail';
-        if (mounted) {
-          setState(() {});
-        }
+    _chatPagePresenter.requestNetwork<ResultData>(Method.get,
+        url: HttpApi.teacherList,
+        isShow: false,
+        isClose: false, onSuccess: (result) {
+      if (result == null || result.data == null) {
+        // _pageState = 'fail';
+        // Future.delayed(const Duration(milliseconds: 500), () {
+        //   init();
+        // });
+        networkfinsh();
+        return;
       }
-    );
+      List<dynamic> list = result.data! as List<dynamic>;
+      if (list.isEmpty) {
+        networkfinsh();
+
+        // _pageState = 'fail';
+        // Future.delayed(const Duration(milliseconds: 500), () {
+        //   init();
+        // });
+        // if (mounted) {
+        //   setState(() {});
+        // }
+        return;
+      }
+      _homeProvider = Provider.of<HomeProvider>(context, listen: false);
+      _characterList =
+          list.map((item) => CharacterEntity.fromJson(item)).toList();
+      _pageState = 'success';
+      if (mounted) {
+        setState(() {});
+      }
+      Future.delayed(const Duration(milliseconds: 300), () {
+        confirmChangeCharacter(0);
+      });
+    }, onError: (code, msg) {
+      Log.d('获取角色列表失败:[error]$msg', tag: '[Function]getCharacterList');
+      // _pageState = 'fail';
+      // Future.delayed(const Duration(milliseconds: 500), () {
+      //   init();
+      // });
+      networkfinsh();
+
+      // if (mounted) {
+      //   setState(() {});
+      // }
+    });
   }
 
   void changeCharacter(int characterIndex) {
@@ -155,8 +183,10 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
     _bottomBarControll.setDisabled(true);
 
     // 左右两侧图片
-    int pre = characterIndex > 0 ? characterIndex - 1 : _characterList.length - 1;
-    int next = characterIndex < _characterList.length - 1 ? characterIndex + 1 : 0;
+    int pre =
+        characterIndex > 0 ? characterIndex - 1 : _characterList.length - 1;
+    int next =
+        characterIndex < _characterList.length - 1 ? characterIndex + 1 : 0;
     String leftImage = _characterList.elementAt(pre).imageUrl;
     String rightImage = _characterList.elementAt(next).imageUrl;
     _backgroundController.setSideImage(leftImage, rightImage);
@@ -180,7 +210,10 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   }
 
   bool checkTopicShouldOpen() {
-    List<String> messageTypeList = _homeProvider.messageList.where((message) => message.type == 'normal' || message.type == 'topic').map((message) => message.type).toList();
+    List<String> messageTypeList = _homeProvider.messageList
+        .where((message) => message.type == 'normal' || message.type == 'topic')
+        .map((message) => message.type)
+        .toList();
     int index = messageTypeList.indexOf('topic');
     // 已推出话题
     if (index > -1) {
@@ -212,7 +245,8 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
           return;
         }
         List<dynamic> data = result.data as List<dynamic>;
-        List<TopicEntity> list = data.map((item) => TopicEntity.fromJson(item)).toList();
+        List<TopicEntity> list =
+            data.map((item) => TopicEntity.fromJson(item)).toList();
         onSuccess(list);
       },
       onError: (code, msg) {
@@ -252,7 +286,9 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
   @override
   void initState() {
     super.initState();
-    init();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      init();
+    });
     EventBus().on('LEAVECHATPAGE', (_) async {
       await _mediaUtils.stopPlay();
       _bottomBarControll.setDisabled(false);
@@ -409,7 +445,8 @@ class _ChatState extends State<ChatPage> with BasePageMixin<ChatPage, ChatPagePr
             left: 0,
             child: ValueListenableBuilder(
               valueListenable: _bottomBarControll.showRecord,
-              builder: (_, show, __) => Record(show: show, controller: _recordController),
+              builder: (_, show, __) =>
+                  Record(show: show, controller: _recordController),
             ),
           ),
           // 左右滑动提示

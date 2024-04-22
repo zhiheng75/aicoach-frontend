@@ -33,7 +33,12 @@ class ScenePage extends StatefulWidget {
   State<ScenePage> createState() => _SceneState();
 }
 
-class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePagePresenter>, AutomaticKeepAliveClientMixin<ScenePage>, WidgetsBindingObserver implements SceneView {
+class _SceneState extends State<ScenePage>
+    with
+        BasePageMixin<ScenePage, ScenePagePresenter>,
+        AutomaticKeepAliveClientMixin<ScenePage>,
+        WidgetsBindingObserver
+    implements SceneView {
   final ChatWebsocket _chatWebsocket = ChatWebsocket();
   final MediaUtils _mediaUtils = MediaUtils();
   late HomeProvider _homeProvider;
@@ -112,7 +117,9 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
   void onWebsocketAnswer(dynamic answer) {
     if (_answer == null) {
       // 结束标记
-      if (answer is String && (answer.contains('[end_session]') || RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
+      if (answer is String &&
+          (answer.contains('[end_session]') ||
+              RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
         return;
       }
       // _answer = NormalMessage();
@@ -149,7 +156,6 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
       }
     }
   }
-
 
   void onWebsocketEnd(String? reason, String endType) {
     _homeProvider.endUsageTimeCutdown();
@@ -202,7 +208,9 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
   void initState() {
     super.initState();
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
-    init();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      init();
+    });
     // 监听App状态
     WidgetsBinding.instance.addObserver(this);
   }
@@ -301,8 +309,7 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
         } else {
           inner = Column(
             children: <Widget>[
-              if (_pageState == 'loading')
-                const LoadData(),
+              if (_pageState == 'loading') const LoadData(),
               if (_pageState == 'fail')
                 LoadFail(
                   reload: init,
@@ -334,7 +341,8 @@ class _SceneState extends State<ScenePage> with BasePageMixin<ScenePage, ScenePa
               left: 0,
               child: ValueListenableBuilder(
                 valueListenable: _bottomBarControll.showRecord,
-                builder: (_, show, __) => Record(show: show, controller: _recordController),
+                builder: (_, show, __) =>
+                    Record(show: show, controller: _recordController),
               ),
             ),
           ],

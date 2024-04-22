@@ -5,11 +5,13 @@ import 'dart:io';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/intercept.dart';
+import 'package:Bubble/util/channel.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sp_util/sp_util.dart';
@@ -36,6 +38,8 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
+    initFDio();
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await SpUtil.getInstance();
       _initSplash();
@@ -67,15 +71,20 @@ class _SplashPageState extends State<SplashPage> {
         context: context,
         barrierDismissible: false,
         builder: (_) => AgreementDialog(() {
+              initFDio();
               SpUtil.putBool(Constant.agreement, true);
               _gotoHome();
             }));
   }
 
   void _gotoHome() async {
+    initFDio();
     initDio();
     await Device.initDeviceInfo();
 
+    // Future.delayed(const Duration(milliseconds: 500), () {
+    //   NavigatorUtils.push(context, HomeRouter.homePage, replace: true);
+    // });
     // ignore: use_build_context_synchronously
     NavigatorUtils.push(context, HomeRouter.homePage, replace: true);
   }
@@ -84,10 +93,45 @@ class _SplashPageState extends State<SplashPage> {
     final deviceInfoPlugin = DeviceInfoPlugin();
     BaseDeviceInfo deviceInfo = await deviceInfoPlugin.deviceInfo;
     final allInfo = deviceInfo.data;
+    final info = await PackageInfo.fromPlatform();
+
 //手机品牌加型号
-    DioUtils.instance.dio.options.headers['BubbleAI'] = allInfo.toString();
-    DioUtils.instance.dio.options.headers['version'] = "1.1.1";
-    DioUtils.instance.dio.options.headers['buildNumber'] = "105";
+    DioUtils.instance.dio.options.headers['sysInfo'] = allInfo.toString();
+    DioUtils.instance.dio.options.headers['version'] = info.version;
+    DioUtils.instance.dio.options.headers['buildNumber'] = info.buildNumber;
+    String platformStr = Channel.channelios;
+    if (Device.isAndroid) {
+      platformStr = Channel.channelhuawei;
+    } else {
+      platformStr = Channel.channelios;
+    }
+    DioUtils.instance.dio.options.headers['marketplace'] = platformStr;
+    DioUtils.instance.dio.options.headers['applyName'] = info.appName;
+  }
+
+  void initFDio() {
+    final List<Interceptor> interceptors = <Interceptor>[];
+
+    /// 统一添加身份验证请求头
+    interceptors.add(AuthInterceptor());
+
+    /// 刷新Token
+    // interceptors.add(TokenInterceptor());
+
+    /// 打印Log(生产模式去除)
+    if (!Constant.inProduction) {
+      interceptors.add(LoggingInterceptor());
+    }
+
+    /// 适配数据(根据自己的数据结构，可自行选择添加)
+    interceptors.add(AdapterInterceptor());
+    configDio(
+      // 测试
+      // baseUrl: 'https://api.bubble.shenmo-ai.net/',
+      // 正式
+      baseUrl: 'https://api.bubble.shenmo-ai.com/',
+      interceptors: interceptors,
+    );
   }
 
   @override

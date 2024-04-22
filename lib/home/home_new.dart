@@ -21,6 +21,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jverify/jverify.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
@@ -36,7 +37,6 @@ import '../widgets/double_tap_back_exit_app.dart';
 import 'presenter/home_new_page_presenter.dart';
 import 'view/home_new_view.dart';
 import 'widget/home_tabbar.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 
 class HomeNewPage extends StatefulWidget {
   const HomeNewPage({Key? key}) : super(key: key);
@@ -85,10 +85,20 @@ class _HomePageState extends State<HomeNewPage>
     final deviceInfoPlugin = DeviceInfoPlugin();
     BaseDeviceInfo deviceInfo = await deviceInfoPlugin.deviceInfo;
     final allInfo = deviceInfo.data;
+    final info = await PackageInfo.fromPlatform();
+
 //手机品牌加型号
-    DioUtils.instance.dio.options.headers['BubbleAI'] = allInfo.toString();
-    DioUtils.instance.dio.options.headers['version'] = "1.1.1";
-    DioUtils.instance.dio.options.headers['buildNumber'] = "105";
+    DioUtils.instance.dio.options.headers['sysInfo'] = allInfo.toString();
+    DioUtils.instance.dio.options.headers['version'] = info.version;
+    DioUtils.instance.dio.options.headers['buildNumber'] = info.buildNumber;
+    String platformStr = Channel.channelios;
+    if (Device.isAndroid) {
+      platformStr = Channel.channelhuawei;
+    } else {
+      platformStr = Channel.channelios;
+    }
+    DioUtils.instance.dio.options.headers['marketplace'] = platformStr;
+    DioUtils.instance.dio.options.headers['applyName'] = info.appName;
   }
 
   Future<void> initPlatformState() async {
