@@ -275,10 +275,10 @@ class _ReportPageState extends State<ReportPage>
         //   width: 8.0,
         // ),
         barItem('系统版报告', 'class'),
-        Gaps.hGap6,
+        Gaps.hGap8,
 
         barItem('口语课报告', 'chat'),
-        Gaps.hGap6,
+        Gaps.hGap8,
 
         barItem('模考报告', 'exam'), //隐藏
       ],
@@ -618,9 +618,9 @@ class _ReportPageState extends State<ReportPage>
                         const Text(
                           "leve1",
                           style: TextStyle(
-                            fontSize: 11.0,
+                            fontSize: 12.0,
                             fontWeight: FontWeight.w400,
-                            color: Colours.color_999999,
+                            color: Colours.color_666666,
                             height: 18.0 / 11.0,
                             letterSpacing: 0.05,
                           ),

@@ -1,3 +1,4 @@
+import 'package:Bubble/core/app_constants.dart';
 import 'package:Bubble/home/home_new.dart';
 import 'package:Bubble/tabmain/bottom_bar_item.dart';
 import 'package:Bubble/chat/chat_home_page.dart';
@@ -29,14 +30,16 @@ class _MainTabberState extends State<MainTabber> {
   Color inactiveColor = const Color(0xffe0e0e0);
 
   List<BottomNavigationBarItem> items = [
-    BottomBarItem("tabBar_icon_mine", "首页"),
-    BottomBarItem("tabBar_icon_mine", "课程"),
-    BottomBarItem("tabBar_icon_mine", "自由练"),
-    BottomBarItem("tabBar_icon_mine", "我的"),
+    BottomBarItem("tabbar_icon_home", "首页"),
+    BottomBarItem("tabbar_icon_course", "上课"),
+    BottomBarItem("tabbar_icon_spoken", "练口语"),
+    BottomBarItem("tabbar_icon_mine", "我的"),
   ];
   List<Widget> pages = [
+    // const MyWidget(),
     const HomeTwoPage(),
     const CourseHomePage(),
+    // const MyWidget(),
     // const ChatHomePage(),
     const HomeNewPage(),
     // const ExamPage(),
@@ -51,7 +54,7 @@ class _MainTabberState extends State<MainTabber> {
 
     _controller!.index = 0;
     currentIndex = 0;
-
+    tabSelect(currentIndex);
     EventBus().on(NotificationUtils.loginOut, (_) {
       setState(() {
         currentIndex = 0;
@@ -83,11 +86,11 @@ class _MainTabberState extends State<MainTabber> {
           _controller!.index = index;
         });
       } else {
-        LoginManager.checkLogin(context, () {
-          setState(() {
-            currentIndex = index;
-            _controller!.index = index;
-          });
+        LoginManager.checkLogin(tabContext!, () {
+          // setState(() {
+          //   currentIndex = index;
+          //   _controller!.index = index;
+          // });
         });
         // return;
       }
@@ -101,6 +104,8 @@ class _MainTabberState extends State<MainTabber> {
 
   @override
   Widget build(BuildContext context) {
+    tabContext = context;
+
     //   Widget body = Scaffold(
     //     body: CupertinoTabScaffold(
     //       controller: _controller,
@@ -138,27 +143,28 @@ class _MainTabberState extends State<MainTabber> {
         type: BottomNavigationBarType.fixed,
         items: items,
         onTap: (index) {
-          if (index == 3) {
-            if (LoginManager.isLogin()) {
-              setState(() {
-                currentIndex = index;
-                _controller!.index = index;
-              });
-            } else {
-              LoginManager.checkLogin(context, () {
-                setState(() {
-                  currentIndex = index;
-                  _controller!.index = index;
-                });
-              });
-              // return;
-            }
-          } else {
-            setState(() {
-              currentIndex = index;
-              _controller!.index = index;
-            });
-          }
+          tabSelect(index);
+          // if (index == 3) {
+          //   if (LoginManager.isLogin()) {
+          //     setState(() {
+          //       currentIndex = index;
+          //       _controller!.index = index;
+          //     });
+          //   } else {
+          //     LoginManager.checkLogin(context, () {
+          //       setState(() {
+          //         currentIndex = index;
+          //         _controller!.index = index;
+          //       });
+          //     });
+          //     // return;
+          //   }
+          // } else {
+          //   setState(() {
+          //     currentIndex = index;
+          //     _controller!.index = index;
+          //   });
+          // }
         },
       ),
     );

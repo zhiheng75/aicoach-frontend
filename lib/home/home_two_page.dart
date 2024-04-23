@@ -514,9 +514,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     sceneList = category.sceneList;
     setState(() {});
     //注释了后期看为什么
-    Future.delayed(const Duration(milliseconds: 300), () {
-      _scrollController.jumpTo(0);
-    });
+    // Future.delayed(const Duration(milliseconds: 300), () {
+    //   _scrollController.jumpTo(0);
+    // });
   }
 
   @override

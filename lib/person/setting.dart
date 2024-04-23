@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluwx/fluwx.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:Bubble/widgets/my_alert.dart';
 
 import '../constant/constant.dart';
 import '../entity/empty_response_entity.dart';
@@ -454,10 +455,16 @@ class _SettingPageState extends State<SettingPage>
                       GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
-                          LoginManager.toLoginOut();
-                          NavigatorUtils.goBack(context);
-                          //
-                          EventBus().emit(NotificationUtils.loginOut);
+                          myAlert.showAlert(context,
+                              title: "提示",
+                              content: "确定退出吗?", clickCallback: (index, text) {
+                            if (index == 1) {
+                              LoginManager.toLoginOut();
+                              NavigatorUtils.goBack(context);
+                              //
+                              EventBus().emit(NotificationUtils.loginOut);
+                            }
+                          });
 
                           // NavigatorUtils.push(context, HomeRouter.homePage);
                           //退出登录

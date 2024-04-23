@@ -10,7 +10,8 @@ class BottomBarItem extends BottomNavigationBarItem {
             gaplessPlayback: true,
           ),
           activeIcon: Image.asset(
-            "assets/images/${iconName}_active.png",
+            // "assets/images/${iconName}_active.png",
+            "assets/images/$iconName.png",
             width: 24,
             gaplessPlayback: true,
           ),

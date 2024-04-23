@@ -15,6 +15,8 @@ class Gaps {
   static Widget hGap12 = SizedBox(width: Dimens.w_dp12);
   static Widget hGap15 = SizedBox(width: Dimens.w_dp15);
   static Widget hGap16 = SizedBox(width: Dimens.w_dp16);
+  static Widget hGap26 = SizedBox(width: Dimens.w_dp26);
+
   static Widget hGap32 = SizedBox(width: Dimens.w_dp32);
 
   /// 垂直间隔

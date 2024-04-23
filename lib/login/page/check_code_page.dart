@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:Bubble/constant/constant.dart';
+import 'package:Bubble/core/app_constants.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/login/entity/login_info_entity.dart';
 import 'package:Bubble/login/entity/new_wx_entity.dart';
@@ -253,10 +254,12 @@ class _CheckCodePageState extends State<CheckCodePage>
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    // NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
+    // // NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
     EventBus().emit("YQM");
 
-    NavigatorUtils.goBack(context);
+    // Navigator.pop(context);
+
+    NavigatorUtils.goBack(tabContext!);
 
     // NavigatorUtils.push(
     //   context,

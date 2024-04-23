@@ -6,6 +6,7 @@ import 'package:Bubble/login/entity/user_info_entity.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
+import 'package:Bubble/widgets/load.dart';
 import 'package:dio/dio.dart';
 import 'package:sp_util/sp_util.dart';
 
@@ -118,9 +119,13 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
 
           view.loginSuccess();
         } else {
+          LoadingDialog.hidden();
+
           Toast.show(data.msg);
         }
       } else {
+        LoadingDialog.hidden();
+
         Toast.show("登录失败");
       }
       EventBus().emit('ERROR');

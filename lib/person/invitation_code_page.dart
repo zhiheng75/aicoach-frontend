@@ -93,11 +93,11 @@ class _InvitationCodePageState extends State<InvitationCodePage>
                             child: MyTextField(
                               key: const Key('phone'),
                               txtStyle: const TextStyle(
-                                fontSize: 20,
+                                fontSize: 14,
                                 color: Colours.color_001652,
                               ),
                               hintStyle: const TextStyle(
-                                  fontSize: 20, color: Colours.color_001652),
+                                  fontSize: 14, color: Colours.color_999999),
                               focusNode: _nodeText1,
                               controller: _phoneController,
                               maxLength: 11,
@@ -111,14 +111,37 @@ class _InvitationCodePageState extends State<InvitationCodePage>
                         ],
                       ),
                     ),
-                    const Text(
-                      "被邀请用户可获得15分钟的加赠体验时长",
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        // fontWeight: FontWeight.bold,
-                        color: Color(0xFF333333),
-                        // height: 18.0 / 15.0,
-                      ),
+                    Row(
+                      children: [
+                        Gaps.hGap26,
+                        const Text(
+                          "被邀请用户可获得",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            // fontWeight: FontWeight.bold,
+                            color: Color(0xFF333333),
+                            // height: 18.0 / 15.0,
+                          ),
+                        ),
+                        const Text(
+                          "15分钟",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            // fontWeight: FontWeight.bold,
+                            color: Colours.color_D845A6,
+                            // height: 18.0 / 15.0,
+                          ),
+                        ),
+                        const Text(
+                          "的加赠体验时长",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            // fontWeight: FontWeight.bold,
+                            color: Color(0xFF333333),
+                            // height: 18.0 / 15.0,
+                          ),
+                        ),
+                      ],
                     ),
                     Container(
                       margin: const EdgeInsets.all(20),

@@ -3,6 +3,7 @@ import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/net/net.dart';
 import 'package:Bubble/person/entity/permission_bean.dart';
+import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
@@ -125,6 +126,7 @@ class _PersonPageState extends State<PersonPage>
 
     EventBus().on('YQM', (_) {
       Log.e("进来了");
+      userInfo();
       _personPagePresenter.getUsageTime();
     });
 
@@ -134,17 +136,12 @@ class _PersonPageState extends State<PersonPage>
 
     init();
     // getAvailableTime();
+    userInfo();
+  }
+
+  void userInfo() {
     Map<String, dynamic> user = LoginManager.getUserInfo();
     Log.e(user.toString());
-
-    // userName = validateInput(user['nickname'])
-    //     ? user['nickname']
-    //     : "用户${user['phone'].toString().substring(7, 11)}";
-    // // userName = "用户${user['phone'].toString().substring(7, 11)}";
-    //
-    // Log.e("个人中心=============================");
-    // headimgurl = validateInput(user['headimgurl']) ? user['headimgurl'] : "";
-    // phone = user['phone'];
 
     // 用户名显示规则 name > nickname > phone
     if (validateInput(user['phone'])) {
@@ -631,12 +628,12 @@ class _PersonPageState extends State<PersonPage>
           //       tapInvitationcCodeMenu(PersonalRouter.personalInvitationcCode),
           // ),
           menuItem(
-            'person_guanyu',
+            'customer_service_icon',
             '联系客服',
             onPress: () => tapMenu(PersonalRouter.about),
           ),
           menuItem(
-            'person_guanyu',
+            'community_icon',
             '加入社群',
             onPress: () => tapMenu(PersonalRouter.about),
           ),
@@ -671,8 +668,8 @@ class _PersonPageState extends State<PersonPage>
         width: width,
         decoration: decoration,
         padding: const EdgeInsets.symmetric(
-          horizontal: 18.0,
-          vertical: 26.0,
+          horizontal: 20.0,
+          vertical: 20.0,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -683,10 +680,22 @@ class _PersonPageState extends State<PersonPage>
               onTap: () {
                 tapMenu(ReportRouter.courseOrderPage);
               },
-              child: const Column(
+              child: Column(
                 children: [
-                  Text("data"),
-                  Text("我的课程"),
+                  const LoadAssetImage(
+                    "course_icon",
+                    width: 32.0,
+                    height: 32.0,
+                  ),
+                  Gaps.vGap5,
+                  const Text(
+                    "我的课程",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -695,20 +704,44 @@ class _PersonPageState extends State<PersonPage>
               onTap: () {
                 tapMenu(ReportRouter.reportPage);
               },
-              child: const Column(
+              child: Column(
                 children: [
-                  Text("data"),
-                  Text("学情报告"),
+                  const LoadAssetImage(
+                    "study_report_icon",
+                    width: 32.0,
+                    height: 32.0,
+                  ),
+                  Gaps.vGap5,
+                  const Text(
+                    "学情报告",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
                 ],
               ),
             ),
             GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {},
-              child: const Column(
+              child: Column(
                 children: [
-                  Text("data"),
-                  Text("纠错"),
+                  const LoadAssetImage(
+                    "error_correction_icon",
+                    width: 32.0,
+                    height: 32.0,
+                  ),
+                  Gaps.vGap5,
+                  const Text(
+                    "纠错",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -717,10 +750,22 @@ class _PersonPageState extends State<PersonPage>
               onTap: () {
                 tapInvitationcCodeMenu(PersonalRouter.personalInvitationcCode);
               },
-              child: const Column(
+              child: Column(
                 children: [
-                  Text("data"),
-                  Text("邀请码"),
+                  const LoadAssetImage(
+                    "Invite_icon",
+                    width: 32.0,
+                    height: 32.0,
+                  ),
+                  Gaps.vGap5,
+                  const Text(
+                    "邀请码",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
                 ],
               ),
             ),
