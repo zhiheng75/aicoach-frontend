@@ -1,4 +1,5 @@
-import 'package:Bubble/TabMain/bottom_bar_item.dart';
+import 'package:Bubble/home/home_new.dart';
+import 'package:Bubble/tabmain/bottom_bar_item.dart';
 import 'package:Bubble/chat/chat_home_page.dart';
 import 'package:Bubble/course/course_home_page.dart';
 import 'package:Bubble/exam/exam.dart';
@@ -36,10 +37,12 @@ class _MainTabberState extends State<MainTabber> {
   List<Widget> pages = [
     const HomeTwoPage(),
     const CourseHomePage(),
-    const ChatHomePage(),
+    // const ChatHomePage(),
+    const HomeNewPage(),
     // const ExamPage(),
     const PersonPage(),
   ];
+  //
 
   @override
   void initState() {

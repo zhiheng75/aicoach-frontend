@@ -443,10 +443,10 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       // SceneEntity scene1 = SceneEntity.fromJson(value['data']);
       _homeProvider.scene = scene;
       // ScenePage(onEnd: () {  },);
-      NavigatorUtils.push(
-        context,
-        HomeRouter.scenePage,
-      );
+      // NavigatorUtils.push(
+      //   context,
+      //   HomeRouter.scenePage,
+      // );
       // scenePage
       //homePage
     });

@@ -404,10 +404,10 @@ class _ChatState extends State<ChatPage>
               );
             },
           ),
-          Positioned(
-            top: 50,
-            child: navbar,
-          ),
+          // Positioned(
+          //   top: 50,
+          //   child: navbar,
+          // ),
           Positioned(
             top: 103.0,
             left: 16.0,

@@ -246,7 +246,20 @@ class _HomePageState extends State<HomeNewPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Material(
-      child: ChatPage(index: widget.index),
+      child: Stack(
+        children: <Widget>[
+          if (_currentTab == 'chat') ChatPage(index: widget.index),
+          // if (_currentTab == 'exam') const ExamPage(),
+          Positioned(
+            top: 60.0,
+            child: HomeTabbar(
+              currentTab: _currentTab,
+              changeTab: changeTab,
+            ),
+          ),
+        ],
+      ),
+      // child: ChatPage(index: widget.index),
     );
   }
 

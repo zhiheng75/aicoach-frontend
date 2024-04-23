@@ -290,8 +290,8 @@ class _ReportDetailPageState extends State<ReportDetailPage>
       child: _detail.isNotEmpty
           ? Radar(
               r: sqrt(5000),
-              top: RadarItem('完整度', _detail['integrity_score']),
-              bottom: RadarItem('流畅度', _detail['fluency_score']),
+              top: RadarItem('流畅度', _detail['fluency_score']),
+              bottom: RadarItem('完整度', _detail['integrity_score']),
               left: RadarItem('发音', _detail['standard_score']),
               right: RadarItem('语法', _detail['accuracy_score']),
               scoreStyle: const TextStyle(

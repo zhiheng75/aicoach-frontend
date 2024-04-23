@@ -96,25 +96,25 @@ class _HomeTabbarState extends State<HomeTabbar> {
         horizontal: 24.0,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              LoginManager.checkLogin(context, () {
-                EventBus().emit('LEAVECHATPAGE');
-                NavigatorUtils.push(
-                  context,
-                  PersonalRouter.person,
-                );
-              });
-            },
-            child: const LoadAssetImage(
-              'gerenzhongxin',
-              width: 22.6,
-              height: 24.0,
-            ),
-          ),
+          // GestureDetector(
+          //   behavior: HitTestBehavior.opaque,
+          //   onTap: () {
+          //     LoginManager.checkLogin(context, () {
+          //       EventBus().emit('LEAVECHATPAGE');
+          //       NavigatorUtils.push(
+          //         context,
+          //         PersonalRouter.person,
+          //       );
+          //     });
+          //   },
+          //   child: const LoadAssetImage(
+          //     'gerenzhongxin',
+          //     width: 22.6,
+          //     height: 24.0,
+          //   ),
+          // ),
           //隐藏
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.center,
@@ -152,34 +152,34 @@ class _HomeTabbarState extends State<HomeTabbar> {
               //     isSelected: widget.currentTab == 'exam'),
             ],
           ),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              LoginManager.checkLogin(
-                context,
-                () {
-                  EventBus().emit('LEAVECHATPAGE');
-                  NavigatorUtils.push(
-                    context,
-                    ReportRouter.reportPage,
-                  );
-                },
-              );
-            },
-            child: Container(
-              width: 36.0,
-              height: 36.0,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(18.0),
-                  color: Colours.color_001652.withOpacity(0.23)),
-              alignment: Alignment.center,
-              child: const LoadAssetImage(
-                'baogao',
-                width: 20.0,
-                height: 20.0,
-              ),
-            ),
-          ),
+          // GestureDetector(
+          //   behavior: HitTestBehavior.opaque,
+          //   onTap: () {
+          //     LoginManager.checkLogin(
+          //       context,
+          //       () {
+          //         EventBus().emit('LEAVECHATPAGE');
+          //         NavigatorUtils.push(
+          //           context,
+          //           ReportRouter.reportPage,
+          //         );
+          //       },
+          //     );
+          //   },
+          //   child: Container(
+          //     width: 36.0,
+          //     height: 36.0,
+          //     decoration: BoxDecoration(
+          //         borderRadius: BorderRadius.circular(18.0),
+          //         color: Colours.color_001652.withOpacity(0.23)),
+          //     alignment: Alignment.center,
+          //     child: const LoadAssetImage(
+          //       'baogao',
+          //       width: 20.0,
+          //       height: 20.0,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

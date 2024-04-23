@@ -1,4 +1,4 @@
-import 'package:Bubble/TabMain/main_tabber.dart';
+import 'package:Bubble/tabmain/main_tabber.dart';
 import 'package:Bubble/home/page/course_purchase_page.dart';
 import 'package:Bubble/scene/scene.dart';
 import 'package:fluro/fluro.dart';

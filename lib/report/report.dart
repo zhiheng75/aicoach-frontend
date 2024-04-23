@@ -569,85 +569,155 @@ class _ReportPageState extends State<ReportPage>
         );
       }
       if (_type == 'class') {
+        //  String sessionId = '';
+        // if (item is ChatReportEntity) {
+        //   sessionId = item.sessionId;
+        // }
         content = GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
-            NavigatorUtils.push(
-              context,
-              CourseRouter.courseReportPage,
-            );
+            // NavigatorUtils.push(
+            //   context,
+            //   ReportRouter.reportDetailPage,
+            //   arguments: {
+            //     'sessionId': sessionId,
+            //   },
+            // );
           },
           child: Padding(
             padding: const EdgeInsets.only(
               right: 16.0,
             ),
-            child: SizedBox(
-              height: 110,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Gaps.hGap10,
-                      SizedBox(
-                        width: 80.0,
-                        height: 80.0,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(40.0),
-                          child: const LoadImage(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 118.0,
+                      height: 118.0,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: const SingleChildScrollView(
+                          physics: NeverScrollableScrollPhysics(),
+                          child: LoadImage(
                             "https://statics.shenmo-ai.com/sophia.jpg",
                             width: 118.0,
                           ),
                         ),
                       ),
-                      Gaps.hGap8,
-                      const Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "你好",
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                              height: 18.0 / 16.0,
-                              letterSpacing: 0.05,
+                    ),
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const Text(
+                          "leve1",
+                          style: TextStyle(
+                            fontSize: 11.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.color_999999,
+                            height: 18.0 / 11.0,
+                            letterSpacing: 0.05,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        const Text(
+                          '农场动物',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            height: 18.0 / 16.0,
+                            letterSpacing: 0.05,
+                          ),
+                        ),
+                        const Text(
+                          "学习时间:2024-4-6",
+                          style: TextStyle(
+                            fontSize: 11.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.color_999999,
+                            height: 18.0 / 11.0,
+                            letterSpacing: 0.05,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        star(100),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          '100',
+                          style: TextStyle(
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w400,
+                            color: getColorByScore(item.score),
+                            letterSpacing: 0.05,
+                          ),
+                        ),
+                        const Text(
+                          '综合得分',
+                          style: TextStyle(
+                            fontSize: 11.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.color_999999,
+                            letterSpacing: 0.05,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 7.0,
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        SizedBox(
+                          width: 32.0,
+                          height: 32.0,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(32.0),
+                            child: const SingleChildScrollView(
+                              physics: NeverScrollableScrollPhysics(),
+                              child: LoadImage(
+                                "https://statics.shenmo-ai.com/sophia.jpg",
+                                width: 32.0,
+                              ),
                             ),
                           ),
-                          SizedBox(
-                            height: 8.0,
+                        ),
+                        const Text(
+                          "ssss",
+                          style: TextStyle(
+                            fontSize: 10.0,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF666666),
+                            height: 18.0 / 10.0,
+                            letterSpacing: 0.05,
                           ),
-                          Text(
-                            '学习时间时长：2024',
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF666666),
-                              height: 18.0 / 14.0,
-                              letterSpacing: 0.05,
-                            ),
-                          ),
-                          Text(
-                            '综合得分：99',
-                            style: TextStyle(
-                              fontSize: 11.0,
-                              fontWeight: FontWeight.w400,
-                              color: Colours.color_999999,
-                              height: 18.0 / 11.0,
-                              letterSpacing: 0.05,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         );

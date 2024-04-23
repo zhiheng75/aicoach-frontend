@@ -609,26 +609,36 @@ class _PersonPageState extends State<PersonPage>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          // menuItem(
+          //   'person_baogao',
+          //   '课程订单',
+          //   onPress: () => tapMenu(ReportRouter.courseOrderPage),
+          // ),
+          // menuItem(
+          //   'person_baogao',
+          //   '学情报告',
+          //   onPress: () => tapMenu(ReportRouter.reportPage),
+          // ),
+          // menuItem(
+          //   'person_goumai',
+          //   '购买记录',
+          //   onPress: () => tapMenu(PersonalRouter.order),
+          // ),
+          // menuItem(
+          //   'person_yaoqing',
+          //   '邀请码',
+          //   onPress: () =>
+          //       tapInvitationcCodeMenu(PersonalRouter.personalInvitationcCode),
+          // ),
           menuItem(
-            'person_baogao',
-            '课程订单',
-            onPress: () => tapMenu(ReportRouter.courseOrderPage),
+            'person_guanyu',
+            '联系客服',
+            onPress: () => tapMenu(PersonalRouter.about),
           ),
           menuItem(
-            'person_baogao',
-            '学情报告',
-            onPress: () => tapMenu(ReportRouter.reportPage),
-          ),
-          menuItem(
-            'person_goumai',
-            '购买记录',
-            onPress: () => tapMenu(PersonalRouter.order),
-          ),
-          menuItem(
-            'person_yaoqing',
-            '邀请码',
-            onPress: () =>
-                tapInvitationcCodeMenu(PersonalRouter.personalInvitationcCode),
+            'person_guanyu',
+            '加入社群',
+            onPress: () => tapMenu(PersonalRouter.about),
           ),
           menuItem(
             'person_fankui',
@@ -640,24 +650,84 @@ class _PersonPageState extends State<PersonPage>
             '关于我们',
             onPress: () => tapMenu(PersonalRouter.about),
           ),
-           menuItem(
-            'person_guanyu',
-            '加入社群',
-            onPress: () => tapMenu(PersonalRouter.about),
-          ),
+
           menuItem(
             'vector_icon',
             '注销账号',
             onPress: () => tapSignOUTMenu(),
           ),
-          menuItem(
-            'shezhi',
-            '设置',
-            onPress: () => tapshezhiMenu(),
-          ),
+          // menuItem(
+          //   'shezhi',
+          //   '设置',
+          //   onPress: () => tapshezhiMenu(),
+          // ),
         ],
       ),
     );
+
+    Widget courseInfo() {
+      return Container(
+        // height: 100,
+        width: width,
+        decoration: decoration,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 18.0,
+          vertical: 26.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // mainAxisSize: MainAxisSize.min,
+          children: [
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                tapMenu(ReportRouter.courseOrderPage);
+              },
+              child: const Column(
+                children: [
+                  Text("data"),
+                  Text("我的课程"),
+                ],
+              ),
+            ),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                tapMenu(ReportRouter.reportPage);
+              },
+              child: const Column(
+                children: [
+                  Text("data"),
+                  Text("学情报告"),
+                ],
+              ),
+            ),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {},
+              child: const Column(
+                children: [
+                  Text("data"),
+                  Text("纠错"),
+                ],
+              ),
+            ),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                tapInvitationcCodeMenu(PersonalRouter.personalInvitationcCode);
+              },
+              child: const Column(
+                children: [
+                  Text("data"),
+                  Text("邀请码"),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 
     return Material(
       child: islog
@@ -677,6 +747,7 @@ class _PersonPageState extends State<PersonPage>
                         const SizedBox(
                           height: 50.0,
                         ),
+
                         // navbar,
                         const SizedBox(
                           height: 16.0,
@@ -689,16 +760,32 @@ class _PersonPageState extends State<PersonPage>
                         const SizedBox(
                           height: 16.0,
                         ),
-                        vipInfo(),
-                        const SizedBox(
-                          height: 16.0,
-                        ),
+                        // vipInfo(),
+                        // const SizedBox(
+                        //   height: 16.0,
+                        // ),
+                        courseInfo(),
                         experience,
                         menu,
                         SizedBox(
                           height: _screenUtil.bottomBarHeight + 16.0,
                         ),
                       ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  right: 20,
+                  top: 60,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      tapshezhiMenu();
+                    },
+                    child: const LoadAssetImage(
+                      "shezhi",
+                      width: 24.0,
+                      height: 24.0,
                     ),
                   ),
                 ),

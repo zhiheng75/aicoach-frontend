@@ -31,7 +31,6 @@ class Radar extends StatefulWidget {
 }
 
 class _RadarState extends State<Radar> {
-
   double toDouble(num value) {
     if (value is double) {
       return value;
@@ -41,8 +40,8 @@ class _RadarState extends State<Radar> {
 
   @override
   Widget build(BuildContext context) {
-
-    Widget legend(RadarItem radarItem, {double? top, double? right, double? bottom, double? left}) {
+    Widget legend(RadarItem radarItem,
+        {double? top, double? right, double? bottom, double? left}) {
       return Positioned(
         top: top,
         right: right,
@@ -73,10 +72,12 @@ class _RadarState extends State<Radar> {
     pointList.add(Offset(0, toDouble(0 - widget.bottom.score)));
 
     double legendHeight = 0;
-    if (widget.scoreStyle.fontSize != null && widget.scoreStyle.height != null) {
+    if (widget.scoreStyle.fontSize != null &&
+        widget.scoreStyle.height != null) {
       legendHeight += widget.scoreStyle.fontSize! * widget.scoreStyle.height!;
     }
-    if (widget.labelStyle.fontSize != null && widget.labelStyle.height != null) {
+    if (widget.labelStyle.fontSize != null &&
+        widget.labelStyle.height != null) {
       legendHeight += widget.labelStyle.fontSize! * widget.labelStyle.height!;
     }
 
@@ -89,11 +90,13 @@ class _RadarState extends State<Radar> {
         legend(
           widget.right,
           bottom: widget.source == 'report' ? 0 : 0,
-          left: widget.r,
+          left: widget.r + 10,
         ),
         legend(
-          widget.top,
-          top: widget.source == 'report' ? -widget.r - legendHeight : -widget.r - legendHeight * 0.5,
+          widget.bottom,
+          top: widget.source == 'report'
+              ? -widget.r - legendHeight
+              : -widget.r - legendHeight * 0.5,
           left: widget.r * 0.25,
         ),
         legend(
@@ -102,8 +105,10 @@ class _RadarState extends State<Radar> {
           right: widget.source == 'report' ? widget.r * 1.25 : widget.r,
         ),
         legend(
-          widget.bottom,
-          top: widget.source == 'report' ? widget.r : widget.r - legendHeight * 0.5,
+          widget.top,
+          top: widget.source == 'report'
+              ? widget.r
+              : widget.r - legendHeight * 0.5,
           left: widget.r * 0.25,
         ),
       ],
@@ -112,7 +117,6 @@ class _RadarState extends State<Radar> {
 }
 
 class RadarWrap extends CustomPainter {
-
   RadarWrap(this.radius, this.points, this.source);
 
   double radius;
@@ -207,11 +211,9 @@ class RadarWrap extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
   }
-
 }
 
 class RadarItem {
-
   RadarItem(this.label, this.score, [Color? color]) {
     if (color != null) {
       this.color = color;
@@ -221,5 +223,4 @@ class RadarItem {
   late String label;
   late num score;
   Color color = Colors.black;
-
 }
