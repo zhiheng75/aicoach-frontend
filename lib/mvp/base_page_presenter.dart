@@ -48,11 +48,11 @@ class BasePagePresenter<V extends IMvpView> extends BasePresenter<V> {
       options: options,
       cancelToken: cancelToken ?? _cancelToken,
       onSuccess: (data) {
-        Map<String, dynamic> user = json.decode(data.toString());
-        ResultData resultData = ResultData.fromJson(user);
-        if (resultData.code == 401) {
-          EventBus().emit('LOGINOUT');
-        }
+        // Map<String, dynamic> user = json.decode(data.toString());
+        // ResultData resultData = ResultData.fromJson(user);
+        // if (resultData.code == 401) {
+        //   EventBus().emit('LOGINOUT');
+        // }
 
         if (isClose) {
           view.closeProgress();

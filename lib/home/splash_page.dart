@@ -79,7 +79,6 @@ class _SplashPageState extends State<SplashPage> {
 
   void _gotoHome() async {
     initFDio();
-    initDio();
     await Device.initDeviceInfo();
 
     // Future.delayed(const Duration(milliseconds: 500), () {
@@ -87,26 +86,6 @@ class _SplashPageState extends State<SplashPage> {
     // });
     // ignore: use_build_context_synchronously
     NavigatorUtils.push(context, HomeRouter.homePage, replace: true);
-  }
-
-  void initDio() async {
-    final deviceInfoPlugin = DeviceInfoPlugin();
-    BaseDeviceInfo deviceInfo = await deviceInfoPlugin.deviceInfo;
-    final allInfo = deviceInfo.data;
-    final info = await PackageInfo.fromPlatform();
-
-//手机品牌加型号
-    DioUtils.instance.dio.options.headers['sysInfo'] = allInfo.toString();
-    DioUtils.instance.dio.options.headers['version'] = info.version;
-    DioUtils.instance.dio.options.headers['buildNumber'] = info.buildNumber;
-    String platformStr = Channel.channelios;
-    if (Device.isAndroid) {
-      platformStr = Channel.channelhuawei;
-    } else {
-      platformStr = Channel.channelios;
-    }
-    DioUtils.instance.dio.options.headers['marketplace'] = platformStr;
-    DioUtils.instance.dio.options.headers['applyName'] = info.appName;
   }
 
   void initFDio() {

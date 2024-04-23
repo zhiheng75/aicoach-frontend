@@ -88,15 +88,44 @@ class _HomePageState extends State<HomeNewPage>
     final info = await PackageInfo.fromPlatform();
 
 //手机品牌加型号
-    DioUtils.instance.dio.options.headers['sysInfo'] = allInfo.toString();
     DioUtils.instance.dio.options.headers['version'] = info.version;
     DioUtils.instance.dio.options.headers['buildNumber'] = info.buildNumber;
     String platformStr = Channel.channelios;
+    String sysInfo = "";
+
     if (Device.isAndroid) {
+      AndroidDeviceInfo androidDeviceInfo =
+          await DeviceInfoPlugin().androidInfo;
+      // androidDeviceInfo.board;
+      // androidDeviceInfo.model;
+      // androidDeviceInfo.version.release;
       platformStr = Channel.channelhuawei;
+      final Map<String, String> params = <String, String>{};
+      params["manufacturer"] = androidDeviceInfo.manufacturer;
+      params["id"] = androidDeviceInfo.id;
+      params["brand"] = androidDeviceInfo.brand;
+      params["board"] = androidDeviceInfo.board;
+      params["model"] = androidDeviceInfo.model;
+      params["version"] = androidDeviceInfo.version.release;
+      params["device"] = androidDeviceInfo.device;
+      params["display"] = androidDeviceInfo.display;
+
+      sysInfo = params.toString(); //allInfo.toString();
     } else {
+      IosDeviceInfo iosDeviceInfo = await DeviceInfoPlugin().iosInfo;
+
       platformStr = Channel.channelios;
+      final Map<String, String> params = <String, String>{};
+      params["version"] = iosDeviceInfo.systemVersion;
+      params["model"] = iosDeviceInfo.model;
+      params["localizedModel"] = iosDeviceInfo.localizedModel;
+      params["isPhysicalDevice"] = iosDeviceInfo.isPhysicalDevice ? "1" : "0";
+      params["systemName"] = iosDeviceInfo.systemName;
+      params["machine"] = iosDeviceInfo.utsname.machine;
+
+      sysInfo = params.toString();
     }
+    DioUtils.instance.dio.options.headers['sysInfo'] = sysInfo;
     DioUtils.instance.dio.options.headers['marketplace'] = platformStr;
     DioUtils.instance.dio.options.headers['applyName'] = info.appName;
   }

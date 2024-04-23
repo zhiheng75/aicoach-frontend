@@ -323,7 +323,7 @@ class _ChatState extends State<ChatPage>
       );
     }
 
-    double homeTabbarHeight = 445.0;
+    double homeTabbarHeight = _screenUtil.screenHeight / 2 - 80;
     double bottomBarHeight = _screenUtil.bottomBarHeight + 80.0;
 
     return GestureDetector(
