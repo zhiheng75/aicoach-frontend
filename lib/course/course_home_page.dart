@@ -96,10 +96,23 @@ class _CourseHomePageState extends State<CourseHomePage> {
             itemBuilder: (ctx, index) {
               return GestureDetector(
                   onTap: () {
-                    NavigatorUtils.push(
-                      context,
-                      CourseRouter.courseFlowPage,
-                    );
+                    if (index == 0) {
+                      NavigatorUtils.push(
+                        context,
+                        CourseRouter.courseDetailsPage,
+                      );
+                    } else if (index == 1) {
+                      NavigatorUtils.push(
+                        context,
+                        CourseRouter.courseReportPage,
+                      );
+                    } else {
+                      NavigatorUtils.push(
+                        context,
+                        CourseRouter.courseFlowPage,
+                      );
+                    }
+
                     // NavigatorUtils.push(
                     //     context,
                     //     "${ClassRouter.classFlowPage}?index=0",

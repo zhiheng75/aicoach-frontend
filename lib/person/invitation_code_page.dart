@@ -13,6 +13,7 @@ import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_only_img_bar.dart';
 import 'package:Bubble/widgets/my_text_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -40,8 +41,17 @@ class _InvitationCodePageState extends State<InvitationCodePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return AnnotatedRegion(
-        value: SystemUiOverlayStyle.light,
+    return CupertinoPageScaffold(
+        navigationBar: const XTCupertinoNavigationBar(
+          backgroundColor: Color(0xFFFFFFFF),
+          border: null,
+          padding: EdgeInsetsDirectional.zero,
+          leading: NavigationBackWidget(),
+          middle: Text(
+            "邀请码",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
         child: Scaffold(
           body: GestureDetector(
             onTap: () {
@@ -65,19 +75,19 @@ class _InvitationCodePageState extends State<InvitationCodePage>
                     //     onActionPress: () {
                     //       NavigatorUtils.goBack(context);
                     //     }),
-                    XTCupertinoNavigationBar(
-                      backgroundColor: const Color.fromRGBO(1, 1, 1, 0),
-                      border: null,
-                      padding: EdgeInsetsDirectional.zero,
-                      leading: NavigationBackWidget(onBack: onBack),
-                      middle: const Text(
-                        "邀请码",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17.0,
-                        ),
-                      ),
-                    ),
+                    // XTCupertinoNavigationBar(
+                    //   backgroundColor: const Color.fromRGBO(1, 1, 1, 0),
+                    //   border: null,
+                    //   padding: EdgeInsetsDirectional.zero,
+                    //   leading: NavigationBackWidget(onBack: onBack),
+                    //   middle: const Text(
+                    //     "邀请码",
+                    //     style: TextStyle(
+                    //       fontWeight: FontWeight.bold,
+                    //       fontSize: 17.0,
+                    //     ),
+                    //   ),
+                    // ),
                     // Gaps.vGap20,
                     Container(
                       margin: const EdgeInsets.all(20),

@@ -27,7 +27,7 @@ class CenterBottomBarBigItem extends BottomNavigationBarItem {
             gaplessPlayback: true,
           ),
           icon: Image.asset(
-            "assets/images/tabBar_icon_mine.png",
+            "assets/images/tabbar_icon_mine.png",
             width: 32,
             gaplessPlayback: true,
           ),

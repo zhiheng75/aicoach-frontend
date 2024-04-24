@@ -725,7 +725,9 @@ class _PersonPageState extends State<PersonPage>
             ),
             GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: () {},
+              onTap: () {
+                tapMenu(PersonalRouter.errorCorrectionPage);
+              },
               child: Column(
                 children: [
                   const LoadAssetImage(

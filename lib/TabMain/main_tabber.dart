@@ -33,7 +33,7 @@ class _MainTabberState extends State<MainTabber> {
     BottomBarItem("tabbar_icon_home", "首页"),
     BottomBarItem("tabbar_icon_course", "上课"),
     BottomBarItem("tabbar_icon_spoken", "练口语"),
-    BottomBarItem("tabbar_icon_mine", "我的"),
+    BottomBarItem("tabbar_icon_spoken", "我的"),
   ];
   List<Widget> pages = [
     // const MyWidget(),
