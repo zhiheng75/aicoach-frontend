@@ -1,8 +1,12 @@
 //课程流程
 import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/course/view/course_flow_item.dart';
+import 'package:Bubble/res/colors.dart';
+import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
+import 'package:Bubble/widgets/load_image.dart';
+import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,24 +18,194 @@ class CourseFlowPage extends StatefulWidget {
 }
 
 class _CourseFlowPageState extends State<CourseFlowPage> {
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: const XTCupertinoNavigationBar(
-        backgroundColor: Color(0xFFFFFFFF),
-        border: null,
-        padding: EdgeInsetsDirectional.zero,
-        leading: NavigationBackWidget(),
-        middle: Text(
-          "课程流程",
-          style: TextStyle(fontWeight: FontWeight.bold),
+  Widget body() {
+    return MyScrollView(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Center(
+            child: Text(
+          "Levell-Unit 2-Lesson 7",
+          style: TextStyle(
+            fontSize: 13.0,
+            fontWeight: FontWeight.w400,
+            color: Colours.color_666666,
+          ),
+        )),
+        Gaps.vGap2,
+        const Text(
+          "Animals and Human",
+          style: TextStyle(
+            fontSize: 17.0,
+            fontWeight: FontWeight.w400,
+            color: Colors.black,
+          ),
         ),
-      ),
-      child: Scaffold(
-          body: SafeArea(
-              child: CustomScrollView(
-        slivers: [
-          SliverList.builder(
+        Gaps.vGap10,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Stack(
+              children: [
+                Container(
+                  // margin: const EdgeInsets.all(0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(90.0),
+                    color: Colours.color_EBCCFE,
+                  ),
+                  padding: const EdgeInsets.all(30),
+                  child: const Column(
+                    children: [
+                      Text(
+                        "报告",
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        "已发布",
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const Positioned(
+                  right: 0,
+                  child: LoadAssetImage(
+                    "report_icon",
+                    width: 24.0,
+                    height: 24.0,
+                  ),
+                ),
+              ],
+            ),
+            Stack(
+              children: [
+                const Positioned(
+                  right: 0,
+                  child: Text(
+                    "+",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                Container(
+                  // margin: const EdgeInsets.all(0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(90.0),
+                    color: Colours.color_C1EBF7,
+                  ),
+                  padding: const EdgeInsets.all(30),
+                  child: const Column(
+                    children: [
+                      Text(
+                        "纠错",
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        "已发布",
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const Positioned(
+                  right: 8,
+                  top: 8,
+                  child: Text(
+                    "99",
+                    style: TextStyle(
+                      fontSize: 17.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Stack(
+              children: [
+                Container(
+                  // margin: const EdgeInsets.all(0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(90.0),
+                    color: Colours.color_DDF3D2,
+                  ),
+                  padding: const EdgeInsets.all(30),
+                  child: const Column(
+                    children: [
+                      Text(
+                        "评价",
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        "已评价",
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const Positioned(
+                  right: 0,
+                  child: LoadAssetImage(
+                    "evaluate_icon",
+                    width: 24.0,
+                    height: 24.0,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        Gaps.vGap10,
+        Container(
+          // margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30.0),
+            color: Colours.color_F8F8F8,
+          ),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 30.0,
+            vertical: 10.0,
+          ),
+          child: const Text(
+            "本课学习目标 Learning targe",
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        Gaps.vGap8,
+        SizedBox(
+          height: 450,
+          child: ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (ctx, index) {
               return GestureDetector(
                 onTap: () {
@@ -50,10 +224,28 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
                 child: const CourseFlowItem(),
               );
             },
-            itemCount: 10,
-          )
-        ],
-      ))),
+            itemCount: 4,
+          ),
+        ),
+        // const CourseFlowItem(),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: const XTCupertinoNavigationBar(
+        backgroundColor: Color(0xFFFFFFFF),
+        border: null,
+        padding: EdgeInsetsDirectional.zero,
+        leading: NavigationBackWidget(),
+        middle: Text(
+          "课程流程",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      child: Scaffold(body: SafeArea(child: body())),
     );
   }
 }

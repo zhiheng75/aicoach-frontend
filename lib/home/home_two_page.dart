@@ -56,42 +56,40 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   Widget barWidget(BuildContext context) {
     return Container(
-      width: double.infinity,
+      margin: const EdgeInsets.all(10),
       height: 200,
-      // color: Colors.white,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.0),
-        color: Colors.white,
-      ),
-      padding: const EdgeInsets.all(10),
-      child: Swiper(
-        itemBuilder: (BuildContext context, int index) {
-          return Image.network(
-            "https://img1.baidu.com/it/u=2286755736,2807423982&fm=253&fmt=auto&app=138&f=JPEG?w=650&h=487",
-            fit: BoxFit.fill,
-          );
-        },
-        onTap: (index) {
-          NavigatorUtils.goWebViewPage(context, "百度", "https://www.baidu.com");
-          // showModalBottomSheet(
-          //   context: context,
-          //   backgroundColor: Colors.transparent,
-          //   barrierColor: Colors.transparent,
-          //   isScrollControlled: true,
-          //   isDismissible: false,
-          //   enableDrag: false,
-          //   builder: (_) => const SelectScene(),
-          // );
-        },
-        itemCount: 3,
-        autoplay: true,
-        pagination: const SwiperPagination(),
-        // control: SwiperControl(),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10.0),
+        child: Swiper(
+          itemBuilder: (BuildContext context, int index) {
+            return Image.network(
+              "https://img1.baidu.com/it/u=2286755736,2807423982&fm=253&fmt=auto&app=138&f=JPEG?w=650&h=487",
+              fit: BoxFit.cover,
+            );
+          },
+          onTap: (index) {
+            NavigatorUtils.goWebViewPage(
+                context, "百度", "https://www.baidu.com");
+            // showModalBottomSheet(
+            //   context: context,
+            //   backgroundColor: Colors.transparent,
+            //   barrierColor: Colors.transparent,
+            //   isScrollControlled: true,
+            //   isDismissible: false,
+            //   enableDrag: false,
+            //   builder: (_) => const SelectScene(),
+            // );
+          },
+          itemCount: 3,
+          autoplay: true,
+          pagination: const SwiperPagination(),
+          // control: SwiperControl(),
+        ),
       ),
     );
   }
 
-  Widget classWidget(BuildContext context) {
+  Widget courseWidget(BuildContext context) {
     return GestureDetector(
       onTap: () {
         //
@@ -101,56 +99,159 @@ class _HomeTwoPageState extends State<HomeTwoPage>
         );
         // NavigatorUtils.goWebViewPage(context, "百度", "https://www.baidu.com");
       },
-      child: Image.network(
-        "http://t15.baidu.com/it/u=3515177818,2652149588&fm=224&app=112&f=JPEG?w=500&h=249",
-        fit: BoxFit.fill,
+      child: Container(
+        margin: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0),
+          color: Colours.color_F8F8F8,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "英语口语春季训练营火热报名中",
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400,
+                color: Colors.black,
+              ),
+            ),
+            Gaps.vGap8,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Image.network(
+                "http://t15.baidu.com/it/u=3515177818,2652149588&fm=224&app=112&f=JPEG?w=500&h=249",
+                fit: BoxFit.fill,
+              ),
+            ),
+            Gaps.vGap8,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 1.0),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(30.0)),
+                    ),
+                    child: const Text(
+                      "去选课",
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    )),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget peopleWidget(BuildContext context) {
-    return Container(
-        margin: const EdgeInsets.all(15),
-        // height: 100,
-        child: Column(
-          children: [
-            Row(
+    return Stack(
+      children: [
+        Container(
+            margin:
+                const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+            // height: 80,
+            // width: 280,
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                gradient: const LinearGradient(
+                  colors: [
+                    Colours.color_E8CCFE,
+                    Colours.color_ACCDFF,
+                  ],
+                )),
+            // height: 200,
+            child: Column(
               children: [
-                Expanded(child: Text(characterList[0].slogan)),
-                LoadImage(
-                  characterList[0].imageUrl,
-                  holderImg: "teacher",
-                  height: 100,
-                  width: 100,
-                  fit: BoxFit.fill,
+                Row(
+                  children: [
+                    Expanded(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          characterList[0].slogan,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.color_2C0047,
+                          ),
+                        ),
+                        Gaps.vGap5,
+                        Container(
+                            padding: const EdgeInsets.only(
+                                top: 5, bottom: 5, left: 15, right: 15),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: Colours.color_6D388F,
+                            ),
+                            child: const Text(
+                              "自由对话",
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                              ),
+                            )),
+                      ],
+                    )),
+                    const SizedBox(
+                      height: 100,
+                      width: 150,
+                    ),
+                    // LoadImage(
+                    //   characterList[0].imageUrl,
+                    //   holderImg: "teacher",
+                    //   height: 100,
+                    //   width: 100,
+                    //   fit: BoxFit.fill,
+                    // ),
+                  ],
                 ),
+                // Row(
+                //   children: [
+                //     GroupAvatarWidget(
+                //       data: headData,
+                //       isShowNum: false,
+                //     ),
+                //     GestureDetector(
+                //         onTap: () {
+                //           EventBus().emit(NotificationUtils.taberThree);
+                //         },
+                //         child: const Text("更多角色")),
+                //     const Expanded(child: Gaps.empty),
+                //     GestureDetector(
+                //         onTap: () {
+                //           NavigatorUtils.push(
+                //             context,
+                //             "${HomeRouter.homePage}?index=0",
+                //           );
+                //         },
+                //         child: const Text("自由对话")),
+                //     Gaps.hGap15,
+                //   ],
+                // ),
               ],
-            ),
-            Row(
-              children: [
-                GroupAvatarWidget(
-                  data: headData,
-                  isShowNum: false,
-                ),
-                GestureDetector(
-                    onTap: () {
-                      EventBus().emit(NotificationUtils.taberThree);
-                    },
-                    child: const Text("更多角色")),
-                const Expanded(child: Gaps.empty),
-                GestureDetector(
-                    onTap: () {
-                      NavigatorUtils.push(
-                        context,
-                        "${HomeRouter.homePage}?index=0",
-                      );
-                    },
-                    child: const Text("自由对话")),
-                Gaps.hGap15,
-              ],
-            ),
-          ],
-        ));
+            )),
+        const Positioned(
+            right: 5,
+            bottom: 10,
+            child: LoadAssetImage(
+              "suofeiya_head",
+              width: 170.0,
+              height: 150.0,
+            ))
+      ],
+    );
   }
 
   Widget mokaoWidget(BuildContext context) {
@@ -161,13 +262,92 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           ExamRouter.examPage,
         );
       },
-      child: const SizedBox(
+      child: Container(
+          margin: const EdgeInsets.all(8),
+          // height: 80,
+          // width: 280,
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              gradient: const LinearGradient(
+                colors: [
+                  Colours.color_FFF3D8,
+                  Colours.color_E8CCFE,
+                ],
+              )),
           height: 120,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Row(
+            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("KET模考"),
-              Text("实景还原考试全流程"),
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  color: Colors.white,
+                ),
+                padding: const EdgeInsets.all(15),
+                child: const LoadAssetImage(
+                  "mokao_icon",
+                  width: 24.0,
+                  height: 24.0,
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "KET模考",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    ),
+                    RichText(
+                      text: const TextSpan(children: [
+                        TextSpan(
+                            text: "实景",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Colours.color_FF71CF,
+                            )),
+                        TextSpan(
+                            text: '还原考试',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Colours.color_666666,
+                            )),
+                        TextSpan(
+                            text: '全流程',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Colours.color_FF71CF,
+                            )),
+                      ]),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                  padding: const EdgeInsets.only(
+                      top: 5, bottom: 5, left: 15, right: 15),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: Colours.color_6D388F,
+                  ),
+                  child: const Text(
+                    "去看看",
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                    ),
+                  )),
             ],
           )),
     );
@@ -255,38 +435,82 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   Widget tabbar() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(
-            left: 15,
-          ),
-          child: Text("口语联系精品课"),
-        ),
         Padding(
           padding: const EdgeInsets.only(
-            top: 8,
-            bottom: 0,
+            left: 15,
           ),
-          child: SizedBox(
-            height: 30,
-            child: ListView.builder(
-              itemBuilder: (ctx, index) {
-                return GestureDetector(
-                  onTap: () {
-                    changeCategory(index);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8, left: 8.0),
-                    child: Text(_categoryList[index].name),
-                  ),
-                );
-              },
-              itemCount: _categoryList.length,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              physics: const AlwaysScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const LoadAssetImage(
+                "home_head_icon",
+                width: 24.0,
+                height: 24.0,
+              ),
+              Gaps.hGap6,
+              const Text(
+                "口语联系精品课",
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
+              ),
+              Gaps.hGap6,
+              const LoadAssetImage(
+                "home_head_icon",
+                width: 24.0,
+                height: 24.0,
+              )
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 40,
+          child: ListView.builder(
+            itemBuilder: (ctx, index) {
+              return _categoryList[index].name.isNotEmpty
+                  ? GestureDetector(
+                      onTap: () {
+                        changeCategory(index);
+                      },
+                      child: Container(
+                          margin: const EdgeInsets.all(5),
+                          // height: 80,
+                          // width: 280,
+                          padding: const EdgeInsets.only(
+                              left: 10, right: 10, top: 5, bottom: 5),
+                          decoration: currentIndex == index
+                              ? BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Colours.color_E8CCFE,
+                                      Colours.color_ACCDFF,
+                                    ],
+                                  ))
+                              : BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  color: Colours.color_F8F8F8,
+                                ),
+                          height: 120,
+                          child: Text(
+                            _categoryList[index].name,
+                            style: const TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          )),
+                    )
+                  : Container();
+            },
+            itemCount: _categoryList.length,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            physics: const AlwaysScrollableScrollPhysics(),
+            scrollDirection: Axis.horizontal,
           ),
         )
         // Row(
@@ -359,13 +583,14 @@ class _HomeTwoPageState extends State<HomeTwoPage>
               SliverToBoxAdapter(
                 child: barWidget(context),
               ),
+
               SliverToBoxAdapter(
-                child: classWidget(context),
-              ),
-              SliverToBoxAdapter(
-                child: characterList.length > 2
+                child: characterList.isNotEmpty
                     ? peopleWidget(context)
                     : Container(),
+              ),
+              SliverToBoxAdapter(
+                child: courseWidget(context),
               ),
               SliverToBoxAdapter(
                 child: mokaoWidget(context),
@@ -375,8 +600,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                       pinned: true,
                       floating: false,
                       delegate: _SliverAppBarDelegate(
-                        minHeight: 60, //收起的高度
-                        maxHeight: 60,
+                        minHeight: 70, //收起的高度
+                        maxHeight: 70,
                         child: Container(color: Colors.white, child: tabbar()),
                       ))
                   : SliverToBoxAdapter(
@@ -393,16 +618,58 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                   onTap: () {
                     selectScene(sceneList[index]);
                   },
-                  child: Center(child: Text(sceneList[index].name)));
+                  child: Stack(
+                    children: [
+                      Container(
+                        // color: Colors.black,
+                        margin: const EdgeInsets.all(8),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            // margin: const EdgeInsets.only(
+                            //     top: 0, left: 8, right: 8, bottom: 0),
+                            // decoration: BoxDecoration(
+                            //   borderRadius: BorderRadius.circular(8.0),
+                            // image: const DecorationImage(
+                            //   image: AssetImage(
+                            //     'assets/images/mkbg.png',
+                            //   ),
+                            //   fit: BoxFit.cover,
+                            // ),
+                            // ),
+                            child: LoadImage(
+                              sceneList[index].cover,
+                              fit: BoxFit.cover,
+                              // width: 56.0,
+                              // height: 56.0,
+                            )),
+                      ),
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              sceneList[index].name,
+                              style: const TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Gaps.vGap10
+                          ],
+                        ),
+                      )
+                    ],
+                  ));
             },
             itemCount: sceneList.length,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: 18.0,
-                crossAxisSpacing: 5,
-                childAspectRatio: 2),
+                mainAxisSpacing: 0,
+                crossAxisSpacing: 0,
+                childAspectRatio: 1),
           ),
         )),
       ),

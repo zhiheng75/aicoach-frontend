@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/course/view/course_home_item.dart';
+import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,12 +21,27 @@ class _CourseHomePageState extends State<CourseHomePage> {
 
   Widget tabbar() {
     return SizedBox(
-      height: 30,
+      height: 50,
       child: ListView.builder(
         itemBuilder: (ctx, index) {
-          return const Padding(
-            padding: EdgeInsets.only(right: 8, left: 8.0),
-            child: Text("LEVEL1"),
+          return Container(
+            width: 80,
+            height: 50,
+            margin: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25.0),
+              color: Colours.color_007AFF,
+            ),
+            padding: const EdgeInsets.only(right: 8, left: 8.0),
+            child: const Center(
+                child: Text(
+              "Level 1",
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.w400,
+                color: Colors.white,
+              ),
+            )),
           );
         },
         itemCount: 3,
@@ -56,12 +72,20 @@ class _CourseHomePageState extends State<CourseHomePage> {
                   pinned: true,
                   floating: false,
                   delegate: _SliverAppBarDelegate(
-                    minHeight: 40, //收起的高度
-                    maxHeight: 40,
-                    child: Container(color: Colors.white, child: tabbar()),
+                    minHeight: 50, //收起的高度
+                    maxHeight: 50,
+                    child: Center(child: SizedBox(width: 300, child: tabbar())),
                   )),
               const SliverToBoxAdapter(
-                child: Center(child: Text("巴拉巴拉")),
+                child: Center(
+                    child: Text(
+                  "Unit2 朋友见面",
+                  style: TextStyle(
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                )),
               ),
             ];
           },
