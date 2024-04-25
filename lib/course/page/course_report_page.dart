@@ -1,9 +1,20 @@
 //课程报告
 import 'dart:math';
 
+import 'package:Bubble/course/item/course_report_select_item.dart';
+import 'package:Bubble/course/item/course_report_vocabulary_item.dart';
+import 'package:Bubble/course/item/play_back_item.dart';
+import 'package:Bubble/person/item/error_correction_detail_item.dart';
+import 'package:Bubble/person/item/error_correction_item.dart';
+import 'package:Bubble/res/colors.dart';
+import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
+import 'package:Bubble/widgets/circle_progress_view.dart';
+import 'package:Bubble/widgets/load_image.dart';
+import 'package:Bubble/widgets/star_rating.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CourseReportPage extends StatefulWidget {
   const CourseReportPage({super.key});
@@ -13,6 +24,8 @@ class CourseReportPage extends StatefulWidget {
 }
 
 class _CourseReportPageState extends State<CourseReportPage> {
+  final ScreenUtil _screenUtil = ScreenUtil();
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -66,76 +79,330 @@ class _CourseReportPageState extends State<CourseReportPage> {
                         children: [
                           Container(
                             width: 1000,
-                            padding: const EdgeInsets.only(top: 50),
-                            margin: const EdgeInsets.only(top: 50),
+                            padding: const EdgeInsets.only(top: 40),
+                            margin: const EdgeInsets.only(top: 30),
                             color: Colors.white,
-                            child: const Column(
+                            child: Column(
                               children: [
-                                Text("欧阳小明"),
-                                Text("认识动物"),
-                                Text("认识动物"),
-                                Text("认识动物"),
+                                const Text(
+                                  "欧阳小明",
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                StarRating(rating: 3.4, isShowLeftText: false),
+                                const Text(
+                                  "L3系统班 Unit1",
+                                  style: TextStyle(
+                                    fontSize: 17.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                const Text(
+                                  "Lesson1 认识农场里的动物",
+                                  style: TextStyle(
+                                    fontSize: 13.0,
+                                    color: Colours.color_666666,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                          const Positioned(
+                          Positioned(
                               // top: 0,
                               child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("1111"),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(30.0),
+                                child: const LoadImage(
+                                  "headimgurl",
+                                  width: 60.0,
+                                  height: 60.0,
+                                ),
+                              ),
                             ],
                           ))
                         ],
                       ),
                     ),
-                    const SliverToBoxAdapter(
-                      child: Text("用户相关信息"),
+                    SliverToBoxAdapter(
+                      child: Container(
+                        color: Colors.white,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                                width: _screenUtil.screenWidth / 2 - 20,
+                                height: 150,
+                                margin: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  color: Colours.color_FAF3FF,
+                                ),
+                                // padding: const EdgeInsets.symmetric(
+                                //   horizontal: 35.0,
+                                //   vertical: 15.0,
+                                // ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const LoadAssetImage(
+                                      "report_zan_icon",
+                                      width: 48.0,
+                                      height: 48.0,
+                                    ),
+                                    Gaps.vGap10,
+                                    RichText(
+                                      text: const TextSpan(children: [
+                                        TextSpan(
+                                            text: "10",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colours.color_333333,
+                                            )),
+                                        TextSpan(
+                                            text: '个赞',
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colours.color_333333,
+                                            )),
+                                      ]),
+                                    ),
+                                    Gaps.vGap4,
+                                    const Text(
+                                      "超过70%的同学",
+                                      style: TextStyle(
+                                        fontSize: 13.0,
+                                        color: Colours.color_906DA9,
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                            Container(
+                                width: _screenUtil.screenWidth / 2 - 20,
+                                height: 150,
+                                margin: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  color: Colours.color_EFF9FF,
+                                ),
+                                // padding: const EdgeInsets.symmetric(
+                                //   horizontal: 35.0,
+                                //   vertical: 15.0,
+                                // ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const LoadAssetImage(
+                                      "report_sentence_icon",
+                                      width: 48.0,
+                                      height: 48.0,
+                                    ),
+                                    Gaps.vGap10,
+                                    RichText(
+                                      text: const TextSpan(children: [
+                                        TextSpan(
+                                            text: "169",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colours.color_333333,
+                                            )),
+                                        TextSpan(
+                                            text: '次开口',
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colours.color_333333,
+                                            )),
+                                      ]),
+                                    ),
+                                    Gaps.vGap4,
+                                    const Text(
+                                      "超过70%的同学",
+                                      style: TextStyle(
+                                        fontSize: 13.0,
+                                        color: Colours.color_3770C6,
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ],
+                        ),
+                      ),
                     ),
-                    const SliverToBoxAdapter(
-                      child: Text("口语评测结果"),
+                    SliverToBoxAdapter(
+                      child: Container(
+                          color: Colors.white,
+                          child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                                color: Colours.color_EFF9FF,
+                              ),
+                              margin: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15.0,
+                                vertical: 15.0,
+                              ),
+                              child: Row(
+                                children: [
+                                  const LoadAssetImage(
+                                    "fang_maike_icon",
+                                    width: 48.0,
+                                    height: 48.0,
+                                  ),
+                                  Gaps.hGap10,
+                                  const Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text("开口102次",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black,
+                                            )),
+                                        Text("超过88%同学",
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colours.color_666666,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                  const CircleProgressView(
+                                    height: 60,
+                                    progress: 20,
+                                    width: 60,
+                                  ),
+                                ],
+                              ))),
                     ),
-                    const SliverToBoxAdapter(
-                      child: Text("优秀表达"),
+
+                    SliverToBoxAdapter(
+                      child: Container(
+                        color: Colors.white,
+                        child: const LoadAssetImage(
+                          "zan_icon",
+                          width: 60.0,
+                          height: 60.0,
+                        ),
+                      ),
                     ),
+                    // SliverToBoxAdapter(
+                    //   child: Gaps.vGap8,
+                    // ),
+                    SliverToBoxAdapter(
+                      child: Container(
+                        color: Colors.white,
+                        child: const Center(
+                            child: Text("这些句子的表达非常棒！",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                ))),
+                      ),
+                    ),
+
                     SliverList.builder(
                       itemBuilder: (ctx, index) {
                         return GestureDetector(
                           onTap: () {},
-                          child: const Text("boagao"),
+                          child: const ErrorCorrectionDetailTwoItem(),
                         );
                       },
-                      itemCount: 3,
+                      itemCount: 4,
+                    ),
+                    SliverToBoxAdapter(
+                      child: Container(
+                        color: Colors.white,
+                        child: const LoadAssetImage(
+                          "liwu_icon",
+                          width: 60.0,
+                          height: 60.0,
+                        ),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Container(
+                        color: Colors.white,
+                        child: const Center(
+                            child: Text("本节课收获",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                ))),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Container(
+                        color: Colors.white,
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CourseReportSelectItem(),
+                            CourseReportSelectItem(),
+                            CourseReportSelectItem(),
+                          ],
+                        ),
+                      ),
                     ),
                     const SliverToBoxAdapter(
-                      child: Text("我的优秀表达"),
+                      child: CourseReportVocabularyItem(),
                     ),
-                    SliverList.builder(
-                      itemBuilder: (ctx, index) {
-                        return GestureDetector(
-                          onTap: () {},
-                          child: const Text("boagao"),
-                        );
-                      },
-                      itemCount: 3,
+                    SliverToBoxAdapter(
+                      child: Container(
+                        color: Colors.white,
+                        child: Container(
+                          margin: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Colours.color_EFF9FF,
+                          ),
+                          // color: Colors.red,
+                          child: const Column(
+                            children: [
+                              PlayBackItem(),
+                              PlayBackItem(),
+                              PlayBackItem(),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                    const SliverToBoxAdapter(
-                      child: Text("本节课收货"),
+                    SliverToBoxAdapter(
+                      child: Container(
+                        color: Colors.white,
+                        child: Container(
+                          margin: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Colours.color_EEF9E8,
+                          ),
+                          // color: Colors.red,
+                          child: const Column(
+                            children: [
+                              PlayBackItem(),
+                              PlayBackItem(),
+                              PlayBackItem(),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                    const SliverToBoxAdapter(
-                      child: Text("举行学习学习"),
-                    ),
-                    SliverList.builder(
-                      itemBuilder: (ctx, index) {
-                        return GestureDetector(
-                          onTap: () {},
-                          child: const Text("boagao"),
-                        );
-                      },
-                      itemCount: 3,
-                    ),
-                    const SliverToBoxAdapter(
-                      child: Text("给本节课打个分"),
+                    SliverToBoxAdapter(
+                      child: Gaps.vGap30,
                     ),
                   ],
                 ),

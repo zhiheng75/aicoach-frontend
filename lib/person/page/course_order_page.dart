@@ -1,5 +1,5 @@
 //课程订单
-import 'package:Bubble/person/view/course_order_item.dart';
+import 'package:Bubble/person/item/course_order_item.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

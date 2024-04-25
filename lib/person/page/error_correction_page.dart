@@ -1,5 +1,5 @@
+import 'package:Bubble/person/item/error_correction_item.dart';
 import 'package:Bubble/person/person_router.dart';
-import 'package:Bubble/person/view/error_correction_item.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';

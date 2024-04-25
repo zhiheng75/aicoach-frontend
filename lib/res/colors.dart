@@ -178,6 +178,13 @@ class Colours {
   static const Color color_6D388F = Color.fromRGBO(109, 56, 143, 1);
   static const Color color_2C0047 = Color.fromRGBO(44, 0, 71, 1);
 
-  // static const Color color_ACCDFF = Color.fromRGBO(71, 216, 255, 1);
-  // static const Color color_8E30FF = Color.fromRGBO(71, 216, 255, 1);
+  static const Color color_906DA9 = Color.fromRGBO(144, 109, 169, 1);
+  static const Color color_3770C6 = Color.fromRGBO(55, 112, 198, 1);
+
+  static const Color color_FAF3FF = Color.fromRGBO(250, 243, 255, 1);
+  static const Color color_EFF9FF = Color.fromRGBO(239, 249, 255, 1);
+
+  static const Color color_F9F8FF = Color.fromRGBO(249, 248, 255, 1);
+
+  static const Color color_EEF9E8 = Color.fromRGBO(238, 249, 232, 1);
 }

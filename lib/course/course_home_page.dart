@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:Bubble/course/course_router.dart';
-import 'package:Bubble/course/view/course_home_item.dart';
+import 'package:Bubble/course/item/course_home_item.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:flutter/material.dart';
@@ -105,6 +105,11 @@ class _CourseHomePageState extends State<CourseHomePage> {
                       NavigatorUtils.push(
                         context,
                         CourseRouter.courseReportPage,
+                      );
+                    } else if (index == 2) {
+                      NavigatorUtils.push(
+                        context,
+                        CourseRouter.curriculumEvaluationPage,
                       );
                     } else {
                       NavigatorUtils.push(

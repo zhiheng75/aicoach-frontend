@@ -1,9 +1,11 @@
 //课程流程
 import 'package:Bubble/course/course_router.dart';
-import 'package:Bubble/course/view/course_flow_item.dart';
+import 'package:Bubble/course/item/course_flow_item.dart';
+import 'package:Bubble/course/page/switching_teacher_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/scene/widget/select_scene.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
@@ -235,12 +237,35 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: const XTCupertinoNavigationBar(
-        backgroundColor: Color(0xFFFFFFFF),
+      navigationBar: XTCupertinoNavigationBar(
+        backgroundColor: const Color(0xFFFFFFFF),
         border: null,
         padding: EdgeInsetsDirectional.zero,
-        leading: NavigationBackWidget(),
-        middle: Text(
+        leading: const NavigationBackWidget(),
+        trailing: Container(
+          margin: const EdgeInsets.only(right: 10),
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              // NavigatorUtils.goBack(context);
+              showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                barrierColor: Colors.transparent,
+                isScrollControlled: true,
+                isDismissible: false,
+                enableDrag: false,
+                builder: (_) => const SwitchingTeacherPage(),
+              );
+            },
+            child: const LoadAssetImage(
+              "switching_teacher_icon",
+              width: 30.0,
+              height: 30.0,
+            ),
+          ),
+        ),
+        middle: const Text(
           "课程流程",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
