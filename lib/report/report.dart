@@ -584,28 +584,52 @@ class _ReportPageState extends State<ReportPage>
             //   },
             // );
           },
-          child: Padding(
-            padding: const EdgeInsets.only(
-              right: 16.0,
-            ),
+          child: Container(
+            margin: const EdgeInsets.all(10),
+            // padding: const EdgeInsets.only(
+            //   right: 16.0,
+            // ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    SizedBox(
-                      width: 118.0,
-                      height: 118.0,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20.0),
-                        child: const SingleChildScrollView(
-                          physics: NeverScrollableScrollPhysics(),
-                          child: LoadImage(
-                            "https://statics.shenmo-ai.com/sophia.jpg",
-                            width: 118.0,
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    Container(
+                      width: 60,
+                      height: 60,
+                      // margin: const EdgeInsets.only(top: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: Colors.white,
+                      ),
+                      // padding: const EdgeInsets.symmetric(
+                      //   horizontal: 10.0,
+                      //   vertical: 10.0,
+                      // ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "1",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
+                          Text(
+                            "Lesson",
+                            style: TextStyle(
+                              fontSize: 13.0,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(
@@ -615,19 +639,6 @@ class _ReportPageState extends State<ReportPage>
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const Text(
-                          "leve1",
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.color_666666,
-                            height: 18.0 / 11.0,
-                            letterSpacing: 0.05,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8.0,
-                        ),
                         const Text(
                           '农场动物',
                           style: TextStyle(
@@ -686,35 +697,35 @@ class _ReportPageState extends State<ReportPage>
                     const SizedBox(
                       height: 7.0,
                     ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        SizedBox(
-                          width: 32.0,
-                          height: 32.0,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(32.0),
-                            child: const SingleChildScrollView(
-                              physics: NeverScrollableScrollPhysics(),
-                              child: LoadImage(
-                                "https://statics.shenmo-ai.com/sophia.jpg",
-                                width: 32.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Text(
-                          "ssss",
-                          style: TextStyle(
-                            fontSize: 10.0,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFF666666),
-                            height: 18.0 / 10.0,
-                            letterSpacing: 0.05,
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Column(
+                    //   mainAxisSize: MainAxisSize.min,
+                    //   children: <Widget>[
+                    //     SizedBox(
+                    //       width: 32.0,
+                    //       height: 32.0,
+                    //       child: ClipRRect(
+                    //         borderRadius: BorderRadius.circular(32.0),
+                    //         child: const SingleChildScrollView(
+                    //           physics: NeverScrollableScrollPhysics(),
+                    //           child: LoadImage(
+                    //             "https://statics.shenmo-ai.com/sophia.jpg",
+                    //             width: 32.0,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     const Text(
+                    //       "ssss",
+                    //       style: TextStyle(
+                    //         fontSize: 10.0,
+                    //         fontWeight: FontWeight.w400,
+                    //         color: Color(0xFF666666),
+                    //         height: 18.0 / 10.0,
+                    //         letterSpacing: 0.05,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ],
@@ -814,6 +825,53 @@ class _ReportPageState extends State<ReportPage>
             const SizedBox(
               height: 20.0,
             ),
+            _type == "class"
+                ? SizedBox(
+                    height: 60,
+                    child: Column(
+                      children: [
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              "lEVEL1",
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w400,
+                                color: Colours.color_007Aff,
+                              ),
+                            ),
+                            Text(
+                              "lEVEL2",
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              "lEVEL3",
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Gaps.vGap4,
+                        const Text(
+                          "Unit2 朋友见面",
+                          style: TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Container(),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(

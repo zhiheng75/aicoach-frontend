@@ -30,10 +30,10 @@ class _MainTabberState extends State<MainTabber> {
   Color inactiveColor = const Color(0xffe0e0e0);
 
   List<BottomNavigationBarItem> items = [
-    BottomBarItem("tabbar_icon_home", "首页"),
-    BottomBarItem("tabbar_icon_course", "上课"),
-    BottomBarItem("tabbar_icon_spoken", "练口语"),
-    BottomBarItem("tabbar_icon_spoken", "我的"),
+    BottomBarItem("tab_home", "首页"),
+    BottomBarItem("tab_course", "上课"),
+    BottomBarItem("tab_spoken", "练口语"),
+    BottomBarItem("tab_mine", "我的"),
   ];
   List<Widget> pages = [
     // const MyWidget(),
@@ -137,7 +137,7 @@ class _MainTabberState extends State<MainTabber> {
       bottomNavigationBar: BottomNavigationBar(
         selectedFontSize: 10,
         unselectedFontSize: 10,
-        selectedItemColor: const Color.fromRGBO(74, 74, 74, 1),
+        selectedItemColor: const Color.fromRGBO(216, 69, 166, 1),
         //可设置颜色items
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,

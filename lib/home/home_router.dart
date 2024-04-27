@@ -1,3 +1,4 @@
+import 'package:Bubble/home/page/course_pays_page.dart';
 import 'package:Bubble/tabmain/main_tabber.dart';
 import 'package:Bubble/home/page/course_purchase_page.dart';
 import 'package:Bubble/scene/scene.dart';
@@ -12,6 +13,7 @@ class HomeRouter implements IRouterProvider {
   static String tabberPage = '/tabber';
   static String scenePage = '/scenePage';
   static String coursePurchasePage = '/CoursePurchasePage';
+  static String coursePaysPage = '/CoursePaysPage';
 
   @override
   void initRouter(FluroRouter router) {
@@ -29,6 +31,9 @@ class HomeRouter implements IRouterProvider {
 
     router.define(coursePurchasePage,
         handler: Handler(handlerFunc: (_, __) => const CoursePurchasePage()));
+
+    router.define(coursePaysPage,
+        handler: Handler(handlerFunc: (_, __) => const CoursePaysPage()));
 
     router.define(scenePage,
         handler: Handler(

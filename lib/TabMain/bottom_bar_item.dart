@@ -1,3 +1,4 @@
+import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 
 class BottomBarItem extends BottomNavigationBarItem {
@@ -5,13 +6,13 @@ class BottomBarItem extends BottomNavigationBarItem {
       : super(
           label: title,
           icon: Image.asset(
-            "assets/images/$iconName.png",
+            "assets/images/${iconName}_nor.png",
             width: 24,
             gaplessPlayback: true,
           ),
           activeIcon: Image.asset(
-            // "assets/images/${iconName}_active.png",
             "assets/images/$iconName.png",
+            // "assets/images/$iconName.png",
             width: 24,
             gaplessPlayback: true,
           ),

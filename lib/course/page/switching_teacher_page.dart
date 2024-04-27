@@ -1,3 +1,4 @@
+import 'package:Bubble/course/item/switching_teacher_item.dart';
 import 'package:Bubble/res/resources.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,60 +80,7 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage> {
                   color: Colors.black,
                   child: GridView.builder(
                     itemBuilder: (ctx, index) {
-                      return GestureDetector(
-                          onTap: () {
-                            // selectScene(sceneList[index]);
-                          },
-                          child: Stack(
-                            children: [
-                              Container(
-                                width: 200,
-                                // color: Colors.red,
-                                margin: const EdgeInsets.all(8),
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    // margin: const EdgeInsets.only(
-                                    //     top: 0, left: 8, right: 8, bottom: 0),
-                                    // decoration: BoxDecoration(
-                                    //   borderRadius: BorderRadius.circular(8.0),
-                                    // image: const DecorationImage(
-                                    //   image: AssetImage(
-                                    //     'assets/images/mkbg.png',
-                                    //   ),
-                                    //   fit: BoxFit.cover,
-                                    // ),
-                                    // ),
-                                    child: const LoadImage(
-                                      "https://statics.shenmo-ai.com/sophia.jpg",
-                                      fit: BoxFit.fill,
-                                      // width: 56.0,
-                                      // height: 56.0,
-                                    )),
-                              ),
-                              Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/shengwen.gif',
-                                      width: 35,
-                                      height: 25,
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                                    Gaps.vGap10
-                                  ],
-                                ),
-                              ),
-                              const Positioned(
-                                  right: 15,
-                                  bottom: 15,
-                                  child: LoadAssetImage(
-                                    "play_teacher_icon",
-                                    width: 32.0,
-                                    height: 32.0,
-                                  )),
-                            ],
-                          ));
+                      return const SwitchingTeacherItem();
                     },
                     itemCount: 10,
                     shrinkWrap: true,
@@ -142,7 +90,7 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage> {
                             crossAxisCount: 2,
                             mainAxisSpacing: 0,
                             crossAxisSpacing: 0,
-                            childAspectRatio: 1),
+                            childAspectRatio: 0.8),
                   )),
             ),
             // const Text("data"),

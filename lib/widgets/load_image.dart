@@ -6,18 +6,18 @@ import '../util/image_utils.dart';
 
 /// 图片加载（支持本地与网络图片）
 class LoadImage extends StatelessWidget {
-  
-  const LoadImage(this.image, {
+  const LoadImage(
+    this.image, {
     super.key,
-    this.width, 
+    this.width,
     this.height,
-    this.fit = BoxFit.cover, 
+    this.fit = BoxFit.cover,
     this.format = ImageFormat.png,
     this.holderImg = 'test_banner_img',
     this.cacheWidth,
     this.cacheHeight,
   });
-  
+
   final String image;
   final double? width;
   final double? height;
@@ -26,10 +26,11 @@ class LoadImage extends StatelessWidget {
   final String holderImg;
   final int? cacheWidth;
   final int? cacheHeight;
-  
+
   @override
   Widget build(BuildContext context) {
-    final Widget holder = LoadAssetImage(holderImg, height: height, width: width, fit: fit);
+    final Widget holder =
+        LoadAssetImage(holderImg, height: height, width: width, fit: fit);
     if (image.isNotEmpty) {
       return CachedNetworkImage(
         imageUrl: image,
@@ -45,7 +46,8 @@ class LoadImage extends StatelessWidget {
         memCacheHeight: cacheHeight,
       );
     } else {
-      return LoadAssetImage(holderImg,
+      return LoadAssetImage(
+        holderImg,
         height: height,
         width: width,
         fit: fit,
@@ -59,17 +61,15 @@ class LoadImage extends StatelessWidget {
 
 /// 加载本地资源图片
 class LoadAssetImage extends StatelessWidget {
-  
-  const LoadAssetImage(this.image, {
-    super.key,
-    this.width,
-    this.height, 
-    this.cacheWidth,
-    this.cacheHeight,
-    this.fit,
-    this.format = ImageFormat.png,
-    this.color
-  });
+  const LoadAssetImage(this.image,
+      {super.key,
+      this.width,
+      this.height,
+      this.cacheWidth,
+      this.cacheHeight,
+      this.fit,
+      this.format = ImageFormat.png,
+      this.color});
 
   final String image;
   final double? width;
@@ -79,10 +79,9 @@ class LoadAssetImage extends StatelessWidget {
   final BoxFit? fit;
   final ImageFormat format;
   final Color? color;
-  
+
   @override
   Widget build(BuildContext context) {
-
     return Image.asset(
       ImageUtils.getImgPath(image, format: format),
       height: height,
@@ -91,6 +90,7 @@ class LoadAssetImage extends StatelessWidget {
       cacheHeight: cacheHeight,
       fit: fit,
       color: color,
+
       /// 忽略图片语义
       excludeFromSemantics: true,
     );

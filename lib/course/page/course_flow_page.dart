@@ -42,6 +42,53 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
             color: Colors.black,
           ),
         ),
+
+        Gaps.vGap10,
+        Container(
+          // margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30.0),
+            color: Colours.color_F8F8F8,
+          ),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 30.0,
+            vertical: 10.0,
+          ),
+          child: const Text(
+            "本课学习目标 Learning targe",
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        Gaps.vGap8,
+        SizedBox(
+          height: 400,
+          child: ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (ctx, index) {
+              return GestureDetector(
+                onTap: () {
+                  if (index == 0) {
+                    NavigatorUtils.push(
+                      context,
+                      CourseRouter.courseDetailsPage,
+                    );
+                  } else if (index == 1) {
+                    NavigatorUtils.push(
+                      context,
+                      CourseRouter.courseReportPage,
+                    );
+                  }
+                },
+                child: const CourseFlowItem(),
+              );
+            },
+            itemCount: 4,
+          ),
+        ),
         Gaps.vGap10,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -182,52 +229,6 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
               ],
             ),
           ],
-        ),
-        Gaps.vGap10,
-        Container(
-          // margin: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30.0),
-            color: Colours.color_F8F8F8,
-          ),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 30.0,
-            vertical: 10.0,
-          ),
-          child: const Text(
-            "本课学习目标 Learning targe",
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
-            ),
-          ),
-        ),
-        Gaps.vGap8,
-        SizedBox(
-          height: 450,
-          child: ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (ctx, index) {
-              return GestureDetector(
-                onTap: () {
-                  if (index == 0) {
-                    NavigatorUtils.push(
-                      context,
-                      CourseRouter.courseDetailsPage,
-                    );
-                  } else if (index == 1) {
-                    NavigatorUtils.push(
-                      context,
-                      CourseRouter.courseReportPage,
-                    );
-                  }
-                },
-                child: const CourseFlowItem(),
-              );
-            },
-            itemCount: 4,
-          ),
         ),
         // const CourseFlowItem(),
       ],
