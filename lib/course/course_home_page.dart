@@ -106,27 +106,10 @@ class _CourseHomePageState extends State<CourseHomePage> {
     for (int i = 0; i < 5; i++) {
       list.add(GestureDetector(
           onTap: () {
-            if (i == 0) {
-              NavigatorUtils.push(
-                context,
-                CourseRouter.courseDetailsPage,
-              );
-            } else if (i == 1) {
-              NavigatorUtils.push(
-                context,
-                CourseRouter.courseReportPage,
-              );
-            } else if (i == 2) {
-              NavigatorUtils.push(
-                context,
-                CourseRouter.curriculumEvaluationPage,
-              );
-            } else {
-              NavigatorUtils.push(
-                context,
-                CourseRouter.courseFlowPage,
-              );
-            }
+            NavigatorUtils.push(
+              context,
+              CourseRouter.courseFlowPage,
+            );
           },
           child: const CourseHomeItem()));
     }
@@ -192,10 +175,10 @@ class _CourseHomePageState extends State<CourseHomePage> {
     //     CourseRouter.courseDetailsPage,
     //   );
     // } else if (index == 1) {
-    //   NavigatorUtils.push(
-    //     context,
-    //     CourseRouter.courseReportPage,
-    //   );
+    // NavigatorUtils.push(
+    //   context,
+    //   CourseRouter.courseReportPage,
+    // );
     // } else if (index == 2) {
     //   NavigatorUtils.push(
     //     context,

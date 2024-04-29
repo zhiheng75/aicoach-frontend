@@ -1,3 +1,4 @@
+import 'package:Bubble/res/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,7 @@ class _CourseReportVocabularyItemState
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          color: Colors.black,
+          color: Colours.color_F9F8FF,
         ),
         // color: Colors.black,
         padding: const EdgeInsets.all(10),
@@ -51,9 +52,9 @@ class KeywordWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget container = Container(
       decoration: BoxDecoration(
-          border: Border.all(color: const Color(0xFFD7D7D7), width: 0.5),
+          // border: Border.all(color: const Color(0xFFD7D7D7), width: 0.5),
           borderRadius: const BorderRadius.all(Radius.circular(15)),
-          color: Colors.white),
+          color: Colours.color_FF71E0),
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
       child: Text(
         keyword,

@@ -26,6 +26,50 @@ class CourseReportPage extends StatefulWidget {
 class _CourseReportPageState extends State<CourseReportPage> {
   final ScreenUtil _screenUtil = ScreenUtil();
 
+  Widget headWidget(String headStr, String numberStr) {
+    return SliverToBoxAdapter(
+      child: Container(
+        color: Colors.white,
+        child: Row(
+          children: [
+            Gaps.hGap16,
+            const LoadAssetImage(
+              "home_head_icon",
+              width: 20.0,
+              height: 20.0,
+            ),
+            Gaps.hGap8,
+            RichText(
+              text: TextSpan(children: [
+                TextSpan(
+                    text: headStr,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colours.color_666666,
+                    )),
+                TextSpan(
+                    text: numberStr,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colours.color_FF71CF,
+                    )),
+                const TextSpan(
+                    text: "个",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colours.color_666666,
+                    )),
+              ]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -343,22 +387,24 @@ class _CourseReportPageState extends State<CourseReportPage> {
                                 ))),
                       ),
                     ),
-                    SliverToBoxAdapter(
-                      child: Container(
-                        color: Colors.white,
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            CourseReportSelectItem(),
-                            CourseReportSelectItem(),
-                            CourseReportSelectItem(),
-                          ],
-                        ),
-                      ),
-                    ),
+                    // SliverToBoxAdapter(
+                    //   child: Container(
+                    //     color: Colors.white,
+                    //     child: const Row(
+                    //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    //       children: [
+                    //         CourseReportSelectItem(),
+                    //         CourseReportSelectItem(),
+                    //         CourseReportSelectItem(),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    headWidget("词汇", "12"),
                     const SliverToBoxAdapter(
                       child: CourseReportVocabularyItem(),
                     ),
+                    headWidget("句型", "12"),
                     SliverToBoxAdapter(
                       child: Container(
                         color: Colors.white,
@@ -380,6 +426,8 @@ class _CourseReportPageState extends State<CourseReportPage> {
                         ),
                       ),
                     ),
+                    headWidget("Speak Skill", "12"),
+
                     SliverToBoxAdapter(
                       child: Container(
                         color: Colors.white,

@@ -274,10 +274,10 @@ class _ReportPageState extends State<ReportPage>
         // const SizedBox(
         //   width: 8.0,
         // ),
-        barItem('系统版报告', 'class'),
+        barItem('系统班报告', 'class'),
         Gaps.hGap8,
 
-        barItem('口语课报告', 'chat'),
+        barItem('口语联系报告', 'chat'),
         Gaps.hGap8,
 
         barItem('模考报告', 'exam'), //隐藏
@@ -576,6 +576,10 @@ class _ReportPageState extends State<ReportPage>
         content = GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
+            NavigatorUtils.push(
+              context,
+              CourseRouter.courseReportPage,
+            );
             // NavigatorUtils.push(
             //   context,
             //   ReportRouter.reportDetailPage,

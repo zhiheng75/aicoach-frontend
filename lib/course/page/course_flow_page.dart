@@ -2,6 +2,7 @@
 import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/course/item/course_flow_item.dart';
 import 'package:Bubble/course/page/switching_teacher_page.dart';
+import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
@@ -44,22 +45,40 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
         ),
 
         Gaps.vGap10,
-        Container(
-          // margin: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30.0),
-            color: Colours.color_F8F8F8,
-          ),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 30.0,
-            vertical: 10.0,
-          ),
-          child: const Text(
-            "本课学习目标 Learning targe",
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
+        GestureDetector(
+          onTap: () {
+            NavigatorUtils.push(
+              context,
+              CourseRouter.courseDetailsPage,
+            );
+          },
+          child: Container(
+            // margin: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30.0),
+              color: Colours.color_F8F8F8,
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 30.0,
+              vertical: 10.0,
+            ),
+            child: RichText(
+              text: const TextSpan(children: [
+                TextSpan(
+                    text: "本课学习目标",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colours.color_examination,
+                    )),
+                TextSpan(
+                    text: "Learning targe",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colours.color_666666,
+                    )),
+              ]),
             ),
           ),
         ),
@@ -71,17 +90,17 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
             itemBuilder: (ctx, index) {
               return GestureDetector(
                 onTap: () {
-                  if (index == 0) {
-                    NavigatorUtils.push(
-                      context,
-                      CourseRouter.courseDetailsPage,
-                    );
-                  } else if (index == 1) {
-                    NavigatorUtils.push(
-                      context,
-                      CourseRouter.courseReportPage,
-                    );
-                  }
+                  // if (index == 0) {
+                  //   NavigatorUtils.push(
+                  //     context,
+                  //     CourseRouter.courseDetailsPage,
+                  //   );
+                  // } else if (index == 1) {
+                  //   NavigatorUtils.push(
+                  //     context,
+                  //     CourseRouter.courseReportPage,
+                  //   );
+                  // }
                 },
                 child: const CourseFlowItem(),
               );
@@ -95,32 +114,40 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
           children: [
             Stack(
               children: [
-                Container(
-                  // margin: const EdgeInsets.all(0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(90.0),
-                    color: Colours.color_EBCCFE,
-                  ),
-                  padding: const EdgeInsets.all(30),
-                  child: const Column(
-                    children: [
-                      Text(
-                        "报告",
-                        style: TextStyle(
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
+                GestureDetector(
+                  onTap: () {
+                    NavigatorUtils.push(
+                      context,
+                      CourseRouter.courseReportPage,
+                    );
+                  },
+                  child: Container(
+                    // margin: const EdgeInsets.all(0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(90.0),
+                      color: Colours.color_EBCCFE,
+                    ),
+                    padding: const EdgeInsets.all(30),
+                    child: const Column(
+                      children: [
+                        Text(
+                          "报告",
+                          style: TextStyle(
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                      Text(
-                        "已发布",
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                        ),
-                      )
-                    ],
+                        Text(
+                          "已发布",
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 const Positioned(
@@ -146,32 +173,40 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
                     ),
                   ),
                 ),
-                Container(
-                  // margin: const EdgeInsets.all(0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(90.0),
-                    color: Colours.color_C1EBF7,
-                  ),
-                  padding: const EdgeInsets.all(30),
-                  child: const Column(
-                    children: [
-                      Text(
-                        "纠错",
-                        style: TextStyle(
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
+                GestureDetector(
+                  onTap: () {
+                    NavigatorUtils.push(
+                      context,
+                      PersonalRouter.errorCorrectionDetailPage,
+                    );
+                  },
+                  child: Container(
+                    // margin: const EdgeInsets.all(0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(90.0),
+                      color: Colours.color_C1EBF7,
+                    ),
+                    padding: const EdgeInsets.all(30),
+                    child: const Column(
+                      children: [
+                        Text(
+                          "纠错",
+                          style: TextStyle(
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                      Text(
-                        "已发布",
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                        ),
-                      )
-                    ],
+                        Text(
+                          "已发布",
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 const Positioned(
@@ -190,32 +225,40 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
             ),
             Stack(
               children: [
-                Container(
-                  // margin: const EdgeInsets.all(0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(90.0),
-                    color: Colours.color_DDF3D2,
-                  ),
-                  padding: const EdgeInsets.all(30),
-                  child: const Column(
-                    children: [
-                      Text(
-                        "评价",
-                        style: TextStyle(
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
+                GestureDetector(
+                  onTap: () {
+                    NavigatorUtils.push(
+                      context,
+                      CourseRouter.curriculumEvaluationPage,
+                    );
+                  },
+                  child: Container(
+                    // margin: const EdgeInsets.all(0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(90.0),
+                      color: Colours.color_DDF3D2,
+                    ),
+                    padding: const EdgeInsets.all(30),
+                    child: const Column(
+                      children: [
+                        Text(
+                          "评价",
+                          style: TextStyle(
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                      Text(
-                        "已评价",
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                        ),
-                      )
-                    ],
+                        Text(
+                          "已评价",
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 const Positioned(

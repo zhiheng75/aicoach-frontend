@@ -456,7 +456,8 @@ class _ChatState extends State<ChatPage>
             ),
           ),
           Positioned(
-            bottom: _screenUtil.bottomBarHeight + 16.0,
+            // bottom: _screenUtil.bottomBarHeight + 16.0,
+            bottom: 16.0,
             child: BottomBar(
               chatWebsocket: _chatWebsocket,
               controller: _bottomBarControll,

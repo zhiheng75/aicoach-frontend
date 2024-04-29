@@ -1,5 +1,6 @@
 import 'package:Bubble/person/item/error_correction_item.dart';
 import 'package:Bubble/person/person_router.dart';
+import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,6 +31,38 @@ class _ErrorCorrectionPageState extends State<ErrorCorrectionPage> {
           body: SafeArea(
         child: Column(
           children: [
+            const SizedBox(
+              height: 40,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    "lEVEL1",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colours.color_007Aff,
+                    ),
+                  ),
+                  Text(
+                    "lEVEL2",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    "lEVEL3",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const Text(
               "Unit2 朋友见面",
               style: TextStyle(
