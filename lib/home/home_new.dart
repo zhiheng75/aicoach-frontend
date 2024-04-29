@@ -20,7 +20,6 @@ import 'package:common_utils/common_utils.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:jverify/jverify.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:umeng_common_sdk/umeng_common_sdk.dart';
@@ -60,10 +59,10 @@ class _HomePageState extends State<HomeNewPage>
 
   void init() {
     initDio();
-    // initUM();
+    initUM();
 
     // 初始化手机号一键登录插件
-    initPlatformState();
+    // initPlatformState();
     checkCollectInformation();
     // 获取体验时间
     _homeProvider.getUsageTime();
@@ -130,23 +129,23 @@ class _HomePageState extends State<HomeNewPage>
     DioUtils.instance.dio.options.headers['applyName'] = info.appName;
   }
 
-  Future<void> initPlatformState() async {
-    // 初始化 SDK 之前添加监听
-    Constant.jverify.addSDKSetupCallBackListener((JVSDKSetupEvent event) {
-      LogUtil.d("receive sdk setup call back event :${event.toMap()}");
-    });
+  // Future<void> initPlatformState() async {
+  //   // 初始化 SDK 之前添加监听
+  //   Constant.jverify.addSDKSetupCallBackListener((JVSDKSetupEvent event) {
+  //     LogUtil.d("receive sdk setup call back event :${event.toMap()}");
+  //   });
 
-    Constant.jverify.setDebugMode(true); // 打开调试模式
-    Constant.jverify.setup(
-        appKey: "d213d60b209d0807dc4146f4", //"你自己应用的 AppKey",
-        channel: "devloper-default"); // 初始化sdk,  appKey 和 channel 只对ios设置有效
-    if (!mounted) return;
+  //   Constant.jverify.setDebugMode(true); // 打开调试模式
+  //   Constant.jverify.setup(
+  //       appKey: "d213d60b209d0807dc4146f4", //"你自己应用的 AppKey",
+  //       channel: "devloper-default"); // 初始化sdk,  appKey 和 channel 只对ios设置有效
+  //   if (!mounted) return;
 
-    /// 授权页面点击时间监听
-    Constant.jverify.addAuthPageEventListener((JVAuthPageEvent event) {
-      LogUtil.d("receive auth page event :${event.toMap()}");
-    });
-  }
+  //   /// 授权页面点击时间监听
+  //   Constant.jverify.addAuthPageEventListener((JVAuthPageEvent event) {
+  //     LogUtil.d("receive auth page event :${event.toMap()}");
+  //   });
+  // }
 
   void checkCollectInformation() {
     _currentTab = '';
@@ -208,10 +207,10 @@ class _HomePageState extends State<HomeNewPage>
   @override
   void initState() {
     super.initState();
-    final Jverify jverify = Jverify();
-    jverify.setup(
-        appKey: "d213d60b209d0807dc4146f4", //"你自己应用的 AppKey",
-        channel: "devloper-default");
+    // final Jverify jverify = Jverify();
+    // jverify.setup(
+    //     appKey: "d213d60b209d0807dc4146f4", //"你自己应用的 AppKey",
+    //     channel: "devloper-default");
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     _isLogin = LoginManager.isLogin();
     Future.delayed(Duration.zero, () {

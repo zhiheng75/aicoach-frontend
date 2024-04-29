@@ -115,7 +115,7 @@ dependencies:
   #in_app_purchase https://github.com/flutter/packages/tree/main/packages/in_app_purchase/in_app_purchase
   in_app_purchase: ^3.1.11
   #极光
-  jverify: 2.1.2
+  # jverify: 2.1.2
   #flutter_keychain https://github.com/jeroentrappers/flutter_keychain
   flutter_keychain: ^2.4.0
   #fluwx https://github.com/OpenFlutter/fluwx
@@ -134,7 +134,7 @@ dependencies:
   audio_session: ^0.1.18
   package_info_plus: ^4.2.0
   umeng_common_sdk: ^1.2.7
-  flutter_bugly: ^0.4.4
+  # flutter_bugly: ^0.4.4
 
 dev_dependencies:
   flutter_test:

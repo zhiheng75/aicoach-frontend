@@ -2,13 +2,10 @@ import 'package:Bubble/conversation/provider/conversation_provider.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/provider/selecter_teacher_provider.dart';
 import 'package:Bubble/setting/provider/device_provider.dart';
-import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/media_utils.dart';
-import 'package:device_identity/device_identity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bugly/flutter_bugly.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +18,6 @@ import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/handle_error_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/theme_utils.dart';
-import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 import 'home/splash_page.dart';
 import 'net/dio_utils.dart';
@@ -33,48 +29,39 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver();
 String? _appLifecycleState;
 
 Future<void> main() async {
-  FlutterBugly.postCatchedException(
-    () {
-      /// 异常处理
-      handleError(() async {
-        /// 确保初始化完成
-        WidgetsFlutterBinding.ensureInitialized();
+  /// 异常处理
+  handleError(() async {
+    /// 确保初始化完成
+    WidgetsFlutterBinding.ensureInitialized();
 
-        /// sp初始化
-        await SpUtil.getInstance();
+    /// sp初始化
+    await SpUtil.getInstance();
 
-        /// device_identity初始化
-        await DeviceIdentity.register();
-        SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    /// device_identity初始化
+    // await DeviceIdentity.register();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-        // 设置音频配置
-        await AudioConfig.addAudioConfig();
+    // 设置音频配置
+    await AudioConfig.addAudioConfig();
 
-        // 全局监听App状态
-        SystemChannels.lifecycle.setMessageHandler((message) async {
-          // 退到后台
-          if (_appLifecycleState == 'AppLifecycleState.inactive' &&
-              message == 'AppLifecycleState.paused') {
-            await MediaUtils().stopPlayByAppPaused();
-          }
+    // 全局监听App状态
+    SystemChannels.lifecycle.setMessageHandler((message) async {
+      // 退到后台
+      if (_appLifecycleState == 'AppLifecycleState.inactive' &&
+          message == 'AppLifecycleState.paused') {
+        await MediaUtils().stopPlayByAppPaused();
+      }
 
-          _appLifecycleState = message;
+      _appLifecycleState = message;
 
-          return message;
-        });
+      return message;
+    });
 
-        runApp(MyApp());
-        FlutterBugly.init(
-          androidAppId: "1461f76ac6",
-          iOSAppId: "2cd012b035",
-        );
-      });
-    },
-    debugUpload: false,
-    // handler: (details) {
-    //   LogUtils.i('error====>${details.toString()}');
-    // }
-  );
+    runApp(MyApp());
+  });
+  // handler: (details) {
+  //   LogUtils.i('error====>${details.toString()}');
+  // }
 
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
 }
@@ -83,7 +70,6 @@ class MyApp extends StatelessWidget {
   MyApp({super.key, this.home, this.theme}) {
     Log.init();
     initDio();
-    initUM();
     Routes.initRoutes();
   }
 
@@ -114,18 +100,6 @@ class MyApp extends StatelessWidget {
       baseUrl: 'https://api.bubble.shenmo-ai.com/',
       interceptors: interceptors,
     );
-  }
-
-  void initUM() {
-    String platformStr = Channel.channelios;
-    if (Device.isAndroid) {
-      platformStr = Channel.channelhuawei;
-    } else {
-      platformStr = Channel.channelios;
-    }
-    UmengCommonSdk.initCommon(
-        '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', platformStr);
-    UmengCommonSdk.setPageCollectionModeManual();
   }
 
   @override

@@ -247,7 +247,7 @@ class _CheckCodePageState extends State<CheckCodePage>
   void loginSuccess() {
     // TODO: implement loginSuccess
     if (widget.typeLogin == "0") {
-      Constant.jverify.dismissLoginAuthView();
+      // Constant.jverify.dismissLoginAuthView();
       hideLoading();
     }
 
