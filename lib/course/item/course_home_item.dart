@@ -4,6 +4,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 
 class CourseHomeItem extends StatefulWidget {
+  // final int index;
   const CourseHomeItem({super.key});
 
   @override

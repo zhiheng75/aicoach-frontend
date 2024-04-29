@@ -104,7 +104,31 @@ class _CourseHomePageState extends State<CourseHomePage> {
   List<Widget> _buildItems() {
     List<Widget> list = [];
     for (int i = 0; i < 5; i++) {
-      list.add(const CourseHomeItem());
+      list.add(GestureDetector(
+          onTap: () {
+            if (i == 0) {
+              NavigatorUtils.push(
+                context,
+                CourseRouter.courseDetailsPage,
+              );
+            } else if (i == 1) {
+              NavigatorUtils.push(
+                context,
+                CourseRouter.courseReportPage,
+              );
+            } else if (i == 2) {
+              NavigatorUtils.push(
+                context,
+                CourseRouter.curriculumEvaluationPage,
+              );
+            } else {
+              NavigatorUtils.push(
+                context,
+                CourseRouter.courseFlowPage,
+              );
+            }
+          },
+          child: const CourseHomeItem()));
     }
     return list;
   }
@@ -162,27 +186,27 @@ class _CourseHomePageState extends State<CourseHomePage> {
     //     itemBuilder: (ctx, index) {
     //       return GestureDetector(
     //           onTap: () {
-    //             if (index == 0) {
-    //               NavigatorUtils.push(
-    //                 context,
-    //                 CourseRouter.courseDetailsPage,
-    //               );
-    //             } else if (index == 1) {
-    //               NavigatorUtils.push(
-    //                 context,
-    //                 CourseRouter.courseReportPage,
-    //               );
-    //             } else if (index == 2) {
-    //               NavigatorUtils.push(
-    //                 context,
-    //                 CourseRouter.curriculumEvaluationPage,
-    //               );
-    //             } else {
-    //               NavigatorUtils.push(
-    //                 context,
-    //                 CourseRouter.courseFlowPage,
-    //               );
-    //             }
+    // if (index == 0) {
+    //   NavigatorUtils.push(
+    //     context,
+    //     CourseRouter.courseDetailsPage,
+    //   );
+    // } else if (index == 1) {
+    //   NavigatorUtils.push(
+    //     context,
+    //     CourseRouter.courseReportPage,
+    //   );
+    // } else if (index == 2) {
+    //   NavigatorUtils.push(
+    //     context,
+    //     CourseRouter.curriculumEvaluationPage,
+    //   );
+    // } else {
+    //   NavigatorUtils.push(
+    //     context,
+    //     CourseRouter.courseFlowPage,
+    //   );
+    // }
 
     //             // NavigatorUtils.push(
     //             //     context,

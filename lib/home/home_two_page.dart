@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:Bubble/chat/entity/character_entity.dart';
 import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/home/entity/banner_list_bean.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/home/presenter/home_two_page_presenter.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
@@ -30,6 +31,7 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
 import 'package:Bubble/chat/entity/character_list_bean.dart';
 import 'package:provider/provider.dart';
 import 'package:Bubble/exam/exam_router.dart';
+import 'package:Bubble/home/entity/banner_list_bean.dart';
 
 class HomeTwoPage extends StatefulWidget {
   const HomeTwoPage({super.key});
@@ -54,6 +56,11 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   List<SceneEntity> sceneList = [];
   final ScrollController _scrollController = ScrollController();
 
+  List<BBanner> banner = [];
+  List<BBanner> lesson = [];
+  int isChatShow = 0;
+  int isKetShow = 0;
+
   Widget barWidget(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(10),
@@ -62,10 +69,16 @@ class _HomeTwoPageState extends State<HomeTwoPage>
         borderRadius: BorderRadius.circular(10.0),
         child: Swiper(
           itemBuilder: (BuildContext context, int index) {
-            return Image.network(
-              "https://img1.baidu.com/it/u=2286755736,2807423982&fm=253&fmt=auto&app=138&f=JPEG?w=650&h=487",
+            return LoadImage(
+              banner[index].imageUrl,
               fit: BoxFit.cover,
+              // width: 56.0,
+              // height: 56.0,
             );
+            // Image.network(
+            //   "https://img1.baidu.com/it/u=2286755736,2807423982&fm=253&fmt=auto&app=138&f=JPEG?w=650&h=487",
+            //   fit: BoxFit.cover,
+            // );
           },
           onTap: (index) {
             NavigatorUtils.goWebViewPage(
@@ -80,7 +93,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
             //   builder: (_) => const SelectScene(),
             // );
           },
-          itemCount: 3,
+          itemCount: banner.length,
           autoplay: true,
           pagination: const SwiperPagination(),
           // control: SwiperControl(),
@@ -89,7 +102,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     );
   }
 
-  Widget courseWidget(BuildContext context) {
+  Widget courseWidget(BBanner lesson) {
     return GestureDetector(
       onTap: () {
         //
@@ -107,45 +120,45 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           color: Colours.color_F8F8F8,
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "英语口语春季训练营火热报名中",
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
-              ),
-            ),
-            Gaps.vGap8,
+            // Text(
+            //   lesson.title,
+            //   style: const TextStyle(
+            //     fontSize: 16.0,
+            //     fontWeight: FontWeight.w400,
+            //     color: Colors.black,
+            //   ),
+            // ),
+            // Gaps.vGap8,
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Image.network(
-                "http://t15.baidu.com/it/u=3515177818,2652149588&fm=224&app=112&f=JPEG?w=500&h=249",
-                fit: BoxFit.fill,
+                lesson.imageUrl,
+                fit: BoxFit.cover,
               ),
             ),
-            Gaps.vGap8,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 1.0),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(30.0)),
-                    ),
-                    child: const Text(
-                      "去选课",
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                      ),
-                    )),
-              ],
-            ),
+            // Gaps.vGap8,
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: [
+            //     Container(
+            //         padding: const EdgeInsets.all(8),
+            //         decoration: BoxDecoration(
+            //           border: Border.all(color: Colors.black, width: 1.0),
+            //           borderRadius:
+            //               const BorderRadius.all(Radius.circular(30.0)),
+            //         ),
+            //         child: const Text(
+            //           "去选课",
+            //           style: TextStyle(
+            //             fontSize: 15.0,
+            //             fontWeight: FontWeight.w400,
+            //             color: Colors.black,
+            //           ),
+            //         )),
+            //   ],
+            // ),
           ],
         ),
       ),
@@ -571,31 +584,42 @@ class _HomeTwoPageState extends State<HomeTwoPage>
               // const SliverToBoxAdapter(
               //   child: Text("Hello Tommy"),
               // ),
-              SliverPersistentHeader(
-                  pinned: true,
-                  floating: false,
-                  delegate: _SliverAppBarDelegate(
-                    minHeight: 25, //收起的高度
-                    maxHeight: 25,
-                    child: Container(
-                        color: Colors.white, child: const Text("Hello Tommy")),
-                  )),
+              // SliverPersistentHeader(
+              //     pinned: true,
+              //     floating: false,
+              //     delegate: _SliverAppBarDelegate(
+              //       minHeight: 25, //收起的高度
+              //       maxHeight: 25,
+              //       child: Container(
+              //           color: Colors.white, child: const Text("Hello Tommy")),
+              //     )),
               SliverToBoxAdapter(
-                child: barWidget(context),
+                child: banner.isNotEmpty ? barWidget(context) : Container(),
               ),
 
               SliverToBoxAdapter(
-                child: characterList.isNotEmpty
-                    ? peopleWidget(context)
-                    : Container(),
+                child: isChatShow == 0
+                    ? Container()
+                    : characterList.isNotEmpty
+                        ? peopleWidget(context)
+                        : Container(),
               ),
+              SliverList.builder(
+                itemBuilder: (ctx, index) {
+                  return GestureDetector(
+                    onTap: () {},
+                    child: courseWidget(lesson[index]),
+                  );
+                },
+                itemCount: lesson.length,
+              ),
+              // SliverToBoxAdapter(
+              //   child: courseWidget(context),
+              // ),
               SliverToBoxAdapter(
-                child: courseWidget(context),
+                child: isKetShow == 1 ? mokaoWidget(context) : Container(),
               ),
-              SliverToBoxAdapter(
-                child: mokaoWidget(context),
-              ),
-              _categoryList.length > 1
+              _categoryList.isNotEmpty
                   ? SliverPersistentHeader(
                       pinned: true,
                       floating: false,
@@ -747,11 +771,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   void getCategoryList(String characterId) async {
     DioUtils.instance.requestNetwork<ResultData>(
-        Method.get, HttpApi.topicOrScene,
-        queryParameters: {
-          'character_id': characterId,
-          'type': 2,
-        }, onSuccess: (result) {
+        Method.get, HttpApi.appSceneList, onSuccess: (result) {
       if (result == null || result.data == null) {
         setState(() {});
         return;
@@ -789,6 +809,17 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   @override
   void sendFail(String msg) {
     // TODO: implement sendFail
+  }
+
+  @override
+  void sendBannerListSuccess(BannerListBean data) {
+    // TODO: implement sendBannerListSuccess
+    banner.addAll(data.data.banner);
+    lesson.addAll(data.data.lesson);
+    isKetShow = data.data.isKetShow;
+    isChatShow = data.data.isChatShow;
+    setState(() {});
+    _homeTwoPagePresenter.getCharacterList();
   }
 }
 

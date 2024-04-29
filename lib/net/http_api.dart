@@ -11,6 +11,8 @@ class HttpApi {
 //角色列表
   static const String characterList = "character_list";
 
+  static const String bannerList = "banner_list";
+
   //获取微信信息
   static const String wechatInfo = "wxinfo";
   //微信登录
@@ -109,6 +111,9 @@ class HttpApi {
   static const String upload = 'uploadfile';
 
   static const String topicOrScene = 'scene_list';
+
+//首页场景列表
+  static const String appSceneList = 'app/scene_list';
 
   //获取oss上传
   static const String getOssSts = "oss_sts";

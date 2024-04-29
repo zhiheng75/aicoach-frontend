@@ -55,25 +55,25 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage> {
                     ),
                   ),
                 )),
-            Container(
-                width: _screenUtil.screenWidth,
-                height: 50,
-                color: Colors.black,
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    LoadAssetImage(
-                      "nv_sele_icon",
-                      width: 72.0,
-                      height: 40.0,
-                    ),
-                    LoadAssetImage(
-                      "nan_nor_icon",
-                      width: 72.0,
-                      height: 40.0,
-                    )
-                  ],
-                )),
+            // Container(
+            //     width: _screenUtil.screenWidth,
+            //     height: 50,
+            //     color: Colors.black,
+            //     child: const Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //       children: [
+            //         LoadAssetImage(
+            //           "nv_sele_icon",
+            //           width: 72.0,
+            //           height: 40.0,
+            //         ),
+            //         LoadAssetImage(
+            //           "nan_nor_icon",
+            //           width: 72.0,
+            //           height: 40.0,
+            //         )
+            //       ],
+            //     )),
             Expanded(
               child: Container(
                   // width: _screenUtil.screenWidth,
@@ -85,12 +85,12 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage> {
                     itemCount: 10,
                     shrinkWrap: true,
                     // physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 0,
-                            crossAxisSpacing: 0,
-                            childAspectRatio: 0.8),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 0,
+                        crossAxisSpacing: 0,
+                        childAspectRatio: (_screenUtil.screenWidth / 2 - 20) /
+                            (_screenUtil.screenWidth / 2 + 30)),
                   )),
             ),
             // const Text("data"),
