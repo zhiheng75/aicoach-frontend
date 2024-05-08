@@ -1,9 +1,11 @@
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:flutter/material.dart';
+import 'package:Bubble/person/entity/order_list_bean.dart';
 
 class CourseOrderItem extends StatelessWidget {
-  const CourseOrderItem({super.key});
+  final Datum datum;
+  const CourseOrderItem({super.key, required this.datum});
 
   @override
   Widget build(BuildContext context) {
@@ -21,27 +23,27 @@ class CourseOrderItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "英语口语系统课L1",
-            style: TextStyle(
+          Text(
+            datum.name,
+            style: const TextStyle(
               fontSize: 17.0,
               fontWeight: FontWeight.w400,
               color: Colors.black,
             ),
           ),
           Gaps.vGap5,
-          const Text(
-            "课程金额: 2160元",
-            style: TextStyle(
+          Text(
+            "课程金额: ${datum.orderPrice}元",
+            style: const TextStyle(
               fontSize: 14.0,
               fontWeight: FontWeight.w400,
               color: Colours.color_666666,
             ),
           ),
-          const Row(
+          Row(
             children: [
-              Text(
-                "课程有效期:",
+              const Text(
+                "课程有效期: ",
                 style: TextStyle(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w400,
@@ -49,8 +51,8 @@ class CourseOrderItem extends StatelessWidget {
                 ),
               ),
               Text(
-                "2025-04-05",
-                style: TextStyle(
+                datum.endTime,
+                style: const TextStyle(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w400,
                   color: Colours.color_893A6E,
@@ -58,17 +60,17 @@ class CourseOrderItem extends StatelessWidget {
               ),
             ],
           ),
-          const Text(
-            "交易时间: 2024-4-06",
-            style: TextStyle(
+          Text(
+            "交易时间: ${datum.createdAt}",
+            style: const TextStyle(
               fontSize: 14.0,
               fontWeight: FontWeight.w400,
               color: Colours.color_666666,
             ),
           ),
-          const Text(
-            "支付方式:微信支付",
-            style: TextStyle(
+          Text(
+            "支付方式: ${datum.paymentMethod}",
+            style: const TextStyle(
               fontSize: 14.0,
               fontWeight: FontWeight.w400,
               color: Colours.color_666666,
@@ -93,9 +95,9 @@ class CourseOrderItem extends StatelessWidget {
                 ),
               ),
               Gaps.hGap5,
-              const Text(
-                "1年期口语练习，2025年4月6号到期",
-                style: TextStyle(
+              Text(
+                datum.giftDesc,
+                style: const TextStyle(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w400,
                   color: Colours.color_333333,

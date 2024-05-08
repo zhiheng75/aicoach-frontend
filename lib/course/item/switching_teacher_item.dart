@@ -4,9 +4,11 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:Bubble/chat/entity/character_list_bean.dart';
 
 class SwitchingTeacherItem extends StatefulWidget {
-  const SwitchingTeacherItem({super.key});
+  final Datum data;
+  const SwitchingTeacherItem({super.key, required this.data});
 
   @override
   State<SwitchingTeacherItem> createState() => _SwitchingTeacherItemState();
@@ -43,7 +45,7 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
                 // ),
                 // ),
                 child: LoadImage(
-                  "https://statics.shenmo-ai.com/sophia.jpg",
+                  widget.data.imageUrl,
                   fit: BoxFit.fill,
                   width: _screenUtil.screenWidth / 2 - 20,
                   height: _screenUtil.screenWidth / 2 + 30,
@@ -73,21 +75,21 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
                 color: Colours.color_292A2E,
               ),
               padding: const EdgeInsets.all(10),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Gaps.vGap4,
                   Text(
-                    "Anela",
-                    style: TextStyle(
+                    widget.data.name,
+                    style: const TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w400,
                       color: Colors.white,
                     ),
                   ),
                   Text(
-                    "洛杉矶大学/高级老师",
-                    style: TextStyle(
+                    widget.data.slogan,
+                    style: const TextStyle(
                       fontSize: 12.0,
                       fontWeight: FontWeight.w400,
                       color: Colours.color_999999,

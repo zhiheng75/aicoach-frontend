@@ -22,7 +22,6 @@ class Background extends StatefulWidget {
 }
 
 class _BackgroundState extends State<Background> {
-
   final ScreenUtil _screenUtil = ScreenUtil();
   final AvatarController _avatarController = AvatarController();
   final ScrollController _scrollController = ScrollController();
@@ -63,7 +62,6 @@ class _BackgroundState extends State<Background> {
 
   @override
   Widget build(BuildContext context) {
-
     Widget content(HomeProvider provider) {
       double width = _screenUtil.screenWidth;
       double height = _screenUtil.screenHeight;
@@ -228,7 +226,11 @@ class BackgroundController {
     }
     double initialX = initialPosition!.dx;
     double x = position.dx;
-    slideDirection = x == initialX ? '' : x > initialX ? 'right' : 'left';
+    slideDirection = x == initialX
+        ? ''
+        : x > initialX
+            ? 'right'
+            : 'left';
     double xDistance = (x - initialX).abs();
     distance.value = xDistance;
   }
@@ -243,7 +245,6 @@ class BackgroundController {
     // leftImageUrl = null;
     // rightImageUrl = null;
   }
-
 }
 
 class AvatarController {
@@ -252,7 +253,8 @@ class AvatarController {
   }
   AvatarController._internal();
 
-  static final AvatarController _avatarController = AvatarController._internal();
+  static final AvatarController _avatarController =
+      AvatarController._internal();
 
   final StreamController _streamController = StreamController.broadcast();
 

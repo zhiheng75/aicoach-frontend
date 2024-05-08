@@ -58,6 +58,7 @@ class Datum {
   int isLocked;
   double pCount;
   double iCount;
+  int isDefault;
 
   Datum({
     required this.characterId,
@@ -82,6 +83,7 @@ class Datum {
     required this.isLocked,
     required this.pCount,
     required this.iCount,
+    required this.isDefault,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -103,10 +105,11 @@ class Datum {
         greetingText: json["greeting_text"],
         greetingAudio: json["greeting_audio"],
         tts: json["tts"],
-        isAuthor: json["is_author"],
-        isLocked: json["is_locked"],
-        pCount: json["p_count"]?.toDouble(),
-        iCount: json["i_count"]?.toDouble(),
+        isAuthor: json["is_author"] ?? true,
+        isLocked: json["is_locked"] ?? 1,
+        pCount: json["p_count"] == null ? 1.0 : json["p_count"]?.toDouble(),
+        iCount: json["i_count"] == null ? 1.0 : json["i_count"]?.toDouble(),
+        isDefault: json["is_default"] ?? 1,
       );
 
   Map<String, dynamic> toJson() => {
@@ -132,5 +135,6 @@ class Datum {
         "is_locked": isLocked,
         "p_count": pCount,
         "i_count": iCount,
+        "is_default": isDefault,
       };
 }

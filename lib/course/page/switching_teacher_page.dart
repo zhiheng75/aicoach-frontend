@@ -1,4 +1,8 @@
+import 'package:Bubble/chat/entity/character_list_bean.dart';
 import 'package:Bubble/course/item/switching_teacher_item.dart';
+import 'package:Bubble/course/presenter/switching_teacher_page_presenter.dart';
+import 'package:Bubble/course/view/switching_teacher_page_view.dart';
+import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/resources.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,11 +16,20 @@ class SwitchingTeacherPage extends StatefulWidget {
   State<SwitchingTeacherPage> createState() => _SwitchingTeacherPageState();
 }
 
-class _SwitchingTeacherPageState extends State<SwitchingTeacherPage> {
+class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
+    with
+        BasePageMixin<SwitchingTeacherPage, SwitchingTeacherPagePresenter>,
+        AutomaticKeepAliveClientMixin<SwitchingTeacherPage>
+    implements SwitchingTeacherPageView {
   final ScreenUtil _screenUtil = ScreenUtil();
+
+  late SwitchingTeacherPagePresenter _switchingTeacherPagePresenter;
+
+  late List<Datum> teacherData = [];
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
         width: _screenUtil.screenWidth,
         height: _screenUtil.screenHeight,
@@ -80,9 +93,11 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage> {
                   color: Colors.black,
                   child: GridView.builder(
                     itemBuilder: (ctx, index) {
-                      return const SwitchingTeacherItem();
+                      return SwitchingTeacherItem(
+                        data: teacherData[index],
+                      );
                     },
-                    itemCount: 10,
+                    itemCount: teacherData.length,
                     shrinkWrap: true,
                     // physics: const NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -93,9 +108,31 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage> {
                             (_screenUtil.screenWidth / 2 + 30)),
                   )),
             ),
-            // const Text("data"),
-            // const Text("data"),
           ],
         ));
   }
+
+  @override
+  SwitchingTeacherPagePresenter createPresenter() {
+    // TODO: implement createPresenter
+    _switchingTeacherPagePresenter = SwitchingTeacherPagePresenter();
+    return _switchingTeacherPagePresenter;
+  }
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+  }
+
+  @override
+  void sendSuccess(CharacterListBean characterListBean) {
+    // TODO: implement sendSuccess
+    setState(() {
+      teacherData.addAll(characterListBean.data);
+    });
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => false;
 }

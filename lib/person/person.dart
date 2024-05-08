@@ -807,10 +807,10 @@ class _PersonPageState extends State<PersonPage>
                         const SizedBox(
                           height: 16.0,
                         ),
-                        // vipInfo(),
-                        // const SizedBox(
-                        //   height: 16.0,
-                        // ),
+                        vipInfo(),
+                        const SizedBox(
+                          height: 16.0,
+                        ),
                         courseInfo(),
                         experience,
                         menu,

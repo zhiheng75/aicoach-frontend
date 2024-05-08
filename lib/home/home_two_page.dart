@@ -60,6 +60,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   List<BBanner> lesson = [];
   int isChatShow = 0;
   int isKetShow = 0;
+  int isDefault = 0;
 
   Widget barWidget(BuildContext context) {
     return Container(
@@ -192,7 +193,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          characterList[0].slogan,
+                          characterList[isDefault].slogan,
                           style: const TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.w400,
@@ -200,21 +201,29 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                           ),
                         ),
                         Gaps.vGap5,
-                        Container(
-                            padding: const EdgeInsets.only(
-                                top: 5, bottom: 5, left: 15, right: 15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                              color: Colours.color_6D388F,
-                            ),
-                            child: const Text(
-                              "自由对话",
-                              style: TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white,
+                        GestureDetector(
+                          onTap: () {
+                            NavigatorUtils.push(
+                              context,
+                              "${HomeRouter.homePage}?index=$isDefault",
+                            );
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.only(
+                                  top: 5, bottom: 5, left: 15, right: 15),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.0),
+                                color: Colours.color_6D388F,
                               ),
-                            )),
+                              child: const Text(
+                                "自由对话",
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              )),
+                        ),
                       ],
                     )),
                     const SizedBox(
@@ -244,10 +253,10 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                 //     const Expanded(child: Gaps.empty),
                 //     GestureDetector(
                 //         onTap: () {
-                //           NavigatorUtils.push(
-                //             context,
-                //             "${HomeRouter.homePage}?index=0",
-                //           );
+                // NavigatorUtils.push(
+                //   context,
+                //   "${HomeRouter.homePage}?index=0",
+                // );
                 //         },
                 //         child: const Text("自由对话")),
                 //     Gaps.hGap15,
@@ -759,6 +768,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     characterList.addAll(data.data);
     for (int i = 0; i < characterList.length; i++) {
       headData.add(characterList[i].avatarImage);
+      if (characterList[i].isDefault == 1) {
+        isDefault = i;
+      }
     }
 
     setState(() {});

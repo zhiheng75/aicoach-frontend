@@ -17,12 +17,15 @@ class _ProblemItemState extends State<ProblemItem> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Gaps.vGap8,
-        const Text(
-          "1,关于选课",
-          style: TextStyle(
-            fontSize: 17.0,
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
+        Container(
+          color: Colors.amber,
+          child: const Text(
+            "1,关于选课",
+            style: TextStyle(
+              fontSize: 17.0,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+            ),
           ),
         ),
         Container(

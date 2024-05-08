@@ -11,6 +11,8 @@ class HttpApi {
 //角色列表
   static const String characterList = "character_list";
 
+  static const String teacherTwoList = "teacher_list";
+
   static const String bannerList = "banner_list";
 
   //获取微信信息
@@ -141,4 +143,7 @@ class HttpApi {
 
   //邀请码
   static const String inviteCode = 'invite_code';
+
+//订单列表
+  static const String orderList = 'order_list';
 }

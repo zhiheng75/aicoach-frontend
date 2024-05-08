@@ -12,6 +12,7 @@ import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/intercept.dart';
 import 'package:Bubble/scene/collect_information.dart';
 import 'package:Bubble/scene/entity/scene_entity.dart';
+import 'package:Bubble/scene/instructional_video_dialogue_page.dart';
 import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
@@ -235,6 +236,10 @@ class _HomePageState extends State<HomeNewPage>
         SceneEntity scene = SceneEntity.fromJson(value['data']);
         _homeProvider.scene = scene;
       }
+      if (type == 'video') {
+        SceneEntity scene = SceneEntity.fromJson(value['data']);
+        _homeProvider.scene = scene;
+      }
       Future.delayed(Duration.zero, () {
         showModalBottomSheet(
           context: context,
@@ -246,7 +251,10 @@ class _HomePageState extends State<HomeNewPage>
           enableDrag: false,
           builder: (_) => type == 'topic'
               ? TopicPage(onEnd: () => changeTab('chat'))
-              : ScenePage(onEnd: () => changeTab('chat')),
+              : type == "scene"
+                  ? ScenePage(onEnd: () => changeTab('chat'))
+                  : InstructionalVideoDialoguePage(
+                      onEnd: () => changeTab('chat')),
         );
         // 重置tab
         changeTab('');

@@ -21,6 +21,7 @@ import '../mvp/base_page.dart';
 import '../util/media_utils.dart';
 import '../widgets/load_data.dart';
 import '../widgets/load_fail.dart';
+import 'package:video_player/video_player.dart';
 
 class InstructionalVideoDialoguePage extends StatefulWidget {
   const InstructionalVideoDialoguePage({
@@ -64,6 +65,8 @@ class _InstructionalVideoDialoguePageState
   AppLifecycleState? _appLifecycleState;
   // 是否对话结束
   bool _isConversationEnd = false;
+
+  late VideoPlayerController _controller;
 
   void init() {
     _pageState = 'loading';
@@ -215,6 +218,31 @@ class _InstructionalVideoDialoguePageState
     init();
     // 监听App状态
     WidgetsBinding.instance.addObserver(this);
+
+    _controller = VideoPlayerController.networkUrl(Uri.parse(
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+    // _controller.play();
+    checkVideoCompletion(_controller);
+    // _controller.value.
+  }
+
+  void checkVideoCompletion(VideoPlayerController controller) {
+    if (controller.value.isInitialized) {
+      // 当视频控制器初始化完成后，开始监听播放事件
+      controller.addListener(() {
+        final bool isPlaying = controller.value.isPlaying;
+        final Duration position = controller.value.position;
+
+        if (isPlaying && position >= controller.value.duration) {
+          // 视频正在播放且播放到了末尾，视频播放完成
+          print('视频播放完成');
+        }
+      });
+    }
   }
 
   @override
@@ -222,6 +250,12 @@ class _InstructionalVideoDialoguePageState
     super.didChangeAppLifecycleState(state);
     _appLifecycleState = state;
     Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -333,6 +367,21 @@ class _InstructionalVideoDialoguePageState
               Positioned(
                 top: _screenUtil.statusBarHeight + 9.0,
                 child: navbar,
+              ),
+              Positioned(
+                top: _screenUtil.statusBarHeight + 50,
+                width: _screenUtil.screenWidth,
+                height: 200,
+                child: _controller.value.isInitialized
+                    ? AspectRatio(
+                        aspectRatio: _controller.value.aspectRatio,
+                        child: Container(
+                            color: Colors.blue,
+                            child: VideoPlayer(_controller)),
+                      )
+                    : Container(
+                        color: Colors.blue,
+                      ),
               ),
               Positioned(
                 top: contentTop,

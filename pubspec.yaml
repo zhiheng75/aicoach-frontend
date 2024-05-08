@@ -91,8 +91,8 @@ dependencies:
   # websocket https://github.com/dart-lang/web_socket_channel
   web_socket_channel: ^2.4.0
   # flutter_sound https://github.com/canardoux/flutter_sound
-  # flutter_sound: ^9.2.13
-  flutter_sound: ^9.4.6
+  flutter_sound: ^9.2.13
+  # flutter_sound: ^9.4.6
   # uuid https://github.com/Daegalus/dart-uuid
   uuid: ^3.0.7
   # permission_handler https://github.com/baseflow/flutter-permission-handler
@@ -140,7 +140,7 @@ dependencies:
   # 轮播图
   card_swiper: ^3.0.1
   liquid_swipe: ^3.1.0
-
+  video_player: ^2.7.2
 
 dev_dependencies:
   flutter_test:

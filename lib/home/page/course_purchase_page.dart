@@ -1,5 +1,4 @@
 //课程购买
-import 'dart:math';
 
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/home/widget/course_equity_item.dart';
@@ -29,6 +28,12 @@ class _CoursePurchasePageState extends State<CoursePurchasePage> {
   bool isUpdateAppBar = false;
   bool _checked = false;
   final ScreenUtil _screenUtil = ScreenUtil();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   Widget classImgWidget(BuildContext context) {
     return SizedBox(
@@ -370,17 +375,21 @@ class _CoursePurchasePageState extends State<CoursePurchasePage> {
                       // mainAxisExtent: 173,
                     ),
                     itemBuilder: (BuildContext ctx, int index) {
-                      return PeopleItem();
+                      return PeopleItem(
+                        idx: index,
+                      );
                     }),
                 headWidget("权益"),
                 SliverList.builder(
                   itemBuilder: (ctx, index) {
                     return GestureDetector(
                       onTap: () {},
-                      child: const CourseEquityItem(),
+                      child: CourseEquityItem(
+                        idx: index,
+                      ),
                     );
                   },
-                  itemCount: 4,
+                  itemCount: 5,
                 ),
                 headWidget("常见问题"),
                 problemWidget(),
