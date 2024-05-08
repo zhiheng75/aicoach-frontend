@@ -103,16 +103,16 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
-                const Center(
-                  child: Text(
-                    "Unit2 朋友见面",
-                    style: TextStyle(
-                      fontSize: 17.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+                // const Center(
+                //   child: Text(
+                //     "Unit2 朋友见面",
+                //     style: TextStyle(
+                //       fontSize: 17.0,
+                //       fontWeight: FontWeight.w400,
+                //       color: Colors.black,
+                //     ),
+                //   ),
+                // ),
                 Container(
                   margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -126,6 +126,23 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const Row(
+                        children: [
+                          Text(
+                            "lisu",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w400,
+                              color: Colours.color_666666,
+                            ),
+                          ),
+                          LoadAssetImage(
+                            'default_head_img',
+                            width: 25.0,
+                            height: 25.0,
+                          ),
+                        ],
+                      ),
                       const Text(
                         "Really? Awesome， Awesome，Behind me are the Alps，Now I'm going skiing，shall we go？",
                         style: TextStyle(
@@ -135,7 +152,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage> {
                         ),
                       ),
                       const ErrorCorrectionDetailItem(),
-                      const ErrorCorrectionDetailItem(),
+                      const ErrorCorrectionOneDetailItem(),
                       notReachItem(),
                     ],
                   ),

@@ -1,7 +1,13 @@
+import 'package:Bubble/course/entity/step_detail_bean.dart';
+import 'package:Bubble/course/presenter/curriculum_evaluation_page_presenter.dart';
+import 'package:Bubble/course/view/curriculum_evaluation_page_view.dart';
+import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/resources.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/image_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
@@ -12,21 +18,32 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CurriculumEvaluationPage extends StatefulWidget {
-  const CurriculumEvaluationPage({super.key});
+  final StepDetailBean stepDetailBean;
+  const CurriculumEvaluationPage({super.key, required this.stepDetailBean});
 
   @override
   State<CurriculumEvaluationPage> createState() =>
       _CurriculumEvaluationPageState();
 }
 
-class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage> {
-  double star = 4;
+class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage>
+    with
+        BasePageMixin<CurriculumEvaluationPage,
+            CurriculumEvaluationPagePresenter>,
+        RouteAware,
+        AutomaticKeepAliveClientMixin<CurriculumEvaluationPage>
+    implements
+        CurriculumEvaluationPageView {
+  // double star = 4;
 
   final TextEditingController _controller = TextEditingController();
   final FocusNode _nodeText1 = FocusNode();
   List<TextInputFormatter>? _inputFormatters;
   bool _isSelect = false;
   final ScreenUtil _screenUtil = ScreenUtil();
+
+  double starNum = 5.0;
+  late CurriculumEvaluationPagePresenter _curriculumEvaluationPagePresenter;
 
   @override
   void initState() {
@@ -38,6 +55,7 @@ class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return CupertinoPageScaffold(
       navigationBar: const XTCupertinoNavigationBar(
         backgroundColor: Color(0xFFFFFFFF),
@@ -54,18 +72,18 @@ class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage> {
               child: MyScrollView(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Center(
+          Center(
               child: Text(
-            "Unit2L3系统课 Unit1 朋友见面",
-            style: TextStyle(
+            widget.stepDetailBean.data.unitName,
+            style: const TextStyle(
               fontSize: 17.0,
               fontWeight: FontWeight.w400,
               color: Colors.black,
             ),
           )),
-          const Text(
-            "Lesson1 农场里的动物",
-            style: TextStyle(
+          Text(
+            widget.stepDetailBean.data.lessonName,
+            style: const TextStyle(
               fontSize: 14.0,
               fontWeight: FontWeight.w400,
               color: Colors.black,
@@ -110,7 +128,7 @@ class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage> {
                   //   },
                   // ),
                   RatingBar(
-                    initialRating: 3,
+                    initialRating: starNum,
                     direction: Axis.horizontal,
                     allowHalfRating: true,
                     itemCount: 5,
@@ -122,7 +140,9 @@ class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage> {
                     ),
                     itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                     onRatingUpdate: (rating) {
-                      print(rating);
+                      setState(() {
+                        starNum = rating;
+                      });
                     },
                   ),
                 ],
@@ -199,7 +219,17 @@ class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage> {
           Gaps.vGap26,
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () {},
+            onTap: () {
+              if (_controller.text.isNotEmpty) {
+                _curriculumEvaluationPagePresenter.postLessonFeedback(
+                    widget.stepDetailBean.data.lessonId.toString(),
+                    _isSelect ? "1" : "0",
+                    starNum.toString(),
+                    _controller.text);
+              } else {
+                Toast.show("请输入建议");
+              }
+            },
             child: Container(
               width: 231.0,
               height: 48.0,
@@ -234,4 +264,27 @@ class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage> {
       ))),
     );
   }
+
+  @override
+  CurriculumEvaluationPagePresenter createPresenter() {
+    // TODO: implement createPresenter
+    _curriculumEvaluationPagePresenter = CurriculumEvaluationPagePresenter();
+    return _curriculumEvaluationPagePresenter;
+  }
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+  }
+
+  @override
+  void sendSuccess(String msg) {
+    // TODO: implement sendSuccess
+    Toast.show(msg);
+    NavigatorUtils.goBack(context);
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => false;
 }

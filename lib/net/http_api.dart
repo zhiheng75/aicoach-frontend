@@ -12,6 +12,8 @@ class HttpApi {
   static const String characterList = "character_list";
 
   static const String teacherTwoList = "teacher_list";
+//课程目录
+  static const String lessonList = "lesson_list";
 
   static const String bannerList = "banner_list";
 
@@ -146,4 +148,11 @@ class HttpApi {
 
 //订单列表
   static const String orderList = 'order_list';
+
+//获取课程step
+  static const String stepDetail = 'step_detail';
+//课程评价
+  static const String lessonFeedback = "lesson_feedback";
+
+  static const String lessonDetail = 'lesson_detail';
 }

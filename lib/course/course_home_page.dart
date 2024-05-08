@@ -1,9 +1,15 @@
 import 'dart:math';
 
 import 'package:Bubble/course/course_router.dart';
+import 'package:Bubble/course/entity/lesson_list_bean.dart';
 import 'package:Bubble/course/item/course_home_item.dart';
+import 'package:Bubble/course/item/lesson_sele_item.dart';
+import 'package:Bubble/course/presenter/course_home_page_presenter.dart';
+import 'package:Bubble/course/view/course_home_page_view.dart';
+import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
@@ -18,56 +24,40 @@ class CourseHomePage extends StatefulWidget {
   State<CourseHomePage> createState() => _CourseHomePageState();
 }
 
-class _CourseHomePageState extends State<CourseHomePage> {
+class _CourseHomePageState extends State<CourseHomePage>
+    with
+        BasePageMixin<CourseHomePage, CourseHomePagePresenter>,
+        RouteAware,
+        AutomaticKeepAliveClientMixin<CourseHomePage>
+    implements CourseHomePageView {
   int curTabIndex = 0;
   final ScreenUtil _screenUtil = ScreenUtil();
+  late CourseHomePagePresenter _courseHomePagePresenter;
+  late List<Datum> listData = [];
 
   Widget tabbar() {
     return SizedBox(
       height: 50,
       child: ListView.builder(
         itemBuilder: (ctx, index) {
-          return Container(
-            width: 80,
-            height: 50,
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25.0),
-              color: Colours.color_007AFF,
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              setState(() {
+                curTabIndex = index;
+              });
+            },
+            child: LessonSeleItem(
+              tit: listData[index].levelName,
+              sele: curTabIndex == index ? true : false,
             ),
-            padding: const EdgeInsets.only(right: 8, left: 8.0),
-            child: const Center(
-                child: Text(
-              "Level 1",
-              style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
-              ),
-            )),
           );
         },
-        itemCount: 3,
+        itemCount: listData.length,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         physics: const AlwaysScrollableScrollPhysics(),
         scrollDirection: Axis.horizontal,
       ),
-    );
-  }
-
-  Widget _refreshListView() {
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (ctx, index) {
-              // return _buildItem(dataList[index]);
-              return _buildStickyHeader();
-            },
-            childCount: 4,
-          ),
-        ),
-      ],
     );
   }
 
@@ -91,33 +81,61 @@ class _CourseHomePageState extends State<CourseHomePage> {
     );
   }
 
-  Widget _buildStickyHeader() {
-    return StickyHeader(
-      header: _headTitle("Unit2 朋友见面"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: _buildItems(),
-      ),
-    );
-  }
-
-  List<Widget> _buildItems() {
+  List<Widget> _buildItems(List<UnitList> xxlist) {
     List<Widget> list = [];
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < xxlist.length; i++) {
       list.add(GestureDetector(
           onTap: () {
             NavigatorUtils.push(
-              context,
-              CourseRouter.courseFlowPage,
-            );
+                context,
+                // CourseRouter.courseFlowPage,
+                "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
           },
-          child: const CourseHomeItem()));
+          child: CourseHomeItem(
+            index: i + 1,
+            unitData: xxlist[i],
+          )));
     }
     return list;
   }
 
+  Widget _buildStickyHeader(List<UnitList> list, String tit) {
+    return StickyHeader(
+      header: _headTitle(tit),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: _buildItems(list),
+      ),
+    );
+  }
+
+  Widget _refreshListView() {
+    // print(listData[curTabIndex].list.length);
+    // Log.e(listData[curTabIndex].list.length as String);
+
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (ctx, index) {
+              // return _buildItem(dataList[index]);
+              // List<DatumList> listData = listData[curTabIndex].list;
+              List<Datum> xxlistData = listData;
+              List<LevelList> xxlist = xxlistData[curTabIndex].list;
+              List<UnitList> list = xxlist[index].list;
+
+              return _buildStickyHeader(list, xxlist[index].unitName);
+            },
+            childCount: listData[curTabIndex].list.length,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     // if (isloading) {
     //   return const Scaffold(
     //     body: Center(
@@ -131,8 +149,8 @@ class _CourseHomePageState extends State<CourseHomePage> {
             body: SafeArea(
           child: Column(
             children: [
-              // tabbar(),
-              Center(child: SizedBox(width: 300, child: tabbar())),
+              listData.length > 1 ? tabbar() : Container(),
+              // Center(child: SizedBox(width: 300, child: tabbar())),
               Expanded(child: _refreshListView()),
             ],
           ),
@@ -204,6 +222,29 @@ class _CourseHomePageState extends State<CourseHomePage> {
     //   ),
     // )),
   }
+
+  @override
+  CourseHomePagePresenter createPresenter() {
+    // TODO: implement createPresenter
+    _courseHomePagePresenter = CourseHomePagePresenter();
+    return _courseHomePagePresenter;
+  }
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+  }
+
+  @override
+  void sendSuccess(LessonListBean data) {
+    setState(() {
+      listData.addAll(data.data);
+    });
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => false;
 }
 
 // class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {

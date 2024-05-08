@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:Bubble/home/entity/lesson_detail_bean.dart';
+import 'package:Bubble/mvp/base_page.dart';
+import 'package:Bubble/person/presneter/purchase_page_presenter.dart';
+import 'package:Bubble/person/view/purchase_view.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
@@ -10,14 +14,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CoursePaysPage extends StatefulWidget {
-  const CoursePaysPage({super.key});
+  final LessonDetailBean data;
+  const CoursePaysPage({super.key, required this.data});
 
   @override
   State<CoursePaysPage> createState() => _CoursePaysPageState();
 }
 
-class _CoursePaysPageState extends State<CoursePaysPage> {
+class _CoursePaysPageState extends State<CoursePaysPage>
+    with
+        BasePageMixin<CoursePaysPage, PurchasePagePresenter>,
+        RouteAware,
+        WidgetsBindingObserver,
+        AutomaticKeepAliveClientMixin<CoursePaysPage>
+    implements PurchaseView {
   final ScreenUtil _screenUtil = ScreenUtil();
+  late PurchasePagePresenter _purchasePagePresenter;
 
   String _pay = 'wxpay';
 
@@ -103,7 +115,23 @@ class _CoursePaysPageState extends State<CoursePaysPage> {
     );
   }
 
-  void showToast({required BuildContext context, required String message}) {
+  void pay() {
+    if (_pay == 'wxpay') {
+      // payInt = 1;
+      _purchasePagePresenter.wxChatPay(
+          widget.data.data.goodsId, widget.data.data.price, true);
+    }
+    if (_pay == 'alipay') {
+      _purchasePagePresenter.aliPay(
+          widget.data.data.goodsId, widget.data.data.price, true);
+    }
+    if (_pay == 'applepay') {
+      _purchasePagePresenter.applePay(widget.data.data.goodsId);
+    }
+    // Navigator.of(context).pop();
+  }
+
+  void showPayToast({required BuildContext context, required String message}) {
     showDialog(
       context: context,
       builder: (context) {
@@ -124,6 +152,7 @@ class _CoursePaysPageState extends State<CoursePaysPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     List<Widget> payChildren = [
       payItem('wxpay'),
       const SizedBox(
@@ -158,9 +187,9 @@ class _CoursePaysPageState extends State<CoursePaysPage> {
               ),
             ),
             Gaps.vGap4,
-            const Text(
-              "2109.00",
-              style: TextStyle(
+            Text(
+              widget.data.data.price.toString(),
+              style: const TextStyle(
                 fontSize: 22.0,
                 fontWeight: FontWeight.w400,
                 color: Colors.black,
@@ -212,9 +241,9 @@ class _CoursePaysPageState extends State<CoursePaysPage> {
                     ),
                   ),
                   Gaps.vGap8,
-                  const Text(
-                    "商品-8985023859823041422536",
-                    style: TextStyle(
+                  Text(
+                    widget.data.data.levelName,
+                    style: const TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w400,
                       color: Colours.color_333333,
@@ -246,7 +275,7 @@ class _CoursePaysPageState extends State<CoursePaysPage> {
             GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                showToast(context: context, message: "message");
+                pay();
               },
               child: Container(
                 width: 250.0,
@@ -294,4 +323,19 @@ class _CoursePaysPageState extends State<CoursePaysPage> {
       }
     }
   }
+
+  @override
+  paySuccess() {
+    // TODO: implement paySuccess
+    showPayToast(context: context, message: "支付成功/前往微信添加/本课程辅导老师");
+  }
+
+  @override
+  PurchasePagePresenter createPresenter() {
+    _purchasePagePresenter = PurchasePagePresenter();
+    return _purchasePagePresenter;
+  }
+
+  @override
+  bool get wantKeepAlive => false;
 }

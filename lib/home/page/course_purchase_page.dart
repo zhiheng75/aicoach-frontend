@@ -1,9 +1,13 @@
 //课程购买
 
+import 'package:Bubble/home/entity/lesson_detail_bean.dart';
 import 'package:Bubble/home/home_router.dart';
+import 'package:Bubble/home/presenter/course_purchase_page_presenter.dart';
+import 'package:Bubble/home/view/course_purchase_page_view.dart';
 import 'package:Bubble/home/widget/course_equity_item.dart';
 import 'package:Bubble/home/widget/people_item.dart';
 import 'package:Bubble/home/widget/problem_item.dart';
+import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
@@ -21,13 +25,22 @@ class CoursePurchasePage extends StatefulWidget {
   State<CoursePurchasePage> createState() => _CoursePurchasePageState();
 }
 
-class _CoursePurchasePageState extends State<CoursePurchasePage> {
+class _CoursePurchasePageState extends State<CoursePurchasePage>
+    with
+        BasePageMixin<CoursePurchasePage, CoursePurchasePagePresenter>,
+        RouteAware,
+        AutomaticKeepAliveClientMixin<CoursePurchasePage>
+    implements CoursePurchasePageView {
   RenderBox? boxTab;
   late Offset offsetTab;
   GlobalKey keyTab = GlobalKey(debugLabel: "university");
   bool isUpdateAppBar = false;
   bool _checked = false;
   final ScreenUtil _screenUtil = ScreenUtil();
+  late CoursePurchasePagePresenter _coursePurchasePagePresenter;
+
+  late LessonDetailBean dataBean;
+  bool isLoding = true;
 
   @override
   void initState() {
@@ -39,12 +52,17 @@ class _CoursePurchasePageState extends State<CoursePurchasePage> {
     return SizedBox(
       height: 200,
       child: GestureDetector(
-        onTap: () {},
-        child: Image.network(
-          "http://t15.baidu.com/it/u=3515177818,2652149588&fm=224&app=112&f=JPEG?w=500&h=249",
-          fit: BoxFit.cover,
-        ),
-      ),
+          onTap: () {},
+          child: LoadImage(
+            dataBean.data.banner,
+            width: 56.0,
+            height: 56.0,
+          )
+          //  Image.network(
+          //   dataBean.data.banner,
+          //   fit: BoxFit.cover,
+          // ),
+          ),
     );
   }
 
@@ -201,7 +219,7 @@ class _CoursePurchasePageState extends State<CoursePurchasePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "L1英语口语系统课",
+            dataBean.data.levelName,
             key: keyTab,
             style: const TextStyle(
               fontSize: 20.0,
@@ -231,9 +249,9 @@ class _CoursePurchasePageState extends State<CoursePurchasePage> {
                 ),
               ),
               Gaps.hGap6,
-              const Text(
-                "1年口语练习",
-                style: TextStyle(
+              Text(
+                dataBean.data.tips,
+                style: const TextStyle(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w400,
                   color: Colors.black,
@@ -242,21 +260,27 @@ class _CoursePurchasePageState extends State<CoursePurchasePage> {
             ],
           ),
           Gaps.vGap4,
-          const Text(
-            "￥2109元",
-            style: TextStyle(
+          Text(
+            "￥${dataBean.data.price}元",
+            style: const TextStyle(
               fontSize: 22.0,
               fontWeight: FontWeight.w400,
               color: Colours.color_108F4C,
             ),
           ),
-          aiTeacherWidget(),
-          const LoadAssetImage(
-            "vs_teacher",
-            // width: 170.0,
-            // height: 150.0,
+          LoadImage(
+            dataBean.data.teacherImg,
           ),
-          teacherWidget()
+          LoadImage(
+            dataBean.data.lessonTimeImg,
+          )
+          // aiTeacherWidget(),
+          // const LoadAssetImage(
+          //   "vs_teacher",
+          //   // width: 170.0,
+          //   // height: 150.0,
+          // ),
+          // teacherWidget()
         ],
       ),
     );
@@ -286,7 +310,19 @@ class _CoursePurchasePageState extends State<CoursePurchasePage> {
     );
   }
 
+  List<Widget> _buildItems() {
+    List<Widget> list = [];
+    for (int i = 0; i < dataBean.data.questions.length; i++) {
+      list.add(ProblemItem(
+        questions: dataBean.data.questions[i],
+      ));
+    }
+    return list;
+  }
+
   Widget problemWidget() {
+    //  dataBean.data.questions
+
     return SliverToBoxAdapter(
       child: Container(
         margin: const EdgeInsets.all(10),
@@ -298,262 +334,297 @@ class _CoursePurchasePageState extends State<CoursePurchasePage> {
           horizontal: 5.0,
           vertical: 5,
         ),
-        child: const Column(
-          children: [
-            ProblemItem(),
-            ProblemItem(),
-          ],
+        child: Column(
+          children: _buildItems(),
+        ),
+      ),
+    );
+  }
+
+  Widget lodingView() {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return CupertinoPageScaffold(
+      child: Scaffold(
+        body: CustomPaint(
+          painter: TopOriginPainter(),
+          size: Size.infinite,
+          child: isLoding
+              ? lodingView()
+              : Stack(children: [
+                  NotificationListener<ScrollNotification>(
+                    onNotification: (ScrollNotification notification) {
+                      boxTab ??= keyTab.currentContext!.findRenderObject()
+                          as RenderBox?;
+                      offsetTab = boxTab!.localToGlobal(Offset.zero);
+
+                      if (offsetTab.dy < 110.0) {
+                        isUpdateAppBar = true;
+                        // isUpdatePage = false;
+                        // isUpdateTheme = true;
+                      } else {
+                        isUpdateAppBar = false;
+                        // isUpdatePage = true;
+                        // isUpdateTheme = false;
+                      }
+                      setState(() {});
+
+                      return true;
+                    },
+                    child: CustomScrollView(slivers: [
+                      SliverToBoxAdapter(
+                        child: classImgWidget(context),
+                      ),
+                      SliverToBoxAdapter(
+                        child: classDetaileWidget(context),
+                      ),
+                      headWidget("用户评价"),
+                      SliverToBoxAdapter(
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          height: 100.0,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: dataBean.data.userFeedbackImg.length,
+                            itemBuilder: (context, index) {
+                              return SizedBox(
+                                width: 150.0,
+                                child: Card(
+                                  // color: Colors.primaries[index],
+                                  child: LoadImage(
+                                    dataBean.data.userFeedbackImg[index],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      headWidget("课程详情"),
+                      headWidget("适用人群"),
+                      SliverGrid.builder(
+                          itemCount: 6,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            //设置列数
+                            crossAxisCount: 3,
+                            //设置横向间距
+                            crossAxisSpacing: 0,
+                            //设置主轴间距
+                            mainAxisSpacing: 0,
+                            // mainAxisExtent: 173,
+                          ),
+                          itemBuilder: (BuildContext ctx, int index) {
+                            return PeopleItem(
+                              idx: index,
+                            );
+                          }),
+                      headWidget("权益"),
+                      SliverList.builder(
+                        itemBuilder: (ctx, index) {
+                          return GestureDetector(
+                            onTap: () {},
+                            child: CourseEquityItem(
+                              idx: index,
+                            ),
+                          );
+                        },
+                        itemCount: 5,
+                      ),
+                      headWidget("常见问题"),
+                      problemWidget(),
+                      SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                            Gaps.vGap80,
+                            SizedBox(
+                              height: _screenUtil.bottomBarHeight,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]),
+                  ),
+                  isUpdateAppBar
+                      ? const Positioned(
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          child: XTCupertinoNavigationBar(
+                            backgroundColor: Color(0xFFFFFFFF),
+                            border: null,
+                            padding: EdgeInsetsDirectional.zero,
+                            leading: NavigationBackWidget(),
+                            middle: Text(
+                              "L1英语口语系统课",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ))
+                      : Positioned(
+                          top: 50,
+                          left: 20,
+                          child: GestureDetector(
+                              onTap: () {
+                                NavigatorUtils.goBack(context);
+                              },
+                              child: const LoadAssetImage(
+                                "ic_back_icon",
+                                width: 20.0,
+                                height: 20.0,
+                              ))),
+                  Positioned(
+                      bottom: 0,
+                      // width: _screenUtil.screenWidth,
+                      child: Container(
+                        color: Colours.color_F9F8FF,
+                        width: _screenUtil.screenWidth,
+                        child: Column(
+                          children: [
+                            Gaps.vGap10,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                const LoadAssetImage(
+                                  "zixun_icon",
+                                  width: 40.0,
+                                  height: 40.0,
+                                ),
+                                GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () {
+                                    NavigatorUtils.push(
+                                        context, HomeRouter.coursePaysPage,
+                                        arguments: dataBean);
+                                  },
+                                  child: Container(
+                                    width: 250.0,
+                                    height: 48.0,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.circular(100.0),
+                                      border: Border.all(
+                                        width: 1.0,
+                                        style: BorderStyle.solid,
+                                        color: Colours.color_001652,
+                                      ),
+                                      gradient: const LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        colors: [
+                                          Colours.color_9AC3FF,
+                                          Colours.color_FF71E0,
+                                        ],
+                                      ),
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      '立即支付',
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colours.color_001652,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () {
+                                    _checked = !_checked;
+                                    setState(() {});
+                                  },
+                                  child: Container(
+                                    width: 30,
+                                    height: 30,
+                                    padding: const EdgeInsets.all(10),
+                                    child: LoadAssetImage(
+                                      _checked ? 'yigouxuan' : 'weigouxuan',
+                                      width: 15.0,
+                                      height: 15.0,
+                                    ),
+                                  ),
+                                ),
+                                // const SizedBox(
+                                //   width: 8.0,
+                                // ),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      const TextSpan(
+                                        text: '我已阅读并同意',
+                                        style: TextStyle(
+                                          fontSize: 12.0,
+                                          fontWeight: FontWeight.w400,
+                                          color: Color(0xFF333333),
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '会员协议',
+                                        style: const TextStyle(
+                                          fontSize: 12.0,
+                                          fontWeight: FontWeight.w400,
+                                          color: Color(0xFF0047FF),
+                                        ),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            NavigatorUtils.goWebViewPage(
+                                                context,
+                                                "会员协议",
+                                                "http://www.shenmo-ai.com/tos/");
+                                          },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: _screenUtil.bottomBarHeight - 10,
+                            ),
+                          ],
+                        ),
+                      )),
+                ]),
         ),
       ),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      child: Scaffold(
-        body: CustomPaint(
-          painter: TopOriginPainter(),
-          size: Size.infinite,
-          child: Stack(children: [
-            NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification notification) {
-                boxTab ??=
-                    keyTab.currentContext!.findRenderObject() as RenderBox?;
-                offsetTab = boxTab!.localToGlobal(Offset.zero);
-
-                if (offsetTab.dy < 110.0) {
-                  isUpdateAppBar = true;
-                  // isUpdatePage = false;
-                  // isUpdateTheme = true;
-                } else {
-                  isUpdateAppBar = false;
-                  // isUpdatePage = true;
-                  // isUpdateTheme = false;
-                }
-                setState(() {});
-
-                return true;
-              },
-              child: CustomScrollView(slivers: [
-                SliverToBoxAdapter(
-                  child: classImgWidget(context),
-                ),
-                SliverToBoxAdapter(
-                  child: classDetaileWidget(context),
-                ),
-                headWidget("用户评价"),
-                SliverToBoxAdapter(
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    height: 100.0,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return SizedBox(
-                          width: 150.0,
-                          child: Card(
-                            color: Colors.primaries[index],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                headWidget("课程详情"),
-                SliverGrid.builder(
-                    itemCount: 6,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      //设置列数
-                      crossAxisCount: 3,
-                      //设置横向间距
-                      crossAxisSpacing: 0,
-                      //设置主轴间距
-                      mainAxisSpacing: 0,
-                      // mainAxisExtent: 173,
-                    ),
-                    itemBuilder: (BuildContext ctx, int index) {
-                      return PeopleItem(
-                        idx: index,
-                      );
-                    }),
-                headWidget("权益"),
-                SliverList.builder(
-                  itemBuilder: (ctx, index) {
-                    return GestureDetector(
-                      onTap: () {},
-                      child: CourseEquityItem(
-                        idx: index,
-                      ),
-                    );
-                  },
-                  itemCount: 5,
-                ),
-                headWidget("常见问题"),
-                problemWidget(),
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      Gaps.vGap80,
-                      SizedBox(
-                        height: _screenUtil.bottomBarHeight,
-                      ),
-                    ],
-                  ),
-                ),
-              ]),
-            ),
-            isUpdateAppBar
-                ? const Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: XTCupertinoNavigationBar(
-                      backgroundColor: Color(0xFFFFFFFF),
-                      border: null,
-                      padding: EdgeInsetsDirectional.zero,
-                      leading: NavigationBackWidget(),
-                      middle: Text(
-                        "L1英语口语系统课",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ))
-                : Positioned(
-                    top: 50,
-                    left: 20,
-                    child: GestureDetector(
-                        onTap: () {
-                          NavigatorUtils.goBack(context);
-                        },
-                        child: const LoadAssetImage(
-                          "ic_back_icon",
-                          width: 20.0,
-                          height: 20.0,
-                        ))),
-            Positioned(
-                bottom: 0,
-                // width: _screenUtil.screenWidth,
-                child: Container(
-                  color: Colours.color_F9F8FF,
-                  width: _screenUtil.screenWidth,
-                  child: Column(
-                    children: [
-                      Gaps.vGap10,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          const LoadAssetImage(
-                            "zixun_icon",
-                            width: 40.0,
-                            height: 40.0,
-                          ),
-                          GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              NavigatorUtils.push(
-                                context,
-                                HomeRouter.coursePaysPage,
-                              );
-                            },
-                            child: Container(
-                              width: 250.0,
-                              height: 48.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100.0),
-                                border: Border.all(
-                                  width: 1.0,
-                                  style: BorderStyle.solid,
-                                  color: Colours.color_001652,
-                                ),
-                                gradient: const LinearGradient(
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight,
-                                  colors: [
-                                    Colours.color_9AC3FF,
-                                    Colours.color_FF71E0,
-                                  ],
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: const Text(
-                                '立即支付',
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colours.color_001652,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              _checked = !_checked;
-                              setState(() {});
-                            },
-                            child: Container(
-                              width: 30,
-                              height: 30,
-                              padding: const EdgeInsets.all(10),
-                              child: LoadAssetImage(
-                                _checked ? 'yigouxuan' : 'weigouxuan',
-                                width: 15.0,
-                                height: 15.0,
-                              ),
-                            ),
-                          ),
-                          // const SizedBox(
-                          //   width: 8.0,
-                          // ),
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                const TextSpan(
-                                  text: '我已阅读并同意',
-                                  style: TextStyle(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xFF333333),
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: '会员协议',
-                                  style: const TextStyle(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xFF0047FF),
-                                  ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      NavigatorUtils.goWebViewPage(
-                                          context,
-                                          "会员协议",
-                                          "http://www.shenmo-ai.com/tos/");
-                                    },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: _screenUtil.bottomBarHeight - 10,
-                      ),
-                    ],
-                  ),
-                )),
-          ]),
-        ),
-      ),
-    );
+  CoursePurchasePagePresenter createPresenter() {
+    // TODO: implement createPresenter
+    _coursePurchasePagePresenter = CoursePurchasePagePresenter();
+    return _coursePurchasePagePresenter;
   }
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+  }
+
+  @override
+  void sendSuccess(LessonDetailBean data) {
+    // TODO: implement sendSuccess
+    setState(() {
+      isLoding = false;
+      dataBean = data;
+    });
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => false;
 }
 
 class TopOriginPainter extends CustomPainter {

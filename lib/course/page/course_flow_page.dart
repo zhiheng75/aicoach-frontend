@@ -1,12 +1,16 @@
 //课程流程
 import 'package:Bubble/chat/entity/character_entity.dart';
 import 'package:Bubble/course/course_router.dart';
+import 'package:Bubble/course/entity/step_detail_bean.dart';
 import 'package:Bubble/course/item/course_flow_item.dart';
 import 'package:Bubble/course/page/switching_teacher_page.dart';
+import 'package:Bubble/course/presenter/course_flow_page_presenter.dart';
+import 'package:Bubble/course/view/course_flow_page_view.dart';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
+import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/person/person_router.dart';
@@ -24,22 +28,41 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CourseFlowPage extends StatefulWidget {
-  const CourseFlowPage({super.key});
+  final String lessonId;
+  const CourseFlowPage({
+    super.key,
+    required this.lessonId,
+  });
 
   @override
   State<CourseFlowPage> createState() => _CourseFlowPageState();
 }
 
-class _CourseFlowPageState extends State<CourseFlowPage> {
+class _CourseFlowPageState extends State<CourseFlowPage>
+    with
+        BasePageMixin<CourseFlowPage, CourseFlowPagePresenter>,
+        RouteAware,
+        AutomaticKeepAliveClientMixin<CourseFlowPage>
+    implements CourseFlowPageView {
   late HomeProvider _homeProvider;
   List<CategoryEntity> _categoryList = [];
   List<SceneEntity> sceneList = [];
+  late CourseFlowPagePresenter _courseDetailsPagePresenter;
+  late StepDetailBean stepDetailData;
+  bool isLoding = true;
 
   @override
   void initState() {
     super.initState();
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
-    init();
+    // init();
+    _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
+  }
+
+  Widget lodingView() {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
   }
 
   void init() {
@@ -163,19 +186,19 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
     return MyScrollView(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Center(
+        Center(
             child: Text(
-          "Levell-Unit 2-Lesson 7",
-          style: TextStyle(
+          stepDetailData.data.unitName,
+          style: const TextStyle(
             fontSize: 13.0,
             fontWeight: FontWeight.w400,
             color: Colours.color_666666,
           ),
         )),
         Gaps.vGap2,
-        const Text(
-          "Animals and Human",
-          style: TextStyle(
+        Text(
+          stepDetailData.data.levelName,
+          style: const TextStyle(
             fontSize: 17.0,
             fontWeight: FontWeight.w400,
             color: Colors.black,
@@ -201,8 +224,8 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
               vertical: 10.0,
             ),
             child: RichText(
-              text: const TextSpan(children: [
-                TextSpan(
+              text: TextSpan(children: [
+                const TextSpan(
                     text: "本课学习目标",
                     style: TextStyle(
                       fontSize: 16,
@@ -210,8 +233,8 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
                       color: Colours.color_examination,
                     )),
                 TextSpan(
-                    text: "Learning targe",
-                    style: TextStyle(
+                    text: stepDetailData.data.objectives,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: Colours.color_666666,
@@ -246,10 +269,10 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
                     // );
                   }
                 },
-                child: const CourseFlowItem(),
+                child: CourseFlowItem(data: stepDetailData.data.data[index]),
               );
             },
-            itemCount: 4,
+            itemCount: stepDetailData.data.data.length,
           ),
         ),
         Gaps.vGap10,
@@ -372,9 +395,14 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
                 GestureDetector(
                   onTap: () {
                     NavigatorUtils.push(
-                      context,
-                      CourseRouter.curriculumEvaluationPage,
-                    );
+                        context, CourseRouter.curriculumEvaluationPage,
+                        arguments: stepDetailData);
+
+                    //     NavigatorUtils.push(
+                    // context,
+                    // replace: true,
+                    // "${ExamRouter.mockExaminationTwoPage}?state=${widget.state}",
+                    // arguments: examStepBean);
                   },
                   child: Container(
                     // margin: const EdgeInsets.all(0),
@@ -424,6 +452,7 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return CupertinoPageScaffold(
       navigationBar: XTCupertinoNavigationBar(
         backgroundColor: const Color(0xFFFFFFFF),
@@ -458,7 +487,33 @@ class _CourseFlowPageState extends State<CourseFlowPage> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      child: Scaffold(body: SafeArea(child: body())),
+      child: Scaffold(
+          body: SafeArea(child: isLoding == true ? lodingView() : body())),
     );
+  }
+
+  @override
+  CourseFlowPagePresenter createPresenter() {
+    // TODO: implement createPresenter
+    _courseDetailsPagePresenter = CourseFlowPagePresenter();
+    return _courseDetailsPagePresenter;
+  }
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => false;
+
+  @override
+  void sendSuccess(StepDetailBean stepDetailBean) {
+    // TODO: implement sendSuccess
+    setState(() {
+      isLoding = false;
+      stepDetailData = stepDetailBean;
+    });
   }
 }

@@ -1,11 +1,17 @@
+import 'package:Bubble/course/entity/lesson_list_bean.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 
 class CourseHomeItem extends StatefulWidget {
-  // final int index;
-  const CourseHomeItem({super.key});
+  final int index;
+  final UnitList unitData;
+  const CourseHomeItem({
+    super.key,
+    required this.unitData,
+    required this.index,
+  });
 
   @override
   State<CourseHomeItem> createState() => _CourseHomeItemState();
@@ -42,18 +48,18 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
               //   horizontal: 10.0,
               //   vertical: 10.0,
               // ),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "1",
-                    style: TextStyle(
+                    widget.index.toString(),
+                    style: const TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.w400,
                       color: Colors.black,
                     ),
                   ),
-                  Text(
+                  const Text(
                     "Lesson",
                     style: TextStyle(
                       fontSize: 13.0,
@@ -65,32 +71,32 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
               ),
             ),
             Gaps.hGap10,
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Animals on the Farm",
-                    style: TextStyle(
+                    widget.unitData.lessonName,
+                    style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w500,
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8.0,
                   ),
                   Text(
-                    'words & sentences',
-                    style: TextStyle(
+                    widget.unitData.lessonType,
+                    style: const TextStyle(
                       fontSize: 13.0,
                       fontWeight: FontWeight.w400,
                       color: Colours.color_666666,
                     ),
                   ),
                   Text(
-                    'Expressing Opinions/Describepictures',
-                    style: TextStyle(
+                    widget.unitData.objectives,
+                    style: const TextStyle(
                       fontSize: 13.0,
                       fontWeight: FontWeight.w400,
                       color: Colours.color_666666,
@@ -100,14 +106,22 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
               ),
             ),
             Gaps.hGap10,
-            const Text(
-              "去上课",
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w400,
-                color: Colours.color_00BB40,
-              ),
-            ),
+            widget.unitData.isLocked == 0
+                ? Text(
+                    widget.unitData.completed == 0 ? "去上课" : "已完成",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w400,
+                      color: widget.unitData.completed == 0
+                          ? Colours.color_00BB40
+                          : Colours.color_666666,
+                    ),
+                  )
+                : const LoadAssetImage(
+                    "locked_icon",
+                    width: 24.0,
+                    height: 24.0,
+                  ),
             Gaps.hGap10,
           ],
         ));
