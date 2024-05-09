@@ -145,47 +145,49 @@ class _MessageItemState extends State<MessageItem> {
     // 角色简介消息
     if (type == 'introduction') {
       _message = _message as IntroductionMessage;
-      return ClipRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: 4.0,
-            sigmaY: 4.0,
-          ),
-          child: Container(
-            width: width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              color: blackBgColor,
-            ),
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                if (_message.name != '')
-                  Text(
-                    _message.name,
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                      height: 22.0 / 16.0,
-                    ),
+      return _message.desc == ""
+          ? Container()
+          : ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 4.0,
+                  sigmaY: 4.0,
+                ),
+                child: Container(
+                  width: width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: blackBgColor,
                   ),
-                Text(
-                  _message.desc,
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFFC0FFFF),
-                    height: 22.0 / 14.0,
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      if (_message.name != '')
+                        Text(
+                          _message.name,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            height: 22.0 / 16.0,
+                          ),
+                        ),
+                      Text(
+                        _message.desc,
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFFC0FFFF),
+                          height: 22.0 / 14.0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
-      );
+              ),
+            );
     }
 
     // 提示消息
@@ -229,7 +231,8 @@ class _MessageItemState extends State<MessageItem> {
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                _homeProvider.sceneStreamController.add({'type': 'topic', 'data': topic.toJson()});
+                _homeProvider.sceneStreamController
+                    .add({'type': 'topic', 'data': topic.toJson()});
               },
               child: Stack(
                 children: <Widget>[
@@ -311,14 +314,16 @@ class _MessageItemState extends State<MessageItem> {
     _message = _message as NormalMessage;
     BoxDecoration decoration = BoxDecoration(
       color: Colors.white.withOpacity(0.86),
-      gradient: _message.speaker == 'ai' ? null : const LinearGradient(
-        begin: Alignment.bottomLeft,
-        end: Alignment.topRight,
-        colors: [
-          Colours.color_E8CCFE,
-          Colours.color_ACCDFF,
-        ],
-      ),
+      gradient: _message.speaker == 'ai'
+          ? null
+          : const LinearGradient(
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+              colors: [
+                Colours.color_E8CCFE,
+                Colours.color_ACCDFF,
+              ],
+            ),
     );
 
     Widget createExtWidget(NormalMessage message) {
@@ -327,7 +332,8 @@ class _MessageItemState extends State<MessageItem> {
           Expanded(
             child: Row(
               children: [
-                if (message.speaker == 'user' && message.evaluation['total_score'] != null)
+                if (message.speaker == 'user' &&
+                    message.evaluation['total_score'] != null)
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: openEvaluation,
@@ -414,7 +420,9 @@ class _MessageItemState extends State<MessageItem> {
           top: 16,
         ),
         child: Text(
-          message.translateState == 1 ? '翻译中...' : (message.translation == 3 ? '翻译失败' : message.translation),
+          message.translateState == 1
+              ? '翻译中...'
+              : (message.translation == 3 ? '翻译失败' : message.translation),
           style: const TextStyle(
             fontSize: 15.0,
             fontWeight: FontWeight.w400,
@@ -434,31 +442,9 @@ class _MessageItemState extends State<MessageItem> {
         padding: const EdgeInsets.only(
           top: 16,
         ),
-        child: message.exampleState != 2 ? Text(
-          message.exampleState == 1 ? '获取示例中...' : '获取示例失败',
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF890073),
-            height: 20 / 15,
-            letterSpacing: 0.05,
-          ),
-        ) : Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 0.8,
-              style: BorderStyle.solid,
-              color: const Color(0xFF3400A2),
-            ),
-            borderRadius: BorderRadius.circular(8),
-            color: Colors.white,
-          ),
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                message.exampleText,
+        child: message.exampleState != 2
+            ? Text(
+                message.exampleState == 1 ? '获取示例中...' : '获取示例失败',
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w400,
@@ -466,27 +452,51 @@ class _MessageItemState extends State<MessageItem> {
                   height: 20 / 15,
                   letterSpacing: 0.05,
                 ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () => playAudio('example'),
-                    child: const LoadAssetImage(
-                      'laba_lan',
-                      width: 17.6,
-                      height: 16,
-                    ),
+              )
+            : Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 0.8,
+                    style: BorderStyle.solid,
+                    color: const Color(0xFF3400A2),
                   ),
-                ],
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.white,
+                ),
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      message.exampleText,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF890073),
+                        height: 20 / 15,
+                        letterSpacing: 0.05,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () => playAudio('example'),
+                          child: const LoadAssetImage(
+                            'laba_lan',
+                            width: 17.6,
+                            height: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
       );
     }
 
@@ -635,6 +645,5 @@ class _MessageItemState extends State<MessageItem> {
     //     ),
     //   ],
     // );
-
   }
 }

@@ -347,6 +347,24 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
     );
   }
 
+  List<Widget> _buildDetailItems() {
+    List<Widget> list = [];
+    for (int i = 0; i < dataBean.data.detailImg.length; i++) {
+      list.add(LoadImage(
+        dataBean.data.detailImg[i],
+      ));
+    }
+    return list;
+  }
+
+  Widget detailWidget() {
+    return SliverToBoxAdapter(
+      child: Column(
+        children: _buildDetailItems(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -407,6 +425,7 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                         ),
                       ),
                       headWidget("课程详情"),
+                      detailWidget(),
                       headWidget("适用人群"),
                       SliverGrid.builder(
                           itemCount: 6,

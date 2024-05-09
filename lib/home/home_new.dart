@@ -11,6 +11,7 @@ import 'package:Bubble/main.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/intercept.dart';
 import 'package:Bubble/scene/collect_information.dart';
+import 'package:Bubble/scene/entity/course_entity.dart';
 import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/scene/instructional_video_dialogue_page.dart';
 import 'package:Bubble/util/channel.dart';
@@ -236,7 +237,9 @@ class _HomePageState extends State<HomeNewPage>
         SceneEntity scene = SceneEntity.fromJson(value['data']);
         _homeProvider.scene = scene;
       }
-      if (type == 'video') {
+      if (type == 'course') {
+        // CourseEntity course = CourseEntity.fromJson(value['data']);
+        // _homeProvider.course = course;
         SceneEntity scene = SceneEntity.fromJson(value['data']);
         _homeProvider.scene = scene;
       }
@@ -254,7 +257,7 @@ class _HomePageState extends State<HomeNewPage>
               : type == "scene"
                   ? ScenePage(onEnd: () => changeTab('chat'))
                   : InstructionalVideoDialoguePage(
-                      onEnd: () => changeTab('chat')),
+                      data: [], idx: 0, onEnd: () => changeTab('chat')),
         );
         // 重置tab
         changeTab('');

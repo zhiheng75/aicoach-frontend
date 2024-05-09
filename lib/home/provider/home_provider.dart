@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:Bubble/loginManager/login_manager.dart';
+import 'package:Bubble/scene/entity/course_entity.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +34,9 @@ class HomeProvider extends ChangeNotifier {
   TopicEntity? _topic;
   // 场景
   SceneEntity? _scene;
+//教学
+  CourseEntity? _course;
+
   // 对话类型 normal-自由对话 topic-话题对话 scene-场景对话
   String _sessionType = '';
   String _sessionId = '';
@@ -53,7 +57,9 @@ class HomeProvider extends ChangeNotifier {
   String get expireDate => _expireDate;
   CharacterEntity get character => _character;
   SceneEntity? get scene => _scene;
+  CourseEntity? get course => _course;
   TopicEntity? get topic => _topic;
+
   String get sessionId => _sessionId;
   String get sessionType => _sessionType;
   String? get chatBackground => _chatBackground;
@@ -81,6 +87,12 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  set course(CourseEntity? scene) {
+    _course = course;
+    _sessionType = 'course';
+    notifyListeners();
+  }
+
   set sessionId(String sessionId) {
     _sessionId = sessionId;
     if (sessionId == '') {
@@ -92,7 +104,8 @@ class HomeProvider extends ChangeNotifier {
   Future<void> getUsageTime([Function()? callback]) async {
     String deviceId = await Device.getDeviceId();
     await DioUtils.instance.requestNetwork<ResultData>(
-      Method.get, HttpApi.permission,
+      Method.get,
+      HttpApi.permission,
       queryParameters: {
         'device_id': deviceId,
       },
@@ -158,6 +171,7 @@ class HomeProvider extends ChangeNotifier {
     _sessionId = '';
     _topic = null;
     _scene = null;
+    _course = null;
     _messageList = [];
     notifyListeners();
   }
@@ -169,7 +183,8 @@ class HomeProvider extends ChangeNotifier {
   // 创建普通消息
   NormalMessage createNormalMessage([bool isUser = false]) {
     NormalMessage normalMessage = NormalMessage();
-    normalMessage.imageUrl = isUser ? LoginManager.getUserAvatar() : _character.imageUrl;
+    normalMessage.imageUrl =
+        isUser ? LoginManager.getUserAvatar() : _character.imageUrl;
     if (isUser) {
       normalMessage.characterId = _character.characterId;
       normalMessage.sessionId = _sessionId;
@@ -234,6 +249,10 @@ class HomeProvider extends ChangeNotifier {
     if (_sessionType == 'scene') {
       introductionMessage.name = '${_scene!.name} ${_scene!.enName}';
       introductionMessage.desc = _scene!.desc;
+    }
+    if (_sessionType == 'course') {
+      introductionMessage.name = '${_course!.name} ${_course!.enName}';
+      introductionMessage.desc = _course!.desc;
     }
     _messageList.add(introductionMessage);
     if (update == true) {
@@ -330,8 +349,7 @@ class HomeProvider extends ChangeNotifier {
 
     normalMessage.showExample = true;
 
-    if (normalMessage.exampleState == 1 ||
-        normalMessage.exampleState == 2) {
+    if (normalMessage.exampleState == 1 || normalMessage.exampleState == 2) {
       notifyListeners();
       return;
     }

@@ -173,6 +173,9 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
     if (sessionType == 'scene') {
       sceneId = _homeProvider.scene!.id.toString();
     }
+    if (sessionType == 'course') {
+      sceneId = _homeProvider.course!.id.toString();
+    }
     try {
       _homeProvider.sessionId = await _chatWebsocket.startChat(
         characterId: characterId,

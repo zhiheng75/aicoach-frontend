@@ -11,6 +11,7 @@ import '../routers/i_router.dart';
 import '../test/TestPage.dart';
 import 'home.dart';
 import 'home_new.dart';
+import 'package:Bubble/course/entity/step_detail_bean.dart';
 
 class HomeRouter implements IRouterProvider {
   static String homePage = '/home';
@@ -64,10 +65,25 @@ class HomeRouter implements IRouterProvider {
                 )));
 
     router.define(instructionalVideoDialoguePage,
-        handler: Handler(
-            handlerFunc: (_, __) => InstructionalVideoDialoguePage(
-                  onEnd: () {},
-                )));
+        handler: Handler(handlerFunc: (context, params) {
+      String index = params['index']!.first;
+      int idx = int.parse(index);
+
+      List<CourseDatum> data =
+          ModalRoute.of(context!)?.settings.arguments as List<CourseDatum>;
+      // }
+      return InstructionalVideoDialoguePage(
+        data: data,
+        idx: idx,
+        onEnd: () {},
+      );
+    }));
+
+    // router.define(instructionalVideoDialoguePage,
+    //     handler: Handler(
+    //         handlerFunc: (_, __) => InstructionalVideoDialoguePage(
+    //               onEnd: () {},
+    //             )));
 
     router.define(teachingDialoguePage,
         handler: Handler(

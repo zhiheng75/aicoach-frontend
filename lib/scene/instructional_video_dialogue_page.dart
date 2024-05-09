@@ -1,10 +1,16 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:Bubble/chat/entity/character_entity.dart';
+import 'package:Bubble/chat/widget/course_bottom_bar.dart';
+import 'package:Bubble/course/entity/step_detail_bean.dart';
+import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/scene/presenter/instructional_video_dialogue_presenter.dart';
 import 'package:Bubble/scene/presenter/teaching_dialogue_presenter.dart';
 import 'package:Bubble/scene/view/instructional_video_dialogue_view.dart';
 import 'package:Bubble/util/confirm_utils.dart';
+import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +18,7 @@ import 'package:provider/provider.dart';
 
 import '../chat/entity/message_entity.dart';
 import '../chat/utils/chat_websocket.dart';
-import '../chat/widget/bottom_bar.dart';
+// import '../chat/widget/bottom_bar.dart';
 import '../chat/widget/message_list.dart';
 import '../chat/widget/record.dart';
 import '../home/provider/home_provider.dart';
@@ -24,9 +30,13 @@ import '../widgets/load_fail.dart';
 import 'package:video_player/video_player.dart';
 
 class InstructionalVideoDialoguePage extends StatefulWidget {
+  final List<CourseDatum> data;
+  final int idx;
   const InstructionalVideoDialoguePage({
     super.key,
     required this.onEnd,
+    required this.data,
+    required this.idx,
   });
   final Function() onEnd;
 
@@ -68,6 +78,14 @@ class _InstructionalVideoDialoguePageState
 
   late VideoPlayerController _controller;
 
+  late String introFileType;
+  late int dataIdx;
+
+  late int resourceIdx = 0;
+  late String introFileStr;
+  late bool isFrist = true;
+  late String resourceSceneId;
+
   void init() {
     _pageState = 'loading';
     setState(() {});
@@ -77,7 +95,9 @@ class _InstructionalVideoDialoguePageState
   void connectWebsocket() async {
     try {
       String characterId = _homeProvider.character.characterId;
-      String sceneId = _homeProvider.scene!.id.toString();
+      String sceneId = resourceSceneId; //_homeProvider.scene!.id.toString();
+      // String sceneId = _homeProvider.course!.id.toString();
+
       _homeProvider.sessionId = await _chatWebsocket.startChat(
         characterId: characterId,
         sceneId: sceneId,
@@ -85,7 +105,7 @@ class _InstructionalVideoDialoguePageState
           _pageState = 'success';
           setState(() {});
           _homeProvider.addIntroductionMessage();
-          _homeProvider.addTipMessage('Scene started！');
+          _homeProvider.addTipMessage('class started！');
           // 刷新使用时间
           _homeProvider.getUsageTime(() {
             // 倒计时
@@ -121,12 +141,46 @@ class _InstructionalVideoDialoguePageState
     }
   }
 
+  void endSocket() async {
+    await _chatWebsocket.endChat(true);
+  }
+
+  void onNextSocketEnd() {
+    ConfirmUtils.show(
+      context: context,
+      title: '是否进行下一个场景',
+      buttonDirection: 'vertical',
+      confirmButtonText: '结束',
+      cancelButtonText: '下一段对话',
+      onConfirm: () {
+        endSocket();
+        Navigator.of(context).pop();
+        widget.onEnd();
+      },
+      onCancel: () {
+        endSocket();
+        forFlow();
+      },
+      child: const Text(
+        '下一个场景的名字',
+        style: TextStyle(
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+          color: Color(0xFF333333),
+          height: 18.0 / 15.0,
+        ),
+      ),
+    );
+  }
+
   void onWebsocketAnswer(dynamic answer) {
     if (_answer == null) {
       // 结束标记
       if (answer is String &&
           (answer.contains('[end_session]') ||
+              answer.contains('{[finish]}') ||
               RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
+        //弹窗点击确定后重新链接
         return;
       }
       // _answer = NormalMessage();
@@ -195,6 +249,9 @@ class _InstructionalVideoDialoguePageState
           Navigator.of(context).pop();
           widget.onEnd();
         },
+        onCancel: () {
+          //留在对话还是退出
+        },
         child: const Text(
           '场景对话进行中，确定要结束吗？',
           style: TextStyle(
@@ -215,34 +272,175 @@ class _InstructionalVideoDialoguePageState
   void initState() {
     super.initState();
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
-    init();
+    dataIdx = widget.idx;
+    dataIdx = 0;
+    resourceIdx = 1;
+    forstartFlow(dataIdx, resourceIdx);
     // 监听App状态
     WidgetsBinding.instance.addObserver(this);
+  }
 
-    _controller = VideoPlayerController.networkUrl(Uri.parse(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'))
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
-    // _controller.play();
-    checkVideoCompletion(_controller);
-    // _controller.value.
+  void forFlow() {
+    resourceIdx = resourceIdx + 1;
+    // dataIdx = dataIdx + 1;
+    if (resourceIdx < widget.data[dataIdx].resource.length) {
+      // resourceIdx = resourceIdx + 1;
+    } else {
+      dataIdx = dataIdx + 1;
+      if (dataIdx < widget.data.length) {
+        resourceIdx = 0;
+      } else {
+        //退出界面
+      }
+    }
+
+    forstartFlow(dataIdx, resourceIdx);
+  }
+
+  void forstartFlow(int dataIdx, int resourceIdx) {
+    setState(() {
+      resourceSceneId =
+          widget.data[dataIdx].resource[resourceIdx].sceneId.toString();
+      introFileType = widget.data[dataIdx].resource[resourceIdx].introFileType!;
+      if (introFileType == "video") {
+        introFileStr = widget.data[dataIdx].resource[resourceIdx].introFile!;
+        _controller = VideoPlayerController.networkUrl(Uri.parse(introFileStr))
+          ..initialize().then((_) {
+            // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+            setState(() {});
+          });
+        // _controller.play();
+        // _controller.value.
+        videoFlow();
+      } else if (introFileType == "image") {
+        introFileStr = widget.data[dataIdx].resource[resourceIdx].introFile!;
+        imgFlow();
+      } else {
+        introFileStr =
+            widget.data[dataIdx].resource[resourceIdx].characterAvatar;
+        imgFlow();
+      }
+      init();
+    });
+  }
+
+  //视频顺序
+  void videoFlow() {
+    startNormalChat();
+  }
+
+  void startNormalChat() async {
+    await _mediaUtils.stopPlay();
+    // await _chatWebsocket.endChat(true);
+    // _homeProvider.resetChatParams();
+    // _homeProvider.character = character;
+    Future.delayed(Duration.zero, () {
+      // _isCharacterChanging = false;
+      _bottomBarControll.setDisabled(true);
+      _homeProvider.addIntroductionMessage();
+      // _homeProvider.addTipMessage('Role-plays started！');
+      NormalMessage normalMessage = _homeProvider.createNormalMessage();
+      normalMessage.text =
+          widget.data[widget.idx].resource[resourceIdx].greetingText!;
+      normalMessage.audioUrl =
+          widget.data[widget.idx].resource[resourceIdx].greetingAudio!;
+      normalMessage.isTextEnd = true;
+      _homeProvider.addNormalMessage(normalMessage);
+      _mediaUtils.play(
+        url: widget.data[widget.idx].resource[resourceIdx].greetingAudio!,
+        useAvatar: true,
+        whenFinished: () {
+          // _bottomBarControll.setDisabled(false);
+          _controller.setLooping(false);
+          _controller.play();
+          checkVideoCompletion(_controller);
+        },
+      );
+    });
   }
 
   void checkVideoCompletion(VideoPlayerController controller) {
-    if (controller.value.isInitialized) {
-      // 当视频控制器初始化完成后，开始监听播放事件
-      controller.addListener(() {
-        final bool isPlaying = controller.value.isPlaying;
-        final Duration position = controller.value.position;
+    // if (controller.value.isInitialized) {
+    // _controller.removeListener(_videoListener);
+    // 当视频控制器初始化完成后，开始监听播放事件
+    controller.addListener(() {
+      final bool isPlaying = controller.value.isPlaying;
+      final Duration position = controller.value.position;
+      Log.e("111111");
+      Log.e(controller.value.position.toString());
+      Log.e(controller.value.duration.toString());
 
-        if (isPlaying && position >= controller.value.duration) {
-          // 视频正在播放且播放到了末尾，视频播放完成
-          print('视频播放完成');
+      if (position >= controller.value.duration) {
+        // 视频正在播放且播放到了末尾，视频播放完成
+        Log.e("视频播放完成");
+        if (isFrist) {
+          startNormaltwoChat();
         }
-      });
-    }
+      }
+      // if (isPlaying && position >= controller.value.duration) {
+      //   // 视频正在播放且播放到了末尾，视频播放完成
+      //   Log.e("视频播放完成");
+      // }
+    });
+    // }
+  }
+
+  void startNormaltwoChat() async {
+    await _mediaUtils.stopPlay();
+    // await _chatWebsocket.endChat(true);
+    // _homeProvider.resetChatParams();
+    // _homeProvider.character = character;
+    Future.delayed(Duration.zero, () {
+      // _isCharacterChanging = false;
+      _bottomBarControll.setDisabled(true);
+      _homeProvider.addIntroductionMessage();
+      // _homeProvider.addTipMessage('Role-plays started！');
+      NormalMessage normalMessage = _homeProvider.createNormalMessage();
+      normalMessage.text =
+          widget.data[widget.idx].resource[resourceIdx].introText!;
+      normalMessage.audioUrl =
+          widget.data[widget.idx].resource[resourceIdx].introAudio!;
+      normalMessage.isTextEnd = true;
+      _homeProvider.addNormalMessage(normalMessage);
+      _mediaUtils.play(
+        url: widget.data[widget.idx].resource[resourceIdx].greetingAudio!,
+        useAvatar: true,
+        whenFinished: () {
+          setState(() {
+            isFrist = false;
+            _bottomBarControll.setDisabled(false);
+          });
+        },
+      );
+    });
+  }
+
+  //图片及其他顺序
+  void imgFlow() async {
+    await _mediaUtils.stopPlay();
+    // await _chatWebsocket.endChat(true);
+    // _homeProvider.resetChatParams();
+    // _homeProvider.character = character;
+    Future.delayed(Duration.zero, () {
+      // _isCharacterChanging = false;
+      _bottomBarControll.setDisabled(true);
+      _homeProvider.addIntroductionMessage();
+      // _homeProvider.addTipMessage('Role-plays started！');
+      NormalMessage normalMessage = _homeProvider.createNormalMessage();
+      normalMessage.text =
+          widget.data[widget.idx].resource[resourceIdx].greetingText!;
+      normalMessage.audioUrl =
+          widget.data[widget.idx].resource[resourceIdx].greetingAudio!;
+      normalMessage.isTextEnd = true;
+      _homeProvider.addNormalMessage(normalMessage);
+      _mediaUtils.play(
+        url: widget.data[widget.idx].resource[resourceIdx].greetingAudio!,
+        useAvatar: true,
+        whenFinished: () {
+          _bottomBarControll.setDisabled(false);
+        },
+      );
+    });
   }
 
   @override
@@ -255,7 +453,114 @@ class _InstructionalVideoDialoguePageState
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    if (introFileType == "video") {
+      _controller.dispose();
+    }
+  }
+
+  Widget topWidget() {
+    if (introFileType == "video") {
+      return Positioned(
+        top: _screenUtil.statusBarHeight + 40,
+        width: _screenUtil.screenWidth,
+        height: 200,
+        child: _controller.value.isInitialized
+            ? AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: Container(
+                    color: Colors.blue, child: VideoPlayer(_controller)),
+              )
+            : Container(
+                color: Colors.blue,
+              ),
+      );
+    } else if (introFileType == "image") {
+      return Positioned(
+        top: _screenUtil.statusBarHeight + 40,
+        width: _screenUtil.screenWidth,
+        height: 200,
+        child: LoadImage(
+          introFileStr,
+          // width: 100.0,
+          // height: 100.0,
+        ),
+      );
+    } else {
+      return Positioned(
+        top: _screenUtil.statusBarHeight + 40,
+        left: (_screenUtil.screenWidth - 150) / 2,
+        // width: 100,
+        // height: 100,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(200.0),
+          child: LoadImage(
+            introFileStr,
+            width: 150.0,
+            height: 150.0,
+          ),
+        ),
+      );
+      // introFileStr =
+      //     widget.data[widget.idx].resource[resourceIdx].characterAvatar;
+    }
+  }
+
+  Widget navbar() {
+    return const XTCupertinoNavigationBar(
+      backgroundColor: Color.fromRGBO(0, 0, 0, 0),
+      border: null,
+      padding: EdgeInsetsDirectional.zero,
+      leading: NavigationBackWidget(),
+      middle: Text(
+        "纠错列表",
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
+
+    return Container(
+      width: _screenUtil.screenWidth,
+      // margin: const EdgeInsets.symmetric(
+      //   horizontal: 16.0,
+      // ),
+      // alignment: Alignment.centerRight,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: onConversationEnd,
+            child: const LoadAssetImage(
+              'guanbi_yuan_bai',
+              width: 32.0,
+              height: 32.0,
+            ),
+          ),
+          const Expanded(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "这里是科恒名字",
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colours.color_001652,
+                ),
+              ),
+            ],
+          )),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: onConversationEnd,
+            child: const LoadAssetImage(
+              'guanbi_yuan_bai',
+              width: 32.0,
+              height: 32.0,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -265,43 +570,46 @@ class _InstructionalVideoDialoguePageState
       builder: (_, provider, __) {
         Widget background = SizedBox(
           height: _screenUtil.screenHeight,
-          child: Column(
-            children: <Widget>[
-              LoadImage(
-                provider.scene?.cover ?? '',
-              ),
-              Expanded(
-                child: ImageFiltered(
-                  imageFilter: ImageFilter.blur(
-                    sigmaX: 7.0,
-                    sigmaY: 7.0,
-                  ),
-                  child: LoadImage(
-                    provider.scene?.cover ?? '',
-                    fit: BoxFit.fitHeight,
-                  ),
-                ),
-              ),
-            ],
+          child: LoadImage(
+            provider.scene?.cover ?? '',
           ),
+          // Column(
+          //   children: <Widget>[
+          // LoadImage(
+          //   provider.scene?.cover ?? '',
+          // ),
+          //     Expanded(
+          //       child: ImageFiltered(
+          //         imageFilter: ImageFilter.blur(
+          //           sigmaX: 7.0,
+          //           sigmaY: 7.0,
+          //         ),
+          //         child: LoadImage(
+          //           provider.scene?.cover ?? '',
+          //           fit: BoxFit.fitHeight,
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         );
 
-        Widget navbar = Container(
-          width: _screenUtil.screenWidth - 32.0,
-          margin: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-          ),
-          alignment: Alignment.centerRight,
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: onConversationEnd,
-            child: const LoadAssetImage(
-              'guanbi_yuan_bai',
-              width: 32.0,
-              height: 32.0,
-            ),
-          ),
-        );
+        // Widget navbar = Container(
+        //   width: _screenUtil.screenWidth - 32.0,
+        //   margin: const EdgeInsets.symmetric(
+        //     horizontal: 16.0,
+        //   ),
+        //   alignment: Alignment.centerRight,
+        //   child: GestureDetector(
+        //     behavior: HitTestBehavior.opaque,
+        //     onTap: onConversationEnd,
+        //     child: const LoadAssetImage(
+        //       'guanbi_yuan_bai',
+        //       width: 32.0,
+        //       height: 32.0,
+        //     ),
+        //   ),
+        // );
 
         double contentTop = _screenUtil.statusBarHeight + 260.0;
         Widget inner;
@@ -331,7 +639,7 @@ class _InstructionalVideoDialoguePageState
                 padding: EdgeInsets.only(
                   bottom: _screenUtil.bottomBarHeight + 16.0,
                 ),
-                child: BottomBar(
+                child: CourseBottomBar(
                   chatWebsocket: _chatWebsocket,
                   controller: _bottomBarControll,
                   recordController: _recordController,
@@ -365,24 +673,25 @@ class _InstructionalVideoDialoguePageState
             children: [
               background,
               Positioned(
-                top: _screenUtil.statusBarHeight + 9.0,
-                child: navbar,
+                // top: _screenUtil.statusBarHeight + 9.0,
+                child: navbar(),
               ),
-              Positioned(
-                top: _screenUtil.statusBarHeight + 50,
-                width: _screenUtil.screenWidth,
-                height: 200,
-                child: _controller.value.isInitialized
-                    ? AspectRatio(
-                        aspectRatio: _controller.value.aspectRatio,
-                        child: Container(
-                            color: Colors.blue,
-                            child: VideoPlayer(_controller)),
-                      )
-                    : Container(
-                        color: Colors.blue,
-                      ),
-              ),
+              topWidget(),
+              // Positioned(
+              //   top: _screenUtil.statusBarHeight + 50,
+              //   width: _screenUtil.screenWidth,
+              //   height: 200,
+              //   child: _controller.value.isInitialized
+              //       ? AspectRatio(
+              //           aspectRatio: _controller.value.aspectRatio,
+              //           child: Container(
+              //               color: Colors.blue,
+              //               child: VideoPlayer(_controller)),
+              //         )
+              //       : Container(
+              //           color: Colors.blue,
+              //         ),
+              // ),
               Positioned(
                 top: contentTop,
                 left: 0,

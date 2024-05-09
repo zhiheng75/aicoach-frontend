@@ -18,6 +18,7 @@ import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/scene/entity/category_entity.dart';
+import 'package:Bubble/scene/entity/course_entity.dart';
 import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/scene/widget/select_scene.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
@@ -55,7 +56,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   void initState() {
     super.initState();
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
-    // init();
+    init();
     _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
   }
 
@@ -130,6 +131,38 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     setState(() {});
   }
 
+  void gotoCourse(int idx) {
+    List<CourseDatum> data = stepDetailData.data.data;
+    CourseDatum dataIdx = stepDetailData.data.data[idx];
+
+    // xxx.id = scene.id;
+    // xxx.name = scene.name;
+    // xxx.enName = scene.enName;
+    // xxx.desc = scene.desc;
+    // xxx.cover = scene.cover;
+
+    SceneEntity scene = SceneEntity();
+    scene.id = dataIdx.resource[0].sceneId;
+    scene.desc = "";
+    scene.name = "";
+    scene.enName = "";
+    scene.cover = "https://statics.shenmo-ai.com/dora.jpg";
+    _homeProvider.character.characterId = dataIdx.resource[0].characterId;
+    // SceneEntity scene = sceneList[idx];
+    // scene.desc = "我也不知道啊";
+    // scene.name = "你好";
+    // scene.enName = "111";
+
+    _homeProvider.resetChatParams();
+    _homeProvider.scene = scene;
+    // _homeProvider.character.characterId
+    NavigatorUtils.push(
+        context,
+        // HomeRouter.instructionalVideoDialoguePage,
+        "${HomeRouter.instructionalVideoDialoguePage}?index=$idx",
+        arguments: data);
+  }
+
   void selectScene(SceneEntity scene) {
     LoginManager.checkLogin(context, () {
       // Navigator.of(context).pop();
@@ -163,21 +196,38 @@ class _CourseFlowPageState extends State<CourseFlowPage>
 
       // SceneEntity scene1 = SceneEntity.fromJson(value['data']);
 
-      _homeProvider.sceneStreamController
-          .add({'type': 'video', 'data': scene.toJson()});
-      _homeProvider.scene = scene;
+      // scene.desc = "我也不知道啊";
+      // scene.name = "你好";
+      // scene.enName = "111";
+      // SceneEntity scene1;
+      // CourseEntity xxx = CourseEntity();
+      // xxx.id = scene.id;
+      // xxx.name = scene.name;
+      // xxx.enName = scene.enName;
+      // xxx.desc = scene.desc;
+      // xxx.cover = scene.cover;
+      // _homeProvider.sceneStreamController
+      //     .add({'type': 'course', 'data': scene.toJson()});
+      // // _homeProvider.scene = scene;
+      // _homeProvider.resetChatParams();
+
       _homeProvider.resetChatParams();
+      _homeProvider.scene = scene;
+      // _homeProvider.character.characterId
+      NavigatorUtils.push(
+        context,
+        HomeRouter.instructionalVideoDialoguePage,
+      );
+
+//  _homeProvider.sceneStreamController
+//           .add({'type': 'scene', 'data': scene.toJson()});
+//       _homeProvider.scene = scene;
+//       _homeProvider.resetChatParams();
 
       // _homeProvider.scene = scene;
-      // ScenePage(onEnd: () {  },);
       // NavigatorUtils.push(
       //   context,
       //   HomeRouter.scenePage,
-      // );
-      // _homeProvider.scene = scene;
-      // NavigatorUtils.push(
-      //   context,
-      //   HomeRouter.instructionalVideoDialoguePage,
       // );
     });
   }
@@ -251,23 +301,23 @@ class _CourseFlowPageState extends State<CourseFlowPage>
             itemBuilder: (ctx, index) {
               return GestureDetector(
                 onTap: () {
-                  selectScene(sceneList[index]);
+                  // selectScene(sceneList[index]);
+                  gotoCourse(index);
+                  // if (index == 0) {
+                  //           _homeProvider.sceneStreamController
+                  // .add({'type': 'scene', 'data': scene.toJson()});
 
-                  if (index == 0) {
-                    //           _homeProvider.sceneStreamController
-                    // .add({'type': 'scene', 'data': scene.toJson()});
+                  // _homeProvider.resetChatParams();
 
-                    // _homeProvider.resetChatParams();
-
-                    // // SceneEntity scene1 = SceneEntity.fromJson(value['data']);
-                    // _homeProvider.scene = scene;
-                    // ScenePage(onEnd: () {  },);
-                  } else if (index == 1) {
-                    // NavigatorUtils.push(
-                    //   context,
-                    //   CourseRouter.courseReportPage,
-                    // );
-                  }
+                  // // SceneEntity scene1 = SceneEntity.fromJson(value['data']);
+                  // _homeProvider.scene = scene;
+                  // ScenePage(onEnd: () {  },);
+                  // } else if (index == 1) {
+                  // NavigatorUtils.push(
+                  //   context,
+                  //   CourseRouter.courseReportPage,
+                  // );
+                  // }
                 },
                 child: CourseFlowItem(data: stepDetailData.data.data[index]),
               );

@@ -140,6 +140,7 @@ class _ChatState extends State<ChatPage>
         onConfirm: () {
           confirmChangeCharacter(characterIndex);
         },
+        onCancel: () {},
         child: const Text(
           '切换角色会结束当前对话',
           style: TextStyle(
@@ -317,6 +318,7 @@ class _ChatState extends State<ChatPage>
           Navigator.of(context).pop();
           // widget.onEnd();
         },
+        onCancel: () {},
         child: const Text(
           '对话进行中，确定要结束吗？',
           style: TextStyle(

@@ -187,6 +187,7 @@ class _TeachingDialoguePageState extends State<TeachingDialoguePage>
           Navigator.of(context).pop();
           widget.onEnd();
         },
+        onCancel: () {},
         child: const Text(
           '场景对话进行中，确定要结束吗？',
           style: TextStyle(

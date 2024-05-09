@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:Bubble/course/entity/step_detail_bean.dart';
 
 class CourseFlowItem extends StatefulWidget {
-  final Datum data;
+  final CourseDatum data;
 
   const CourseFlowItem({super.key, required this.data});
 

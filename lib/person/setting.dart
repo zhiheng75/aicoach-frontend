@@ -371,6 +371,7 @@ class _SettingPageState extends State<SettingPage>
                               buttonDirection: 'vertical',
                               cancelButtonText: '再想一想',
                               onConfirm: unbindWx,
+                              onCancel: () {},
                             );
                           } else {
                             bindWx();

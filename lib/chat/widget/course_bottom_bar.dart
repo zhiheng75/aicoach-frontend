@@ -3,7 +3,6 @@
 import 'dart:typed_data';
 
 import 'package:Bubble/chat/widget/background.dart';
-import 'package:Bubble/chat/widget/record_error.dart';
 import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
@@ -28,8 +27,8 @@ import '../utils/recognize_util.dart';
 import 'example.dart';
 import 'record.dart';
 
-class BottomErrorBar extends StatefulWidget {
-  BottomErrorBar({
+class CourseBottomBar extends StatefulWidget {
+  CourseBottomBar({
     Key? key,
     required this.chatWebsocket,
     required this.controller,
@@ -41,7 +40,7 @@ class BottomErrorBar extends StatefulWidget {
   }) : super(key: key);
 
   final ChatWebsocket chatWebsocket;
-  final BottomErrorBarController controller;
+  final BottomBarController controller;
   final RecordController recordController;
   bool? isCollectInformation;
   String? language;
@@ -49,10 +48,10 @@ class BottomErrorBar extends StatefulWidget {
   final bool isNormalChat;
 
   @override
-  State<BottomErrorBar> createState() => _BottomErrorBarState();
+  State<CourseBottomBar> createState() => _CourseBottomBarState();
 }
 
-class _BottomErrorBarState extends State<BottomErrorBar>
+class _CourseBottomBarState extends State<CourseBottomBar>
     with WidgetsBindingObserver {
   late ChatWebsocket _chatWebsocket;
   final ScreenUtil _screenUtil = ScreenUtil();
@@ -407,6 +406,7 @@ class _BottomErrorBarState extends State<BottomErrorBar>
         child: StreamBuilder(
           stream: AvatarController().getStream(),
           builder: (_, snapshot) {
+            dynamic data = snapshot.data;
             return Container(
               height: 50.0,
               decoration: BoxDecoration(
@@ -416,38 +416,50 @@ class _BottomErrorBarState extends State<BottomErrorBar>
                   style: BorderStyle.solid,
                   color: Colours.color_001652,
                 ),
-                color: const Color(0xFFF8F8F8),
-                gradient: const LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  colors: [
-                    Colours.color_9AC3FF,
-                    Colours.color_FF71E0,
-                  ],
-                ),
+                color: data == true
+                    ? null
+                    : disabled
+                        ? const Color(0xFFF8F8F8)
+                        : null,
+                gradient: data == true || !disabled
+                    ? const LinearGradient(
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                        colors: [
+                          Colours.color_9AC3FF,
+                          Colours.color_FF71E0,
+                        ],
+                      )
+                    : null,
               ),
               alignment: Alignment.center,
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  LoadAssetImage(
-                    'maikefeng',
-                    width: 24.0,
-                    height: 24.0,
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Text(
-                    '按住更正读音',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colours.color_001652,
+              child: data == true
+                  ? Image.asset(
+                      'assets/images/shengwen.gif',
+                      height: 50.0,
+                      fit: BoxFit.fitHeight,
+                    )
+                  : const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        LoadAssetImage(
+                          'maikefeng',
+                          width: 24.0,
+                          height: 24.0,
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(
+                          '按住说话',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.color_001652,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
             );
           },
         ),
@@ -456,106 +468,153 @@ class _BottomErrorBarState extends State<BottomErrorBar>
 
     return Container(
       width: _screenUtil.screenWidth,
-      margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.symmetric(
         horizontal: 16.0,
       ),
-      child: ValueListenableBuilder(
-        valueListenable: widget.controller.disabled,
-        builder: (_, disabled, __) => button(
-          disabled: disabled,
-          onStart: (detail) async {
-            if (!isAvailable()) {
-              return;
-            }
-            try {
-              bool hasAgree =
-                  SpUtil.getBool(Constant.mediaUtils, defValue: false) ?? false;
-              if (!hasAgree) {
-                Toast.show("录音音频使用说明:用于对话场景", duration: 6000);
-                SpUtil.putBool(Constant.mediaUtils, true);
-              }
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(
+              right: 8.0,
+            ),
+            child: ValueListenableBuilder(
+              valueListenable: widget.controller.showMessageList,
+              builder: (_, showMessageList, __) => iconButtom(
+                onPress: () {
+                  if (!showMessageList) {
+                    if (widget.onScrollEnd != null) {
+                      widget.onScrollEnd!();
+                    }
+                  }
+                  widget.controller.setShowMessageList(!showMessageList);
+                },
+                child: LoadAssetImage(
+                  showMessageList ? 'yanjing_bi' : 'yanjing_kai',
+                  width: 24.0,
+                  height: 17.9,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: ValueListenableBuilder(
+              valueListenable: widget.controller.disabled,
+              builder: (_, disabled, __) => button(
+                disabled: disabled,
+                onStart: (detail) async {
+                  if (!isAvailable()) {
+                    return;
+                  }
+                  try {
+                    bool hasAgree =
+                        SpUtil.getBool(Constant.mediaUtils, defValue: false) ??
+                            false;
+                    if (!hasAgree) {
+                      Toast.show("录音音频使用说明:用于对话场景", duration: 6000);
+                      SpUtil.putBool(Constant.mediaUtils, true);
+                    }
 
-              // 检查权限
-              bool isRequest = await _mediaUtils.checkMicrophonePermission();
-              if (isRequest) {
-                Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
-                return;
-              }
-              // 开始录音
-              _bufferList = [];
-              _mediaUtils.startRecord(onData: (buffer) {
-                _bufferList.add(buffer);
-                _recognizeUtil.pushAudioBuffer(1, buffer);
-              }, onComplete: (buffer) {
-                _recognizeUtil.pushAudioBuffer(2, buffer ?? Uint8List(0));
-              });
-              // 设置识别
-              _recognizeUtil.recognize((result) async {
-                bool shoRecord = widget.controller.showRecord.value;
-                // 录音中
-                if (shoRecord) {
-                  // 识别失败
-                  if (result['success'] == false) {
-                    widget.controller.setShowRecord(false);
-                    await _mediaUtils.stopRecord();
+                    // 检查权限
+                    bool isRequest =
+                        await _mediaUtils.checkMicrophonePermission();
+                    if (isRequest) {
+                      Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
+                      return;
+                    }
+                    // 开始录音
+                    _bufferList = [];
+                    _mediaUtils.startRecord(onData: (buffer) {
+                      _bufferList.add(buffer);
+                      _recognizeUtil.pushAudioBuffer(1, buffer);
+                    }, onComplete: (buffer) {
+                      _recognizeUtil.pushAudioBuffer(2, buffer ?? Uint8List(0));
+                    });
+                    // 设置识别
+                    _recognizeUtil.recognize((result) async {
+                      bool shoRecord = widget.controller.showRecord.value;
+                      // 录音中
+                      if (shoRecord) {
+                        // 识别失败
+                        if (result['success'] == false) {
+                          widget.controller.setShowRecord(false);
+                          await _mediaUtils.stopRecord();
+                          Toast.show(
+                            result['message'],
+                            duration: 1000,
+                          );
+                        }
+                        return;
+                      }
+                      bool isInSendButton =
+                          widget.recordController.isInSendButton.value;
+                      // 取消发送
+                      if (!isInSendButton) {
+                        return;
+                      }
+                      if (result['success'] == false) {
+                        Toast.show(
+                          result['message'],
+                          duration: 1000,
+                        );
+                        widget.controller.setDisabled(false);
+                        return;
+                      }
+                      sendMessage(result['text']);
+                    });
+                    widget.controller.setShowRecord(true);
+                  } catch (e) {
                     Toast.show(
-                      result['message'],
+                      e.toString().substring(11),
                       duration: 1000,
                     );
                   }
-                  return;
-                }
-                bool isInSendButton =
-                    widget.recordController.isInSendButton.value;
-                // 取消发送
-                if (!isInSendButton) {
-                  return;
-                }
-                if (result['success'] == false) {
-                  Toast.show(
-                    result['message'],
-                    duration: 1000,
-                  );
-                  widget.controller.setDisabled(false);
-                  return;
-                }
-                sendMessage(result['text']);
-              });
-              widget.controller.setShowRecord(true);
-            } catch (e) {
-              Toast.show(
-                e.toString().substring(11),
-                duration: 1000,
-              );
-            }
-          },
-          onEnd: (_) async {
-            // 录音中因识别失败关闭录音操作后手指还未抬起
-            if (!widget.controller.showRecord.value) {
-              return;
-            }
-            widget.controller.setShowRecord(false);
-            await _mediaUtils.stopRecord();
-            // 取消发送则关闭识别
-            if (!widget.recordController.isInSendButton.value) {
-              await _recognizeUtil.cancelRecognize();
-              return;
-            }
-            // 暂时禁用按钮
-            widget.controller.setDisabled(true);
-          },
-        ),
+                },
+                onEnd: (_) async {
+                  // 录音中因识别失败关闭录音操作后手指还未抬起
+                  if (!widget.controller.showRecord.value) {
+                    return;
+                  }
+                  widget.controller.setShowRecord(false);
+                  await _mediaUtils.stopRecord();
+                  // 取消发送则关闭识别
+                  if (!widget.recordController.isInSendButton.value) {
+                    await _recognizeUtil.cancelRecognize();
+                    return;
+                  }
+                  // 暂时禁用按钮
+                  widget.controller.setDisabled(true);
+                },
+              ),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(
+              left: 8.0,
+            ),
+            child: SizedBox(
+              width: 17.5,
+              height: 24.0,
+            ),
+            // child: iconButtom(
+            //   onPress: getExample,
+            //   child: const LoadAssetImage(
+            //     'tishi',
+            //     width: 17.5,
+            //     height: 24.0,
+            //   ),
+            // ),
+          ),
+        ],
       ),
     );
   }
 }
 
 // 控制器
-class BottomErrorBarController {
-  BottomErrorBarController();
+class BottomBarController {
+  BottomBarController();
 
-  ValueNotifier<bool> _disabled = ValueNotifier(false);
+  ValueNotifier<bool> _disabled = ValueNotifier(true);
   ValueNotifier<bool> _showRecord = ValueNotifier(false);
   ValueNotifier<bool> _showMessageList = ValueNotifier(true);
 

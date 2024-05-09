@@ -227,6 +227,7 @@ class _PurchasePageState extends State<PurchasePage>
         cancelButtonText: '立即购买',
         confirmButtonText: "狠心离开",
         onConfirm: onConfirm,
+        onCancel: () {},
       );
 
       // myAlert.showAlert(context, title: "确定放弃购买吗?", content: "放手容易,再遇见好难",

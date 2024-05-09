@@ -33,7 +33,12 @@ class TopicPage extends StatefulWidget {
   State<TopicPage> createState() => _TopicState();
 }
 
-class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPagePresenter>, AutomaticKeepAliveClientMixin<TopicPage>, WidgetsBindingObserver implements TopicView {
+class _TopicState extends State<TopicPage>
+    with
+        BasePageMixin<TopicPage, TopicPagePresenter>,
+        AutomaticKeepAliveClientMixin<TopicPage>,
+        WidgetsBindingObserver
+    implements TopicView {
   final ChatWebsocket _chatWebsocket = ChatWebsocket();
   final MediaUtils _mediaUtils = MediaUtils();
   late HomeProvider _homeProvider;
@@ -112,7 +117,9 @@ class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPa
   void onWebsocketAnswer(dynamic answer) {
     if (_answer == null) {
       // 结束标记
-      if (answer is String && (answer.contains('[end_session]') || RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
+      if (answer is String &&
+          (answer.contains('[end_session]') ||
+              RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
         return;
       }
       // _answer = NormalMessage();
@@ -150,7 +157,6 @@ class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPa
     }
   }
 
-
   void onWebsocketEnd(String? reason, String endType) {
     _homeProvider.endUsageTimeCutdown();
     _bottomBarControll.setDisabled(true);
@@ -182,6 +188,7 @@ class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPa
           Navigator.of(context).pop();
           widget.onEnd();
         },
+        onCancel: () {},
         child: const Text(
           '话题对话进行中，确定要结束吗？',
           style: TextStyle(
@@ -301,8 +308,7 @@ class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPa
         } else {
           inner = Column(
             children: <Widget>[
-              if (_pageState == 'loading')
-                const LoadData(),
+              if (_pageState == 'loading') const LoadData(),
               if (_pageState == 'fail')
                 LoadFail(
                   reload: init,
@@ -334,7 +340,8 @@ class _TopicState extends State<TopicPage> with BasePageMixin<TopicPage, TopicPa
               left: 0,
               child: ValueListenableBuilder(
                 valueListenable: _bottomBarControll.showRecord,
-                builder: (_, show, __) => Record(show: show, controller: _recordController),
+                builder: (_, show, __) =>
+                    Record(show: show, controller: _recordController),
               ),
             ),
           ],

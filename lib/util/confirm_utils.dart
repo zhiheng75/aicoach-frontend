@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ConfirmUtils {
-
   static void show({
     required BuildContext context,
     required String title,
@@ -10,6 +9,7 @@ class ConfirmUtils {
     String? confirmButtonText,
     String? cancelButtonText,
     required Function() onConfirm,
+    required Function() onCancel,
     Widget? child,
   }) {
     showDialog(
@@ -23,11 +23,11 @@ class ConfirmUtils {
         confirmButtonText: confirmButtonText,
         cancelButtonText: cancelButtonText,
         onConfirm: onConfirm,
+        onCancel: onCancel,
         child: child,
       ),
     );
   }
-
 }
 
 class Confirm extends StatelessWidget {
@@ -38,6 +38,7 @@ class Confirm extends StatelessWidget {
     this.confirmButtonText,
     this.cancelButtonText,
     required this.onConfirm,
+    required this.onCancel,
     this.child,
   }) : super(key: key);
 
@@ -46,6 +47,8 @@ class Confirm extends StatelessWidget {
   final String? confirmButtonText;
   final String? cancelButtonText;
   final Function() onConfirm;
+  final Function() onCancel;
+
   final Widget? child;
 
   @override
@@ -53,7 +56,8 @@ class Confirm extends StatelessWidget {
     ScreenUtil screenUtil = ScreenUtil();
     Color borderColor = const Color(0xFF3C3C43).withOpacity(0.36);
 
-    Widget button(String text, {
+    Widget button(
+      String text, {
       required Function() onPress,
     }) {
       return GestureDetector(
@@ -83,49 +87,53 @@ class Confirm extends StatelessWidget {
       );
     }
 
-    Widget bottomButton = buttonDirection == 'vertical' ? Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        button(
-          confirmButtonText ?? '确定',
-          onPress: () {
-            Navigator.of(context).pop();
-            onConfirm();
-          },
-        ),
-        button(
-          cancelButtonText ?? '取消',
-          onPress: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    ) : Row(
-      children: <Widget>[
-        Expanded(
-          child: button(
-            cancelButtonText ?? '取消',
-            onPress: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-        Container(
-          width: 1.0,
-          height: 44.0,
-          color: borderColor,
-        ),
-        Expanded(
-          child: button(
-            '确定',
-            onPress: () {
-              Navigator.of(context).pop();
-              onConfirm();
-            },
-          ),
-        ),
-      ],
-    );
+    Widget bottomButton = buttonDirection == 'vertical'
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              button(
+                confirmButtonText ?? '确定',
+                onPress: () {
+                  Navigator.of(context).pop();
+                  onConfirm();
+                },
+              ),
+              button(
+                cancelButtonText ?? '取消',
+                onPress: () {
+                  Navigator.of(context).pop();
+                  onCancel();
+                },
+              ),
+            ],
+          )
+        : Row(
+            children: <Widget>[
+              Expanded(
+                child: button(
+                  cancelButtonText ?? '取消',
+                  onPress: () {
+                    Navigator.of(context).pop();
+                    onCancel();
+                  },
+                ),
+              ),
+              Container(
+                width: 1.0,
+                height: 44.0,
+                color: borderColor,
+              ),
+              Expanded(
+                child: button(
+                  '确定',
+                  onPress: () {
+                    Navigator.of(context).pop();
+                    onConfirm();
+                  },
+                ),
+              ),
+            ],
+          );
 
     return Material(
       color: Colors.transparent,
@@ -178,5 +186,4 @@ class Confirm extends StatelessWidget {
       ),
     );
   }
-
 }

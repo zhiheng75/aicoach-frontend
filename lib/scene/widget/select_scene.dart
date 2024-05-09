@@ -137,6 +137,7 @@ class _SelectSceneState extends State<SelectScene> {
             _homeProvider.sceneStreamController
                 .add({'type': 'scene', 'data': scene.toJson()});
           },
+          onCancel: () {},
           child: const Text(
             '场景切换会结束当前对话',
             style: TextStyle(

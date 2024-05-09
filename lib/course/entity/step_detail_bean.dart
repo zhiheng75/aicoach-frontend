@@ -34,7 +34,7 @@ class StepDetailBean {
 }
 
 class Data {
-  List<Datum> data;
+  List<CourseDatum> data;
   int userId;
   int levelId;
   String levelName;
@@ -59,7 +59,8 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<CourseDatum>.from(
+            json["data"].map((x) => CourseDatum.fromJson(x))),
         userId: json["user_id"],
         levelId: json["level_id"],
         levelName: json["level_name"],
@@ -85,27 +86,31 @@ class Data {
       };
 }
 
-class Datum {
+class CourseDatum {
   bool completed;
   int stepId;
   String stepName;
   String sceneIds;
-  dynamic resources;
+  int stepIcon;
+  List<Resource> resource;
 
-  Datum({
+  CourseDatum({
     required this.completed,
     required this.stepId,
     required this.stepName,
     required this.sceneIds,
-    required this.resources,
+    required this.stepIcon,
+    required this.resource,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory CourseDatum.fromJson(Map<String, dynamic> json) => CourseDatum(
         completed: json["completed"],
         stepId: json["step_id"],
         stepName: json["step_name"],
         sceneIds: json["scene_ids"],
-        resources: json["resources"],
+        stepIcon: json["step_icon"],
+        resource: List<Resource>.from(
+            json["resource"].map((x) => Resource.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -113,6 +118,59 @@ class Datum {
         "step_id": stepId,
         "step_name": stepName,
         "scene_ids": sceneIds,
-        "resources": resources,
+        "step_icon": stepIcon,
+        "resource": List<dynamic>.from(resource.map((x) => x.toJson())),
+      };
+}
+
+class Resource {
+  int sceneId;
+  String characterId;
+  String title;
+  String? greetingAudio;
+  String? greetingText;
+  String? introFileType;
+  String? introFile;
+  String? introAudio;
+  String? introText;
+  String characterAvatar;
+
+  Resource({
+    required this.sceneId,
+    required this.characterId,
+    required this.title,
+    required this.greetingAudio,
+    required this.greetingText,
+    required this.introFileType,
+    required this.introFile,
+    required this.introAudio,
+    required this.introText,
+    required this.characterAvatar,
+  });
+
+  factory Resource.fromJson(Map<String, dynamic> json) => Resource(
+        sceneId: json["scene_id"],
+        characterId: json["character_id"],
+        title: json["title"],
+        greetingAudio: json["greeting_audio"] ?? "999999",
+        greetingText: json["greeting_text"] ?? "999999",
+        introFileType: json["intro_file_type"] ?? "999999",
+        introFile: json["intro_file"] ?? "999999",
+        introAudio: json["intro_audio"] ?? "999999",
+        introText: json["intro_text"] ?? "999999",
+        characterAvatar: json["character_avatar"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "scene_id": sceneId,
+        "character_id": characterId,
+        "title": title,
+        "greeting_audio": greetingAudio,
+        "greeting_text": greetingText,
+        "intro_file_type": introFileType,
+        "intro_file": introFile,
+        "intro_audio": introAudio,
+        "intro_text": introText,
+        "character_avatar": characterAvatar,
       };
 }
