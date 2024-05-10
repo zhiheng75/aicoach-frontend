@@ -37,6 +37,7 @@ class CourseBottomBar extends StatefulWidget {
     this.language,
     this.isNormalChat = false,
     this.onScrollEnd,
+    this.onStarEnd,
   }) : super(key: key);
 
   final ChatWebsocket chatWebsocket;
@@ -45,6 +46,8 @@ class CourseBottomBar extends StatefulWidget {
   bool? isCollectInformation;
   String? language;
   final Function()? onScrollEnd;
+  final Function()? onStarEnd;
+
   final bool isNormalChat;
 
   @override
@@ -167,16 +170,16 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     }
     String characterId = _homeProvider.character.characterId;
     String? sceneId;
-    String sessionType = _homeProvider.sessionType;
-    if (sessionType == 'topic') {
-      sceneId = _homeProvider.topic!.id.toString();
-    }
-    if (sessionType == 'scene') {
-      sceneId = _homeProvider.scene!.id.toString();
-    }
-    if (sessionType == 'course') {
-      sceneId = _homeProvider.course!.id.toString();
-    }
+    // String sessionType = _homeProvider.sessionType;
+    // if (sessionType == 'topic') {
+    //   sceneId = _homeProvider.topic!.id.toString();
+    // }
+    // if (sessionType == 'scene') {
+    sceneId = _homeProvider.scene!.id.toString();
+    // }
+    // if (sessionType == 'course') {
+    //   sceneId = _homeProvider.course!.id.toString();
+    // }
     try {
       _homeProvider.sessionId = await _chatWebsocket.startChat(
         characterId: characterId,
@@ -502,6 +505,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
               builder: (_, disabled, __) => button(
                 disabled: disabled,
                 onStart: (detail) async {
+                  widget.onStarEnd!();
                   if (!isAvailable()) {
                     return;
                   }

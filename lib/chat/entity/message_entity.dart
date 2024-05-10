@@ -20,6 +20,8 @@ class NormalMessage extends MessageEntity {
   String id = '';
   String text = '';
   String coverUrl = '';
+  String ishead = '';
+  String heardcover = '';
 
   List<Uint8List> audio = [];
   String? audioUrl;
@@ -59,6 +61,12 @@ class NormalMessage extends MessageEntity {
     if (json['coverUrl'] != null) {
       entity.coverUrl = json['coverUrl'];
     }
+    if (json['ishead'] != null) {
+      entity.ishead = json['ishead'];
+    }
+    if (json['heardcover'] != null) {
+      entity.heardcover = json['heardcover'];
+    }
     if (json['audio'] != null) {
       List<dynamic> audio = jsonDecode(json['audio']);
       entity.audio = audio.map((item) {
@@ -85,6 +93,8 @@ class NormalMessage extends MessageEntity {
       'id': id,
       'text': text,
       'coverUrl': coverUrl,
+      'ishead': ishead,
+      'heardcover': heardcover,
       'audio': jsonEncode(audio),
       'evaluation': evaluation,
     };

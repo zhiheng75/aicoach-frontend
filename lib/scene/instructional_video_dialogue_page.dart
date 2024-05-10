@@ -93,6 +93,8 @@ class _InstructionalVideoDialoguePageState
   late bool isFrist = true;
   late String resourceSceneId;
   late String titStr;
+  late String isVideo;
+  late bool isplay = true;
 
   void init() {
     _pageState = 'loading';
@@ -105,7 +107,7 @@ class _InstructionalVideoDialoguePageState
       String characterId = _homeProvider.character.characterId;
       String sceneId = resourceSceneId; //_homeProvider.scene!.id.toString();
       // String sceneId = _homeProvider.course!.id.toString();
-
+      _homeProvider.scene!.id = int.parse(resourceSceneId);
       _homeProvider.sessionId = await _chatWebsocket.startChat(
         characterId: characterId,
         sceneId: sceneId,
@@ -211,6 +213,7 @@ class _InstructionalVideoDialoguePageState
         return;
       }
       _answer!.text += answer;
+      _answer!.heardcover = _homeProvider.scene!.cover;
       _homeProvider.notify();
       _listScrollController.scrollToEnd();
       return;
@@ -311,7 +314,10 @@ class _InstructionalVideoDialoguePageState
           widget.data[dataIdx].resource[resourceIdx].sceneId.toString();
       introFileType = widget.data[dataIdx].resource[resourceIdx].introFileType!;
       titStr = widget.data[dataIdx].resource[resourceIdx].title;
+      _homeProvider.scene!.id = int.parse(resourceSceneId);
+
       if (introFileType == "video") {
+        isVideo = "1";
         introFileStr = widget.data[dataIdx].resource[resourceIdx].introFile!;
         _controller = VideoPlayerController.networkUrl(Uri.parse(introFileStr))
           ..initialize().then((_) {
@@ -374,14 +380,18 @@ class _InstructionalVideoDialoguePageState
     // _controller.removeListener(_videoListener);
     // 当视频控制器初始化完成后，开始监听播放事件
     controller.addListener(() {
+      isplay = false;
       final Duration position = controller.value.position;
+
       if (position >= controller.value.duration) {
         // 视频正在播放且播放到了末尾，视频播放完成
         Log.e("视频播放完成");
+        isplay = true;
         if (isFrist) {
           startNormaltwoChat();
         }
       }
+      setState(() {});
       // if (isPlaying && position >= controller.value.duration) {
       //   // 视频正在播放且播放到了末尾，视频播放完成
       //   Log.e("视频播放完成");
@@ -458,7 +468,7 @@ class _InstructionalVideoDialoguePageState
   @override
   void dispose() {
     super.dispose();
-    if (introFileType == "video") {
+    if (isVideo == "1") {
       _controller.dispose();
     }
   }
@@ -473,10 +483,37 @@ class _InstructionalVideoDialoguePageState
             ? AspectRatio(
                 aspectRatio: _controller.value.aspectRatio,
                 child: Container(
-                    color: Colors.blue, child: VideoPlayer(_controller)),
+                    color: Colors.black,
+                    child: Stack(
+                      children: [
+                        VideoPlayer(_controller),
+                        isFrist
+                            ? Container()
+                            : Center(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (isplay) {
+                                      _controller.play();
+                                    } else {
+                                      _controller.pause();
+                                    }
+                                    isplay = !isplay;
+                                    setState(() {});
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 60,
+                                    color: Colors.amber,
+                                    child: Center(
+                                        child: Text(isplay ? "播放" : "暂停")),
+                                  ),
+                                ),
+                              )
+                      ],
+                    )),
               )
             : Container(
-                color: Colors.blue,
+                color: Colors.black,
               ),
       );
     } else if (introFileType == "image") {
@@ -712,6 +749,12 @@ class _InstructionalVideoDialoguePageState
                   chatWebsocket: _chatWebsocket,
                   controller: _bottomBarControll,
                   recordController: _recordController,
+                  onStarEnd: () {
+                    setState(() {
+                      _controller.pause();
+                      isplay = true;
+                    });
+                  },
                   onScrollEnd: () {
                     _listScrollController.scrollToEnd();
                   },

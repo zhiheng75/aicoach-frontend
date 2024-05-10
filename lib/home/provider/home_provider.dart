@@ -50,7 +50,13 @@ class HomeProvider extends ChangeNotifier {
   // 使用次数
   int _usageCount = 0;
 
+  String _ishread = '';
+  String _heardcover = '';
+
   /// get
+  String get ishread => _ishread;
+  String get heardcover => _heardcover;
+
   int get usageTime => _usageTime;
   int get expDay => _expDay;
   int get vipState => _vipState;
@@ -98,6 +104,14 @@ class HomeProvider extends ChangeNotifier {
     if (sessionId == '') {
       _sessionType = 'normal';
     }
+  }
+
+  set ishread(String ishread) {
+    _ishread = ishread;
+  }
+
+  set heardcover(String heardcover) {
+    heardcover = _heardcover;
   }
 
   // 获取使用时间、体验天数
@@ -173,6 +187,8 @@ class HomeProvider extends ChangeNotifier {
     _scene = null;
     _course = null;
     _messageList = [];
+    _ishread = "";
+    _heardcover = "";
     notifyListeners();
   }
 

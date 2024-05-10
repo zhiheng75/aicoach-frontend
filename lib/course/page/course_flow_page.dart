@@ -57,6 +57,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
 
   late String characterIdStr;
   late String coverStr;
+  late String characterCoverStr;
 
   @override
   void initState() {
@@ -88,6 +89,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
         if (teacherListBean.data.isNotEmpty) {
           characterIdStr = teacherListBean.data[0].characterId;
           coverStr = teacherListBean.data[0].imageUrl;
+          characterCoverStr = teacherListBean.data[0].imageUrl;
         }
       } else {}
       setState(() {});
@@ -153,6 +155,12 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     _homeProvider.character.characterId = characterIdStr.isNotEmpty
         ? characterIdStr
         : dataIdx.resource[0].characterId;
+    _homeProvider.heardcover = characterCoverStr.isNotEmpty
+        ? characterCoverStr
+        : dataIdx.resource[0].characterAvatar;
+    _homeProvider.ishread = characterCoverStr.isNotEmpty
+        ? characterCoverStr
+        : dataIdx.resource[0].characterAvatar;
     // SceneEntity scene = sceneList[idx];
     // scene.desc = "我也不知道啊";
     // scene.name = "你好";
@@ -534,6 +542,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     setState(() {
                       characterIdStr = characterId;
                       coverStr = cover;
+                      characterCoverStr = cover;
                     });
                   },
                 ),

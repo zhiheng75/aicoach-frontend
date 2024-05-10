@@ -577,6 +577,9 @@ class _MessageItemState extends State<MessageItem> {
                   physics: const NeverScrollableScrollPhysics(),
                   child: LoadImage(
                     _message.imageUrl,
+                    // _homeProvider.ishread == ""
+                    //     ? _message.imageUrl
+                    //     : _homeProvider.ishread,
                     width: 48.0,
                   ),
                 ),
