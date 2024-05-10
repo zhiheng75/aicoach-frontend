@@ -302,6 +302,7 @@ class _InstructionalVideoDialoguePageState
         resourceIdx = 0;
       } else {
         //退出界面
+        Navigator.of(context).pop();
       }
     }
 
@@ -547,12 +548,17 @@ class _InstructionalVideoDialoguePageState
     }
   }
 
+  ///返回事件
+  void onBack() {
+    onConversationEnd();
+  }
+
   Widget navbar() {
     return XTCupertinoNavigationBar(
         backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
         border: null,
         padding: EdgeInsetsDirectional.zero,
-        leading: const NavigationBackWidget(),
+        leading: NavigationBackWidget(onBack: onBack),
         middle: Text(
           titStr,
           style:
