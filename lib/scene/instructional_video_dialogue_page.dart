@@ -4,7 +4,9 @@ import 'dart:ui';
 import 'package:Bubble/chat/entity/character_entity.dart';
 import 'package:Bubble/chat/widget/course_bottom_bar.dart';
 import 'package:Bubble/course/entity/step_detail_bean.dart';
+import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/res/colors.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/scene/presenter/instructional_video_dialogue_presenter.dart';
 import 'package:Bubble/scene/presenter/teaching_dialogue_presenter.dart';
 import 'package:Bubble/scene/view/instructional_video_dialogue_view.dart';
@@ -32,11 +34,16 @@ import 'package:video_player/video_player.dart';
 class InstructionalVideoDialoguePage extends StatefulWidget {
   final List<CourseDatum> data;
   final int idx;
+  final int isUserBuy;
+  final String levelId;
+
   const InstructionalVideoDialoguePage({
     super.key,
     required this.onEnd,
     required this.data,
     required this.idx,
+    required this.levelId,
+    required this.isUserBuy,
   });
   final Function() onEnd;
 
@@ -85,6 +92,7 @@ class _InstructionalVideoDialoguePageState
   late String introFileStr;
   late bool isFrist = true;
   late String resourceSceneId;
+  late String titStr;
 
   void init() {
     _pageState = 'loading';
@@ -273,8 +281,8 @@ class _InstructionalVideoDialoguePageState
     super.initState();
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     dataIdx = widget.idx;
-    dataIdx = 0;
-    resourceIdx = 1;
+    // dataIdx = 0;
+    resourceIdx = 0;
     forstartFlow(dataIdx, resourceIdx);
     // 监听App状态
     WidgetsBinding.instance.addObserver(this);
@@ -302,6 +310,7 @@ class _InstructionalVideoDialoguePageState
       resourceSceneId =
           widget.data[dataIdx].resource[resourceIdx].sceneId.toString();
       introFileType = widget.data[dataIdx].resource[resourceIdx].introFileType!;
+      titStr = widget.data[dataIdx].resource[resourceIdx].title;
       if (introFileType == "video") {
         introFileStr = widget.data[dataIdx].resource[resourceIdx].introFile!;
         _controller = VideoPlayerController.networkUrl(Uri.parse(introFileStr))
@@ -341,7 +350,8 @@ class _InstructionalVideoDialoguePageState
       // _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
       normalMessage.text =
-          widget.data[widget.idx].resource[resourceIdx].greetingText!;
+          widget.data[widget.idx].resource[resourceIdx].greetingText! +
+              "<image>https://statics.shenmo-ai.com/dora.jpg</image>";
       normalMessage.audioUrl =
           widget.data[widget.idx].resource[resourceIdx].greetingAudio!;
       normalMessage.isTextEnd = true;
@@ -364,12 +374,7 @@ class _InstructionalVideoDialoguePageState
     // _controller.removeListener(_videoListener);
     // 当视频控制器初始化完成后，开始监听播放事件
     controller.addListener(() {
-      final bool isPlaying = controller.value.isPlaying;
       final Duration position = controller.value.position;
-      Log.e("111111");
-      Log.e(controller.value.position.toString());
-      Log.e(controller.value.duration.toString());
-
       if (position >= controller.value.duration) {
         // 视频正在播放且播放到了末尾，视频播放完成
         Log.e("视频播放完成");
@@ -461,7 +466,7 @@ class _InstructionalVideoDialoguePageState
   Widget topWidget() {
     if (introFileType == "video") {
       return Positioned(
-        top: _screenUtil.statusBarHeight + 40,
+        top: _screenUtil.statusBarHeight + 80,
         width: _screenUtil.screenWidth,
         height: 200,
         child: _controller.value.isInitialized
@@ -476,7 +481,7 @@ class _InstructionalVideoDialoguePageState
       );
     } else if (introFileType == "image") {
       return Positioned(
-        top: _screenUtil.statusBarHeight + 40,
+        top: _screenUtil.statusBarHeight + 80,
         width: _screenUtil.screenWidth,
         height: 200,
         child: LoadImage(
@@ -487,7 +492,7 @@ class _InstructionalVideoDialoguePageState
       );
     } else {
       return Positioned(
-        top: _screenUtil.statusBarHeight + 40,
+        top: _screenUtil.statusBarHeight + 80,
         left: (_screenUtil.screenWidth - 150) / 2,
         // width: 100,
         // height: 100,
@@ -506,16 +511,33 @@ class _InstructionalVideoDialoguePageState
   }
 
   Widget navbar() {
-    return const XTCupertinoNavigationBar(
-      backgroundColor: Color.fromRGBO(0, 0, 0, 0),
-      border: null,
-      padding: EdgeInsetsDirectional.zero,
-      leading: NavigationBackWidget(),
-      middle: Text(
-        "纠错列表",
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-    );
+    return XTCupertinoNavigationBar(
+        backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
+        border: null,
+        padding: EdgeInsetsDirectional.zero,
+        leading: const NavigationBackWidget(),
+        middle: Text(
+          titStr,
+          style:
+              const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+        ),
+        trailing: widget.isUserBuy == 1
+            ? Container()
+            : GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+//到课程购买页
+                  NavigatorUtils.push(
+                    context,
+                    "${HomeRouter.coursePurchasePage}?levelId=${widget.levelId}",
+                  );
+                },
+                child: const LoadAssetImage(
+                  'class_vip_icon',
+                  width: 32.0,
+                  height: 32.0,
+                ),
+              ));
 
     return Container(
       width: _screenUtil.screenWidth,
@@ -561,6 +583,53 @@ class _InstructionalVideoDialoguePageState
         ],
       ),
     );
+  }
+
+  Widget topFlowWidget() {
+    return Positioned(
+      top: _screenUtil.statusBarHeight + 50,
+      left: (_screenUtil.screenWidth - 130) / 2,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30.0),
+          color: const Color.fromRGBO(1, 1, 1, 0.4),
+        ),
+        width: 130,
+        height: 20,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: _buildItems(),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildItems() {
+    List<Widget> list = [];
+    for (int i = 0; i < widget.data.length; i++) {
+      if (i == widget.idx) {
+        list.add(
+          const SizedBox(
+            width: 15,
+            height: 15,
+            child: Card(
+              color: Colours.color_FF4343,
+            ),
+          ),
+        );
+      } else {
+        list.add(
+          const SizedBox(
+            width: 15,
+            height: 15,
+            child: Card(
+              color: Colours.color_FFFFFF,
+            ),
+          ),
+        );
+      }
+    }
+    return list;
   }
 
   @override
@@ -611,7 +680,7 @@ class _InstructionalVideoDialoguePageState
         //   ),
         // );
 
-        double contentTop = _screenUtil.statusBarHeight + 260.0;
+        double contentTop = _screenUtil.statusBarHeight + 280.0;
         Widget inner;
         if (_pageState == 'success') {
           inner = Column(
@@ -677,6 +746,7 @@ class _InstructionalVideoDialoguePageState
                 child: navbar(),
               ),
               topWidget(),
+              topFlowWidget(),
               // Positioned(
               //   top: _screenUtil.statusBarHeight + 50,
               //   width: _screenUtil.screenWidth,

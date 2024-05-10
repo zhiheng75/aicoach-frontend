@@ -109,7 +109,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
         //
         NavigatorUtils.push(
           context,
-          HomeRouter.coursePurchasePage,
+          "${HomeRouter.coursePurchasePage}?levelId=1",
         );
         // NavigatorUtils.goWebViewPage(context, "百度", "https://www.baidu.com");
       },

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:Bubble/util/media_utils.dart';
+import 'package:Bubble/widgets/photo_view_simple_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +34,7 @@ class _MessageItemState extends State<MessageItem> {
   final MediaUtils _mediaUtils = MediaUtils();
   String _audioType = '';
 
+  late String coverUrl = '';
   void openTranslate() {
     if (!(widget.message as NormalMessage).isTextEnd) {
       Toast.show(
@@ -438,6 +440,7 @@ class _MessageItemState extends State<MessageItem> {
       if (!message.showExample) {
         return const SizedBox();
       }
+
       return Padding(
         padding: const EdgeInsets.only(
           top: 16,
@@ -500,6 +503,63 @@ class _MessageItemState extends State<MessageItem> {
       );
     }
 
+    Widget createImgExample(NormalMessage message) {
+      // String text = 'this is dog <image>https://www/somelogo.png</image>';
+      if (message.text.contains("<image>")) {
+        RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+        RegExpMatch? match = pattern.firstMatch(message.text);
+        late String coverUrl = "";
+        if (match != null) {
+          // String? tag = match.group(1); // 获取标签名
+          String? content = match.group(2); // 获取内容
+          // Log.e('===============Tag: $tag, Content: $content');
+          // print('Tag: $tag, Content: $content');
+          coverUrl = content!;
+        }
+
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              barrierColor: Colors.transparent,
+              isScrollControlled: true,
+              isDismissible: false,
+              builder: (_) => PhotoViewSimpleScreen(
+                imageProvider: NetworkImage(coverUrl),
+              ),
+            );
+          },
+          child: LoadImage(
+            coverUrl,
+            // width: 48.0,
+          ),
+        );
+      }
+      return Container();
+    }
+
+    String titMessage(NormalMessage message) {
+      if (message.text.contains("<image>")) {
+        RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+        RegExpMatch? match = pattern.firstMatch(message.text);
+        late String coverUrl = "";
+        if (match != null) {
+          // String? tag = match.group(1); // 获取标签名
+          String? content = match.group(2); // 获取内容
+          // Log.e('===============Tag: $tag, Content: $content');
+          coverUrl = content!;
+        }
+        String one = "<image>$coverUrl</image>";
+        String replacedString = message.text.replaceAll(one, "");
+
+        return replacedString;
+      }
+
+      return message.text;
+    }
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -539,7 +599,8 @@ class _MessageItemState extends State<MessageItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _message.text,
+                    // _message.text,
+                    titMessage(_message),
                     style: const TextStyle(
                       fontSize: 15.0,
                       fontWeight: FontWeight.w400,
@@ -548,6 +609,16 @@ class _MessageItemState extends State<MessageItem> {
                       letterSpacing: 0.05,
                     ),
                   ),
+                  createImgExample(_message),
+                  // _message.coverUrl == ''
+                  //     ? Container()
+                  //     :
+                  // _message.coverUrl != ""
+                  //     ? LoadImage(
+                  //         _message.coverUrl,
+                  //         // width: 48.0,
+                  //       )
+                  //     : Container(),
                   const SizedBox(
                     height: 16,
                   ),

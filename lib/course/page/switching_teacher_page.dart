@@ -10,7 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SwitchingTeacherPage extends StatefulWidget {
-  const SwitchingTeacherPage({super.key});
+  final Function(String characterId, String cover) clickCallBack;
+
+  const SwitchingTeacherPage({super.key, required this.clickCallBack});
 
   @override
   State<SwitchingTeacherPage> createState() => _SwitchingTeacherPageState();
@@ -93,8 +95,16 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
                   color: Colors.black,
                   child: GridView.builder(
                     itemBuilder: (ctx, index) {
-                      return SwitchingTeacherItem(
-                        data: teacherData[index],
+                      return GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          widget.clickCallBack(teacherData[index].characterId,
+                              teacherData[index].imageUrl);
+                          Navigator.of(context).pop();
+                        },
+                        child: SwitchingTeacherItem(
+                          data: teacherData[index],
+                        ),
                       );
                     },
                     itemCount: teacherData.length,

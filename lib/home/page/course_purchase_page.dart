@@ -19,7 +19,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CoursePurchasePage extends StatefulWidget {
-  const CoursePurchasePage({super.key});
+  final String levelId;
+  const CoursePurchasePage({super.key, required this.levelId});
 
   @override
   State<CoursePurchasePage> createState() => _CoursePurchasePageState();

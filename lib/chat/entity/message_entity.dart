@@ -19,6 +19,8 @@ class NormalMessage extends MessageEntity {
   String questionMessageId = '';
   String id = '';
   String text = '';
+  String coverUrl = '';
+
   List<Uint8List> audio = [];
   String? audioUrl;
   bool showTranslation = false;
@@ -32,6 +34,7 @@ class NormalMessage extends MessageEntity {
   String exampleAudio = '';
   String speaker = 'ai';
   String imageUrl = '';
+
   Map<String, dynamic> evaluation = {};
   // 是否文本（音频）已全部返回
   bool isTextEnd = false;
@@ -52,6 +55,9 @@ class NormalMessage extends MessageEntity {
     }
     if (json['text'] != null) {
       entity.text = json['text'];
+    }
+    if (json['coverUrl'] != null) {
+      entity.coverUrl = json['coverUrl'];
     }
     if (json['audio'] != null) {
       List<dynamic> audio = jsonDecode(json['audio']);
@@ -78,6 +84,7 @@ class NormalMessage extends MessageEntity {
       'session_id': sessionId,
       'id': id,
       'text': text,
+      'coverUrl': coverUrl,
       'audio': jsonEncode(audio),
       'evaluation': evaluation,
     };

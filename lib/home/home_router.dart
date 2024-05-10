@@ -23,6 +23,8 @@ class HomeRouter implements IRouterProvider {
       '/InstructionalVideoDialoguePage';
   static String teachingDialoguePage = '/TeachingDialoguePage';
 
+  static String photoViewSimpleScreen = '/PhotoViewSimpleScreen';
+
   @override
   void initRouter(FluroRouter router) {
     // router.define(homePage, handler: Handler(handlerFunc: (_, __) => const HomePage()));
@@ -53,7 +55,17 @@ class HomeRouter implements IRouterProvider {
         handler: Handler(handlerFunc: (_, __) => const MainTabber()));
 
     router.define(coursePurchasePage,
-        handler: Handler(handlerFunc: (_, __) => const CoursePurchasePage()));
+        handler: Handler(handlerFunc: (_, params) {
+      //人物
+      String levelId = params['levelId']!.first;
+      // int idx = int.parse(index);
+      return CoursePurchasePage(
+        levelId: levelId,
+      );
+    }));
+
+    // router.define(coursePurchasePage,
+    //     handler: Handler(handlerFunc: (_, __) => const CoursePurchasePage()));
 
     // router.define(coursePaysPage,
     //     handler: Handler(handlerFunc: (_, __) => const CoursePaysPage()));
@@ -68,6 +80,9 @@ class HomeRouter implements IRouterProvider {
         handler: Handler(handlerFunc: (context, params) {
       String index = params['index']!.first;
       int idx = int.parse(index);
+      final String isUserBuy = params['isUserBuy']?.first ?? '';
+      int isUserBuyInt = int.parse(isUserBuy);
+      final String levelId = params['levelId']?.first ?? '';
 
       List<CourseDatum> data =
           ModalRoute.of(context!)?.settings.arguments as List<CourseDatum>;
@@ -75,7 +90,9 @@ class HomeRouter implements IRouterProvider {
       return InstructionalVideoDialoguePage(
         data: data,
         idx: idx,
+        isUserBuy: isUserBuyInt,
         onEnd: () {},
+        levelId: levelId,
       );
     }));
 

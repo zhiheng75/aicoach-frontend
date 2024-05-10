@@ -257,7 +257,12 @@ class _HomePageState extends State<HomeNewPage>
               : type == "scene"
                   ? ScenePage(onEnd: () => changeTab('chat'))
                   : InstructionalVideoDialoguePage(
-                      data: [], idx: 0, onEnd: () => changeTab('chat')),
+                      data: [],
+                      idx: 0,
+                      onEnd: () => changeTab('chat'),
+                      isUserBuy: 0,
+                      levelId: '1',
+                    ),
         );
         // 重置tab
         changeTab('');

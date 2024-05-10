@@ -1,5 +1,8 @@
 //课程流程
+import 'dart:convert';
+
 import 'package:Bubble/chat/entity/character_entity.dart';
+import 'package:Bubble/chat/entity/character_list_bean.dart';
 import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/course/entity/step_detail_bean.dart';
 import 'package:Bubble/course/item/course_flow_item.dart';
@@ -52,6 +55,9 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   late StepDetailBean stepDetailData;
   bool isLoding = true;
 
+  late String characterIdStr;
+  late String coverStr;
+
   @override
   void initState() {
     super.initState();
@@ -67,28 +73,24 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   }
 
   void init() {
+    // String characterId = _homeProvider.character.characterId;
+    getDefaultCharacter();
     setState(() {});
-    String characterId = _homeProvider.character.characterId;
-    if (characterId == '') {
-      getDefaultCharacter((id) => getCategoryList(id));
-    } else {
-      getCategoryList(characterId);
-    }
   }
 
-  void getDefaultCharacter(Function(String) onSuccess) {
+  void getDefaultCharacter() {
     DioUtils.instance.requestNetwork<ResultData>(
-        Method.get, HttpApi.teacherList, onSuccess: (result) {
-      if (result == null || result.data == null) {
-        setState(() {});
-        return;
-      }
-      List<dynamic> list = result.data! as List<dynamic>;
-      if (list.isEmpty) {
-        setState(() {});
-        return;
-      }
-      onSuccess(CharacterEntity.fromJson(list.first).characterId);
+        Method.get, HttpApi.teacherTwoList, onSuccess: (result) {
+      Map<String, dynamic> characterListMap = json.decode(result.toString());
+      CharacterListBean teacherListBean =
+          CharacterListBean.fromJson(characterListMap);
+      if (teacherListBean.code == 200) {
+        if (teacherListBean.data.isNotEmpty) {
+          characterIdStr = teacherListBean.data[0].characterId;
+          coverStr = teacherListBean.data[0].imageUrl;
+        }
+      } else {}
+      setState(() {});
     }, onError: (code, msg) {
       setState(() {});
     });
@@ -140,14 +142,17 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     // xxx.enName = scene.enName;
     // xxx.desc = scene.desc;
     // xxx.cover = scene.cover;
-
+//  characterIdStr = characterId;
+//                       coverStr = cover;
     SceneEntity scene = SceneEntity();
     scene.id = dataIdx.resource[0].sceneId;
     scene.desc = "";
     scene.name = "";
     scene.enName = "";
-    scene.cover = "https://statics.shenmo-ai.com/dora.jpg";
-    _homeProvider.character.characterId = dataIdx.resource[0].characterId;
+    scene.cover = coverStr;
+    _homeProvider.character.characterId = characterIdStr.isNotEmpty
+        ? characterIdStr
+        : dataIdx.resource[0].characterId;
     // SceneEntity scene = sceneList[idx];
     // scene.desc = "我也不知道啊";
     // scene.name = "你好";
@@ -159,11 +164,12 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     NavigatorUtils.push(
         context,
         // HomeRouter.instructionalVideoDialoguePage,
-        "${HomeRouter.instructionalVideoDialoguePage}?index=$idx",
+        "${HomeRouter.instructionalVideoDialoguePage}?index=$idx&isUserBuy=${stepDetailData.data.isUserBuy}&levelId=${stepDetailData.data.levelId}",
         arguments: data);
   }
 
   void selectScene(SceneEntity scene) {
+    return;
     LoginManager.checkLogin(context, () {
       // Navigator.of(context).pop();
       // HomeProvider homeProvider = Provider.of<HomeProvider>(context, listen: false);
@@ -522,7 +528,15 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                 isScrollControlled: true,
                 isDismissible: false,
                 enableDrag: false,
-                builder: (_) => const SwitchingTeacherPage(),
+                builder: (_) => SwitchingTeacherPage(
+                  clickCallBack: (String characterId, String cover) {
+//huiliadezhi1
+                    setState(() {
+                      characterIdStr = characterId;
+                      coverStr = cover;
+                    });
+                  },
+                ),
               );
             },
             child: const LoadAssetImage(

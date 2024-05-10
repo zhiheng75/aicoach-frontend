@@ -19,97 +19,87 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // height: _screenUtil.screenWidth / 2 + 30,
-
-      // decoration: BoxDecoration(
-      //   borderRadius: BorderRadius.circular(20.0),
-      //   color: Colours.color_292A2E,
-      // ),
-      // // color: Colors.red,
-      // margin: const EdgeInsets.all(8),
-      child: Stack(
-        children: [
-          Center(
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                // margin: const EdgeInsets.only(
-                //     top: 0, left: 8, right: 8, bottom: 0),
-                // decoration: BoxDecoration(
-                //   borderRadius: BorderRadius.circular(8.0),
-                // image: const DecorationImage(
-                //   image: AssetImage(
-                //     'assets/images/mkbg.png',
-                //   ),
-                //   fit: BoxFit.cover,
-                // ),
-                // ),
-                child: LoadImage(
-                  widget.data.imageUrl,
-                  fit: BoxFit.fill,
-                  width: _screenUtil.screenWidth / 2 - 20,
-                  height: _screenUtil.screenWidth / 2 + 30,
-                )),
-          ),
-          // Gaps.vGap4,
-
-          Positioned(
-              right: 20,
-              top: 20,
-              child: Image.asset(
-                'assets/images/shengwen.gif',
-                width: 35,
-                height: 25,
-                fit: BoxFit.fitWidth,
+    return Stack(
+      children: [
+        Center(
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              // margin: const EdgeInsets.only(
+              //     top: 0, left: 8, right: 8, bottom: 0),
+              // decoration: BoxDecoration(
+              //   borderRadius: BorderRadius.circular(8.0),
+              // image: const DecorationImage(
+              //   image: AssetImage(
+              //     'assets/images/mkbg.png',
+              //   ),
+              //   fit: BoxFit.cover,
+              // ),
+              // ),
+              child: LoadImage(
+                widget.data.imageUrl,
+                fit: BoxFit.fill,
+                width: _screenUtil.screenWidth / 2 - 20,
+                height: _screenUtil.screenWidth / 2 + 30,
               )),
-          Positioned(
-            // right: 15,
-            bottom: 10,
-            right: 10,
-            left: 10,
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20.0),
-                    bottomRight: Radius.circular(20.0)),
-                color: Colours.color_292A2E,
-              ),
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Gaps.vGap4,
-                  Text(
-                    widget.data.name,
-                    style: const TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                    ),
+        ),
+        // Gaps.vGap4,
+
+        Positioned(
+            right: 20,
+            top: 20,
+            child: Image.asset(
+              'assets/images/shengwen.gif',
+              width: 35,
+              height: 25,
+              fit: BoxFit.fitWidth,
+            )),
+        Positioned(
+          // right: 15,
+          bottom: 10,
+          right: 10,
+          left: 10,
+          child: Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20.0),
+                  bottomRight: Radius.circular(20.0)),
+              color: Colours.color_292A2E,
+            ),
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Gaps.vGap4,
+                Text(
+                  widget.data.name,
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
                   ),
-                  Text(
-                    widget.data.slogan,
-                    style: const TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colours.color_999999,
-                    ),
+                ),
+                Text(
+                  widget.data.slogan,
+                  style: const TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w400,
+                    color: Colours.color_999999,
                   ),
-                  // Gaps.vGap4,
-                ],
-              ),
+                ),
+                // Gaps.vGap4,
+              ],
             ),
           ),
-          const Positioned(
-              right: 15,
-              bottom: 70,
-              child: LoadAssetImage(
-                "play_teacher_icon",
-                width: 32.0,
-                height: 32.0,
-              )),
-        ],
-      ),
+        ),
+        const Positioned(
+            right: 15,
+            bottom: 70,
+            child: LoadAssetImage(
+              "play_teacher_icon",
+              width: 32.0,
+              height: 32.0,
+            )),
+      ],
     );
   }
 }
