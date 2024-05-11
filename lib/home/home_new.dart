@@ -64,7 +64,7 @@ class _HomePageState extends State<HomeNewPage>
   late StreamSubscription _streamSubscription;
 
   void init() {
-    initDio();
+    // initDio();
     initUM();
 
     // 初始化手机号一键登录插件

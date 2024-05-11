@@ -386,10 +386,10 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                         Gaps.vGap5,
                         GestureDetector(
                           onTap: () {
-                            NavigatorUtils.push(
-                              context,
-                              "${HomeRouter.homePage}?index=$isDefault",
-                            );
+                            // NavigatorUtils.push(
+                            //   context,
+                            //   "${HomeRouter.homePage}?index=$isDefault",
+                            // );
                           },
                           child: Container(
                               padding: const EdgeInsets.only(
@@ -779,56 +779,57 @@ class _HomeTwoPageState extends State<HomeTwoPage>
               SliverToBoxAdapter(
                 child: banner.isNotEmpty ? barWidget(context) : Container(),
               ),
+
+              // SliverToBoxAdapter(
+              //   child: headWidget("精品推荐"),
+              // ),
+              // SliverToBoxAdapter(
+              //   child: recommendedWidget(),
+              // ),
+              // SliverToBoxAdapter(
+              //   child: headWidget("AI学伴"),
+              // ),
+              // SliverToBoxAdapter(
+              //   child: SizedBox(
+              //     // margin: const EdgeInsets.only(top: 10),
+              //     height: 150.0,
+              //     child: ListView.builder(
+              //       scrollDirection: Axis.horizontal,
+              //       itemCount: characterList.length,
+              //       itemBuilder: (context, index) {
+              //         return Container(
+              //           // color: Colors.black,
+              //           margin: const EdgeInsets.all(10),
+              //           child: LoadImage(
+              //             characterList[isDefault].coverImageUrl,
+              //           ),
+              //         );
+              //       },
+              //     ),
+              //   ),
+              // ),
               SliverToBoxAdapter(
-                child: headWidget("精品推荐"),
+                child: isChatShow == 0
+                    ? Container()
+                    : characterList.isNotEmpty
+                        ? peopleWidget(context)
+                        : Container(),
               ),
-              SliverToBoxAdapter(
-                child: recommendedWidget(),
-              ),
-              SliverToBoxAdapter(
-                child: headWidget("AI学伴"),
-              ),
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  // margin: const EdgeInsets.only(top: 10),
-                  height: 150.0,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: characterList.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        // color: Colors.black,
-                        margin: const EdgeInsets.all(10),
-                        child: LoadImage(
-                          characterList[isDefault].coverImageUrl,
-                        ),
-                      );
-                    },
-                  ),
-                ),
+              SliverList.builder(
+                itemBuilder: (ctx, index) {
+                  return GestureDetector(
+                    onTap: () {},
+                    child: courseWidget(lesson[index]),
+                  );
+                },
+                itemCount: lesson.length,
               ),
               // SliverToBoxAdapter(
-              //   child: isChatShow == 0
-              //       ? Container()
-              //       : characterList.isNotEmpty
-              //           ? peopleWidget(context)
-              //           : Container(),
+              //   child: courseWidget(context),
               // ),
-              // SliverList.builder(
-              //   itemBuilder: (ctx, index) {
-              //     return GestureDetector(
-              //       onTap: () {},
-              //       child: courseWidget(lesson[index]),
-              //     );
-              //   },
-              //   itemCount: lesson.length,
-              // ),
-              // // SliverToBoxAdapter(
-              // //   child: courseWidget(context),
-              // // ),
-              // SliverToBoxAdapter(
-              //   child: isKetShow == 1 ? mokaoWidget(context) : Container(),
-              // ),
+              SliverToBoxAdapter(
+                child: isKetShow == 1 ? mokaoWidget(context) : Container(),
+              ),
               _categoryList.isNotEmpty
                   ? SliverPersistentHeader(
                       pinned: true,

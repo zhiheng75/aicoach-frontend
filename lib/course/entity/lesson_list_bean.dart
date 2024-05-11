@@ -76,7 +76,7 @@ class LevelList {
 }
 
 class UnitList {
-  int userId;
+  // int userId;
   int levelId;
   String levelName;
   int unitId;
@@ -85,12 +85,12 @@ class UnitList {
   String lessonName;
   String lessonType;
   String objectives;
-  int isUserBy;
+  int isUserBuy;
   int completed;
   int isLocked;
 
   UnitList({
-    required this.userId,
+    // required this.userId,
     required this.levelId,
     required this.levelName,
     required this.unitId,
@@ -99,13 +99,13 @@ class UnitList {
     required this.lessonName,
     required this.lessonType,
     required this.objectives,
-    required this.isUserBy,
+    required this.isUserBuy,
     required this.completed,
     required this.isLocked,
   });
 
   factory UnitList.fromJson(Map<String, dynamic> json) => UnitList(
-        userId: json["user_id"],
+        // userId: json["user_id"],
         levelId: json["level_id"],
         levelName: json["level_name"],
         unitId: json["unit_id"],
@@ -114,13 +114,13 @@ class UnitList {
         lessonName: json["lesson_name"],
         lessonType: json["lesson_type"],
         objectives: json["objectives"],
-        isUserBy: json["is_user_by"],
+        isUserBuy: json["is_user_buy"] ?? 0,
         completed: json["completed"],
         isLocked: json["is_locked"],
       );
 
   Map<String, dynamic> toJson() => {
-        "user_id": userId,
+        // "user_id": userId,
         "level_id": levelId,
         "level_name": levelName,
         "unit_id": unitId,
@@ -129,7 +129,7 @@ class UnitList {
         "lesson_name": lessonName,
         "lesson_type": lessonType,
         "objectives": objectives,
-        "is_user_by": isUserBy,
+        "is_user_buy": isUserBuy,
         "completed": completed,
         "is_locked": isLocked,
       };
