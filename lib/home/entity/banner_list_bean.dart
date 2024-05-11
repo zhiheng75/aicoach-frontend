@@ -64,57 +64,61 @@ class Data {
 }
 
 class BBanner {
+  String linkUrl;
   String title;
   String? buttonTitle;
-  String linkUrl;
   int typeId;
-  int type;
-  DateTime createdAt;
-  String imageUrl;
+  String? param;
+  int status;
   int id;
+  String imageUrl;
   int sort;
   dynamic position;
-  int status;
+  int type;
+  DateTime createdAt;
 
   BBanner({
+    required this.linkUrl,
     required this.title,
     required this.buttonTitle,
-    required this.linkUrl,
     required this.typeId,
-    required this.type,
-    required this.createdAt,
-    required this.imageUrl,
+    required this.param,
+    required this.status,
     required this.id,
+    required this.imageUrl,
     required this.sort,
     required this.position,
-    required this.status,
+    required this.type,
+    required this.createdAt,
   });
 
   factory BBanner.fromJson(Map<String, dynamic> json) => BBanner(
+        linkUrl: json["link_url"],
         title: json["title"],
         buttonTitle: json["button_title"],
-        linkUrl: json["link_url"],
         typeId: json["type_id"],
-        type: json["type"],
-        createdAt: DateTime.parse(json["created_at"]),
-        imageUrl: json["image_url"],
+        param: json["param"],
+        status: json["status"],
         id: json["id"],
+        imageUrl: json["image_url"],
         sort: json["sort"],
         position: json["position"],
-        status: json["status"],
+        type: json["type"],
+        createdAt: DateTime.parse(json["created_at"]),
       );
 
   Map<String, dynamic> toJson() => {
+        "link_url": linkUrl,
         "title": title,
         "button_title": buttonTitle,
-        "link_url": linkUrl,
         "type_id": typeId,
-        "type": type,
-        "created_at": createdAt.toIso8601String(),
-        "image_url": imageUrl,
+        "param": param,
+        "status": status,
         "id": id,
+        "image_url": imageUrl,
         "sort": sort,
         "position": position,
-        "status": status,
+        "type": type,
+        "created_at": createdAt.toIso8601String(),
       };
 }

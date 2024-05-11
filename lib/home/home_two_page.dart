@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:Bubble/chat/entity/character_entity.dart';
+import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/entity/banner_list_bean.dart';
 import 'package:Bubble/home/home_router.dart';
@@ -82,8 +83,26 @@ class _HomeTwoPageState extends State<HomeTwoPage>
             // );
           },
           onTap: (index) {
-            NavigatorUtils.goWebViewPage(
-                context, "百度", "https://www.baidu.com");
+            if (banner[index].type == 1) {
+              NavigatorUtils.goWebViewPage(
+                  context, banner[index].title, banner[index].linkUrl);
+            } else if (banner[index].type == 2) {
+              if (banner[index].linkUrl == "1") {
+                //单系统课购买页
+                NavigatorUtils.push(
+                  context,
+                  "${HomeRouter.coursePurchasePage}?levelId=${banner[index].param}",
+                );
+              } else if (banner[index].linkUrl == "2") {
+                //个人中心进入的购买页（引流课购买和课程购买可切换的页面）
+              } else if (banner[index].linkUrl == "3") {
+                //试听课页面
+                NavigatorUtils.push(
+                    context,
+                    // CourseRouter.courseFlowPage,
+                    "${CourseRouter.courseFlowPage}?lessonId=${banner[index].param}");
+              }
+            }
             // showModalBottomSheet(
             //   context: context,
             //   backgroundColor: Colors.transparent,
@@ -109,7 +128,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
         //
         NavigatorUtils.push(
           context,
-          "${HomeRouter.coursePurchasePage}?levelId=1",
+          "${HomeRouter.coursePurchasePage}?levelId=${lesson.param}",
         );
         // NavigatorUtils.goWebViewPage(context, "百度", "https://www.baidu.com");
       },
@@ -776,8 +795,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     setState(() {});
 
     String characterId = characterList[0].characterId;
+    // _homeProvider.character.characterId = characterId;
     _homeProvider.character.characterId = characterId;
-
+    _homeProvider.character.imageUrl = characterList[0].imageUrl;
     getCategoryList(characterId);
   }
 

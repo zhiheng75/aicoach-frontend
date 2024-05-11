@@ -81,6 +81,8 @@ class _MainTabberState extends State<MainTabber> {
   void tabSelect(int index) {
     if (index == 3) {
       if (LoginManager.isLogin()) {
+        EventBus().emit(NotificationUtils.resetChat, index.toString());
+
         setState(() {
           currentIndex = index;
           _controller!.index = index;
@@ -91,10 +93,13 @@ class _MainTabberState extends State<MainTabber> {
           //   currentIndex = index;
           //   _controller!.index = index;
           // });
+          EventBus().emit(NotificationUtils.resetChat, index.toString());
         });
         // return;
       }
     } else {
+      EventBus().emit(NotificationUtils.resetChat, index.toString());
+
       setState(() {
         currentIndex = index;
         _controller!.index = index;

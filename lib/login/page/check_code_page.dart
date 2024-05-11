@@ -14,6 +14,7 @@ import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/my_only_img_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -256,6 +257,7 @@ class _CheckCodePageState extends State<CheckCodePage>
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
     // // NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
     EventBus().emit("YQM");
+    EventBus().emit(NotificationUtils.resetLoginChat);
 
     // Navigator.pop(context);
 
@@ -522,6 +524,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
     // NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
 
     EventBus().emit("YQM");
+    EventBus().emit(NotificationUtils.resetLoginChat);
 
     NavigatorUtils.goBack(context);
   }

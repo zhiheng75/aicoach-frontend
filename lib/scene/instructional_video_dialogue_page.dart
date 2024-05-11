@@ -283,6 +283,7 @@ class _InstructionalVideoDialoguePageState
   void initState() {
     super.initState();
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    _homeProvider.ishread = "0";
     dataIdx = widget.idx;
     // dataIdx = 0;
     resourceIdx = 0;
@@ -357,8 +358,7 @@ class _InstructionalVideoDialoguePageState
       // _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
       normalMessage.text =
-          widget.data[widget.idx].resource[resourceIdx].greetingText! +
-              "<image>https://statics.shenmo-ai.com/dora.jpg</image>";
+          widget.data[widget.idx].resource[resourceIdx].greetingText!;
       normalMessage.audioUrl =
           widget.data[widget.idx].resource[resourceIdx].greetingAudio!;
       normalMessage.isTextEnd = true;
@@ -469,6 +469,8 @@ class _InstructionalVideoDialoguePageState
   @override
   void dispose() {
     super.dispose();
+    _homeProvider.ishread = "";
+
     if (isVideo == "1") {
       _controller.dispose();
     }

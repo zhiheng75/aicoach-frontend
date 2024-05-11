@@ -2,4 +2,8 @@
 class NotificationUtils {
   static String loginOut = "LoginOut"; //退出
   static String taberThree = "taberThree"; //到自由聊天
+
+  static String resetChat = "ResetChat"; //重置自由聊天
+
+  static String resetLoginChat = "resetLoginChat";
 }

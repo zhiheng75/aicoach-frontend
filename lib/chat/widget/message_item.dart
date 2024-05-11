@@ -564,28 +564,29 @@ class _MessageItemState extends State<MessageItem> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (_message.speaker == 'ai')
-          Padding(
-            padding: const EdgeInsets.only(
-              right: 8,
-            ),
-            child: SizedBox(
-              width: 48.0,
-              height: 48.0,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(48.0),
-                child: SingleChildScrollView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  child: LoadImage(
-                    _message.imageUrl,
-                    // _homeProvider.ishread == ""
-                    //     ? _message.imageUrl
-                    //     : _homeProvider.ishread,
-                    width: 48.0,
+          _homeProvider.ishread == ""
+              ? Padding(
+                  padding: const EdgeInsets.only(
+                    right: 8,
                   ),
-                ),
-              ),
-            ),
-          ),
+                  child: SizedBox(
+                    width: 48.0,
+                    height: 48.0,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(48.0),
+                      child: SingleChildScrollView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        child: LoadImage(
+                          _message.imageUrl,
+                          width: 48.0,
+                        ),
+                      ),
+                    ),
+                  ))
+              : SizedBox(width: 0, height: 0),
+        _homeProvider.ishread == ""
+            ? const SizedBox(width: 0, height: 0)
+            : SizedBox(width: _message.speaker == 'user' ? 40 : 0, height: 0),
         Expanded(
           child: ClipRRect(
             borderRadius: BorderRadius.only(
@@ -633,20 +634,25 @@ class _MessageItemState extends State<MessageItem> {
             ),
           ),
         ),
+        _homeProvider.ishread == ""
+            ? const SizedBox(width: 0, height: 0)
+            : SizedBox(width: _message.speaker == 'ai' ? 40 : 0, height: 0),
         if (_message.speaker == 'user')
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 8,
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(48.0),
-              child: LoadImage(
-                _message.imageUrl,
-                width: 48,
-                height: 48,
-              ),
-            ),
-          ),
+          _homeProvider.ishread == ""
+              ? Padding(
+                  padding: const EdgeInsets.only(
+                    left: 8,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(48.0),
+                    child: LoadImage(
+                      _message.imageUrl,
+                      width: 48,
+                      height: 48,
+                    ),
+                  ),
+                )
+              : SizedBox(width: 0, height: 0),
       ],
     );
 

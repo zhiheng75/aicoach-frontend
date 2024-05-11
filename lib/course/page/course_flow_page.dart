@@ -538,7 +538,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                 enableDrag: false,
                 builder: (_) => SwitchingTeacherPage(
                   clickCallBack: (String characterId, String cover) {
-//huiliadezhi1
                     setState(() {
                       characterIdStr = characterId;
                       coverStr = cover;

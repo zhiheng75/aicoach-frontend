@@ -4,6 +4,7 @@ import 'package:Bubble/course/presenter/switching_teacher_page_presenter.dart';
 import 'package:Bubble/course/view/switching_teacher_page_view.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/resources.dart';
+import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -98,6 +99,7 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
                       return GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
+                          MediaUtils().stopPlay();
                           widget.clickCallBack(teacherData[index].characterId,
                               teacherData[index].imageUrl);
                           Navigator.of(context).pop();

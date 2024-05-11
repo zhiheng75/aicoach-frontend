@@ -1,5 +1,6 @@
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,14 @@ class SwitchingTeacherItem extends StatefulWidget {
 
 class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
   final ScreenUtil _screenUtil = ScreenUtil();
+
+  late int isSele = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isSele = 0;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,24 +56,32 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
         Positioned(
             right: 20,
             top: 20,
-            child: Image.asset(
-              'assets/images/shengwen.gif',
-              width: 35,
-              height: 25,
-              fit: BoxFit.fitWidth,
-            )),
+            child: isSele == 0
+                ? Container()
+                : Image.asset(
+                    'assets/images/shengwen.gif',
+                    width: 35,
+                    height: 25,
+                    fit: BoxFit.fitWidth,
+                  )),
         Positioned(
           // right: 15,
           bottom: 10,
           right: 10,
           left: 10,
           child: Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20.0),
-                  bottomRight: Radius.circular(20.0)),
-              color: Colours.color_292A2E,
-            ),
+            decoration: isSele == 0
+                ? const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20.0),
+                        bottomRight: Radius.circular(20.0)),
+                    color: Colours.color_292A2E,
+                  )
+                : const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20.0),
+                        bottomRight: Radius.circular(20.0)),
+                  ),
             padding: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,6 +97,7 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
                 ),
                 Text(
                   widget.data.slogan,
+                  maxLines: 1,
                   style: const TextStyle(
                     fontSize: 12.0,
                     fontWeight: FontWeight.w400,
@@ -91,14 +109,44 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
             ),
           ),
         ),
-        const Positioned(
-            right: 15,
-            bottom: 70,
-            child: LoadAssetImage(
-              "play_teacher_icon",
-              width: 32.0,
-              height: 32.0,
-            )),
+        Positioned(
+          right: 15,
+          bottom: 70,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              if (isSele == 0) {
+                isSele = 1;
+                //播放
+                MediaUtils().play(
+                  url: widget.data.greetingAudio,
+                  useAvatar: true,
+                  whenFinished: () {
+                    setState(() {
+                      isSele = 0;
+                    });
+                  },
+                );
+              } else {
+                isSele = 0;
+                //暂停
+              }
+              setState(() {});
+            },
+            child: Container(
+                child: isSele == 0
+                    ? const LoadAssetImage(
+                        "play_teacher_icon",
+                        width: 32.0,
+                        height: 32.0,
+                      )
+                    : const LoadAssetImage(
+                        "pause_teacher_icon",
+                        width: 32.0,
+                        height: 32.0,
+                      )),
+          ),
+        )
       ],
     );
   }

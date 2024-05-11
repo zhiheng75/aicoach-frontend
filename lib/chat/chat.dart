@@ -1,3 +1,4 @@
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart' hide ScreenUtil;
 import 'package:flutter/material.dart';
@@ -66,6 +67,7 @@ class _ChatState extends State<ChatPage>
   // 左右滑动提示
   bool _showSlideTip = false;
 
+  late String isNew;
   void init() {
     _pageState = 'loading';
     setState(() {});
@@ -264,7 +266,20 @@ class _ChatState extends State<ChatPage>
   @override
   void initState() {
     super.initState();
-    init();
+    EventBus().on(NotificationUtils.resetChat, (idx) {
+      setState(() {
+        isNew = idx;
+      });
+      if (idx == "2") {
+        init();
+      }
+    });
+    EventBus().on(NotificationUtils.resetLoginChat, (_) {
+      if (isNew == "2") {
+        init();
+      }
+    });
+
     EventBus().on('LEAVECHATPAGE', (_) async {
       await _mediaUtils.stopPlay();
       _bottomBarControll.setDisabled(false);
@@ -299,8 +314,9 @@ class _ChatState extends State<ChatPage>
       );
     }
 
-    double homeTabbarHeight = 445.0;
-    double bottomBarHeight = _screenUtil.bottomBarHeight + 80.0;
+    double homeTabbarHeight = _screenUtil.screenHeight / 2 - 150;
+    // double bottomBarHeight = _screenUtil.bottomBarHeight + 80.0;
+    double bottomBarHeight = 80.0;
 
     void onConversationEnd() {
       // if (!_isConversationEnd) {
@@ -511,6 +527,9 @@ class _ChatState extends State<ChatPage>
   @override
   void dispose() {
     EventBus().off('LEAVECHATPAGE');
+    EventBus().off(NotificationUtils.resetChat);
+    EventBus().off(NotificationUtils.resetLoginChat);
+
     super.dispose();
   }
 

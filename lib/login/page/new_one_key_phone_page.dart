@@ -20,6 +20,7 @@ import 'package:Bubble/util/change_notifier_manage.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_only_img_bar.dart';
@@ -494,6 +495,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
     // NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
     EventBus().emit("YQM");
+    EventBus().emit(NotificationUtils.resetLoginChat);
 
     NavigatorUtils.goBack(context);
   }
