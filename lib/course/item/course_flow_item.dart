@@ -17,7 +17,7 @@ class _CourseFlowItemState extends State<CourseFlowItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(8),
+      margin: const EdgeInsets.all(10),
       height: 80,
       // width: 280,
       padding: const EdgeInsets.all(0.5),

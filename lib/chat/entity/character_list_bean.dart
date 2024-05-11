@@ -44,6 +44,7 @@ class Datum {
   String voiceId;
   String authorName;
   String imageUrl;
+  String coverImageUrl;
   int sort;
   String stage;
   String stageImg;
@@ -69,6 +70,7 @@ class Datum {
     required this.voiceId,
     required this.authorName,
     required this.imageUrl,
+    required this.coverImageUrl,
     required this.sort,
     required this.stage,
     required this.stageImg,
@@ -95,6 +97,7 @@ class Datum {
         voiceId: json["voice_id"],
         authorName: json["author_name"],
         imageUrl: json["image_url"],
+        coverImageUrl: json["cover_image_url"],
         sort: json["sort"],
         stage: json["stage"],
         stageImg: json["stage_img"],
@@ -121,6 +124,7 @@ class Datum {
         "voice_id": voiceId,
         "author_name": authorName,
         "image_url": imageUrl,
+        "cover_image_url": coverImageUrl,
         "sort": sort,
         "stage": stage,
         "stage_img": stageImg,

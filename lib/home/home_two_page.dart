@@ -30,6 +30,7 @@ import 'package:flutter/services.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extended;
 import 'package:Bubble/chat/entity/character_list_bean.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/home/entity/banner_list_bean.dart';
@@ -62,11 +63,12 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   int isChatShow = 0;
   int isKetShow = 0;
   int isDefault = 0;
+  final ScreenUtil _screenUtil = ScreenUtil();
 
   Widget barWidget(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(10),
-      height: 200,
+      height: 150,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
         child: Swiper(
@@ -119,6 +121,168 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           // control: SwiperControl(),
         ),
       ),
+    );
+  }
+
+  Widget headWidget(String tit) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 15,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Gaps.hGap6,
+          Text(
+            tit,
+            style: const TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+            ),
+          ),
+          Gaps.hGap6,
+          const LoadAssetImage(
+            "class_vip_icon",
+            width: 30.0,
+            height: 30.0,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget recommendedWidget() {
+    return Row(
+      children: [
+        Container(
+          color: Colors.amber,
+          width: _screenUtil.screenWidth / 2,
+          height: 200,
+          child: Column(
+            children: [
+              Text(
+                "AI口语系统课",
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                "适合1-6年级",
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                "领取一节体验课",
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                "我要学",
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Column(
+          children: [
+            Container(
+              color: Colors.blue,
+              width: _screenUtil.screenWidth / 2,
+              height: 100,
+              child: Column(
+                children: [
+                  Text(
+                    "AI口语系统课",
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    "适合1-6年级",
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    "领取一节体验课",
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    "我要学",
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              color: Colors.deepPurple,
+              width: _screenUtil.screenWidth / 2,
+              height: 100,
+              child: Column(
+                children: [
+                  Text(
+                    "AI口语系统课",
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    "适合1-6年级",
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    "领取一节体验课",
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    "我要学",
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ],
     );
   }
 
@@ -476,36 +640,19 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   Widget tabbar() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(
+        const Padding(
+          padding: EdgeInsets.only(
             left: 15,
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const LoadAssetImage(
-                "home_head_icon",
-                width: 24.0,
-                height: 24.0,
-              ),
-              Gaps.hGap6,
-              const Text(
-                "口语联系精品课",
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-              ),
-              Gaps.hGap6,
-              const LoadAssetImage(
-                "home_head_icon",
-                width: 24.0,
-                height: 24.0,
-              )
-            ],
+          child: Text(
+            "场景模拟练习",
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+            ),
           ),
         ),
         SizedBox(
@@ -518,31 +665,34 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                         changeCategory(index);
                       },
                       child: Container(
-                          margin: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.only(
+                              top: 5, bottom: 5, left: 20, right: 20),
                           // height: 80,
                           // width: 280,
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 5, bottom: 5),
-                          decoration: currentIndex == index
-                              ? BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Colours.color_E8CCFE,
-                                      Colours.color_ACCDFF,
-                                    ],
-                                  ))
-                              : BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  color: Colours.color_F8F8F8,
-                                ),
-                          height: 120,
+                          // padding: const EdgeInsets.only(
+                          //     left: 10, right: 10, top: 5, bottom: 5),
+                          // decoration: currentIndex == index
+                          //     ? BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(15),
+                          //         gradient: const LinearGradient(
+                          //           colors: [
+                          //             Colours.color_E8CCFE,
+                          //             Colours.color_ACCDFF,
+                          //           ],
+                          //         ))
+                          //     : BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(15.0),
+                          //         color: Colours.color_F8F8F8,
+                          //       ),
+                          height: 40,
                           child: Text(
                             _categoryList[index].name,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 15.0,
                               fontWeight: FontWeight.w400,
-                              color: Colors.black,
+                              color: currentIndex == index
+                                  ? Colors.red
+                                  : Colors.black,
                             ),
                           )),
                     )
@@ -609,9 +759,14 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             // return buildSliverHeader();
             return [
-              // const SliverToBoxAdapter(
-              //   child: Text("Hello Tommy"),
-              // ),
+              const SliverToBoxAdapter(
+                child: Text("   口语嘟嘟 AI",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    )),
+              ),
               // SliverPersistentHeader(
               //     pinned: true,
               //     floating: false,
@@ -624,29 +779,56 @@ class _HomeTwoPageState extends State<HomeTwoPage>
               SliverToBoxAdapter(
                 child: banner.isNotEmpty ? barWidget(context) : Container(),
               ),
-
               SliverToBoxAdapter(
-                child: isChatShow == 0
-                    ? Container()
-                    : characterList.isNotEmpty
-                        ? peopleWidget(context)
-                        : Container(),
+                child: headWidget("精品推荐"),
               ),
-              SliverList.builder(
-                itemBuilder: (ctx, index) {
-                  return GestureDetector(
-                    onTap: () {},
-                    child: courseWidget(lesson[index]),
-                  );
-                },
-                itemCount: lesson.length,
+              SliverToBoxAdapter(
+                child: recommendedWidget(),
+              ),
+              SliverToBoxAdapter(
+                child: headWidget("AI学伴"),
+              ),
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  // margin: const EdgeInsets.only(top: 10),
+                  height: 150.0,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: characterList.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        // color: Colors.black,
+                        margin: const EdgeInsets.all(10),
+                        child: LoadImage(
+                          characterList[isDefault].coverImageUrl,
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
               // SliverToBoxAdapter(
-              //   child: courseWidget(context),
+              //   child: isChatShow == 0
+              //       ? Container()
+              //       : characterList.isNotEmpty
+              //           ? peopleWidget(context)
+              //           : Container(),
               // ),
-              SliverToBoxAdapter(
-                child: isKetShow == 1 ? mokaoWidget(context) : Container(),
-              ),
+              // SliverList.builder(
+              //   itemBuilder: (ctx, index) {
+              //     return GestureDetector(
+              //       onTap: () {},
+              //       child: courseWidget(lesson[index]),
+              //     );
+              //   },
+              //   itemCount: lesson.length,
+              // ),
+              // // SliverToBoxAdapter(
+              // //   child: courseWidget(context),
+              // // ),
+              // SliverToBoxAdapter(
+              //   child: isKetShow == 1 ? mokaoWidget(context) : Container(),
+              // ),
               _categoryList.isNotEmpty
                   ? SliverPersistentHeader(
                       pinned: true,
@@ -674,9 +856,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                     children: [
                       Container(
                         // color: Colors.black,
-                        margin: const EdgeInsets.all(8),
+                        margin: const EdgeInsets.only(left: 8, right: 8),
                         child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(20.0),
                             // margin: const EdgeInsets.only(
                             //     top: 0, left: 8, right: 8, bottom: 0),
                             // decoration: BoxDecoration(
@@ -691,7 +873,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                             child: LoadImage(
                               sceneList[index].cover,
                               fit: BoxFit.cover,
-                              // width: 56.0,
+                              width: _screenUtil.screenWidth / 2,
                               // height: 56.0,
                             )),
                       ),
@@ -719,9 +901,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: 0,
+                mainAxisSpacing: 20,
                 crossAxisSpacing: 0,
-                childAspectRatio: 1),
+                childAspectRatio: 1.5),
           ),
         )),
       ),

@@ -7,10 +7,14 @@ import 'package:flutter/material.dart';
 class CourseHomeItem extends StatefulWidget {
   final int index;
   final UnitList unitData;
+  final Color backColor;
+  final List<Color> iconBackColor;
   const CourseHomeItem({
     super.key,
     required this.unitData,
     required this.index,
+    required this.backColor,
+    required this.iconBackColor,
   });
 
   @override
@@ -25,7 +29,7 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
         margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
-          color: Colours.color_F8F8F8,
+          color: widget.backColor,
         ),
         padding: const EdgeInsets.symmetric(
           horizontal: 5.0,
@@ -41,9 +45,14 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
               height: 80,
               // margin: const EdgeInsets.only(top: 10),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                color: Colors.white,
-              ),
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                    colors: widget.iconBackColor,
+                  )),
+              // decoration: BoxDecoration(
+              //   borderRadius: BorderRadius.circular(8.0),
+              //   color: Colors.white,
+              // ),
               // padding: const EdgeInsets.symmetric(
               //   horizontal: 10.0,
               //   vertical: 10.0,

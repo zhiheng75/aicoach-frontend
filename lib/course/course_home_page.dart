@@ -34,6 +34,79 @@ class _CourseHomePageState extends State<CourseHomePage>
   final ScreenUtil _screenUtil = ScreenUtil();
   late CourseHomePagePresenter _courseHomePagePresenter;
   late List<Datum> listData = [];
+  bool isLoding = true;
+
+  List<Color> colorBackData = [
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+  ];
+
+  List<List<Color>> colorIconBackData = [
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+  ];
 
   Widget tabbar() {
     return SizedBox(
@@ -81,7 +154,8 @@ class _CourseHomePageState extends State<CourseHomePage>
     );
   }
 
-  List<Widget> _buildItems(List<UnitList> xxlist) {
+  List<Widget> _buildItems(
+      List<UnitList> xxlist, Color backColor, List<Color> iconBackColor) {
     List<Widget> list = [];
     for (int i = 0; i < xxlist.length; i++) {
       list.add(GestureDetector(
@@ -94,17 +168,20 @@ class _CourseHomePageState extends State<CourseHomePage>
           child: CourseHomeItem(
             index: i + 1,
             unitData: xxlist[i],
+            backColor: backColor,
+            iconBackColor: iconBackColor,
           )));
     }
     return list;
   }
 
-  Widget _buildStickyHeader(List<UnitList> list, String tit) {
+  Widget _buildStickyHeader(List<UnitList> list, String tit, Color backColor,
+      List<Color> iconBackColor) {
     return StickyHeader(
       header: _headTitle(tit),
       content: Column(
         mainAxisSize: MainAxisSize.min,
-        children: _buildItems(list),
+        children: _buildItems(list, backColor, iconBackColor),
       ),
     );
   }
@@ -124,12 +201,19 @@ class _CourseHomePageState extends State<CourseHomePage>
               List<LevelList> xxlist = xxlistData[curTabIndex].list;
               List<UnitList> list = xxlist[index].list;
 
-              return _buildStickyHeader(list, xxlist[index].unitName);
+              return _buildStickyHeader(list, xxlist[index].unitName,
+                  colorBackData[index], colorIconBackData[index]);
             },
             childCount: listData[curTabIndex].list.length,
           ),
         ),
       ],
+    );
+  }
+
+  Widget lodingView() {
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
 
@@ -147,13 +231,15 @@ class _CourseHomePageState extends State<CourseHomePage>
         value: SystemUiOverlayStyle.dark,
         child: Scaffold(
             body: SafeArea(
-          child: Column(
-            children: [
-              listData.length > 1 ? tabbar() : Container(),
-              // Center(child: SizedBox(width: 300, child: tabbar())),
-              Expanded(child: _refreshListView()),
-            ],
-          ),
+          child: isLoding
+              ? lodingView()
+              : Column(
+                  children: [
+                    listData.length > 1 ? tabbar() : Container(),
+                    // Center(child: SizedBox(width: 300, child: tabbar())),
+                    Expanded(child: _refreshListView()),
+                  ],
+                ),
         )));
 
     //      extended.ExtendedNestedScrollView(
@@ -238,6 +324,7 @@ class _CourseHomePageState extends State<CourseHomePage>
   @override
   void sendSuccess(LessonListBean data) {
     setState(() {
+      isLoding = false;
       listData.addAll(data.data);
     });
   }

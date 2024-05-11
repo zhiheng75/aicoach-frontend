@@ -278,36 +278,64 @@ class _CourseFlowPageState extends State<CourseFlowPage>
             );
           },
           child: Container(
+            margin: const EdgeInsets.all(10),
             // margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30.0),
-              color: Colours.color_F8F8F8,
-            ),
+                borderRadius: BorderRadius.circular(30),
+                gradient: const LinearGradient(
+                  colors: [
+                    Colours.color_B2E3FF,
+                    Colours.color_FFA7EC,
+                  ],
+                )),
             padding: const EdgeInsets.symmetric(
               horizontal: 30.0,
               vertical: 10.0,
             ),
-            child: RichText(
-              text: TextSpan(children: [
-                const TextSpan(
-                    text: "本课学习目标",
+            child: const Row(
+              children: [
+                Text("本课学习目标   ",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
-                      color: Colours.color_examination,
+                      color: Colors.black,
                     )),
-                TextSpan(
-                    text: stepDetailData.data.objectives,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colours.color_666666,
-                    )),
-              ]),
+                Expanded(
+                  child: Text("Learning targe",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colours.color_666666,
+                      )),
+                ),
+                LoadAssetImage(
+                  "goal_Icon",
+                  width: 15.0,
+                  height: 15.0,
+                )
+                // RichText(
+                //   text: const TextSpan(children: [
+                //     TextSpan(
+                //         text: "本课学习目标 ",
+                //         style: TextStyle(
+                //           fontSize: 16,
+                //           fontWeight: FontWeight.w400,
+                //           color: Colors.black,
+                //         )),
+                //     TextSpan(
+                //         text: "Learning targe",
+                //         style: TextStyle(
+                //           fontSize: 16,
+                //           fontWeight: FontWeight.w400,
+                //           color: Colours.color_666666,
+                //         )),
+                //   ]),
+                // ),
+              ],
             ),
           ),
         ),
-        Gaps.vGap8,
+        // Gaps.vGap8,
         SizedBox(
           height: 400,
           child: ListView.builder(
@@ -381,29 +409,29 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     ),
                   ),
                 ),
-                const Positioned(
-                  right: 0,
-                  child: LoadAssetImage(
-                    "report_icon",
-                    width: 24.0,
-                    height: 24.0,
-                  ),
-                ),
+                // const Positioned(
+                //   right: 0,
+                //   child: LoadAssetImage(
+                //     "report_icon",
+                //     width: 24.0,
+                //     height: 24.0,
+                //   ),
+                // ),
               ],
             ),
             Stack(
               children: [
-                const Positioned(
-                  right: 0,
-                  child: Text(
-                    "+",
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+                // const Positioned(
+                //   right: 0,
+                //   child: Text(
+                //     "+",
+                //     style: TextStyle(
+                //       fontSize: 14.0,
+                //       fontWeight: FontWeight.bold,
+                //       color: Colors.black,
+                //     ),
+                //   ),
+                // ),
                 GestureDetector(
                   onTap: () {
                     NavigatorUtils.push(
@@ -440,15 +468,23 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     ),
                   ),
                 ),
-                const Positioned(
-                  right: 8,
-                  top: 8,
-                  child: Text(
-                    "99",
-                    style: TextStyle(
-                      fontSize: 17.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                Positioned(
+                  right: 1,
+                  top: 1,
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                        top: 4, bottom: 4, left: 6, right: 6),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(90.0),
+                      color: Colors.red,
+                    ),
+                    child: const Text(
+                      "99",
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -497,14 +533,14 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     ),
                   ),
                 ),
-                const Positioned(
-                  right: 0,
-                  child: LoadAssetImage(
-                    "evaluate_icon",
-                    width: 24.0,
-                    height: 24.0,
-                  ),
-                ),
+                // const Positioned(
+                //   right: 0,
+                //   child: LoadAssetImage(
+                //     "evaluate_icon",
+                //     width: 24.0,
+                //     height: 24.0,
+                //   ),
+                // ),
               ],
             ),
           ],
