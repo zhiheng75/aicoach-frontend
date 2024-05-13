@@ -17,7 +17,7 @@ class _PlayBackItemState extends State<PlayBackItem> {
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.0),
-        color: Colours.color_F8F8F8,
+        color: Colors.white,
       ),
       padding: const EdgeInsets.symmetric(
         horizontal: 15.0,
@@ -35,11 +35,11 @@ class _PlayBackItemState extends State<PlayBackItem> {
               ),
             ),
           ),
-          LoadAssetImage(
-            "laba_lan",
-            width: 20.0,
-            height: 20.0,
-          ),
+          // LoadAssetImage(
+          //   "laba_lan",
+          //   width: 20.0,
+          //   height: 20.0,
+          // ),
         ],
       ),
     );

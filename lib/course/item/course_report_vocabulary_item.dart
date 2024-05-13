@@ -1,4 +1,6 @@
 import 'package:Bubble/res/colors.dart';
+import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -26,15 +28,56 @@ class _CourseReportVocabularyItemState
         // color: Colors.black,
         padding: const EdgeInsets.all(10),
         margin: const EdgeInsets.all(10),
-        child: Wrap(
-          spacing: 8,
-          runSpacing: 10,
-          children: List.generate(10, (index) {
-            return KeywordWidget(
-              keyword: "你好",
-              callback: search,
-            );
-          }),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const LoadAssetImage(
+                  "home_head_icon",
+                  width: 40.0,
+                  height: 40.0,
+                ),
+                // Gaps.hGap8,
+                RichText(
+                  text: const TextSpan(children: [
+                    TextSpan(
+                        text: "词汇  ",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        )),
+                    TextSpan(
+                        text: "vocabulary",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        )),
+                    // const TextSpan(
+                    //     text: "个",
+                    //     style: TextStyle(
+                    //       fontSize: 16,
+                    //       fontWeight: FontWeight.w400,
+                    //       color: Colours.color_666666,
+                    //     )),
+                  ]),
+                ),
+              ],
+            ),
+            Gaps.vGap11,
+            Wrap(
+              spacing: 8,
+              runSpacing: 10,
+              children: List.generate(20, (index) {
+                return KeywordWidget(
+                  keyword: "你好111",
+                  callback: search,
+                );
+              }),
+            ),
+          ],
         ),
       ),
     );

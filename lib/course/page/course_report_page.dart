@@ -35,8 +35,8 @@ class _CourseReportPageState extends State<CourseReportPage> {
             Gaps.hGap16,
             const LoadAssetImage(
               "home_head_icon",
-              width: 20.0,
-              height: 20.0,
+              width: 40.0,
+              height: 40.0,
             ),
             Gaps.hGap8,
             RichText(
@@ -140,16 +140,16 @@ class _CourseReportPageState extends State<CourseReportPage> {
                                 const Text(
                                   "L3系统班 Unit1",
                                   style: TextStyle(
-                                    fontSize: 17.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black,
+                                    fontSize: 13.0,
+                                    color: Colours.color_666666,
                                   ),
                                 ),
                                 const Text(
                                   "Lesson1 认识农场里的动物",
                                   style: TextStyle(
-                                    fontSize: 13.0,
-                                    color: Colours.color_666666,
+                                    fontSize: 17.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
                                   ),
                                 ),
                               ],
@@ -281,55 +281,54 @@ class _CourseReportPageState extends State<CourseReportPage> {
                         ),
                       ),
                     ),
-                    SliverToBoxAdapter(
-                      child: Container(
-                          color: Colors.white,
-                          child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.0),
-                                color: Colours.color_EFF9FF,
-                              ),
-                              margin: const EdgeInsets.all(10),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15.0,
-                                vertical: 15.0,
-                              ),
-                              child: Row(
-                                children: [
-                                  const LoadAssetImage(
-                                    "fang_maike_icon",
-                                    width: 48.0,
-                                    height: 48.0,
-                                  ),
-                                  Gaps.hGap10,
-                                  const Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("开口102次",
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black,
-                                            )),
-                                        Text("超过88%同学",
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colours.color_666666,
-                                            )),
-                                      ],
-                                    ),
-                                  ),
-                                  const CircleProgressView(
-                                    height: 60,
-                                    progress: 20,
-                                    width: 60,
-                                  ),
-                                ],
-                              ))),
-                    ),
-
+                    // SliverToBoxAdapter(
+                    //   child: Container(
+                    //       color: Colors.white,
+                    //       child: Container(
+                    //           decoration: BoxDecoration(
+                    //             borderRadius: BorderRadius.circular(8.0),
+                    //             color: Colours.color_EFF9FF,
+                    //           ),
+                    //           margin: const EdgeInsets.all(10),
+                    //           padding: const EdgeInsets.symmetric(
+                    //             horizontal: 15.0,
+                    //             vertical: 15.0,
+                    //           ),
+                    //           child: Row(
+                    //             children: [
+                    //               const LoadAssetImage(
+                    //                 "fang_maike_icon",
+                    //                 width: 48.0,
+                    //                 height: 48.0,
+                    //               ),
+                    //               Gaps.hGap10,
+                    //               const Expanded(
+                    //                 child: Column(
+                    //                   crossAxisAlignment:
+                    //                       CrossAxisAlignment.start,
+                    //                   children: [
+                    //                     Text("开口102次",
+                    //                         style: TextStyle(
+                    //                           fontSize: 18,
+                    //                           fontWeight: FontWeight.w400,
+                    //                           color: Colors.black,
+                    //                         )),
+                    //                     Text("超过88%同学",
+                    //                         style: TextStyle(
+                    //                           fontSize: 14,
+                    //                           color: Colours.color_666666,
+                    //                         )),
+                    //                   ],
+                    //                 ),
+                    //               ),
+                    //               const CircleProgressView(
+                    //                 height: 60,
+                    //                 progress: 20,
+                    //                 width: 60,
+                    //               ),
+                    //             ],
+                    //           ))),
+                    // ),
                     SliverToBoxAdapter(
                       child: Container(
                         color: Colors.white,
@@ -349,7 +348,7 @@ class _CourseReportPageState extends State<CourseReportPage> {
                         child: const Center(
                             child: Text("这些句子的表达非常棒！",
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w400,
                                   color: Colors.black,
                                 ))),
@@ -400,11 +399,11 @@ class _CourseReportPageState extends State<CourseReportPage> {
                     //     ),
                     //   ),
                     // ),
-                    headWidget("词汇", "12"),
+                    // headWidget("词汇", "12"),
                     const SliverToBoxAdapter(
                       child: CourseReportVocabularyItem(),
                     ),
-                    headWidget("句型", "12"),
+                    // headWidget("句型", "12"),
                     SliverToBoxAdapter(
                       child: Container(
                         color: Colors.white,
@@ -413,20 +412,56 @@ class _CourseReportPageState extends State<CourseReportPage> {
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
-                            color: Colours.color_EFF9FF,
+                            color: Colours.color_F9F8FF,
                           ),
                           // color: Colors.red,
-                          child: const Column(
+                          child: Column(
                             children: [
-                              PlayBackItem(),
-                              PlayBackItem(),
-                              PlayBackItem(),
+                              Row(
+                                children: [
+                                  const LoadAssetImage(
+                                    "home_head_icon",
+                                    width: 40.0,
+                                    height: 40.0,
+                                  ),
+                                  // Gaps.hGap8,
+                                  RichText(
+                                    text: const TextSpan(children: [
+                                      TextSpan(
+                                          text: "句型  ",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black,
+                                          )),
+                                      TextSpan(
+                                          text: "Sentence pattern",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black,
+                                          )),
+                                      // const TextSpan(
+                                      //     text: "个",
+                                      //     style: TextStyle(
+                                      //       fontSize: 16,
+                                      //       fontWeight: FontWeight.w400,
+                                      //       color: Colours.color_666666,
+                                      //     )),
+                                    ]),
+                                  ),
+                                ],
+                              ),
+                              Gaps.vGap11,
+                              const PlayBackItem(),
+                              const PlayBackItem(),
+                              const PlayBackItem(),
                             ],
                           ),
                         ),
                       ),
                     ),
-                    headWidget("Speak Skill", "12"),
+                    // headWidget("Speak Skill", "12"),
 
                     SliverToBoxAdapter(
                       child: Container(
@@ -436,14 +471,50 @@ class _CourseReportPageState extends State<CourseReportPage> {
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
-                            color: Colours.color_EEF9E8,
+                            color: Colours.color_F9F8FF,
                           ),
                           // color: Colors.red,
-                          child: const Column(
+                          child: Column(
                             children: [
-                              PlayBackItem(),
-                              PlayBackItem(),
-                              PlayBackItem(),
+                              Row(
+                                children: [
+                                  const LoadAssetImage(
+                                    "home_head_icon",
+                                    width: 40.0,
+                                    height: 40.0,
+                                  ),
+                                  // Gaps.hGap8,
+                                  RichText(
+                                    text: const TextSpan(children: [
+                                      TextSpan(
+                                          text: "能力  ",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black,
+                                          )),
+                                      TextSpan(
+                                          text: "Speaking Skills",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black,
+                                          )),
+                                      // const TextSpan(
+                                      //     text: "个",
+                                      //     style: TextStyle(
+                                      //       fontSize: 16,
+                                      //       fontWeight: FontWeight.w400,
+                                      //       color: Colours.color_666666,
+                                      //     )),
+                                    ]),
+                                  ),
+                                ],
+                              ),
+                              Gaps.vGap11,
+                              const PlayBackItem(),
+                              const PlayBackItem(),
+                              const PlayBackItem(),
                             ],
                           ),
                         ),

@@ -266,6 +266,8 @@ class _ChatState extends State<ChatPage>
   @override
   void initState() {
     super.initState();
+    // init();
+
     EventBus().on(NotificationUtils.resetChat, (idx) {
       setState(() {
         isNew = idx;

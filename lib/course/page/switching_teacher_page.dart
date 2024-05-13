@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SwitchingTeacherPage extends StatefulWidget {
-  final Function(String characterId, String cover) clickCallBack;
+  final Function(Datum teachData) clickCallBack;
 
   const SwitchingTeacherPage({super.key, required this.clickCallBack});
 
@@ -100,8 +100,7 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
                           MediaUtils().stopPlay();
-                          widget.clickCallBack(teacherData[index].characterId,
-                              teacherData[index].imageUrl);
+                          widget.clickCallBack(teacherData[index]);
                           Navigator.of(context).pop();
                         },
                         child: SwitchingTeacherItem(

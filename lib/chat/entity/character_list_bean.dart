@@ -97,7 +97,7 @@ class Datum {
         voiceId: json["voice_id"],
         authorName: json["author_name"],
         imageUrl: json["image_url"],
-        coverImageUrl: json["cover_image_url"],
+        coverImageUrl: json["cover_image_url"] ?? "",
         sort: json["sort"],
         stage: json["stage"],
         stageImg: json["stage_img"],

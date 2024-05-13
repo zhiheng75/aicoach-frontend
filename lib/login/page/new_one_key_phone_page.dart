@@ -460,11 +460,11 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
 
             String? result = response.code;
             _registerPresenter.getWxInfo(response.code ?? "");
-            setState(() {
-              String result =
-                  'state :${response.state} \n code:${response.code}';
-              print(result);
-            });
+            // setState(() {
+            // String result =
+            //     'state :${response.state} \n code:${response.code}';
+            // print(result);
+            // });
           }
         });
       } else {

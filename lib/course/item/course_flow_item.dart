@@ -21,7 +21,7 @@ class _CourseFlowItemState extends State<CourseFlowItem> {
       height: 80,
       // width: 280,
       padding: const EdgeInsets.all(0.5),
-      decoration: widget.data.completed
+      decoration: widget.data.completed == 1
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               gradient: const LinearGradient(
@@ -35,7 +35,7 @@ class _CourseFlowItemState extends State<CourseFlowItem> {
               color: const Color.fromRGBO(248, 248, 248, 1)),
       child: Container(
         alignment: Alignment.center,
-        decoration: widget.data.completed
+        decoration: widget.data.completed == 1
             ? BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
                 color: Colors.white,
@@ -80,12 +80,12 @@ class _CourseFlowItemState extends State<CourseFlowItem> {
             Gaps.hGap10,
             Text(
               // ignore: unrelated_type_equality_checks
-              widget.data.completed ? "已完成" : "去完成",
+              widget.data.completed == 1 ? "已完成" : "去完成",
               style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w400,
                 // color: Colours.color_00BB40,
-                color: widget.data.completed
+                color: widget.data.completed == 1
                     ? Colours.color_666666
                     : Colours.color_00BB40,
               ),

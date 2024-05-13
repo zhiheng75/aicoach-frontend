@@ -56,9 +56,11 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   bool isLoding = true;
 
   late String characterIdStr;
-  late String coverStr;
   late String characterCoverStr;
-
+  late int characterSceneIdStr;
+  late String characterSceneDescStr;
+  late String characterSceneNameStr;
+  late String characterSceneenNameStr;
   @override
   void initState() {
     super.initState();
@@ -88,8 +90,12 @@ class _CourseFlowPageState extends State<CourseFlowPage>
       if (teacherListBean.code == 200) {
         if (teacherListBean.data.isNotEmpty) {
           characterIdStr = teacherListBean.data[0].characterId;
-          coverStr = teacherListBean.data[0].imageUrl;
           characterCoverStr = teacherListBean.data[0].imageUrl;
+          characterSceneDescStr = teacherListBean.data[0].slogan;
+          characterSceneNameStr = teacherListBean.data[0].name;
+          characterSceneenNameStr = teacherListBean.data[0].authorName;
+
+          getCategoryList(teacherListBean.data[0].characterId); //可删除
         }
       } else {}
       setState(() {});
@@ -138,7 +144,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   void gotoCourse(int idx) {
     List<CourseDatum> data = stepDetailData.data.data;
     CourseDatum dataIdx = stepDetailData.data.data[idx];
-
+    characterSceneIdStr = dataIdx.resource[0].sceneId;
     // xxx.id = scene.id;
     // xxx.name = scene.name;
     // xxx.enName = scene.enName;
@@ -146,12 +152,18 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     // xxx.cover = scene.cover;
 //  characterIdStr = characterId;
 //                       coverStr = cover;
+
+    // late String characterCoverStr;
+    // late String characterSceneIdStr;
+    // characterSceneDescStr
+    // late String characterSceneNameStr;
+    // late String characterSceneenNameStr;
     SceneEntity scene = SceneEntity();
-    scene.id = dataIdx.resource[0].sceneId;
+    scene.id = characterSceneIdStr;
     scene.desc = "";
     scene.name = "";
     scene.enName = "";
-    scene.cover = coverStr;
+    scene.cover = characterCoverStr;
     _homeProvider.character.characterId = characterIdStr.isNotEmpty
         ? characterIdStr
         : dataIdx.resource[0].characterId;
@@ -168,17 +180,21 @@ class _CourseFlowPageState extends State<CourseFlowPage>
 
     _homeProvider.resetChatParams();
     _homeProvider.scene = scene;
-    // _homeProvider.character.characterId
-    NavigatorUtils.push(
-        context,
-        // HomeRouter.instructionalVideoDialoguePage,
+    NavigatorUtils.push(context,
         "${HomeRouter.instructionalVideoDialoguePage}?index=$idx&isUserBuy=${stepDetailData.data.isUserBuy}&levelId=${stepDetailData.data.levelId}",
         arguments: data);
   }
 
   void selectScene(SceneEntity scene) {
-    return;
     LoginManager.checkLogin(context, () {
+      _homeProvider.sceneStreamController
+          .add({'type': 'scene', 'data': scene.toJson()});
+
+      _homeProvider.resetChatParams();
+
+      // SceneEntity scene1 = SceneEntity.fromJson(value['data']);
+      _homeProvider.scene = scene;
+      return;
       // Navigator.of(context).pop();
       // HomeProvider homeProvider = Provider.of<HomeProvider>(context, listen: false);
       // if (homeProvider.sessionType == 'chat') {
@@ -225,13 +241,13 @@ class _CourseFlowPageState extends State<CourseFlowPage>
       // // _homeProvider.scene = scene;
       // _homeProvider.resetChatParams();
 
-      _homeProvider.resetChatParams();
-      _homeProvider.scene = scene;
-      // _homeProvider.character.characterId
-      NavigatorUtils.push(
-        context,
-        HomeRouter.instructionalVideoDialoguePage,
-      );
+      // _homeProvider.resetChatParams();
+      // _homeProvider.scene = scene;
+      // // _homeProvider.character.characterId
+      // NavigatorUtils.push(
+      //   context,
+      //   HomeRouter.instructionalVideoDialoguePage,
+      // );
 
 //  _homeProvider.sceneStreamController
 //           .add({'type': 'scene', 'data': scene.toJson()});
@@ -343,23 +359,11 @@ class _CourseFlowPageState extends State<CourseFlowPage>
             itemBuilder: (ctx, index) {
               return GestureDetector(
                 onTap: () {
-                  // selectScene(sceneList[index]);
-                  gotoCourse(index);
-                  // if (index == 0) {
-                  //           _homeProvider.sceneStreamController
-                  // .add({'type': 'scene', 'data': scene.toJson()});
+                  LoginManager.checkLogin(context, () {
+                    // selectScene(sceneList[index]);
 
-                  // _homeProvider.resetChatParams();
-
-                  // // SceneEntity scene1 = SceneEntity.fromJson(value['data']);
-                  // _homeProvider.scene = scene;
-                  // ScenePage(onEnd: () {  },);
-                  // } else if (index == 1) {
-                  // NavigatorUtils.push(
-                  //   context,
-                  //   CourseRouter.courseReportPage,
-                  // );
-                  // }
+                    gotoCourse(index);
+                  });
                 },
                 child: CourseFlowItem(data: stepDetailData.data.data[index]),
               );
@@ -573,11 +577,13 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                 isDismissible: false,
                 enableDrag: false,
                 builder: (_) => SwitchingTeacherPage(
-                  clickCallBack: (String characterId, String cover) {
+                  clickCallBack: (teachData) {
                     setState(() {
-                      characterIdStr = characterId;
-                      coverStr = cover;
-                      characterCoverStr = cover;
+                      characterIdStr = teachData.characterId;
+                      characterCoverStr = teachData.coverImageUrl;
+                      characterSceneDescStr = teachData.slogan;
+                      characterSceneNameStr = teachData.name;
+                      characterSceneenNameStr = teachData.authorName;
                     });
                   },
                 ),

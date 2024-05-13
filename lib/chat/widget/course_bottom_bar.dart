@@ -37,7 +37,7 @@ class CourseBottomBar extends StatefulWidget {
     this.language,
     this.isNormalChat = false,
     this.onScrollEnd,
-    this.onStarEnd,
+    // this.onStarEnd,
   }) : super(key: key);
 
   final ChatWebsocket chatWebsocket;
@@ -46,7 +46,7 @@ class CourseBottomBar extends StatefulWidget {
   bool? isCollectInformation;
   String? language;
   final Function()? onScrollEnd;
-  final Function()? onStarEnd;
+  // final Function()? onStarEnd;
 
   final bool isNormalChat;
 
@@ -505,7 +505,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
               builder: (_, disabled, __) => button(
                 disabled: disabled,
                 onStart: (detail) async {
-                  widget.onStarEnd!();
+                  // widget.onStarEnd!();
                   if (!isAvailable()) {
                     return;
                   }

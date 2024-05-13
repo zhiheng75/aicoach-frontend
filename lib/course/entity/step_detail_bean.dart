@@ -92,7 +92,7 @@ class Data {
 }
 
 class CourseDatum {
-  bool completed;
+  int completed;
   int stepId;
   String stepName;
   String sceneIds;

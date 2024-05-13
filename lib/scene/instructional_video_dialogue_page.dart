@@ -93,7 +93,7 @@ class _InstructionalVideoDialoguePageState
   late bool isFrist = true;
   late String resourceSceneId;
   late String titStr;
-  late String isVideo;
+  late String isVideo = "0";
   late bool isplay = true;
 
   void init() {
@@ -213,7 +213,7 @@ class _InstructionalVideoDialoguePageState
         return;
       }
       _answer!.text += answer;
-      _answer!.heardcover = _homeProvider.scene!.cover;
+      // _answer!.heardcover = _homeProvider.scene!.cover;
       _homeProvider.notify();
       _listScrollController.scrollToEnd();
       return;
@@ -757,12 +757,12 @@ class _InstructionalVideoDialoguePageState
                   chatWebsocket: _chatWebsocket,
                   controller: _bottomBarControll,
                   recordController: _recordController,
-                  onStarEnd: () {
-                    setState(() {
-                      _controller.pause();
-                      isplay = true;
-                    });
-                  },
+                  // onStarEnd: () {
+                  //   setState(() {
+                  //     _controller.pause();
+                  //     isplay = true;
+                  //   });
+                  // },
                   onScrollEnd: () {
                     _listScrollController.scrollToEnd();
                   },
