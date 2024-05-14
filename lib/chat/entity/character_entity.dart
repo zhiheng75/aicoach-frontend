@@ -1,10 +1,11 @@
 class CharacterEntity {
-
   String characterId = '';
   String name = '';
   String imageUrl = '';
   String stillImage = '';
   String motionImage = '';
+  String stillImageD = '';
+  String motionImageD = '';
   String stage = '';
   String stageImg = '';
   String slogan = '';
@@ -32,6 +33,12 @@ class CharacterEntity {
     if (json['motion_image'] != null) {
       entity.motionImage = json['motion_image'];
     }
+    if (json['still_imageD'] != null) {
+      entity.stillImageD = json['still_imageD'];
+    }
+    if (json['motion_imageD'] != null) {
+      entity.motionImageD = json['motion_imageD'];
+    }
     if (json['stage'] != null) {
       entity.stage = json['stage'];
     }
@@ -49,7 +56,8 @@ class CharacterEntity {
     }
     if (json['topic'] != null) {
       List<dynamic> list = json['topic'] as List<dynamic>;
-      entity.topicList = list.map((item) => CharacterTopic.fromJson(item)).toList();
+      entity.topicList =
+          list.map((item) => CharacterTopic.fromJson(item)).toList();
     }
     return entity;
   }
@@ -61,6 +69,8 @@ class CharacterEntity {
       'image_url': imageUrl,
       'still_image': stillImage,
       'motion_image': motionImage,
+      'still_imageD': stillImageD,
+      'motion_imageD': motionImageD,
       'stage': stage,
       'stage_img': stageImg,
       'slogan': slogan,
@@ -69,11 +79,9 @@ class CharacterEntity {
       'topic': topicList,
     };
   }
-
 }
 
 class CharacterTopic {
-
   String id = '';
   String title = '';
   String desc = '';
@@ -107,5 +115,4 @@ class CharacterTopic {
       'cover': cover,
     };
   }
-
 }

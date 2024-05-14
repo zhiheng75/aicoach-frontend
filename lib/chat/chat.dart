@@ -68,6 +68,42 @@ class _ChatState extends State<ChatPage>
   bool _showSlideTip = false;
 
   late String isNew;
+
+  List<Map<String, String>> characterData = [
+    {
+      "characterId": "dora",
+      "stillImage": "dora_still_image",
+      "motionImage": "dora_motion_image"
+    },
+    {
+      "characterId": "peppa_pig",
+      "stillImage": "peppa_pig",
+      "motionImage": "peppa_pig"
+    },
+    {
+      "characterId": "sophia",
+      "stillImage": "sophia_still_image",
+      "motionImage": "sophia_motion_image"
+    },
+    {
+      "characterId": "gg_bond",
+      "stillImage": "gg_bond",
+      "motionImage": "gg_bond"
+    },
+    {"characterId": "mickey", "stillImage": "mickey", "motionImage": "mickey"},
+    {"characterId": "eggy", "stillImage": "eggy", "motionImage": "eggy"},
+    {
+      "characterId": "ultraman",
+      "stillImage": "ultraman",
+      "motionImage": "ultraman"
+    },
+    {
+      "characterId": "harry_potter",
+      "stillImage": "harry_potter_still_image",
+      "motionImage": "harry_potter_motion_image"
+    },
+  ];
+
   void init() {
     _pageState = 'loading';
     setState(() {});

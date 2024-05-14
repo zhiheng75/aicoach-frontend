@@ -69,18 +69,17 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
           ),
         ),
         // Gaps.vGap4,
-
-        Positioned(
-            right: 20,
-            top: 20,
-            child: isSele == 0
-                ? Container()
-                : Image.asset(
-                    'assets/images/shengwen.gif',
-                    width: 35,
-                    height: 25,
-                    fit: BoxFit.fitWidth,
-                  )),
+        // Positioned(
+        //     right: 20,
+        //     top: 20,
+        //     child: isSele == 0
+        //         ? Container()
+        //         : Image.asset(
+        //             'assets/images/shengwen.gif',
+        //             width: 35,
+        //             height: 25,
+        //             fit: BoxFit.fitWidth,
+        //           )),
         Positioned(
           // right: 15,
           bottom: 8,

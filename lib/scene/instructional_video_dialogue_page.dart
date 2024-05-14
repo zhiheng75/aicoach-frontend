@@ -503,23 +503,34 @@ class _InstructionalVideoDialoguePageState
                             ? Container()
                             : Center(
                                 child: GestureDetector(
-                                  onTap: () {
-                                    if (isplay) {
-                                      _controller.play();
-                                    } else {
-                                      _controller.pause();
-                                    }
-                                    isplay = !isplay;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    width: 60,
-                                    height: 60,
-                                    color: Colors.amber,
-                                    child: Center(
-                                        child: Text(isplay ? "播放" : "暂停")),
-                                  ),
-                                ),
+                                    onTap: () {
+                                      if (isplay) {
+                                        _controller.play();
+                                      } else {
+                                        _controller.pause();
+                                      }
+                                      isplay = !isplay;
+                                      setState(() {});
+                                    },
+                                    child: isplay
+                                        ? const LoadAssetImage(
+                                            "play_video_icon",
+                                            width: 32.0,
+                                            height: 32.0,
+                                          )
+                                        : const LoadAssetImage(
+                                            "pause_video_icon",
+                                            width: 32.0,
+                                            height: 32.0,
+                                          )
+                                    //  Container(
+                                    //   width: 60,
+                                    //   height: 60,
+                                    //   color: Colors.amber,
+                                    //   child: Center(
+                                    //       child: Text(isplay ? "播放" : "暂停")),
+                                    // ),
+                                    ),
                               )
                       ],
                     )),

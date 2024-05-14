@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:Bubble/util/image_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,9 @@ class _BackgroundState extends State<Background> {
   final ScrollController _scrollController = ScrollController();
   bool _isScroll = true;
   double _distance = 0.0;
+
+  // String stillImage = provider.character.imageUrl;
+  //             String motionImage = provider.character.imageUrl;
 
   void scroll() {
     if (!_isScroll) {
@@ -83,29 +87,70 @@ class _BackgroundState extends State<Background> {
               if (provider.character.motionImage != '') {
                 motionImage = provider.character.motionImage;
               }
+
+              if (provider.character.characterId == "dora") {
+                stillImage = "dora_still_image";
+                motionImage = "dora_motion_image";
+              } else if (provider.character.characterId == "peppa_pig") {
+                stillImage = "peppa_pig";
+                motionImage = "peppa_pig";
+              } else if (provider.character.characterId == "sophia") {
+                stillImage = "sophia_still_image";
+                motionImage = "sophia_motion_image";
+              } else if (provider.character.characterId == "gg_bond") {
+                stillImage = "gg_bond";
+                motionImage = "gg_bond";
+              } else if (provider.character.characterId == "mickey") {
+                stillImage = "mickey";
+                motionImage = "mickey";
+              } else if (provider.character.characterId == "eggy") {
+                stillImage = "eggy";
+                motionImage = "eggy";
+              } else if (provider.character.characterId == "ultraman") {
+                stillImage = "ultraman";
+                motionImage = "ultraman";
+              } else {
+                stillImage = "harry_potter_still_image";
+                motionImage = "harry_potter_motion_image";
+              }
+
               dynamic data = snapshot.data;
               return Stack(
                 children: [
                   Container(
-                    width: width,
-                    height: height,
-                    alignment: Alignment.center,
-                    child: LoadImage(
-                      motionImage,
+                      width: width,
                       height: height,
-                      fit: BoxFit.fitHeight,
-                    ),
-                  ),
+                      alignment: Alignment.center,
+                      child: LoadAssetImage(
+                        motionImage,
+                        format: ImageFormat.gif,
+                        width: width,
+                        height: height,
+                        fit: BoxFit.fitHeight,
+                      )
+                      // LoadImage(
+                      //   motionImage,
+                      //   height: height,
+                      //   fit: BoxFit.fitHeight,
+                      // ),
+                      ),
                   Container(
                     width: data != null && data == true ? 0 : width,
                     height: height,
                     alignment: Alignment.center,
                     color: Colors.white,
-                    child: LoadImage(
+                    child: LoadAssetImage(
                       stillImage,
+                      format: ImageFormat.gif,
+                      width: width,
                       height: height,
                       fit: BoxFit.fitHeight,
                     ),
+                    // LoadImage(
+                    //   stillImage,
+                    //   height: height,
+                    //   fit: BoxFit.fitHeight,
+                    // ),
                   ),
                 ],
               );
