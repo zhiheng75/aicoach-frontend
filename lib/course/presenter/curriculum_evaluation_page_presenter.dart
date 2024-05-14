@@ -25,7 +25,7 @@ class CurriculumEvaluationPagePresenter
 
     return requestNetwork<ResultData>(Method.post,
         url: HttpApi.lessonFeedback,
-        queryParameters: params,
+        params: params,
         isShow: false, onSuccess: (result) {
       Map<String, dynamic> lessonFeedbackMap = json.decode(result.toString());
       ResultData lessonFeedback = ResultData.fromJson(lessonFeedbackMap);

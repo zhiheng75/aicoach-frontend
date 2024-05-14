@@ -490,6 +490,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     //   print(v),
     // });
     Log.e("======登录成功=======");
+    Navigator.pop(context);
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
@@ -497,7 +498,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     EventBus().emit("YQM");
     EventBus().emit(NotificationUtils.resetLoginChat);
 
-    NavigatorUtils.goBack(context);
+    // NavigatorUtils.goBack(context);
   }
 
   @override

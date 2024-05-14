@@ -248,6 +248,7 @@ class _CheckCodePageState extends State<CheckCodePage>
   @override
   void loginSuccess() {
     // TODO: implement loginSuccess
+    Navigator.pop(context);
     if (widget.typeLogin == "0") {
       Constant.jverify.dismissLoginAuthView();
       hideLoading();
@@ -259,9 +260,7 @@ class _CheckCodePageState extends State<CheckCodePage>
     EventBus().emit("YQM");
     EventBus().emit(NotificationUtils.resetLoginChat);
 
-    // Navigator.pop(context);
-
-    NavigatorUtils.goBack(context);
+    // NavigatorUtils.goBack(context);
 
     // NavigatorUtils.push(
     //   context,
@@ -517,7 +516,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   @override
   void loginSuccess() {
     // TODO: implement loginSuccess
-
+    Navigator.pop(context);
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
     // NavigatorUtils.push(context, PersonalRouter.person, replace: true);
@@ -526,7 +525,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
     EventBus().emit("YQM");
     EventBus().emit(NotificationUtils.resetLoginChat);
 
-    NavigatorUtils.goBack(context);
+    // NavigatorUtils.goBack(context);
   }
 
   @override

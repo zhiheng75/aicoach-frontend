@@ -82,11 +82,17 @@ class _CourseFlowPageState extends State<CourseFlowPage>
         characterSceneenNameStr = _teacherListBean.data[idx].authorName;
       });
     });
+
+    EventBus().on(NotificationUtils.nextResetChat, (_) {
+      _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
+    });
   }
 
   @override
   void dispose() {
     EventBus().off(NotificationUtils.teachIdx);
+    EventBus().off(NotificationUtils.nextResetChat);
+
     super.dispose();
   }
 
@@ -517,9 +523,13 @@ class _CourseFlowPageState extends State<CourseFlowPage>
               children: [
                 GestureDetector(
                   onTap: () {
-                    NavigatorUtils.push(
-                        context, CourseRouter.curriculumEvaluationPage,
-                        arguments: stepDetailData);
+                    LoginManager.checkLogin(context, () {
+                      // selectScene(sceneList[index]);
+
+                      NavigatorUtils.push(
+                          context, CourseRouter.curriculumEvaluationPage,
+                          arguments: stepDetailData);
+                    });
 
                     //     NavigatorUtils.push(
                     // context,

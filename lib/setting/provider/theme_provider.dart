@@ -14,10 +14,8 @@ extension ThemeModeExtension on ThemeMode {
 }
 
 class ThemeProvider extends ChangeNotifier {
-
   /// 是否跟随系统
-  bool get isFollowSystem =>
-      getThemeMode() == ThemeMode.system;
+  bool get isFollowSystem => getThemeMode() == ThemeMode.system;
 
   void syncTheme() {
     final String theme = SpUtil.getString(Constant.theme) ?? '';
@@ -31,9 +29,9 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  ThemeMode getThemeMode(){
+  ThemeMode getThemeMode() {
     final String theme = SpUtil.getString(Constant.theme) ?? '';
-    switch(theme) {
+    switch (theme) {
       case 'Dark':
         return ThemeMode.dark;
       case 'Light':
@@ -43,15 +41,13 @@ class ThemeProvider extends ChangeNotifier {
     }
   }
 
-
-
   /// 暗黑模式判断
   bool isDark(BuildContext context) {
     if (!isPriorityApp) {
-      return Theme.of(context).brightness == Brightness.dark;
+      return Theme.of(context).brightness == Brightness.light;
     } else {
       if (isFollowSystem) {
-        return Theme.of(context).brightness == Brightness.dark;
+        return Theme.of(context).brightness == Brightness.light;
       } else {
         return getThemeColor() == Colours.app_main;
       }
@@ -67,16 +63,16 @@ class ThemeProvider extends ChangeNotifier {
     return ThemeData(
       primaryColor: isDarkMode ? Colours.dark_app_main : Colours.app_main,
       colorScheme: ColorScheme.fromSwatch().copyWith(
-        brightness: isDarkMode ? Brightness.dark : Brightness.light,
+        brightness: isDarkMode ? Brightness.light : Brightness.light,
         secondary: isDarkMode ? Colours.dark_app_main : Colours.app_main,
         error: isDarkMode ? Colours.dark_red : Colours.red,
       ),
       // Tab指示器颜色
       indicatorColor: isDarkMode ? Colours.dark_app_main : Colours.app_main,
       // 页面背景色
-      scaffoldBackgroundColor: isDarkMode ? Colours.dark_bg_color : Colors.white,
+      scaffoldBackgroundColor: isDarkMode ? Colors.white : Colors.white,
       // 主要用于Material背景色
-      canvasColor: isDarkMode ? Colours.dark_material_bg : Colors.white,
+      canvasColor: isDarkMode ? Colors.white : Colors.white,
       // 文字选择色（输入框选择文字等）
       // textSelectionColor: Colours.app_main.withAlpha(70),
       // textSelectionHandleColor: Colours.app_main,
@@ -90,26 +86,27 @@ class ThemeProvider extends ChangeNotifier {
         titleMedium: isDarkMode ? TextStyles.textDark : TextStyles.text,
         // Text文字样式
         bodyMedium: isDarkMode ? TextStyles.textDark : TextStyles.text,
-        titleSmall: isDarkMode ? TextStyles.textDarkGray12 : TextStyles.textGray12,
+        titleSmall:
+            isDarkMode ? TextStyles.textDarkGray12 : TextStyles.textGray12,
       ),
       inputDecorationTheme: InputDecorationTheme(
-        hintStyle: isDarkMode ? TextStyles.textHint14 : TextStyles.textDarkGray14,
+        hintStyle:
+            isDarkMode ? TextStyles.textHint14 : TextStyles.textDarkGray14,
       ),
       appBarTheme: AppBarTheme(
         elevation: 0.0,
         color: isDarkMode ? Colours.dark_bg_color : Colors.white,
-        systemOverlayStyle: isDarkMode ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+        // systemOverlayStyle: isDarkMode ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       dividerTheme: DividerThemeData(
-        color: isDarkMode ? Colours.dark_line : Colours.line,
-        space: 0.6,
-        thickness: 0.6
-      ),
+          color: isDarkMode ? Colours.dark_line : Colours.line,
+          space: 0.6,
+          thickness: 0.6),
       cupertinoOverrideTheme: CupertinoThemeData(
-        brightness: isDarkMode ? Brightness.dark : Brightness.light,
+        brightness: isDarkMode ? Brightness.light : Brightness.light,
       ),
       visualDensity: VisualDensity.standard,
     );
   }
-
 }

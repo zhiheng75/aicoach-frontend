@@ -64,8 +64,8 @@ class Data {
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         data: List<CourseDatum>.from(
             json["data"].map((x) => CourseDatum.fromJson(x))),
-        userId: json["user_id"],
-        levelId: json["level_id"],
+        userId: json["user_id"] ?? 0,
+        levelId: json["level_id"] ?? 0,
         isUserBuy: json["is_user_buy"],
         levelName: json["level_name"],
         unitId: json["unit_id"],

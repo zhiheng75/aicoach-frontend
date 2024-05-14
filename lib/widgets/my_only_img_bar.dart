@@ -37,11 +37,6 @@ class MyOnlyImgBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final Color bgColor = backgroundColor ?? context.backgroundColor;
 
-    final SystemUiOverlayStyle overlayStyle =
-        ThemeData.estimateBrightnessForColor(bgColor) == Brightness.dark
-            ? SystemUiOverlayStyle.light
-            : SystemUiOverlayStyle.dark;
-
     final Widget actionImgBtn = actionUrl.isNotEmpty
         ? MyImgButton(
             minHeight: height,
@@ -68,7 +63,7 @@ class MyOnlyImgBar extends StatelessWidget implements PreferredSizeWidget {
     );
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: overlayStyle,
+      value: SystemUiOverlayStyle.light,
       child: Material(
         color: bgColor,
         child: SafeArea(

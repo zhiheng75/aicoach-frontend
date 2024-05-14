@@ -58,7 +58,7 @@ class _LoadingDialog extends Dialog {
                 Theme(
                   data: ThemeData(
                     cupertinoOverrideTheme: const CupertinoThemeData(
-                      brightness: Brightness.dark, // 局部指定夜间模式，加载圈颜色会设置为白色
+                      brightness: Brightness.light, // 局部指定夜间模式，加载圈颜色会设置为白色
                     ),
                   ),
                   child: const CupertinoActivityIndicator(radius: 14.0),

@@ -11,7 +11,9 @@ import 'package:Bubble/scene/presenter/instructional_video_dialogue_presenter.da
 import 'package:Bubble/scene/presenter/teaching_dialogue_presenter.dart';
 import 'package:Bubble/scene/view/instructional_video_dialogue_view.dart';
 import 'package:Bubble/util/confirm_utils.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
@@ -185,6 +187,13 @@ class _InstructionalVideoDialoguePageState
 
   void onWebsocketAnswer(dynamic answer) {
     if (_answer == null) {
+      if (answer is String && (answer.contains('{[finish]}'))) {
+        //弹窗点击确定后重新链接
+        onNextSocketEnd();
+        EventBus().emit(NotificationUtils.nextResetChat);
+
+        return;
+      }
       // 结束标记
       if (answer is String &&
           (answer.contains('[end_session]') ||
@@ -317,7 +326,7 @@ class _InstructionalVideoDialoguePageState
       introFileType = widget.data[dataIdx].resource[resourceIdx].introFileType!;
       titStr = widget.data[dataIdx].resource[resourceIdx].title;
       _homeProvider.scene!.id = int.parse(resourceSceneId);
-
+      connectWebsocket();
       if (introFileType == "video") {
         isVideo = "1";
         introFileStr = widget.data[dataIdx].resource[resourceIdx].introFile!;
