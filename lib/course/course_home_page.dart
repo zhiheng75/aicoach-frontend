@@ -228,7 +228,7 @@ class _CourseHomePageState extends State<CourseHomePage>
     //   );
     // }
     return AnnotatedRegion(
-        value: SystemUiOverlayStyle.dark,
+        value: SystemUiOverlayStyle.light,
         child: Scaffold(
             body: SafeArea(
           child: isLoding

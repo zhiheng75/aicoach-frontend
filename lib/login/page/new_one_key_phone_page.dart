@@ -115,7 +115,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     super.build(context);
 
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.dark,
+      value: SystemUiOverlayStyle.light,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(

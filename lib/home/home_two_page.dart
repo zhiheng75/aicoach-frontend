@@ -752,7 +752,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     //   );
     // }
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.dark,
+      value: SystemUiOverlayStyle.light,
       child: Scaffold(
         body: SafeArea(
             child: extended.ExtendedNestedScrollView(

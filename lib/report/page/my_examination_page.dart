@@ -485,7 +485,7 @@ class _MyExaminationPageState extends State<MyExaminationPage>
       );
     }
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.dark,
+      value: SystemUiOverlayStyle.light,
       child: Scaffold(
         body: SafeArea(
             child: extended.ExtendedNestedScrollView(

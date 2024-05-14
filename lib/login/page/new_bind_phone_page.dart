@@ -55,7 +55,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
   Widget build(BuildContext context) {
     super.build(context);
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.dark,
+      value: SystemUiOverlayStyle.light,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(

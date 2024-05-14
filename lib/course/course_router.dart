@@ -3,6 +3,7 @@ import 'package:Bubble/course/page/course_details_page.dart';
 import 'package:Bubble/course/page/course_flow_page.dart';
 import 'package:Bubble/course/page/course_report_page.dart';
 import 'package:Bubble/course/page/curriculum_evaluation_page.dart';
+import 'package:Bubble/course/page/switching_teacher_page.dart';
 import 'package:Bubble/routers/i_router.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class CourseRouter implements IRouterProvider {
   static String courseDetailsPage = '/CourseDetailsPage';
   static String courseReportPage = '/CourseReportPage';
   static String curriculumEvaluationPage = '/CurriculumEvaluationPage';
+  static String switchingTeacherPage = '/SwitchingTeacherPage';
 
   @override
   void initRouter(FluroRouter router) {
@@ -33,12 +35,24 @@ class CourseRouter implements IRouterProvider {
     // router.define(courseFlowPage,
     //     handler: Handler(handlerFunc: (_, __) => const CourseFlowPage()));
 
+    // router.define(courseDetailsPage,
+    //     handler: Handler(handlerFunc: (_, __) => const CourseDetailsPage()));
+
     router.define(courseDetailsPage,
-        handler: Handler(handlerFunc: (_, __) => const CourseDetailsPage()));
+        handler: Handler(handlerFunc: (context, params) {
+      StepDetailBean stepDetailBean =
+          ModalRoute.of(context!)?.settings.arguments as StepDetailBean;
+      // }
+      return CourseDetailsPage(
+        stepDetailBean: stepDetailBean,
+      );
+    }));
 
     router.define(courseReportPage,
         handler: Handler(handlerFunc: (_, __) => const CourseReportPage()));
 
+    router.define(switchingTeacherPage,
+        handler: Handler(handlerFunc: (_, __) => const SwitchingTeacherPage()));
     // router.define(curriculumEvaluationPage,
     //     handler:
     //         Handler(handlerFunc: (_, __) => const CurriculumEvaluationPage()));

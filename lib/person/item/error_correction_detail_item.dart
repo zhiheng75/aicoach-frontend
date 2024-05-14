@@ -65,15 +65,41 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
                       ),
               ),
               Gaps.hGap10,
-              const Text(
-                "我的回答",
-                style: TextStyle(
-                  backgroundColor: Colors.yellow,
-                  fontSize: 17.0,
-                  color: Colors.black,
+              SizedBox(
+                width: 70,
+                height: 25,
+                // color: Colors.red,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 5,
+                      left: 3,
+                      child: Container(
+                        width: 60,
+                        height: 15,
+                        color: Colours.color_FFD076,
+                      ),
+                    ),
+                    const Text(
+                      "我的回答",
+                      style: TextStyle(
+                        // backgroundColor: Colors.yellow,
+                        fontSize: 17.0,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Gaps.hGap10,
+              // const Text(
+              //   "我的回答",
+              //   style: TextStyle(
+              //     backgroundColor: Colors.yellow,
+              //     fontSize: 17.0,
+              //     color: Colors.black,
+              //   ),
+              // ),
+              // Gaps.hGap10,
               const Text(
                 "14",
                 style: TextStyle(
@@ -146,14 +172,40 @@ class _ErrorCorrectionOneDetailItemState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "试试这么说",
-            style: TextStyle(
-              backgroundColor: Colors.yellow,
-              fontSize: 17.0,
-              color: Colors.black,
+          SizedBox(
+            width: 100,
+            height: 25,
+            // color: Colors.red,
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 5,
+                  left: 3,
+                  child: Container(
+                    width: 78,
+                    height: 15,
+                    color: Colours.color_FFD076,
+                  ),
+                ),
+                const Text(
+                  "试试这么说",
+                  style: TextStyle(
+                    // backgroundColor: Colors.yellow,
+                    fontSize: 17.0,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
           ),
+          // const Text(
+          //   "试试这么说",
+          //   style: TextStyle(
+          //     backgroundColor: Colors.yellow,
+          //     fontSize: 17.0,
+          //     color: Colors.black,
+          //   ),
+          // ),
           Gaps.vGap8,
           Container(
             // margin: const EdgeInsets.all(10),
@@ -249,6 +301,118 @@ class _ErrorCorrectionDetailTwoItemState
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ErrorCorrectionThreeDetailItem extends StatefulWidget {
+  const ErrorCorrectionThreeDetailItem({super.key});
+
+  @override
+  State<ErrorCorrectionThreeDetailItem> createState() =>
+      _ErrorCorrectionThreeDetailItemState();
+}
+
+class _ErrorCorrectionThreeDetailItemState
+    extends State<ErrorCorrectionThreeDetailItem> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              SizedBox(
+                width: 65,
+                height: 25,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 5,
+                      left: 3,
+                      child: Container(
+                        width: 42,
+                        height: 15,
+                        color: Colours.color_FFD076,
+                      ),
+                    ),
+                    const Text(
+                      "已更正",
+                      style: TextStyle(
+                        fontSize: 17.0,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const LoadAssetImage(
+                'correct_icon',
+                width: 15.0,
+                height: 15.0,
+              ),
+              Gaps.hGap8,
+              const Text(
+                "94",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.0,
+                  color: Colours.color_00B53D,
+                ),
+              ),
+              const Text(
+                "分",
+                style: TextStyle(
+                  // backgroundColor: Colors.yellow,
+                  fontSize: 12.0,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          // const Text(
+          //   "试试这么说",
+          //   style: TextStyle(
+          //     backgroundColor: Colors.yellow,
+          //     fontSize: 17.0,
+          //     color: Colors.black,
+          //   ),
+          // ),
+          Gaps.vGap8,
+          Container(
+            // margin: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              color: Colors.white,
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 18.0,
+              vertical: 10.0,
+            ),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    "Really? Awesome， Awesome，Behind me are the Alps，Now I'm going skiing，shall we go？",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                Gaps.hGap16,
+                const LoadAssetImage(
+                  'laba_lan',
+                  width: 17.6,
+                  height: 16.0,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

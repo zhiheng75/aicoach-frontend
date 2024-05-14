@@ -13,7 +13,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CourseDetailsPage extends StatefulWidget {
-  const CourseDetailsPage({super.key});
+  final StepDetailBean stepDetailBean;
+
+  const CourseDetailsPage({super.key, required this.stepDetailBean});
 
   @override
   State<CourseDetailsPage> createState() => _CourseDetailsPageState();
@@ -26,6 +28,31 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
         AutomaticKeepAliveClientMixin<CourseDetailsPage>
     implements CourseFlowPageView {
   late CourseFlowPagePresenter _courseDetailsPagePresenter;
+
+  List<Widget> _buildPatternItems() {
+    List<Widget> list = [];
+    for (int i = 0;
+        i < widget.stepDetailBean.data.objectives.sentencePattern.length;
+        i++) {
+      list.add(PlayBackItem(
+          title:
+              widget.stepDetailBean.data.objectives.sentencePattern[i].sentence,
+          isPaly: false));
+    }
+    return list;
+  }
+
+  List<Widget> _buildSkillsItems() {
+    List<Widget> list = [];
+    for (int i = 0;
+        i < widget.stepDetailBean.data.objectives.speakingSkills.length;
+        i++) {
+      list.add(PlayBackItem(
+          title: widget.stepDetailBean.data.objectives.speakingSkills[i].skill,
+          isPaly: false));
+    }
+    return list;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +71,9 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
       child: Scaffold(
           body: SafeArea(
               child: CustomScrollView(slivers: [
-        const SliverToBoxAdapter(
-          child: CourseReportVocabularyItem(),
+        SliverToBoxAdapter(
+          child:
+              CourseReportVocabularyItem(stepDetailBean: widget.stepDetailBean),
         ),
         SliverToBoxAdapter(
           child: Container(
@@ -96,9 +124,9 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
                     ],
                   ),
                   Gaps.vGap11,
-                  const PlayBackItem(),
-                  const PlayBackItem(),
-                  const PlayBackItem(),
+                  Column(
+                    children: _buildPatternItems(),
+                  ),
                 ],
               ),
             ),
@@ -155,9 +183,9 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
                     ],
                   ),
                   Gaps.vGap11,
-                  const PlayBackItem(),
-                  const PlayBackItem(),
-                  const PlayBackItem(),
+                  Column(
+                    children: _buildSkillsItems(),
+                  ),
                 ],
               ),
             ),

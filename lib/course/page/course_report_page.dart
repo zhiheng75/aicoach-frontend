@@ -399,10 +399,10 @@ class _CourseReportPageState extends State<CourseReportPage> {
                     //     ),
                     //   ),
                     // ),
-                    // headWidget("词汇", "12"),
-                    const SliverToBoxAdapter(
-                      child: CourseReportVocabularyItem(),
-                    ),
+                    // headWidget("词汇", "12"),s
+                    //  SliverToBoxAdapter(
+                    //   child: CourseReportVocabularyItem(stepDetailBean: {},),
+                    // ),
                     // headWidget("句型", "12"),
                     SliverToBoxAdapter(
                       child: Container(
@@ -453,9 +453,9 @@ class _CourseReportPageState extends State<CourseReportPage> {
                                 ],
                               ),
                               Gaps.vGap11,
-                              const PlayBackItem(),
-                              const PlayBackItem(),
-                              const PlayBackItem(),
+                              const PlayBackItem(title: '111', isPaly: false),
+                              const PlayBackItem(title: '111', isPaly: false),
+                              const PlayBackItem(title: '111', isPaly: false),
                             ],
                           ),
                         ),
@@ -512,9 +512,9 @@ class _CourseReportPageState extends State<CourseReportPage> {
                                 ],
                               ),
                               Gaps.vGap11,
-                              const PlayBackItem(),
-                              const PlayBackItem(),
-                              const PlayBackItem(),
+                              const PlayBackItem(title: '111', isPaly: false),
+                              const PlayBackItem(title: '111', isPaly: false),
+                              const PlayBackItem(title: '111', isPaly: false),
                             ],
                           ),
                         ),

@@ -88,7 +88,7 @@ class _MainTabberState extends State<MainTabber> {
           _controller!.index = index;
         });
       } else {
-        LoginManager.checkLogin(tabContext!, () {
+        LoginManager.checkLogin(context, () {
           // setState(() {
           //   currentIndex = index;
           //   _controller!.index = index;
@@ -109,7 +109,7 @@ class _MainTabberState extends State<MainTabber> {
 
   @override
   Widget build(BuildContext context) {
-    tabContext = context;
+    // tabContext = context;
 
     //   Widget body = Scaffold(
     //     body: CupertinoTabScaffold(

@@ -59,7 +59,7 @@ class _ChatHomePageState extends State<ChatHomePage>
   Widget build(BuildContext context) {
     super.build(context);
     return AnnotatedRegion(
-        value: SystemUiOverlayStyle.dark,
+        value: SystemUiOverlayStyle.light,
         child: Scaffold(
             body: SafeArea(
           child: ListView.builder(

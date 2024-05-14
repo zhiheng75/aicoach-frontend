@@ -10,6 +10,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ErrorCorrectionDetailPage extends StatefulWidget {
   const ErrorCorrectionDetailPage({super.key});
@@ -26,6 +27,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage> {
       BottomErrorBarController();
   // 录音界面控制器
   final RecordController _recordController = RecordController();
+  final ScreenUtil _screenUtil = ScreenUtil();
 
   @override
   void initState() {
@@ -40,16 +42,35 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "未更正",
-            style: TextStyle(
-              backgroundColor: Colors.yellow,
-              fontSize: 17.0,
-              color: Colors.black,
+          SizedBox(
+            width: 90,
+            height: 25,
+            // color: Colors.red,
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 5,
+                  left: 3,
+                  child: Container(
+                    width: 45,
+                    height: 15,
+                    color: Colours.color_FFD076,
+                  ),
+                ),
+                const Text(
+                  "未更正",
+                  style: TextStyle(
+                    // backgroundColor: Colors.yellow,
+                    fontSize: 17.0,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
           ),
           Gaps.vGap8,
           Container(
+            width: _screenUtil.screenWidth - 40,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
               color: Colors.white,
@@ -90,7 +111,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage> {
         size: Size.infinite,
         child: Stack(
           children: [
-            Column(
+            MyScrollView(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const XTCupertinoNavigationBar(
@@ -113,11 +134,26 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage> {
                 //     ),
                 //   ),
                 // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    // Expanded(child: Text("data")),
+                    const Text(
+                      "2/3",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        // fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Gaps.hGap26
+                  ],
+                ),
                 Container(
                   margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    color: Colours.color_F8F8F8,
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: Colours.color_F9F8FF,
                   ),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 18.0,
@@ -126,20 +162,21 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                      Row(
                         children: [
-                          Text(
-                            "lisu",
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400,
-                              color: Colours.color_666666,
-                            ),
-                          ),
-                          LoadAssetImage(
+                          const LoadAssetImage(
                             'default_head_img',
                             width: 25.0,
                             height: 25.0,
+                          ),
+                          Gaps.hGap6,
+                          const Text(
+                            "lisu",
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
                         ],
                       ),
@@ -154,10 +191,17 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage> {
                       const ErrorCorrectionDetailItem(),
                       const ErrorCorrectionOneDetailItem(),
                       notReachItem(),
+                      // const ErrorCorrectionThreeDetailItem(),
+                      BottomErrorBar(
+                        chatWebsocket: _chatWebsocket,
+                        controller: _bottomBarControll,
+                        recordController: _recordController,
+                        onScrollEnd: () {},
+                      )
                     ],
                   ),
                 ),
-                Gaps.vGap30,
+                Gaps.vGap10,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -198,12 +242,6 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage> {
                   ],
                 ),
                 Gaps.vGap30,
-                BottomErrorBar(
-                  chatWebsocket: _chatWebsocket,
-                  controller: _bottomBarControll,
-                  recordController: _recordController,
-                  onScrollEnd: () {},
-                ),
               ],
             ),
             Positioned(

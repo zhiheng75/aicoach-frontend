@@ -220,9 +220,10 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     bcontext = context;
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.dark,
+      value: SystemUiOverlayStyle.light,
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Stack(

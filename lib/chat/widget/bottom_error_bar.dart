@@ -271,7 +271,7 @@ class _BottomErrorBarState extends State<BottomErrorBar>
   void sendMessage(String text) async {
     // 连接
     try {
-      await connectWebsocket();
+      // await connectWebsocket();
     } catch (e) {
       Log.d('connect websocket fail:[error]${e.toString()}',
           tag: 'sendMessage');
@@ -411,18 +411,18 @@ class _BottomErrorBarState extends State<BottomErrorBar>
               height: 50.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100.0),
-                border: Border.all(
-                  width: 1.0,
-                  style: BorderStyle.solid,
-                  color: Colours.color_001652,
-                ),
+                // border: Border.all(
+                //   width: 1.0,
+                //   style: BorderStyle.solid,
+                //   color: Colours.color_001652,
+                // ),
                 color: const Color(0xFFF8F8F8),
                 gradient: const LinearGradient(
                   begin: Alignment.bottomLeft,
                   end: Alignment.topRight,
                   colors: [
-                    Colours.color_9AC3FF,
-                    Colours.color_FF71E0,
+                    Colours.color_8256FF,
+                    Colours.color_FF5CDB,
                   ],
                 ),
               ),
@@ -431,7 +431,7 @@ class _BottomErrorBarState extends State<BottomErrorBar>
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   LoadAssetImage(
-                    'maikefeng',
+                    'maikefeng_icon',
                     width: 24.0,
                     height: 24.0,
                   ),
@@ -443,7 +443,7 @@ class _BottomErrorBarState extends State<BottomErrorBar>
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w400,
-                      color: Colours.color_001652,
+                      color: Colors.white,
                     ),
                   ),
                 ],

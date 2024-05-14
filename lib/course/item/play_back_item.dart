@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PlayBackItem extends StatefulWidget {
-  const PlayBackItem({super.key});
+  final String title;
+  final bool isPaly;
+  const PlayBackItem({super.key, required this.title, required this.isPaly});
 
   @override
   State<PlayBackItem> createState() => _PlayBackItemState();
@@ -23,9 +25,9 @@ class _PlayBackItemState extends State<PlayBackItem> {
         horizontal: 15.0,
         vertical: 15.0,
       ),
-      child: const Row(
+      child: Row(
         children: [
-          Expanded(
+          const Expanded(
             child: Text(
               "He's a nice cat.",
               style: TextStyle(
@@ -35,11 +37,13 @@ class _PlayBackItemState extends State<PlayBackItem> {
               ),
             ),
           ),
-          // LoadAssetImage(
-          //   "laba_lan",
-          //   width: 20.0,
-          //   height: 20.0,
-          // ),
+          widget.isPaly
+              ? const LoadAssetImage(
+                  "laba_lan",
+                  width: 20.0,
+                  height: 20.0,
+                )
+              : Container(),
         ],
       ),
     );

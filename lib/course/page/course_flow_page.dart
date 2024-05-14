@@ -24,6 +24,8 @@ import 'package:Bubble/scene/entity/category_entity.dart';
 import 'package:Bubble/scene/entity/course_entity.dart';
 import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/scene/widget/select_scene.dart';
+import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
@@ -61,12 +63,31 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   late String characterSceneDescStr;
   late String characterSceneNameStr;
   late String characterSceneenNameStr;
+
+  late CharacterListBean _teacherListBean;
   @override
   void initState() {
     super.initState();
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     init();
     _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
+
+    EventBus().on(NotificationUtils.teachIdx, (idx) {
+      // idx
+      setState(() {
+        characterIdStr = _teacherListBean.data[idx].characterId;
+        characterCoverStr = _teacherListBean.data[idx].coverImageUrl;
+        characterSceneDescStr = _teacherListBean.data[idx].slogan;
+        characterSceneNameStr = _teacherListBean.data[idx].name;
+        characterSceneenNameStr = _teacherListBean.data[idx].authorName;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    EventBus().off(NotificationUtils.teachIdx);
+    super.dispose();
   }
 
   Widget lodingView() {
@@ -94,7 +115,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
           characterSceneDescStr = teacherListBean.data[0].slogan;
           characterSceneNameStr = teacherListBean.data[0].name;
           characterSceneenNameStr = teacherListBean.data[0].authorName;
-
+          _teacherListBean = teacherListBean;
           getCategoryList(teacherListBean.data[0].characterId); //可删除
         }
       } else {}
@@ -288,10 +309,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
         Gaps.vGap10,
         GestureDetector(
           onTap: () {
-            NavigatorUtils.push(
-              context,
-              CourseRouter.courseDetailsPage,
-            );
+            NavigatorUtils.push(context, CourseRouter.courseDetailsPage,
+                arguments: stepDetailData);
           },
           child: Container(
             margin: const EdgeInsets.all(10),
@@ -568,26 +587,30 @@ class _CourseFlowPageState extends State<CourseFlowPage>
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              // NavigatorUtils.goBack(context);
-              showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                barrierColor: Colors.transparent,
-                isScrollControlled: true,
-                isDismissible: false,
-                enableDrag: false,
-                builder: (_) => SwitchingTeacherPage(
-                  clickCallBack: (teachData) {
-                    setState(() {
-                      characterIdStr = teachData.characterId;
-                      characterCoverStr = teachData.coverImageUrl;
-                      characterSceneDescStr = teachData.slogan;
-                      characterSceneNameStr = teachData.name;
-                      characterSceneenNameStr = teachData.authorName;
-                    });
-                  },
-                ),
+              NavigatorUtils.push(
+                context,
+                CourseRouter.switchingTeacherPage,
               );
+              // NavigatorUtils.goBack(context);
+              // showModalBottomSheet(
+              //   context: context,
+              //   backgroundColor: Colors.transparent,
+              //   barrierColor: Colors.transparent,
+              //   isScrollControlled: true,
+              //   isDismissible: false,
+              //   enableDrag: false,
+              //   builder: (_) => SwitchingTeacherPage(
+              //     clickCallBack: (teachData) {
+              // setState(() {
+              //   characterIdStr = teachData.characterId;
+              //   characterCoverStr = teachData.coverImageUrl;
+              //   characterSceneDescStr = teachData.slogan;
+              //   characterSceneNameStr = teachData.name;
+              //   characterSceneenNameStr = teachData.authorName;
+              // });
+              //     },
+              //   ),
+              // );
             },
             child: const LoadAssetImage(
               "switching_teacher_icon",

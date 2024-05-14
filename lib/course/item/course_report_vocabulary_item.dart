@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:Bubble/course/entity/step_detail_bean.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -7,7 +10,8 @@ import 'package:flutter/material.dart';
 typedef KeywordCallback = void Function(String keyword);
 
 class CourseReportVocabularyItem extends StatefulWidget {
-  const CourseReportVocabularyItem({super.key});
+  final StepDetailBean stepDetailBean;
+  const CourseReportVocabularyItem({super.key, required this.stepDetailBean});
 
   @override
   State<CourseReportVocabularyItem> createState() =>
@@ -70,9 +74,12 @@ class _CourseReportVocabularyItemState
             Wrap(
               spacing: 8,
               runSpacing: 10,
-              children: List.generate(20, (index) {
+              children: List.generate(
+                  widget.stepDetailBean.data.objectives.vocabulary.length,
+                  (index) {
                 return KeywordWidget(
-                  keyword: "你好111",
+                  keyword: widget
+                      .stepDetailBean.data.objectives.vocabulary[index].word,
                   callback: search,
                 );
               }),

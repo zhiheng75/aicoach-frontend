@@ -45,7 +45,7 @@ class Data {
   int lessonId;
   String lessonName;
   String lessonType;
-  String objectives;
+  Objectives objectives;
 
   Data({
     required this.data,
@@ -73,7 +73,7 @@ class Data {
         lessonId: json["lesson_id"],
         lessonName: json["lesson_name"],
         lessonType: json["lesson_type"],
-        objectives: json["objectives"],
+        objectives: Objectives.fromJson(json["objectives"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -87,7 +87,7 @@ class Data {
         "lesson_id": lessonId,
         "lesson_name": lessonName,
         "lesson_type": lessonType,
-        "objectives": objectives,
+        "objectives": objectives.toJson(),
       };
 }
 
@@ -177,5 +177,83 @@ class Resource {
         "intro_audio": introAudio,
         "intro_text": introText,
         "character_avatar": characterAvatar,
+      };
+}
+
+class Objectives {
+  List<Vocabulary> vocabulary;
+  List<SentencePattern> sentencePattern;
+  List<SpeakingSkill> speakingSkills;
+
+  Objectives({
+    required this.vocabulary,
+    required this.sentencePattern,
+    required this.speakingSkills,
+  });
+
+  factory Objectives.fromJson(Map<String, dynamic> json) => Objectives(
+        vocabulary: List<Vocabulary>.from(
+            json["Vocabulary"].map((x) => Vocabulary.fromJson(x))),
+        sentencePattern: List<SentencePattern>.from(
+            json["Sentence Pattern"].map((x) => SentencePattern.fromJson(x))),
+        speakingSkills: List<SpeakingSkill>.from(
+            json["Speaking Skills"].map((x) => SpeakingSkill.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "Vocabulary": List<dynamic>.from(vocabulary.map((x) => x.toJson())),
+        "Sentence Pattern":
+            List<dynamic>.from(sentencePattern.map((x) => x.toJson())),
+        "Speaking Skills":
+            List<dynamic>.from(speakingSkills.map((x) => x.toJson())),
+      };
+}
+
+class SentencePattern {
+  String sentence;
+
+  SentencePattern({
+    required this.sentence,
+  });
+
+  factory SentencePattern.fromJson(Map<String, dynamic> json) =>
+      SentencePattern(
+        sentence: json["sentence"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "sentence": sentence,
+      };
+}
+
+class SpeakingSkill {
+  String skill;
+
+  SpeakingSkill({
+    required this.skill,
+  });
+
+  factory SpeakingSkill.fromJson(Map<String, dynamic> json) => SpeakingSkill(
+        skill: json["skill"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "skill": skill,
+      };
+}
+
+class Vocabulary {
+  String word;
+
+  Vocabulary({
+    required this.word,
+  });
+
+  factory Vocabulary.fromJson(Map<String, dynamic> json) => Vocabulary(
+        word: json["word"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "word": word,
       };
 }

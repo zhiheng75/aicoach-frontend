@@ -593,7 +593,7 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
     // ScreenUtil screenUtil = ScreenUtil();
 
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.dark,
+      value: SystemUiOverlayStyle.light,
       child: Scaffold(
         body: Column(children: [
           XTCupertinoNavigationBar(

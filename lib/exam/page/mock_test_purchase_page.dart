@@ -105,7 +105,7 @@ class _MockTestPurchasePageState extends State<MockTestPurchasePage>
   Widget build(BuildContext context) {
     super.build(context);
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.dark,
+      value: SystemUiOverlayStyle.light,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Column(
