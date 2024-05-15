@@ -1,8 +1,14 @@
 // ignore_for_file: prefer_final_fields
 
+import 'dart:convert';
+
 import 'package:Bubble/course/course_router.dart';
+import 'package:Bubble/course/item/course_home_item.dart';
+import 'package:Bubble/course/item/lesson_sele_item.dart';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/report/entity/lesson_reports_bean.dart';
+import 'package:Bubble/report/widget/course_report_class_item.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/widgets/load_data.dart';
@@ -11,6 +17,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sticky_headers/sticky_headers/widget.dart';
 
 import '../mvp/base_page.dart';
 import '../net/http_api.dart';
@@ -37,14 +44,88 @@ class _ReportPageState extends State<ReportPage>
     implements ReportView {
   late ReportPagePresenter _reportPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
-  String _type = 'chat';
+  String _type = 'class';
   int _page = 1;
   int _loading = 0;
   String _state = '';
   List<dynamic> _list = [];
   CancelToken? _cancelToken;
   String _message = '还没有系统报告！';
+  List<ReportsDatum> _reportsData = [];
 
+  int curTabIndex = 0;
+
+  List<Color> colorBackData = [
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+  ];
+
+  List<List<Color>> colorIconBackData = [
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+  ];
   void init() {
     _page = 1;
     getMore();
@@ -59,8 +140,58 @@ class _ReportPageState extends State<ReportPage>
     } else if (_type == 'exam') {
       getExamReortList();
     } else if (_type == 'class') {
-      getChatReportList();
+      getChatClassList();
     }
+  }
+
+  void getChatClassList() async {
+    if (_cancelToken != null && _loading == 1) {
+      _cancelToken!.cancel();
+    }
+    _cancelToken = CancelToken();
+    if (_page == 1) {
+      _reportsData = [];
+    }
+    _reportPagePresenter.requestNetwork<ResultData>(
+      Method.get,
+      url: HttpApi.lessonReports,
+      isShow: false,
+      isClose: false,
+      cancelToken: _cancelToken,
+      onSuccess: (result) {
+        _cancelToken = null;
+        if (result == null || result.data == null) {
+          _loading = 0;
+          _state = 'fail';
+          if (mounted) {
+            setState(() {});
+          }
+          return;
+        }
+        Map<String, dynamic> lessonReportsMap = json.decode(result.toString());
+        LessonReportsBean lessonReportsBean =
+            LessonReportsBean.fromJson(lessonReportsMap);
+        _reportsData.addAll(lessonReportsBean.data);
+        // _list.addAll(list);
+        _loading = 0;
+        _state = 'success';
+        if (mounted) {
+          setState(() {});
+        }
+      },
+      onError: (code, msg) {
+        _cancelToken = null;
+        _loading = 0;
+        _state = 'fail';
+        if (mounted) {
+          setState(() {});
+        }
+      },
+    );
+
+    _state = 'success';
+    _loading = 0;
+    setState(() {});
   }
 
   void getChatReportList() async {
@@ -187,6 +318,87 @@ class _ReportPageState extends State<ReportPage>
       _cancelToken!.cancel();
     }
     super.dispose();
+  }
+
+  Widget _refreshListView() {
+    // print(listData[curTabIndex].list.length);
+    // Log.e(listData[curTabIndex].list.length as String);
+
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (ctx, index) {
+              // return _buildItem(dataList[index]);
+              // List<DatumList> listData = listData[curTabIndex].list;
+              // List<ReportsDatum> _reportsData
+              List<ReportsDatum> xxlistData = _reportsData;
+              List<DatumList> xxlist = xxlistData[curTabIndex].list;
+              List<ListList> list = xxlist[index].list;
+
+              return _buildStickyHeader(list, xxlist[index].unitName,
+                  colorBackData[index], colorIconBackData[index]);
+            },
+            childCount: _reportsData[curTabIndex].list.length,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStickyHeader(List<ListList> list, String tit, Color backColor,
+      List<Color> iconBackColor) {
+    return StickyHeader(
+      header: _headTitle(tit),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: _buildItems(list, backColor, iconBackColor),
+      ),
+    );
+  }
+
+  Widget _headTitle(String title) {
+    return Container(
+      width: _screenUtil.screenWidth,
+      color: const Color(0xFFFFFFFF),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 18, top: 6, bottom: 6),
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 17.0,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildItems(
+      List<ListList> xxlist, Color backColor, List<Color> iconBackColor) {
+    List<Widget> list = [];
+    for (int i = 0; i < xxlist.length; i++) {
+      list.add(GestureDetector(
+          onTap: () {
+            NavigatorUtils.push(context,
+                "${CourseRouter.courseReportPage}?lessonId=${xxlist[i].lessonId}");
+
+            // NavigatorUtils.push(
+            //     context,
+            //     // CourseRouter.courseFlowPage,
+            //     "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
+          },
+          child: CourseReportClassItem(
+            index: i + 1,
+            unitData: xxlist[i],
+            backColor: backColor,
+            iconBackColor: iconBackColor,
+          )));
+    }
+    return list;
   }
 
   @override
@@ -568,175 +780,175 @@ class _ReportPageState extends State<ReportPage>
           ),
         );
       }
-      if (_type == 'class') {
-        //  String sessionId = '';
-        // if (item is ChatReportEntity) {
-        //   sessionId = item.sessionId;
-        // }
-        content = GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            NavigatorUtils.push(
-              context,
-              CourseRouter.courseReportPage,
-            );
-            // NavigatorUtils.push(
-            //   context,
-            //   ReportRouter.reportDetailPage,
-            //   arguments: {
-            //     'sessionId': sessionId,
-            //   },
-            // );
-          },
-          child: Container(
-            margin: const EdgeInsets.all(10),
-            // padding: const EdgeInsets.only(
-            //   right: 16.0,
-            // ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    const SizedBox(
-                      width: 8.0,
-                    ),
-                    Container(
-                      width: 60,
-                      height: 60,
-                      // margin: const EdgeInsets.only(top: 10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        color: Colors.white,
-                      ),
-                      // padding: const EdgeInsets.symmetric(
-                      //   horizontal: 10.0,
-                      //   vertical: 10.0,
-                      // ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "1",
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            "Lesson",
-                            style: TextStyle(
-                              fontSize: 13.0,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 8.0,
-                    ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const Text(
-                          '农场动物',
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                            height: 18.0 / 16.0,
-                            letterSpacing: 0.05,
-                          ),
-                        ),
-                        const Text(
-                          "学习时间:2024-4-6",
-                          style: TextStyle(
-                            fontSize: 11.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.color_999999,
-                            height: 18.0 / 11.0,
-                            letterSpacing: 0.05,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8.0,
-                        ),
-                        star(100),
-                      ],
-                    ),
-                  ],
-                ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          '100',
-                          style: TextStyle(
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.w400,
-                            color: getColorByScore(item.score),
-                            letterSpacing: 0.05,
-                          ),
-                        ),
-                        const Text(
-                          '综合得分',
-                          style: TextStyle(
-                            fontSize: 11.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.color_999999,
-                            letterSpacing: 0.05,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 7.0,
-                    ),
-                    // Column(
-                    //   mainAxisSize: MainAxisSize.min,
-                    //   children: <Widget>[
-                    //     SizedBox(
-                    //       width: 32.0,
-                    //       height: 32.0,
-                    //       child: ClipRRect(
-                    //         borderRadius: BorderRadius.circular(32.0),
-                    //         child: const SingleChildScrollView(
-                    //           physics: NeverScrollableScrollPhysics(),
-                    //           child: LoadImage(
-                    //             "https://statics.shenmo-ai.com/sophia.jpg",
-                    //             width: 32.0,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     const Text(
-                    //       "ssss",
-                    //       style: TextStyle(
-                    //         fontSize: 10.0,
-                    //         fontWeight: FontWeight.w400,
-                    //         color: Color(0xFF666666),
-                    //         height: 18.0 / 10.0,
-                    //         letterSpacing: 0.05,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      }
+      // if (_type == 'class') {
+      //   //  String sessionId = '';
+      //   // if (item is ChatReportEntity) {
+      //   //   sessionId = item.sessionId;
+      //   // }
+      //   content = GestureDetector(
+      //     behavior: HitTestBehavior.opaque,
+      //     onTap: () {
+      //       NavigatorUtils.push(
+      //         context,
+      //         CourseRouter.courseReportPage,
+      //       );
+      //       // NavigatorUtils.push(
+      //       //   context,
+      //       //   ReportRouter.reportDetailPage,
+      //       //   arguments: {
+      //       //     'sessionId': sessionId,
+      //       //   },
+      //       // );
+      //     },
+      //     child: Container(
+      //       margin: const EdgeInsets.all(10),
+      //       // padding: const EdgeInsets.only(
+      //       //   right: 16.0,
+      //       // ),
+      //       child: Row(
+      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //         children: <Widget>[
+      //           Row(
+      //             mainAxisSize: MainAxisSize.min,
+      //             children: <Widget>[
+      //               const SizedBox(
+      //                 width: 8.0,
+      //               ),
+      //               Container(
+      //                 width: 60,
+      //                 height: 60,
+      //                 // margin: const EdgeInsets.only(top: 10),
+      //                 decoration: BoxDecoration(
+      //                   borderRadius: BorderRadius.circular(8.0),
+      //                   color: Colors.white,
+      //                 ),
+      //                 // padding: const EdgeInsets.symmetric(
+      //                 //   horizontal: 10.0,
+      //                 //   vertical: 10.0,
+      //                 // ),
+      //                 child: const Column(
+      //                   mainAxisAlignment: MainAxisAlignment.center,
+      //                   children: [
+      //                     Text(
+      //                       "1",
+      //                       style: TextStyle(
+      //                         fontSize: 20.0,
+      //                         fontWeight: FontWeight.w400,
+      //                         color: Colors.black,
+      //                       ),
+      //                     ),
+      //                     Text(
+      //                       "Lesson",
+      //                       style: TextStyle(
+      //                         fontSize: 13.0,
+      //                         fontWeight: FontWeight.w400,
+      //                         color: Colors.black,
+      //                       ),
+      //                     ),
+      //                   ],
+      //                 ),
+      //               ),
+      //               const SizedBox(
+      //                 width: 8.0,
+      //               ),
+      //               Column(
+      //                 mainAxisSize: MainAxisSize.min,
+      //                 crossAxisAlignment: CrossAxisAlignment.start,
+      //                 children: <Widget>[
+      //                   const Text(
+      //                     '农场动物',
+      //                     style: TextStyle(
+      //                       fontSize: 16.0,
+      //                       fontWeight: FontWeight.w500,
+      //                       color: Colors.black,
+      //                       height: 18.0 / 16.0,
+      //                       letterSpacing: 0.05,
+      //                     ),
+      //                   ),
+      //                   const Text(
+      //                     "学习时间:2024-4-6",
+      //                     style: TextStyle(
+      //                       fontSize: 11.0,
+      //                       fontWeight: FontWeight.w400,
+      //                       color: Colours.color_999999,
+      //                       height: 18.0 / 11.0,
+      //                       letterSpacing: 0.05,
+      //                     ),
+      //                   ),
+      //                   const SizedBox(
+      //                     height: 8.0,
+      //                   ),
+      //                   star(100),
+      //                 ],
+      //               ),
+      //             ],
+      //           ),
+      //           Column(
+      //             mainAxisSize: MainAxisSize.min,
+      //             children: <Widget>[
+      //               Column(
+      //                 mainAxisSize: MainAxisSize.min,
+      //                 crossAxisAlignment: CrossAxisAlignment.center,
+      //                 children: <Widget>[
+      //                   Text(
+      //                     '100',
+      //                     style: TextStyle(
+      //                       fontSize: 24.0,
+      //                       fontWeight: FontWeight.w400,
+      //                       color: getColorByScore(item.score),
+      //                       letterSpacing: 0.05,
+      //                     ),
+      //                   ),
+      //                   const Text(
+      //                     '综合得分',
+      //                     style: TextStyle(
+      //                       fontSize: 11.0,
+      //                       fontWeight: FontWeight.w400,
+      //                       color: Colours.color_999999,
+      //                       letterSpacing: 0.05,
+      //                     ),
+      //                   ),
+      //                 ],
+      //               ),
+      //               const SizedBox(
+      //                 height: 7.0,
+      //               ),
+      //               // Column(
+      //               //   mainAxisSize: MainAxisSize.min,
+      //               //   children: <Widget>[
+      //               //     SizedBox(
+      //               //       width: 32.0,
+      //               //       height: 32.0,
+      //               //       child: ClipRRect(
+      //               //         borderRadius: BorderRadius.circular(32.0),
+      //               //         child: const SingleChildScrollView(
+      //               //           physics: NeverScrollableScrollPhysics(),
+      //               //           child: LoadImage(
+      //               //             "https://statics.shenmo-ai.com/sophia.jpg",
+      //               //             width: 32.0,
+      //               //           ),
+      //               //         ),
+      //               //       ),
+      //               //     ),
+      //               //     const Text(
+      //               //       "ssss",
+      //               //       style: TextStyle(
+      //               //         fontSize: 10.0,
+      //               //         fontWeight: FontWeight.w400,
+      //               //         color: Color(0xFF666666),
+      //               //         height: 18.0 / 10.0,
+      //               //         letterSpacing: 0.05,
+      //               //       ),
+      //               //     ),
+      //               //   ],
+      //               // ),
+      //             ],
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //   );
+      // }
       return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {},
@@ -760,43 +972,101 @@ class _ReportPageState extends State<ReportPage>
 
     if (_loading == 0) {
       if (_state == 'success') {
-        if (_list.isEmpty) {
-          list = Container(
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const LoadAssetImage(
-                  'no_data',
-                  width: 63.0,
-                  height: 63.0,
-                ),
-                const SizedBox(
-                  height: 21.0,
-                ),
-                Text(
-                  _message,
-                  style: const TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w400,
-                    color: Colours.color_999999,
-                    letterSpacing: 0.05,
+        if (_type == 'class') {
+          if (_reportsData[curTabIndex].list.isEmpty) {
+            list = Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const LoadAssetImage(
+                    'no_data',
+                    width: 63.0,
+                    height: 63.0,
                   ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          list = ListView.builder(
-            padding: EdgeInsets.zero,
-            itemCount: _type == "class" ? 10 : _list.length,
-            itemBuilder: (_, i) => Padding(
-              padding: EdgeInsets.only(
-                bottom: i == _list.length - 1 ? 0 : 16.0,
+                  const SizedBox(
+                    height: 21.0,
+                  ),
+                  Text(
+                    _message,
+                    style: const TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colours.color_999999,
+                      letterSpacing: 0.05,
+                    ),
+                  ),
+                ],
               ),
-              child: listItem(_list.elementAt(i)),
-            ),
-          );
+            );
+          } else {
+            if (_type == 'class') {
+              list = _refreshListView();
+            } else {
+              list = ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: _type == "class" ? 10 : _list.length,
+                itemBuilder: (_, i) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: i == _list.length - 1 ? 0 : 16.0,
+                  ),
+                  child: listItem(_list.elementAt(i)),
+                ),
+              );
+            }
+          }
+        } else {
+          if (_list.isEmpty) {
+            list = Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const LoadAssetImage(
+                    'no_data',
+                    width: 63.0,
+                    height: 63.0,
+                  ),
+                  const SizedBox(
+                    height: 21.0,
+                  ),
+                  Text(
+                    _message,
+                    style: const TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colours.color_999999,
+                      letterSpacing: 0.05,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            if (_type == 'class') {
+              list = ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: 10,
+                itemBuilder: (_, i) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: i == _list.length - 1 ? 0 : 16.0,
+                  ),
+                  child: const Text("1111"),
+                ),
+              );
+            } else {
+              list = ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: _type == "class" ? 10 : _list.length,
+                itemBuilder: (_, i) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: i == _list.length - 1 ? 0 : 16.0,
+                  ),
+                  child: listItem(_list.elementAt(i)),
+                ),
+              );
+            }
+          }
         }
       }
       if (_state == 'fail') {
@@ -809,6 +1079,32 @@ class _ReportPageState extends State<ReportPage>
           ),
         );
       }
+    }
+
+    Widget twoTabbar() {
+      return SizedBox(
+        height: 50,
+        child: ListView.builder(
+          itemBuilder: (ctx, index) {
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                setState(() {
+                  curTabIndex = index;
+                });
+              },
+              child: LessonSeleItem(
+                tit: _reportsData[index].levelName,
+                sele: curTabIndex == index ? true : false,
+              ),
+            );
+          },
+          itemCount: _reportsData.length,
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          physics: const AlwaysScrollableScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+        ),
+      );
     }
 
     return Scaffold(
@@ -830,51 +1126,9 @@ class _ReportPageState extends State<ReportPage>
               height: 20.0,
             ),
             _type == "class"
-                ? SizedBox(
-                    height: 60,
-                    child: Column(
-                      children: [
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              "lEVEL1",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w400,
-                                color: Colours.color_007Aff,
-                              ),
-                            ),
-                            Text(
-                              "lEVEL2",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              "lEVEL3",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Gaps.vGap4,
-                        const Text(
-                          "Unit2 朋友见面",
-                          style: TextStyle(
-                            fontSize: 17.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
+                ? _reportsData.length == 1
+                    ? Container()
+                    : twoTabbar()
                 : Container(),
             Expanded(
               child: Padding(

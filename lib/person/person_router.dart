@@ -45,7 +45,11 @@ class PersonalRouter implements IRouterProvider {
         handler: Handler(handlerFunc: (_, __) => const ErrorCorrectionPage()));
 
     router.define(errorCorrectionDetailPage,
-        handler:
-            Handler(handlerFunc: (_, __) => const ErrorCorrectionDetailPage()));
+        handler: Handler(handlerFunc: (context, params) {
+      String lessonId = params['lessonId']!.first;
+      return ErrorCorrectionDetailPage(
+        lessonId: lessonId,
+      );
+    }));
   }
 }

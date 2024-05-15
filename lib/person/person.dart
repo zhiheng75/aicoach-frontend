@@ -581,7 +581,7 @@ class _PersonPageState extends State<PersonPage>
                 permissionBeanData.data.leftTime > 0)
           Container(
             width: width,
-            decoration: decoration,
+            // decoration: decoration,
             padding: const EdgeInsets.symmetric(
               horizontal: 32.0,
               vertical: 16.0,
@@ -674,7 +674,8 @@ class _PersonPageState extends State<PersonPage>
 
     Widget menuItem(
       String icon,
-      String label, {
+      String label,
+      String edition, {
       Function()? onPress,
     }) {
       return GestureDetector(
@@ -689,27 +690,33 @@ class _PersonPageState extends State<PersonPage>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  LoadAssetImage(
-                    icon,
-                    width: 24.0,
-                    height: 24.0,
+              LoadAssetImage(
+                icon,
+                width: 24.0,
+                height: 24.0,
+              ),
+              const SizedBox(
+                width: 8.0,
+              ),
+              Expanded(
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                    height: 16.0 / 14.0,
                   ),
-                  const SizedBox(
-                    width: 8.0,
-                  ),
-                  Text(
-                    label,
-                    style: const TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                      height: 16.0 / 14.0,
-                    ),
-                  ),
-                ],
+                ),
+              ),
+              Text(
+                edition,
+                style: const TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colours.color_999999,
+                  height: 16.0 / 14.0,
+                ),
               ),
             ],
           ),
@@ -746,27 +753,32 @@ class _PersonPageState extends State<PersonPage>
           menuItem(
             'customer_service_icon',
             '联系客服',
+            '',
             onPress: () => tapMenu(PersonalRouter.about),
           ),
           menuItem(
             'community_icon',
             '加入社群',
+            '',
             onPress: () => tapMenu(PersonalRouter.about),
           ),
           menuItem(
             'person_fankui',
             '意见反馈',
+            '',
             onPress: () => tapMenu(PersonalRouter.personalSuggestion),
           ),
           menuItem(
             'person_guanyu',
             '关于我们',
+            'v1.1.0',
             onPress: () => tapMenu(PersonalRouter.about),
           ),
 
           menuItem(
             'vector_icon',
             '注销账号',
+            '',
             onPress: () => tapSignOUTMenu(),
           ),
           // menuItem(
@@ -931,7 +943,7 @@ class _PersonPageState extends State<PersonPage>
                         const SizedBox(
                           height: 16.0,
                         ),
-                        experience,
+                        // experience,
                         menu,
                         SizedBox(
                           height: _screenUtil.bottomBarHeight + 16.0,

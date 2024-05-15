@@ -1,6 +1,4 @@
-import 'dart:ffi';
-
-import 'package:Bubble/course/entity/step_detail_bean.dart';
+import 'package:Bubble/course/entity/lesson_report_detail_bean.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -9,19 +7,18 @@ import 'package:flutter/material.dart';
 
 typedef KeywordCallback = void Function(String keyword);
 
-class CourseReportVocabularyItem extends StatefulWidget {
-  // final StepDetailBean stepDetailBean;
+class CourseReportVocabularyTwoItem extends StatefulWidget {
   final List<Vocabulary> vocabulary;
 
-  const CourseReportVocabularyItem({super.key, required this.vocabulary});
+  const CourseReportVocabularyTwoItem({super.key, required this.vocabulary});
 
   @override
-  State<CourseReportVocabularyItem> createState() =>
-      _CourseReportVocabularyItemState();
+  State<CourseReportVocabularyTwoItem> createState() =>
+      _CourseReportVocabularyTwoItemState();
 }
 
-class _CourseReportVocabularyItemState
-    extends State<CourseReportVocabularyItem> {
+class _CourseReportVocabularyTwoItemState
+    extends State<CourseReportVocabularyTwoItem> {
   List<Color> colorBackData = [
     Colours.color_E8CCFE,
     Colours.color_C1E8F7,
@@ -66,7 +63,6 @@ class _CourseReportVocabularyItemState
     Colours.color_C1E8F7,
     Colours.color_E8CCFE,
   ];
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -142,6 +138,7 @@ class _CourseReportVocabularyItemState
 class KeywordWidget extends StatelessWidget {
   final String keyword;
   final Color colorStr;
+
   final KeywordCallback? callback;
   const KeywordWidget(
       {super.key,

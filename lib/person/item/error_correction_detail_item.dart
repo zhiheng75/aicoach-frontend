@@ -1,12 +1,17 @@
+import 'package:Bubble/course/entity/lesson_report_detail_bean.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
+import 'package:Bubble/person/entity/mistake_details_bean.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ErrorCorrectionDetailItem extends StatefulWidget {
-  const ErrorCorrectionDetailItem({super.key});
+  final Datum data;
+  const ErrorCorrectionDetailItem({super.key, required this.data});
 
   @override
   State<ErrorCorrectionDetailItem> createState() =>
@@ -100,9 +105,9 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
               //   ),
               // ),
               // Gaps.hGap10,
-              const Text(
-                "14",
-                style: TextStyle(
+              Text(
+                widget.data.userScore.toString(),
+                style: const TextStyle(
                   // backgroundColor: Colors.yellow,
                   fontSize: 15.0,
                   color: Colours.color_E00094,
@@ -131,20 +136,29 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
             ),
             child: Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: Text(
-                    "Really? Awesome， Awesome，Behind me are the Alps，Now I'm going skiing，shall we go？",
-                    style: TextStyle(
+                    widget.data.userSentence,
+                    style: const TextStyle(
                       fontSize: 14.0,
                       color: Colors.black,
                     ),
                   ),
                 ),
                 Gaps.hGap16,
-                const LoadAssetImage(
-                  'laba_lan',
-                  width: 17.6,
-                  height: 16.0,
+                GestureDetector(
+                  onTap: () {
+                    MediaUtils().play(
+                      url: widget.data.userAudio,
+                      useAvatar: true,
+                      whenFinished: () {},
+                    );
+                  },
+                  child: const LoadAssetImage(
+                    'laba_lan',
+                    width: 17.6,
+                    height: 16.0,
+                  ),
                 ),
               ],
             ),
@@ -156,7 +170,9 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
 }
 
 class ErrorCorrectionOneDetailItem extends StatefulWidget {
-  const ErrorCorrectionOneDetailItem({super.key});
+  final Datum data;
+
+  const ErrorCorrectionOneDetailItem({super.key, required this.data});
 
   @override
   State<ErrorCorrectionOneDetailItem> createState() =>
@@ -219,20 +235,29 @@ class _ErrorCorrectionOneDetailItemState
             ),
             child: Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: Text(
-                    "Really? Awesome， Awesome，Behind me are the Alps，Now I'm going skiing，shall we go？",
-                    style: TextStyle(
+                    widget.data.suggestionSentence ?? "",
+                    style: const TextStyle(
                       fontSize: 14.0,
                       color: Colors.black,
                     ),
                   ),
                 ),
                 Gaps.hGap16,
-                const LoadAssetImage(
-                  'laba_lan',
-                  width: 17.6,
-                  height: 16.0,
+                GestureDetector(
+                  onTap: () {
+                    MediaUtils().play(
+                      url: widget.data.suggestionAudio,
+                      useAvatar: true,
+                      whenFinished: () {},
+                    );
+                  },
+                  child: const LoadAssetImage(
+                    'laba_lan',
+                    width: 17.6,
+                    height: 16.0,
+                  ),
                 ),
               ],
             ),
@@ -244,7 +269,11 @@ class _ErrorCorrectionOneDetailItemState
 }
 
 class ErrorCorrectionDetailTwoItem extends StatefulWidget {
-  const ErrorCorrectionDetailTwoItem({super.key});
+  final ExcellentExpression excellentExpression;
+  const ErrorCorrectionDetailTwoItem({
+    super.key,
+    required this.excellentExpression,
+  });
 
   @override
   State<ErrorCorrectionDetailTwoItem> createState() =>
@@ -271,10 +300,10 @@ class _ErrorCorrectionDetailTwoItemState
         ),
         child: Row(
           children: [
-            const Expanded(
+            Expanded(
               child: Text(
-                "Really? Awesome， Awesome，Behind me are the Alps，Now I'm going skiing，shall we go？",
-                style: TextStyle(
+                widget.excellentExpression.sentence,
+                style: const TextStyle(
                   fontSize: 14.0,
                   color: Colors.black,
                 ),
@@ -283,19 +312,40 @@ class _ErrorCorrectionDetailTwoItemState
             Gaps.hGap16,
             Column(
               children: [
-                const Text(
-                  "14+",
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      widget.excellentExpression.score.toString(),
+                      style: const TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const Text(
+                      "分",
+                      style: TextStyle(
+                        fontSize: 10.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
                 Gaps.vGap8,
-                const LoadAssetImage(
-                  'laba_lan',
-                  width: 17.6,
-                  height: 16.0,
+                GestureDetector(
+                  onTap: () {
+                    MediaUtils().play(
+                      url: widget.excellentExpression.audio,
+                      useAvatar: true,
+                      whenFinished: () {},
+                    );
+                  },
+                  child: const LoadAssetImage(
+                    'laba_lan',
+                    width: 17.6,
+                    height: 16.0,
+                  ),
                 ),
               ],
             ),
@@ -307,7 +357,9 @@ class _ErrorCorrectionDetailTwoItemState
 }
 
 class ErrorCorrectionThreeDetailItem extends StatefulWidget {
-  const ErrorCorrectionThreeDetailItem({super.key});
+  final Datum data;
+
+  const ErrorCorrectionThreeDetailItem({super.key, required this.data});
 
   @override
   State<ErrorCorrectionThreeDetailItem> createState() =>
@@ -355,9 +407,9 @@ class _ErrorCorrectionThreeDetailItemState
                 height: 15.0,
               ),
               Gaps.hGap8,
-              const Text(
-                "94",
-                style: TextStyle(
+              Text(
+                widget.data.userPracticeScore.toString(),
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 12.0,
                   color: Colours.color_00B53D,
@@ -394,20 +446,29 @@ class _ErrorCorrectionThreeDetailItemState
             ),
             child: Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: Text(
-                    "Really? Awesome， Awesome，Behind me are the Alps，Now I'm going skiing，shall we go？",
-                    style: TextStyle(
+                    widget.data.userPracticeSentence ?? "",
+                    style: const TextStyle(
                       fontSize: 14.0,
                       color: Colors.black,
                     ),
                   ),
                 ),
                 Gaps.hGap16,
-                const LoadAssetImage(
-                  'laba_lan',
-                  width: 17.6,
-                  height: 16.0,
+                GestureDetector(
+                  onTap: () {
+                    MediaUtils().play(
+                      url: widget.data.userPracticeAudio,
+                      useAvatar: true,
+                      whenFinished: () {},
+                    );
+                  },
+                  child: const LoadAssetImage(
+                    'laba_lan',
+                    width: 17.6,
+                    height: 16.0,
+                  ),
                 ),
               ],
             ),
@@ -415,5 +476,76 @@ class _ErrorCorrectionThreeDetailItemState
         ],
       ),
     );
+  }
+}
+
+class ErrorCorrectionNotDetailItem extends StatefulWidget {
+  const ErrorCorrectionNotDetailItem({super.key});
+
+  @override
+  State<ErrorCorrectionNotDetailItem> createState() =>
+      _ErrorCorrectionNotDetailItemState();
+}
+
+class _ErrorCorrectionNotDetailItemState
+    extends State<ErrorCorrectionNotDetailItem> {
+  final ScreenUtil _screenUtil = ScreenUtil();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 90,
+            height: 25,
+            // color: Colors.red,
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 5,
+                  left: 3,
+                  child: Container(
+                    width: 45,
+                    height: 15,
+                    color: Colours.color_FFD076,
+                  ),
+                ),
+                const Text(
+                  "未更正",
+                  style: TextStyle(
+                    // backgroundColor: Colors.yellow,
+                    fontSize: 17.0,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Gaps.vGap8,
+          Container(
+            width: _screenUtil.screenWidth - 40,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: Colors.white,
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 18.0,
+              vertical: 10.0,
+            ),
+            child: const Text(
+              "你还未更正读音喔~",
+              style: TextStyle(
+                fontSize: 14.0,
+                color: Colours.color_999999,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    ;
   }
 }

@@ -190,7 +190,7 @@ class _InstructionalVideoDialoguePageState
       if (answer is String && (answer.contains('{[finish]}'))) {
         //弹窗点击确定后重新链接
         onNextSocketEnd();
-        EventBus().emit(NotificationUtils.nextResetChat);
+        _instructionalVideoDialoguePresenter.postStepUpdate();
 
         return;
       }
@@ -863,4 +863,15 @@ class _InstructionalVideoDialoguePageState
 
   @override
   bool get wantKeepAlive => false;
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+  }
+
+  @override
+  void sendSuccess(String data) {
+    // TODO: implement sendSuccess
+    EventBus().emit(NotificationUtils.nextResetChat);
+  }
 }

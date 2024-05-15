@@ -72,8 +72,8 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
           body: SafeArea(
               child: CustomScrollView(slivers: [
         SliverToBoxAdapter(
-          child:
-              CourseReportVocabularyItem(stepDetailBean: widget.stepDetailBean),
+          child: CourseReportVocabularyItem(
+              vocabulary: widget.stepDetailBean.data.objectives.vocabulary),
         ),
         SliverToBoxAdapter(
           child: Container(

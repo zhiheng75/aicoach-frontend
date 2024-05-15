@@ -49,7 +49,12 @@ class CourseRouter implements IRouterProvider {
     }));
 
     router.define(courseReportPage,
-        handler: Handler(handlerFunc: (_, __) => const CourseReportPage()));
+        handler: Handler(handlerFunc: (context, params) {
+      String lessonId = params['lessonId']!.first;
+      return CourseReportPage(
+        lessonId: lessonId,
+      );
+    }));
 
     router.define(switchingTeacherPage,
         handler: Handler(handlerFunc: (_, __) => const SwitchingTeacherPage()));

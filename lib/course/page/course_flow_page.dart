@@ -404,10 +404,10 @@ class _CourseFlowPageState extends State<CourseFlowPage>
               children: [
                 GestureDetector(
                   onTap: () {
-                    NavigatorUtils.push(
-                      context,
-                      CourseRouter.courseReportPage,
-                    );
+                    LoginManager.checkLogin(context, () {
+                      NavigatorUtils.push(context,
+                          "${CourseRouter.courseReportPage}?lessonId=${widget.lessonId}");
+                    });
                   },
                   child: Container(
                     // margin: const EdgeInsets.all(0),
@@ -463,10 +463,10 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                 // ),
                 GestureDetector(
                   onTap: () {
-                    NavigatorUtils.push(
-                      context,
-                      PersonalRouter.errorCorrectionDetailPage,
-                    );
+                    LoginManager.checkLogin(context, () {
+                      NavigatorUtils.push(context,
+                          "${PersonalRouter.errorCorrectionDetailPage}?lessonId=${widget.lessonId}");
+                    });
                   },
                   child: Container(
                     // margin: const EdgeInsets.all(0),

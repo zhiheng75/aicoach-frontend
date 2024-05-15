@@ -77,7 +77,16 @@ class HttpApi {
 
   //学习报告的集合
   static const String studyReportList = "app/conversations";
+//课程报告列表
+  static const String lessonReports = "lesson_reports";
+  //纠错列表
+  static const String mistakeRecords = "mistake_records";
+  //纠错详情
+  static const String mistakeDetails = "mistake_details";
+  // step完成状态修改
+  static const String stepUpdate = "step_update";
 
+//
   //模考报告列表
   static const String examReportList = "exam_list";
 
@@ -155,4 +164,6 @@ class HttpApi {
   static const String lessonFeedback = "lesson_feedback";
 
   static const String lessonDetail = 'lesson_detail';
+
+  static const String lessonReportDetail = 'lesson_report_detail';
 }
