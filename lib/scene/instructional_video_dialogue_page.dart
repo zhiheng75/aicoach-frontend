@@ -7,6 +7,7 @@ import 'package:Bubble/course/entity/step_detail_bean.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/scene/page/class_video_page.dart';
 import 'package:Bubble/scene/presenter/instructional_video_dialogue_presenter.dart';
 import 'package:Bubble/scene/presenter/teaching_dialogue_presenter.dart';
 import 'package:Bubble/scene/view/instructional_video_dialogue_view.dart';
@@ -18,6 +19,7 @@ import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:native_video_player/native_video_player.dart';
 import 'package:provider/provider.dart';
 
 import '../chat/entity/message_entity.dart';
@@ -38,6 +40,8 @@ class InstructionalVideoDialoguePage extends StatefulWidget {
   final int idx;
   final int isUserBuy;
   final String levelId;
+  final String lessonId;
+  final String stepId;
 
   const InstructionalVideoDialoguePage({
     super.key,
@@ -46,6 +50,8 @@ class InstructionalVideoDialoguePage extends StatefulWidget {
     required this.idx,
     required this.levelId,
     required this.isUserBuy,
+    required this.lessonId,
+    required this.stepId,
   });
   final Function() onEnd;
 
@@ -85,7 +91,7 @@ class _InstructionalVideoDialoguePageState
   // 是否对话结束
   bool _isConversationEnd = false;
 
-  late VideoPlayerController _controller;
+  // late VideoPlayerController _controller;
 
   late String introFileType;
   late int dataIdx;
@@ -96,7 +102,7 @@ class _InstructionalVideoDialoguePageState
   late String resourceSceneId;
   late String titStr;
   late String isVideo = "0";
-  late bool isplay = true;
+  late bool isplay = false;
 
   void init() {
     _pageState = 'loading';
@@ -117,7 +123,7 @@ class _InstructionalVideoDialoguePageState
           _pageState = 'success';
           setState(() {});
           _homeProvider.addIntroductionMessage();
-          _homeProvider.addTipMessage('class started！');
+          // _homeProvider.addTipMessage('class started！');
           // 刷新使用时间
           _homeProvider.getUsageTime(() {
             // 倒计时
@@ -160,7 +166,7 @@ class _InstructionalVideoDialoguePageState
   void onNextSocketEnd() {
     ConfirmUtils.show(
       context: context,
-      title: '是否进行下一个场景',
+      title: '是否进行下一段对话',
       buttonDirection: 'vertical',
       confirmButtonText: '结束',
       cancelButtonText: '下一段对话',
@@ -187,19 +193,19 @@ class _InstructionalVideoDialoguePageState
 
   void onWebsocketAnswer(dynamic answer) {
     if (_answer == null) {
-      if (answer is String && (answer.contains('{[finish]}'))) {
-        //弹窗点击确定后重新链接
-        onNextSocketEnd();
-        _instructionalVideoDialoguePresenter.postStepUpdate();
-
-        return;
-      }
       // 结束标记
       if (answer is String &&
           (answer.contains('[end_session]') ||
               answer.contains('{[finish]}') ||
               RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
         //弹窗点击确定后重新链接
+        if ((answer.contains('{[finish]}'))) {
+          //弹窗点击确定后重新链接
+          _instructionalVideoDialoguePresenter.postStepUpdate();
+          onNextSocketEnd();
+
+          return;
+        }
         return;
       }
       // _answer = NormalMessage();
@@ -261,7 +267,7 @@ class _InstructionalVideoDialoguePageState
     if (!_isConversationEnd) {
       ConfirmUtils.show(
         context: context,
-        title: '结束场景对话',
+        title: '结束上课',
         buttonDirection: 'vertical',
         confirmButtonText: '结束对话',
         cancelButtonText: '留在对话中',
@@ -330,13 +336,12 @@ class _InstructionalVideoDialoguePageState
       if (introFileType == "video") {
         isVideo = "1";
         introFileStr = widget.data[dataIdx].resource[resourceIdx].introFile!;
-        _controller = VideoPlayerController.networkUrl(Uri.parse(introFileStr))
-          ..initialize().then((_) {
-            // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-            setState(() {});
-          });
-        // _controller.play();
-        // _controller.value.
+        // _controller = VideoPlayerController.networkUrl(Uri.parse(introFileStr))
+        //   ..initialize().then((_) {
+        //     // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        //     setState(() {});
+        //   });
+
         videoFlow();
       } else if (introFileType == "image") {
         introFileStr = widget.data[dataIdx].resource[resourceIdx].introFile!;
@@ -367,48 +372,101 @@ class _InstructionalVideoDialoguePageState
       // _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
       normalMessage.text =
-          widget.data[widget.idx].resource[resourceIdx].greetingText!;
+          widget.data[widget.idx].resource[resourceIdx].introText!;
       normalMessage.audioUrl =
-          widget.data[widget.idx].resource[resourceIdx].greetingAudio!;
+          widget.data[widget.idx].resource[resourceIdx].introAudio!;
       normalMessage.isTextEnd = true;
       _homeProvider.addNormalMessage(normalMessage);
       _mediaUtils.play(
-        url: widget.data[widget.idx].resource[resourceIdx].greetingAudio!,
+        url: widget.data[widget.idx].resource[resourceIdx].introAudio!,
         useAvatar: true,
         whenFinished: () {
+          //通知播放视频
+
+          // setState(() {
+          //   isplay = true;
+          // });
+          _controller?.play();
+          _controller?.setVolume(1);
+
+          // showModalBottomSheet(
+          //   context: context,
+          //   backgroundColor: Colors.transparent,
+          //   barrierColor: Colors.transparent,
+          //   isScrollControlled: true,
+          //   isDismissible: false,
+          //   clipBehavior: Clip.none,
+          //   enableDrag: false,
+          //   builder: (_) => ClassVideoPage(
+          //     introFileStr: introFileStr,
+          //     onScrollEnd: () {
+          //       // setState(() {
+          //       //   isplay = false;
+          //       // });
+          //       startNormaltwoChat();
+          //     },
+          //   ),
+          // );
+
           // _bottomBarControll.setDisabled(false);
-          _controller.setLooping(false);
-          _controller.play();
-          checkVideoCompletion(_controller);
+          //   _controller.play();
+          // checkVideoCompletion(_controller);
         },
       );
     });
+
+    // await _mediaUtils.stopPlay();
+    // // await _chatWebsocket.endChat(true);
+    // _homeProvider.resetChatParams();
+    // // _homeProvider.character = character;
+    // Future.delayed(Duration.zero, () {
+    //   // _isCharacterChanging = false;
+    //   _bottomBarControll.setDisabled(true);
+    //   _homeProvider.addIntroductionMessage();
+    //   // _homeProvider.addTipMessage('Role-plays started！');
+    //   NormalMessage normalMessage = _homeProvider.createNormalMessage();
+    //   normalMessage.text =
+    //       widget.data[widget.idx].resource[resourceIdx].greetingText!;
+    //   normalMessage.audioUrl =
+    //       widget.data[widget.idx].resource[resourceIdx].greetingAudio!;
+    //   normalMessage.isTextEnd = true;
+    //   _homeProvider.addNormalMessage(normalMessage);
+    //   _mediaUtils.play(
+    //     url: widget.data[widget.idx].resource[resourceIdx].greetingAudio!,
+    //     useAvatar: true,
+    //     whenFinished: () {
+    //       // _bottomBarControll.setDisabled(false);
+    //       _controller.play();
+    //       checkVideoCompletion(_controller);
+    //     },
+    //   );
+    // });
   }
 
-  void checkVideoCompletion(VideoPlayerController controller) {
-    // if (controller.value.isInitialized) {
-    // _controller.removeListener(_videoListener);
-    // 当视频控制器初始化完成后，开始监听播放事件
-    controller.addListener(() {
-      isplay = false;
-      final Duration position = controller.value.position;
+  // void checkVideoCompletion(VideoPlayerController controller) {
+  //   // if (controller.value.isInitialized) {
+  //   // _controller.removeListener(_videoListener);
+  //   // 当视频控制器初始化完成后，开始监听播放事件
+  //   controller.addListener(() {
+  //     isplay = false;
+  //     final Duration position = controller.value.position;
 
-      if (position >= controller.value.duration) {
-        // 视频正在播放且播放到了末尾，视频播放完成
-        Log.e("视频播放完成");
-        isplay = true;
-        if (isFrist) {
-          startNormaltwoChat();
-        }
-      }
-      setState(() {});
-      // if (isPlaying && position >= controller.value.duration) {
-      //   // 视频正在播放且播放到了末尾，视频播放完成
-      //   Log.e("视频播放完成");
-      // }
-    });
-    // }
-  }
+  //     if (position >= controller.value.duration) {
+  //       // 视频正在播放且播放到了末尾，视频播放完成
+  //       Log.e("视频播放完成");
+  //       isplay = true;
+  //       if (isFrist) {
+  //         startNormaltwoChat();
+  //       }
+  //     }
+  //     setState(() {});
+  //     // if (isPlaying && position >= controller.value.duration) {
+  //     //   // 视频正在播放且播放到了末尾，视频播放完成
+  //     //   Log.e("视频播放完成");
+  //     // }
+  //   });
+  //   // }
+  // }
 
   void startNormaltwoChat() async {
     await _mediaUtils.stopPlay();
@@ -422,9 +480,9 @@ class _InstructionalVideoDialoguePageState
       // _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
       normalMessage.text =
-          widget.data[widget.idx].resource[resourceIdx].introText!;
+          widget.data[widget.idx].resource[resourceIdx].greetingText!;
       normalMessage.audioUrl =
-          widget.data[widget.idx].resource[resourceIdx].introAudio!;
+          widget.data[widget.idx].resource[resourceIdx].greetingAudio!;
       normalMessage.isTextEnd = true;
       _homeProvider.addNormalMessage(normalMessage);
       _mediaUtils.play(
@@ -432,7 +490,7 @@ class _InstructionalVideoDialoguePageState
         useAvatar: true,
         whenFinished: () {
           setState(() {
-            isFrist = false;
+            // isFrist = false;
             _bottomBarControll.setDisabled(false);
           });
         },
@@ -475,14 +533,109 @@ class _InstructionalVideoDialoguePageState
     Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
   }
 
+  bool isAutoplayEnabled = false;
+  bool isPlaybackLoopEnabled = false;
   @override
   void dispose() {
-    super.dispose();
     _homeProvider.ishread = "";
 
-    if (isVideo == "1") {
-      _controller.dispose();
+    _controller?. //
+        onPlaybackStatusChanged
+        .removeListener(_onPlaybackStatusChanged);
+    _controller?. //
+        onPlaybackPositionChanged
+        .removeListener(_onPlaybackPositionChanged);
+    _controller?. //
+        onPlaybackSpeedChanged
+        .removeListener(_onPlaybackSpeedChanged);
+    _controller?. //
+        onVolumeChanged
+        .removeListener(_onPlaybackVolumeChanged);
+    _controller?. //
+        onPlaybackReady
+        .removeListener(_onPlaybackReady);
+    _controller?. //
+        onPlaybackEnded
+        .removeListener(_onPlaybackEnded);
+    _controller = null;
+    super.dispose();
+  }
+
+  void _onPlaybackReady() {
+    setState(() {});
+    if (isAutoplayEnabled) {
+      _controller?.play();
     }
+  }
+
+  void _onPlaybackStatusChanged() {
+    setState(() {});
+  }
+
+  void _onPlaybackPositionChanged() {
+    Log.e(_controller?.playbackInfo?.position.toString() ?? "0");
+    Log.e(_controller?.videoInfo?.duration.toString() ?? "0");
+
+    if (_controller?.playbackInfo?.position ==
+        _controller?.videoInfo?.duration) {
+      startNormaltwoChat();
+      //播放完成重置状态
+    }
+
+    setState(() {});
+  }
+
+  void _onPlaybackSpeedChanged() {
+    setState(() {});
+  }
+
+  void _onPlaybackVolumeChanged() {
+    setState(() {});
+  }
+
+  void _onPlaybackEnded() {
+    if (isPlaybackLoopEnabled) {
+      _controller?.play();
+    }
+  }
+
+  NativeVideoPlayerController? _controller;
+
+  Future<void> _initController(controller) async {
+    _controller = controller;
+
+    _controller?. //
+        onPlaybackStatusChanged
+        .addListener(_onPlaybackStatusChanged);
+    _controller?. //
+        onPlaybackPositionChanged
+        .addListener(_onPlaybackPositionChanged);
+    _controller?. //
+        onPlaybackSpeedChanged
+        .addListener(_onPlaybackSpeedChanged);
+    _controller?. //
+        onVolumeChanged
+        .addListener(_onPlaybackVolumeChanged);
+    _controller?. //
+        onPlaybackReady
+        .addListener(_onPlaybackReady);
+    _controller?. //
+        onPlaybackEnded
+        .addListener(_onPlaybackEnded);
+
+    await _loadVideoSource();
+  }
+
+  Future<void> _loadVideoSource() async {
+    final videoSource = await _createVideoSource();
+    await _controller?.loadVideoSource(videoSource);
+  }
+
+  Future<VideoSource> _createVideoSource() async {
+    return await VideoSource.init(
+      path: introFileStr,
+      type: VideoSourceType.network,
+    );
   }
 
   Widget topWidget() {
@@ -490,54 +643,13 @@ class _InstructionalVideoDialoguePageState
       return Positioned(
         top: _screenUtil.statusBarHeight + 80,
         width: _screenUtil.screenWidth,
-        height: 200,
-        child: _controller.value.isInitialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: Container(
-                    color: Colors.black,
-                    child: Stack(
-                      children: [
-                        VideoPlayer(_controller),
-                        isFrist
-                            ? Container()
-                            : Center(
-                                child: GestureDetector(
-                                    onTap: () {
-                                      if (isplay) {
-                                        _controller.play();
-                                      } else {
-                                        _controller.pause();
-                                      }
-                                      isplay = !isplay;
-                                      setState(() {});
-                                    },
-                                    child: isplay
-                                        ? const LoadAssetImage(
-                                            "play_video_icon",
-                                            width: 32.0,
-                                            height: 32.0,
-                                          )
-                                        : const LoadAssetImage(
-                                            "pause_video_icon",
-                                            width: 32.0,
-                                            height: 32.0,
-                                          )
-                                    //  Container(
-                                    //   width: 60,
-                                    //   height: 60,
-                                    //   color: Colors.amber,
-                                    //   child: Center(
-                                    //       child: Text(isplay ? "播放" : "暂停")),
-                                    // ),
-                                    ),
-                              )
-                      ],
-                    )),
-              )
-            : Container(
-                color: Colors.black,
-              ),
+        height: _screenUtil.screenWidth / 16 * 9,
+        child: AspectRatio(
+          aspectRatio: 16 / 9,
+          child: NativeVideoPlayerView(
+            onViewReady: _initController,
+          ),
+        ),
       );
     } else if (introFileType == "image") {
       return Positioned(
@@ -774,6 +886,8 @@ class _InstructionalVideoDialoguePageState
                   bottom: _screenUtil.bottomBarHeight + 16.0,
                 ),
                 child: CourseBottomBar(
+                  stepId: widget.stepId,
+                  lessonId: widget.lessonId,
                   chatWebsocket: _chatWebsocket,
                   controller: _bottomBarControll,
                   recordController: _recordController,

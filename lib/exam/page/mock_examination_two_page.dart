@@ -525,6 +525,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
   void insertUserMessage(String text, Function(MockMessageEntity) onSuccess) {
     MockMessageEntity message = MockMessageEntity();
     message.text = text;
+    message.type = "3";
     message.audio = [..._bufferList];
     message.sessionId = mockID;
     message.messageId = questionID;

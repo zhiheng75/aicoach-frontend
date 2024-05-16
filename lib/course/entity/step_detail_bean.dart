@@ -37,6 +37,8 @@ class Data {
   List<CourseDatum> data;
   int userId;
   int levelId;
+  int stepId;
+
   int isUserBuy;
 
   String levelName;
@@ -50,6 +52,7 @@ class Data {
   Data({
     required this.data,
     required this.userId,
+    required this.stepId,
     required this.isUserBuy,
     required this.levelId,
     required this.levelName,
@@ -65,6 +68,7 @@ class Data {
         data: List<CourseDatum>.from(
             json["data"].map((x) => CourseDatum.fromJson(x))),
         userId: json["user_id"] ?? 0,
+        stepId: json["step_id"] ?? 0,
         levelId: json["level_id"] ?? 0,
         isUserBuy: json["is_user_buy"],
         levelName: json["level_name"],
@@ -79,6 +83,7 @@ class Data {
   Map<String, dynamic> toJson() => {
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
         "user_id": userId,
+        "step_id": stepId,
         "level_id": levelId,
         "is_user_buy": isUserBuy,
         "level_name": levelName,

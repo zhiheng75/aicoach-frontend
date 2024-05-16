@@ -312,6 +312,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
     message.text = text;
     message.audio = [..._bufferList];
     message.speaker = 'user';
+    message.typeId = "1";
     return message;
   }
 

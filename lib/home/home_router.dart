@@ -84,6 +84,9 @@ class HomeRouter implements IRouterProvider {
       int isUserBuyInt = int.parse(isUserBuy);
       final String levelId = params['levelId']?.first ?? '';
 
+      final String lessonId = params['lessonId']?.first ?? '';
+      final String stepId = params['stepId']?.first ?? '';
+
       List<CourseDatum> data =
           ModalRoute.of(context!)?.settings.arguments as List<CourseDatum>;
       // }
@@ -91,8 +94,10 @@ class HomeRouter implements IRouterProvider {
         data: data,
         idx: idx,
         isUserBuy: isUserBuyInt,
-        onEnd: () {},
+        lessonId: lessonId,
+        stepId: stepId,
         levelId: levelId,
+        onEnd: () {},
       );
     }));
 

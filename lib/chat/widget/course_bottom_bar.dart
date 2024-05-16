@@ -37,6 +37,9 @@ class CourseBottomBar extends StatefulWidget {
     this.language,
     this.isNormalChat = false,
     this.onScrollEnd,
+    required this.lessonId,
+    required this.stepId,
+
     // this.onStarEnd,
   }) : super(key: key);
 
@@ -47,6 +50,8 @@ class CourseBottomBar extends StatefulWidget {
   String? language;
   final Function()? onScrollEnd;
   // final Function()? onStarEnd;
+  final String lessonId;
+  final String stepId;
 
   final bool isNormalChat;
 
@@ -316,6 +321,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     message.text = text;
     message.audio = [..._bufferList];
     message.speaker = 'user';
+    message.lessonId = "";
+    message.stepId = "";
+    message.typeId = "4";
     return message;
   }
 

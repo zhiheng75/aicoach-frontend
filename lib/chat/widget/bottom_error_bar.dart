@@ -2,6 +2,8 @@
 
 import 'dart:typed_data';
 
+import 'package:Bubble/chat/entity/class_message_entity.dart';
+import 'package:Bubble/chat/utils/error_class_evaluate_util.dart';
 import 'package:Bubble/chat/widget/background.dart';
 import 'package:Bubble/chat/widget/record_error.dart';
 import 'package:Bubble/constant/constant.dart';
@@ -9,6 +11,7 @@ import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/websocket_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -31,21 +34,31 @@ import 'record.dart';
 class BottomErrorBar extends StatefulWidget {
   BottomErrorBar({
     Key? key,
-    required this.chatWebsocket,
+    // required this.chatWebsocket,
     required this.controller,
     required this.recordController,
     this.isCollectInformation,
     this.language,
     this.isNormalChat = false,
     this.onScrollEnd,
+    this.onMapEnd,
+    required this.idStr,
+    required this.suggestionSentenceStr,
+    required this.suggestionAudioStr,
   }) : super(key: key);
 
-  final ChatWebsocket chatWebsocket;
+  // final ChatWebsocket chatWebsocket;
   final BottomErrorBarController controller;
   final RecordController recordController;
   bool? isCollectInformation;
   String? language;
+  final String idStr;
+  final String suggestionSentenceStr;
+  final String suggestionAudioStr;
+
   final Function()? onScrollEnd;
+  final Function(Map<String, dynamic> map)? onMapEnd;
+
   final bool isNormalChat;
 
   @override
@@ -54,18 +67,18 @@ class BottomErrorBar extends StatefulWidget {
 
 class _BottomErrorBarState extends State<BottomErrorBar>
     with WidgetsBindingObserver {
-  late ChatWebsocket _chatWebsocket;
+  // late ChatWebsocket _chatWebsocket;
   final ScreenUtil _screenUtil = ScreenUtil();
   late HomeProvider _homeProvider;
   final MediaUtils _mediaUtils = MediaUtils();
   final RecognizeUtil _recognizeUtil = RecognizeUtil();
   List<Uint8List> _bufferList = [];
-  // ai回答消息
-  NormalMessage? _answer;
-  // ai音频播放
-  ListPlayer? _listPlayer;
-  // app状态
-  AppLifecycleState? _appLifecycleState;
+  // // ai回答消息
+  // NormalMessage? _answer;
+  // // ai音频播放
+  // ListPlayer? _listPlayer;
+  // // app状态
+  // AppLifecycleState? _appLifecycleState;
 
   void getExample() {
     LoginManager.checkLogin(context, () {
@@ -162,144 +175,162 @@ class _BottomErrorBarState extends State<BottomErrorBar>
     return isAvailable;
   }
 
-  Future<void> connectWebsocket() async {
-    if (_homeProvider.sessionId != '') {
-      return;
-    }
-    String characterId = _homeProvider.character.characterId;
-    String? sceneId;
-    String sessionType = _homeProvider.sessionType;
-    if (sessionType == 'topic') {
-      sceneId = _homeProvider.topic!.id.toString();
-    }
-    if (sessionType == 'scene') {
-      sceneId = _homeProvider.scene!.id.toString();
-    }
-    if (sessionType == 'course') {
-      sceneId = _homeProvider.course!.id.toString();
-    }
-    try {
-      _homeProvider.sessionId = await _chatWebsocket.startChat(
-        characterId: characterId,
-        sceneId: sceneId,
-        onConnected: () {
-          // 刷新使用时间
-          _homeProvider.getUsageTime(() {
-            // 倒计时
-            _homeProvider.startUsageTimeCutdown(() async {
-              showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                barrierColor: Colors.transparent,
-                isScrollControlled: true,
-                isDismissible: false,
-                builder: (_) => ExpirationReminder(),
-              );
-            });
-          });
-          // // 倒计时
-          // _homeProvider.startUsageTimeCutdown(() async {
-          //   showModalBottomSheet(
-          //     context: context,
-          //     backgroundColor: Colors.transparent,
-          //     barrierColor: Colors.transparent,
-          //     isScrollControlled: true,
-          //     isDismissible: false,
-          //     builder: (_) => ExpirationReminder(),
-          //   );
-          // });
-        },
-        onAnswer: onWebsocketAnswer,
-        onEnd: onWebsocketEnd,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
+  // Future<void> connectWebsocket() async {
+  //   if (_homeProvider.sessionId != '') {
+  //     return;
+  //   }
+  //   String characterId = _homeProvider.character.characterId;
+  //   String? sceneId;
+  //   String sessionType = _homeProvider.sessionType;
+  //   if (sessionType == 'topic') {
+  //     sceneId = _homeProvider.topic!.id.toString();
+  //   }
+  //   if (sessionType == 'scene') {
+  //     sceneId = _homeProvider.scene!.id.toString();
+  //   }
+  //   if (sessionType == 'course') {
+  //     sceneId = _homeProvider.course!.id.toString();
+  //   }
+  //   try {
+  //     _homeProvider.sessionId = await _chatWebsocket.startChat(
+  //       characterId: characterId,
+  //       sceneId: sceneId,
+  //       onConnected: () {
+  //         // 刷新使用时间
+  //         _homeProvider.getUsageTime(() {
+  //           // 倒计时
+  //           _homeProvider.startUsageTimeCutdown(() async {
+  //             showModalBottomSheet(
+  //               context: context,
+  //               backgroundColor: Colors.transparent,
+  //               barrierColor: Colors.transparent,
+  //               isScrollControlled: true,
+  //               isDismissible: false,
+  //               builder: (_) => ExpirationReminder(),
+  //             );
+  //           });
+  //         });
+  //         // // 倒计时
+  //         // _homeProvider.startUsageTimeCutdown(() async {
+  //         //   showModalBottomSheet(
+  //         //     context: context,
+  //         //     backgroundColor: Colors.transparent,
+  //         //     barrierColor: Colors.transparent,
+  //         //     isScrollControlled: true,
+  //         //     isDismissible: false,
+  //         //     builder: (_) => ExpirationReminder(),
+  //         //   );
+  //         // });
+  //       },
+  //       onAnswer: onWebsocketAnswer,
+  //       onEnd: onWebsocketEnd,
+  //     );
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
-  void onWebsocketAnswer(dynamic answer) {
-    if (_answer == null) {
-      // _answer = NormalMessage();
-      _answer = _homeProvider.createNormalMessage();
-      // 创建列表播放
-      _listPlayer = _mediaUtils.createListPlay(() {
-        widget.controller.setDisabled(false);
-      }, widget.isNormalChat);
-      _homeProvider.addNormalMessage(_answer!);
-    }
-    if (answer is String) {
-      if (answer.startsWith('[end')) {
-        _answer!.isTextEnd = true;
-        // 音频已全部返回
-        if (_listPlayer != null) {
-          _listPlayer!.setReturnEnd();
-        }
-        _homeProvider.notify();
-        return;
-      }
-      _answer!.text += answer;
-      _homeProvider.notify();
-      if (widget.onScrollEnd != null) {
-        widget.onScrollEnd!();
-      }
-      return;
-    }
-    if (answer is Uint8List) {
-      _answer!.audio.add(answer);
-      if (_appLifecycleState == AppLifecycleState.paused) {
-        return;
-      }
-      if (_listPlayer != null) {
-        _listPlayer!.play(answer);
-      }
-    }
-  }
+  // void onWebsocketAnswer(dynamic answer) {
+  //   if (_answer == null) {
+  //     // _answer = NormalMessage();
+  //     _answer = _homeProvider.createNormalMessage();
+  //     // 创建列表播放
+  //     _listPlayer = _mediaUtils.createListPlay(() {
+  //       widget.controller.setDisabled(false);
+  //     }, widget.isNormalChat);
+  //     _homeProvider.addNormalMessage(_answer!);
+  //   }
+  //   if (answer is String) {
+  //     if (answer.startsWith('[end')) {
+  //       _answer!.isTextEnd = true;
+  //       // 音频已全部返回
+  //       if (_listPlayer != null) {
+  //         _listPlayer!.setReturnEnd();
+  //       }
+  //       _homeProvider.notify();
+  //       return;
+  //     }
+  //     _answer!.text += answer;
+  //     _homeProvider.notify();
+  //     if (widget.onScrollEnd != null) {
+  //       widget.onScrollEnd!();
+  //     }
+  //     return;
+  //   }
+  //   if (answer is Uint8List) {
+  //     _answer!.audio.add(answer);
+  //     if (_appLifecycleState == AppLifecycleState.paused) {
+  //       return;
+  //     }
+  //     if (_listPlayer != null) {
+  //       _listPlayer!.play(answer);
+  //     }
+  //   }
+  // }
 
-  void onWebsocketEnd(String? reason, String endType) {
-    _homeProvider.endUsageTimeCutdown();
-    widget.controller.setDisabled(true);
-    // 异常结束
-    if (reason == 'Error') {
-      insertTipMessage('Please switch to new roles, topics, or scene');
-    }
-    // 正常结束
-    if (reason == 'Session End' && endType == 'normal') {
-      insertTipMessage('Conversation finished！');
-    }
-  }
+  // void onWebsocketEnd(String? reason, String endType) {
+  //   _homeProvider.endUsageTimeCutdown();
+  //   widget.controller.setDisabled(true);
+  //   // 异常结束
+  //   if (reason == 'Error') {
+  //     insertTipMessage('Please switch to new roles, topics, or scene');
+  //   }
+  //   // 正常结束
+  //   if (reason == 'Session End' && endType == 'normal') {
+  //     insertTipMessage('Conversation finished！');
+  //   }
+  // }
 
   void sendMessage(String text) async {
-    // 连接
-    try {
-      // await connectWebsocket();
-    } catch (e) {
-      Log.d('connect websocket fail:[error]${e.toString()}',
-          tag: 'sendMessage');
-    } finally {
-      NormalMessage message = createUserNormalMessage(text);
-      _chatWebsocket.sendMessage(
-        text: '[message_id=${message.id}]$text',
-        onUninited: () {
-          Toast.show(
-            '发送失败，请稍后再试',
-            duration: 1000,
-          );
-        },
-        onSuccess: () {
-          insertUserMessage(message, () {
-            if (widget.onScrollEnd != null) {
-              widget.onScrollEnd!();
-            }
-            EvaluateUtil().evaluate(message, () {
-              _homeProvider.updateNormalMessage(message);
-            });
-          });
-        },
-        onFail: () {
-          insertTipMessage('Please switch to new roles, topics, or scene');
-        },
-      );
-    }
+    insertUserMessage(text, (message) {
+      ErrorClassEvaluateUtil().evaluate(message, (Map<String, dynamic> map) {
+        Log.e(map.toString());
+        widget.onMapEnd!(map);
+      });
+    });
+    // // 连接
+    // try {
+    //   // await connectWebsocket();
+    // } catch (e) {
+    //   Log.d('connect websocket fail:[error]${e.toString()}',
+    //       tag: 'sendMessage');
+    // } finally {
+    //   NormalMessage message = createUserNormalMessage(text);
+    //   _chatWebsocket.sendMessage(
+    //     text: '[message_id=${message.id}]$text',
+    //     onUninited: () {
+    //       Toast.show(
+    //         '发送失败，请稍后再试',
+    //         duration: 1000,
+    //       );
+    //     },
+    //     onSuccess: () {
+    //       insertUserMessage(message, () {
+    //         if (widget.onScrollEnd != null) {
+    //           widget.onScrollEnd!();
+    //         }
+    //         EvaluateUtil().evaluate(message, () {
+    //           _homeProvider.updateNormalMessage(message);
+    //         });
+    //       });
+    //     },
+    //     onFail: () {
+    //       insertTipMessage('Please switch to new roles, topics, or scene');
+    //     },
+    //   );
+    // }
+  }
+
+  void insertUserMessage(
+      String text, Function(ErrorClassMessageEntity) onSuccess) {
+    ErrorClassMessageEntity message = ErrorClassMessageEntity();
+    message.text = text;
+    message.audio = [..._bufferList];
+    message.sessionId = widget.idStr;
+    message.speechfile = "";
+    message.suggestionAudio = widget.suggestionAudioStr;
+    message.tesuggestionSentencext = widget.suggestionSentenceStr;
+    onSuccess(message);
   }
 
   void insertTipMessage(String tip) {
@@ -309,24 +340,24 @@ class _BottomErrorBarState extends State<BottomErrorBar>
     }
   }
 
-  NormalMessage createUserNormalMessage(String text) {
-    NormalMessage message = _homeProvider.createNormalMessage(true);
-    message.text = text;
-    message.audio = [..._bufferList];
-    message.speaker = 'user';
-    return message;
-  }
+  // NormalMessage createUserNormalMessage(String text) {
+  //   NormalMessage message = _homeProvider.createNormalMessage(true);
+  //   message.text = text;
+  //   message.audio = [..._bufferList];
+  //   message.speaker = 'user';
+  //   return message;
+  // }
 
-  void insertUserMessage(NormalMessage message, Function() onSuccess) {
-    _homeProvider.addNormalMessage(message);
-    _answer = null;
-    onSuccess();
-  }
+  // void insertUserMessage(NormalMessage message, Function() onSuccess) {
+  //   _homeProvider.addNormalMessage(message);
+  //   // _answer = null;
+  //   onSuccess();
+  // }
 
   @override
   void initState() {
     super.initState();
-    _chatWebsocket = widget.chatWebsocket;
+    // _chatWebsocket = widget.chatWebsocket;
     _recognizeUtil.setLanguage(widget.language ?? 'en');
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     // 监听App状态
@@ -346,7 +377,7 @@ class _BottomErrorBarState extends State<BottomErrorBar>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    _appLifecycleState = state;
+    // _appLifecycleState = state;
     Future.delayed(Duration.zero, () async {
       await _mediaUtils.stopPlay();
     });

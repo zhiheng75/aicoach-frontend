@@ -973,7 +973,7 @@ class _ReportPageState extends State<ReportPage>
     if (_loading == 0) {
       if (_state == 'success') {
         if (_type == 'class') {
-          if (_reportsData[curTabIndex].list.isEmpty) {
+          if (_reportsData.length == 0) {
             list = Container(
               alignment: Alignment.center,
               child: Column(
@@ -1000,19 +1000,47 @@ class _ReportPageState extends State<ReportPage>
               ),
             );
           } else {
-            if (_type == 'class') {
-              list = _refreshListView();
-            } else {
-              list = ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: _type == "class" ? 10 : _list.length,
-                itemBuilder: (_, i) => Padding(
-                  padding: EdgeInsets.only(
-                    bottom: i == _list.length - 1 ? 0 : 16.0,
-                  ),
-                  child: listItem(_list.elementAt(i)),
+            if (_reportsData[curTabIndex].list.isEmpty) {
+              list = Container(
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const LoadAssetImage(
+                      'no_data',
+                      width: 63.0,
+                      height: 63.0,
+                    ),
+                    const SizedBox(
+                      height: 21.0,
+                    ),
+                    Text(
+                      _message,
+                      style: const TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colours.color_999999,
+                        letterSpacing: 0.05,
+                      ),
+                    ),
+                  ],
                 ),
               );
+            } else {
+              if (_type == 'class') {
+                list = _refreshListView();
+              } else {
+                list = ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: _type == "class" ? 10 : _list.length,
+                  itemBuilder: (_, i) => Padding(
+                    padding: EdgeInsets.only(
+                      bottom: i == _list.length - 1 ? 0 : 16.0,
+                    ),
+                    child: listItem(_list.elementAt(i)),
+                  ),
+                );
+              }
             }
           }
         } else {

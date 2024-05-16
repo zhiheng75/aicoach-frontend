@@ -42,6 +42,8 @@ PODS:
     - JCore (= 2.6.2)
     - JVerification (= 2.7.1)
   - MTBBarcodeScanner (5.0.11)
+  - native_video_player (1.0.0):
+    - Flutter
   - package_info (0.0.1):
     - Flutter
   - package_info_plus (0.4.5):
@@ -106,6 +108,7 @@ DEPENDENCIES:
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - in_app_purchase_storekit (from `.symlinks/plugins/in_app_purchase_storekit/darwin`)
   - jverify (from `.symlinks/plugins/jverify/ios`)
+  - native_video_player (from `.symlinks/plugins/native_video_player/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -163,6 +166,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/in_app_purchase_storekit/darwin"
   jverify:
     :path: ".symlinks/plugins/jverify/ios"
+  native_video_player:
+    :path: ".symlinks/plugins/native_video_player/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
   package_info_plus:
@@ -218,6 +223,7 @@ SPEC CHECKSUMS:
   JVerification: 750dc6b4ce55e53d1095958267cfd2e9eb4398a1
   jverify: 1245a818edcaf6054c9bd1c776f100344ff9c08e
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
+  native_video_player: d12af78a1a4a8cf09775a5177d5b392def6fd23c
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c

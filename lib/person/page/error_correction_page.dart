@@ -233,7 +233,9 @@ class _ErrorCorrectionPageState extends State<ErrorCorrectionPage>
                 children: [
                   mistakelistData.length > 1 ? tabbar() : Container(),
                   // Center(child: SizedBox(width: 300, child: tabbar())),
-                  Expanded(child: _refreshListView()),
+                  mistakelistData.isNotEmpty
+                      ? Expanded(child: _refreshListView())
+                      : Container(),
                 ],
               ),
         //         CustomScrollView(

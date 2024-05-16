@@ -17,6 +17,11 @@ class NormalMessage extends MessageEntity {
   String sessionId = '';
   String question = '';
   String questionMessageId = '';
+
+  String lessonId = '';
+  String stepId = '';
+  String typeId = '';
+
   String id = '';
   String text = '';
   String coverUrl = '';
@@ -49,9 +54,20 @@ class NormalMessage extends MessageEntity {
   factory NormalMessage.fromJson(dynamic json) {
     json = json as Map<String, dynamic>;
     NormalMessage entity = NormalMessage();
+    if (json['lesson_id'] != null) {
+      entity.lessonId = json['lesson_id'];
+    }
+    if (json['step_id'] != null) {
+      entity.stepId = json['step_id'];
+    }
+    if (json['type_id'] != null) {
+      entity.typeId = json['type_id'];
+    }
+
     if (json['session_id'] != null) {
       entity.sessionId = json['session_id'];
     }
+
     if (json['id'] != null) {
       entity.id = json['id'];
     }
@@ -89,6 +105,9 @@ class NormalMessage extends MessageEntity {
 
   Map<String, dynamic> toJson() {
     return {
+      'lesson_id': lessonId,
+      'step_id': stepId,
+      'type_id': typeId,
       'session_id': sessionId,
       'id': id,
       'text': text,

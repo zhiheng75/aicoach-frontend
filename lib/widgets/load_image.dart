@@ -36,31 +36,31 @@ class LoadImage extends StatelessWidget {
       height: height,
       width: width,
     );
-    if (image.isNotEmpty) {
-      return CachedNetworkImage(
-        imageUrl: image,
-        placeholder: (_, __) => LoadingAnimationWidget.waveDots(
-          color: Colors.white,
-          size: 20.0,
-        ),
-        errorWidget: (_, __, dynamic error) => holder,
-        width: width,
-        height: height,
-        fit: fit,
-        memCacheWidth: cacheWidth,
-        memCacheHeight: cacheHeight,
-      );
-    } else {
-      return LoadAssetImage(
-        holderImg,
-        height: height,
-        width: width,
-        fit: fit,
-        format: format,
-        cacheWidth: cacheWidth,
-        cacheHeight: cacheHeight,
-      );
-    }
+    // if (image.isNotEmpty) {
+    return CachedNetworkImage(
+      imageUrl: image,
+      placeholder: (_, __) => LoadingAnimationWidget.waveDots(
+        color: Colors.white,
+        size: 20.0,
+      ),
+      errorWidget: (_, __, dynamic error) => holder,
+      width: width,
+      height: height,
+      fit: fit,
+      memCacheWidth: cacheWidth,
+      memCacheHeight: cacheHeight,
+    );
+    // } else {
+    //   return LoadAssetImage(
+    //     holderImg,
+    //     height: height,
+    //     width: width,
+    //     fit: fit,
+    //     format: format,
+    //     cacheWidth: cacheWidth,
+    //     cacheHeight: cacheHeight,
+    //   );
+    // }
   }
 }
 

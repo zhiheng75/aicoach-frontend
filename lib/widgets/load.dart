@@ -55,15 +55,7 @@ class _LoadingDialog extends Dialog {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 // CircularProgressIndicator(),
-                Theme(
-                  data: ThemeData(
-                    cupertinoOverrideTheme: const CupertinoThemeData(
-                      brightness: Brightness.light, // 局部指定夜间模式，加载圈颜色会设置为白色
-                    ),
-                  ),
-                  child: const CupertinoActivityIndicator(radius: 14.0),
-                ),
-
+                const CupertinoActivityIndicator(radius: 14.0),
                 Gaps.vGap8,
                 const Text(
                   "正在加载...",

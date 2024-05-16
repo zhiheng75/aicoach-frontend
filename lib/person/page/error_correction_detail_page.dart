@@ -174,10 +174,29 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                   ),
                             errorDetailData[idx].userPracticeAudio.isEmpty
                                 ? BottomErrorBar(
-                                    chatWebsocket: _chatWebsocket,
+                                    suggestionSentenceStr: errorDetailData[idx]
+                                            .suggestionSentence ??
+                                        "",
+                                    suggestionAudioStr:
+                                        errorDetailData[idx].suggestionAudio,
+                                    idStr: errorDetailData[idx].id.toString(),
+                                    // chatWebsocket: _chatWebsocket,
                                     controller: _bottomBarControll,
                                     recordController: _recordController,
                                     onScrollEnd: () {},
+                                    onMapEnd: (data) {
+                                      setState(() {
+                                        errorDetailData[idx]
+                                                .userPracticeSentence =
+                                            data["user_practice_sentence"];
+                                        errorDetailData[idx].userPracticeAudio =
+                                            // ignore: prefer_interpolation_to_compose_strings
+                                            "https://statics.shenmo-ai.com/" +
+                                                data["user_practice_audio"];
+                                        errorDetailData[idx].userPracticeScore =
+                                            data["user_practice_score"];
+                                      });
+                                    },
                                   )
                                 : Center(
                                     child: Container(
@@ -285,8 +304,9 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                     ],
                   ),
                   Positioned(
-                    top: 0,
+                    // top: 0,
                     left: 0,
+                    bottom: 0,
                     child: ValueListenableBuilder(
                       valueListenable: _bottomBarControll.showRecord,
                       builder: (_, show, __) =>

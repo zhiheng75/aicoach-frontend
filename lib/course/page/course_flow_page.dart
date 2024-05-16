@@ -208,7 +208,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     _homeProvider.resetChatParams();
     _homeProvider.scene = scene;
     NavigatorUtils.push(context,
-        "${HomeRouter.instructionalVideoDialoguePage}?index=$idx&isUserBuy=${stepDetailData.data.isUserBuy}&levelId=${stepDetailData.data.levelId}",
+        "${HomeRouter.instructionalVideoDialoguePage}?index=$idx&isUserBuy=${stepDetailData.data.isUserBuy}&levelId=${stepDetailData.data.levelId}&lessonId=${stepDetailData.data.lessonId}&stepId=${stepDetailData.data.stepId}",
         arguments: data);
   }
 
