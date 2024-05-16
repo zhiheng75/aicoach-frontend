@@ -252,7 +252,7 @@ class EvaluateUtil {
       'message': message.text,
       'message_id': message.id,
       'lesson_id': message.lessonId,
-      'step_id': message.sessionId,
+      'step_id': message.stepId,
       'type': message.typeId,
       'accuracy_score': evaluation['accuracy_score'],
       'fluency_score': evaluation['fluency_score'],

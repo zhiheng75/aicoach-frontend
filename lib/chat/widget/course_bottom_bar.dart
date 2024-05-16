@@ -321,8 +321,8 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     message.text = text;
     message.audio = [..._bufferList];
     message.speaker = 'user';
-    message.lessonId = "";
-    message.stepId = "";
+    message.lessonId = widget.lessonId;
+    message.stepId = widget.stepId;
     message.typeId = "4";
     return message;
   }
