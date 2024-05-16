@@ -263,7 +263,6 @@ class _HomePageState extends State<HomeNewPage>
                       isUserBuy: 0,
                       levelId: '1',
                       lessonId: "1",
-                      stepId: "1",
                     ),
         );
         // 重置tab

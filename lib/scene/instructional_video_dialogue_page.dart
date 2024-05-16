@@ -41,7 +41,6 @@ class InstructionalVideoDialoguePage extends StatefulWidget {
   final int isUserBuy;
   final String levelId;
   final String lessonId;
-  final String stepId;
 
   const InstructionalVideoDialoguePage({
     super.key,
@@ -51,7 +50,6 @@ class InstructionalVideoDialoguePage extends StatefulWidget {
     required this.levelId,
     required this.isUserBuy,
     required this.lessonId,
-    required this.stepId,
   });
   final Function() onEnd;
 
@@ -100,6 +98,9 @@ class _InstructionalVideoDialoguePageState
   late String introFileStr;
   late bool isFrist = true;
   late String resourceSceneId;
+
+  late String stepId;
+
   late String titStr;
   late String isVideo = "0";
   late bool isplay = false;
@@ -201,7 +202,8 @@ class _InstructionalVideoDialoguePageState
         //弹窗点击确定后重新链接
         if ((answer.contains('{[finish]}'))) {
           //弹窗点击确定后重新链接
-          _instructionalVideoDialoguePresenter.postStepUpdate();
+          _instructionalVideoDialoguePresenter.postStepUpdate(
+              widget.lessonId, stepId);
           onNextSocketEnd();
 
           return;
@@ -331,17 +333,12 @@ class _InstructionalVideoDialoguePageState
           widget.data[dataIdx].resource[resourceIdx].sceneId.toString();
       introFileType = widget.data[dataIdx].resource[resourceIdx].introFileType!;
       titStr = widget.data[dataIdx].resource[resourceIdx].title;
+      stepId = widget.data[dataIdx].stepId.toString();
       _homeProvider.scene!.id = int.parse(resourceSceneId);
       connectWebsocket();
       if (introFileType == "video") {
         isVideo = "1";
         introFileStr = widget.data[dataIdx].resource[resourceIdx].introFile!;
-        // _controller = VideoPlayerController.networkUrl(Uri.parse(introFileStr))
-        //   ..initialize().then((_) {
-        //     // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        //     setState(() {});
-        //   });
-
         videoFlow();
       } else if (introFileType == "image") {
         introFileStr = widget.data[dataIdx].resource[resourceIdx].introFile!;
@@ -886,7 +883,7 @@ class _InstructionalVideoDialoguePageState
                   bottom: _screenUtil.bottomBarHeight + 16.0,
                 ),
                 child: CourseBottomBar(
-                  stepId: widget.stepId,
+                  stepId: stepId,
                   lessonId: widget.lessonId,
                   chatWebsocket: _chatWebsocket,
                   controller: _bottomBarControll,
@@ -986,6 +983,6 @@ class _InstructionalVideoDialoguePageState
   @override
   void sendSuccess(String data) {
     // TODO: implement sendSuccess
-    EventBus().emit(NotificationUtils.nextResetChat);
+    // EventBus().emit(NotificationUtils.nextResetChat);
   }
 }
