@@ -233,18 +233,12 @@ class _PersonPageState extends State<PersonPage>
       child: Row(
         children: <Widget>[
           ClipRRect(
-            borderRadius: BorderRadius.circular(28.0),
-            child: headimgurl != ''
-                ? LoadImage(
-                    headimgurl,
-                    width: 56.0,
-                    height: 56.0,
-                  )
-                : const LoadAssetImage(
-                    'default_head_img',
-                    width: 56.0,
-                    height: 56.0,
-                  ),
+            borderRadius: BorderRadius.circular(36.0),
+            child: LoadImage(
+              headimgurl,
+              width: 72.0,
+              height: 72.0,
+            ),
           ),
           const SizedBox(
             width: 8.0,
@@ -258,11 +252,12 @@ class _PersonPageState extends State<PersonPage>
                   userName,
                   style: const TextStyle(
                     fontSize: 20.0,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.bold,
                     color: Colors.black,
                     letterSpacing: 0.05,
                   ),
                 ),
+                Gaps.vGap4,
                 Text(
                   '你的周学习活跃指数为${_study.activeRank}，\n保持每天学习 ，加油赶超！',
                   style: const TextStyle(
@@ -311,7 +306,7 @@ class _PersonPageState extends State<PersonPage>
             ],
           ),
           const SizedBox(
-            height: 16.0,
+            height: 6.0,
           ),
           Text(
             label,
@@ -348,8 +343,8 @@ class _PersonPageState extends State<PersonPage>
               Text(
                 unit,
                 style: const TextStyle(
-                  fontSize: 13.0,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold,
                   color: Colors.black,
                   height: 18.0 / 13.0,
                   letterSpacing: 0.05,
@@ -358,7 +353,7 @@ class _PersonPageState extends State<PersonPage>
             ],
           ),
           const SizedBox(
-            height: 16.0,
+            height: 6.0,
           ),
           Text(
             label,
@@ -377,10 +372,29 @@ class _PersonPageState extends State<PersonPage>
     Widget studyInfo() {
       return Container(
         width: width,
-        decoration: decoration,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+          // border: Border.all(
+          //   width: 1.0,
+          //   style: BorderStyle.solid,
+          //   color: Colours.color_001652,
+          // ),
+          gradient: const LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.white70,
+              Colors.white,
+              Colors.white,
+              Colors.white,
+              Colors.white,
+              Colors.white,
+            ],
+          ),
+        ),
         padding: const EdgeInsets.symmetric(
           horizontal: 32.0,
-          vertical: 24.0,
+          vertical: 16.0,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -485,10 +499,7 @@ class _PersonPageState extends State<PersonPage>
                 Colours.color_F3E4FF,
               ],
             )),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 16.0,
-        ),
+        padding: const EdgeInsets.only(left: 8, right: 16, top: 16, bottom: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -497,9 +508,10 @@ class _PersonPageState extends State<PersonPage>
               children: <Widget>[
                 LoadAssetImage(
                   phone == "17001234567" ? "jinpai" : 'zhuanshi',
-                  width: 48.0,
-                  height: 48.0,
+                  width: 64.0,
+                  height: 51.0,
                 ),
+                Gaps.hGap4,
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -535,8 +547,11 @@ class _PersonPageState extends State<PersonPage>
             ),
             GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: () =>
-                  NavigatorUtils.push(context, PersonalRouter.purchase),
+              onTap: () {
+                // NavigatorUtils.push(context, PersonalRouter.purchase);
+                NavigatorUtils.push(
+                    context, PersonalRouter.userMembershipUpgradePage);
+              },
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),

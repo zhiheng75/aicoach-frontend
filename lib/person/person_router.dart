@@ -1,6 +1,7 @@
 import 'package:Bubble/person/invitation_code_page.dart';
 import 'package:Bubble/person/page/error_correction_detail_page.dart';
 import 'package:Bubble/person/page/error_correction_page.dart';
+import 'package:Bubble/person/page/user_membership_upgrade_page.dart';
 import 'package:fluro/fluro.dart';
 
 import '../routers/i_router.dart';
@@ -23,6 +24,7 @@ class PersonalRouter implements IRouterProvider {
 
   static String errorCorrectionPage = '/ErrorCorrectionPage';
   static String errorCorrectionDetailPage = '/ErrorCorrectionDetailPage';
+  static String userMembershipUpgradePage = '/UserMembershipUpgradePage';
 
   @override
   void initRouter(FluroRouter router) {
@@ -51,5 +53,9 @@ class PersonalRouter implements IRouterProvider {
         lessonId: lessonId,
       );
     }));
+
+    router.define(userMembershipUpgradePage,
+        handler:
+            Handler(handlerFunc: (_, __) => const UserMembershipUpgradePage()));
   }
 }

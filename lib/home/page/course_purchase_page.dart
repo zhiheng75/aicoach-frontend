@@ -237,7 +237,7 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                   color: Colours.color_FFD076,
                 ),
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 2.0,
+                  horizontal: 8.0,
                   vertical: 2.0,
                 ),
                 child: const Text(
@@ -261,20 +261,33 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
             ],
           ),
           Gaps.vGap4,
-          Text(
-            "￥${dataBean.data.price}元",
-            style: const TextStyle(
-              fontSize: 22.0,
-              fontWeight: FontWeight.w400,
-              color: Colours.color_108F4C,
-            ),
+          Row(
+            children: [
+              const Text(
+                "￥",
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colours.color_542DEC,
+                ),
+              ),
+              Text(
+                "${dataBean.data.price}",
+                style: const TextStyle(
+                  fontSize: 36.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colours.color_542DEC,
+                ),
+              ),
+            ],
           ),
           LoadImage(
             dataBean.data.teacherImg,
+            width: _screenUtil.screenWidth,
           ),
-          LoadImage(
-            dataBean.data.lessonTimeImg,
-          )
+          // LoadImage(
+          //   dataBean.data.lessonTimeImg,
+          // )
           // aiTeacherWidget(),
           // const LoadAssetImage(
           //   "vs_teacher",
@@ -289,24 +302,48 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
 
   Widget headWidget(String headStr) {
     return SliverToBoxAdapter(
-      child: Row(
-        children: [
-          Gaps.hGap8,
-          const LoadAssetImage(
-            "zhuangshi_ke",
-            width: 20.0,
-            height: 20.0,
-          ),
-          Gaps.hGap8,
-          Text(
-            headStr,
-            style: const TextStyle(
-              fontSize: 17.0,
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10),
+        child: Stack(
+          children: [
+            Positioned(
+              bottom: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  gradient: const LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: [
+                      Colours.color_8256FF,
+                      Colours.color_FF5CDB,
+                    ],
+                  ),
+                ),
+                width: 80,
+                height: 5,
+              ),
             ),
-          ),
-        ],
+            Text(
+              headStr,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget otherHeadWidget(String headStr) {
+    return SliverToBoxAdapter(
+      child: LoadAssetImage(
+        headStr,
+        // width: 170.0,
+        // height: 150.0,
       ),
     );
   }
@@ -353,6 +390,7 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
     for (int i = 0; i < dataBean.data.detailImg.length; i++) {
       list.add(LoadImage(
         dataBean.data.detailImg[i],
+        width: _screenUtil.screenWidth,
       ));
     }
     return list;
@@ -425,38 +463,40 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                           ),
                         ),
                       ),
-                      headWidget("课程详情"),
+                      otherHeadWidget("class_head"),
                       detailWidget(),
-                      headWidget("适用人群"),
-                      SliverGrid.builder(
-                          itemCount: 6,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            //设置列数
-                            crossAxisCount: 3,
-                            //设置横向间距
-                            crossAxisSpacing: 0,
-                            //设置主轴间距
-                            mainAxisSpacing: 0,
-                            // mainAxisExtent: 173,
-                          ),
-                          itemBuilder: (BuildContext ctx, int index) {
-                            return PeopleItem(
-                              idx: index,
-                            );
-                          }),
-                      headWidget("权益"),
-                      SliverList.builder(
-                        itemBuilder: (ctx, index) {
-                          return GestureDetector(
-                            onTap: () {},
-                            child: CourseEquityItem(
-                              idx: index,
-                            ),
-                          );
-                        },
-                        itemCount: 5,
-                      ),
+                      otherHeadWidget("people_head"),
+                      otherHeadWidget("quanyi_hrad"),
+
+                      // SliverGrid.builder(
+                      //     itemCount: 6,
+                      //     gridDelegate:
+                      //         const SliverGridDelegateWithFixedCrossAxisCount(
+                      //       //设置列数
+                      //       crossAxisCount: 3,
+                      //       //设置横向间距
+                      //       crossAxisSpacing: 0,
+                      //       //设置主轴间距
+                      //       mainAxisSpacing: 0,
+                      //       // mainAxisExtent: 173,
+                      //     ),
+                      //     itemBuilder: (BuildContext ctx, int index) {
+                      //       return PeopleItem(
+                      //         idx: index,
+                      //       );
+                      //     }),
+                      // headWidget("权益"),
+                      // SliverList.builder(
+                      //   itemBuilder: (ctx, index) {
+                      //     return GestureDetector(
+                      //       onTap: () {},
+                      //       child: CourseEquityItem(
+                      //         idx: index,
+                      //       ),
+                      //     );
+                      //   },
+                      //   itemCount: 5,
+                      // ),
                       headWidget("常见问题"),
                       problemWidget(),
                       SliverToBoxAdapter(

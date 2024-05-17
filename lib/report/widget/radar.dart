@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 
+import 'package:Bubble/res/colors.dart';
 import 'package:flutter/material.dart';
 
 class Radar extends StatefulWidget {
@@ -125,7 +126,7 @@ class RadarWrap extends CustomPainter {
 
   void drawWrap(List<Offset> points, Canvas canvas) {
     Paint paint = Paint();
-    paint.color = Colors.black;
+    paint.color = Colours.color_8F8D8D;
     paint.strokeWidth = 1.0;
     paint.style = PaintingStyle.stroke;
 

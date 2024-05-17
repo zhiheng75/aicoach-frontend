@@ -16,21 +16,21 @@ class _PlayBackItemState extends State<PlayBackItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.only(bottom: 16, left: 10, right: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.0),
         color: Colors.white,
       ),
       padding: const EdgeInsets.symmetric(
-        horizontal: 15.0,
+        horizontal: 20.0,
         vertical: 15.0,
       ),
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
             child: Text(
-              "He's a nice cat.",
-              style: TextStyle(
+              widget.title,
+              style: const TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w400,
                 color: Colors.black,

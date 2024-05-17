@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:Bubble/util/log_utils.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -127,9 +128,12 @@ class ChatWebsocket {
   void _startHeartbeat() {
     _heartbeat = Timer.periodic(const Duration(seconds: 5), (_) {
       if (_status == 'closed') {
+        Log.e("结束心跳");
+
         _endHeartBeat();
         return;
       }
+      Log.e("发心跳");
       _websocket!.sink.add('[heartbeat]pong');
     });
   }

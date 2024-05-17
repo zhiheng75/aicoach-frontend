@@ -25,46 +25,40 @@ class _CourseReportVocabularyItemState
   List<Color> colorBackData = [
     Colours.color_E8CCFE,
     Colours.color_C1E8F7,
-    Colours.color_E8CCFE,
-    Colours.color_E8CCFE,
-    Colours.color_C1E8F7,
-    Colours.color_E8CCFE,
+    Colours.color_C8F5B1,
     Colours.color_E8CCFE,
     Colours.color_C1E8F7,
-    Colours.color_E8CCFE,
-    Colours.color_E8CCFE,
-    Colours.color_C1E8F7,
-    Colours.color_E8CCFE,
+    Colours.color_C8F5B1,
     Colours.color_E8CCFE,
     Colours.color_C1E8F7,
-    Colours.color_E8CCFE,
-    Colours.color_E8CCFE,
-    Colours.color_C1E8F7,
-    Colours.color_E8CCFE,
+    Colours.color_C8F5B1,
     Colours.color_E8CCFE,
     Colours.color_C1E8F7,
-    Colours.color_E8CCFE,
-    Colours.color_E8CCFE,
-    Colours.color_C1E8F7,
-    Colours.color_E8CCFE,
+    Colours.color_C8F5B1,
     Colours.color_E8CCFE,
     Colours.color_C1E8F7,
-    Colours.color_E8CCFE,
-    Colours.color_E8CCFE,
-    Colours.color_C1E8F7,
-    Colours.color_E8CCFE,
+    Colours.color_C8F5B1,
     Colours.color_E8CCFE,
     Colours.color_C1E8F7,
-    Colours.color_E8CCFE,
-    Colours.color_E8CCFE,
-    Colours.color_C1E8F7,
-    Colours.color_E8CCFE,
+    Colours.color_C8F5B1,
     Colours.color_E8CCFE,
     Colours.color_C1E8F7,
-    Colours.color_E8CCFE,
+    Colours.color_C8F5B1,
     Colours.color_E8CCFE,
     Colours.color_C1E8F7,
+    Colours.color_C8F5B1,
     Colours.color_E8CCFE,
+    Colours.color_C1E8F7,
+    Colours.color_C8F5B1,
+    Colours.color_E8CCFE,
+    Colours.color_C1E8F7,
+    Colours.color_C8F5B1,
+    Colours.color_E8CCFE,
+    Colours.color_C1E8F7,
+    Colours.color_C8F5B1,
+    Colours.color_E8CCFE,
+    Colours.color_C1E8F7,
+    Colours.color_C8F5B1,
   ];
 
   @override
@@ -77,8 +71,8 @@ class _CourseReportVocabularyItemState
           color: Colours.color_F9F8FF,
         ),
         // color: Colors.black,
-        padding: const EdgeInsets.all(10),
-        margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.only(left: 6, right: 6, top: 9, bottom: 25),
+        margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -96,11 +90,11 @@ class _CourseReportVocabularyItemState
                         text: "词汇  ",
                         style: TextStyle(
                           fontSize: 15,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.bold,
                           color: Colors.black,
                         )),
                     TextSpan(
-                        text: "vocabulary",
+                        text: "Vocabulary",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
@@ -117,17 +111,20 @@ class _CourseReportVocabularyItemState
                 ),
               ],
             ),
-            Gaps.vGap11,
-            Wrap(
-              spacing: 8,
-              runSpacing: 10,
-              children: List.generate(widget.vocabulary.length, (index) {
-                return KeywordWidget(
-                  keyword: widget.vocabulary[index].word,
-                  colorStr: colorBackData[index],
-                  callback: search,
-                );
-              }),
+            // Gaps.vGap11,
+            Container(
+              margin: const EdgeInsets.only(left: 12, right: 12),
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: List.generate(widget.vocabulary.length, (index) {
+                  return KeywordWidget(
+                    keyword: widget.vocabulary[index].word,
+                    colorStr: colorBackData[index],
+                    callback: search,
+                  );
+                }),
+              ),
             ),
           ],
         ),
@@ -153,12 +150,12 @@ class KeywordWidget extends StatelessWidget {
     Widget container = Container(
       decoration: BoxDecoration(
           // border: Border.all(color: const Color(0xFFD7D7D7), width: 0.5),
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          borderRadius: const BorderRadius.all(Radius.circular(50)),
           color: colorStr),
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Text(
         keyword,
-        style: const TextStyle(fontSize: 13, color: Color(0xFF444444)),
+        style: const TextStyle(fontSize: 15, color: Color(0xFF444444)),
       ),
     );
     return GestureDetector(

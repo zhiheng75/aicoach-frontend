@@ -79,10 +79,10 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
           child: Container(
             color: Colors.white,
             child: Container(
-              margin: const EdgeInsets.all(8),
+              margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(20.0),
                 color: Colours.color_F9F8FF,
               ),
               // color: Colors.red,
@@ -102,7 +102,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
                               text: "句型  ",
                               style: TextStyle(
                                 fontSize: 15,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               )),
                           TextSpan(
@@ -123,7 +123,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
                       ),
                     ],
                   ),
-                  Gaps.vGap11,
+                  // Gaps.vGap11,
                   Column(
                     children: _buildPatternItems(),
                   ),
@@ -138,10 +138,10 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
           child: Container(
             color: Colors.white,
             child: Container(
-              margin: const EdgeInsets.all(8),
+              margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(20.0),
                 color: Colours.color_F9F8FF,
               ),
               // color: Colors.red,
@@ -161,7 +161,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
                               text: "能力  ",
                               style: TextStyle(
                                 fontSize: 15,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               )),
                           TextSpan(
@@ -182,7 +182,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
                       ),
                     ],
                   ),
-                  Gaps.vGap11,
+                  // Gaps.vGap11,
                   Column(
                     children: _buildSkillsItems(),
                   ),

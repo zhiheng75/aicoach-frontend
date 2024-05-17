@@ -139,15 +139,12 @@ class _CourseHomePageState extends State<CourseHomePage>
       width: _screenUtil.screenWidth,
       color: const Color(0xFFFFFFFF),
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 18, top: 6, bottom: 6),
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 17.0,
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
-            ),
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 17.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
           ),
         ),
       ),

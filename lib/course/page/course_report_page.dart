@@ -178,14 +178,15 @@ class _CourseReportPageState extends State<CourseReportPage>
       height: 240.0,
       color: Colors.white,
       child: Container(
-          width: _screenUtil.screenWidth - 32.0,
+          width: _screenUtil.screenWidth,
           height: 240.0,
+          margin: const EdgeInsets.only(left: 16, right: 16),
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
                 'assets/images/radar_bg.png',
               ),
-              fit: BoxFit.fitHeight,
+              fit: BoxFit.fitWidth,
             ),
           ),
           alignment: Alignment.center,
@@ -274,10 +275,23 @@ class _CourseReportPageState extends State<CourseReportPage>
                           child: Stack(
                             children: [
                               Container(
-                                width: 1000,
+                                width: _screenUtil.screenWidth,
                                 padding: const EdgeInsets.only(top: 40),
                                 margin: const EdgeInsets.only(top: 30),
-                                color: Colors.white,
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20)),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.white70,
+                                      Colors.white,
+                                      Colors.white,
+                                    ],
+                                  ),
+                                ),
                                 child: Column(
                                   children: [
                                     Text(
@@ -288,6 +302,7 @@ class _CourseReportPageState extends State<CourseReportPage>
                                         color: Colors.black,
                                       ),
                                     ),
+                                    Gaps.vGap6,
                                     RatingBar(
                                       initialRating: star,
                                       direction: Axis.horizontal,
@@ -307,18 +322,21 @@ class _CourseReportPageState extends State<CourseReportPage>
                                           horizontal: 2.0),
                                       onRatingUpdate: (rating) {},
                                     ),
+                                    Gaps.vGap6,
                                     Text(
                                       "${lessonReportDetailData.data.levelName}  ${lessonReportDetailData.data.unitName}",
                                       style: const TextStyle(
                                         fontSize: 13.0,
                                         color: Colours.color_666666,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
+                                    Gaps.vGap4,
                                     Text(
                                       lessonReportDetailData.data.lessonName,
                                       style: const TextStyle(
                                         fontSize: 17.0,
-                                        fontWeight: FontWeight.w400,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                       ),
                                     ),
@@ -351,9 +369,10 @@ class _CourseReportPageState extends State<CourseReportPage>
                                 Container(
                                     width: _screenUtil.screenWidth / 2 - 20,
                                     height: 150,
-                                    margin: const EdgeInsets.all(10),
+                                    margin: const EdgeInsets.only(
+                                        left: 16, right: 4, top: 12, bottom: 8),
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderRadius: BorderRadius.circular(20.0),
                                       color: Colours.color_FAF3FF,
                                     ),
                                     child: Column(
@@ -399,9 +418,10 @@ class _CourseReportPageState extends State<CourseReportPage>
                                 Container(
                                     width: _screenUtil.screenWidth / 2 - 20,
                                     height: 150,
-                                    margin: const EdgeInsets.all(10),
+                                    margin: const EdgeInsets.only(
+                                        left: 4, right: 16, top: 12, bottom: 8),
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderRadius: BorderRadius.circular(20.0),
                                       color: Colours.color_EFF9FF,
                                     ),
                                     child: Column(

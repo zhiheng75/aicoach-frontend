@@ -17,13 +17,13 @@ class _CourseFlowItemState extends State<CourseFlowItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
       height: 80,
       // width: 280,
       padding: const EdgeInsets.all(0.5),
       decoration: widget.data.completed == 1
           ? BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(20),
               gradient: const LinearGradient(
                 colors: [
                   Colours.color_9AC3FF,
@@ -31,67 +31,70 @@ class _CourseFlowItemState extends State<CourseFlowItem> {
                 ],
               ))
           : BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(20),
               color: const Color.fromRGBO(248, 248, 248, 1)),
       child: Container(
         alignment: Alignment.center,
         decoration: widget.data.completed == 1
             ? BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(20),
                 color: Colors.white,
               )
             : BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(20),
               ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Gaps.hGap10,
-            Container(
-              width: 40,
-              height: 40,
-              // margin: const EdgeInsets.only(top: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                color: Colours.color_F3E4FF,
-              ),
-              padding: const EdgeInsets.all(10),
-//video_icon
-// word_icon
-// sentence_icon
-// scene_icon
-              child: const LoadAssetImage(
-                "video_icon",
-                width: 24.0,
-                height: 24.0,
-              ),
-            ),
-            Gaps.hGap10,
-            Expanded(
-              child: Text(
-                widget.data.stepName,
-                style: const TextStyle(
-                  fontSize: 17.0,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
+        child: Container(
+          margin: EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Gaps.hGap10,
+              Container(
+                width: 40,
+                height: 40,
+                // margin: const EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  color: Colours.color_F3E4FF,
+                ),
+                padding: const EdgeInsets.all(10),
+                //video_icon
+                // word_icon
+                // sentence_icon
+                // scene_icon
+                child: const LoadAssetImage(
+                  "video_icon",
+                  width: 24.0,
+                  height: 24.0,
                 ),
               ),
-            ),
-            Gaps.hGap10,
-            Text(
-              // ignore: unrelated_type_equality_checks
-              widget.data.completed == 1 ? "已完成" : "去完成",
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w400,
-                // color: Colours.color_00BB40,
-                color: widget.data.completed == 1
-                    ? Colours.color_666666
-                    : Colours.color_00BB40,
+              Gaps.hGap8,
+              Expanded(
+                child: Text(
+                  widget.data.stepName,
+                  style: const TextStyle(
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                ),
               ),
-            ),
-            Gaps.hGap10,
-          ],
+              Gaps.hGap10,
+              Text(
+                // ignore: unrelated_type_equality_checks
+                widget.data.completed == 1 ? "已完成" : "去完成",
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w400,
+                  // color: Colours.color_00BB40,
+                  color: widget.data.completed == 1
+                      ? Colours.color_666666
+                      : Colours.color_00BB40,
+                ),
+              ),
+              // Gaps.hGap10,
+            ],
+          ),
         ),
       ),
     );

@@ -312,14 +312,14 @@ class _CourseFlowPageState extends State<CourseFlowPage>
           ),
         ),
 
-        Gaps.vGap10,
+        // Gaps.vGap10,
         GestureDetector(
           onTap: () {
             NavigatorUtils.push(context, CourseRouter.courseDetailsPage,
                 arguments: stepDetailData);
           },
           child: Container(
-            margin: const EdgeInsets.all(10),
+            margin: const EdgeInsets.only(left: 16, right: 16, top: 18),
             // margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
@@ -601,26 +601,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                 context,
                 CourseRouter.switchingTeacherPage,
               );
-              // NavigatorUtils.goBack(context);
-              // showModalBottomSheet(
-              //   context: context,
-              //   backgroundColor: Colors.transparent,
-              //   barrierColor: Colors.transparent,
-              //   isScrollControlled: true,
-              //   isDismissible: false,
-              //   enableDrag: false,
-              //   builder: (_) => SwitchingTeacherPage(
-              //     clickCallBack: (teachData) {
-              // setState(() {
-              //   characterIdStr = teachData.characterId;
-              //   characterCoverStr = teachData.coverImageUrl;
-              //   characterSceneDescStr = teachData.slogan;
-              //   characterSceneNameStr = teachData.name;
-              //   characterSceneenNameStr = teachData.authorName;
-              // });
-              //     },
-              //   ),
-              // );
             },
             child: const LoadAssetImage(
               "switching_teacher_icon",

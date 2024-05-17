@@ -1,0 +1,62 @@
+import 'package:Bubble/res/colors.dart';
+import 'package:flutter/material.dart';
+import 'package:Bubble/person/entity/goods_bean.dart';
+
+class UserMembershipUpgradeItem extends StatefulWidget {
+  final Datum data;
+  const UserMembershipUpgradeItem({super.key, required this.data});
+
+  @override
+  State<UserMembershipUpgradeItem> createState() =>
+      _UserMembershipUpgradeItemState();
+}
+
+class _UserMembershipUpgradeItemState extends State<UserMembershipUpgradeItem> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.0),
+        color: Colors.white,
+      ),
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
+      width: 200,
+      height: 200,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            widget.data.name,
+            style: const TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "￥",
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colours.color_542DEC,
+                ),
+              ),
+              Text(
+                widget.data.price.toString(),
+                style: const TextStyle(
+                  fontSize: 36.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colours.color_542DEC,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}

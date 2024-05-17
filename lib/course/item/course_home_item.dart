@@ -26,9 +26,9 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
   Widget build(BuildContext context) {
     return Container(
         // height: 120,
-        margin: const EdgeInsets.all(10),
+        margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(20.0),
           color: widget.backColor,
         ),
         padding: const EdgeInsets.symmetric(
@@ -41,11 +41,11 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
           children: [
             Gaps.hGap10,
             Container(
-              width: 80,
-              height: 80,
-              // margin: const EdgeInsets.only(top: 10),
+              width: 64,
+              height: 64,
+              // padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(10),
                   gradient: LinearGradient(
                     colors: widget.iconBackColor,
                   )),
@@ -64,16 +64,16 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
                     widget.index.toString(),
                     style: const TextStyle(
                       fontSize: 20.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
                   const Text(
                     "Lesson",
                     style: TextStyle(
                       fontSize: 13.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      color: Colours.color_FFFFFF60,
                     ),
                   ),
                 ],
@@ -97,9 +97,11 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
                   ),
                   Text(
                     widget.unitData.lessonType,
+                    maxLines: 3,
                     style: const TextStyle(
                       fontSize: 13.0,
                       fontWeight: FontWeight.w400,
+                      overflow: TextOverflow.ellipsis,
                       color: Colours.color_666666,
                     ),
                   ),

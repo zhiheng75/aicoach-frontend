@@ -1,4 +1,5 @@
 import 'package:Bubble/course/entity/step_detail_bean.dart';
+import 'package:Bubble/course/page/certified_learning_page.dart';
 import 'package:Bubble/course/page/course_details_page.dart';
 import 'package:Bubble/course/page/course_flow_page.dart';
 import 'package:Bubble/course/page/course_report_page.dart';
@@ -14,6 +15,8 @@ class CourseRouter implements IRouterProvider {
   static String courseReportPage = '/CourseReportPage';
   static String curriculumEvaluationPage = '/CurriculumEvaluationPage';
   static String switchingTeacherPage = '/SwitchingTeacherPage';
+
+  static String certifiedLearningPage = '/CertifiedLearningPage';
 
   @override
   void initRouter(FluroRouter router) {
@@ -58,9 +61,9 @@ class CourseRouter implements IRouterProvider {
 
     router.define(switchingTeacherPage,
         handler: Handler(handlerFunc: (_, __) => const SwitchingTeacherPage()));
-    // router.define(curriculumEvaluationPage,
-    //     handler:
-    //         Handler(handlerFunc: (_, __) => const CurriculumEvaluationPage()));
+    router.define(certifiedLearningPage,
+        handler:
+            Handler(handlerFunc: (_, __) => const CertifiedLearningPage()));
 
     router.define(curriculumEvaluationPage,
         handler: Handler(handlerFunc: (context, params) {
