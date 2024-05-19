@@ -129,7 +129,6 @@ class ChatWebsocket {
     _heartbeat = Timer.periodic(const Duration(seconds: 5), (_) {
       if (_status == 'closed') {
         Log.e("结束心跳");
-
         _endHeartBeat();
         return;
       }

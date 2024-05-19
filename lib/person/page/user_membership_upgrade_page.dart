@@ -51,6 +51,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
 
   late GoodsBean listData;
   late int idx = 0;
+  late int payIdx = 0;
 
   @override
   void initState() {
@@ -291,6 +292,106 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
             ),
           ),
           Gaps.vGap10,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  setState(() {
+                    payIdx = 0;
+                  });
+                  // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
+                },
+                child: Container(
+                  width: 120,
+                  decoration: payIdx == 0
+                      ? BoxDecoration(
+                          borderRadius: BorderRadius.circular(40.0),
+                          border: Border.all(
+                            width: 1.0,
+                            style: BorderStyle.solid,
+                            color: Colours.color_8256FF,
+                          ),
+                          color: Colors.white,
+                        )
+                      : BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.white,
+                        ),
+                  margin: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const LoadAssetImage(
+                        'wxpay_icon',
+                        width: 24.0,
+                        height: 24.0,
+                      ),
+                      Gaps.hGap4,
+                      Text(
+                        "微信支付",
+                        style: const TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  setState(() {
+                    payIdx = 1;
+                  });
+                  // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
+                },
+                child: Container(
+                  width: 120,
+                  decoration: payIdx == 1
+                      ? BoxDecoration(
+                          borderRadius: BorderRadius.circular(40.0),
+                          border: Border.all(
+                            width: 1.0,
+                            style: BorderStyle.solid,
+                            color: Colours.color_8256FF,
+                          ),
+                          color: Colors.white,
+                        )
+                      : BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: Colors.white,
+                        ),
+                  margin: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const LoadAssetImage(
+                        'alipay_img',
+                        width: 24.0,
+                        height: 24.0,
+                      ),
+                      Gaps.hGap4,
+                      Text(
+                        "支付宝",
+                        style: const TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Gaps.vGap10,
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
@@ -322,7 +423,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                   style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w400,
-                    color: Colours.color_001652,
+                    color: Colors.white,
                   ),
                 ),
               ),
