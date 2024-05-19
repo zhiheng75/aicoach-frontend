@@ -4,7 +4,9 @@ import 'package:Bubble/person/entity/goods_bean.dart';
 
 class UserMembershipUpgradeItem extends StatefulWidget {
   final Datum data;
-  const UserMembershipUpgradeItem({super.key, required this.data});
+  final bool isSele;
+  const UserMembershipUpgradeItem(
+      {super.key, required this.data, required this.isSele});
 
   @override
   State<UserMembershipUpgradeItem> createState() =>
@@ -15,10 +17,20 @@ class _UserMembershipUpgradeItemState extends State<UserMembershipUpgradeItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.0),
-        color: Colors.white,
-      ),
+      decoration: widget.isSele
+          ? BoxDecoration(
+              borderRadius: BorderRadius.circular(12.0),
+              border: Border.all(
+                width: 1.0,
+                style: BorderStyle.solid,
+                color: Colours.color_8256FF,
+              ),
+              color: Colours.color_EFE9FF,
+            )
+          : BoxDecoration(
+              borderRadius: BorderRadius.circular(12.0),
+              color: Colors.white,
+            ),
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
       width: 200,

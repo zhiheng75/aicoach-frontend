@@ -1,4 +1,5 @@
 import 'package:Bubble/course/course_router.dart';
+import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/widget/course_equity_item.dart';
 import 'package:Bubble/home/widget/people_item.dart';
 import 'package:Bubble/home/widget/problem_item.dart';
@@ -13,12 +14,14 @@ import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class UserMembershipUpgradePage extends StatefulWidget {
   const UserMembershipUpgradePage({super.key});
@@ -276,6 +279,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                     });
                   },
                   child: UserMembershipUpgradeItem(
+                    isSele: idx == index ? true : false,
                     data: listData.data[index],
                   ),
                 );
@@ -330,9 +334,9 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                         height: 24.0,
                       ),
                       Gaps.hGap4,
-                      Text(
+                      const Text(
                         "微信支付",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
@@ -377,9 +381,9 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                         height: 24.0,
                       ),
                       Gaps.hGap4,
-                      Text(
+                      const Text(
                         "支付宝",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
@@ -394,9 +398,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
           Gaps.vGap10,
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () {
-              // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
-            },
+            onTap: () {},
             child: Center(
               child: Container(
                 width: 250.0,
@@ -729,6 +731,22 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => false;
+
+  @override
+  void paySuccess() {
+    // TODO: implement paySuccess
+    Provider.of<HomeProvider>(context, listen: false).getUsageTime();
+    EventBus().emit("YQM");
+    Future.delayed(const Duration(seconds: 1), () {
+      Navigator.of(context).pop();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    EventBus().off("YQM");
+  }
 }
 
 class TopOriginPainter extends CustomPainter {
