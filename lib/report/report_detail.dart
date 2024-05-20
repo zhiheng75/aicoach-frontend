@@ -420,7 +420,11 @@ class _ReportDetailPageState extends State<ReportDetailPage>
           ),
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () => NavigatorUtils.push(context, PersonalRouter.purchase),
+            onTap: () {
+              // NavigatorUtils.push(context, PersonalRouter.purchase);
+              NavigatorUtils.push(
+                  context, PersonalRouter.userMembershipUpgradePage);
+            },
             child: Container(
               width: 87.0,
               height: 34.0,

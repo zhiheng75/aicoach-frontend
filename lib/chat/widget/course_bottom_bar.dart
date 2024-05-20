@@ -39,7 +39,7 @@ class CourseBottomBar extends StatefulWidget {
     this.onScrollEnd,
     required this.lessonId,
     required this.stepId,
-
+    required this.sceneId,
     // this.onStarEnd,
   }) : super(key: key);
 
@@ -52,6 +52,7 @@ class CourseBottomBar extends StatefulWidget {
   // final Function()? onStarEnd;
   final String lessonId;
   final String stepId;
+  final String sceneId;
 
   final bool isNormalChat;
 
@@ -180,7 +181,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     //   sceneId = _homeProvider.topic!.id.toString();
     // }
     // if (sessionType == 'scene') {
-    sceneId = _homeProvider.scene!.id.toString();
+    sceneId = widget.sceneId; //_homeProvider.scene!.id.toString();
     // }
     // if (sessionType == 'course') {
     //   sceneId = _homeProvider.course!.id.toString();
@@ -278,7 +279,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   void sendMessage(String text) async {
     // 连接
     try {
-      await connectWebsocket();
+      // await connectWebsocket();
     } catch (e) {
       Log.d('connect websocket fail:[error]${e.toString()}',
           tag: 'sendMessage');

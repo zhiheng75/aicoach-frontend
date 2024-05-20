@@ -106,9 +106,13 @@ class _InstructionalVideoDialoguePageState
   late bool isplay = false;
 
   void init() {
-    _pageState = 'loading';
+    _pageState = 'success';
     setState(() {});
     connectWebsocket();
+    String characterId = _homeProvider.character.characterId;
+    String sceneId = resourceSceneId; //_homeProvider.scene!.id.toString();
+    // String sceneId = _homeProvider.course!.id.toString();
+    _homeProvider.scene!.id = int.parse(resourceSceneId);
   }
 
   void connectWebsocket() async {
@@ -335,7 +339,7 @@ class _InstructionalVideoDialoguePageState
       titStr = widget.data[dataIdx].resource[resourceIdx].title;
       stepId = widget.data[dataIdx].stepId.toString();
       _homeProvider.scene!.id = int.parse(resourceSceneId);
-      connectWebsocket();
+      // connectWebsocket();
       if (introFileType == "video") {
         isVideo = "1";
         introFileStr = widget.data[dataIdx].resource[resourceIdx].introFile!;
@@ -359,8 +363,8 @@ class _InstructionalVideoDialoguePageState
 
   void startNormalChat() async {
     await _mediaUtils.stopPlay();
-    // await _chatWebsocket.endChat(true);
-    // _homeProvider.resetChatParams();
+    await _chatWebsocket.endChat(true);
+    _homeProvider.resetChatParams();
     // _homeProvider.character = character;
     Future.delayed(Duration.zero, () {
       // _isCharacterChanging = false;
@@ -467,7 +471,7 @@ class _InstructionalVideoDialoguePageState
 
   void startNormaltwoChat() async {
     await _mediaUtils.stopPlay();
-    // await _chatWebsocket.endChat(true);
+    await _chatWebsocket.endChat(true);
     // _homeProvider.resetChatParams();
     // _homeProvider.character = character;
     Future.delayed(Duration.zero, () {
@@ -498,13 +502,13 @@ class _InstructionalVideoDialoguePageState
   //图片及其他顺序
   void imgFlow() async {
     await _mediaUtils.stopPlay();
-    // await _chatWebsocket.endChat(true);
+    await _chatWebsocket.endChat(true);
     // _homeProvider.resetChatParams();
     // _homeProvider.character = character;
     Future.delayed(Duration.zero, () {
       // _isCharacterChanging = false;
       _bottomBarControll.setDisabled(true);
-      _homeProvider.addIntroductionMessage();
+      // _homeProvider.addIntroductionMessage();
       // _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
       normalMessage.text =
@@ -884,6 +888,7 @@ class _InstructionalVideoDialoguePageState
                 ),
                 child: CourseBottomBar(
                   stepId: stepId,
+                  sceneId: resourceSceneId,
                   lessonId: widget.lessonId,
                   chatWebsocket: _chatWebsocket,
                   controller: _bottomBarControll,

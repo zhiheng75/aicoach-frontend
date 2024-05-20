@@ -61,6 +61,7 @@ class ChatWebsocket {
         onAnswer(data);
       },
       onDone: () {
+        Log.e("后台说断开连接");
         _status = 'closed';
         _endHeartBeat();
         // 保留websocket实例，用于处理异步的操作
@@ -133,6 +134,7 @@ class ChatWebsocket {
         return;
       }
       Log.e("发心跳");
+
       _websocket!.sink.add('[heartbeat]pong');
     });
   }

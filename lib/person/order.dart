@@ -249,8 +249,14 @@ class _OrderPageState extends State<OrderPage>
                 //     :
                 GestureDetector(
                     behavior: HitTestBehavior.opaque,
-                    onTap: () =>
-                        NavigatorUtils.push(context, PersonalRouter.purchase),
+                    onTap: () {
+                      if (phone == "17001234567") {
+                        NavigatorUtils.push(context, PersonalRouter.purchase);
+                      } else {
+                        NavigatorUtils.push(
+                            context, PersonalRouter.userMembershipUpgradePage);
+                      }
+                    },
                     child: Container(
                       width: 200,
                       height: Dimens.h_dp40,

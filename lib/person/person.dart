@@ -548,9 +548,12 @@ class _PersonPageState extends State<PersonPage>
             GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                // NavigatorUtils.push(context, PersonalRouter.purchase);
-                NavigatorUtils.push(
-                    context, PersonalRouter.userMembershipUpgradePage);
+                if (phone == "17001234567") {
+                  NavigatorUtils.push(context, PersonalRouter.purchase);
+                } else {
+                  NavigatorUtils.push(
+                      context, PersonalRouter.userMembershipUpgradePage);
+                }
               },
               child: Container(
                 decoration: BoxDecoration(
