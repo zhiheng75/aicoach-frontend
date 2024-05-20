@@ -10,6 +10,8 @@ import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
+import 'package:Bubble/widgets/navigation_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
@@ -35,6 +37,7 @@ class _CourseHomePageState extends State<CourseHomePage>
   late CourseHomePagePresenter _courseHomePagePresenter;
   late List<Datum> listData = [];
   bool isLoding = true;
+  late String levelNameStr = "";
 
   List<Color> colorBackData = [
     Colours.color_F9F8FF,
@@ -232,7 +235,20 @@ class _CourseHomePageState extends State<CourseHomePage>
               ? lodingView()
               : Column(
                   children: [
-                    listData.length > 1 ? tabbar() : Container(),
+                    listData.length > 1
+                        ? tabbar()
+                        : XTCupertinoNavigationBar(
+                            backgroundColor: Color(0xFFFFFFFF),
+                            border: null,
+                            padding: EdgeInsetsDirectional.zero,
+                            middle: Text(
+                              levelNameStr,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                    // NavigationBaView(
+                    //     title: levelNameStr,
+                    //   ),
                     // Center(child: SizedBox(width: 300, child: tabbar())),
                     Expanded(child: _refreshListView()),
                   ],
@@ -322,6 +338,9 @@ class _CourseHomePageState extends State<CourseHomePage>
   void sendSuccess(LessonListBean data) {
     setState(() {
       isLoding = false;
+      if (data.data.isNotEmpty) {
+        levelNameStr = data.data[0].levelName;
+      }
       listData.addAll(data.data);
     });
   }

@@ -84,7 +84,8 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
             ? lodingView()
             : Stack(
                 children: [
-                  MyScrollView(
+                  //MyScrollView
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const XTCupertinoNavigationBar(

@@ -14,7 +14,7 @@ class InstructionalVideoDialoguePresenter
     final Map<String, dynamic> params = <String, dynamic>{};
     params["level_id"] = lessonId;
     params["step_id"] = stepId;
-    params["complated"] = "1";
+    params["completed"] = "1";
 
     return requestNetwork<ResultData>(Method.post,
         url: HttpApi.stepUpdate,

@@ -109,10 +109,10 @@ class _InstructionalVideoDialoguePageState
     _pageState = 'success';
     setState(() {});
     connectWebsocket();
-    String characterId = _homeProvider.character.characterId;
-    String sceneId = resourceSceneId; //_homeProvider.scene!.id.toString();
-    // String sceneId = _homeProvider.course!.id.toString();
-    _homeProvider.scene!.id = int.parse(resourceSceneId);
+    // String characterId = _homeProvider.character.characterId;
+    // String sceneId = resourceSceneId; //_homeProvider.scene!.id.toString();
+    // // String sceneId = _homeProvider.course!.id.toString();
+    // _homeProvider.scene!.id = int.parse(resourceSceneId);
   }
 
   void connectWebsocket() async {
@@ -278,6 +278,7 @@ class _InstructionalVideoDialoguePageState
         confirmButtonText: '结束对话',
         cancelButtonText: '留在对话中',
         onConfirm: () {
+          endSocket();
           Navigator.of(context).pop();
           widget.onEnd();
         },
@@ -303,6 +304,7 @@ class _InstructionalVideoDialoguePageState
   @override
   void initState() {
     super.initState();
+    _pageState = 'success';
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     _homeProvider.ishread = "0";
     dataIdx = widget.idx;
@@ -347,12 +349,13 @@ class _InstructionalVideoDialoguePageState
       } else if (introFileType == "image") {
         introFileStr = widget.data[dataIdx].resource[resourceIdx].introFile!;
         imgFlow();
+        init();
       } else {
         introFileStr =
             widget.data[dataIdx].resource[resourceIdx].characterAvatar;
         imgFlow();
+        init();
       }
-      init();
     });
   }
 
@@ -364,12 +367,12 @@ class _InstructionalVideoDialoguePageState
   void startNormalChat() async {
     await _mediaUtils.stopPlay();
     await _chatWebsocket.endChat(true);
-    _homeProvider.resetChatParams();
+    // _homeProvider.resetChatParams();
     // _homeProvider.character = character;
     Future.delayed(Duration.zero, () {
       // _isCharacterChanging = false;
       _bottomBarControll.setDisabled(true);
-      _homeProvider.addIntroductionMessage();
+      // _homeProvider.addIntroductionMessage();
       // _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
       normalMessage.text =
@@ -477,7 +480,7 @@ class _InstructionalVideoDialoguePageState
     Future.delayed(Duration.zero, () {
       // _isCharacterChanging = false;
       _bottomBarControll.setDisabled(true);
-      _homeProvider.addIntroductionMessage();
+      // _homeProvider.addIntroductionMessage();
       // _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
       normalMessage.text =
@@ -497,6 +500,7 @@ class _InstructionalVideoDialoguePageState
         },
       );
     });
+    init();
   }
 
   //图片及其他顺序
@@ -858,7 +862,7 @@ class _InstructionalVideoDialoguePageState
         //   ),
         // );
 
-        double contentTop = _screenUtil.statusBarHeight + 280.0;
+        double contentTop = _screenUtil.statusBarHeight + 300.0;
         Widget inner;
         if (_pageState == 'success') {
           inner = Column(

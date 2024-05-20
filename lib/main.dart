@@ -3,6 +3,7 @@ import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/provider/selecter_teacher_provider.dart';
 import 'package:Bubble/setting/provider/device_provider.dart';
 import 'package:Bubble/util/channel.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:device_identity/device_identity.dart';
 import 'package:dio/dio.dart';
@@ -117,15 +118,16 @@ class MyApp extends StatelessWidget {
   }
 
   void initUM() {
-    String platformStr = Channel.channelios;
-    if (Device.isAndroid) {
-      platformStr = Channel.channelhuawei;
-    } else {
-      platformStr = Channel.channelios;
-    }
-    UmengCommonSdk.initCommon(
-        '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', platformStr);
-    UmengCommonSdk.setPageCollectionModeManual();
+    EventUMStatistics.umengCommonInit();
+    // String platformStr = Channel.channelios;
+    // if (Device.isAndroid) {
+    //   platformStr = Channel.channelhuawei;
+    // } else {
+    //   platformStr = Channel.channelios;
+    // }
+    // UmengCommonSdk.initCommon(
+    //     '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', platformStr);
+    // UmengCommonSdk.setPageCollectionModeManual();
   }
 
   @override

@@ -108,11 +108,11 @@ class _CourseErrorClassItemState extends State<CourseErrorClassItem> {
             ),
             Gaps.hGap10,
             Text(
-              widget.unitData.complated == 0 ? "去纠错" : "已纠错",
+              widget.unitData.completed == 0 ? "去纠错" : "已纠错",
               style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w400,
-                color: widget.unitData.complated == 0
+                color: widget.unitData.completed == 0
                     ? Colours.color_00BB40
                     : Colours.color_666666,
               ),

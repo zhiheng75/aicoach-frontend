@@ -26,6 +26,7 @@ import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/scene/widget/select_scene.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/notification_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
@@ -169,6 +170,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   }
 
   void gotoCourse(int idx) {
+    // _homeProvider.resetChatParams();
     List<CourseDatum> data = stepDetailData.data.data;
     CourseDatum dataIdx = stepDetailData.data.data[idx];
     characterSceneIdStr = dataIdx.resource[0].sceneId;
@@ -191,15 +193,9 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     scene.name = "";
     scene.enName = "";
     scene.cover = characterCoverStr;
-    _homeProvider.character.characterId = characterIdStr.isNotEmpty
-        ? characterIdStr
-        : dataIdx.resource[0].characterId;
-    _homeProvider.heardcover = characterCoverStr.isNotEmpty
-        ? characterCoverStr
-        : dataIdx.resource[0].characterAvatar;
-    _homeProvider.ishread = characterCoverStr.isNotEmpty
-        ? characterCoverStr
-        : dataIdx.resource[0].characterAvatar;
+    _homeProvider.character.characterId = characterIdStr;
+    _homeProvider.heardcover = characterCoverStr;
+    _homeProvider.ishread = characterCoverStr;
     // SceneEntity scene = sceneList[idx];
     // scene.desc = "我也不知道啊";
     // scene.name = "你好";
@@ -405,31 +401,48 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                 GestureDetector(
                   onTap: () {
                     LoginManager.checkLogin(context, () {
-                      NavigatorUtils.push(context,
-                          "${CourseRouter.courseReportPage}?lessonId=${widget.lessonId}");
+                      if (stepDetailData.data.reportStatus == 1) {
+                        NavigatorUtils.push(context,
+                            "${CourseRouter.courseReportPage}?lessonId=${widget.lessonId}");
+                      } else {
+                        Toast.show("未完成课程");
+                      }
                     });
                   },
                   child: Container(
+                    width: 110,
+                    height: 110,
                     // margin: const EdgeInsets.all(0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(90.0),
-                      color: Colours.color_EBCCFE,
-                    ),
-                    padding: const EdgeInsets.all(30),
-                    child: const Column(
-                      children: [
-                        Text(
-                          "报告",
-                          style: TextStyle(
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
+                    // decoration: BoxDecoration(
+                    //   borderRadius: BorderRadius.circular(90.0),
+                    //   color: Colours.color_EBCCFE,
+                    // ),
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                          'assets/images/baogao_flow.png',
                         ),
-                        Text(
-                          "已发布",
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    // padding: const EdgeInsets.all(30),
+                    child: Column(
+                      children: [
+                        // Text(
+                        //   "报告",
+                        //   style: TextStyle(
+                        //     fontSize: 22.0,
+                        //     fontWeight: FontWeight.w400,
+                        //     color: Colors.black,
+                        //   ),
+                        // ),
+                        Container(
+                          height: 65,
+                        ),
+                        const Text(
+                          "学习报告",
                           style: TextStyle(
-                            fontSize: 12.0,
+                            fontSize: 16.0,
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
                           ),
@@ -464,31 +477,40 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                 GestureDetector(
                   onTap: () {
                     LoginManager.checkLogin(context, () {
-                      NavigatorUtils.push(context,
-                          "${PersonalRouter.errorCorrectionDetailPage}?lessonId=${widget.lessonId}");
+                      if (stepDetailData.data.mistakeStatus == 1) {
+                        NavigatorUtils.push(context,
+                            "${PersonalRouter.errorCorrectionDetailPage}?lessonId=${widget.lessonId}");
+                      } else {
+                        Toast.show("未完成课程");
+                      }
                     });
                   },
                   child: Container(
-                    // margin: const EdgeInsets.all(0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(90.0),
-                      color: Colours.color_C1EBF7,
+                    width: 110,
+                    height: 110,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                          'assets/images/jiucuo_flow.png',
+                        ),
+                        fit: BoxFit.fill,
+                      ),
                     ),
-                    padding: const EdgeInsets.all(30),
-                    child: const Column(
+                    // margin: const EdgeInsets.all(0),
+                    // decoration: BoxDecoration(
+                    //   borderRadius: BorderRadius.circular(90.0),
+                    //   color: Colours.color_C1EBF7,
+                    // ),
+                    // padding: const EdgeInsets.all(30),
+                    child: Column(
                       children: [
-                        Text(
+                        Container(
+                          height: 65,
+                        ),
+                        const Text(
                           "纠错",
                           style: TextStyle(
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          "已发布",
-                          style: TextStyle(
-                            fontSize: 12.0,
+                            fontSize: 16.0,
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
                           ),
@@ -497,26 +519,26 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     ),
                   ),
                 ),
-                Positioned(
-                  right: 1,
-                  top: 1,
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        top: 4, bottom: 4, left: 6, right: 6),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(90.0),
-                      color: Colors.red,
-                    ),
-                    child: const Text(
-                      "99",
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+                // Positioned(
+                //   right: 1,
+                //   top: 1,
+                //   child: Container(
+                //     padding: const EdgeInsets.only(
+                //         top: 4, bottom: 4, left: 6, right: 6),
+                //     decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(90.0),
+                //       color: Colors.red,
+                //     ),
+                //     child: const Text(
+                //       "99",
+                //       style: TextStyle(
+                //         fontSize: 14.0,
+                //         fontWeight: FontWeight.bold,
+                //         color: Colors.white,
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
             Stack(
@@ -526,9 +548,13 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     LoginManager.checkLogin(context, () {
                       // selectScene(sceneList[index]);
 
-                      NavigatorUtils.push(
-                          context, CourseRouter.curriculumEvaluationPage,
-                          arguments: stepDetailData);
+                      if (stepDetailData.data.evaluationStatus == 1) {
+                        NavigatorUtils.push(
+                            context, CourseRouter.curriculumEvaluationPage,
+                            arguments: stepDetailData);
+                      } else {
+                        Toast.show("未完成课程");
+                      }
                     });
 
                     //     NavigatorUtils.push(
@@ -538,26 +564,39 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     // arguments: examStepBean);
                   },
                   child: Container(
-                    // margin: const EdgeInsets.all(0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(90.0),
-                      color: Colours.color_DDF3D2,
-                    ),
-                    padding: const EdgeInsets.all(30),
-                    child: const Column(
-                      children: [
-                        Text(
-                          "评价",
-                          style: TextStyle(
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
+                    width: 110,
+                    height: 110,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                          'assets/images/pingjia_flow.png',
                         ),
-                        Text(
-                          "已评价",
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    // margin: const EdgeInsets.all(0),
+                    // decoration: BoxDecoration(
+                    //   borderRadius: BorderRadius.circular(90.0),
+                    //   color: Colours.color_DDF3D2,
+                    // ),
+                    // padding: const EdgeInsets.all(30),
+                    child: Column(
+                      children: [
+                        // Text(
+                        //   "评价",
+                        //   style: TextStyle(
+                        //     fontSize: 22.0,
+                        //     fontWeight: FontWeight.w400,
+                        //     color: Colors.black,
+                        //   ),
+                        // ),
+                        Container(
+                          height: 65,
+                        ),
+                        const Text(
+                          "课程评价",
                           style: TextStyle(
-                            fontSize: 12.0,
+                            fontSize: 16.0,
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
                           ),

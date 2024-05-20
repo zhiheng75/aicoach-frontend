@@ -89,7 +89,7 @@ class ListList {
   String lessonType;
   String objectives;
   int isUserBuy;
-  int complated;
+  int completed;
 
   ListList({
     required this.userId,
@@ -102,7 +102,7 @@ class ListList {
     required this.lessonType,
     required this.objectives,
     required this.isUserBuy,
-    required this.complated,
+    required this.completed,
   });
 
   factory ListList.fromJson(Map<String, dynamic> json) => ListList(
@@ -116,7 +116,7 @@ class ListList {
         lessonType: json["lesson_type"],
         objectives: json["objectives"],
         isUserBuy: json["is_user_buy"],
-        complated: json["complated"],
+        completed: json["completed"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -130,6 +130,6 @@ class ListList {
         "lesson_type": lessonType,
         "objectives": objectives,
         "is_user_buy": isUserBuy,
-        "complated": complated,
+        "completed": completed,
       };
 }

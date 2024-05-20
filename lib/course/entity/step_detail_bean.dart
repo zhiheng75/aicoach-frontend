@@ -41,6 +41,10 @@ class Data {
 
   int isUserBuy;
 
+  int reportStatus;
+  int mistakeStatus;
+  int evaluationStatus;
+
   String levelName;
   int unitId;
   String unitName;
@@ -54,6 +58,9 @@ class Data {
     required this.userId,
     required this.stepId,
     required this.isUserBuy,
+    required this.reportStatus,
+    required this.mistakeStatus,
+    required this.evaluationStatus,
     required this.levelId,
     required this.levelName,
     required this.unitId,
@@ -71,6 +78,9 @@ class Data {
         stepId: json["step_id"] ?? 0,
         levelId: json["level_id"] ?? 0,
         isUserBuy: json["is_user_buy"],
+        reportStatus: json["report_status"],
+        mistakeStatus: json["mistake_status"],
+        evaluationStatus: json["evaluation_status"],
         levelName: json["level_name"],
         unitId: json["unit_id"],
         unitName: json["unit_name"],
@@ -86,6 +96,9 @@ class Data {
         "step_id": stepId,
         "level_id": levelId,
         "is_user_buy": isUserBuy,
+        "report_status": reportStatus,
+        "mistake_status": mistakeStatus,
+        "evaluation_status": evaluationStatus,
         "level_name": levelName,
         "unit_id": unitId,
         "unit_name": unitName,

@@ -141,8 +141,13 @@ class ExpirationReminder extends StatelessWidget {
 
         Widget button = GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () => NavigatorUtils.push(context, PersonalRouter.purchase,
-              replace: true),
+          onTap: () {
+            // NavigatorUtils.push(context, PersonalRouter.purchase,
+            //     replace: true);
+            NavigatorUtils.push(
+                context, PersonalRouter.userMembershipUpgradePage,
+                replace: true);
+          },
           child: Container(
             width: 239.0,
             height: 48.0,

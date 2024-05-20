@@ -144,7 +144,7 @@ class RadarWrap extends CustomPainter {
     paint.color = Colors.black;
     paint.style = PaintingStyle.fill;
     for (var point in points) {
-      canvas.drawCircle(point, radius / 16, paint);
+      canvas.drawCircle(point, radius / 40, paint);
     }
   }
 
