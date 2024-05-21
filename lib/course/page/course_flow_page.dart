@@ -68,6 +68,9 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   late String characterSceneenNameStr;
 
   late CharacterListBean _teacherListBean;
+
+  late int mistakeCountInt = 0;
+
   @override
   void initState() {
     super.initState();
@@ -83,7 +86,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
         characterSceneDescStr = _teacherListBean.data[idx].slogan;
         characterSceneNameStr = _teacherListBean.data[idx].name;
         characterSceneenNameStr = _teacherListBean.data[idx].authorName;
-        // characterHeadCoverStr = _teacherListBean.data[idx].imageUrl;
+        // characterHeadCoverStr = _teacherListBean.data[idx].avatarImage;
       });
     });
 
@@ -125,7 +128,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
           characterSceneDescStr = teacherListBean.data[0].slogan;
           characterSceneNameStr = teacherListBean.data[0].name;
           characterSceneenNameStr = teacherListBean.data[0].authorName;
-          // characterHeadCoverStr = _teacherListBean.data[0].imageUrl;
+          // characterHeadCoverStr = _teacherListBean.data[0].avatarImage;
 
           _teacherListBean = teacherListBean;
           // getCategoryList(teacherListBean.data[0].characterId); //可删除
@@ -199,6 +202,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     scene.enName = "";
     scene.cover = characterCoverStr;
     _homeProvider.character.characterId = characterIdStr;
+    _homeProvider.character.motionImageD = characterCoverStr;
     _homeProvider.heardcover = characterCoverStr;
     _homeProvider.ishread = characterCoverStr;
     // SceneEntity scene = sceneList[idx];
@@ -525,26 +529,34 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     ),
                   ),
                 ),
-                // Positioned(
-                //   right: 1,
-                //   top: 1,
-                //   child: Container(
-                //     padding: const EdgeInsets.only(
-                //         top: 4, bottom: 4, left: 6, right: 6),
-                //     decoration: BoxDecoration(
-                //       borderRadius: BorderRadius.circular(90.0),
-                //       color: Colors.red,
-                //     ),
-                //     child: const Text(
-                //       "99",
-                //       style: TextStyle(
-                //         fontSize: 14.0,
-                //         fontWeight: FontWeight.bold,
-                //         color: Colors.white,
-                //       ),
-                //     ),
-                //   ),
-                // ),
+                Positioned(
+                  right: 1,
+                  top: 1,
+                  child: mistakeCountInt > 0
+                      ? Container(
+                          width: 20,
+                          height: 20,
+                          // padding: EdgeInsets.all(4),
+                          // margin: EdgeInsets.all(10),
+                          // padding: const EdgeInsets.only(
+                          //     top: 4, bottom: 4, left: 6, right: 6),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100.0),
+                            color: Colors.red,
+                          ),
+                          child: Center(
+                            child: Text(
+                              mistakeCountInt.toString(),
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                ),
               ],
             ),
             Stack(
@@ -686,6 +698,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     setState(() {
       isLoding = false;
       stepDetailData = stepDetailBean;
+      mistakeCountInt = stepDetailData.data.mistakeCount;
     });
   }
 }

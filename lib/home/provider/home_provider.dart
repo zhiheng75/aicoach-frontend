@@ -111,7 +111,7 @@ class HomeProvider extends ChangeNotifier {
   }
 
   set heardcover(String heardcover) {
-    heardcover = _heardcover;
+    _heardcover = heardcover;
   }
 
   // 获取使用时间、体验天数

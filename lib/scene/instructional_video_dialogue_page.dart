@@ -183,7 +183,7 @@ class _InstructionalVideoDialoguePageState
         widget.onEnd();
       },
       onCancel: () {
-        endSocket();
+        // endSocket();
         forFlow();
       },
       child: const Text(
@@ -309,6 +309,7 @@ class _InstructionalVideoDialoguePageState
     _pageState = 'success';
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     _homeProvider.ishread = "0";
+    Log.e(_homeProvider.character.motionImageD);
     dataIdx = widget.idx;
     // dataIdx = 0;
     resourceIdx = 0;
@@ -353,7 +354,7 @@ class _InstructionalVideoDialoguePageState
         imgFlow();
         init();
       } else {
-        introFileStr = '';
+        introFileStr = _homeProvider.character.motionImageD;
         imgFlow();
         init();
       }

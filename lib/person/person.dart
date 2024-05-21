@@ -446,7 +446,7 @@ class _PersonPageState extends State<PersonPage>
                             ? '至${permissionBeanData.data.membershipExpiryDate}'
                             : '升级会员 为学习提速',
                 style: const TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 16.0,
                   fontWeight: FontWeight.w500,
                   color: Colors.black,
                   height: 23.0 / 16.0,
@@ -524,7 +524,7 @@ class _PersonPageState extends State<PersonPage>
                               ? ""
                               : phone == "17001234567"
                                   ? "奖牌领取"
-                                  : permissionBeanData.data.isMember == 1
+                                  : permissionBeanData.data.isMember != 1
                                       ? '会员权益'
                                       : '升级会员 为学习提速',
                           // islog
@@ -534,15 +534,17 @@ class _PersonPageState extends State<PersonPage>
                           //         : permissionBeanData.data.isMember == 1
                           //             ? '会员权益至${permissionBeanData.data.membershipExpiryDate}'
                           //             : '升级会员 为学习提速',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              foreground: Paint()
-                                ..shader = const LinearGradient(colors: [
-                                  Colours.color_8256FF,
-                                  Colours.color_FF5CDB,
-                                ]).createShader(
-                                    const Rect.fromLTWH(0, 0, 150, 0))),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w900,
+                            color: Colours.color_8256FF,
+                            // foreground: Paint()
+                            //   ..shader = const LinearGradient(colors: [
+                            //     Colours.color_8256FF,
+                            //     Colours.color_FF5CDB,
+                            //   ]).createShader(
+                            //       const Rect.fromLTWH(0, 0, 150, 0))
+                          ),
                         ),
                         isVip(),
                       ],
@@ -592,8 +594,8 @@ class _PersonPageState extends State<PersonPage>
               ],
             ),
             Positioned(
-              right: 10,
-              top: 20,
+              right: 5,
+              top: 10,
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
@@ -612,6 +614,9 @@ class _PersonPageState extends State<PersonPage>
                           Colours.color_8256FF,
                           Colours.color_FF5CDB,
                         ],
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                        // stops: [0.28, 0.9],
                       )),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 14.0,

@@ -561,6 +561,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
     List<Widget> list = [];
     for (int i = 0; i < listData.data[idx].detail.detailImg.length; i++) {
       list.add(LoadImage(
+        width: _screenUtil.screenWidth,
         listData.data[idx].detail.detailImg[i],
       ));
     }
@@ -578,6 +579,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   Widget otherHeadWidget(String headStr) {
     return SliverToBoxAdapter(
       child: LoadAssetImage(
+        width: _screenUtil.screenWidth,
         headStr,
         // width: 170.0,
         // height: 150.0,
@@ -892,7 +894,7 @@ class _MarqueeState extends State<Marquee> with SingleTickerProviderStateMixin {
             )
           : const SizedBox(),
     );
-    return _scrollView ?? Column();
+    return _scrollView ?? const Column();
   }
 
   @override
