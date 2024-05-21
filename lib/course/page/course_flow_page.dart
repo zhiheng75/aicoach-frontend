@@ -60,6 +60,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
 
   late String characterIdStr;
   late String characterCoverStr;
+  // late String characterHeadCoverStr;
+
   late int characterSceneIdStr;
   late String characterSceneDescStr;
   late String characterSceneNameStr;
@@ -77,10 +79,11 @@ class _CourseFlowPageState extends State<CourseFlowPage>
       // idx
       setState(() {
         characterIdStr = _teacherListBean.data[idx].characterId;
-        characterCoverStr = _teacherListBean.data[idx].coverImageUrl;
+        characterCoverStr = _teacherListBean.data[idx].imageUrl;
         characterSceneDescStr = _teacherListBean.data[idx].slogan;
         characterSceneNameStr = _teacherListBean.data[idx].name;
         characterSceneenNameStr = _teacherListBean.data[idx].authorName;
+        // characterHeadCoverStr = _teacherListBean.data[idx].imageUrl;
       });
     });
 
@@ -122,8 +125,10 @@ class _CourseFlowPageState extends State<CourseFlowPage>
           characterSceneDescStr = teacherListBean.data[0].slogan;
           characterSceneNameStr = teacherListBean.data[0].name;
           characterSceneenNameStr = teacherListBean.data[0].authorName;
+          // characterHeadCoverStr = _teacherListBean.data[0].imageUrl;
+
           _teacherListBean = teacherListBean;
-          getCategoryList(teacherListBean.data[0].characterId); //可删除
+          // getCategoryList(teacherListBean.data[0].characterId); //可删除
         }
       } else {}
       setState(() {});
@@ -203,6 +208,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
 
     _homeProvider.resetChatParams();
     _homeProvider.scene = scene;
+    //
     NavigatorUtils.push(context,
         "${HomeRouter.instructionalVideoDialoguePage}?index=$idx&isUserBuy=${stepDetailData.data.isUserBuy}&levelId=${stepDetailData.data.levelId}&lessonId=${stepDetailData.data.lessonId}",
         arguments: data);

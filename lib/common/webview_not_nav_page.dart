@@ -56,7 +56,10 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         ),
       )
       ..addJavaScriptChannel('goBack', onMessageReceived: (message) {
-        // dispatchAction(message.message);
+        //回到上一页
+      })
+      ..addJavaScriptChannel('goHome', onMessageReceived: (message) {
+        //回到目录页
       })
       ..loadRequest(Uri.parse(widget.url));
   }

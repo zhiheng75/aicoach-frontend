@@ -41,6 +41,7 @@ class InstructionalVideoDialoguePage extends StatefulWidget {
   final int isUserBuy;
   final String levelId;
   final String lessonId;
+  // final String characterHeadCover;
 
   const InstructionalVideoDialoguePage({
     super.key,
@@ -50,6 +51,7 @@ class InstructionalVideoDialoguePage extends StatefulWidget {
     required this.levelId,
     required this.isUserBuy,
     required this.lessonId,
+    // required this.characterHeadCover,
   });
   final Function() onEnd;
 
@@ -204,14 +206,14 @@ class _InstructionalVideoDialoguePageState
               answer.contains('{[finish]}') ||
               RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
         //弹窗点击确定后重新链接
-        if ((answer.contains('{[finish]}'))) {
-          //弹窗点击确定后重新链接
-          _instructionalVideoDialoguePresenter.postStepUpdate(
-              widget.lessonId, stepId);
-          onNextSocketEnd();
+        // if ((answer.contains('{[finish]}'))) {
+        //弹窗点击确定后重新链接
+        _instructionalVideoDialoguePresenter.postStepUpdate(
+            widget.lessonId, stepId);
+        onNextSocketEnd();
 
-          return;
-        }
+        //   return;
+        // }
         return;
       }
       // _answer = NormalMessage();
@@ -256,11 +258,11 @@ class _InstructionalVideoDialoguePageState
     _isConversationEnd = true;
     // 异常结束
     if (reason == 'Error') {
-      insertTipMessage('Please switch to new roles, topics, or scene');
+      insertTipMessage('Please switch to new class');
     }
     // 正常结束
     if (reason == 'Session End' && endType != 'force') {
-      insertTipMessage('Conversation finished！');
+      // insertTipMessage('Class finished！');
     }
   }
 
@@ -351,8 +353,7 @@ class _InstructionalVideoDialoguePageState
         imgFlow();
         init();
       } else {
-        introFileStr =
-            widget.data[dataIdx].resource[resourceIdx].characterAvatar;
+        introFileStr = '';
         imgFlow();
         init();
       }
@@ -366,7 +367,7 @@ class _InstructionalVideoDialoguePageState
 
   void startNormalChat() async {
     await _mediaUtils.stopPlay();
-    await _chatWebsocket.endChat(true);
+    // await _chatWebsocket.endChat(true);
     // _homeProvider.resetChatParams();
     // _homeProvider.character = character;
     Future.delayed(Duration.zero, () {
@@ -474,7 +475,7 @@ class _InstructionalVideoDialoguePageState
 
   void startNormaltwoChat() async {
     await _mediaUtils.stopPlay();
-    await _chatWebsocket.endChat(true);
+    // await _chatWebsocket.endChat(true);
     // _homeProvider.resetChatParams();
     // _homeProvider.character = character;
     Future.delayed(Duration.zero, () {
@@ -506,7 +507,7 @@ class _InstructionalVideoDialoguePageState
   //图片及其他顺序
   void imgFlow() async {
     await _mediaUtils.stopPlay();
-    await _chatWebsocket.endChat(true);
+    // await _chatWebsocket.endChat(true);
     // _homeProvider.resetChatParams();
     // _homeProvider.character = character;
     Future.delayed(Duration.zero, () {

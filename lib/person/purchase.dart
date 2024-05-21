@@ -8,6 +8,7 @@ import 'package:Bubble/person/entity/basec_onfig_bean.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/confirm_utils.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -683,7 +684,7 @@ class _PurchasePageState extends State<PurchasePage>
   paySuccess() {
     // 刷新使用时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    EventBus().emit("YQM");
+    EventBus().emit(NotificationUtils.loginIn);
     Future.delayed(const Duration(seconds: 1), () {
       Navigator.of(context).pop();
     });

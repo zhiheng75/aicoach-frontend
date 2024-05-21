@@ -9,7 +9,9 @@ import 'package:Bubble/course/view/course_home_page_view.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/navigation_bar_view.dart';
 import 'package:flutter/material.dart';
@@ -110,6 +112,25 @@ class _CourseHomePageState extends State<CourseHomePage>
       Colours.color_6EF0F1,
     ],
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    EventBus().on(NotificationUtils.loginIn, (_) {
+      _courseHomePagePresenter.getLessonList();
+    });
+    EventBus().on(NotificationUtils.loginOut, (_) {
+      _courseHomePagePresenter.getLessonList();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    EventBus().off(NotificationUtils.loginIn);
+    EventBus().off(NotificationUtils.loginOut);
+  }
 
   Widget tabbar() {
     return SizedBox(

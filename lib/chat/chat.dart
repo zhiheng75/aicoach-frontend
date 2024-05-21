@@ -312,16 +312,21 @@ class _ChatState extends State<ChatPage>
         init();
       }
     });
-    EventBus().on(NotificationUtils.resetLoginChat, (_) {
+    EventBus().on(NotificationUtils.loginIn, (_) {
+      if (isNew == "2") {
+        init();
+      }
+    });
+    EventBus().on(NotificationUtils.loginOut, (_) {
       if (isNew == "2") {
         init();
       }
     });
 
-    EventBus().on('LEAVECHATPAGE', (_) async {
-      await _mediaUtils.stopPlay();
-      _bottomBarControll.setDisabled(false);
-    });
+    // EventBus().on('LEAVECHATPAGE', (_) async {
+    //   await _mediaUtils.stopPlay();
+    //   _bottomBarControll.setDisabled(false);
+    // });
   }
 
   @override
@@ -564,9 +569,10 @@ class _ChatState extends State<ChatPage>
 
   @override
   void dispose() {
-    EventBus().off('LEAVECHATPAGE');
+    // EventBus().off('LEAVECHATPAGE');
     EventBus().off(NotificationUtils.resetChat);
-    EventBus().off(NotificationUtils.resetLoginChat);
+    EventBus().off(NotificationUtils.loginIn);
+    EventBus().off(NotificationUtils.loginOut);
 
     super.dispose();
   }

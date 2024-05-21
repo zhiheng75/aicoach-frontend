@@ -272,14 +272,14 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     }
     // 正常结束
     if (reason == 'Session End' && endType == 'normal') {
-      insertTipMessage('Conversation finished！');
+      // insertTipMessage('Conversation finished！');
     }
   }
 
   void sendMessage(String text) async {
     // 连接
     try {
-      // await connectWebsocket();
+      await connectWebsocket();
     } catch (e) {
       Log.d('connect websocket fail:[error]${e.toString()}',
           tag: 'sendMessage');

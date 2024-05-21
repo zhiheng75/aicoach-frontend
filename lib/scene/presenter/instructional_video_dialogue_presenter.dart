@@ -12,7 +12,7 @@ class InstructionalVideoDialoguePresenter
     extends BasePagePresenter<InstructionalVideoDialogueView> {
   Future postStepUpdate(String lessonId, String stepId) async {
     final Map<String, dynamic> params = <String, dynamic>{};
-    params["level_id"] = lessonId;
+    params["lesson_id"] = lessonId;
     params["step_id"] = stepId;
     params["completed"] = "1";
 

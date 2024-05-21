@@ -7,6 +7,7 @@ import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -108,7 +109,7 @@ class _PersonPageState extends State<PersonPage>
   @override
   void dispose() {
     super.dispose();
-    EventBus().off("YQM");
+    EventBus().off(NotificationUtils.loginIn);
   }
 
   @override
@@ -125,7 +126,7 @@ class _PersonPageState extends State<PersonPage>
       });
     });
 
-    EventBus().on('YQM', (_) {
+    EventBus().on(NotificationUtils.loginIn, (_) {
       Log.e("进来了");
       userInfo();
       _personPagePresenter.getUsageTime();
@@ -500,91 +501,140 @@ class _PersonPageState extends State<PersonPage>
               ],
             )),
         padding: const EdgeInsets.only(left: 8, right: 16, top: 16, bottom: 16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
+        child: Stack(
+          children: [
             Row(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                LoadAssetImage(
-                  phone == "17001234567" ? "jinpai" : 'zhuanshi',
-                  width: 64.0,
-                  height: 51.0,
-                ),
-                Gaps.hGap4,
-                Column(
+                Row(
                   mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      islog
-                          ? ""
-                          : phone == "17001234567"
-                              ? "奖牌领取"
-                              : permissionBeanData.data.isMember == 1
-                                  ? '会员权益'
-                                  : '升级会员 为学习提速',
-                      // islog
-                      //     ? ""
-                      //     : phone == "17001234567"
-                      //         ? "奖牌领取"
-                      //         : permissionBeanData.data.isMember == 1
-                      //             ? '会员权益至${permissionBeanData.data.membershipExpiryDate}'
-                      //             : '升级会员 为学习提速',
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          foreground: Paint()
-                            ..shader = const LinearGradient(colors: [
-                              Colours.color_8256FF,
-                              Colours.color_FF5CDB,
-                            ]).createShader(const Rect.fromLTWH(0, 0, 150, 0))),
+                    LoadAssetImage(
+                      phone == "17001234567" ? "jinpai" : 'zhuanshi',
+                      width: 64.0,
+                      height: 51.0,
                     ),
-                    isVip(),
+                    Gaps.hGap4,
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          islog
+                              ? ""
+                              : phone == "17001234567"
+                                  ? "奖牌领取"
+                                  : permissionBeanData.data.isMember == 1
+                                      ? '会员权益'
+                                      : '升级会员 为学习提速',
+                          // islog
+                          //     ? ""
+                          //     : phone == "17001234567"
+                          //         ? "奖牌领取"
+                          //         : permissionBeanData.data.isMember == 1
+                          //             ? '会员权益至${permissionBeanData.data.membershipExpiryDate}'
+                          //             : '升级会员 为学习提速',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              foreground: Paint()
+                                ..shader = const LinearGradient(colors: [
+                                  Colours.color_8256FF,
+                                  Colours.color_FF5CDB,
+                                ]).createShader(
+                                    const Rect.fromLTWH(0, 0, 150, 0))),
+                        ),
+                        isVip(),
+                      ],
+                    ),
                   ],
                 ),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.opaque,
+                //   onTap: () {
+                //     if (phone == "17001234567") {
+                //       NavigatorUtils.push(context, PersonalRouter.purchase);
+                //     } else {
+                //       NavigatorUtils.push(
+                //           context, PersonalRouter.userMembershipUpgradePage);
+                //     }
+                //   },
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.circular(30),
+                //         gradient: const LinearGradient(
+                //           colors: [
+                //             Colours.color_8256FF,
+                //             Colours.color_FF5CDB,
+                //           ],
+                //         )),
+                //     padding: const EdgeInsets.symmetric(
+                //       horizontal: 14.0,
+                //       vertical: 7.0,
+                //     ),
+                //     child: Text(
+                //       islog
+                //           ? ""
+                //           : phone == "17001234567"
+                //               ? "领取"
+                //               : permissionBeanData.data.isMember == 1
+                //                   ? '立即续费'
+                //                   : '立即开通',
+                //       style: const TextStyle(
+                //         fontSize: 15.0,
+                //         fontWeight: FontWeight.bold,
+                //         color: Colors.white,
+                //         height: 20.0 / 15.0,
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                if (phone == "17001234567") {
-                  NavigatorUtils.push(context, PersonalRouter.purchase);
-                } else {
-                  NavigatorUtils.push(
-                      context, PersonalRouter.userMembershipUpgradePage);
-                }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    gradient: const LinearGradient(
-                      colors: [
-                        Colours.color_8256FF,
-                        Colours.color_FF5CDB,
-                      ],
-                    )),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14.0,
-                  vertical: 7.0,
-                ),
-                child: Text(
-                  islog
-                      ? ""
-                      : phone == "17001234567"
-                          ? "领取"
-                          : permissionBeanData.data.isMember == 1
-                              ? '立即续费'
-                              : '立即开通',
-                  style: const TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    height: 20.0 / 15.0,
+            Positioned(
+              right: 10,
+              top: 20,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  if (phone == "17001234567") {
+                    NavigatorUtils.push(context, PersonalRouter.purchase);
+                  } else {
+                    NavigatorUtils.push(
+                        context, PersonalRouter.userMembershipUpgradePage);
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      gradient: const LinearGradient(
+                        colors: [
+                          Colours.color_8256FF,
+                          Colours.color_FF5CDB,
+                        ],
+                      )),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14.0,
+                    vertical: 7.0,
+                  ),
+                  child: Text(
+                    islog
+                        ? ""
+                        : phone == "17001234567"
+                            ? "领取"
+                            : permissionBeanData.data.isMember == 1
+                                ? '立即续费'
+                                : '立即开通',
+                    style: const TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      height: 20.0 / 15.0,
+                    ),
                   ),
                 ),
               ),
-            ),
+            )
           ],
         ),
       );

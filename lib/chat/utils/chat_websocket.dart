@@ -101,6 +101,7 @@ class ChatWebsocket {
     if (_websocket == null) {
       return;
     }
+    _endHeartBeat();
     _endType = force ? 'force' : 'normal';
     await _websocket!.sink.close(WebSocketStatus.normalClosure, 'Session End');
   }
@@ -118,6 +119,8 @@ class ChatWebsocket {
     if (sceneId != null) {
       uri = '$uri&scene_id=$sceneId';
     }
+    Log.e(uri);
+
     try {
       _websocket = WebSocketChannel.connect(Uri.parse(uri));
       return sessionId;

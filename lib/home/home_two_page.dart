@@ -723,6 +723,20 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     // TODO: implement initState
     super.initState();
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    EventBus().on(NotificationUtils.loginIn, (_) {
+      _homeTwoPagePresenter.getBannerList();
+    });
+    EventBus().on(NotificationUtils.loginOut, (_) {
+      _homeTwoPagePresenter.getBannerList();
+    });
+  }
+
+  @override
+  void dispose() {
+    EventBus().off(NotificationUtils.loginIn);
+    EventBus().off(NotificationUtils.loginOut);
+
+    super.dispose();
   }
 
   // void getCharacterList() {

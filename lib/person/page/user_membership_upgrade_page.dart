@@ -15,6 +15,7 @@ import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -736,7 +737,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   void paySuccess() {
     // TODO: implement paySuccess
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    EventBus().emit("YQM");
+    EventBus().emit(NotificationUtils.loginIn);
     Future.delayed(const Duration(seconds: 1), () {
       Navigator.of(context).pop();
     });
@@ -745,7 +746,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   @override
   void dispose() {
     super.dispose();
-    EventBus().off("YQM");
+    EventBus().off(NotificationUtils.loginIn);
   }
 }
 

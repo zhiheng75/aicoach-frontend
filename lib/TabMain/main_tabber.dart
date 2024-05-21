@@ -36,13 +36,15 @@ class _MainTabberState extends State<MainTabber> {
     BottomBarItem("tab_mine", "我的"),
   ];
   List<Widget> pages = [
-    // const MyWidget(),
+    // const CourseHomePage(),
+    // const CourseHomePage(),
+    // const CourseHomePage(),
+    // const CourseHomePage(),
+
     const HomeTwoPage(),
     const CourseHomePage(),
-    // const MyWidget(),
     // const ChatHomePage(),
     const HomeNewPage(),
-    // const ExamPage(),
     const PersonPage(),
   ];
   //
