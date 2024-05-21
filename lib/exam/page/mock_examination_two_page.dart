@@ -765,7 +765,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                 width: double.infinity,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: ImageUtils.getAssetImage("splash_bg"),
+                        image: ImageUtils.getAssetImage("person_bg"),
                         fit: BoxFit.fill)),
                 child: Column(
                   children: [
@@ -952,7 +952,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
                                       image:
-                                          ImageUtils.getAssetImage("splash_bg"),
+                                          ImageUtils.getAssetImage("person_bg"),
                                       fit: BoxFit.fill)),
                               width: MediaQuery.of(context).size.width -
                                   188 * 2 -

@@ -121,7 +121,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: ImageUtils.getAssetImage("splash_bg"),
+                  image: ImageUtils.getAssetImage("person_bg"),
                   fit: BoxFit.fill)),
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,

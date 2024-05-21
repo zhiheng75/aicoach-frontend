@@ -32,9 +32,9 @@ class _UserMembershipUpgradeItemState extends State<UserMembershipUpgradeItem> {
               color: Colors.white,
             ),
       margin: const EdgeInsets.all(10),
-      padding: const EdgeInsets.all(10),
-      width: 200,
-      height: 200,
+      // padding: const EdgeInsets.all(10),
+      width: 160,
+      height: 160,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

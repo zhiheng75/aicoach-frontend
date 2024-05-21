@@ -243,7 +243,7 @@ class _CourseReportPageState extends State<CourseReportPage>
                     decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage(
-                          'assets/images/splash_bg.png',
+                          'assets/images/person_bg.png',
                         ),
                         fit: BoxFit.fitHeight,
                       ),

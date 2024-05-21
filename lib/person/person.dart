@@ -209,9 +209,9 @@ class _PersonPageState extends State<PersonPage>
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage(
-            'assets/images/splash_bg.png',
+            'assets/images/person_bg.png',
           ),
-          fit: BoxFit.fitHeight,
+          fit: BoxFit.fill,
         ),
       ),
     );

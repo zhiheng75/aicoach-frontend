@@ -114,7 +114,7 @@ class _CheckCodePageState extends State<CheckCodePage>
         body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: ImageUtils.getAssetImage("splash_bg"),
+                    image: ImageUtils.getAssetImage("person_bg"),
                     fit: BoxFit.fill)),
             height: double.infinity,
             width: double.infinity,
@@ -377,7 +377,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
         body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: ImageUtils.getAssetImage("splash_bg"),
+                    image: ImageUtils.getAssetImage("person_bg"),
                     fit: BoxFit.fill)),
             height: double.infinity,
             width: double.infinity,

@@ -15,6 +15,7 @@ import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -241,18 +242,20 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
               Colours.color_F3EEFE,
             ],
           )),
-      margin: const EdgeInsets.all(10),
-      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(9),
+      padding: const EdgeInsets.only(left: 13, right: 17, top: 6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
+              Gaps.hGap8,
               const LoadAssetImage(
                 'zhuanshi',
                 width: 48.0,
                 height: 48.0,
               ),
+              Gaps.hGap4,
               Text(
                 "升级会员",
                 key: keyTab,
@@ -264,10 +267,10 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
               ),
             ],
           ),
-          Gaps.vGap4,
+          // Gaps.vGap4,
           SizedBox(
             // margin: const EdgeInsets.only(top: 10),
-            height: 200.0,
+            height: 180.0,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: listData.data.length,
@@ -597,114 +600,121 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
           size: Size.infinite,
           child: isLoding
               ? lodingView()
-              : Stack(children: [
-                  NotificationListener<ScrollNotification>(
-                    onNotification: (ScrollNotification notification) {
-                      boxTab ??= keyTab.currentContext!.findRenderObject()
-                          as RenderBox?;
-                      offsetTab = boxTab!.localToGlobal(Offset.zero);
+              : Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: ImageUtils.getAssetImage("person_bg"),
+                          fit: BoxFit.fill)),
+                  child: Stack(children: [
+                    NotificationListener<ScrollNotification>(
+                      onNotification: (ScrollNotification notification) {
+                        boxTab ??= keyTab.currentContext!.findRenderObject()
+                            as RenderBox?;
+                        offsetTab = boxTab!.localToGlobal(Offset.zero);
 
-                      if (offsetTab.dy < 110.0) {
-                        isUpdateAppBar = true;
-                        // isUpdatePage = false;
-                        // isUpdateTheme = true;
-                      } else {
-                        isUpdateAppBar = false;
-                        // isUpdatePage = true;
-                        // isUpdateTheme = false;
-                      }
-                      setState(() {});
+                        if (offsetTab.dy < 110.0) {
+                          isUpdateAppBar = true;
+                          // isUpdatePage = false;
+                          // isUpdateTheme = true;
+                        } else {
+                          isUpdateAppBar = false;
+                          // isUpdatePage = true;
+                          // isUpdateTheme = false;
+                        }
+                        setState(() {});
 
-                      return true;
-                    },
-                    child: CustomScrollView(slivers: [
-                      SliverToBoxAdapter(
-                        child: Container(
-                          // color: Colors.amber,
-                          height: _screenUtil.statusBarHeight + 40,
-                        ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: userInfoWidget(),
-                      ),
-                      SliverToBoxAdapter(
-                        child: classPayWidget(),
-                      ),
-                      SliverToBoxAdapter(
-                        child: LoadImage(
-                          listData.data[idx].detail.teacherImg,
-                        ),
-                      ),
-                      headWidget("用户评价"),
-                      SliverToBoxAdapter(
-                        child: Container(
-                          margin: const EdgeInsets.only(top: 10),
-                          height: 100.0,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: listData
-                                .data[idx].detail.userFeedbackImg.length,
-                            itemBuilder: (context, index) {
-                              return SizedBox(
-                                width: 150.0,
-                                child: Card(
-                                  // color: Colors.primaries[index],
-                                  child: LoadImage(
-                                    listData.data[idx].detail
-                                        .userFeedbackImg[index],
-                                  ),
-                                ),
-                              );
-                            },
+                        return true;
+                      },
+                      child: CustomScrollView(slivers: [
+                        SliverToBoxAdapter(
+                          child: Container(
+                            // color: Colors.amber,
+                            height: _screenUtil.statusBarHeight + 40,
                           ),
                         ),
-                      ),
-                      // headWidget("课程详情"),
-                      detailWidget(),
-                      listData.data[idx].type == 1
-                          ? otherHeadWidget("people_head")
-                          : SliverToBoxAdapter(child: Container()),
-                      listData.data[idx].type == 1
-                          ? otherHeadWidget("quanyi_hrad")
-                          : SliverToBoxAdapter(child: Container()),
-                      listData.data[idx].type == 1
-                          ? headWidget("常见问题")
-                          : SliverToBoxAdapter(child: Container()),
-                      listData.data[idx].type == 1
-                          ? problemWidget()
-                          : SliverToBoxAdapter(
-                              child: Container(),
-                            )
-                    ]),
-                  ),
-                  isUpdateAppBar
-                      ? const Positioned(
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          child: XTCupertinoNavigationBar(
-                            backgroundColor: Color(0xFFFFFFFF),
-                            border: null,
-                            padding: EdgeInsetsDirectional.zero,
-                            leading: NavigationBackWidget(),
-                            middle: Text(
-                              "L1英语口语系统课",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ))
-                      : Positioned(
-                          top: 50,
-                          left: 20,
-                          child: GestureDetector(
-                              onTap: () {
-                                NavigatorUtils.goBack(context);
+                        SliverToBoxAdapter(
+                          child: userInfoWidget(),
+                        ),
+                        SliverToBoxAdapter(
+                          child: classPayWidget(),
+                        ),
+                        SliverToBoxAdapter(
+                          child: LoadImage(
+                            listData.data[idx].detail.teacherImg,
+                          ),
+                        ),
+                        headWidget("用户评价"),
+                        SliverToBoxAdapter(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 10),
+                            height: 100.0,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: listData
+                                  .data[idx].detail.userFeedbackImg.length,
+                              itemBuilder: (context, index) {
+                                return SizedBox(
+                                  width: 150.0,
+                                  child: Card(
+                                    // color: Colors.primaries[index],
+                                    child: LoadImage(
+                                      listData.data[idx].detail
+                                          .userFeedbackImg[index],
+                                    ),
+                                  ),
+                                );
                               },
-                              child: const LoadAssetImage(
-                                "ic_back_icon",
-                                width: 20.0,
-                                height: 20.0,
-                              ))),
-                ]),
+                            ),
+                          ),
+                        ),
+                        // headWidget("课程详情"),
+                        detailWidget(),
+                        listData.data[idx].type == 1
+                            ? otherHeadWidget("people_head")
+                            : SliverToBoxAdapter(child: Container()),
+                        listData.data[idx].type == 1
+                            ? otherHeadWidget("quanyi_hrad")
+                            : SliverToBoxAdapter(child: Container()),
+                        listData.data[idx].type == 1
+                            ? headWidget("常见问题")
+                            : SliverToBoxAdapter(child: Container()),
+                        listData.data[idx].type == 1
+                            ? problemWidget()
+                            : SliverToBoxAdapter(
+                                child: Container(),
+                              )
+                      ]),
+                    ),
+                    isUpdateAppBar
+                        ? const Positioned(
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            child: XTCupertinoNavigationBar(
+                              backgroundColor: Color(0xFFFFFFFF),
+                              border: null,
+                              padding: EdgeInsetsDirectional.zero,
+                              leading: NavigationBackWidget(),
+                              middle: Text(
+                                "升级会员",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ))
+                        : Positioned(
+                            top: 50,
+                            left: 20,
+                            child: GestureDetector(
+                                onTap: () {
+                                  NavigatorUtils.goBack(context);
+                                },
+                                child: const LoadAssetImage(
+                                  "ic_back_icon",
+                                  width: 20.0,
+                                  height: 20.0,
+                                ))),
+                  ]),
+                ),
         ),
       ),
     );

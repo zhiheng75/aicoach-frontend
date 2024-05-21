@@ -142,7 +142,7 @@ class _SplashPageState extends State<SplashPage> {
             body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: ImageUtils.getAssetImage("splash_bg"),
+                  image: ImageUtils.getAssetImage("person_bg"),
                   fit: BoxFit.fill)),
           child: const FractionallyAlignedSizedBox(
             heightFactor: 0.3,
