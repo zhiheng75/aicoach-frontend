@@ -572,12 +572,17 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                         widget.controller.setDisabled(false);
                         return;
                       }
-                      if (result['text'].contains('To')) {
-                        sendMessage("Two");
-                      } else if (result['text'].contains('Full')) {
-                        sendMessage("Four");
-                      } else if (result['text'].contains('For')) {
-                        sendMessage("Four");
+                      String textStr = result['text'];
+                      if (textStr.length < 8) {
+                        if (result['text'].contains('To')) {
+                          sendMessage("Two");
+                        } else if (result['text'].contains('Full')) {
+                          sendMessage("Four");
+                        } else if (result['text'].contains('For')) {
+                          sendMessage("Four");
+                        } else {
+                          sendMessage(result['text']);
+                        }
                       } else {
                         sendMessage(result['text']);
                       }
