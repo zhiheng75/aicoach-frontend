@@ -18,6 +18,7 @@ import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:native_video_player/native_video_player.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +35,7 @@ import '../util/media_utils.dart';
 import '../widgets/load_data.dart';
 import '../widgets/load_fail.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InstructionalVideoDialoguePage extends StatefulWidget {
   final List<CourseDatum> data;
@@ -187,7 +189,7 @@ class _InstructionalVideoDialoguePageState
         forFlow();
       },
       child: const Text(
-        '下一个场景的名字',
+        '',
         style: TextStyle(
           fontSize: 15.0,
           fontWeight: FontWeight.w400,
@@ -288,7 +290,7 @@ class _InstructionalVideoDialoguePageState
           //留在对话还是退出
         },
         child: const Text(
-          '场景对话进行中，确定要结束吗？',
+          '对话进行中，确定要结束吗？',
           style: TextStyle(
             fontSize: 15.0,
             fontWeight: FontWeight.w400,
@@ -306,6 +308,27 @@ class _InstructionalVideoDialoguePageState
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
+    // 全局监听App状态
+    SystemChannels.lifecycle.setMessageHandler((message) async {
+      // 退到后台
+      // if (_appLifecycleState == 'AppLifecycleState.inactive' ||
+      //     message == 'AppLifecycleState.paused') {}
+      if (message == 'AppLifecycleState.paused') {
+        ConfirmUtils.showSingle(
+          context: context,
+          title: "请重新开始对话",
+          onCancel: () {
+            endSocket();
+            Navigator.of(context).pop();
+            widget.onEnd();
+          },
+        );
+      }
+      return message;
+    });
+
     _pageState = 'success';
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     _homeProvider.ishread = "0";
@@ -315,7 +338,18 @@ class _InstructionalVideoDialoguePageState
     resourceIdx = 0;
     forstartFlow(dataIdx, resourceIdx);
     // 监听App状态
-    WidgetsBinding.instance.addObserver(this);
+    //   ScreenUtil.init(context);
+// ScreenUtil.registerToBuild(context)
+    //     // 监听锁屏状态变化
+    // ScreenUtil.lockedStateStream.listen((locked) {
+    //   if (locked) {
+    //     // 手机锁屏了
+    //     print('手机锁屏了');
+    //   } else {
+    //     // 手机解锁了
+    //     print('手机解锁了');
+    //   }
+    // });
   }
 
   void forFlow() {
@@ -536,8 +570,21 @@ class _InstructionalVideoDialoguePageState
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
+      // 应用程序已经进入后台 或锁屏
+      ConfirmUtils.showSingle(
+        context: context,
+        title: "请重新开始对话",
+        onCancel: () {
+          endSocket();
+          Navigator.of(context).pop();
+          widget.onEnd();
+        },
+      );
+    }
     _appLifecycleState = state;
-    Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
+    // Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
   }
 
   bool isAutoplayEnabled = false;
@@ -545,6 +592,7 @@ class _InstructionalVideoDialoguePageState
   @override
   void dispose() {
     _homeProvider.ishread = "";
+    WidgetsBinding.instance.removeObserver(this);
 
     _controller?. //
         onPlaybackStatusChanged
