@@ -9,13 +9,12 @@ class RecommendTeacherWidget2 extends StatefulWidget {
   final TeachListEntity entity;
   final Function callBack;
 
-  const RecommendTeacherWidget2(
-      this.entity, this.callBack,
-      {Key? key})
+  const RecommendTeacherWidget2(this.entity, this.callBack, {Key? key})
       : super(key: key);
 
   @override
-  State<RecommendTeacherWidget2> createState() => _RecommendTeacherWidgetState();
+  State<RecommendTeacherWidget2> createState() =>
+      _RecommendTeacherWidgetState();
 }
 
 class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget2> {
@@ -30,19 +29,11 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget2> {
       onTap: () {
         widget.callBack();
       },
-      child:
-      Container(
+      child: Container(
         decoration: BoxDecoration(
-            borderRadius:const BorderRadius.all(Radius.circular(10)),
-            // border: Border.all(
-            //     width: widget.entity.isSelect? 2:1,
-            //     color:  widget.entity.isSelect ? Colours.color_00E6D0:Colours.color_5B8BD2
-            // ),
-            // color: widget.entity.isSelect ?Colours.color_70white:Colors.transparent
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
-        child:
-
-        Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -56,14 +47,25 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget2> {
             ),
             Gaps.vGap10,
             Text(
-              widget.entity.name??"",
+              widget.entity.name ?? "",
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: const TextStyle(
-                  fontSize: 16, color: Colours.color_111B44,fontWeight: FontWeight.bold),
+                  fontSize: 16,
+                  color: Colours.color_111B44,
+                  fontWeight: FontWeight.bold),
             ),
-            Text(widget.entity.slogan??"",    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 12),),
-            Text(widget.entity.character??widget.entity.character.replaceAll(",", " "),    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 12),)
+            Text(
+              widget.entity.slogan ?? "",
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: Colours.color_546092, fontSize: 12),
+            ),
+            Text(
+              widget.entity.character ??
+                  widget.entity.character.replaceAll(",", " "),
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: Colours.color_546092, fontSize: 12),
+            )
           ],
         ),
       ),

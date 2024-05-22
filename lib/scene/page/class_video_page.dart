@@ -1,6 +1,5 @@
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
-// import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

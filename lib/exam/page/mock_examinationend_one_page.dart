@@ -71,9 +71,6 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
       userName = "用户${phone.toString().substring(7, 11)}";
     }
     name = userName;
-    // name = user['nickname'] != ""
-    //     ? user['nickname']
-    //     : "用户${user['phone'].toString().substring(7, 11)}";
 
     Future.delayed(const Duration(microseconds: 200), () {
       _examDetailPagePresenter.getExamDetail(widget.mockId);
@@ -241,30 +238,9 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
                   Row(
                     children: [
                       NavigationBackWidget(onBack: onBack),
-                      // NavigationBackWidget(),
-                      // SizedBox(
-                      //   width: MediaQuery.of(context).size.width / 2 - 100,
-                      // ),
-                      // numberWidget,
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     // NavigatorUtils.push(
-                      //     //   context,
-                      //     //   ExamRouter.mockExaminationTwoPage,
-                      //     // );
-                      //   },
-                      //   child: const Text(
-                      //     "提交",
-                      //     style: TextStyle(
-                      //         color: Colours.color_0047FF,
-                      //         fontSize: 20,
-                      //         decoration: TextDecoration.underline),
-                      //   ),
-                      // ),
                     ],
                   ),
                   Gaps.vGap168,
-                  // const Expanded(child: Gaps.empty),
                   isloading
                       ? const Center()
                       : Expanded(

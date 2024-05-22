@@ -14,8 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SwitchingTeacherPage extends StatefulWidget {
-  // final Function(Datum teachData) clickCallBack;
-
   const SwitchingTeacherPage({super.key});
 
   @override
@@ -60,9 +58,6 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
                       setState(() {
                         idx = index;
                       });
-                      // MediaUtils().stopPlay();
-                      // widget.clickCallBack(teacherData[index]);
-                      // Navigator.of(context).pop();
                     },
                     child: SwitchingTeacherItem(
                       data: teacherData[index],
@@ -72,7 +67,6 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
                 },
                 itemCount: teacherData.length,
                 shrinkWrap: true,
-                // physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 0,
@@ -86,7 +80,6 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      // widget.clickCallBack(teacherData[index]);
                       EventBus().emit(NotificationUtils.teachIdx, idx);
                       Navigator.of(context).pop();
                     },
@@ -95,11 +88,6 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
                       width: 160,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100.0),
-                        // border: Border.all(
-                        //   width: 1.0,
-                        //   style: BorderStyle.solid,
-                        //   color: Colours.color_001652,
-                        // ),
                         color: const Color(0xFFF8F8F8),
                         gradient: const LinearGradient(
                           begin: Alignment.bottomLeft,

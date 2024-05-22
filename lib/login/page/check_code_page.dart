@@ -114,7 +114,7 @@ class _CheckCodePageState extends State<CheckCodePage>
         body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: ImageUtils.getAssetImage("person_bg"),
+                    image: ImageUtils.getAssetImage("login_bg_img"),
                     fit: BoxFit.fill)),
             height: double.infinity,
             width: double.infinity,
@@ -256,10 +256,8 @@ class _CheckCodePageState extends State<CheckCodePage>
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    // // NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
     EventBus().emit(NotificationUtils.loginIn);
-
-    // NavigatorUtils.goBack(context);
+    EventBus().emit(NotificationUtils.resetInFo);
 
     // NavigatorUtils.push(
     //   context,
@@ -377,7 +375,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
         body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: ImageUtils.getAssetImage("person_bg"),
+                    image: ImageUtils.getAssetImage("login_bg_img"),
                     fit: BoxFit.fill)),
             height: double.infinity,
             width: double.infinity,
@@ -516,14 +514,11 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   void loginSuccess() {
     // TODO: implement loginSuccess
     Navigator.pop(context);
+
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    // NavigatorUtils.push(context, PersonalRouter.person, replace: true);
-    // NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
-
     EventBus().emit(NotificationUtils.loginIn);
-
-    // NavigatorUtils.goBack(context);
+    EventBus().emit(NotificationUtils.resetInFo);
   }
 
   @override

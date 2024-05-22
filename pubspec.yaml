@@ -72,9 +72,7 @@ dependencies:
   provider: ^6.0.5
   # 扫码 https://github.com/juliuscanute/qr_code_scanner
   qr_code_scanner: 1.0.0
-  #    git:
-  #      url: https://github.com/xeinebiu/qr_code_scanner.git
-  #      ref: fix_break_changes_platform
+  # https://github.com/xeinebiu/qr_code_scanner.git
   # App Shortcuts https://github.com/flutter/packages/tree/main/packages/quick_actions
   quick_actions: 1.0.5
   # 振动 https://github.com/benjamindean/flutter_vibration
@@ -139,8 +137,6 @@ dependencies:
   sticky_headers: ^0.3.0+2
   # 轮播图
   card_swiper: ^3.0.1
-  # liquid_swipe: ^3.1.0
-  # video_player: ^2.7.2
   photo_view: ^0.15.0
   native_video_player: ^1.2.0+3
 

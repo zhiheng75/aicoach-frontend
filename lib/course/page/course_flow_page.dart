@@ -60,7 +60,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
 
   late String characterIdStr;
   late String characterCoverStr;
-  // late String characterHeadCoverStr;
 
   late int characterSceneIdStr;
   late String characterSceneDescStr;
@@ -86,7 +85,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
         characterSceneDescStr = _teacherListBean.data[idx].slogan;
         characterSceneNameStr = _teacherListBean.data[idx].name;
         characterSceneenNameStr = _teacherListBean.data[idx].authorName;
-        // characterHeadCoverStr = _teacherListBean.data[idx].avatarImage;
       });
     });
 
@@ -110,7 +108,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   }
 
   void init() {
-    // String characterId = _homeProvider.character.characterId;
     getDefaultCharacter();
     setState(() {});
   }
@@ -128,10 +125,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
           characterSceneDescStr = teacherListBean.data[0].slogan;
           characterSceneNameStr = teacherListBean.data[0].name;
           characterSceneenNameStr = teacherListBean.data[0].authorName;
-          // characterHeadCoverStr = _teacherListBean.data[0].avatarImage;
 
           _teacherListBean = teacherListBean;
-          // getCategoryList(teacherListBean.data[0].characterId); //可删除
         }
       } else {}
       setState(() {});
@@ -182,19 +177,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     List<CourseDatum> data = stepDetailData.data.data;
     CourseDatum dataIdx = stepDetailData.data.data[idx];
     characterSceneIdStr = dataIdx.resource[0].sceneId;
-    // xxx.id = scene.id;
-    // xxx.name = scene.name;
-    // xxx.enName = scene.enName;
-    // xxx.desc = scene.desc;
-    // xxx.cover = scene.cover;
-//  characterIdStr = characterId;
-//                       coverStr = cover;
 
-    // late String characterCoverStr;
-    // late String characterSceneIdStr;
-    // characterSceneDescStr
-    // late String characterSceneNameStr;
-    // late String characterSceneenNameStr;
     SceneEntity scene = SceneEntity();
     scene.id = characterSceneIdStr;
     scene.desc = "";
@@ -205,10 +188,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     _homeProvider.character.motionImageD = characterCoverStr;
     _homeProvider.heardcover = characterCoverStr;
     _homeProvider.ishread = characterCoverStr;
-    // SceneEntity scene = sceneList[idx];
-    // scene.desc = "我也不知道啊";
-    // scene.name = "你好";
-    // scene.enName = "111";
 
     _homeProvider.resetChatParams();
     _homeProvider.scene = scene;
@@ -225,73 +204,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
 
       _homeProvider.resetChatParams();
 
-      // SceneEntity scene1 = SceneEntity.fromJson(value['data']);
       _homeProvider.scene = scene;
       return;
-      // Navigator.of(context).pop();
-      // HomeProvider homeProvider = Provider.of<HomeProvider>(context, listen: false);
-      // if (homeProvider.sessionType == 'chat') {
-      //   ConfirmUtils.show(
-      //     context: context,
-      //     title: '你要切换场景吗？',
-      //     onConfirm: () {
-      //       _homeProvider.sceneStreamController
-      //           .add({'type': 'scene', 'data': scene.toJson()});
-      //     },
-      //     child: const Text(
-      //       '场景切换会结束当前对话',
-      //       style: TextStyle(
-      //         fontSize: 15.0,
-      //         fontWeight: FontWeight.w400,
-      //         color: Color(0xFF333333),
-      //         height: 18.0 / 15.0,
-      //       ),
-      //     ),
-      //   );
-
-      //   return;
-      // }
-
-      // _homeProvider.sceneStreamController
-      //     .add({'type': 'scene', 'data': scene.toJson()});
-
-      // _homeProvider.resetChatParams();
-
-      // SceneEntity scene1 = SceneEntity.fromJson(value['data']);
-
-      // scene.desc = "我也不知道啊";
-      // scene.name = "你好";
-      // scene.enName = "111";
-      // SceneEntity scene1;
-      // CourseEntity xxx = CourseEntity();
-      // xxx.id = scene.id;
-      // xxx.name = scene.name;
-      // xxx.enName = scene.enName;
-      // xxx.desc = scene.desc;
-      // xxx.cover = scene.cover;
-      // _homeProvider.sceneStreamController
-      //     .add({'type': 'course', 'data': scene.toJson()});
-      // // _homeProvider.scene = scene;
-      // _homeProvider.resetChatParams();
-
-      // _homeProvider.resetChatParams();
-      // _homeProvider.scene = scene;
-      // // _homeProvider.character.characterId
-      // NavigatorUtils.push(
-      //   context,
-      //   HomeRouter.instructionalVideoDialoguePage,
-      // );
-
-//  _homeProvider.sceneStreamController
-//           .add({'type': 'scene', 'data': scene.toJson()});
-//       _homeProvider.scene = scene;
-//       _homeProvider.resetChatParams();
-
-      // _homeProvider.scene = scene;
-      // NavigatorUtils.push(
-      //   context,
-      //   HomeRouter.scenePage,
-      // );
     });
   }
 
@@ -360,24 +274,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                   width: 15.0,
                   height: 15.0,
                 )
-                // RichText(
-                //   text: const TextSpan(children: [
-                //     TextSpan(
-                //         text: "本课学习目标 ",
-                //         style: TextStyle(
-                //           fontSize: 16,
-                //           fontWeight: FontWeight.w400,
-                //           color: Colors.black,
-                //         )),
-                //     TextSpan(
-                //         text: "Learning targe",
-                //         style: TextStyle(
-                //           fontSize: 16,
-                //           fontWeight: FontWeight.w400,
-                //           color: Colours.color_666666,
-                //         )),
-                //   ]),
-                // ),
               ],
             ),
           ),
@@ -391,8 +287,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
               return GestureDetector(
                 onTap: () {
                   LoginManager.checkLogin(context, () {
-                    // selectScene(sceneList[index]);
-
                     gotoCourse(index);
                   });
                 },
@@ -411,22 +305,18 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                 GestureDetector(
                   onTap: () {
                     LoginManager.checkLogin(context, () {
-                      if (stepDetailData.data.reportStatus == 1) {
+                      if (stepDetailData.data.reportStatus == 0) {
+                        Toast.show("未完成课程");
+                      } else {
                         NavigatorUtils.push(context,
                             "${CourseRouter.courseReportPage}?lessonId=${widget.lessonId}");
-                      } else {
-                        Toast.show("未完成课程");
                       }
                     });
                   },
                   child: Container(
                     width: 110,
                     height: 110,
-                    // margin: const EdgeInsets.all(0),
-                    // decoration: BoxDecoration(
-                    //   borderRadius: BorderRadius.circular(90.0),
-                    //   color: Colours.color_EBCCFE,
-                    // ),
+
                     decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage(
@@ -438,14 +328,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     // padding: const EdgeInsets.all(30),
                     child: Column(
                       children: [
-                        // Text(
-                        //   "报告",
-                        //   style: TextStyle(
-                        //     fontSize: 22.0,
-                        //     fontWeight: FontWeight.w400,
-                        //     color: Colors.black,
-                        //   ),
-                        // ),
                         Container(
                           height: 65,
                         ),
@@ -461,37 +343,18 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     ),
                   ),
                 ),
-                // const Positioned(
-                //   right: 0,
-                //   child: LoadAssetImage(
-                //     "report_icon",
-                //     width: 24.0,
-                //     height: 24.0,
-                //   ),
-                // ),
               ],
             ),
             Stack(
               children: [
-                // const Positioned(
-                //   right: 0,
-                //   child: Text(
-                //     "+",
-                //     style: TextStyle(
-                //       fontSize: 14.0,
-                //       fontWeight: FontWeight.bold,
-                //       color: Colors.black,
-                //     ),
-                //   ),
-                // ),
                 GestureDetector(
                   onTap: () {
                     LoginManager.checkLogin(context, () {
-                      if (stepDetailData.data.mistakeStatus == 1) {
+                      if (stepDetailData.data.mistakeStatus == 0) {
+                        Toast.show("未完成课程");
+                      } else {
                         NavigatorUtils.push(context,
                             "${PersonalRouter.errorCorrectionDetailPage}?lessonId=${widget.lessonId}");
-                      } else {
-                        Toast.show("未完成课程");
                       }
                     });
                   },
@@ -506,12 +369,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                         fit: BoxFit.fill,
                       ),
                     ),
-                    // margin: const EdgeInsets.all(0),
-                    // decoration: BoxDecoration(
-                    //   borderRadius: BorderRadius.circular(90.0),
-                    //   color: Colours.color_C1EBF7,
-                    // ),
-                    // padding: const EdgeInsets.all(30),
                     child: Column(
                       children: [
                         Container(
@@ -536,10 +393,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                       ? Container(
                           width: 20,
                           height: 20,
-                          // padding: EdgeInsets.all(4),
-                          // margin: EdgeInsets.all(10),
-                          // padding: const EdgeInsets.only(
-                          //     top: 4, bottom: 4, left: 6, right: 6),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100.0),
                             color: Colors.red,
@@ -566,20 +419,14 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     LoginManager.checkLogin(context, () {
                       // selectScene(sceneList[index]);
 
-                      if (stepDetailData.data.evaluationStatus == 1) {
+                      if (stepDetailData.data.evaluationStatus == 0) {
+                        Toast.show("未完成课程");
+                      } else {
                         NavigatorUtils.push(
                             context, CourseRouter.curriculumEvaluationPage,
                             arguments: stepDetailData);
-                      } else {
-                        Toast.show("未完成课程");
                       }
                     });
-
-                    //     NavigatorUtils.push(
-                    // context,
-                    // replace: true,
-                    // "${ExamRouter.mockExaminationTwoPage}?state=${widget.state}",
-                    // arguments: examStepBean);
                   },
                   child: Container(
                     width: 110,
@@ -592,22 +439,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                         fit: BoxFit.fill,
                       ),
                     ),
-                    // margin: const EdgeInsets.all(0),
-                    // decoration: BoxDecoration(
-                    //   borderRadius: BorderRadius.circular(90.0),
-                    //   color: Colours.color_DDF3D2,
-                    // ),
-                    // padding: const EdgeInsets.all(30),
                     child: Column(
                       children: [
-                        // Text(
-                        //   "评价",
-                        //   style: TextStyle(
-                        //     fontSize: 22.0,
-                        //     fontWeight: FontWeight.w400,
-                        //     color: Colors.black,
-                        //   ),
-                        // ),
                         Container(
                           height: 65,
                         ),
@@ -623,19 +456,10 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     ),
                   ),
                 ),
-                // const Positioned(
-                //   right: 0,
-                //   child: LoadAssetImage(
-                //     "evaluate_icon",
-                //     width: 24.0,
-                //     height: 24.0,
-                //   ),
-                // ),
               ],
             ),
           ],
         ),
-        // const CourseFlowItem(),
       ],
     );
   }

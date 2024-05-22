@@ -212,9 +212,6 @@ class _MockTestPurchasePageState extends State<MockTestPurchasePage>
                     ),
                   ),
                 ),
-                // const SizedBox(
-                //   width: 8.0,
-                // ),
                 RichText(
                   text: TextSpan(
                     children: [

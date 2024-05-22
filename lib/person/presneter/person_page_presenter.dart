@@ -66,7 +66,7 @@ class PersonPagePresenter extends BasePagePresenter<PersonView> {
       Map<String, dynamic> permissionBeanMap = json.decode(result.toString());
       PermissionBean permissionBean =
           PermissionBean.fromJson(permissionBeanMap);
-      if (permissionBean.data != null) {
+      if (permissionBean.code == 200) {
         view.sendSuccess(permissionBean);
       } else {
         view.sendFail("响应异常");

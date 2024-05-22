@@ -91,7 +91,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage>
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: ImageUtils.getAssetImage("person_bg"),
+                  image: ImageUtils.getAssetImage("login_bg_img"),
                   fit: BoxFit.fill)),
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,

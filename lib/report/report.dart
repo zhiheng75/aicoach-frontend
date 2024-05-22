@@ -50,7 +50,7 @@ class _ReportPageState extends State<ReportPage>
   String _state = '';
   List<dynamic> _list = [];
   CancelToken? _cancelToken;
-  String _message = '还没有系统报告！';
+  String _message = '你还没有系统课报告，快去上课吧！';
   List<ReportsDatum> _reportsData = [];
 
   int curTabIndex = 0;
@@ -447,7 +447,7 @@ class _ReportPageState extends State<ReportPage>
           }
           _type = type;
           if (type == "class") {
-            _message = '还没有系统报告！';
+            _message = '还你还没有系统课报告，快去上课吧！';
           } else if (type == "chat") {
             _message = '还没有口语学习报告，\n快点开始学习吧！';
           } else if (type == "exam") {

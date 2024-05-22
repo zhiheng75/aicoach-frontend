@@ -223,16 +223,6 @@ class _CourseReportPageState extends State<CourseReportPage>
   Widget build(BuildContext context) {
     super.build(context);
     return CupertinoPageScaffold(
-      // navigationBar: const XTCupertinoNavigationBar(
-      //   backgroundColor: Color(0xFFFFFFFF),
-      //   border: null,
-      //   padding: EdgeInsetsDirectional.zero,
-      //   leading: NavigationBackWidget(),
-      //   middle: Text(
-      //     "课程报告",
-      //     style: TextStyle(fontWeight: FontWeight.bold),
-      //   ),
-      // ),
       child: Scaffold(
           body: isLoding
               ? lodingView()
@@ -266,11 +256,7 @@ class _CourseReportPageState extends State<CourseReportPage>
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ))),
-                        // const SliverToBoxAdapter(
-                        //   child: SizedBox(
-                        //     height: 120,
-                        //   ),
-                        // ),
+
                         SliverToBoxAdapter(
                           child: Stack(
                             children: [
@@ -529,13 +515,6 @@ class _CourseReportPageState extends State<CourseReportPage>
                                                 fontWeight: FontWeight.w400,
                                                 color: Colors.black,
                                               )),
-                                          // const TextSpan(
-                                          //     text: "个",
-                                          //     style: TextStyle(
-                                          //       fontSize: 16,
-                                          //       fontWeight: FontWeight.w400,
-                                          //       color: Colours.color_666666,
-                                          //     )),
                                         ]),
                                       ),
                                     ],
@@ -588,13 +567,6 @@ class _CourseReportPageState extends State<CourseReportPage>
                                                 fontWeight: FontWeight.w400,
                                                 color: Colors.black,
                                               )),
-                                          // const TextSpan(
-                                          //     text: "个",
-                                          //     style: TextStyle(
-                                          //       fontSize: 16,
-                                          //       fontWeight: FontWeight.w400,
-                                          //       color: Colours.color_666666,
-                                          //     )),
                                         ]),
                                       ),
                                     ],

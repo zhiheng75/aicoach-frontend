@@ -425,14 +425,6 @@ class _ErrorCorrectionThreeDetailItemState
               ),
             ],
           ),
-          // const Text(
-          //   "试试这么说",
-          //   style: TextStyle(
-          //     backgroundColor: Colors.yellow,
-          //     fontSize: 17.0,
-          //     color: Colors.black,
-          //   ),
-          // ),
           Gaps.vGap8,
           Container(
             // margin: const EdgeInsets.all(10),

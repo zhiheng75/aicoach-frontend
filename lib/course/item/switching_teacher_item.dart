@@ -49,17 +49,6 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
                   ),
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(20.0),
-                // margin: const EdgeInsets.only(
-                //     top: 0, left: 8, right: 8, bottom: 0),
-                // decoration: BoxDecoration(
-                //   borderRadius: BorderRadius.circular(8.0),
-                // image: const DecorationImage(
-                //   image: AssetImage(
-                //     'assets/images/mkbg.png',
-                //   ),
-                //   fit: BoxFit.cover,
-                // ),
-                // ),
                 child: LoadImage(
                   widget.data.imageUrl,
                   fit: BoxFit.fill,
@@ -68,18 +57,6 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
                 )),
           ),
         ),
-        // Gaps.vGap4,
-        // Positioned(
-        //     right: 20,
-        //     top: 20,
-        //     child: isSele == 0
-        //         ? Container()
-        //         : Image.asset(
-        //             'assets/images/shengwen.gif',
-        //             width: 35,
-        //             height: 25,
-        //             fit: BoxFit.fitWidth,
-        //           )),
         Positioned(
           // right: 15,
           bottom: 8,
@@ -90,11 +67,6 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
           height: 85,
           child: Stack(
             children: <Widget>[
-              //约束性盒子
-              // ConstrainedBox(
-              //   constraints: const BoxConstraints.expand(),
-              //   child: Text("111"),
-              // ),
               Container(
                 clipBehavior: Clip.antiAlias,
                 decoration: const BoxDecoration(
@@ -184,49 +156,6 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
               )
             ],
           ),
-          // Container(
-          //   decoration: BoxDecoration(
-          //       // borderRadius: BorderRadius.circular(20.0),
-          //       color: Colors.grey.shade200.withOpacity(0.9)),
-          //   // decoration: isSele == 0
-          //   //     ? const BoxDecoration(
-          //   //         borderRadius: BorderRadius.only(
-          //   //             bottomLeft: Radius.circular(20.0),
-          //   //             bottomRight: Radius.circular(20.0)),
-          //   //         color: Colours.color_292A2E,
-          //   //       )
-          //   //     : const BoxDecoration(
-          //   //         borderRadius: BorderRadius.only(
-          //   //             bottomLeft: Radius.circular(20.0),
-          //   //             bottomRight: Radius.circular(20.0)),
-          //   //       ),
-          //   padding: const EdgeInsets.all(10),
-          // child: Column(
-          //   crossAxisAlignment: CrossAxisAlignment.start,
-          //   children: [
-          //     // Gaps.vGap4,
-          //     Text(
-          //       widget.data.name,
-          //       style: const TextStyle(
-          //         fontSize: 14.0,
-          //         fontWeight: FontWeight.w400,
-          //         color: Colors.white,
-          //       ),
-          //     ),
-          //     Text(
-          //       widget.data.slogan,
-          //       maxLines: 1,
-          //       style: const TextStyle(
-          //         fontSize: 12.0,
-          //         fontWeight: FontWeight.w400,
-          //         color: Colours.color_999999,
-          //       ),
-          //     ),
-          //     // Gaps.vGap4,
-          //     Text("11"),
-          //   ],
-          // ),
-          // ),
         ),
         Positioned(
           right: 15,

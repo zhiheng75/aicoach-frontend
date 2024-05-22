@@ -27,15 +27,8 @@ class HomeRouter implements IRouterProvider {
 
   @override
   void initRouter(FluroRouter router) {
-    // router.define(homePage, handler: Handler(handlerFunc: (_, __) => const HomePage()));
-
     router.define(coursePaysPage,
         handler: Handler(handlerFunc: (context, params) {
-      // ExamStepBean examStepBean
-
-      // if (context != null) {
-      // String state = params['state']!.first;
-
       LessonDetailBean lessonDetailBean =
           ModalRoute.of(context!)?.settings.arguments as LessonDetailBean;
       // }
@@ -64,12 +57,6 @@ class HomeRouter implements IRouterProvider {
       );
     }));
 
-    // router.define(coursePurchasePage,
-    //     handler: Handler(handlerFunc: (_, __) => const CoursePurchasePage()));
-
-    // router.define(coursePaysPage,
-    //     handler: Handler(handlerFunc: (_, __) => const CoursePaysPage()));
-
     router.define(scenePage,
         handler: Handler(
             handlerFunc: (_, __) => ScenePage(
@@ -95,16 +82,9 @@ class HomeRouter implements IRouterProvider {
         isUserBuy: isUserBuyInt,
         lessonId: lessonId,
         levelId: levelId,
-        // characterHeadCover: characterHeadCover,
         onEnd: () {},
       );
     }));
-
-    // router.define(instructionalVideoDialoguePage,
-    //     handler: Handler(
-    //         handlerFunc: (_, __) => InstructionalVideoDialoguePage(
-    //               onEnd: () {},
-    //             )));
 
     router.define(teachingDialoguePage,
         handler: Handler(

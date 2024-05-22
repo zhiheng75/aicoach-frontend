@@ -489,12 +489,10 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
           return;
         }
         Map<String, dynamic> data = result.data as Map<String, dynamic>;
-        // map['answer_text'] = data['text'];
-        // map['answer_audio'] = data['speech_url'];
+
         mockUP.add(map);
         upmap['answer'] = mockUP;
-        // mockUP.answer.add(map);
-        // upmap['answer'] = mockUP.answer;
+
         //考伴回答
         setState(() {
           mockKlowTwoPlay(data['speech_url']);
@@ -562,8 +560,6 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    // _cancelRecorderSubscriptions();
-    // _releaseFlauto();
   }
 
   Widget peopleWidget(String head, bool isVector, String name) {
@@ -579,8 +575,6 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
             left: 0,
             right: 0,
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 isVector
                     ? Image.asset(
@@ -599,33 +593,6 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
             ))
       ],
     );
-
-    // return Container(
-    //     decoration: BoxDecoration(
-    //         borderRadius: BorderRadius.circular(10),
-    //         // color: Colors.black,
-    //         image: DecorationImage(
-    //             image: ImageUtils.getAssetImage("mkbg"), fit: BoxFit.fill)),
-    //     width: 140,
-    //     height: 100,
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.end,
-    //       children: [
-    //         isVector
-    //             ? Image.asset(
-    //                 'assets/images/shengbo.gif',
-    //                 width: 35,
-    //                 height: 18,
-    //                 fit: BoxFit.fitWidth,
-    //               )
-    //             : Container(),
-    //         Text(name,
-    //             style: const TextStyle(
-    //               fontSize: 12,
-    //               color: Colors.white,
-    //             )),
-    //       ],
-    //     ));
   }
 
   //说话的框
@@ -657,7 +624,6 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
         builder: (BuildContext context) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            // crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -683,24 +649,15 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                   Center(
                     child: LoadImage(
                       image,
-                      width: 512, height: 288,
-                      // fit: BoxFit.cover
+                      width: 512,
+                      height: 288,
                     ),
                   ),
                   const Positioned(
-                      // top: 0,
-                      // right: 0,
-                      // left: 0,
-                      // height: 32,
-                      // width: 512,
                       child: Center(
                     child: SizedBox(
                       width: 512,
                       height: 32,
-                      // decoration: BoxDecoration(
-                      //   borderRadius: BorderRadius.circular(10),
-                      //   color: Colors.white,
-                      // ),
                       child: Center(
                         child: Text(
                           "KET模拟考试 Part2 看图对话",
@@ -913,10 +870,8 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.white,
                               ),
-                              // color: Colors.white,
                               width: 188,
                               height: double.infinity,
-                              // margin: const EdgeInsets.all(10),
                               child: Column(
                                 children: [
                                   Gaps.vGap5,
@@ -957,8 +912,6 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                               width: MediaQuery.of(context).size.width -
                                   188 * 2 -
                                   6.w * 2,
-                              // width: double.infinity,
-
                               height: double.infinity,
                               child: Stack(
                                 children: [
@@ -1174,22 +1127,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                               showToast("请倾听..");
                                             }
                                           },
-                                          onTap: () {
-                                            //点击答题
-                                            // showConfirmDialog();
-
-                                            // NavigatorUtils.push(
-                                            //   context,
-                                            //   replace: true,
-                                            //   ExamRouter.mockExaminationendOnePage,
-                                            // );
-
-                                            // NavigatorUtils.push(
-                                            //   context,
-                                            //   replace: true,
-                                            //   ExamRouter.mockExaminationendTwoPage,
-                                            // );
-                                          },
+                                          onTap: () {},
                                           child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius:
@@ -1199,7 +1137,6 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                               ),
                                               width: 180,
                                               height: 40,
-                                              // color: Colours.color_examination,
                                               child: const Center(
                                                 child: Text(
                                                   "长按答题",
@@ -1246,7 +1183,6 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.white,
                               ),
-                              // color: Colors.white,
                               width: 188,
                               height: double.infinity,
                               child: Column(

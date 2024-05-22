@@ -100,13 +100,6 @@ class _CourseReportVocabularyItemState
                           fontWeight: FontWeight.w400,
                           color: Colors.black,
                         )),
-                    // const TextSpan(
-                    //     text: "个",
-                    //     style: TextStyle(
-                    //       fontSize: 16,
-                    //       fontWeight: FontWeight.w400,
-                    //       color: Colours.color_666666,
-                    //     )),
                   ]),
                 ),
               ],

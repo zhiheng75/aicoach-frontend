@@ -61,7 +61,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: ImageUtils.getAssetImage("person_bg"),
+                  image: ImageUtils.getAssetImage("login_bg_img"),
                   fit: BoxFit.fill)),
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,

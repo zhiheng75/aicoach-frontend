@@ -238,19 +238,6 @@ class _ErrorCorrectionPageState extends State<ErrorCorrectionPage>
                       : Container(),
                 ],
               ),
-        //         CustomScrollView(
-        //   slivers: [
-        // SliverList.builder(
-        //   itemBuilder: (ctx, index) {
-        //     return GestureDetector(
-        //       onTap: () {},
-        //       child: const ErrorCorrectionItem(),
-        //     );
-        //   },
-        //   itemCount: 10,
-        // )
-        //   ],
-        // )
       )),
     );
   }

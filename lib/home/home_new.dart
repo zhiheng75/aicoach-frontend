@@ -104,9 +104,7 @@ class _HomePageState extends State<HomeNewPage>
     if (Device.isAndroid) {
       AndroidDeviceInfo androidDeviceInfo =
           await DeviceInfoPlugin().androidInfo;
-      // androidDeviceInfo.board;
-      // androidDeviceInfo.model;
-      // androidDeviceInfo.version.release;
+
       platformStr = Channel.channelhuawei;
       final Map<String, String> params = <String, String>{};
       params["manufacturer"] = androidDeviceInfo.manufacturer;

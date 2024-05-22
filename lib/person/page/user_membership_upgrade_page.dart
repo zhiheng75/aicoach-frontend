@@ -164,8 +164,6 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
         Container(
             margin:
                 const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
-            // height: 80,
-            // width: 280,
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
@@ -175,7 +173,6 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                     Colours.color_ACCDFF,
                   ],
                 )),
-            // height: 200,
             child: Column(
               children: [
                 Row(
@@ -615,12 +612,8 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
 
                         if (offsetTab.dy < 110.0) {
                           isUpdateAppBar = true;
-                          // isUpdatePage = false;
-                          // isUpdateTheme = true;
                         } else {
                           isUpdateAppBar = false;
-                          // isUpdatePage = true;
-                          // isUpdateTheme = false;
                         }
                         setState(() {});
 
@@ -749,7 +742,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   void paySuccess() {
     // TODO: implement paySuccess
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    EventBus().emit(NotificationUtils.loginIn);
+    EventBus().emit(NotificationUtils.resetInFo);
     Future.delayed(const Duration(seconds: 1), () {
       Navigator.of(context).pop();
     });
@@ -758,7 +751,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   @override
   void dispose() {
     super.dispose();
-    EventBus().off(NotificationUtils.loginIn);
+    EventBus().off(NotificationUtils.resetInFo);
   }
 }
 
@@ -774,70 +767,6 @@ class TopOriginPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
-
-// class MarqueeText extends StatefulWidget {
-//   final String text;
-//   final TextStyle style;
-//   final Duration duration;
-
-//   const MarqueeText(
-//       {super.key,
-//       required this.text,
-//       required this.style,
-//       required this.duration});
-
-//   @override
-//   _MarqueeTextState createState() => _MarqueeTextState();
-// }
-
-// class _MarqueeTextState extends State<MarqueeText>
-//     with SingleTickerProviderStateMixin {
-//   late AnimationController controller;
-//   late Animation<double> animation;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     controller = AnimationController(duration: widget.duration, vsync: this);
-//     animation = Tween<double>(begin: -1.0, end: 1.0).animate(CurvedAnimation(
-//       parent: controller,
-//       curve: Curves.linear,
-//     ))
-//       ..addListener(() => setState(() {}));
-//     controller.forward();
-//   }
-
-//   @override
-//   void dispose() {
-//     controller.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return LayoutBuilder(
-//       builder: (context, constraints) {
-//         final textPainter = TextPainter(
-//           textDirection: TextDirection.ltr,
-//         );
-//         textPainter.text = TextSpan(text: widget.text, style: widget.style);
-//         textPainter.layout(maxWidth: constraints.biggest.width);
-
-//         return AnimatedBuilder(
-//           animation: animation,
-//           builder: (context, child) {
-//             double dx = -textPainter.width * animation.value;
-//             return Transform.translate(
-//               offset: Offset(dx, 0.0),
-//               child: child,
-//             );
-//           },
-//           child: Text(widget.text, style: widget.style),
-//         );
-//       },
-//     );
-//   }
-// }
 
 class Marquee extends StatefulWidget {
   const Marquee({required this.child, this.speed = 10, Key? key})

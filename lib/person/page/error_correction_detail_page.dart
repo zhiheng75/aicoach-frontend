@@ -66,16 +66,6 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
   Widget build(BuildContext context) {
     super.build(context);
     return CupertinoPageScaffold(
-      // navigationBar: const XTCupertinoNavigationBar(
-      //   backgroundColor: Color(0xFFFFFFFF),
-      //   border: null,
-      //   padding: EdgeInsetsDirectional.zero,
-      //   leading: NavigationBackWidget(),
-      //   middle: Text(
-      //     "纠错",
-      //     style: TextStyle(fontWeight: FontWeight.bold),
-      //   ),
-      // ),
       child: Scaffold(
           body: CustomPaint(
         painter: TopOriginPainter(),
@@ -98,16 +88,6 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      // const Center(
-                      //   child: Text(
-                      //     "Unit2 朋友见面",
-                      //     style: TextStyle(
-                      //       fontSize: 17.0,
-                      //       fontWeight: FontWeight.w400,
-                      //       color: Colors.black,
-                      //     ),
-                      //   ),
-                      // ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [

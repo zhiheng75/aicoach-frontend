@@ -55,7 +55,8 @@ class _LoadingDialog extends Dialog {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 // CircularProgressIndicator(),
-                const CupertinoActivityIndicator(radius: 14.0),
+                const CupertinoActivityIndicator(
+                    color: Colors.white, radius: 14.0),
                 Gaps.vGap8,
                 const Text(
                   "正在加载...",

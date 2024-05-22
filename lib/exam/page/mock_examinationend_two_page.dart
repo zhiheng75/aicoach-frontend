@@ -73,9 +73,6 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
       1.25,
     ];
     Map<String, dynamic> user = LoginManager.getUserInfo();
-    // name = user['nickname'] != ""
-    //     ? user['nickname']
-    //     : "用户${user['phone'].toString().substring(7, 11)}";
 
     String userName = '';
     if (validateInput(user['name'])) {
@@ -89,7 +86,6 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
       userName = "用户${phone.toString().substring(7, 11)}";
     }
     name = userName;
-    // name = "用户${user['phone'].toString().substring(7, 11)}";
   }
 
   bool validateInput(String? input) {
@@ -106,7 +102,6 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
 
   Widget score() {
     return Container(
-      // width: width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         color: Colors.black.withOpacity(0.85),
@@ -264,7 +259,6 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
           ),
           width: (MediaQuery.of(context).size.width - 32.0) / 3 - 5,
           height: (MediaQuery.of(context).size.width - 32.0) / 3 - 5,
-          // color: Colours.color_E8CCFE,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -307,7 +301,6 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
           ),
           width: (MediaQuery.of(context).size.width - 32.0) / 3 - 5,
           height: (MediaQuery.of(context).size.width - 32.0) / 3 - 5,
-          // color: Colours.color_E8CCFE,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -331,7 +324,6 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
         Gaps.hGap5,
         Container(
           padding: const EdgeInsets.all(20),
-
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
                 ((MediaQuery.of(context).size.width - 32.0) / 3 - 5) / 2),
@@ -339,7 +331,6 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
           ),
           width: (MediaQuery.of(context).size.width - 32.0) / 3 - 5,
           height: (MediaQuery.of(context).size.width - 32.0) / 3 - 5,
-          // color: Colours.color_E8CCFE,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -381,8 +372,6 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
   Widget contentBar() {
     return Container(
       width: double.infinity,
-      // height: double.infinity,
-      // color: Colors.white,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         color: Colors.white,
@@ -397,7 +386,6 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
               borderRadius: BorderRadius.circular(20),
               color: Colours.color_F4F4F4,
             ),
-            // color: Colours.color_F4F4F4,
             child: Column(
               children: [
                 const Text(
@@ -450,7 +438,6 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
                           ),
                         )
                       : RichText(
-                          // RichText
                           text: TextSpan(
                               text: '建议考前再练习',
                               style: const TextStyle(
@@ -548,7 +535,6 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
             borderRadius: BorderRadius.circular(20),
             color: Colours.color_F4F4F4,
           ),
-          // color: Colours.color_F4F4F4,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -577,12 +563,6 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
 
   ///返回事件
   void onBack() {
-    // myAlert.showAlert(bcontext,
-    //     title: "离开考场",
-    //     content: "模拟考试进行中,\n请尽可能一次性完成整场模拟考试", clickCallback: (index, text) {
-    //   if (index == 1) {
-    //   }
-    // });\
     Navigator.pop(context);
 
     EventBus().emit('PAY');
@@ -590,7 +570,7 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
 
   @override
   Widget build(BuildContext context) {
-    // ScreenUtil screenUtil = ScreenUtil();
+    super.build(context);
 
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.light,

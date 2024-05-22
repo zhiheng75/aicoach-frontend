@@ -155,20 +155,9 @@ class _SplashPageState extends State<SplashPage> {
                   "splash_icon",
                   width: 150,
                 ),
-                // Text(
-                //   "AI点亮未来",
-                //   style: TextStyle(color: Colors.white, fontSize: 16),
-                // )
               ],
             ),
           ),
         )));
   }
-
-//FractionallyAlignedSizedBox(
-//                 heightFactor: 0.3,
-//                 widthFactor: 0.33,
-//                 leftFactor: 0.33,
-//                 bottomFactor: 0,
-//                 child: LoadAssetImage('test_banner_img'))
 }

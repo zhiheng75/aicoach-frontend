@@ -76,13 +76,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
             return LoadImage(
               banner[index].imageUrl,
               fit: BoxFit.cover,
-              // width: 56.0,
-              // height: 56.0,
             );
-            // Image.network(
-            //   "https://img1.baidu.com/it/u=2286755736,2807423982&fm=253&fmt=auto&app=138&f=JPEG?w=650&h=487",
-            //   fit: BoxFit.cover,
-            // );
           },
           onTap: (index) {
             if (banner[index].type == 1) {
@@ -105,15 +99,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                     "${CourseRouter.courseFlowPage}?lessonId=${banner[index].param}");
               }
             }
-            // showModalBottomSheet(
-            //   context: context,
-            //   backgroundColor: Colors.transparent,
-            //   barrierColor: Colors.transparent,
-            //   isScrollControlled: true,
-            //   isDismissible: false,
-            //   enableDrag: false,
-            //   builder: (_) => const SelectScene(),
-            // );
           },
           itemCount: banner.length,
           autoplay: true,
@@ -294,7 +279,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           context,
           "${HomeRouter.coursePurchasePage}?levelId=${lesson.param}",
         );
-        // NavigatorUtils.goWebViewPage(context, "百度", "https://www.baidu.com");
       },
       child: Container(
         margin: const EdgeInsets.all(15),
@@ -304,17 +288,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           color: Colours.color_F8F8F8,
         ),
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Text(
-            //   lesson.title,
-            //   style: const TextStyle(
-            //     fontSize: 16.0,
-            //     fontWeight: FontWeight.w400,
-            //     color: Colors.black,
-            //   ),
-            // ),
-            // Gaps.vGap8,
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Image.network(
@@ -322,27 +296,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                 fit: BoxFit.cover,
               ),
             ),
-            // Gaps.vGap8,
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.end,
-            //   children: [
-            //     Container(
-            //         padding: const EdgeInsets.all(8),
-            //         decoration: BoxDecoration(
-            //           border: Border.all(color: Colors.black, width: 1.0),
-            //           borderRadius:
-            //               const BorderRadius.all(Radius.circular(30.0)),
-            //         ),
-            //         child: const Text(
-            //           "去选课",
-            //           style: TextStyle(
-            //             fontSize: 15.0,
-            //             fontWeight: FontWeight.w400,
-            //             color: Colors.black,
-            //           ),
-            //         )),
-            //   ],
-            // ),
           ],
         ),
       ),
@@ -355,8 +308,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
         Container(
             margin:
                 const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
-            // height: 80,
-            // width: 280,
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
@@ -366,7 +317,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                     Colours.color_ACCDFF,
                   ],
                 )),
-            // height: 200,
             child: Column(
               children: [
                 Row(
@@ -413,38 +363,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                       height: 100,
                       width: 150,
                     ),
-                    // LoadImage(
-                    //   characterList[0].imageUrl,
-                    //   holderImg: "teacher",
-                    //   height: 100,
-                    //   width: 100,
-                    //   fit: BoxFit.fill,
-                    // ),
                   ],
                 ),
-                // Row(
-                //   children: [
-                //     GroupAvatarWidget(
-                //       data: headData,
-                //       isShowNum: false,
-                //     ),
-                //     GestureDetector(
-                //         onTap: () {
-                //           EventBus().emit(NotificationUtils.taberThree);
-                //         },
-                //         child: const Text("更多角色")),
-                //     const Expanded(child: Gaps.empty),
-                //     GestureDetector(
-                //         onTap: () {
-                // NavigatorUtils.push(
-                //   context,
-                //   "${HomeRouter.homePage}?index=0",
-                // );
-                //         },
-                //         child: const Text("自由对话")),
-                //     Gaps.hGap15,
-                //   ],
-                // ),
               ],
             )),
         const Positioned(
@@ -558,86 +478,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     );
   }
 
-  // Widget barItem(String label, bool isSelected, int idx) {
-  //   // bool isSelected = tabType == type;
-  //   return GestureDetector(
-  //     behavior: HitTestBehavior.opaque,
-  //     onTap: () {
-  //       if (isSelected) {
-  //         return;
-  //       }
-  //       setState(() {
-  //         // curTabIndex = idx;
-  //       });
-  //     },
-  //     child: Column(
-  //       mainAxisSize: MainAxisSize.min,
-  //       children: <Widget>[
-  //         Row(
-  //           children: [
-  //             const SizedBox(
-  //               width: 8.0,
-  //             ),
-  //             Text(
-  //               label,
-  //               style: TextStyle(
-  //                 fontSize: 16.0,
-  //                 fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-  //                 color: isSelected
-  //                     ? const Color(0xFF000000)
-  //                     : const Color(0xFF333333),
-  //                 height: 18.0 / 16.0,
-  //               ),
-  //             ),
-  //             const SizedBox(
-  //               width: 8.0,
-  //             ),
-  //           ],
-  //         ),
-  //         // const SizedBox(
-  //         //   height: 8.0,
-  //         // ),
-  //         // Container(
-  //         //   width: 56.0,
-  //         //   height: 3.0,
-  //         //   decoration: BoxDecoration(
-  //         //     borderRadius: BorderRadius.circular(10.0),
-  //         //     gradient: isSelected
-  //         //         ? const LinearGradient(
-  //         //             begin: Alignment.topLeft,
-  //         //             end: Alignment.bottomRight,
-  //         //             colors: [
-  //         //               Colours.color_9AC3FF,
-  //         //               Colours.color_FF71E0,
-  //         //             ],
-  //         //           )
-  //         //         : null,
-  //         //   ),
-  //         // ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // Widget tabbar() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       const Text("口语联系精品课"),
-  //       Row(
-  //         // mainAxisAlignment: MainAxisAlignment.center,
-  //         // mainAxisSize: MainAxisSize.min,
-  //         children: <Widget>[
-  //           barItem('热门推荐', curTabIndex == 0 ? true : false, 0),
-  //           barItem('爱好娱乐', curTabIndex == 1 ? true : false, 1),
-  //           barItem('学校生活', curTabIndex == 2 ? true : false, 2),
-  //           barItem('热门推荐', curTabIndex == 0 ? true : false, 3),
-  //         ],
-  //       ),
-  //     ],
-  //   );
-  // }
-
   Widget tabbar() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -667,23 +507,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                       child: Container(
                           margin: const EdgeInsets.only(
                               top: 5, bottom: 5, left: 20, right: 20),
-                          // height: 80,
-                          // width: 280,
-                          // padding: const EdgeInsets.only(
-                          //     left: 10, right: 10, top: 5, bottom: 5),
-                          // decoration: currentIndex == index
-                          //     ? BoxDecoration(
-                          //         borderRadius: BorderRadius.circular(15),
-                          //         gradient: const LinearGradient(
-                          //           colors: [
-                          //             Colours.color_E8CCFE,
-                          //             Colours.color_ACCDFF,
-                          //           ],
-                          //         ))
-                          //     : BoxDecoration(
-                          //         borderRadius: BorderRadius.circular(15.0),
-                          //         color: Colours.color_F8F8F8,
-                          //       ),
                           height: 40,
                           child: Text(
                             _categoryList[index].name,
@@ -704,16 +527,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
             scrollDirection: Axis.horizontal,
           ),
         )
-        // Row(
-        //   // mainAxisAlignment: MainAxisAlignment.center,
-        //   // mainAxisSize: MainAxisSize.min,
-        //   children: <Widget>[
-        //     ,
-        //     barItem('爱好娱乐', curTabIndex == 1 ? true : false, 1),
-        //     barItem('学校生活', curTabIndex == 2 ? true : false, 2),
-        //     barItem('热门推荐', curTabIndex == 0 ? true : false, 3),
-        //   ],
-        // ),
       ],
     );
   }
@@ -739,32 +552,10 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     super.dispose();
   }
 
-  // void getCharacterList() {
-  //   _chatPagePresenter.requestNetwork<ResultData>(Method.get,
-  //       url: HttpApi.characterList,
-  //       isShow: false,
-  //       isClose: false, onSuccess: (result) {
-  //     Map<String, dynamic> characterListMap = json.decode(result.toString());
-  //     CharacterListBean goodsListBean =
-  //         CharacterListBean.fromJson(characterListMap);
-  //     Log.e(goodsListBean.msg);
-  //     if (goodsListBean.code == 200) {
-  //       characterList.addAll(goodsListBean.data);
-  //       setState(() {});
-  //     } else {}
-  //   }, onError: (code, msg) {});
-  // }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    // if (isloading) {
-    //   return const Scaffold(
-    //     body: Center(
-    //       child: LoadData(),
-    //     ),
-    //   );
-    // }
+
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
@@ -781,47 +572,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                       color: Colors.black,
                     )),
               ),
-              // SliverPersistentHeader(
-              //     pinned: true,
-              //     floating: false,
-              //     delegate: _SliverAppBarDelegate(
-              //       minHeight: 25, //收起的高度
-              //       maxHeight: 25,
-              //       child: Container(
-              //           color: Colors.white, child: const Text("Hello Tommy")),
-              //     )),
               SliverToBoxAdapter(
                 child: banner.isNotEmpty ? barWidget(context) : Container(),
               ),
-
-              // SliverToBoxAdapter(
-              //   child: headWidget("精品推荐"),
-              // ),
-              // SliverToBoxAdapter(
-              //   child: recommendedWidget(),
-              // ),
-              // SliverToBoxAdapter(
-              //   child: headWidget("AI学伴"),
-              // ),
-              // SliverToBoxAdapter(
-              //   child: SizedBox(
-              //     // margin: const EdgeInsets.only(top: 10),
-              //     height: 150.0,
-              //     child: ListView.builder(
-              //       scrollDirection: Axis.horizontal,
-              //       itemCount: characterList.length,
-              //       itemBuilder: (context, index) {
-              //         return Container(
-              //           // color: Colors.black,
-              //           margin: const EdgeInsets.all(10),
-              //           child: LoadImage(
-              //             characterList[isDefault].coverImageUrl,
-              //           ),
-              //         );
-              //       },
-              //     ),
-              //   ),
-              // ),
               SliverToBoxAdapter(
                 child: isChatShow == 0
                     ? Container()
@@ -838,9 +591,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                 },
                 itemCount: lesson.length,
               ),
-              // SliverToBoxAdapter(
-              //   child: courseWidget(context),
-              // ),
               SliverToBoxAdapter(
                 child: isKetShow == 1 ? mokaoWidget(context) : Container(),
               ),
@@ -858,9 +608,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                     ),
             ];
           },
-          // pinnedHeaderSliverHeightBuilder: () {
-          //   return 100;
-          // },
           body: GridView.builder(
             itemBuilder: (ctx, index) {
               return GestureDetector(
@@ -927,44 +674,12 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   void selectScene(SceneEntity scene) {
     LoginManager.checkLogin(context, () {
-      // Navigator.of(context).pop();
-      // HomeProvider homeProvider = Provider.of<HomeProvider>(context, listen: false);
-      // if (homeProvider.sessionType == 'chat') {
-      //   ConfirmUtils.show(
-      //     context: context,
-      //     title: '你要切换场景吗？',
-      //     onConfirm: () {
-      //       _homeProvider.sceneStreamController
-      //           .add({'type': 'scene', 'data': scene.toJson()});
-      //     },
-      //     child: const Text(
-      //       '场景切换会结束当前对话',
-      //       style: TextStyle(
-      //         fontSize: 15.0,
-      //         fontWeight: FontWeight.w400,
-      //         color: Color(0xFF333333),
-      //         height: 18.0 / 15.0,
-      //       ),
-      //     ),
-      //   );
-
-      //   return;
-      // }
-
       _homeProvider.sceneStreamController
           .add({'type': 'scene', 'data': scene.toJson()});
 
       _homeProvider.resetChatParams();
 
-      // SceneEntity scene1 = SceneEntity.fromJson(value['data']);
       _homeProvider.scene = scene;
-      // ScenePage(onEnd: () {  },);
-      // NavigatorUtils.push(
-      //   context,
-      //   HomeRouter.scenePage,
-      // );
-      // scenePage
-      //homePage
     });
   }
 

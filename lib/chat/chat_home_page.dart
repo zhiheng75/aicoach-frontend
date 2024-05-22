@@ -99,36 +99,4 @@ class _ChatHomePageState extends State<ChatHomePage>
 
   @override
   bool get wantKeepAlive => false;
-
-  // return Center(
-  //     child: Column(
-  //   mainAxisAlignment: MainAxisAlignment.center,
-  //   children: [
-  //     GestureDetector(
-  //         onTap: () {
-  // NavigatorUtils.push(
-  //   context,
-  //   HomeRouter.homePage,
-  // );
-  //         },
-  //         child: const Text("对话")),
-  //     const SizedBox(
-  //       height: 18.0,
-  //     ),
-  //     GestureDetector(
-  //         onTap: () {
-  // showModalBottomSheet(
-  //   context: context,
-  //   backgroundColor: Colors.transparent,
-  //   barrierColor: Colors.transparent,
-  //   isScrollControlled: true,
-  //   isDismissible: false,
-  //   enableDrag: false,
-  //   builder: (_) => const SelectScene(),
-  // );
-  //         },
-  //         child: const Text("场景")),
-  //   ],
-  // ));
-  // }
 }

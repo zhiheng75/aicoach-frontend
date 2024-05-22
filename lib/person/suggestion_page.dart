@@ -74,20 +74,6 @@ class _SuggestionPageState extends State<SuggestionPage>
             },
             child: Container(
               alignment: Alignment.centerLeft,
-              // decoration: const BoxDecoration(
-              //     gradient: LinearGradient(
-              //         begin: Alignment.topRight,
-              //         end: Alignment.bottomLeft,
-              //         colors: [
-              //       Colours.color_00E6D0,
-              //       Colours.color_006CFF,
-              //       Colours.color_D74DFF,
-              //     ],
-              //         stops: [
-              //       0.0,
-              //       0.2,
-              //       1
-              //     ])),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -102,12 +88,6 @@ class _SuggestionPageState extends State<SuggestionPage>
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  // const MyAppBar(
-                  //   centerTitle: "意见反馈",
-                  //   centerTitleColor: Colors.black,
-                  //   backImgColor: Colors.black,
-                  //   backgroundColor: Colours.black,
-                  // ),
                   Expanded(
                     child: Container(
                       width: ScreenUtil().screenWidth,
@@ -195,21 +175,6 @@ class _SuggestionPageState extends State<SuggestionPage>
                                       mlist.add(f);
                                     }
                                   }
-                                  Log.e("============");
-                                  // Log.e(mlist as String);
-                                  // Log.e(selectImgAmount as String);
-
-                                  Log.e("============");
-
-                                  // _presenter.uploadImg(mlist,assetEntityList);
-                                  // _presenter.getOssToken(mlist, assetEntityList);
-                                  // var asset = assetEntityList[0];
-                                  // print(await asset.file);
-                                  // print(await asset.originFile);
-                                  // var asd = await asset.file;
-                                  // if(asd!=null){
-                                  //   _presenter.uploadImg(asd);
-                                  // }
                                 }
                               },
                               deleteCallBack: (index) async {

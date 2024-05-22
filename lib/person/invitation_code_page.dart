@@ -260,7 +260,8 @@ class _InvitationCodePageState extends State<InvitationCodePage>
   void sendSuccess(String ms) {
     // TODO: implement sendSuccess
     Toast.show(ms);
-    EventBus().emit(NotificationUtils.loginIn);
+    // EventBus().emit(NotificationUtils.loginIn);
+    EventBus().emit(NotificationUtils.resetInFo);
 
     onBack();
   }

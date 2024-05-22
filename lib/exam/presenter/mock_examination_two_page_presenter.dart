@@ -15,13 +15,6 @@ class MockExaminationTwoPagePresenter
         url: HttpApi.examUpdata,
         params: map,
         isShow: false, onSuccess: (result) {
-      // Map<String, dynamic> examPermissionMap = json.decode(result.toString());
-      // ExamPermissionBean examPermissioBean =
-      //     ExamPermissionBean.fromJson(examPermissionMap);
-      // Log.e("=============");
-      // Log.e(examPermissioBean.data.leftTime.toString());
-      // Log.e("=============");
-
       if (result != null && result.code == 200) {
         view.sendSuccess("");
       } else {

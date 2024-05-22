@@ -112,13 +112,6 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
                                 fontWeight: FontWeight.w400,
                                 color: Colors.black,
                               )),
-                          // const TextSpan(
-                          //     text: "个",
-                          //     style: TextStyle(
-                          //       fontSize: 16,
-                          //       fontWeight: FontWeight.w400,
-                          //       color: Colours.color_666666,
-                          //     )),
                         ]),
                       ),
                     ],
@@ -132,8 +125,6 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
             ),
           ),
         ),
-        // headWidget("Speak Skill", "12"),
-
         SliverToBoxAdapter(
           child: Container(
             color: Colors.white,
@@ -171,18 +162,10 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
                                 fontWeight: FontWeight.w400,
                                 color: Colors.black,
                               )),
-                          // const TextSpan(
-                          //     text: "个",
-                          //     style: TextStyle(
-                          //       fontSize: 16,
-                          //       fontWeight: FontWeight.w400,
-                          //       color: Colours.color_666666,
-                          //     )),
                         ]),
                       ),
                     ],
                   ),
-                  // Gaps.vGap11,
                   Column(
                     children: _buildSkillsItems(),
                   ),

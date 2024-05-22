@@ -218,28 +218,6 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
                   // numberWidget,
                 ],
               ),
-              // GestureDetector(
-              //   onTap: () {
-              //     // NavigatorUtils.push(
-              //     //   context,
-              //     //   replace: true,
-              //     //   ExamRouter.mockExaminationendTwoPage,
-
-              //     // );
-              //     NavigatorUtils.push(
-              //       context,
-              //       replace: true,
-              //       ExamRouter.mockExaminationTwoPage,
-              //     );
-              //   },
-              //   child: const Text(
-              //     "下一步",
-              //     style: TextStyle(
-              //         color: Colours.color_0047FF,
-              //         fontSize: 20,
-              //         decoration: TextDecoration.underline),
-              //   ),
-              // ),
               const Expanded(child: Gaps.empty),
               Container(
                   padding: const EdgeInsets.all(25),
@@ -313,50 +291,18 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
             if (next == 2) {
               return;
             }
-            // _bottomBarControll.setDisabled(false);
-            // if (!_cancelToken!.isCancelled) {
+
             showToast("恭喜你，该环节已完成，即将进入下一考试环节");
-            // }
 
             Future.delayed(const Duration(seconds: 2), () {
-              //   // // 强制横屏
-              //   // SystemChrome.setPreferredOrientations([
-              //   //   DeviceOrientation.landscapeLeft,
-              //   //   // DeviceOrientation.landscapeRight
-              //   // ]);
-              // if (!_cancelToken!.isCancelled) {
               NavigatorUtils.push(
                   context,
                   replace: true,
                   "${ExamRouter.mockExaminationTwoPage}?state=${widget.state}",
                   arguments: examStepBean);
-              // }
             });
           },
         );
-
-        // if (next == 2) {
-        //   return;
-        // }
-        // // _bottomBarControll.setDisabled(false);
-        // // if (!_cancelToken!.isCancelled) {
-        // showToast("恭喜你，该环节已完成，即将进入下一考试环节");
-        // // }
-
-        // Future.delayed(const Duration(seconds: 2), () {
-        //   //   // // 强制横屏
-        //   //   // SystemChrome.setPreferredOrientations([
-        //   //   //   DeviceOrientation.landscapeLeft,
-        //   //   //   // DeviceOrientation.landscapeRight
-        //   //   // ]);
-        //   // if (!_cancelToken!.isCancelled) {
-        //   NavigatorUtils.push(
-        //       context,
-        //       replace: true,
-        //       "${ExamRouter.mockExaminationTwoPage}?state=${widget.state}",
-        //       arguments: examStepBean);
-        //   // }
-        // });
       },
     );
     setState(() {});

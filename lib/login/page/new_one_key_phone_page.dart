@@ -121,7 +121,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: ImageUtils.getAssetImage("person_bg"),
+                  image: ImageUtils.getAssetImage("login_bg_img"),
                   fit: BoxFit.fill)),
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,
@@ -496,6 +496,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
     // NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
     EventBus().emit(NotificationUtils.loginIn);
+    EventBus().emit(NotificationUtils.resetInFo);
 
     // NavigatorUtils.goBack(context);
   }
@@ -509,12 +510,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   }
 
   @override
-  void wechatSuccess(LoginInfoDataData data) {
-    // SpUtil.putObject(Constant.userInfoKey, data);
-    // SpUtil.putString(Constant.accessToken, data.token);
-    // NavigatorUtils.push(context, LoginRouter.changeBindPhonePage,
-    //     arguments: data, replace: true);
-  }
+  void wechatSuccess(LoginInfoDataData data) {}
 
   @override
   void sendSmsSuccess() {
@@ -522,14 +518,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   }
 
   @override
-  void loginSuccess() {
-    // if (widget.typeLogin == "0") {
-    //   Constant.jverify.dismissLoginAuthView();
-    //   hideLoading();
-    // }
-
-    // NavigatorUtils.push(context, PersonalRouter.person, replace: true);
-  }
+  void loginSuccess() {}
 
   @override
   void newwechatSuccess(NewWxInfoBeanData data) {
@@ -537,43 +526,4 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     NavigatorUtils.push(context, LoginRouter.newBindPhonePage,
         arguments: data, replace: true);
   }
-
-  // void _showAgreement(int state) {
-  //   showDialog<void>(
-  //       context: context,
-  //       barrierDismissible: false,
-  //       builder: (_) => AgreementDialog(() {
-  //             _isSelect = true;
-  //             toNext(state);
-  //           }));
-  // }
-
-  // // 0 手机号登录 1微信登录
-  // void toNext(int state) {
-  //   if (state == 0) {
-  //     if (_isSelect && _clickable) {
-  //       _registerPresenter.register(
-  //           _phoneController.text, _vCodeController.text, true);
-  //     } else if (!_clickable) {
-  //       if (_phoneController.text.isEmpty) {
-  //         Toast.show("手机号无效");
-  //       } else if (_vCodeController.text.isEmpty) {
-  //         Toast.show("验证码无效");
-  //       } else {
-  //         Toast.show("输入有误");
-  //       }
-  //     } else if (!_isSelect) {
-  //       // _showAgreement(state);
-  //       toNext(state);
-  //     }
-  //   } else if (state == 1) {
-  //     if (_isSelect) {
-  //       FlutterToNative.jumpToWechatLogin()
-  //           .then((value) => {_registerPresenter.getWxInfo(value)});
-  //     } else {
-  //       // Toast.show("请同意服务协议");
-  //       // _showAgreement(state);
-  //     }
-  //   }
-  // }
 }

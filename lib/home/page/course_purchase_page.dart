@@ -58,12 +58,7 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
             dataBean.data.banner,
             width: 56.0,
             height: 56.0,
-          )
-          //  Image.network(
-          //   dataBean.data.banner,
-          //   fit: BoxFit.cover,
-          // ),
-          ),
+          )),
     );
   }
 
@@ -73,8 +68,6 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
         Container(
             margin:
                 const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
-            // height: 80,
-            // width: 280,
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
@@ -84,7 +77,6 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                     Colours.color_ACCDFF,
                   ],
                 )),
-            // height: 200,
             child: Column(
               children: [
                 Row(
@@ -285,16 +277,6 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
             dataBean.data.teacherImg,
             width: _screenUtil.screenWidth,
           ),
-          // LoadImage(
-          //   dataBean.data.lessonTimeImg,
-          // )
-          // aiTeacherWidget(),
-          // const LoadAssetImage(
-          //   "vs_teacher",
-          //   // width: 170.0,
-          //   // height: 150.0,
-          // ),
-          // teacherWidget()
         ],
       ),
     );

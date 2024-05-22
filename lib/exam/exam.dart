@@ -275,55 +275,6 @@ class _ExamPageState extends State<ExamPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    // Widget barItem(String label, String type) {
-    //   bool isSelected = _type == type;
-    //   return GestureDetector(
-    //     behavior: HitTestBehavior.opaque,
-    //     onTap: () {
-    //       if (isSelected) {
-    //         return;
-    //       }
-    //       _type = type;
-    //       setState(() {});
-    //     },
-    //     child: Container(
-    //       width: 88.0,
-    //       height: 34.0,
-    //       decoration: BoxDecoration(
-    //         borderRadius: BorderRadius.circular(40.0),
-    //         color:
-    //             isSelected ? const Color(0xFF007AFF) : const Color(0xFFF3F5F7),
-    //       ),
-    //       alignment: Alignment.center,
-    //       child: Text(
-    //         label,
-    //         style: TextStyle(
-    //           fontSize: 15.0,
-    //           fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-    //           color: isSelected ? Colors.white : Colours.color_999999,
-    //           height: 20.0 / 15.0,
-    //         ),
-    //       ),
-    //     ),
-    //   );
-    // }
-
-    // Widget tabbar = Padding(
-    //   padding: const EdgeInsets.symmetric(
-    //     horizontal: 16.0,
-    //   ),
-    //   child: Row(
-    //     mainAxisAlignment: MainAxisAlignment.start,
-    //     children: <Widget>[
-    //       barItem('KET', 'ket'),
-    //       const SizedBox(
-    //         width: 10.0,
-    //       ),
-    //       barItem('PET', 'pet'),
-    //     ],
-    //   ),
-    // );
-
     Widget descItem(String desc) {
       return Row(
         children: <Widget>[

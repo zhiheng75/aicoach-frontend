@@ -44,9 +44,7 @@ class _PersonPageState extends State<PersonPage>
   late String headimgurl = "";
   late String phone = "";
   late int totalTime = 0;
-  void init() {
-    // getStudyInfo();
-  }
+  void init() {}
 
   void getStudyInfo() {
     _personPagePresenter.requestNetwork<ResultData>(Method.get,
@@ -61,39 +59,20 @@ class _PersonPageState extends State<PersonPage>
       if (result == null || result.data == null) {
         return;
       }
-      _study = StudyEntity.fromJson(result.data);
+      if (result.code == 200) {
+        islog = false;
+        _study = StudyEntity.fromJson(result.data);
+      }
+
       setState(() {});
     }, onError: (code, msg) {});
   }
-
-  // Future getAvailableTime() async {
-  //   String deviceId = await Device.getDeviceId();
-  //   _personPagePresenter.requestNetwork<ResultData>(Method.get,
-  //       url: HttpApi.permission,
-  //       queryParameters: {
-  //         'device_id': deviceId,
-  //       }, onSuccess: (result) {
-  //     Log.e("这里==============");
-
-  //     Log.e(result.toString());
-  //     Log.e("==============");
-  //     // Map<String, dynamic> data = {
-  //     //   'left_time': 0,
-  //     //   'is_member': 0,
-  //     // };
-  //     // if (result != null && result.code == 200 && result.data != null) {
-  //     //   data = result.data as Map<String, dynamic>;
-  //     // }
-  //   });
-  // }
 
   void tapMenu(String path) {
     NavigatorUtils.push(context, path);
   }
 
   void tapInvitationcCodeMenu(String path) {
-    // NavigatorUtils.goWebViewPage(
-    //     context, "注销账号", "http://www.shenmo-ai.com/account_cancellation/");
     NavigatorUtils.push(context, path);
   }
 
@@ -109,13 +88,16 @@ class _PersonPageState extends State<PersonPage>
   @override
   void dispose() {
     super.dispose();
-    EventBus().off(NotificationUtils.loginIn);
+    // EventBus().off(NotificationUtils.loginIn);
+    EventBus().off(NotificationUtils.resetInFo);
+    EventBus().off("LOGINOUT");
   }
 
   @override
   void initState() {
     super.initState();
-
+    // userInfo();
+    // _personPagePresenter.getUsageTime();
     EventBus().on('LOGINOUT', (_) {
       setState(() {
         LoginManager.toLoginOut();
@@ -126,7 +108,7 @@ class _PersonPageState extends State<PersonPage>
       });
     });
 
-    EventBus().on(NotificationUtils.loginIn, (_) {
+    EventBus().on(NotificationUtils.resetInFo, (_) {
       Log.e("进来了");
       userInfo();
       _personPagePresenter.getUsageTime();
@@ -551,46 +533,6 @@ class _PersonPageState extends State<PersonPage>
                     ),
                   ],
                 ),
-                // GestureDetector(
-                //   behavior: HitTestBehavior.opaque,
-                //   onTap: () {
-                //     if (phone == "17001234567") {
-                //       NavigatorUtils.push(context, PersonalRouter.purchase);
-                //     } else {
-                //       NavigatorUtils.push(
-                //           context, PersonalRouter.userMembershipUpgradePage);
-                //     }
-                //   },
-                //   child: Container(
-                //     decoration: BoxDecoration(
-                //         borderRadius: BorderRadius.circular(30),
-                //         gradient: const LinearGradient(
-                //           colors: [
-                //             Colours.color_8256FF,
-                //             Colours.color_FF5CDB,
-                //           ],
-                //         )),
-                //     padding: const EdgeInsets.symmetric(
-                //       horizontal: 14.0,
-                //       vertical: 7.0,
-                //     ),
-                //     child: Text(
-                //       islog
-                //           ? ""
-                //           : phone == "17001234567"
-                //               ? "领取"
-                //               : permissionBeanData.data.isMember == 1
-                //                   ? '立即续费'
-                //                   : '立即开通',
-                //       style: const TextStyle(
-                //         fontSize: 15.0,
-                //         fontWeight: FontWeight.bold,
-                //         color: Colors.white,
-                //         height: 20.0 / 15.0,
-                //       ),
-                //     ),
-                //   ),
-                // ),
               ],
             ),
             Positioned(
@@ -715,9 +657,6 @@ class _PersonPageState extends State<PersonPage>
               ],
             ),
           ),
-        // const SizedBox(
-        //   height: 16.0,
-        // ),
       ],
     );
 
@@ -732,10 +671,6 @@ class _PersonPageState extends State<PersonPage>
                 Colours.color_F3E4FF5,
               ],
             )),
-        // padding: const EdgeInsets.symmetric(
-        //   horizontal: 8.0,
-        //   vertical: 16.0,
-        // ),
         child: Column(
           children: [
             experience,
@@ -802,27 +737,6 @@ class _PersonPageState extends State<PersonPage>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          // menuItem(
-          //   'person_baogao',
-          //   '课程订单',
-          //   onPress: () => tapMenu(ReportRouter.courseOrderPage),
-          // ),
-          // menuItem(
-          //   'person_baogao',
-          //   '学情报告',
-          //   onPress: () => tapMenu(ReportRouter.reportPage),
-          // ),
-          // menuItem(
-          //   'person_goumai',
-          //   '购买记录',
-          //   onPress: () => tapMenu(PersonalRouter.order),
-          // ),
-          // menuItem(
-          //   'person_yaoqing',
-          //   '邀请码',
-          //   onPress: () =>
-          //       tapInvitationcCodeMenu(PersonalRouter.personalInvitationcCode),
-          // ),
           menuItem(
             'customer_service_icon',
             '联系客服',
@@ -996,14 +910,6 @@ class _PersonPageState extends State<PersonPage>
                           height: _screenUtil.statusBarHeight + 40,
                         ),
 
-                        // navbar,
-                        // const SizedBox(
-                        //   height: 16.0,
-                        // ),
-                        // userInfo,
-                        // const SizedBox(
-                        //   height: 16.0,
-                        // ),
                         studyInfo(),
                         const SizedBox(
                           height: 16.0,
@@ -1062,11 +968,10 @@ class _PersonPageState extends State<PersonPage>
   @override
   void sendSuccess(PermissionBean permissionBean) {
     // TODO: implement sendSuccess
-    islog = false;
     permissionBeanData = permissionBean;
     totalTime = permissionBean.data.totalTime;
     getStudyInfo();
 
-    setState(() {});
+    // setState(() {});
   }
 }

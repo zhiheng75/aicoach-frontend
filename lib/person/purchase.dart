@@ -684,7 +684,7 @@ class _PurchasePageState extends State<PurchasePage>
   paySuccess() {
     // 刷新使用时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    EventBus().emit(NotificationUtils.loginIn);
+    EventBus().emit(NotificationUtils.resetInFo);
     Future.delayed(const Duration(seconds: 1), () {
       Navigator.of(context).pop();
     });

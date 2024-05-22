@@ -76,11 +76,6 @@ class _CertifiedLearningPageState extends State<CertifiedLearningPage> {
                   height: 48.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
-                    // border: Border.all(
-                    //   width: 1.0,
-                    //   style: BorderStyle.solid,
-                    //   color: Colours.color_001652,
-                    // ),
                     gradient: const LinearGradient(
                       begin: Alignment.bottomLeft,
                       end: Alignment.topRight,
