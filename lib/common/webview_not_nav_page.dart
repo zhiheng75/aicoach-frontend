@@ -1,5 +1,8 @@
 import 'package:Bubble/course/entity/step_detail_bean.dart';
+import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/home_router.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/event_bus.dart';
@@ -65,9 +68,10 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         ),
       )
       ..addJavaScriptChannel('goBack', onMessageReceived: (message) {
+        //发个请求
+        postStepUpdate();
         //回到上一页
         Navigator.of(context).pop();
-
         if (widget.type == "1") {
           int next = widget.idx;
           next = next + 1;
@@ -84,6 +88,9 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         }
       })
       ..addJavaScriptChannel('goHome', onMessageReceived: (message) {
+        // 发个请求
+        postStepUpdate();
+
         //回到目录页
         if (widget.type == "1") {
           Navigator.of(context).pop();
@@ -93,6 +100,24 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         }
       })
       ..loadRequest(Uri.parse(widget.url));
+  }
+
+  void postStepUpdate() {
+    int next = widget.idx;
+
+    String lessonId = widget.stepDetailData.data.lessonId.toString();
+    String stepId = widget.stepDetailData.data.data[next].stepId.toString();
+
+    final Map<String, dynamic> params = <String, dynamic>{};
+    params["lesson_id"] = lessonId;
+    params["step_id"] = stepId;
+    params["completed"] = "1";
+
+    DioUtils.instance.requestNetwork<ResultData>(
+        Method.post, HttpApi.stepUpdate, params: params, onSuccess: (result) {},
+        onError: (code, msg) {
+      setState(() {});
+    });
   }
 
   @override
