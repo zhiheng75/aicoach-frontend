@@ -465,6 +465,8 @@ class _SettingPageState extends State<SettingPage>
                               NavigatorUtils.goBack(context);
                               //
                               EventBus().emit(NotificationUtils.loginOut);
+
+                              // EventBus().emit(NotificationUtils.loginIn);
                             }
                           });
 

@@ -86,6 +86,8 @@ class ListList {
   String unitName;
   int lessonId;
   String lessonName;
+  String lessonLabel;
+
   String lessonType;
   String objectives;
   int isUserBuy;
@@ -95,6 +97,7 @@ class ListList {
     required this.userId,
     required this.levelId,
     required this.levelName,
+    required this.lessonLabel,
     required this.unitId,
     required this.unitName,
     required this.lessonId,
@@ -109,6 +112,7 @@ class ListList {
         userId: json["user_id"],
         levelId: json["level_id"],
         levelName: json["level_name"],
+        lessonLabel: json["lesson_label"],
         unitId: json["unit_id"],
         unitName: json["unit_name"],
         lessonId: json["lesson_id"],
@@ -123,6 +127,7 @@ class ListList {
         "user_id": userId,
         "level_id": levelId,
         "level_name": levelName,
+        "lesson_label": lessonLabel,
         "unit_id": unitId,
         "unit_name": unitName,
         "lesson_id": lessonId,

@@ -14,4 +14,6 @@ class NotificationUtils {
   static String loginIn = "ResetLOGININ"; //登录
 
   static String resetInFo = "resetInFo";
+
+  static String nextClass = "NEXTCLASS";
 }

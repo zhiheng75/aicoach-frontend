@@ -86,18 +86,23 @@ class ListList {
   String unitName;
   int lessonId;
   String lessonName;
+  String lessonLabel;
+
   String lessonType;
   String objectives;
   int isUserBuy;
   int score;
+  String createdAt;
 
   ListList({
     required this.userId,
     required this.levelId,
     required this.levelName,
+    required this.lessonLabel,
     required this.unitId,
     required this.unitName,
     required this.lessonId,
+    required this.createdAt,
     required this.lessonName,
     required this.lessonType,
     required this.objectives,
@@ -108,7 +113,9 @@ class ListList {
   factory ListList.fromJson(Map<String, dynamic> json) => ListList(
         userId: json["user_id"],
         levelId: json["level_id"],
+        createdAt: json["created_at"],
         levelName: json["level_name"],
+        lessonLabel: json["lesson_label"],
         unitId: json["unit_id"],
         unitName: json["unit_name"],
         lessonId: json["lesson_id"],
@@ -126,7 +133,9 @@ class ListList {
   Map<String, dynamic> toJson() => {
         "user_id": userId,
         "level_id": levelId,
+        "created_at": createdAt,
         "level_name": levelName,
+        "lesson_label": lessonLabel,
         "unit_id": unitId,
         "unit_name": unitName,
         "lesson_id": lessonId,

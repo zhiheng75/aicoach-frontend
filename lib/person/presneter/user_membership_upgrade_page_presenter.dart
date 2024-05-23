@@ -7,8 +7,10 @@ import 'package:Bubble/mvp/base_page_presenter.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/person/entity/ali_pay_entity.dart';
+import 'package:Bubble/person/entity/basec_onfig_bean.dart';
 import 'package:Bubble/person/entity/good_list_entity.dart';
 import 'package:Bubble/person/entity/goods_bean.dart';
+import 'package:Bubble/person/entity/member_state_bean.dart';
 import 'package:Bubble/person/entity/my_good_list_entity.dart';
 import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/person/view/user_membership_upgrade_page_view.dart';
@@ -29,6 +31,36 @@ class UserMembershipUpgradepagePresenter
   void afterInit() {
     super.afterInit();
     getStudyInfo();
+    getMemberState();
+    getbaseConfig();
+  }
+
+  Future getbaseConfig() async {
+    String titleStr = "";
+    String contentStr = "";
+
+    final Map<String, dynamic> params = <String, dynamic>{};
+    return requestNetwork<ResultData>(Method.get,
+        url: HttpApi.baseConfig,
+        queryParameters: params,
+        isShow: false, onSuccess: (result) {
+      Map<String, dynamic> ebasecOnfigBeanMap = json.decode(result.toString());
+      BasecOnfigBean basecOnfigBean =
+          BasecOnfigBean.fromJson(ebasecOnfigBeanMap);
+      if (basecOnfigBean != null || basecOnfigBean.data.length != 0) {
+        for (int i = 0; i < basecOnfigBean.data.length; i++) {
+          BasecDatum datum = basecOnfigBean.data[i];
+
+          if (datum.key == "rechargeSlogan") {
+            contentStr = datum.value;
+          }
+          if (datum.key == "rechargeLessonSlogan") {
+            titleStr = datum.value;
+          }
+        }
+        view.sendSuccessMsg(titleStr, contentStr);
+      } else {}
+    });
   }
 
   Future getStudyInfo() async {
@@ -42,6 +74,19 @@ class UserMembershipUpgradepagePresenter
       GoodsBean goodsBean = GoodsBean.fromJson(goodsBeanMap);
       if (goodsBean.code == 200) {
         view.sendSuccess(goodsBean);
+      } else {
+        view.sendFail(goodsBean.msg);
+      }
+    });
+  }
+
+  Future getMemberState() async {
+    return requestNetwork<ResultData>(Method.get,
+        url: HttpApi.memberState, isShow: false, onSuccess: (data) {
+      Map<String, dynamic> memberStateBeanMap = json.decode(data.toString());
+      MemberStateBean goodsBean = MemberStateBean.fromJson(memberStateBeanMap);
+      if (goodsBean.code == 200) {
+        view.sendMemberStateSuccess(goodsBean);
       } else {
         view.sendFail(goodsBean.msg);
       }

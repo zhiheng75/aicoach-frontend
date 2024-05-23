@@ -1,3 +1,4 @@
+import 'package:Bubble/common/webview_not_nav_page.dart';
 import 'package:Bubble/home/entity/lesson_detail_bean.dart';
 import 'package:Bubble/home/page/course_pays_page.dart';
 import 'package:Bubble/scene/instructional_video_dialogue_page.dart';
@@ -24,6 +25,8 @@ class HomeRouter implements IRouterProvider {
   static String teachingDialoguePage = '/TeachingDialoguePage';
 
   static String photoViewSimpleScreen = '/PhotoViewSimpleScreen';
+
+  static String webviewNotNavPage = '/WebviewNotNavPage';
 
   @override
   void initRouter(FluroRouter router) {
@@ -67,23 +70,36 @@ class HomeRouter implements IRouterProvider {
         handler: Handler(handlerFunc: (context, params) {
       String index = params['index']!.first;
       int idx = int.parse(index);
-      final String isUserBuy = params['isUserBuy']?.first ?? '';
-      int isUserBuyInt = int.parse(isUserBuy);
-      final String levelId = params['levelId']?.first ?? '';
+      // final String isUserBuy = params['isUserBuy']?.first ?? '';
+      // int isUserBuyInt = int.parse(isUserBuy);
+      // final String levelId = params['levelId']?.first ?? '';
 
-      final String lessonId = params['lessonId']?.first ?? '';
+      // final String lessonId = params['lessonId']?.first ?? '';
 
-      List<CourseDatum> data =
-          ModalRoute.of(context!)?.settings.arguments as List<CourseDatum>;
-      // }
+      StepDetailBean data =
+          ModalRoute.of(context!)?.settings.arguments as StepDetailBean;
+      // List<CourseDatum> data =
+      //     ModalRoute.of(context!)?.settings.arguments as List<CourseDatum>;
+
       return InstructionalVideoDialoguePage(
-        data: data,
+        stepDetailData: data,
         idx: idx,
-        isUserBuy: isUserBuyInt,
-        lessonId: lessonId,
-        levelId: levelId,
         onEnd: () {},
       );
+    }));
+
+    router.define(webviewNotNavPage,
+        handler: Handler(handlerFunc: (context, params) {
+      final String url = params['url']?.first ?? '';
+      String index = params['index']!.first;
+      int idx = int.parse(index);
+
+      final String type = params['type']?.first ?? '';
+
+      StepDetailBean data =
+          ModalRoute.of(context!)?.settings.arguments as StepDetailBean;
+      return WebviewNotNavPage(
+          url: url, stepDetailData: data, idx: idx, type: type);
     }));
 
     router.define(teachingDialoguePage,

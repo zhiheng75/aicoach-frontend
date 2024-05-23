@@ -7,6 +7,7 @@ import 'package:Bubble/home/widget/problem_two_item.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/person/entity/goods_bean.dart';
+import 'package:Bubble/person/entity/member_state_bean.dart';
 import 'package:Bubble/person/presneter/user_membership_upgrade_page_presenter.dart';
 import 'package:Bubble/person/view/user_membership_upgrade_page_view.dart';
 import 'package:Bubble/person/widget/user_membership_upgrade_item.dart';
@@ -53,10 +54,16 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   bool isLoding = true;
   late String headimgurl = "";
   late String userName = "";
+  late String userVIP = "";
 
   late GoodsBean listData;
   late int idx = 0;
   late int payIdx = 0;
+
+  String _pay = 'wxpay';
+
+  late String rechargeSloganStr = "";
+  late String rechargeLessonSloganStr = "";
 
   @override
   void initState() {
@@ -93,6 +100,21 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
     return true;
   }
 
+  void pay() {
+    int _goodsId = listData.data[idx].id;
+    double _goodPrice = listData.data[idx].price;
+
+    if (_pay == 'wxpay') {
+      _userMembershipUpgradepagePresenter.wxChatPay(_goodsId, _goodPrice, true);
+    }
+    if (_pay == 'alipay') {
+      _userMembershipUpgradepagePresenter.aliPay(_goodsId, _goodPrice, true);
+    }
+    if (_pay == 'applepay') {
+      _userMembershipUpgradepagePresenter.applePay(_goodsId);
+    }
+  }
+
   Widget userInfoWidget() {
     return Container(
       height: 90,
@@ -123,7 +145,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                     ),
                   ),
                   Text(
-                    "是会员吗",
+                    userVIP,
                     style: const TextStyle(
                       fontSize: 14.0,
                       color: Colors.black,
@@ -289,7 +311,9 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
           ),
           Gaps.vGap4,
           Text(
-            listData.data[idx].desc,
+            listData.data[idx].type != 1
+                ? rechargeSloganStr
+                : rechargeLessonSloganStr,
             style: const TextStyle(
               fontSize: 12.0,
               fontWeight: FontWeight.w400,
@@ -305,6 +329,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                 onTap: () {
                   setState(() {
                     payIdx = 0;
+                    _pay = 'wxpay';
                   });
                   // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
                 },
@@ -352,6 +377,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                 onTap: () {
                   setState(() {
                     payIdx = 1;
+                    _pay = 'alipay';
                   });
                   // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
                 },
@@ -399,7 +425,9 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
           Gaps.vGap10,
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () {},
+            onTap: () {
+              pay();
+            },
             child: Center(
               child: Container(
                 width: 250.0,
@@ -663,16 +691,16 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                         ),
                         // headWidget("课程详情"),
                         detailWidget(),
-                        listData.data[idx].type == 1
+                        listData.data[idx].type != 1
                             ? otherHeadWidget("people_head")
                             : SliverToBoxAdapter(child: Container()),
-                        listData.data[idx].type == 1
+                        listData.data[idx].type != 1
                             ? otherHeadWidget("quanyi_hrad")
                             : SliverToBoxAdapter(child: Container()),
-                        listData.data[idx].type == 1
+                        listData.data[idx].type != 1
                             ? headWidget("常见问题")
                             : SliverToBoxAdapter(child: Container()),
-                        listData.data[idx].type == 1
+                        listData.data[idx].type != 1
                             ? problemWidget()
                             : SliverToBoxAdapter(
                                 child: Container(),
@@ -752,6 +780,32 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   void dispose() {
     super.dispose();
     EventBus().off(NotificationUtils.resetInFo);
+  }
+
+  @override
+  void sendMemberStateSuccess(MemberStateBean data) {
+    // TODO: implement sendMemberStateSuccess
+    if (data.code == 200) {
+      if (data.data.isMember == 1) {
+        userVIP = "会员";
+      } else if (data.data.isMember == 2) {
+        userVIP = "会员已到期 ";
+      } else {
+        userVIP = "非会员";
+      }
+    }
+    setState(() {});
+
+// userVIP
+  }
+
+  @override
+  void sendSuccessMsg(String title, String msg) {
+    // TODO: implement sendSuccessMsg
+    setState(() {
+      rechargeSloganStr = title;
+      rechargeLessonSloganStr = msg;
+    });
   }
 }
 

@@ -9,6 +9,7 @@ import 'package:Bubble/person/widget/course_error_class_item.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
+import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -235,7 +236,32 @@ class _ErrorCorrectionPageState extends State<ErrorCorrectionPage>
                   // Center(child: SizedBox(width: 300, child: tabbar())),
                   mistakelistData.isNotEmpty
                       ? Expanded(child: _refreshListView())
-                      : Container(),
+                      : Column(
+                          // mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Container(
+                              height: 200,
+                            ),
+                            const LoadAssetImage(
+                              'no_data',
+                              width: 63.0,
+                              height: 63.0,
+                            ),
+                            const SizedBox(
+                              height: 21.0,
+                            ),
+                            const Text(
+                              "这节课表现太优秀了\n没有待纠错内容，继续加油!",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w400,
+                                color: Colours.color_999999,
+                                letterSpacing: 0.05,
+                              ),
+                            ),
+                          ],
+                        ),
                 ],
               ),
       )),

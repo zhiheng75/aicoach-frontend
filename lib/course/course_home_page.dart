@@ -118,10 +118,18 @@ class _CourseHomePageState extends State<CourseHomePage>
     // TODO: implement initState
     super.initState();
     EventBus().on(NotificationUtils.loginIn, (_) {
-      _courseHomePagePresenter.getLessonList();
+      Future.delayed(const Duration(seconds: 1), () {
+        _courseHomePagePresenter.getLessonList();
+
+        // 这里是你想要延迟执行的代码
+      });
     });
     EventBus().on(NotificationUtils.loginOut, (_) {
-      _courseHomePagePresenter.getLessonList();
+      Future.delayed(const Duration(seconds: 1), () {
+        _courseHomePagePresenter.getLessonList();
+
+        // 这里是你想要延迟执行的代码
+      });
     });
   }
 
@@ -160,16 +168,24 @@ class _CourseHomePageState extends State<CourseHomePage>
 
   Widget _headTitle(String title) {
     return Container(
+      height: 45,
       width: _screenUtil.screenWidth,
       color: const Color(0xFFFFFFFF),
       child: Center(
-        child: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 17.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
+        child: Column(
+          children: [
+            Container(
+              height: 15,
+            ),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 17.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -357,6 +373,7 @@ class _CourseHomePageState extends State<CourseHomePage>
 
   @override
   void sendSuccess(LessonListBean data) {
+    listData.clear();
     setState(() {
       isLoding = false;
       if (data.data.isNotEmpty) {

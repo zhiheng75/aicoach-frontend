@@ -1,16 +1,25 @@
+import 'package:Bubble/course/entity/step_detail_bean.dart';
+import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebviewNotNavPage extends StatefulWidget {
-  final String title;
   final String url;
+  final StepDetailBean stepDetailData;
+  final int idx;
+  final String type;
 
   const WebviewNotNavPage({
     super.key,
-    required this.title,
     required this.url,
+    required this.stepDetailData,
+    required this.idx,
+    required this.type,
   });
 
   @override
@@ -57,9 +66,31 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
       )
       ..addJavaScriptChannel('goBack', onMessageReceived: (message) {
         //回到上一页
+        Navigator.of(context).pop();
+
+        if (widget.type == "1") {
+          int next = widget.idx;
+          next = next + 1;
+          if (next < widget.stepDetailData.data.data.length) {
+            //退出这一页去聊天
+            NavigatorUtils.push(context,
+                "${HomeRouter.instructionalVideoDialoguePage}?index=$next",
+                arguments: widget.stepDetailData);
+          }
+        } else {
+          //只是退出这一页 发通知
+          //发一个进行下一步的通知
+          EventBus().emit(NotificationUtils.nextClass);
+        }
       })
       ..addJavaScriptChannel('goHome', onMessageReceived: (message) {
         //回到目录页
+        if (widget.type == "1") {
+          Navigator.of(context).pop();
+        } else {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        }
       })
       ..loadRequest(Uri.parse(widget.url));
   }
@@ -76,23 +107,21 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         }
         return Future.value(true);
       },
-      child: CupertinoPageScaffold(
-        child: SafeArea(
-          child: Stack(
-            children: [
-              WebViewWidget(
-                controller: _controller,
-              ),
-              if (_progressValue != 100)
-                LinearProgressIndicator(
-                  value: _progressValue / 100,
-                  backgroundColor: Colors.transparent,
-                  minHeight: 2,
-                )
-              else
-                Gaps.empty,
-            ],
-          ),
+      child: Material(
+        child: Stack(
+          children: [
+            WebViewWidget(
+              controller: _controller,
+            ),
+            if (_progressValue != 100)
+              LinearProgressIndicator(
+                value: _progressValue / 100,
+                backgroundColor: Colors.transparent,
+                minHeight: 2,
+              )
+            else
+              Gaps.empty,
+          ],
         ),
       ),
     );

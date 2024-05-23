@@ -175,7 +175,8 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                             "https://statics.shenmo-ai.com/" +
                                                 data["user_practice_audio"];
                                         errorDetailData[idx].userPracticeScore =
-                                            data["user_practice_score"];
+                                            int.parse(
+                                                data["user_practice_score"]);
                                       });
                                     },
                                   )

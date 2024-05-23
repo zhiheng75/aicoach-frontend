@@ -17,6 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluwx/fluwx.dart';
 
 class CoursePurchasePage extends StatefulWidget {
   final String levelId;
@@ -532,10 +533,22 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                const LoadAssetImage(
-                                  "zixun_icon",
-                                  width: 40.0,
-                                  height: 40.0,
+                                GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () {
+                                    Fluwx fluwx = Fluwx();
+                                    // MiniProgram
+                                    fluwx.open(
+                                        target: CustomerServiceChat(
+                                            corpId: "wwd0c44d64eb7bcab7",
+                                            url:
+                                                "https://work.weixin.qq.com/kfid/kfc17bc7445bac300b9"));
+                                  },
+                                  child: const LoadAssetImage(
+                                    "zixun_icon",
+                                    width: 40.0,
+                                    height: 40.0,
+                                  ),
                                 ),
                                 GestureDetector(
                                   behavior: HitTestBehavior.opaque,

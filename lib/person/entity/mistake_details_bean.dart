@@ -72,7 +72,7 @@ class Datum {
         id: json["id"],
         userId: json["user_id"],
         lessonId: json["lesson_id"],
-        lessonName: json["lesson_name"],
+        lessonName: json["lesson_name"] ?? "",
         sentence: json["sentence"],
         userScore: json["user_score"],
         userSentence: json["user_sentence"],

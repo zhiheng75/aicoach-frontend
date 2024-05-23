@@ -176,7 +176,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     // _homeProvider.resetChatParams();
     List<CourseDatum> data = stepDetailData.data.data;
     CourseDatum dataIdx = stepDetailData.data.data[idx];
-    characterSceneIdStr = dataIdx.resource[0].sceneId;
+    characterSceneIdStr = dataIdx.resource[0].sceneId!;
 
     SceneEntity scene = SceneEntity();
     scene.id = characterSceneIdStr;
@@ -192,9 +192,15 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     _homeProvider.resetChatParams();
     _homeProvider.scene = scene;
     //
-    NavigatorUtils.push(context,
-        "${HomeRouter.instructionalVideoDialoguePage}?index=$idx&isUserBuy=${stepDetailData.data.isUserBuy}&levelId=${stepDetailData.data.levelId}&lessonId=${stepDetailData.data.lessonId}",
-        arguments: data);
+    if (dataIdx.resource[0].resourceType == 2) {
+      NavigatorUtils.push(context,
+          "${HomeRouter.webviewNotNavPage}?url=${Uri.encodeComponent(dataIdx.resource[0].gameUrl ?? "")}&index=$idx&type=1",
+          arguments: stepDetailData);
+    } else {
+      NavigatorUtils.push(
+          context, "${HomeRouter.instructionalVideoDialoguePage}?index=$idx",
+          arguments: stepDetailData);
+    }
   }
 
   void selectScene(SceneEntity scene) {

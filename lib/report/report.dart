@@ -447,7 +447,7 @@ class _ReportPageState extends State<ReportPage>
           }
           _type = type;
           if (type == "class") {
-            _message = '还你还没有系统课报告，快去上课吧！';
+            _message = '你还没有系统课报告，快去上课吧！';
           } else if (type == "chat") {
             _message = '还没有口语学习报告，\n快点开始学习吧！';
           } else if (type == "exam") {
@@ -486,10 +486,10 @@ class _ReportPageState extends State<ReportPage>
         // const SizedBox(
         //   width: 8.0,
         // ),
-        barItem('系统班报告', 'class'),
+        barItem('系统课报告', 'class'),
         Gaps.hGap8,
 
-        barItem('口语联系报告', 'chat'),
+        barItem('口语练习报告', 'chat'),
         Gaps.hGap8,
 
         barItem('模考报告', 'exam'), //隐藏
@@ -555,14 +555,18 @@ class _ReportPageState extends State<ReportPage>
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          item.topicName,
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                            height: 18.0 / 16.0,
-                            letterSpacing: 0.05,
+                        SizedBox(
+                          width: _screenUtil.screenWidth - 220,
+                          child: Text(
+                            item.topicName,
+                            maxLines: 2,
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                              height: 18.0 / 16.0,
+                              letterSpacing: 0.05,
+                            ),
                           ),
                         ),
                         const SizedBox(

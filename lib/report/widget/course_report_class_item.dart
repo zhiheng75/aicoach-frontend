@@ -61,7 +61,7 @@ class _CourseReportClassItemState extends State<CourseReportClassItem> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    widget.index.toString(),
+                    widget.unitData.lessonLabel,
                     style: const TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.w400,
@@ -95,38 +95,121 @@ class _CourseReportClassItemState extends State<CourseReportClassItem> {
                   const SizedBox(
                     height: 8.0,
                   ),
-                  const Text(
-                    "学习时间:",
-                    style: TextStyle(
-                      fontSize: 13.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colours.color_666666,
-                    ),
-                  ),
                   Text(
-                    "综合得分:${widget.unitData.score}分 ",
+                    "学习时间:${widget.unitData.createdAt}",
                     style: const TextStyle(
                       fontSize: 13.0,
                       fontWeight: FontWeight.w400,
                       color: Colours.color_666666,
                     ),
                   ),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  star(widget.unitData.score.toInt()),
+
+                  // Text(
+                  //   "综合得分:${widget.unitData.score}分 ",
+                  //   style: const TextStyle(
+                  //     fontSize: 13.0,
+                  //     fontWeight: FontWeight.w400,
+                  //     color: Colours.color_666666,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
             Gaps.hGap10,
-            Text(
-              widget.unitData.completed == 0 ? "去上课" : "已完成",
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w400,
-                color: widget.unitData.completed == 0
-                    ? Colours.color_00BB40
-                    : Colours.color_666666,
-              ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      '${widget.unitData.score}',
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        color:
+                            getColorByScore(widget.unitData.score.toDouble()),
+                        letterSpacing: 0.05,
+                      ),
+                    ),
+                    const Text(
+                      '综合得分',
+                      style: TextStyle(
+                        fontSize: 11.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colours.color_999999,
+                        letterSpacing: 0.05,
+                      ),
+                    ),
+                  ],
+                ),
+                // const SizedBox(
+                //   height: 7.0,
+                // ),
+              ],
             ),
-            Gaps.hGap10,
+            // Text(
+            //   widget.unitData.completed == 0 ? "去上课" : "已完成",
+            //   style: TextStyle(
+            //     fontSize: 16.0,
+            //     fontWeight: FontWeight.w400,
+            //     color: widget.unitData.completed == 0
+            //         ? Colours.color_00BB40
+            //         : Colours.color_666666,
+            //   ),
+            // ),
+            const LoadAssetImage(
+              "ic_arrow_right",
+              width: 15.0,
+              height: 15.0,
+            ),
+            // Gaps.hGap10,
           ],
         ));
+  }
+
+  Color getColorByScore(double score) {
+    Color color;
+    if (score < 50) {
+      color = const Color(0xFFE00094);
+    } else if (score < 80) {
+      color = const Color(0xFF020000);
+    } else {
+      color = const Color(0xFF24B340);
+    }
+    return color;
+  }
+
+  Widget star(num score) {
+    List<Widget> children = [];
+    int count = 0;
+    if (score >= 92) {
+      count = 5;
+    } else if (score >= 80) {
+      count = 4;
+    } else if (score >= 60) {
+      count = 3;
+    } else if (score >= 50) {
+      count = 2;
+    } else {
+      count = 1;
+    }
+    while (count > 0) {
+      children.add(const LoadAssetImage(
+        'star',
+        width: 16.0,
+        height: 15.0,
+      ));
+      count--;
+    }
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: children,
+    );
   }
 }

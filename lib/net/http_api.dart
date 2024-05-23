@@ -79,6 +79,7 @@ class HttpApi {
   //学习报告的集合
   static const String studyReportList = "app/conversations";
   static const String goods = "goods";
+  static const String memberState = "member_state";
 
 //课程报告列表
   static const String lessonReports = "lesson_reports";

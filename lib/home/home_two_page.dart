@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:Bubble/chat/entity/character_entity.dart';
+import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/entity/banner_list_bean.dart';
@@ -18,19 +19,26 @@ import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/scene/entity/category_entity.dart';
 import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/scene/widget/select_scene.dart';
+import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/confirm_utils.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/group_avatar_widget.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:common_utils/common_utils.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extended;
 import 'package:Bubble/chat/entity/character_list_bean.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jverify/jverify.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/home/entity/banner_list_bean.dart';
@@ -535,12 +543,89 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   void initState() {
     // TODO: implement initState
     super.initState();
+    initDio();
+    initUM();
+
+    // 初始化手机号一键登录插件
+    initPlatformState();
+    // 获取体验时间
+    // _homeProvider.getUsageTime();
+
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     EventBus().on(NotificationUtils.loginIn, (_) {
       _homeTwoPagePresenter.getBannerList();
     });
     EventBus().on(NotificationUtils.loginOut, (_) {
       _homeTwoPagePresenter.getBannerList();
+    });
+  }
+
+  void initDio() async {
+    final deviceInfoPlugin = DeviceInfoPlugin();
+    BaseDeviceInfo deviceInfo = await deviceInfoPlugin.deviceInfo;
+    final allInfo = deviceInfo.data;
+    final info = await PackageInfo.fromPlatform();
+
+//手机品牌加型号
+    DioUtils.instance.dio.options.headers['version'] = info.version;
+    DioUtils.instance.dio.options.headers['buildNumber'] = info.buildNumber;
+    String platformStr = Channel.channelios;
+    String sysInfo = "";
+
+    if (Device.isAndroid) {
+      AndroidDeviceInfo androidDeviceInfo =
+          await DeviceInfoPlugin().androidInfo;
+
+      platformStr = Channel.channelhuawei;
+      final Map<String, String> params = <String, String>{};
+      params["manufacturer"] = androidDeviceInfo.manufacturer;
+      params["id"] = androidDeviceInfo.id;
+      params["brand"] = androidDeviceInfo.brand;
+      params["board"] = androidDeviceInfo.board;
+      params["model"] = androidDeviceInfo.model;
+      params["version"] = androidDeviceInfo.version.release;
+      params["device"] = androidDeviceInfo.device;
+      params["display"] = androidDeviceInfo.display;
+
+      sysInfo = params.toString(); //allInfo.toString();
+    } else {
+      IosDeviceInfo iosDeviceInfo = await DeviceInfoPlugin().iosInfo;
+
+      platformStr = Channel.channelios;
+      final Map<String, String> params = <String, String>{};
+      params["version"] = iosDeviceInfo.systemVersion;
+      params["model"] = iosDeviceInfo.model;
+      params["localizedModel"] = iosDeviceInfo.localizedModel;
+      params["isPhysicalDevice"] = iosDeviceInfo.isPhysicalDevice ? "1" : "0";
+      params["systemName"] = iosDeviceInfo.systemName;
+      params["machine"] = iosDeviceInfo.utsname.machine;
+
+      sysInfo = params.toString();
+    }
+    DioUtils.instance.dio.options.headers['sysInfo'] = sysInfo;
+    DioUtils.instance.dio.options.headers['marketplace'] = platformStr;
+    DioUtils.instance.dio.options.headers['applyName'] = info.appName;
+  }
+
+  void initUM() {
+    EventUMStatistics.umengCommonInit();
+  }
+
+  Future<void> initPlatformState() async {
+    // 初始化 SDK 之前添加监听
+    Constant.jverify.addSDKSetupCallBackListener((JVSDKSetupEvent event) {
+      LogUtil.d("receive sdk setup call back event :${event.toMap()}");
+    });
+
+    Constant.jverify.setDebugMode(true); // 打开调试模式
+    Constant.jverify.setup(
+        appKey: "d213d60b209d0807dc4146f4", //"你自己应用的 AppKey",
+        channel: "devloper-default"); // 初始化sdk,  appKey 和 channel 只对ios设置有效
+    if (!mounted) return;
+
+    /// 授权页面点击时间监听
+    Constant.jverify.addAuthPageEventListener((JVAuthPageEvent event) {
+      LogUtil.d("receive auth page event :${event.toMap()}");
     });
   }
 
@@ -696,6 +781,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   @override
   void sendCharacterListSuccess(CharacterListBean data) {
     // TODO: implement sendCharacterListSuccess
+    // characterList.clear();
     characterList.addAll(data.data);
     for (int i = 0; i < characterList.length; i++) {
       headData.add(characterList[i].avatarImage);
@@ -758,6 +844,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   @override
   void sendBannerListSuccess(BannerListBean data) {
     // TODO: implement sendBannerListSuccess
+    banner.clear();
+    lesson.clear();
     banner.addAll(data.data.banner);
     lesson.addAll(data.data.lesson);
     isKetShow = data.data.isKetShow;

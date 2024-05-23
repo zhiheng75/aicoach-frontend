@@ -3,9 +3,11 @@ import 'dart:ui';
 
 import 'package:Bubble/chat/entity/character_entity.dart';
 import 'package:Bubble/chat/widget/course_bottom_bar.dart';
+import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/course/entity/step_detail_bean.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/res/colors.dart';
+import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/scene/page/class_video_page.dart';
 import 'package:Bubble/scene/presenter/instructional_video_dialogue_presenter.dart';
@@ -38,21 +40,18 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InstructionalVideoDialoguePage extends StatefulWidget {
-  final List<CourseDatum> data;
+  // final List<CourseDatum> data;
+  final StepDetailBean stepDetailData;
   final int idx;
-  final int isUserBuy;
-  final String levelId;
-  final String lessonId;
+
   // final String characterHeadCover;
 
   const InstructionalVideoDialoguePage({
     super.key,
     required this.onEnd,
-    required this.data,
+    required this.stepDetailData,
     required this.idx,
-    required this.levelId,
-    required this.isUserBuy,
-    required this.lessonId,
+
     // required this.characterHeadCover,
   });
   final Function() onEnd;
@@ -109,6 +108,10 @@ class _InstructionalVideoDialoguePageState
   late String isVideo = "0";
   late bool isplay = false;
 
+  late List<CourseDatum> data;
+  late int isUserBuy;
+  late String levelId;
+  late String lessonId;
   void init() {
     _pageState = 'success';
     setState(() {});
@@ -208,14 +211,9 @@ class _InstructionalVideoDialoguePageState
               answer.contains('{[finish]}') ||
               RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
         //弹窗点击确定后重新链接
-        // if ((answer.contains('{[finish]}'))) {
-        //弹窗点击确定后重新链接
-        _instructionalVideoDialoguePresenter.postStepUpdate(
-            widget.lessonId, stepId);
+        _instructionalVideoDialoguePresenter.postStepUpdate(lessonId, stepId);
         onNextSocketEnd();
 
-        //   return;
-        // }
         return;
       }
       // _answer = NormalMessage();
@@ -310,31 +308,41 @@ class _InstructionalVideoDialoguePageState
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
+    EventBus().on(NotificationUtils.nextClass, (_) {
+      forFlow();
+    });
+
     // 全局监听App状态
     SystemChannels.lifecycle.setMessageHandler((message) async {
       // 退到后台
       // if (_appLifecycleState == 'AppLifecycleState.inactive' ||
       //     message == 'AppLifecycleState.paused') {}
       if (message == 'AppLifecycleState.paused') {
-        ConfirmUtils.showSingle(
-          context: context,
-          title: "请重新开始对话",
-          onCancel: () {
-            endSocket();
-            Navigator.of(context).pop();
-            widget.onEnd();
-          },
-        );
+        // ConfirmUtils.showSingle(
+        //   context: context,
+        //   title: "请重新开始对话",
+        //   onCancel: () {
+        //     endSocket();
+        //     Navigator.of(context).pop();
+        //     widget.onEnd();
+        //   },
+        // );
       }
       return message;
     });
+    // setState(() {
+    data = widget.stepDetailData.data.data;
+    // data.addAll(widget.stepDetailData.data.data);
+    isUserBuy = widget.stepDetailData.data.isUserBuy;
+    levelId = widget.stepDetailData.data.levelId.toString();
+    lessonId = widget.stepDetailData.data.lessonId.toString();
+    // });
 
     _pageState = 'success';
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     _homeProvider.ishread = "0";
     Log.e(_homeProvider.character.motionImageD);
     dataIdx = widget.idx;
-    // dataIdx = 0;
     resourceIdx = 0;
     forstartFlow(dataIdx, resourceIdx);
     // 监听App状态
@@ -355,11 +363,11 @@ class _InstructionalVideoDialoguePageState
   void forFlow() {
     resourceIdx = resourceIdx + 1;
     // dataIdx = dataIdx + 1;
-    if (resourceIdx < widget.data[dataIdx].resource.length) {
+    if (resourceIdx < data[dataIdx].resource.length) {
       // resourceIdx = resourceIdx + 1;
     } else {
       dataIdx = dataIdx + 1;
-      if (dataIdx < widget.data.length) {
+      if (dataIdx < data.length) {
         resourceIdx = 0;
       } else {
         //退出界面
@@ -371,28 +379,37 @@ class _InstructionalVideoDialoguePageState
   }
 
   void forstartFlow(int dataIdx, int resourceIdx) {
-    setState(() {
-      resourceSceneId =
-          widget.data[dataIdx].resource[resourceIdx].sceneId.toString();
-      introFileType = widget.data[dataIdx].resource[resourceIdx].introFileType!;
-      titStr = widget.data[dataIdx].resource[resourceIdx].title;
-      stepId = widget.data[dataIdx].stepId.toString();
-      _homeProvider.scene!.id = int.parse(resourceSceneId);
-      // connectWebsocket();
-      if (introFileType == "video") {
-        isVideo = "1";
-        introFileStr = widget.data[dataIdx].resource[resourceIdx].introFile!;
-        videoFlow();
-      } else if (introFileType == "image") {
-        introFileStr = widget.data[dataIdx].resource[resourceIdx].introFile!;
-        imgFlow();
-        init();
-      } else {
-        introFileStr = _homeProvider.character.motionImageD;
-        imgFlow();
-        init();
-      }
-    });
+    if (data[dataIdx].resource[resourceIdx].resourceType == 2) {
+      //跳游戏
+      Future.delayed(const Duration(seconds: 1), () {
+        NavigatorUtils.push(context,
+            "${HomeRouter.webviewNotNavPage}?url=${Uri.encodeComponent(data[dataIdx].resource[resourceIdx].gameUrl ?? "")}&index=$dataIdx&type=2",
+            arguments: widget.stepDetailData);
+      });
+    } else {
+      setState(() {
+        resourceSceneId =
+            data[dataIdx].resource[resourceIdx].sceneId.toString();
+        introFileType = data[dataIdx].resource[resourceIdx].introFileType!;
+        titStr = data[dataIdx].resource[resourceIdx].title ?? "";
+        stepId = data[dataIdx].stepId.toString();
+        _homeProvider.scene!.id = int.parse(resourceSceneId);
+        // connectWebsocket();
+        if (introFileType == "video") {
+          isVideo = "1";
+          introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
+          videoFlow();
+        } else if (introFileType == "image") {
+          introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
+          imgFlow();
+          init();
+        } else {
+          introFileStr = _homeProvider.character.motionImageD;
+          imgFlow();
+          init();
+        }
+      });
+    }
   }
 
   //视频顺序
@@ -411,14 +428,13 @@ class _InstructionalVideoDialoguePageState
       // _homeProvider.addIntroductionMessage();
       // _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
-      normalMessage.text =
-          widget.data[widget.idx].resource[resourceIdx].introText!;
+      normalMessage.text = data[widget.idx].resource[resourceIdx].introText!;
       normalMessage.audioUrl =
-          widget.data[widget.idx].resource[resourceIdx].introAudio!;
+          data[widget.idx].resource[resourceIdx].introAudio!;
       normalMessage.isTextEnd = true;
       _homeProvider.addNormalMessage(normalMessage);
       _mediaUtils.play(
-        url: widget.data[widget.idx].resource[resourceIdx].introAudio!,
+        url: data[widget.idx].resource[resourceIdx].introAudio!,
         useAvatar: true,
         whenFinished: () {
           //通知播放视频
@@ -519,14 +535,13 @@ class _InstructionalVideoDialoguePageState
       // _homeProvider.addIntroductionMessage();
       // _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
-      normalMessage.text =
-          widget.data[widget.idx].resource[resourceIdx].greetingText!;
+      normalMessage.text = data[widget.idx].resource[resourceIdx].greetingText!;
       normalMessage.audioUrl =
-          widget.data[widget.idx].resource[resourceIdx].greetingAudio!;
+          data[widget.idx].resource[resourceIdx].greetingAudio!;
       normalMessage.isTextEnd = true;
       _homeProvider.addNormalMessage(normalMessage);
       _mediaUtils.play(
-        url: widget.data[widget.idx].resource[resourceIdx].greetingAudio!,
+        url: data[widget.idx].resource[resourceIdx].greetingAudio!,
         useAvatar: true,
         whenFinished: () {
           setState(() {
@@ -551,14 +566,13 @@ class _InstructionalVideoDialoguePageState
       // _homeProvider.addIntroductionMessage();
       // _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
-      normalMessage.text =
-          widget.data[widget.idx].resource[resourceIdx].greetingText!;
+      normalMessage.text = data[widget.idx].resource[resourceIdx].greetingText!;
       normalMessage.audioUrl =
-          widget.data[widget.idx].resource[resourceIdx].greetingAudio!;
+          data[widget.idx].resource[resourceIdx].greetingAudio!;
       normalMessage.isTextEnd = true;
       _homeProvider.addNormalMessage(normalMessage);
       _mediaUtils.play(
-        url: widget.data[widget.idx].resource[resourceIdx].greetingAudio!,
+        url: data[widget.idx].resource[resourceIdx].greetingAudio!,
         useAvatar: true,
         whenFinished: () {
           _bottomBarControll.setDisabled(false);
@@ -573,15 +587,15 @@ class _InstructionalVideoDialoguePageState
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.inactive) {
       // 应用程序已经进入后台 或锁屏
-      ConfirmUtils.showSingle(
-        context: context,
-        title: "请重新开始对话",
-        onCancel: () {
-          endSocket();
-          Navigator.of(context).pop();
-          widget.onEnd();
-        },
-      );
+      // ConfirmUtils.showSingle(
+      //   context: context,
+      //   title: "请重新开始对话",
+      //   onCancel: () {
+      //     endSocket();
+      //     Navigator.of(context).pop();
+      //     widget.onEnd();
+      //   },
+      // );
     }
     _appLifecycleState = state;
     // Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
@@ -591,6 +605,7 @@ class _InstructionalVideoDialoguePageState
   bool isPlaybackLoopEnabled = false;
   @override
   void dispose() {
+    EventBus().off(NotificationUtils.nextClass);
     _homeProvider.ishread = "";
     WidgetsBinding.instance.removeObserver(this);
 
@@ -743,75 +758,53 @@ class _InstructionalVideoDialoguePageState
   }
 
   Widget navbar() {
-    return XTCupertinoNavigationBar(
-        backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
-        border: null,
-        padding: EdgeInsetsDirectional.zero,
-        leading: NavigationBackWidget(onBack: onBack),
-        middle: Text(
-          titStr,
-          style:
-              const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-        ),
-        trailing: widget.isUserBuy == 1
-            ? Container()
-            : GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-//到课程购买页
-                  NavigatorUtils.push(
-                    context,
-                    "${HomeRouter.coursePurchasePage}?levelId=${widget.levelId}",
-                  );
-                },
-                child: const LoadAssetImage(
-                  'class_vip_icon',
-                  width: 32.0,
-                  height: 32.0,
-                ),
-              ));
-
     return Container(
-      width: _screenUtil.screenWidth,
-      // margin: const EdgeInsets.symmetric(
-      //   horizontal: 16.0,
-      // ),
-      // alignment: Alignment.centerRight,
+      height: _screenUtil.statusBarHeight + 64,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          const SizedBox(width: 15),
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: onConversationEnd,
-            child: const LoadAssetImage(
-              'guanbi_yuan_bai',
-              width: 32.0,
-              height: 32.0,
-            ),
-          ),
-          const Expanded(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "这里是科恒名字",
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w400,
-                  color: Colours.color_001652,
-                ),
+            onTap: () async {
+              onBack();
+            },
+            child: SizedBox(
+              width: 20,
+              height: 20,
+              child: Image.asset(
+                width: 20,
+                height: 26,
+                'assets/images/ic_back_icon.png',
               ),
-            ],
-          )),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: onConversationEnd,
-            child: const LoadAssetImage(
-              'guanbi_yuan_bai',
-              width: 32.0,
-              height: 32.0,
             ),
           ),
+          Expanded(
+              child: Center(
+                  child: Text(
+            titStr ?? "",
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold),
+          ))),
+          isUserBuy == 1
+              ? Container(
+                  width: 35,
+                )
+              : GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+//到课程购买页
+                    NavigatorUtils.push(
+                      context,
+                      "${HomeRouter.coursePurchasePage}?levelId=$levelId",
+                    );
+                  },
+                  child: const LoadAssetImage(
+                    'class_vip_icon',
+                    width: 32.0,
+                    height: 32.0,
+                  ),
+                )
         ],
       ),
     );
@@ -838,7 +831,7 @@ class _InstructionalVideoDialoguePageState
 
   List<Widget> _buildItems() {
     List<Widget> list = [];
-    for (int i = 0; i < widget.data.length; i++) {
+    for (int i = 0; i < data.length; i++) {
       if (i == widget.idx) {
         list.add(
           const SizedBox(
@@ -874,44 +867,7 @@ class _InstructionalVideoDialoguePageState
           child: LoadImage(
             provider.scene?.cover ?? '',
           ),
-          // Column(
-          //   children: <Widget>[
-          // LoadImage(
-          //   provider.scene?.cover ?? '',
-          // ),
-          //     Expanded(
-          //       child: ImageFiltered(
-          //         imageFilter: ImageFilter.blur(
-          //           sigmaX: 7.0,
-          //           sigmaY: 7.0,
-          //         ),
-          //         child: LoadImage(
-          //           provider.scene?.cover ?? '',
-          //           fit: BoxFit.fitHeight,
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
         );
-
-        // Widget navbar = Container(
-        //   width: _screenUtil.screenWidth - 32.0,
-        //   margin: const EdgeInsets.symmetric(
-        //     horizontal: 16.0,
-        //   ),
-        //   alignment: Alignment.centerRight,
-        //   child: GestureDetector(
-        //     behavior: HitTestBehavior.opaque,
-        //     onTap: onConversationEnd,
-        //     child: const LoadAssetImage(
-        //       'guanbi_yuan_bai',
-        //       width: 32.0,
-        //       height: 32.0,
-        //     ),
-        //   ),
-        // );
-
         double contentTop = _screenUtil.statusBarHeight + 300.0;
         Widget inner;
         if (_pageState == 'success') {
@@ -943,7 +899,7 @@ class _InstructionalVideoDialoguePageState
                 child: CourseBottomBar(
                   stepId: stepId,
                   sceneId: resourceSceneId,
-                  lessonId: widget.lessonId,
+                  lessonId: lessonId,
                   chatWebsocket: _chatWebsocket,
                   controller: _bottomBarControll,
                   recordController: _recordController,
@@ -982,27 +938,9 @@ class _InstructionalVideoDialoguePageState
           body: Stack(
             children: [
               background,
-              Positioned(
-                // top: _screenUtil.statusBarHeight + 9.0,
-                child: navbar(),
-              ),
+              navbar(),
               topWidget(),
               topFlowWidget(),
-              // Positioned(
-              //   top: _screenUtil.statusBarHeight + 50,
-              //   width: _screenUtil.screenWidth,
-              //   height: 200,
-              //   child: _controller.value.isInitialized
-              //       ? AspectRatio(
-              //           aspectRatio: _controller.value.aspectRatio,
-              //           child: Container(
-              //               color: Colors.blue,
-              //               child: VideoPlayer(_controller)),
-              //         )
-              //       : Container(
-              //           color: Colors.blue,
-              //         ),
-              // ),
               Positioned(
                 top: contentTop,
                 left: 0,

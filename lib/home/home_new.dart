@@ -70,9 +70,10 @@ class _HomePageState extends State<HomeNewPage>
 
     // 初始化手机号一键登录插件
     initPlatformState();
-    checkCollectInformation();
     // 获取体验时间
     _homeProvider.getUsageTime();
+
+    checkCollectInformation();
   }
 
   void initUM() {
@@ -255,17 +256,7 @@ class _HomePageState extends State<HomeNewPage>
           enableDrag: false,
           builder: (_) => type == 'topic'
               ? TopicPage(onEnd: () => changeTab('chat'))
-              : type == "scene"
-                  ? ScenePage(onEnd: () => changeTab('chat'))
-                  : InstructionalVideoDialoguePage(
-                      data: [],
-                      idx: 0,
-                      onEnd: () => changeTab('chat'),
-                      isUserBuy: 0,
-                      levelId: '1',
-                      lessonId: "1",
-                      // characterHeadCover: "1",
-                    ),
+              : ScenePage(onEnd: () => changeTab('chat')),
         );
         // 重置tab
         changeTab('');

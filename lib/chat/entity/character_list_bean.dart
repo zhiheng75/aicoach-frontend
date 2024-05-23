@@ -104,7 +104,7 @@ class Datum {
         stillImage: json["still_image"],
         motionImage: json["motion_image"],
         avatarImage: json["avatar_image"],
-        avatarId: json["avatar_id"],
+        avatarId: json["avatar_id"] ?? "",
         greetingText: json["greeting_text"],
         greetingAudio: json["greeting_audio"],
         tts: json["tts"],

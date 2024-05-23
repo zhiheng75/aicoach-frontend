@@ -151,9 +151,11 @@ class CourseDatum {
 }
 
 class Resource {
-  int sceneId;
-  String characterId;
-  String title;
+  int? sceneId;
+  String? characterId;
+  int resourceType;
+  String? gameUrl;
+  String? title;
   String? greetingAudio;
   String? greetingText;
   String? introFileType;
@@ -165,6 +167,8 @@ class Resource {
   Resource({
     required this.sceneId,
     required this.characterId,
+    required this.resourceType,
+    required this.gameUrl,
     required this.title,
     required this.greetingAudio,
     required this.greetingText,
@@ -176,21 +180,25 @@ class Resource {
   });
 
   factory Resource.fromJson(Map<String, dynamic> json) => Resource(
-        sceneId: json["scene_id"],
-        characterId: json["character_id"],
-        title: json["title"],
+        sceneId: json["scene_id"] ?? 0,
+        characterId: json["character_id"] ?? "",
+        resourceType: json["resource_type"] ?? 1,
+        gameUrl: json["game_url"] ?? "",
+        title: json["title"] ?? "",
         greetingAudio: json["greeting_audio"] ?? "999999",
         greetingText: json["greeting_text"] ?? "999999",
         introFileType: json["intro_file_type"] ?? "999999",
         introFile: json["intro_file"] ?? "999999",
         introAudio: json["intro_audio"] ?? "999999",
         introText: json["intro_text"] ?? "999999",
-        characterAvatar: json["character_avatar"],
+        characterAvatar: json["character_avatar"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
         "scene_id": sceneId,
         "character_id": characterId,
+        "resource_type": resourceType,
+        "game_url": gameUrl,
         "title": title,
         "greeting_audio": greetingAudio,
         "greeting_text": greetingText,

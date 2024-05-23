@@ -506,7 +506,7 @@ class _PersonPageState extends State<PersonPage>
                               ? ""
                               : phone == "17001234567"
                                   ? "奖牌领取"
-                                  : permissionBeanData.data.isMember != 1
+                                  : permissionBeanData.data.isMember == 1
                                       ? '会员权益'
                                       : '升级会员 为学习提速',
                           // islog
@@ -909,7 +909,6 @@ class _PersonPageState extends State<PersonPage>
                         SizedBox(
                           height: _screenUtil.statusBarHeight + 40,
                         ),
-
                         studyInfo(),
                         const SizedBox(
                           height: 16.0,

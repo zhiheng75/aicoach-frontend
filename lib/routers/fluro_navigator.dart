@@ -65,6 +65,12 @@ class NavigatorUtils {
         '${Routes.webViewPage}?title=${Uri.encodeComponent(title)}&url=${Uri.encodeComponent(url)}');
   }
 
+  // /// 跳到WebView页
+  // static void goWeNotbViewPage(BuildContext context, String url) {
+  //   //fluro 不支持传中文,需转换
+  //   push(context, '${Routes.webNotViewPage}&url=${Uri.encodeComponent(url)}');
+  // }
+
   static void unfocus() {
     // 使用下面的方式，会触发不必要的build。
     // FocusScope.of(context).unfocus();

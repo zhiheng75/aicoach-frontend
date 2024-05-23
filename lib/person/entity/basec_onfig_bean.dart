@@ -12,7 +12,7 @@ String basecOnfigBeanToJson(BasecOnfigBean data) => json.encode(data.toJson());
 class BasecOnfigBean {
   int code;
   String msg;
-  List<Datum> data;
+  List<BasecDatum> data;
 
   BasecOnfigBean({
     required this.code,
@@ -23,7 +23,8 @@ class BasecOnfigBean {
   factory BasecOnfigBean.fromJson(Map<String, dynamic> json) => BasecOnfigBean(
         code: json["code"],
         msg: json["msg"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<BasecDatum>.from(
+            json["data"].map((x) => BasecDatum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -33,7 +34,7 @@ class BasecOnfigBean {
       };
 }
 
-class Datum {
+class BasecDatum {
   String key;
   String value;
   int status;
@@ -41,7 +42,7 @@ class Datum {
   int id;
   DateTime createdAt;
 
-  Datum({
+  BasecDatum({
     required this.key,
     required this.value,
     required this.status,
@@ -50,7 +51,7 @@ class Datum {
     required this.createdAt,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory BasecDatum.fromJson(Map<String, dynamic> json) => BasecDatum(
         key: json["key"],
         value: json["value"],
         status: json["status"],

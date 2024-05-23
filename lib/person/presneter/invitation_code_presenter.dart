@@ -31,7 +31,7 @@ class InvitationCodePresenter extends BasePagePresenter<InvitationCodeView> {
           BasecOnfigBean.fromJson(ebasecOnfigBeanMap);
       if (basecOnfigBean != null || basecOnfigBean.data.length != 0) {
         for (int i = 0; i < basecOnfigBean.data.length; i++) {
-          Datum datum = basecOnfigBean.data[i];
+          BasecDatum datum = basecOnfigBean.data[i];
 
           if (datum.key == "invite_content") {
             contentStr = datum.value;

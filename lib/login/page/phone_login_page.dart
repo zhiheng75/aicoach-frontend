@@ -203,39 +203,37 @@ class _PhoneLoginPageState extends State<PhoneLoginPage>
                             ),
                           ),
                           // Gaps.hGap10,
-                          Text(
+                          const Text(
                             "我已阅读并同意",
-                            style: TextStyle(
-                                fontSize: Dimens.font_sp12,
-                                color: Colours.black),
+                            style:
+                                TextStyle(fontSize: 14, color: Colours.black),
                           ),
                           GestureDetector(
                             onTap: () {
                               NavigatorUtils.goWebViewPage(context, "隐私政策",
                                   "http://www.shenmo-ai.com/privacy_policy/");
                             },
-                            child: Text("隐私政策",
+                            child: const Text("隐私政策",
                                 style: TextStyle(
-                                    fontSize: Dimens.font_sp12,
+                                    fontSize: 14,
                                     color: Colours.color_0047FF,
                                     decoration: TextDecoration.underline)),
                           ),
-                          Text(
+                          const Text(
                             "和",
                             style: TextStyle(
-                                fontSize: Dimens.font_sp12,
-                                color: Colours.color_546092),
+                                fontSize: 14, color: Colours.color_546092),
                           ),
                           GestureDetector(
                             onTap: () {
                               NavigatorUtils.goWebViewPage(context, "服务协议",
                                   "http://www.shenmo-ai.com/tos/");
                             },
-                            child: Text(
+                            child: const Text(
                               "服务协议",
                               style: TextStyle(
                                   color: Colours.color_0047FF,
-                                  fontSize: Dimens.font_sp12,
+                                  fontSize: 14,
                                   decoration: TextDecoration.underline),
                             ),
                           ),

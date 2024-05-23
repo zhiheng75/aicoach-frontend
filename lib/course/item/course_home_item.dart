@@ -61,7 +61,7 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    widget.index.toString(),
+                    widget.unitData.lessonLabel,
                     style: const TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,

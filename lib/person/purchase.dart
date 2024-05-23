@@ -78,7 +78,7 @@ class _PurchasePageState extends State<PurchasePage>
           BasecOnfigBean.fromJson(ebasecOnfigBeanMap);
       if (basecOnfigBean != null || basecOnfigBean.data.length != 0) {
         for (int i = 0; i < basecOnfigBean.data.length; i++) {
-          Datum datum = basecOnfigBean.data[i];
+          BasecDatum datum = basecOnfigBean.data[i];
           if (datum.key == "rechargeTitle") {
             title = datum.value;
           }

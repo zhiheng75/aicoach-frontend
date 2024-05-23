@@ -1,3 +1,4 @@
+import 'package:Bubble/common/webview_not_nav_page.dart';
 import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/util/log_utils.dart';
@@ -18,6 +19,7 @@ import 'not_found_page.dart';
 class Routes {
   static String home = '/home';
   static String webViewPage = '/webView';
+  // static String webNotViewPage = '/WebviewNotNavPage';
 
   static final List<IRouterProvider> _listRouter = [];
 
@@ -39,6 +41,11 @@ class Routes {
       return WebViewPage(title: title, url: url);
     }));
 
+    // router.define(webNotViewPage, handler: Handler(handlerFunc: (_, params) {
+    //   Log.e(params.toString());
+    //   final String url = params['url']?.first ?? '';
+    //   return WebviewNotNavPage(url: url);
+    // }));
     _listRouter.clear();
 
     /// 各自路由由各自模块管理，统一在此添加初始化
