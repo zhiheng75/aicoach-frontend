@@ -10,6 +10,7 @@ import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
@@ -44,7 +45,9 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
   final MediaUtils _mediaUtils = MediaUtils();
   List<Uint8List> _bufferList = [];
   final RecognizeUtil _recognizeUtil = RecognizeUtil();
-  bool isInSendButton = true;
+  // bool isInSendButton = true;
+  late bool isTalk = false;
+
   @override
   void initState() {
     super.initState();
@@ -116,12 +119,20 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
       ..addJavaScriptChannel('startRecord', onMessageReceived: (message) {
         startRecord();
       })
-      ..addJavaScriptChannel('cancelRecord', onMessageReceived: (message) {
-        setState(() {
-          isInSendButton = false;
-        });
+      ..addJavaScriptChannel('finshRecord', onMessageReceived: (message) {
+        finshRecord();
       })
+      // ..addJavaScriptChannel('cancelRecord', onMessageReceived: (message) {
+      //   setState(() {
+      //     // isInSendButton = false;
+      //   });
+      // })
       ..loadRequest(Uri.parse(widget.url));
+  }
+
+  void finshRecord() async {
+    isTalk = false;
+    await _mediaUtils.stopRecord();
   }
 
   void startRecord() async {
@@ -149,8 +160,18 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
       });
       // 设置识别
       _recognizeUtil.recognize((result) async {
-        // 取消发送
-        if (!isInSendButton) {
+        bool shoRecord = isTalk;
+        // 录音中
+        if (shoRecord) {
+          // 识别失败
+          if (result['success'] == false) {
+            isTalk = false;
+            await _mediaUtils.stopRecord();
+            Toast.show(
+              result['message'],
+              duration: 1000,
+            );
+          }
           return;
         }
         if (result['success'] == false) {
@@ -158,14 +179,16 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
             result['message'],
             duration: 1000,
           );
+          isTalk = false;
           return;
         }
-
+        Log.e("录音后识别的文字${result['text']}");
         String textStr = result['text'];
         //检测出来的音频
         // await _controller.
         _postUploadText(textStr);
       });
+      isTalk = true;
     } catch (e) {
       Toast.show(
         e.toString().substring(11),

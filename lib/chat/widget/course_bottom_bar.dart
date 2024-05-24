@@ -420,10 +420,13 @@ class _CourseBottomBarState extends State<CourseBottomBar>
           stream: AvatarController().getStream(),
           builder: (_, snapshot) {
             dynamic data = snapshot.data;
-            Log.e(data == true ? "111111" : "22222222");
-            if (widget.onFinshEnd != null) {
-              widget.onFinshEnd!(data);
+            if (data == bool) {
+              if (widget.onFinshEnd != null) {
+                widget.onFinshEnd!(data);
+              }
             }
+            // Log.e(data == true ? "111111" : "22222222");
+
             return Container(
               height: 50.0,
               decoration: BoxDecoration(

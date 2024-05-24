@@ -312,7 +312,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                   onTap: () {
                     LoginManager.checkLogin(context, () {
                       if (stepDetailData.data.reportStatus == 0) {
-                        Toast.show("未完成课程");
+                        Toast.show("课程完成后才可查看学习报告");
                       } else {
                         NavigatorUtils.push(context,
                             "${CourseRouter.courseReportPage}?lessonId=${widget.lessonId}");
@@ -357,7 +357,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                   onTap: () {
                     LoginManager.checkLogin(context, () {
                       if (stepDetailData.data.mistakeStatus == 0) {
-                        Toast.show("未完成课程");
+                        Toast.show("课程完成后才可以纠错");
                       } else {
                         NavigatorUtils.push(context,
                             "${PersonalRouter.errorCorrectionDetailPage}?lessonId=${widget.lessonId}");
@@ -426,7 +426,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                       // selectScene(sceneList[index]);
 
                       if (stepDetailData.data.evaluationStatus == 0) {
-                        Toast.show("未完成课程");
+                        Toast.show("课程完成后才可评价");
                       } else {
                         NavigatorUtils.push(
                             context, CourseRouter.curriculumEvaluationPage,

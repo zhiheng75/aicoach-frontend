@@ -6,9 +6,11 @@ import 'package:Bubble/course/item/course_home_item.dart';
 import 'package:Bubble/course/item/lesson_sele_item.dart';
 import 'package:Bubble/course/presenter/course_home_page_presenter.dart';
 import 'package:Bubble/course/view/course_home_page_view.dart';
+import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/confirm_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
@@ -132,6 +134,12 @@ class _CourseHomePageState extends State<CourseHomePage>
         // 这里是你想要延迟执行的代码
       });
     });
+
+    EventBus().on(NotificationUtils.resetChat, (idx) {
+      if (idx == "1") {
+        _courseHomePagePresenter.getLessonList();
+      }
+    });
   }
 
   @override
@@ -139,6 +147,7 @@ class _CourseHomePageState extends State<CourseHomePage>
     super.dispose();
     EventBus().off(NotificationUtils.loginIn);
     EventBus().off(NotificationUtils.loginOut);
+    EventBus().off(NotificationUtils.resetChat);
   }
 
   Widget tabbar() {
@@ -192,6 +201,33 @@ class _CourseHomePageState extends State<CourseHomePage>
     );
   }
 
+  void showView(int levelId) {
+    ConfirmUtils.show(
+      context: context,
+      title: '提示',
+      buttonDirection: 'vertical',
+      confirmButtonText: '暂不购买',
+      cancelButtonText: '立即购买',
+      onConfirm: () {},
+      onCancel: () {
+        //去购买页
+        NavigatorUtils.push(
+          context,
+          "${HomeRouter.coursePurchasePage}?levelId=$levelId",
+        );
+      },
+      child: const Text(
+        '购买课程即可开始学习',
+        style: TextStyle(
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+          color: Color(0xFF333333),
+          height: 18.0 / 15.0,
+        ),
+      ),
+    );
+  }
+
   List<Widget> _buildItems(
       List<UnitList> xxlist, Color backColor, List<Color> iconBackColor) {
     List<Widget> list = [];
@@ -207,18 +243,18 @@ class _CourseHomePageState extends State<CourseHomePage>
                     "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
               } else {
                 Toast.show(
-                  '老师还没安排这节课',
+                  '需要老师安排课才能上课',
                 );
               }
-            } else if (xxlist[i].isLocked == 0) {
-              NavigatorUtils.push(
-                  context,
-                  // CourseRouter.courseFlowPage,
-                  "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
             } else {
-              Toast.show(
-                '请购买',
-              );
+              if (xxlist[i].isLocked == 0) {
+                NavigatorUtils.push(
+                    context,
+                    // CourseRouter.courseFlowPage,
+                    "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
+              } else {
+                showView(xxlist[i].levelId);
+              }
             }
           },
           child: CourseHomeItem(
