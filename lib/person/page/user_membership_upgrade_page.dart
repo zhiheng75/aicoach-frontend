@@ -791,7 +791,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
       } else if (data.data.isMember == 2) {
         userVIP = "会员已到期 ";
       } else {
-        userVIP = "非会员";
+        userVIP = "暂未开通会员";
       }
     }
     setState(() {});

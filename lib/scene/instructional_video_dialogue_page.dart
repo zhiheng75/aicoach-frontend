@@ -32,12 +32,15 @@ import '../chat/widget/message_list.dart';
 import '../chat/widget/record.dart';
 import '../home/provider/home_provider.dart';
 import '../home/widget/expiration_reminder.dart';
+import '../main.dart';
 import '../mvp/base_page.dart';
 import '../util/media_utils.dart';
 import '../widgets/load_data.dart';
 import '../widgets/load_fail.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+// final RouteObserver<Route<dynamic>> routeObserver = RouteObserver();
 
 class InstructionalVideoDialoguePage extends StatefulWidget {
   // final List<CourseDatum> data;
@@ -66,6 +69,7 @@ class _InstructionalVideoDialoguePageState
     with
         BasePageMixin<InstructionalVideoDialoguePage,
             InstructionalVideoDialoguePresenter>,
+        RouteAware,
         AutomaticKeepAliveClientMixin<InstructionalVideoDialoguePage>,
         WidgetsBindingObserver
     implements
@@ -112,6 +116,11 @@ class _InstructionalVideoDialoguePageState
   late int isUserBuy;
   late String levelId;
   late String lessonId;
+
+  late String isShowStr = "1";
+  late int chatNumberEnd = 0;
+  late String ischatEndStr = "0";
+
   void init() {
     _pageState = 'success';
     setState(() {});
@@ -210,9 +219,9 @@ class _InstructionalVideoDialoguePageState
           (answer.contains('[end_session]') ||
               answer.contains('{[finish]}') ||
               RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
+        ischatEndStr == "1";
         //弹窗点击确定后重新链接
         _instructionalVideoDialoguePresenter.postStepUpdate(lessonId, stepId);
-        onNextSocketEnd();
 
         return;
       }
@@ -243,6 +252,7 @@ class _InstructionalVideoDialoguePageState
     }
     if (answer is Uint8List) {
       _answer!.audio.add(answer);
+      chatNumberEnd = chatNumberEnd + 1;
       if (_appLifecycleState == AppLifecycleState.paused) {
         return;
       }
@@ -332,7 +342,6 @@ class _InstructionalVideoDialoguePageState
     });
     // setState(() {
     data = widget.stepDetailData.data.data;
-    // data.addAll(widget.stepDetailData.data.data);
     isUserBuy = widget.stepDetailData.data.isUserBuy;
     levelId = widget.stepDetailData.data.levelId.toString();
     lessonId = widget.stepDetailData.data.lessonId.toString();
@@ -358,6 +367,43 @@ class _InstructionalVideoDialoguePageState
     //     print('手机解锁了');
     //   }
     // });
+  }
+
+  @override
+  void didChangeDependencies() {
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didPush() {
+    // TODO: implement didPush
+    super.didPush();
+    //从其他页面过来
+    Log.e("+++++++++++++++从其他页面过来");
+    setState(() {
+      isShowStr = "1";
+    });
+  }
+
+  @override
+  void didPushNext() {
+    // TODO: implement didPushNext
+    super.didPushNext();
+    Log.e("+++++++++++++++从当前页面跳转到下一页之后才会调用");
+    setState(() {
+      isShowStr = "2";
+    });
+  }
+
+  @override
+  void didPopNext() {
+    // TODO: implement didPopNext
+    super.didPopNext();
+    Log.e("+++++++++++++++返回到了当前页面");
+    setState(() {
+      isShowStr = "1";
+    });
   }
 
   void forFlow() {
@@ -586,16 +632,21 @@ class _InstructionalVideoDialoguePageState
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.inactive) {
-      // 应用程序已经进入后台 或锁屏
-      // ConfirmUtils.showSingle(
-      //   context: context,
-      //   title: "请重新开始对话",
-      //   onCancel: () {
-      //     endSocket();
-      //     Navigator.of(context).pop();
-      //     widget.onEnd();
-      //   },
-      // );
+      if (isShowStr == "1") {
+        setState(() {
+          isShowStr = "2";
+        });
+        // 应用程序已经进入后台 或锁屏
+        ConfirmUtils.showSingle(
+          context: context,
+          title: "请重新开始对话",
+          onCancel: () {
+            endSocket();
+            Navigator.of(context).pop();
+            widget.onEnd();
+          },
+        );
+      }
     }
     _appLifecycleState = state;
     // Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
@@ -605,6 +656,8 @@ class _InstructionalVideoDialoguePageState
   bool isPlaybackLoopEnabled = false;
   @override
   void dispose() {
+    routeObserver.unsubscribe(this); //取消订阅
+
     EventBus().off(NotificationUtils.nextClass);
     _homeProvider.ishread = "";
     WidgetsBinding.instance.removeObserver(this);
@@ -903,12 +956,20 @@ class _InstructionalVideoDialoguePageState
                   chatWebsocket: _chatWebsocket,
                   controller: _bottomBarControll,
                   recordController: _recordController,
-                  // onStarEnd: () {
-                  //   setState(() {
-                  //     _controller.pause();
-                  //     isplay = true;
-                  //   });
-                  // },
+                  onFinshEnd: (data) {
+                    if (data == true) {
+                      //读完了
+                      chatNumberEnd = chatNumberEnd - 1;
+                      if (chatNumberEnd == 0 && ischatEndStr == "1") {
+                        //弹窗
+                        onNextSocketEnd();
+                      }
+                    }
+                    // setState(() {
+                    //   _controller.pause();
+                    //   isplay = true;
+                    // });
+                  },
                   onScrollEnd: () {
                     _listScrollController.scrollToEnd();
                   },

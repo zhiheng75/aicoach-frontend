@@ -12,6 +12,7 @@ import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/navigation_bar_view.dart';
 import 'package:flutter/material.dart';
@@ -197,10 +198,28 @@ class _CourseHomePageState extends State<CourseHomePage>
     for (int i = 0; i < xxlist.length; i++) {
       list.add(GestureDetector(
           onTap: () {
-            NavigatorUtils.push(
-                context,
-                // CourseRouter.courseFlowPage,
-                "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
+            if (xxlist[i].isUserBuy == 1) {
+              //去上课
+              if (xxlist[i].isLocked == 0) {
+                NavigatorUtils.push(
+                    context,
+                    // CourseRouter.courseFlowPage,
+                    "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
+              } else {
+                Toast.show(
+                  '老师还没安排这节课',
+                );
+              }
+            } else if (xxlist[i].isLocked == 0) {
+              NavigatorUtils.push(
+                  context,
+                  // CourseRouter.courseFlowPage,
+                  "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
+            } else {
+              Toast.show(
+                '请购买',
+              );
+            }
           },
           child: CourseHomeItem(
             index: i + 1,
@@ -373,8 +392,9 @@ class _CourseHomePageState extends State<CourseHomePage>
 
   @override
   void sendSuccess(LessonListBean data) {
-    listData.clear();
     setState(() {
+      listData = [];
+
       isLoding = false;
       if (data.data.isNotEmpty) {
         levelNameStr = data.data[0].levelName;
@@ -387,34 +407,3 @@ class _CourseHomePageState extends State<CourseHomePage>
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => false;
 }
-
-// class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-//   _SliverAppBarDelegate({
-//     required this.minHeight,
-//     required this.maxHeight,
-//     required this.child,
-//   });
-
-//   final double minHeight;
-//   final double maxHeight;
-//   final Widget child;
-
-//   @override
-//   double get minExtent => minHeight;
-
-//   @override
-//   double get maxExtent => max(maxHeight, minHeight);
-
-//   @override
-//   Widget build(
-//       BuildContext context, double shrinkOffset, bool overlapsContent) {
-//     return SizedBox.expand(child: child);
-//   }
-
-//   @override
-//   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-//     return maxHeight != oldDelegate.maxHeight ||
-//         minHeight != oldDelegate.minHeight ||
-//         child != oldDelegate.child;
-//   }
-// }

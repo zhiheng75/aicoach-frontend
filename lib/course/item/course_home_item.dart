@@ -118,16 +118,22 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
             ),
             Gaps.hGap10,
             widget.unitData.isUserBuy == 1
-                ? Text(
-                    widget.unitData.completed == 0 ? "去上课" : "已完成",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w400,
-                      color: widget.unitData.completed == 0
-                          ? Colours.color_00BB40
-                          : Colours.color_666666,
-                    ),
-                  )
+                ? widget.unitData.isLocked == 0
+                    ? Text(
+                        widget.unitData.completed == 0 ? "去上课" : "已完成",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                          color: widget.unitData.completed == 0
+                              ? Colours.color_00BB40
+                              : Colours.color_666666,
+                        ),
+                      )
+                    : const LoadAssetImage(
+                        "locked_icon",
+                        width: 24.0,
+                        height: 24.0,
+                      )
                 : widget.unitData.isLocked == 0
                     ? Text(
                         widget.unitData.completed == 0 ? "去上课" : "已完成",

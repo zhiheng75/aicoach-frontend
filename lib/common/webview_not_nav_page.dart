@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:Bubble/chat/utils/recognize_util.dart';
+import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/course/entity/step_detail_bean.dart';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/home_router.dart';
@@ -6,9 +10,13 @@ import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:sp_util/sp_util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebviewNotNavPage extends StatefulWidget {
@@ -33,10 +41,17 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
   late final WebViewController _controller;
   int _progressValue = 0;
   bool finished = false;
-
+  final MediaUtils _mediaUtils = MediaUtils();
+  List<Uint8List> _bufferList = [];
+  final RecognizeUtil _recognizeUtil = RecognizeUtil();
+  bool isInSendButton = true;
   @override
   void initState() {
     super.initState();
+    oneStartRecord();
+    _recognizeUtil.setLanguage('en');
+    // _homeProvider = Provider.of<HomeProvider>(context, listen: false);
+
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
@@ -90,7 +105,6 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
       ..addJavaScriptChannel('goHome', onMessageReceived: (message) {
         // 发个请求
         postStepUpdate();
-
         //回到目录页
         if (widget.type == "1") {
           Navigator.of(context).pop();
@@ -99,7 +113,102 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
           Navigator.of(context).pop();
         }
       })
+      ..addJavaScriptChannel('startRecord', onMessageReceived: (message) {
+        startRecord();
+      })
+      ..addJavaScriptChannel('cancelRecord', onMessageReceived: (message) {
+        setState(() {
+          isInSendButton = false;
+        });
+      })
       ..loadRequest(Uri.parse(widget.url));
+  }
+
+  void startRecord() async {
+    try {
+      bool hasAgree =
+          SpUtil.getBool(Constant.mediaUtils, defValue: false) ?? false;
+      if (!hasAgree) {
+        Toast.show("录音音频使用说明:用于对话场景", duration: 6000);
+        SpUtil.putBool(Constant.mediaUtils, true);
+      }
+
+      // 检查权限
+      bool isRequest = await _mediaUtils.checkMicrophonePermission();
+      if (isRequest) {
+        Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
+        return;
+      }
+      // 开始录音
+      _bufferList = [];
+      _mediaUtils.startRecord(onData: (buffer) {
+        _bufferList.add(buffer);
+        _recognizeUtil.pushAudioBuffer(1, buffer);
+      }, onComplete: (buffer) {
+        _recognizeUtil.pushAudioBuffer(2, buffer ?? Uint8List(0));
+      });
+      // 设置识别
+      _recognizeUtil.recognize((result) async {
+        // 取消发送
+        if (!isInSendButton) {
+          return;
+        }
+        if (result['success'] == false) {
+          Toast.show(
+            result['message'],
+            duration: 1000,
+          );
+          return;
+        }
+
+        String textStr = result['text'];
+        //检测出来的音频
+        // await _controller.
+        _postUploadText(textStr);
+      });
+    } catch (e) {
+      Toast.show(
+        e.toString().substring(11),
+        duration: 1000,
+      );
+    }
+  }
+
+  void _postUploadText(String textStr) {
+    String istextStr = "1";
+    Map<String, dynamic> params;
+    if (textStr.isEmpty) {
+      params = {
+        "istextStr": istextStr,
+      };
+    } else {
+      istextStr = "2";
+      params = {
+        "text": textStr,
+        "istextStr": istextStr,
+      };
+    }
+    String str = json.encode(params);
+
+    _controller.runJavaScriptReturningResult('callJS($str)').then((result) {
+      print('----js回调----$result');
+    });
+  }
+
+  void oneStartRecord() async {
+    bool hasAgree =
+        SpUtil.getBool(Constant.mediaUtils, defValue: false) ?? false;
+    if (!hasAgree) {
+      Toast.show("录音音频使用说明:用于对话场景", duration: 6000);
+      SpUtil.putBool(Constant.mediaUtils, true);
+    }
+
+    // 检查权限
+    bool isRequest = await _mediaUtils.checkMicrophonePermission();
+    if (isRequest) {
+      Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
+      return;
+    }
   }
 
   void postStepUpdate() {

@@ -37,6 +37,7 @@ class CourseBottomBar extends StatefulWidget {
     this.language,
     this.isNormalChat = false,
     this.onScrollEnd,
+    this.onFinshEnd,
     required this.lessonId,
     required this.stepId,
     required this.sceneId,
@@ -49,7 +50,7 @@ class CourseBottomBar extends StatefulWidget {
   bool? isCollectInformation;
   String? language;
   final Function()? onScrollEnd;
-  // final Function()? onStarEnd;
+  final Function(bool isfinsh)? onFinshEnd;
   final String lessonId;
   final String stepId;
   final String sceneId;
@@ -420,6 +421,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
           builder: (_, snapshot) {
             dynamic data = snapshot.data;
             Log.e(data == true ? "111111" : "22222222");
+            if (widget.onFinshEnd != null) {
+              widget.onFinshEnd!(data);
+            }
             return Container(
               height: 50.0,
               decoration: BoxDecoration(

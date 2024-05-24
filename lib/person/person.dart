@@ -1,4 +1,5 @@
 import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/net/net.dart';
@@ -45,6 +46,7 @@ class _PersonPageState extends State<PersonPage>
   late String phone = "";
   late int totalTime = 0;
   void init() {}
+  late HomeProvider _homeProvider;
 
   void getStudyInfo() {
     _personPagePresenter.requestNetwork<ResultData>(Method.get,
@@ -88,7 +90,7 @@ class _PersonPageState extends State<PersonPage>
   @override
   void dispose() {
     super.dispose();
-    // EventBus().off(NotificationUtils.loginIn);
+    EventBus().off(NotificationUtils.resetChat);
     EventBus().off(NotificationUtils.resetInFo);
     EventBus().off("LOGINOUT");
   }
@@ -112,6 +114,14 @@ class _PersonPageState extends State<PersonPage>
       Log.e("进来了");
       userInfo();
       _personPagePresenter.getUsageTime();
+    });
+
+    EventBus().on(NotificationUtils.resetChat, (idx) {
+      if (idx == "3") {
+        // _homeProvider.getUsageTime();
+        userInfo();
+        _personPagePresenter.getUsageTime();
+      }
     });
 
     SystemChrome.setPreferredOrientations([

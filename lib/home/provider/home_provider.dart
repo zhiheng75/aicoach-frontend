@@ -135,6 +135,9 @@ class HomeProvider extends ChangeNotifier {
         if (result.data == null) {
           return;
         }
+        if (result.code != 200) {
+          return;
+        }
         Map<String, dynamic> data = result.data! as Map<String, dynamic>;
         if (data.containsKey('left_time')) {
           _usageTime = data['left_time'];

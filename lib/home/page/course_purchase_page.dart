@@ -11,6 +11,7 @@ import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -495,18 +496,19 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                     ]),
                   ),
                   isUpdateAppBar
-                      ? const Positioned(
+                      ? Positioned(
                           top: 0,
                           left: 0,
                           right: 0,
                           child: XTCupertinoNavigationBar(
-                            backgroundColor: Color(0xFFFFFFFF),
+                            backgroundColor: const Color(0xFFFFFFFF),
                             border: null,
                             padding: EdgeInsetsDirectional.zero,
-                            leading: NavigationBackWidget(),
+                            leading: const NavigationBackWidget(),
                             middle: Text(
-                              "L1英语口语系统课",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              dataBean.data.levelName,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ))
                       : Positioned(
@@ -537,7 +539,11 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                                   behavior: HitTestBehavior.opaque,
                                   onTap: () {
                                     Fluwx fluwx = Fluwx();
-                                    // MiniProgram
+                                    fluwx.registerApi(
+                                        appId: "wxfb033d09d2eecaf0",
+                                        universalLink:
+                                            "https://demo.shenmo-ai.net/ios/");
+                                    // // MiniProgram
                                     fluwx.open(
                                         target: CustomerServiceChat(
                                             corpId: "wwd0c44d64eb7bcab7",

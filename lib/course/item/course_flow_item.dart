@@ -49,24 +49,10 @@ class _CourseFlowItemState extends State<CourseFlowItem> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Gaps.hGap10,
-              Container(
-                width: 40,
-                height: 40,
-                // margin: const EdgeInsets.only(top: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  color: Colours.color_F3E4FF,
-                ),
-                padding: const EdgeInsets.all(10),
-                //video_icon
-                // word_icon
-                // sentence_icon
-                // scene_icon
-                child: const LoadAssetImage(
-                  "video_icon",
-                  width: 24.0,
-                  height: 24.0,
-                ),
+              LoadAssetImage(
+                imgStr(widget.data.stepIcon),
+                width: 40.0,
+                height: 40.0,
               ),
               Gaps.hGap8,
               Expanded(
@@ -98,5 +84,18 @@ class _CourseFlowItemState extends State<CourseFlowItem> {
         ),
       ),
     );
+  }
+
+  String imgStr(int stepIconStr) {
+    //  widget.data.stepIcon
+    if (stepIconStr == 1) {
+      return "video_icon";
+    } else if (stepIconStr == 2 || stepIconStr == 3) {
+      return "danci_icon";
+    } else if (stepIconStr == 4 || stepIconStr == 5) {
+      return "juxing_icon";
+    } else {
+      return "qingjing_icon";
+    }
   }
 }
