@@ -87,7 +87,7 @@ class Data {
         evaluationStatus: json["evaluation_status"],
         mistakeCount: json["mistake_count"] ?? 0,
         levelName: json["level_name"],
-        title: json["title"],
+        title: json["title"] ?? "",
         unitId: json["unit_id"],
         unitName: json["unit_name"],
         lessonId: json["lesson_id"],

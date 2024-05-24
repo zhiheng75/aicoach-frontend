@@ -4,8 +4,10 @@ import 'dart:typed_data';
 
 import 'package:Bubble/chat/widget/background.dart';
 import 'package:Bubble/constant/constant.dart';
+import 'package:Bubble/exam/entity/mock_message_entity.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/scene/utils/class_evaluate_util.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
@@ -338,6 +340,40 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     onSuccess();
   }
 
+  void sendTwoMessage(String msg, String word) {
+    insertTwoUserMessage(word, (message) {
+      ClassEvaluateUtil().evaluate(message, (Map<String, dynamic> map) {
+        Log.e("============");
+
+        Log.e(map.toString());
+        Log.e("============");
+
+        Log.e(map["total_score"]);
+        // Log.e(map["total_score"]);
+        try {
+          double value = double.parse(map["total_score"]);
+          if (value > 70) {
+            sendMessage(word);
+          } else {
+            sendMessage(msg);
+          }
+        } catch (e) {
+          sendMessage(msg);
+        }
+        // evaluation['total_score']
+        Log.e("============");
+      });
+    });
+  }
+
+  void insertTwoUserMessage(
+      String text, Function(ClassMessageEntity) onSuccess) {
+    ClassMessageEntity message = ClassMessageEntity();
+    message.text = text;
+    message.audio = [..._bufferList];
+    onSuccess(message);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -423,11 +459,19 @@ class _CourseBottomBarState extends State<CourseBottomBar>
           stream: AvatarController().getStream(),
           builder: (_, snapshot) {
             dynamic data = snapshot.data;
-            if (data == bool) {
+            Log.e("11111111111");
+
+            if (data == true) {
+              Log.e("222222222");
+
               if (widget.onFinshEnd != null) {
+                Log.e("333333333");
+
                 widget.onFinshEnd!(data);
               }
             }
+            Log.e("444444444");
+
             // Log.e(data == true ? "111111" : "22222222");
 
             return Container(
@@ -585,7 +629,8 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                       }
                       // String textStr = result['text'];
                       if (widget.repeatWord != "") {
-                        sendMessage(widget.repeatWord);
+                        //这里先调评测,分高传tag分低穿别的
+                        sendTwoMessage(result['text'], widget.repeatWord);
                       } else {
                         sendMessage(result['text']);
                       }

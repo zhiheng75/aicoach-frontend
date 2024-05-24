@@ -515,12 +515,31 @@ class _MessageItemState extends State<MessageItem> {
           if (match != null) {
             String? tag = match.group(1); // 获取标签名
             String? content = match.group(2); // 获取内容
+            // Log.e('===============Tag: $tag, Content: $content');
             if (tag == "image") {
-              coverUrl = content!;
               //去出来图片content
+              coverUrl = content!;
             }
+            if (tag == "word") {
+              //取出来文字content
+            }
+            String reStr = "<$tag>$content</$tag>";
+            String replacedString = one.replaceAll(reStr, "");
+            one = replacedString;
           }
         }
+        // for (int i = 0; i < 2; i++) {
+        //   RegExpMatch? match = pattern.firstMatch(one);
+
+        //   if (match != null) {
+        //     String? tag = match.group(1); // 获取标签名
+        //     String? content = match.group(2); // 获取内容
+        //     if (tag == "image") {
+        //       coverUrl = content!;
+        //       //去出来图片content
+        //     }
+        //   }
+        // }
         if (coverUrl != "") {
           return GestureDetector(
             behavior: HitTestBehavior.opaque,

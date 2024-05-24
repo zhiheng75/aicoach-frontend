@@ -17,3 +17,12 @@ class MockMessageUPEntity {
   // String answer = '';
   List<Map<String, dynamic>> answer = [];
 }
+
+class ClassMessageEntity {
+  String text = '';
+  List<Uint8List> audio = [];
+}
+
+class ClassMessageUPEntity {
+  List<Map<String, dynamic>> answer = [];
+}

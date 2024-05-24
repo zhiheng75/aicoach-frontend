@@ -118,7 +118,7 @@ class _InstructionalVideoDialoguePageState
   late String lessonId;
 
   late String isShowStr = "1";
-  late int chatNumberEnd = 0;
+  // late int chatNumberEnd = 0;
   late String ischatEndStr = "0";
   late String repeatWord = "";
 
@@ -142,13 +142,33 @@ class _InstructionalVideoDialoguePageState
         if (match != null) {
           String? tag = match.group(1); // 获取标签名
           String? content = match.group(2); // 获取内容
-          Log.e('===============Tag: $tag, Content: $content');
+          // Log.e('===============Tag: $tag, Content: $content');
+          if (tag == "image") {
+            //去出来图片content
+            // coverUrl = content!;
+          }
           if (tag == "word") {
             //取出来文字content
             repeatWord = content!;
           }
+          String reStr = "<$tag>$content</$tag>";
+          String replacedString = one.replaceAll(reStr, "");
+          one = replacedString;
         }
       }
+      // for (int i = 0; i < 2; i++) {
+      //   RegExpMatch? match = pattern.firstMatch(one);
+
+      //   if (match != null) {
+      //     String? tag = match.group(1); // 获取标签名
+      //     String? content = match.group(2); // 获取内容
+      //     Log.e('===============Tag: $tag, Content: $content');
+      //     if (tag == "word") {
+      //       //取出来文字content
+      //       repeatWord = content!;
+      //     }
+      //   }
+      // }
     } else if (one.contains("<word>")) {
       RegExpMatch? match = pattern.firstMatch(one);
 
@@ -249,10 +269,10 @@ class _InstructionalVideoDialoguePageState
           (answer.contains('[end_session]') ||
               answer.contains('{[finish]}') ||
               RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
-        ischatEndStr == "1";
+        ischatEndStr = "1";
         //弹窗点击确定后重新链接
         _instructionalVideoDialoguePresenter.postStepUpdate(lessonId, stepId);
-
+        onNextSocketEnd();
         return;
       }
       // _answer = NormalMessage();
@@ -271,6 +291,7 @@ class _InstructionalVideoDialoguePageState
         // 音频已全部返回
         if (_listPlayer != null) {
           _listPlayer!.setReturnEnd();
+          Log.e("ai播放完音频");
         }
         _homeProvider.notify();
         _answer = null;
@@ -285,12 +306,15 @@ class _InstructionalVideoDialoguePageState
     }
     if (answer is Uint8List) {
       _answer!.audio.add(answer);
-      chatNumberEnd = chatNumberEnd + 1;
+
       if (_appLifecycleState == AppLifecycleState.paused) {
         return;
       }
       if (_listPlayer != null) {
         _listPlayer!.play(answer);
+        // chatNumberEnd = chatNumberEnd + 1;
+        // Log.e("11111111111111111111111111chatNumberEnd+1" +
+        //     chatNumberEnd.toString());
       }
     }
   }
@@ -993,11 +1017,14 @@ class _InstructionalVideoDialoguePageState
                   onFinshEnd: (data) {
                     if (data == true) {
                       //读完了
-                      chatNumberEnd = chatNumberEnd - 1;
-                      if (chatNumberEnd == 0 && ischatEndStr == "1") {
-                        //弹窗
-                        onNextSocketEnd();
-                      }
+                      // chatNumberEnd = chatNumberEnd - 1;
+                      // Log.e("11111111111111111111111111chatNumberEnd-1" +
+                      //     chatNumberEnd.toString());
+
+                      // if (chatNumberEnd == 0 && ischatEndStr == "1") {
+                      //   //弹窗
+                      //   onNextSocketEnd();
+                      // }
                     }
                     // setState(() {
                     //   _controller.pause();
