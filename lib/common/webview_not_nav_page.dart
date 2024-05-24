@@ -122,12 +122,17 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
       ..addJavaScriptChannel('finshRecord', onMessageReceived: (message) {
         finshRecord();
       })
-      // ..addJavaScriptChannel('cancelRecord', onMessageReceived: (message) {
-      //   setState(() {
-      //     // isInSendButton = false;
-      //   });
-      // })
+      ..addJavaScriptChannel('cancelRecord', onMessageReceived: (message) {
+        cancelRecord();
+      })
       ..loadRequest(Uri.parse(widget.url));
+  }
+
+  void cancelRecord() async {
+    setState(() {
+      isTalk = true;
+    });
+    await _mediaUtils.stopRecord();
   }
 
   void finshRecord() async {
@@ -167,10 +172,10 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
           if (result['success'] == false) {
             isTalk = false;
             await _mediaUtils.stopRecord();
-            Toast.show(
-              result['message'],
-              duration: 1000,
-            );
+            // Toast.show(
+            //   result['message'],
+            //   duration: 1000,
+            // );
           }
           return;
         }

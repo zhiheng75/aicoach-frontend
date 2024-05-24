@@ -327,7 +327,7 @@ class _CoursePaysPageState extends State<CoursePaysPage>
   @override
   paySuccess() {
     // TODO: implement paySuccess
-    showPayToast(context: context, message: "支付成功/前往微信添加/本课程辅导老师");
+    showPayToast(context: context, message: "支付成功\n前往微信添加\n本课程辅导老师");
   }
 
   @override

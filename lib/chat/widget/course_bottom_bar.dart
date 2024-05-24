@@ -41,6 +41,8 @@ class CourseBottomBar extends StatefulWidget {
     required this.lessonId,
     required this.stepId,
     required this.sceneId,
+    required this.repeatWord,
+
     // this.onStarEnd,
   }) : super(key: key);
 
@@ -56,6 +58,7 @@ class CourseBottomBar extends StatefulWidget {
   final String sceneId;
 
   final bool isNormalChat;
+  final String repeatWord;
 
   @override
   State<CourseBottomBar> createState() => _CourseBottomBarState();
@@ -580,20 +583,25 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                         widget.controller.setDisabled(false);
                         return;
                       }
-                      String textStr = result['text'];
-                      if (textStr.length < 8) {
-                        if (result['text'].contains('To')) {
-                          sendMessage("Two");
-                        } else if (result['text'].contains('Full')) {
-                          sendMessage("Four");
-                        } else if (result['text'].contains('For')) {
-                          sendMessage("Four");
-                        } else {
-                          sendMessage(result['text']);
-                        }
+                      // String textStr = result['text'];
+                      if (widget.repeatWord != "") {
+                        sendMessage(widget.repeatWord);
                       } else {
                         sendMessage(result['text']);
                       }
+                      // if (textStr.length < 8) {
+                      //   if (result['text'].contains('To')) {
+                      //     sendMessage("Two");
+                      //   } else if (result['text'].contains('Full')) {
+                      //     sendMessage("Four");
+                      //   } else if (result['text'].contains('For')) {
+                      //     sendMessage("Four");
+                      //   } else {
+                      //     sendMessage(result['text']);
+                      //   }
+                      // } else {
+                      //   sendMessage(result['text']);
+                      // }
                     });
                     widget.controller.setShowRecord(true);
                   } catch (e) {

@@ -53,6 +53,7 @@ class Data {
   String lessonName;
   String lessonType;
   Objectives objectives;
+  String title;
 
   Data({
     required this.data,
@@ -65,6 +66,7 @@ class Data {
     required this.mistakeCount,
     required this.levelId,
     required this.levelName,
+    required this.title,
     required this.unitId,
     required this.unitName,
     required this.lessonId,
@@ -85,6 +87,7 @@ class Data {
         evaluationStatus: json["evaluation_status"],
         mistakeCount: json["mistake_count"] ?? 0,
         levelName: json["level_name"],
+        title: json["title"],
         unitId: json["unit_id"],
         unitName: json["unit_name"],
         lessonId: json["lesson_id"],
@@ -104,6 +107,7 @@ class Data {
         "evaluation_status": evaluationStatus,
         "mistake_count": mistakeCount,
         "level_name": levelName,
+        "title": title,
         "unit_id": unitId,
         "unit_name": unitName,
         "lesson_id": lessonId,

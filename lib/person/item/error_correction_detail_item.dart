@@ -64,7 +64,7 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
                         height: 25.0,
                       )
                     : const LoadAssetImage(
-                        'default_head_img',
+                        'my_head_img',
                         width: 25.0,
                         height: 25.0,
                       ),

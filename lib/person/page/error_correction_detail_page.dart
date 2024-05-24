@@ -319,7 +319,14 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
 
     setState(() {
       errorDetailData = data.data;
-      isLoding = false;
+      if (errorDetailData.isNotEmpty) {
+        if (errorDetailData[0].suggestionAudio.isEmpty) {
+          _errorCorrectionDetailPagePresenter
+              .postSuggestAnswer(errorDetailData[idx].sentence);
+        } else {
+          isLoding = false;
+        }
+      }
     });
   }
 
@@ -332,6 +339,8 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
     // TODO: implement sendSuggestAnsweSuccess
     errorDetailData[idx].suggestionSentence = standardAnswerStr;
     errorDetailData[idx].suggestionAudio = speechUrlStr;
+    isLoding = false;
+
     setState(() {});
   }
 }

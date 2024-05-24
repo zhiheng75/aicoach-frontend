@@ -120,6 +120,7 @@ class _InstructionalVideoDialoguePageState
   late String isShowStr = "1";
   late int chatNumberEnd = 0;
   late String ischatEndStr = "0";
+  late String repeatWord = "";
 
   void init() {
     _pageState = 'success';
@@ -129,6 +130,35 @@ class _InstructionalVideoDialoguePageState
     // String sceneId = resourceSceneId; //_homeProvider.scene!.id.toString();
     // // String sceneId = _homeProvider.course!.id.toString();
     // _homeProvider.scene!.id = int.parse(resourceSceneId);
+  }
+
+  void repeatTextStr(String str) {
+    String one = str;
+    RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+    if (one.contains("<image>") && one.contains("<word>")) {
+      for (int i = 0; i < 2; i++) {
+        RegExpMatch? match = pattern.firstMatch(one);
+
+        if (match != null) {
+          String? tag = match.group(1); // 获取标签名
+          String? content = match.group(2); // 获取内容
+          Log.e('===============Tag: $tag, Content: $content');
+          if (tag == "word") {
+            //取出来文字content
+            repeatWord = content!;
+          }
+        }
+      }
+    } else if (one.contains("<word>")) {
+      RegExpMatch? match = pattern.firstMatch(one);
+
+      if (match != null) {
+        String? tag = match.group(1); // 获取标签名
+        String? content = match.group(2); // 获取内容
+        Log.e('===============Tag: $tag, Content: $content');
+        repeatWord = content!;
+      }
+    }
   }
 
   void connectWebsocket() async {
@@ -235,6 +265,8 @@ class _InstructionalVideoDialoguePageState
     }
     if (answer is String) {
       if (answer.startsWith('[end')) {
+        repeatTextStr(_answer!.text);
+        // Log.e("2222222222222222222222" + _answer!.text);
         _answer!.isTextEnd = true;
         // 音频已全部返回
         if (_listPlayer != null) {
@@ -245,6 +277,7 @@ class _InstructionalVideoDialoguePageState
         return;
       }
       _answer!.text += answer;
+      // Log.e("11111111111111111111111" + _answer!.text);
       // _answer!.heardcover = _homeProvider.scene!.cover;
       _homeProvider.notify();
       _listScrollController.scrollToEnd();
@@ -950,6 +983,7 @@ class _InstructionalVideoDialoguePageState
                   bottom: _screenUtil.bottomBarHeight + 16.0,
                 ),
                 child: CourseBottomBar(
+                  repeatWord: repeatWord,
                   stepId: stepId,
                   sceneId: resourceSceneId,
                   lessonId: lessonId,

@@ -25,6 +25,7 @@ import 'package:Bubble/scene/entity/course_entity.dart';
 import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/scene/widget/select_scene.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
@@ -73,6 +74,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   @override
   void initState() {
     super.initState();
+
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     init();
     _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
@@ -221,7 +223,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
       children: [
         Center(
             child: Text(
-          stepDetailData.data.unitName,
+          stepDetailData.data.title,
           style: const TextStyle(
             fontSize: 13.0,
             fontWeight: FontWeight.w400,
@@ -230,7 +232,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
         )),
         Gaps.vGap2,
         Text(
-          stepDetailData.data.levelName,
+          stepDetailData.data.lessonName,
           style: const TextStyle(
             fontSize: 17.0,
             fontWeight: FontWeight.w400,

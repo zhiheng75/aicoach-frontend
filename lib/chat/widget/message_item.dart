@@ -504,16 +504,54 @@ class _MessageItemState extends State<MessageItem> {
     }
 
     Widget createImgExample(NormalMessage message) {
-      // String text = 'this is dog <image>https://www/somelogo.png</image>';
-      if (message.text.contains("<image>")) {
-        RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
-        RegExpMatch? match = pattern.firstMatch(message.text);
+      String one = message.text;
+      RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+      if (one.contains("<image>") && one.contains("<word>")) {
         late String coverUrl = "";
+
+        for (int i = 0; i < 2; i++) {
+          RegExpMatch? match = pattern.firstMatch(one);
+
+          if (match != null) {
+            String? tag = match.group(1); // 获取标签名
+            String? content = match.group(2); // 获取内容
+            if (tag == "image") {
+              coverUrl = content!;
+              //去出来图片content
+            }
+          }
+        }
+        if (coverUrl != "") {
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                barrierColor: Colors.transparent,
+                isScrollControlled: true,
+                isDismissible: false,
+                builder: (_) => PhotoViewSimpleScreen(
+                  imageProvider: NetworkImage(coverUrl),
+                ),
+              );
+            },
+            child: LoadImage(
+              coverUrl,
+              // width: 48.0,
+            ),
+          );
+        } else {
+          return Container();
+        }
+      } else if (one.contains("<image>")) {
+        RegExpMatch? match = pattern.firstMatch(one);
+        late String coverUrl = "";
+
         if (match != null) {
-          // String? tag = match.group(1); // 获取标签名
+          String? tag = match.group(1); // 获取标签名
           String? content = match.group(2); // 获取内容
           // Log.e('===============Tag: $tag, Content: $content');
-          // print('Tag: $tag, Content: $content');
           coverUrl = content!;
         }
 
@@ -536,26 +574,116 @@ class _MessageItemState extends State<MessageItem> {
             // width: 48.0,
           ),
         );
+      } else {
+        return Container();
       }
-      return Container();
+      // return Container();
+      // if (message.text.contains("<image>")) {
+      //   RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+      //   RegExpMatch? match = pattern.firstMatch(message.text);
+      //   late String coverUrl = "";
+      //   if (match != null) {
+      //     // String? tag = match.group(1); // 获取标签名
+      //     String? content = match.group(2); // 获取内容
+      //     // Log.e('===============Tag: $tag, Content: $content');
+      //     // print('Tag: $tag, Content: $content');
+      //     coverUrl = content!;
+      //   }
+
+      // return GestureDetector(
+      //   behavior: HitTestBehavior.opaque,
+      //   onTap: () {
+      //     showModalBottomSheet(
+      //       context: context,
+      //       backgroundColor: Colors.transparent,
+      //       barrierColor: Colors.transparent,
+      //       isScrollControlled: true,
+      //       isDismissible: false,
+      //       builder: (_) => PhotoViewSimpleScreen(
+      //         imageProvider: NetworkImage(coverUrl),
+      //       ),
+      //     );
+      //   },
+      //   child: LoadImage(
+      //     coverUrl,
+      //     // width: 48.0,
+      //   ),
+      // );
+      // }
+      // return Container();
     }
 
     String titMessage(NormalMessage message) {
-      if (message.text.contains("<image>")) {
-        RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
-        RegExpMatch? match = pattern.firstMatch(message.text);
+      String one = message.text;
+      RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+      if (one.contains("<image>") && one.contains("<word>")) {
+        for (int i = 0; i < 2; i++) {
+          RegExpMatch? match = pattern.firstMatch(one);
+          late String coverUrl = "";
+
+          if (match != null) {
+            String? tag = match.group(1); // 获取标签名
+            String? content = match.group(2); // 获取内容
+            // Log.e('===============Tag: $tag, Content: $content');
+            coverUrl = content!;
+            if (tag == "image") {
+              //去出来图片content
+            }
+            if (tag == "word") {
+              //取出来文字content
+            }
+            String reStr = "<$tag>$coverUrl</$tag>";
+            String replacedString = one.replaceAll(reStr, "");
+            one = replacedString;
+          }
+          // Log.e("================" + one);
+        }
+        return one;
+      } else if (one.contains("<image>")) {
+        RegExpMatch? match = pattern.firstMatch(one);
         late String coverUrl = "";
+
         if (match != null) {
-          // String? tag = match.group(1); // 获取标签名
+          String? tag = match.group(1); // 获取标签名
           String? content = match.group(2); // 获取内容
           // Log.e('===============Tag: $tag, Content: $content');
           coverUrl = content!;
         }
-        String one = "<image>$coverUrl</image>";
-        String replacedString = message.text.replaceAll(one, "");
-
-        return replacedString;
+        String reStr = "<image>$coverUrl</image>";
+        String replacedString = one.replaceAll(reStr, "");
+        one = replacedString;
+        return one;
+      } else if (one.contains("<word>")) {
+        RegExpMatch? match = pattern.firstMatch(one);
+        late String coverUrl = "";
+        if (match != null) {
+          String? tag = match.group(1); // 获取标签名
+          String? content = match.group(2); // 获取内容
+          // Log.e('===============Tag: $tag, Content: $content');
+          coverUrl = content!;
+        }
+        String reStr = "<word>$coverUrl</word>";
+        String replacedString = one.replaceAll(reStr, "");
+        one = replacedString;
+        return one;
+        // Log.e("================" + one);
       }
+
+      // if (message.text.contains("<image>")) {
+      //   RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+      //   RegExpMatch? match = pattern.firstMatch(message.text);
+      //   late String coverUrl = "";
+      //   if (match != null) {
+      //     String? tag = match.group(1); // 获取标签名
+      //     String? content = match.group(2); // 获取内容
+      //     // Log.e('===============Tag: $tag, Content: $content');
+      //     coverUrl = content!;
+      //   }
+      //   String one = "<image>$coverUrl</image>";
+      //   String replacedString = message.text.replaceAll(one, "");
+
+      //   return replacedString;
+      // }
 
       return message.text;
     }
