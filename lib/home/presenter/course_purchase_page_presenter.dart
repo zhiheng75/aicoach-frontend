@@ -14,7 +14,7 @@ class CoursePurchasePagePresenter
   void afterInit() {
     // TODO: implement afterInit
     super.afterInit();
-    getLessonDetail("1");
+    // getLessonDetail("1");
   }
 
   Future getLessonDetail(String levelId) {

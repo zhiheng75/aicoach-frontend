@@ -49,6 +49,7 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
   void initState() {
     // TODO: implement initState
     super.initState();
+    _coursePurchasePagePresenter.getLessonDetail(widget.levelId);
   }
 
   Widget classImgWidget(BuildContext context) {
