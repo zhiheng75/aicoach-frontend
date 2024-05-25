@@ -7,8 +7,10 @@ import 'package:Bubble/chat/utils/error_class_evaluate_util.dart';
 import 'package:Bubble/chat/widget/background.dart';
 import 'package:Bubble/chat/widget/record_error.dart';
 import 'package:Bubble/constant/constant.dart';
+import 'package:Bubble/exam/entity/mock_message_entity.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/scene/utils/class_evaluate_util.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/websocket_utils.dart';
@@ -45,7 +47,9 @@ class BottomErrorBar extends StatefulWidget {
     required this.idStr,
     required this.suggestionSentenceStr,
     required this.suggestionAudioStr,
+    required this.repeatWord,
   }) : super(key: key);
+  final String repeatWord;
 
   // final ChatWebsocket chatWebsocket;
   final BottomErrorBarController controller;
@@ -164,6 +168,40 @@ class _BottomErrorBarState extends State<BottomErrorBar>
     if (widget.onScrollEnd != null) {
       widget.onScrollEnd!();
     }
+  }
+
+  void insertTwoUserMessage(
+      String text, Function(ClassMessageEntity) onSuccess) {
+    ClassMessageEntity message = ClassMessageEntity();
+    message.text = text;
+    message.audio = [..._bufferList];
+    onSuccess(message);
+  }
+
+  void sendTwoMessage(String msg, String word) {
+    insertTwoUserMessage(word, (message) {
+      ClassEvaluateUtil().evaluate(message, (Map<String, dynamic> map) {
+        Log.e("============");
+
+        Log.e(map.toString());
+        Log.e("============");
+
+        Log.e(map["total_score"]);
+        // Log.e(map["total_score"]);
+        try {
+          double value = double.parse(map["total_score"]);
+          if (value > 60) {
+            sendMessage(word);
+          } else {
+            sendMessage(msg);
+          }
+        } catch (e) {
+          sendMessage(msg);
+        }
+        // evaluation['total_score']
+        Log.e("============");
+      });
+    });
   }
 
   @override
@@ -363,7 +401,13 @@ class _BottomErrorBarState extends State<BottomErrorBar>
                   widget.controller.setDisabled(false);
                   return;
                 }
-                sendMessage(result['text']);
+                if (widget.repeatWord != "") {
+                  //这里先调评测,分高传tag分低穿别的
+                  sendTwoMessage(result['text'], widget.repeatWord);
+                } else {
+                  sendMessage(result['text']);
+                }
+                // sendMessage(result['text']);
               });
               widget.controller.setShowRecord(true);
             } catch (e) {

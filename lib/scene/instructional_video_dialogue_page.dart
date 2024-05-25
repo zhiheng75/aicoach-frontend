@@ -286,7 +286,7 @@ class _InstructionalVideoDialoguePageState
     if (answer is String) {
       if (answer.startsWith('[end')) {
         repeatTextStr(_answer!.text);
-        // Log.e("2222222222222222222222" + _answer!.text);
+        Log.e("2222222222222222222222" + _answer!.text);
         _answer!.isTextEnd = true;
         // 音频已全部返回
         if (_listPlayer != null) {

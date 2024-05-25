@@ -35,6 +35,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../main.dart';
+
 class CourseFlowPage extends StatefulWidget {
   final String lessonId;
   const CourseFlowPage({
@@ -71,6 +73,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
 
   late int mistakeCountInt = 0;
 
+  late String titleStr = "";
+
   @override
   void initState() {
     super.initState();
@@ -96,9 +100,23 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   }
 
   @override
+  void didChangeDependencies() {
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didPopNext() {
+    // TODO: implement didPopNext
+    super.didPopNext();
+    _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
+  }
+
+  @override
   void dispose() {
     EventBus().off(NotificationUtils.teachIdx);
     EventBus().off(NotificationUtils.nextResetChat);
+    routeObserver.unsubscribe(this); //取消订阅
 
     super.dispose();
   }
@@ -221,16 +239,16 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     return MyScrollView(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Center(
-            child: Text(
-          stepDetailData.data.title,
-          style: const TextStyle(
-            fontSize: 13.0,
-            fontWeight: FontWeight.w400,
-            color: Colours.color_666666,
-          ),
-        )),
-        Gaps.vGap2,
+        // Center(
+        //     child: Text(
+        //   stepDetailData.data.title,
+        //   style: const TextStyle(
+        //     fontSize: 13.0,
+        //     fontWeight: FontWeight.w400,
+        //     color: Colours.color_666666,
+        //   ),
+        // )),
+        // Gaps.vGap2,
         Text(
           stepDetailData.data.lessonName,
           style: const TextStyle(
@@ -498,8 +516,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
             ),
           ),
         ),
-        middle: const Text(
-          "课程流程",
+        middle: Text(
+          titleStr,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -531,6 +549,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
       isLoding = false;
       stepDetailData = stepDetailBean;
       mistakeCountInt = stepDetailData.data.mistakeCount;
+      titleStr = stepDetailData.data.title;
     });
   }
 }

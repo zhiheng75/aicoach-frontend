@@ -9,9 +9,11 @@ import 'package:Bubble/person/presneter/error_correction_detail_page_presenter.d
 import 'package:Bubble/person/view/error_correction_detail_page_view.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
+import 'package:Bubble/widgets/photo_view_simple_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -48,12 +50,76 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
   late List<Datum> errorDetailData;
 
   late int idx = 0;
+
+  late String coverUrl = "";
+  late String repeatWord = "";
+  late String repeatText = "";
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _bottomBarControll.setDisabled(false);
     _errorCorrectionDetailPagePresenter.getMistakeDetails(widget.lessonId);
+  }
+
+  void repeatTextStr(String str) {
+    String one = str;
+    RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+    if (one.contains("<image>") && one.contains("<word>")) {
+      for (int i = 0; i < 2; i++) {
+        RegExpMatch? match = pattern.firstMatch(one);
+
+        if (match != null) {
+          String? tag = match.group(1); // 获取标签名
+          String? content = match.group(2); // 获取内容
+          // Log.e('===============Tag: $tag, Content: $content');
+          if (tag == "image") {
+            //去出来图片content
+            coverUrl = content!;
+          }
+          if (tag == "word") {
+            //取出来文字content
+            repeatWord = content!;
+          }
+          String reStr = "<$tag>$content</$tag>";
+          String replacedString = one.replaceAll(reStr, "");
+          one = replacedString;
+        }
+      }
+      repeatText = one;
+    } else if (one.contains("<word>")) {
+      RegExpMatch? match = pattern.firstMatch(one);
+
+      if (match != null) {
+        String? tag = match.group(1); // 获取标签名
+        String? content = match.group(2); // 获取内容
+        Log.e('===============Tag: $tag, Content: $content');
+        repeatWord = content!;
+        String reStr = "<$tag>$content</$tag>";
+        String replacedString = one.replaceAll(reStr, "");
+        one = replacedString;
+      }
+      repeatText = one;
+    } else if (one.contains("<image>")) {
+      RegExpMatch? match = pattern.firstMatch(one);
+
+      if (match != null) {
+        String? tag = match.group(1); // 获取标签名
+        String? content = match.group(2); // 获取内容
+        Log.e('===============Tag: $tag, Content: $content');
+        coverUrl = content!;
+        String reStr = "<$tag>$content</$tag>";
+        String replacedString = one.replaceAll(reStr, "");
+        one = replacedString;
+      }
+      repeatText = one;
+    } else {
+      coverUrl = "";
+      repeatWord = "";
+      repeatText = str;
+    }
+    setState(() {});
   }
 
   Widget lodingView() {
@@ -75,7 +141,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
             : Stack(
                 children: [
                   //MyScrollView
-                  Column(
+                  MyScrollView(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const XTCupertinoNavigationBar(
@@ -135,13 +201,34 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                               ],
                             ),
                             Text(
-                              errorDetailData[idx].sentence,
+                              repeatText,
                               style: const TextStyle(
                                 fontSize: 14.0,
                                 fontWeight: FontWeight.w400,
                                 color: Colours.color_666666,
                               ),
                             ),
+                            coverUrl == ""
+                                ? Container()
+                                : GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        backgroundColor: Colors.transparent,
+                                        barrierColor: Colors.transparent,
+                                        isScrollControlled: true,
+                                        isDismissible: false,
+                                        builder: (_) => PhotoViewSimpleScreen(
+                                          imageProvider: NetworkImage(coverUrl),
+                                        ),
+                                      );
+                                    },
+                                    child: LoadImage(
+                                      coverUrl,
+                                      // width: 48.0,
+                                    ),
+                                  ),
                             ErrorCorrectionDetailItem(
                               data: errorDetailData[idx],
                             ),
@@ -155,6 +242,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                   ),
                             errorDetailData[idx].userPracticeAudio.isEmpty
                                 ? BottomErrorBar(
+                                    repeatWord: repeatWord,
                                     suggestionSentenceStr: errorDetailData[idx]
                                             .suggestionSentence ??
                                         "",
@@ -174,9 +262,12 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                             // ignore: prefer_interpolation_to_compose_strings
                                             "https://statics.shenmo-ai.com/" +
                                                 data["user_practice_audio"];
+                                        double value = double.parse(
+                                            data["user_practice_score"]);
+                                        int intValue =
+                                            value.toInt(); // intValue 的值为 123
                                         errorDetailData[idx].userPracticeScore =
-                                            int.parse(
-                                                data["user_practice_score"]);
+                                            intValue;
                                       });
                                     },
                                   )
@@ -213,6 +304,8 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                             onTap: () {
                               if (idx != 0) {
                                 idx = idx - 1;
+                                repeatTextStr(errorDetailData[idx].sentence);
+
                                 if (errorDetailData[idx]
                                     .suggestionAudio
                                     .isEmpty) {
@@ -249,6 +342,8 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                             onTap: () {
                               if (idx + 1 < errorDetailData.length) {
                                 idx = idx + 1;
+                                repeatTextStr(errorDetailData[idx].sentence);
+
                                 if (errorDetailData[idx]
                                     .suggestionAudio
                                     .isEmpty) {
@@ -319,6 +414,10 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
 
     setState(() {
       errorDetailData = data.data;
+      repeatTextStr(errorDetailData[idx].sentence);
+      // repeatTextStr(
+      //     "Great! Let's start with the first word. One<word>one</word><image>https://statics.shenmo-ai.com/courses/level1/unit0/lesson1/Group%202.jpg</image>");
+
       if (errorDetailData.isNotEmpty) {
         if (errorDetailData[0].suggestionAudio.isEmpty) {
           _errorCorrectionDetailPagePresenter

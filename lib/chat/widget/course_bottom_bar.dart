@@ -352,7 +352,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
         // Log.e(map["total_score"]);
         try {
           double value = double.parse(map["total_score"]);
-          if (value > 70) {
+          if (value > 60) {
             sendMessage(word);
           } else {
             sendMessage(msg);
