@@ -66,18 +66,34 @@ class _CourseFlowItemState extends State<CourseFlowItem> {
                 ),
               ),
               Gaps.hGap10,
-              Text(
-                // ignore: unrelated_type_equality_checks
-                widget.data.completed == 1 ? "已完成" : "去完成",
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w400,
-                  // color: Colours.color_00BB40,
-                  color: widget.data.completed == 1
-                      ? Colours.color_666666
-                      : Colours.color_00BB40,
-                ),
-              ),
+              widget.data.isLocked == 0
+                  ? Text(
+                      widget.data.completed == 0 ? "去上课" : "已完成",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w400,
+                        color: widget.data.completed == 0
+                            ? Colours.color_00BB40
+                            : Colours.color_666666,
+                      ),
+                    )
+                  : const LoadAssetImage(
+                      "locked_icon",
+                      width: 24.0,
+                      height: 24.0,
+                    ),
+              // Text(
+              //   // ignore: unrelated_type_equality_checks
+              //   widget.data.completed == 1 ? "已完成" : "去完成",
+              //   style: TextStyle(
+              //     fontSize: 16.0,
+              //     fontWeight: FontWeight.w400,
+              //     // color: Colours.color_00BB40,
+              //     color: widget.data.completed == 1
+              //         ? Colours.color_666666
+              //         : Colours.color_00BB40,
+              //   ),
+              // ),
               // Gaps.hGap10,
             ],
           ),

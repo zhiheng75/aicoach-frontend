@@ -86,8 +86,11 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         ),
       )
       ..addJavaScriptChannel('goBack', onMessageReceived: (message) {
-        //发个请求
-        postStepUpdate();
+        if (message.message == "finish") {
+          //发个请求
+          postStepUpdate();
+        }
+
         //回到上一页
         Navigator.of(context).pop();
         if (widget.type == "1") {
@@ -106,8 +109,11 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         }
       })
       ..addJavaScriptChannel('goHome', onMessageReceived: (message) {
-        // 发个请求
-        postStepUpdate();
+        if (message.message == "finish") {
+          //发个请求
+          postStepUpdate();
+        }
+
         //回到目录页
         if (widget.type == "1") {
           Navigator.of(context).pop();
@@ -260,15 +266,16 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        final bool canGoBack = await _controller.canGoBack();
-        if (canGoBack) {
-          // 网页可以返回时，优先返回上一页
-          await _controller.goBack();
-          return Future.value(false);
-        }
-        return Future.value(true);
-      },
+      onWillPop: () async => false,
+      // onWillPop: () async {
+      //   final bool canGoBack = await _controller.canGoBack();
+      //   if (canGoBack) {
+      //     // 网页可以返回时，优先返回上一页
+      //     await _controller.goBack();
+      //     return Future.value(false);
+      //   }
+      //   return Future.value(true);
+      // },
       child: Material(
         child: Stack(
           children: [

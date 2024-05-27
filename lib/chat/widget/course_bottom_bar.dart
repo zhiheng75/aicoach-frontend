@@ -79,7 +79,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   // ai音频播放
   ListPlayer? _listPlayer;
   // app状态
-  AppLifecycleState? _appLifecycleState;
+  // AppLifecycleState? _appLifecycleState;
 
   void getExample() {
     LoginManager.checkLogin(context, () {
@@ -260,9 +260,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     }
     if (answer is Uint8List) {
       _answer!.audio.add(answer);
-      if (_appLifecycleState == AppLifecycleState.paused) {
-        return;
-      }
+      // if (_appLifecycleState == AppLifecycleState.paused) {
+      //   return;
+      // }
       if (_listPlayer != null) {
         _listPlayer!.play(answer);
       }
@@ -343,13 +343,6 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   void sendTwoMessage(String msg, String word) {
     insertTwoUserMessage(word, (message) {
       ClassEvaluateUtil().evaluate(message, (Map<String, dynamic> map) {
-        Log.e("============");
-
-        Log.e(map.toString());
-        Log.e("============");
-
-        Log.e(map["total_score"]);
-        // Log.e(map["total_score"]);
         try {
           double value = double.parse(map["total_score"]);
           if (value > 60) {
@@ -381,7 +374,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     _recognizeUtil.setLanguage(widget.language ?? 'en');
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     // 监听App状态
-    WidgetsBinding.instance.addObserver(this);
+    // WidgetsBinding.instance.addObserver(this);
 
     EventBus().on('LOGINOUT', (_) {
       setState(() {
@@ -397,15 +390,15 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    _appLifecycleState = state;
-    Future.delayed(Duration.zero, () async {
-      await _mediaUtils.stopPlay();
-    });
+    // _appLifecycleState = state;
+    // Future.delayed(Duration.zero, () async {
+    //   await _mediaUtils.stopPlay();
+    // });
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    // WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -459,21 +452,11 @@ class _CourseBottomBarState extends State<CourseBottomBar>
           stream: AvatarController().getStream(),
           builder: (_, snapshot) {
             dynamic data = snapshot.data;
-            Log.e("11111111111");
-
             if (data == true) {
-              Log.e("222222222");
-
               if (widget.onFinshEnd != null) {
-                Log.e("333333333");
-
                 widget.onFinshEnd!(data);
               }
             }
-            Log.e("444444444");
-
-            // Log.e(data == true ? "111111" : "22222222");
-
             return Container(
               height: 50.0,
               decoration: BoxDecoration(
@@ -634,19 +617,6 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                       } else {
                         sendMessage(result['text']);
                       }
-                      // if (textStr.length < 8) {
-                      //   if (result['text'].contains('To')) {
-                      //     sendMessage("Two");
-                      //   } else if (result['text'].contains('Full')) {
-                      //     sendMessage("Four");
-                      //   } else if (result['text'].contains('For')) {
-                      //     sendMessage("Four");
-                      //   } else {
-                      //     sendMessage(result['text']);
-                      //   }
-                      // } else {
-                      //   sendMessage(result['text']);
-                      // }
                     });
                     widget.controller.setShowRecord(true);
                   } catch (e) {
@@ -682,14 +652,6 @@ class _CourseBottomBarState extends State<CourseBottomBar>
               width: 17.5,
               height: 24.0,
             ),
-            // child: iconButtom(
-            //   onPress: getExample,
-            //   child: const LoadAssetImage(
-            //     'tishi',
-            //     width: 17.5,
-            //     height: 24.0,
-            //   ),
-            // ),
           ),
         ],
       ),

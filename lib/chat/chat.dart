@@ -67,7 +67,7 @@ class _ChatState extends State<ChatPage>
   // 左右滑动提示
   bool _showSlideTip = false;
 
-  late String isNew;
+  late String isNew = "";
 
   List<Map<String, String>> characterData = [
     {

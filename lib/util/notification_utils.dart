@@ -16,4 +16,5 @@ class NotificationUtils {
   static String resetInFo = "resetInFo";
 
   static String nextClass = "NEXTCLASS";
+  static String paySuccess = "paySuccess";
 }

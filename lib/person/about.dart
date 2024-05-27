@@ -292,12 +292,12 @@ class _AboutPageState extends State<AboutPage> {
             image: AssetImage(
               'assets/images/person_bg.png',
             ),
-            fit: BoxFit.fitHeight,
+            fit: BoxFit.fill,
           ),
         ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-        ),
+        // padding: const EdgeInsets.symmetric(
+        //   horizontal: 16.0,
+        // ),
         child: Column(
           children: [
             // const Text("data"),

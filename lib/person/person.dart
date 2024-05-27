@@ -12,6 +12,7 @@ import 'package:Bubble/util/notification_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluwx/fluwx.dart';
 
 import '../mvp/base_page.dart';
 import '../report/report_router.dart';
@@ -747,12 +748,23 @@ class _PersonPageState extends State<PersonPage>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          menuItem(
-            'customer_service_icon',
-            '联系客服',
-            '',
-            onPress: () => tapMenu(PersonalRouter.about),
-          ),
+          menuItem('customer_service_icon', '联系客服', '', onPress: () {
+            if (phone == "17001234567") {
+              tapMenu(PersonalRouter.about);
+            } else {
+              Fluwx fluwx = Fluwx();
+              fluwx.registerApi(
+                  appId: "wxfb033d09d2eecaf0",
+                  universalLink: "https://demo.shenmo-ai.net/ios/");
+              // // MiniProgram
+              fluwx.open(
+                  target: CustomerServiceChat(
+                      corpId: "wwd0c44d64eb7bcab7",
+                      url:
+                          "https://work.weixin.qq.com/kfid/kfc17bc7445bac300b9"));
+            }
+          } //=> tapMenu(PersonalRouter.about),
+              ),
           menuItem(
             'community_icon',
             '加入社群',

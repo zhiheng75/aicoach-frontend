@@ -140,11 +140,21 @@ class _CourseHomePageState extends State<CourseHomePage>
         _courseHomePagePresenter.getLessonList();
       }
     });
+    EventBus().on(NotificationUtils.paySuccess, (_) {
+      Future.delayed(const Duration(seconds: 1), () {
+        _courseHomePagePresenter.getLessonList();
+
+        // 这里是你想要延迟执行的代码
+      });
+      // 这里是你想要延迟执行的代码
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+    EventBus().off(NotificationUtils.paySuccess);
+
     EventBus().off(NotificationUtils.loginIn);
     EventBus().off(NotificationUtils.loginOut);
     EventBus().off(NotificationUtils.resetChat);

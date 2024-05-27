@@ -100,6 +100,8 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
         String replacedString = one.replaceAll(reStr, "");
         one = replacedString;
       }
+      coverUrl = "";
+
       repeatText = one;
     } else if (one.contains("<image>")) {
       RegExpMatch? match = pattern.firstMatch(one);
@@ -114,6 +116,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
         one = replacedString;
       }
       repeatText = one;
+      repeatWord = "";
     } else {
       coverUrl = "";
       repeatWord = "";
@@ -141,244 +144,253 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
             : Stack(
                 children: [
                   //MyScrollView
-                  MyScrollView(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const XTCupertinoNavigationBar(
-                        backgroundColor: Color(0xFFFFFFFF),
-                        border: null,
-                        padding: EdgeInsetsDirectional.zero,
-                        leading: NavigationBackWidget(),
-                        middle: Text(
-                          "纠错",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          // Expanded(child: Text("data")),
-                          Text(
-                            "${idx + 1}/${errorDetailData.length}",
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                              // fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
+                  Positioned(
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: MyScrollView(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const XTCupertinoNavigationBar(
+                          backgroundColor: Color(0xFFFFFFFF),
+                          border: null,
+                          padding: EdgeInsetsDirectional.zero,
+                          leading: NavigationBackWidget(),
+                          middle: Text(
+                            "纠错",
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          Gaps.hGap26
-                        ],
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0),
-                          color: Colours.color_F9F8FF,
                         ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 18.0,
-                          vertical: 10.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Row(
-                              children: [
-                                const LoadAssetImage(
-                                  'lisu_icon',
-                                  width: 25.0,
-                                  height: 25.0,
-                                ),
-                                Gaps.hGap6,
-                                const Text(
-                                  "AI教师",
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
+                            // Expanded(child: Text("data")),
                             Text(
-                              repeatText,
+                              "${idx + 1}/${errorDetailData.length}",
                               style: const TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w400,
-                                color: Colours.color_666666,
+                                fontSize: 16.0,
+                                // fontWeight: FontWeight.bold,
+                                color: Colors.black,
                               ),
                             ),
-                            coverUrl == ""
-                                ? Container()
-                                : GestureDetector(
-                                    behavior: HitTestBehavior.opaque,
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        backgroundColor: Colors.transparent,
-                                        barrierColor: Colors.transparent,
-                                        isScrollControlled: true,
-                                        isDismissible: false,
-                                        builder: (_) => PhotoViewSimpleScreen(
-                                          imageProvider: NetworkImage(coverUrl),
-                                        ),
-                                      );
-                                    },
-                                    child: LoadImage(
-                                      coverUrl,
-                                      // width: 48.0,
-                                    ),
-                                  ),
-                            ErrorCorrectionDetailItem(
-                              data: errorDetailData[idx],
-                            ),
-                            ErrorCorrectionOneDetailItem(
-                              data: errorDetailData[idx],
-                            ),
-                            errorDetailData[idx].userPracticeAudio == ""
-                                ? const ErrorCorrectionNotDetailItem()
-                                : ErrorCorrectionThreeDetailItem(
-                                    data: errorDetailData[idx],
-                                  ),
-                            errorDetailData[idx].userPracticeAudio.isEmpty
-                                ? BottomErrorBar(
-                                    repeatWord: repeatWord,
-                                    suggestionSentenceStr: errorDetailData[idx]
-                                            .suggestionSentence ??
-                                        "",
-                                    suggestionAudioStr:
-                                        errorDetailData[idx].suggestionAudio,
-                                    idStr: errorDetailData[idx].id.toString(),
-                                    // chatWebsocket: _chatWebsocket,
-                                    controller: _bottomBarControll,
-                                    recordController: _recordController,
-                                    onScrollEnd: () {},
-                                    onMapEnd: (data) {
-                                      setState(() {
-                                        errorDetailData[idx]
-                                                .userPracticeSentence =
-                                            data["user_practice_sentence"];
-                                        errorDetailData[idx].userPracticeAudio =
-                                            // ignore: prefer_interpolation_to_compose_strings
-                                            "https://statics.shenmo-ai.com/" +
-                                                data["user_practice_audio"];
-                                        double value = double.parse(
-                                            data["user_practice_score"]);
-                                        int intValue =
-                                            value.toInt(); // intValue 的值为 123
-                                        errorDetailData[idx].userPracticeScore =
-                                            intValue;
-                                      });
-                                    },
-                                  )
-                                : Center(
-                                    child: Container(
-                                      margin: const EdgeInsets.only(top: 20),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                        color: Colors.white,
-                                      ),
-                                      width: 200,
-                                      height: 40,
-                                      child: const Center(
-                                          child: Text(
-                                        "已更正",
-                                        style: TextStyle(
-                                          fontSize: 17.0,
-                                          color: Colours.color_999999,
-                                        ),
-                                      )),
-                                    ),
-                                  ),
-                            Gaps.vGap10,
+                            Gaps.hGap26
                           ],
                         ),
-                      ),
-                      Gaps.vGap10,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              if (idx != 0) {
-                                idx = idx - 1;
-                                repeatTextStr(errorDetailData[idx].sentence);
-
-                                if (errorDetailData[idx]
-                                    .suggestionAudio
-                                    .isEmpty) {
-                                  _errorCorrectionDetailPagePresenter
-                                      .postSuggestAnswer(
-                                          errorDetailData[idx].sentence);
-                                } else {
-                                  setState(() {});
-                                }
-                              }
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.0),
-                                color: Colours.color_F8F8F8,
+                        Container(
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: Colours.color_F9F8FF,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 18.0,
+                            vertical: 10.0,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const LoadAssetImage(
+                                    'lisu_icon',
+                                    width: 25.0,
+                                    height: 25.0,
+                                  ),
+                                  Gaps.hGap6,
+                                  const Text(
+                                    "AI教师",
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 18.0,
-                                vertical: 10.0,
-                              ),
-                              child: Text(
-                                "上一页",
-                                style: TextStyle(
+                              Text(
+                                repeatText,
+                                style: const TextStyle(
                                   fontSize: 14.0,
-                                  color: idx == 0
-                                      ? Colours.color_999999
-                                      : Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colours.color_666666,
+                                ),
+                              ),
+                              coverUrl == ""
+                                  ? Container()
+                                  : GestureDetector(
+                                      behavior: HitTestBehavior.opaque,
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          backgroundColor: Colors.transparent,
+                                          barrierColor: Colors.transparent,
+                                          isScrollControlled: true,
+                                          isDismissible: false,
+                                          builder: (_) => PhotoViewSimpleScreen(
+                                            imageProvider:
+                                                NetworkImage(coverUrl),
+                                          ),
+                                        );
+                                      },
+                                      child: LoadImage(
+                                        coverUrl,
+                                        // width: 48.0,
+                                      ),
+                                    ),
+                              ErrorCorrectionDetailItem(
+                                data: errorDetailData[idx],
+                              ),
+                              ErrorCorrectionOneDetailItem(
+                                data: errorDetailData[idx],
+                              ),
+                              errorDetailData[idx].userPracticeAudio == ""
+                                  ? const ErrorCorrectionNotDetailItem()
+                                  : ErrorCorrectionThreeDetailItem(
+                                      data: errorDetailData[idx],
+                                    ),
+                              errorDetailData[idx].userPracticeAudio.isEmpty
+                                  ? BottomErrorBar(
+                                      repeatWord: repeatWord,
+                                      suggestionSentenceStr:
+                                          errorDetailData[idx]
+                                                  .suggestionSentence ??
+                                              "",
+                                      suggestionAudioStr:
+                                          errorDetailData[idx].suggestionAudio,
+                                      idStr: errorDetailData[idx].id.toString(),
+                                      // chatWebsocket: _chatWebsocket,
+                                      controller: _bottomBarControll,
+                                      recordController: _recordController,
+                                      onScrollEnd: () {},
+                                      onMapEnd: (data) {
+                                        setState(() {
+                                          errorDetailData[idx]
+                                                  .userPracticeSentence =
+                                              data["user_practice_sentence"];
+                                          errorDetailData[idx]
+                                                  .userPracticeAudio =
+                                              // ignore: prefer_interpolation_to_compose_strings
+                                              "https://statics.shenmo-ai.com/" +
+                                                  data["user_practice_audio"];
+                                          double value = double.parse(
+                                              data["user_practice_score"]);
+                                          int intValue =
+                                              value.toInt(); // intValue 的值为 123
+                                          errorDetailData[idx]
+                                              .userPracticeScore = intValue;
+                                        });
+                                      },
+                                    )
+                                  : Center(
+                                      child: Container(
+                                        margin: const EdgeInsets.only(top: 20),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                          color: Colors.white,
+                                        ),
+                                        width: 200,
+                                        height: 40,
+                                        child: const Center(
+                                            child: Text(
+                                          "已更正",
+                                          style: TextStyle(
+                                            fontSize: 17.0,
+                                            color: Colours.color_999999,
+                                          ),
+                                        )),
+                                      ),
+                                    ),
+                              Gaps.vGap10,
+                            ],
+                          ),
+                        ),
+                        Gaps.vGap10,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                if (idx != 0) {
+                                  idx = idx - 1;
+                                  repeatTextStr(errorDetailData[idx].sentence);
+
+                                  if (errorDetailData[idx]
+                                      .suggestionAudio
+                                      .isEmpty) {
+                                    _errorCorrectionDetailPagePresenter
+                                        .postSuggestAnswer(
+                                            errorDetailData[idx].sentence);
+                                  } else {
+                                    setState(() {});
+                                  }
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  color: Colours.color_F8F8F8,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 18.0,
+                                  vertical: 10.0,
+                                ),
+                                child: Text(
+                                  "上一页",
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: idx == 0
+                                        ? Colours.color_999999
+                                        : Colors.black,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              if (idx + 1 < errorDetailData.length) {
-                                idx = idx + 1;
-                                repeatTextStr(errorDetailData[idx].sentence);
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                if (idx + 1 < errorDetailData.length) {
+                                  idx = idx + 1;
+                                  repeatTextStr(errorDetailData[idx].sentence);
 
-                                if (errorDetailData[idx]
-                                    .suggestionAudio
-                                    .isEmpty) {
-                                  _errorCorrectionDetailPagePresenter
-                                      .postSuggestAnswer(
-                                          errorDetailData[idx].sentence);
-                                } else {
-                                  setState(() {});
+                                  if (errorDetailData[idx]
+                                      .suggestionAudio
+                                      .isEmpty) {
+                                    _errorCorrectionDetailPagePresenter
+                                        .postSuggestAnswer(
+                                            errorDetailData[idx].sentence);
+                                  } else {
+                                    setState(() {});
+                                  }
                                 }
-                              }
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.0),
-                                color: Colours.color_F8F8F8,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 18.0,
-                                vertical: 10.0,
-                              ),
-                              child: Text(
-                                "下一页",
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: idx + 1 < errorDetailData.length
-                                      ? Colors.black
-                                      : Colours.color_999999,
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  color: Colours.color_F8F8F8,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 18.0,
+                                  vertical: 10.0,
+                                ),
+                                child: Text(
+                                  "下一页",
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: idx + 1 < errorDetailData.length
+                                        ? Colors.black
+                                        : Colours.color_999999,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      Gaps.vGap30,
-                    ],
+                          ],
+                        ),
+                        Gaps.vGap30,
+                      ],
+                    ),
                   ),
                   Positioned(
                     // top: 0,
@@ -417,7 +429,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
       repeatTextStr(errorDetailData[idx].sentence);
       // repeatTextStr(
       //     "Great! Let's start with the first word. One<word>one</word><image>https://statics.shenmo-ai.com/courses/level1/unit0/lesson1/Group%202.jpg</image>");
-
+      // errorDetailData[idx].userPracticeAudio = "";
       if (errorDetailData.isNotEmpty) {
         if (errorDetailData[0].suggestionAudio.isEmpty) {
           _errorCorrectionDetailPagePresenter

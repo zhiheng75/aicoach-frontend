@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:Bubble/chat/entity/character_entity.dart';
 import 'package:Bubble/chat/entity/character_list_bean.dart';
+import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/course/entity/step_detail_bean.dart';
 import 'package:Bubble/course/item/course_flow_item.dart';
@@ -26,6 +27,7 @@ import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/scene/widget/select_scene.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
@@ -34,6 +36,7 @@ import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sp_util/sp_util.dart';
 
 import '../../main.dart';
 
@@ -74,6 +77,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   late int mistakeCountInt = 0;
 
   late String titleStr = "";
+  final MediaUtils _mediaUtils = MediaUtils();
 
   @override
   void initState() {
@@ -97,6 +101,23 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     EventBus().on(NotificationUtils.nextResetChat, (_) {
       _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
     });
+    intPermission();
+  }
+
+  void intPermission() async {
+    bool hasAgree =
+        SpUtil.getBool(Constant.mediaUtils, defValue: false) ?? false;
+    if (!hasAgree) {
+      Toast.show("录音音频使用说明:用于对话场景", duration: 6000);
+      SpUtil.putBool(Constant.mediaUtils, true);
+    }
+
+    // 检查权限
+    bool isRequest = await _mediaUtils.checkMicrophonePermission();
+    if (isRequest) {
+      Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
+      return;
+    }
   }
 
   @override
@@ -313,7 +334,13 @@ class _CourseFlowPageState extends State<CourseFlowPage>
               return GestureDetector(
                 onTap: () {
                   LoginManager.checkLogin(context, () {
-                    gotoCourse(index);
+                    if (stepDetailData.data.data[index].isLocked == 0) {
+                      gotoCourse(index);
+                    } else {
+                      Toast.show(
+                        '请按顺序完成',
+                      );
+                    }
                   });
                 },
                 child: CourseFlowItem(data: stepDetailData.data.data[index]),

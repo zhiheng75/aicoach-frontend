@@ -120,6 +120,8 @@ class Data {
 class CourseDatum {
   int completed;
   int stepId;
+  int isLocked;
+
   String stepName;
   String sceneIds;
   int stepIcon;
@@ -128,6 +130,7 @@ class CourseDatum {
   CourseDatum({
     required this.completed,
     required this.stepId,
+    required this.isLocked,
     required this.stepName,
     required this.sceneIds,
     required this.stepIcon,
@@ -137,6 +140,7 @@ class CourseDatum {
   factory CourseDatum.fromJson(Map<String, dynamic> json) => CourseDatum(
         completed: json["completed"],
         stepId: json["step_id"],
+        isLocked: json["is_locked"],
         stepName: json["step_name"],
         sceneIds: json["scene_ids"],
         stepIcon: json["step_icon"],
@@ -147,6 +151,7 @@ class CourseDatum {
   Map<String, dynamic> toJson() => {
         "completed": completed,
         "step_id": stepId,
+        "is_locked": isLocked,
         "step_name": stepName,
         "scene_ids": sceneIds,
         "step_icon": stepIcon,

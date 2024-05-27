@@ -6,12 +6,16 @@ import 'package:Bubble/person/presneter/purchase_page_presenter.dart';
 import 'package:Bubble/person/view/purchase_view.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/util/confirm_utils.dart';
+import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluwx/fluwx.dart';
 
 class CoursePaysPage extends StatefulWidget {
   final LessonDetailBean data;
@@ -328,6 +332,25 @@ class _CoursePaysPageState extends State<CoursePaysPage>
   paySuccess() {
     // TODO: implement paySuccess
     showPayToast(context: context, message: "支付成功\n前往微信添加\n本课程辅导老师");
+    EventBus().emit(NotificationUtils.paySuccess);
+
+    // ConfirmUtils.showSingle(
+    //   context: context,
+    //   title: "支付成功\n前往微信添加\n本课程辅导老师",
+    //   onCancel: () {
+    //     //跳转小程序
+    //     Fluwx fluwx = Fluwx();
+    //     fluwx.registerApi(
+    //         appId: "wxfb033d09d2eecaf0",
+    //         universalLink: "https://demo.shenmo-ai.net/ios/");
+    //     fluwx.open(
+    //         target: MiniProgram(
+    //             username: "",
+    //             path: "",
+    //             miniProgramType: WXMiniProgramType.preview));
+    //     Navigator.of(context).pop();
+    //   },
+    // );
   }
 
   @override

@@ -178,6 +178,8 @@ class _InstructionalVideoDialoguePageState
         Log.e('===============Tag: $tag, Content: $content');
         repeatWord = content!;
       }
+    } else {
+      repeatWord = "";
     }
   }
 
@@ -384,7 +386,20 @@ class _InstructionalVideoDialoguePageState
       // 退到后台
       // if (_appLifecycleState == 'AppLifecycleState.inactive' ||
       //     message == 'AppLifecycleState.paused') {}
-      if (message == 'AppLifecycleState.paused') {
+      if (message == 'AppLifecycleState.inactive') {
+        if (isShowStr == "1") {
+          // 应用程序已经进入后台 或锁屏
+          ConfirmUtils.showSingle(
+            context: context,
+            title: "请重新开始对话",
+            onCancel: () {
+              endSocket();
+              Navigator.of(context).pop();
+              widget.onEnd();
+            },
+          );
+          isShowStr = "2";
+        }
         // ConfirmUtils.showSingle(
         //   context: context,
         //   title: "请重新开始对话",
@@ -438,9 +453,7 @@ class _InstructionalVideoDialoguePageState
     super.didPush();
     //从其他页面过来
     Log.e("+++++++++++++++从其他页面过来");
-    setState(() {
-      isShowStr = "1";
-    });
+    isShowStr = "1";
   }
 
   @override
@@ -448,9 +461,7 @@ class _InstructionalVideoDialoguePageState
     // TODO: implement didPushNext
     super.didPushNext();
     Log.e("+++++++++++++++从当前页面跳转到下一页之后才会调用");
-    setState(() {
-      isShowStr = "2";
-    });
+    isShowStr = "2";
   }
 
   @override
@@ -687,12 +698,8 @@ class _InstructionalVideoDialoguePageState
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.paused ||
-        state == AppLifecycleState.inactive) {
+    if (state == AppLifecycleState.inactive) {
       if (isShowStr == "1") {
-        setState(() {
-          isShowStr = "2";
-        });
         // 应用程序已经进入后台 或锁屏
         ConfirmUtils.showSingle(
           context: context,
@@ -703,6 +710,7 @@ class _InstructionalVideoDialoguePageState
             widget.onEnd();
           },
         );
+        isShowStr = "2";
       }
     }
     _appLifecycleState = state;
