@@ -16,6 +16,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluwx/fluwx.dart';
+import 'package:sp_util/sp_util.dart';
+
+import '../../constant/constant.dart';
 
 class CoursePaysPage extends StatefulWidget {
   final LessonDetailBean data;
@@ -334,23 +337,30 @@ class _CoursePaysPageState extends State<CoursePaysPage>
     showPayToast(context: context, message: "支付成功\n前往微信添加\n本课程辅导老师");
     EventBus().emit(NotificationUtils.paySuccess);
 
-    // ConfirmUtils.showSingle(
-    //   context: context,
-    //   title: "支付成功\n前往微信添加\n本课程辅导老师",
-    //   onCancel: () {
-    //     //跳转小程序
-    //     Fluwx fluwx = Fluwx();
-    //     fluwx.registerApi(
-    //         appId: "wxfb033d09d2eecaf0",
-    //         universalLink: "https://demo.shenmo-ai.net/ios/");
-    //     fluwx.open(
-    //         target: MiniProgram(
-    //             username: "",
-    //             path: "",
-    //             miniProgramType: WXMiniProgramType.preview));
-    //     Navigator.of(context).pop();
-    //   },
-    // );
+//     ConfirmUtils.showSingle(
+//       context: context,
+//       title: "支付成功\n前往微信添加\n本课程辅导老师",
+//       onCancel: () {
+// //         移动应用appid:wxfb033d09d2eecaf0
+// // 小程序appid:wx2140a8026b8cdf74
+// // 跳转路径：pages/mine/add-weChat/add-weChat?user_token=token
+
+//         final String? accessToken = SpUtil.getString(Constant.accessToken);
+
+//         //跳转小程序
+//         Fluwx fluwx = Fluwx();
+//         fluwx.registerApi(
+//             appId: "wxfb033d09d2eecaf0",
+//             universalLink: "https://demo.shenmo-ai.net/ios/");
+//         fluwx.open(
+//             target: MiniProgram(
+//                 username: "wx2140a8026b8cdf74",
+//                 path:
+//                     "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
+//                 miniProgramType: WXMiniProgramType.test));
+//         Navigator.of(context).pop();
+//       },
+//     );
   }
 
   @override

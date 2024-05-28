@@ -78,14 +78,16 @@ class _CourseReportVocabularyTwoItemState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Gaps.vGap8,
             Row(
               children: [
+                Gaps.hGap12,
                 const LoadAssetImage(
-                  "home_head_icon",
-                  width: 40.0,
-                  height: 40.0,
+                  "head_cihui_icon",
+                  width: 24.0,
+                  height: 24.0,
                 ),
-                // Gaps.hGap8,
+                Gaps.hGap8,
                 RichText(
                   text: const TextSpan(children: [
                     TextSpan(
@@ -99,7 +101,7 @@ class _CourseReportVocabularyTwoItemState
                         text: "vocabulary",
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w500,
                           color: Colors.black,
                         )),
                   ]),

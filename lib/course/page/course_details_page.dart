@@ -88,14 +88,16 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
               // color: Colors.red,
               child: Column(
                 children: [
+                  Gaps.vGap8,
                   Row(
                     children: [
+                      Gaps.hGap12,
                       const LoadAssetImage(
-                        "home_head_icon",
-                        width: 40.0,
-                        height: 40.0,
+                        "head_juxing_icon",
+                        width: 24.0,
+                        height: 24.0,
                       ),
-                      // Gaps.hGap8,
+                      Gaps.hGap8,
                       RichText(
                         text: const TextSpan(children: [
                           TextSpan(
@@ -109,14 +111,14 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
                               text: "Sentence pattern",
                               style: TextStyle(
                                 fontSize: 16,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w500,
                                 color: Colors.black,
                               )),
                         ]),
                       ),
                     ],
                   ),
-                  // Gaps.vGap11,
+                  Gaps.vGap11,
                   Column(
                     children: _buildPatternItems(),
                   ),
@@ -138,14 +140,16 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
               // color: Colors.red,
               child: Column(
                 children: [
+                  Gaps.vGap8,
                   Row(
                     children: [
+                      Gaps.hGap8,
                       const LoadAssetImage(
-                        "home_head_icon",
-                        width: 40.0,
-                        height: 40.0,
+                        "head_nengli_icon",
+                        width: 24.0,
+                        height: 24.0,
                       ),
-                      // Gaps.hGap8,
+                      Gaps.hGap8,
                       RichText(
                         text: const TextSpan(children: [
                           TextSpan(
@@ -166,6 +170,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
                       ),
                     ],
                   ),
+                  Gaps.vGap11,
                   Column(
                     children: _buildSkillsItems(),
                   ),

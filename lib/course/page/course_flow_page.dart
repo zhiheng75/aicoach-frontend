@@ -269,7 +269,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
         //     color: Colours.color_666666,
         //   ),
         // )),
-        // Gaps.vGap2,
+        Gaps.vGap4,
         Text(
           stepDetailData.data.lessonName,
           style: const TextStyle(
@@ -286,6 +286,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                 arguments: stepDetailData);
           },
           child: Container(
+            // height: 40,
             margin: const EdgeInsets.only(left: 16, right: 16, top: 18),
             // margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -296,30 +297,28 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     Colours.color_FFA7EC,
                   ],
                 )),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 30.0,
-              vertical: 10.0,
-            ),
+            padding:
+                const EdgeInsets.only(left: 30, right: 20, top: 10, bottom: 10),
             child: const Row(
               children: [
                 Text("本课学习目标   ",
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w500,
                       color: Colors.black,
                     )),
                 Expanded(
                   child: Text("Learning targe",
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w500,
                         color: Colours.color_666666,
                       )),
                 ),
                 LoadAssetImage(
                   "goal_Icon",
-                  width: 15.0,
-                  height: 15.0,
+                  width: 6.0,
+                  height: 12.0,
                 )
               ],
             ),
@@ -350,168 +349,171 @@ class _CourseFlowPageState extends State<CourseFlowPage>
           ),
         ),
         Gaps.vGap10,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Stack(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    LoginManager.checkLogin(context, () {
-                      if (stepDetailData.data.reportStatus == 0) {
-                        Toast.show("课程完成后才可查看学习报告");
-                      } else {
-                        NavigatorUtils.push(context,
-                            "${CourseRouter.courseReportPage}?lessonId=${widget.lessonId}");
-                      }
-                    });
-                  },
-                  child: Container(
-                    width: 110,
-                    height: 110,
+        Container(
+          margin: const EdgeInsets.only(left: 16, right: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      LoginManager.checkLogin(context, () {
+                        if (stepDetailData.data.reportStatus == 0) {
+                          Toast.show("课程完成后才可查看学习报告");
+                        } else {
+                          NavigatorUtils.push(context,
+                              "${CourseRouter.courseReportPage}?lessonId=${widget.lessonId}");
+                        }
+                      });
+                    },
+                    child: Container(
+                      width: 110,
+                      height: 110,
 
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                          'assets/images/baogao_flow.png',
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/baogao_flow.png',
+                          ),
+                          fit: BoxFit.fill,
                         ),
-                        fit: BoxFit.fill,
+                      ),
+                      // padding: const EdgeInsets.all(30),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 65,
+                          ),
+                          const Text(
+                            "学习报告",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                    // padding: const EdgeInsets.all(30),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 65,
-                        ),
-                        const Text(
-                          "学习报告",
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
-                        )
-                      ],
-                    ),
                   ),
-                ),
-              ],
-            ),
-            Stack(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    LoginManager.checkLogin(context, () {
-                      if (stepDetailData.data.mistakeStatus == 0) {
-                        Toast.show("课程完成后才可以纠错");
-                      } else {
-                        NavigatorUtils.push(context,
-                            "${PersonalRouter.errorCorrectionDetailPage}?lessonId=${widget.lessonId}");
-                      }
-                    });
-                  },
-                  child: Container(
-                    width: 110,
-                    height: 110,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                          'assets/images/jiucuo_flow.png',
+                ],
+              ),
+              Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      LoginManager.checkLogin(context, () {
+                        if (stepDetailData.data.mistakeStatus == 0) {
+                          Toast.show("课程完成后才可以纠错");
+                        } else {
+                          NavigatorUtils.push(context,
+                              "${PersonalRouter.errorCorrectionDetailPage}?lessonId=${widget.lessonId}");
+                        }
+                      });
+                    },
+                    child: Container(
+                      width: 110,
+                      height: 110,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/jiucuo_flow.png',
+                          ),
+                          fit: BoxFit.fill,
                         ),
-                        fit: BoxFit.fill,
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 65,
+                          ),
+                          const Text(
+                            "纠错",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 65,
-                        ),
-                        const Text(
-                          "纠错",
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
-                        )
-                      ],
-                    ),
                   ),
-                ),
-                Positioned(
-                  right: 1,
-                  top: 1,
-                  child: mistakeCountInt > 0
-                      ? Container(
-                          width: 20,
-                          height: 20,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100.0),
-                            color: Colors.red,
-                          ),
-                          child: Center(
-                            child: Text(
-                              mistakeCountInt.toString(),
-                              style: const TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                  Positioned(
+                    right: 5,
+                    top: 1,
+                    child: mistakeCountInt > 0
+                        ? Container(
+                            width: 26,
+                            height: 26,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100.0),
+                              color: Colors.red,
+                            ),
+                            child: Center(
+                              child: Text(
+                                mistakeCountInt.toString(),
+                                style: const TextStyle(
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                      : Container(),
-                ),
-              ],
-            ),
-            Stack(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    LoginManager.checkLogin(context, () {
-                      // selectScene(sceneList[index]);
+                          )
+                        : Container(),
+                  ),
+                ],
+              ),
+              Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      LoginManager.checkLogin(context, () {
+                        // selectScene(sceneList[index]);
 
-                      if (stepDetailData.data.evaluationStatus == 0) {
-                        Toast.show("课程完成后才可评价");
-                      } else {
-                        NavigatorUtils.push(
-                            context, CourseRouter.curriculumEvaluationPage,
-                            arguments: stepDetailData);
-                      }
-                    });
-                  },
-                  child: Container(
-                    width: 110,
-                    height: 110,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                          'assets/images/pingjia_flow.png',
+                        if (stepDetailData.data.evaluationStatus == 0) {
+                          Toast.show("课程完成后才可评价");
+                        } else {
+                          NavigatorUtils.push(
+                              context, CourseRouter.curriculumEvaluationPage,
+                              arguments: stepDetailData);
+                        }
+                      });
+                    },
+                    child: Container(
+                      width: 110,
+                      height: 110,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images/pingjia_flow.png',
+                          ),
+                          fit: BoxFit.fill,
                         ),
-                        fit: BoxFit.fill,
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 65,
+                          ),
+                          const Text(
+                            "课程评价",
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 65,
-                        ),
-                        const Text(
-                          "课程评价",
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
-                          ),
-                        )
-                      ],
-                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -527,7 +529,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
         padding: EdgeInsetsDirectional.zero,
         leading: const NavigationBackWidget(),
         trailing: Container(
-          margin: const EdgeInsets.only(right: 10),
+          margin: const EdgeInsets.only(right: 12),
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
@@ -538,8 +540,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
             },
             child: const LoadAssetImage(
               "switching_teacher_icon",
-              width: 30.0,
-              height: 30.0,
+              width: 24.0,
+              height: 24.0,
             ),
           ),
         ),
@@ -576,7 +578,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
       isLoding = false;
       stepDetailData = stepDetailBean;
       mistakeCountInt = stepDetailData.data.mistakeCount;
-      titleStr = stepDetailData.data.title;
+      titleStr = "Lesson ${stepDetailData.data.lessonLabel}";
     });
   }
 }

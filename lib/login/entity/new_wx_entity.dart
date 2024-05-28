@@ -39,7 +39,7 @@ class NewWxInfoBean {
 class NewWxInfoBeanData {
   String openid;
   String nickname;
-  int sex;
+  String sex;
   String language;
   String city;
   String province;
@@ -69,7 +69,7 @@ class NewWxInfoBeanData {
       NewWxInfoBeanData(
         openid: json["openid"].toString() ?? "",
         nickname: json["nickname"].toString() ?? "",
-        sex: json["sex"] ?? "",
+        sex: json["sex"].toString() ?? "",
         language: json["language"].toString() ?? "",
         city: json["city"].toString(),
         province: json["province"].toString() ?? "",

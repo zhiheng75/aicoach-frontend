@@ -49,7 +49,7 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -64,12 +64,12 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
                         height: 25.0,
                       )
                     : const LoadAssetImage(
-                        'my_head_img',
+                        'head_icon',
                         width: 25.0,
                         height: 25.0,
                       ),
               ),
-              Gaps.hGap10,
+              Gaps.hGap6,
               SizedBox(
                 width: 70,
                 height: 25,
@@ -82,15 +82,16 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
                       child: Container(
                         width: 60,
                         height: 15,
-                        color: Colours.color_FFD076,
+                        color: Colours.color_FFE99C,
                       ),
                     ),
                     const Text(
                       "我的回答",
                       style: TextStyle(
                         // backgroundColor: Colors.yellow,
-                        fontSize: 17.0,
+                        fontSize: 16.0,
                         color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
@@ -109,40 +110,44 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
                 widget.data.userScore.toString(),
                 style: const TextStyle(
                   // backgroundColor: Colors.yellow,
-                  fontSize: 15.0,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+
                   color: Colours.color_E00094,
                 ),
               ),
+              Gaps.hGap2,
               const Text(
                 "分",
                 style: TextStyle(
                   // backgroundColor: Colors.yellow,
-                  fontSize: 13.0,
+                  fontSize: 12.0,
                   color: Colours.color_666666,
+                  height: 2,
                 ),
               ),
             ],
           ),
           Gaps.vGap8,
           Container(
+            margin: const EdgeInsets.only(right: 16),
             // margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(20.0),
               color: Colors.white,
             ),
             padding: const EdgeInsets.symmetric(
               horizontal: 18.0,
-              vertical: 10.0,
+              vertical: 12.0,
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Text(
                     widget.data.userSentence,
                     style: const TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.black,
-                    ),
+                        fontSize: 14.0, color: Colors.black, height: 1.5),
                   ),
                 ),
                 Gaps.hGap16,
@@ -155,9 +160,9 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
                     );
                   },
                   child: const LoadAssetImage(
-                    'laba_lan',
-                    width: 17.6,
-                    height: 16.0,
+                    'jiucuo_laba_icon',
+                    width: 24,
+                    height: 24,
                   ),
                 ),
               ],
@@ -184,7 +189,7 @@ class _ErrorCorrectionOneDetailItemState
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -200,14 +205,16 @@ class _ErrorCorrectionOneDetailItemState
                   child: Container(
                     width: 78,
                     height: 15,
-                    color: Colours.color_FFD076,
+                    color: Colours.color_FFE99C,
                   ),
                 ),
                 const Text(
                   "试试这么说",
                   style: TextStyle(
                     // backgroundColor: Colors.yellow,
-                    fontSize: 17.0,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+
                     color: Colors.black,
                   ),
                 ),
@@ -225,23 +232,24 @@ class _ErrorCorrectionOneDetailItemState
           Gaps.vGap8,
           Container(
             // margin: const EdgeInsets.all(10),
+            margin: const EdgeInsets.only(right: 16),
+
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(20.0),
               color: Colors.white,
             ),
             padding: const EdgeInsets.symmetric(
               horizontal: 18.0,
-              vertical: 10.0,
+              vertical: 12.0,
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Text(
                     widget.data.suggestionSentence ?? "",
                     style: const TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.black,
-                    ),
+                        fontSize: 14.0, color: Colors.black, height: 1.5),
                   ),
                 ),
                 Gaps.hGap16,
@@ -254,9 +262,9 @@ class _ErrorCorrectionOneDetailItemState
                     );
                   },
                   child: const LoadAssetImage(
-                    'laba_lan',
-                    width: 17.6,
-                    height: 16.0,
+                    'jiucuo_laba_icon',
+                    width: 24,
+                    height: 24,
                   ),
                 ),
               ],
@@ -342,9 +350,9 @@ class _ErrorCorrectionDetailTwoItemState
                     );
                   },
                   child: const LoadAssetImage(
-                    'laba_lan',
-                    width: 17.6,
-                    height: 16.0,
+                    'jiucuo_laba_icon',
+                    width: 24,
+                    height: 24,
                   ),
                 ),
               ],
@@ -371,14 +379,14 @@ class _ErrorCorrectionThreeDetailItemState
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               SizedBox(
-                width: 65,
+                width: 55,
                 height: 25,
                 child: Stack(
                   children: [
@@ -388,13 +396,14 @@ class _ErrorCorrectionThreeDetailItemState
                       child: Container(
                         width: 42,
                         height: 15,
-                        color: Colours.color_FFD076,
+                        color: Colours.color_FFE99C,
                       ),
                     ),
                     const Text(
                       "已更正",
                       style: TextStyle(
-                        fontSize: 17.0,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
                     ),
@@ -403,40 +412,45 @@ class _ErrorCorrectionThreeDetailItemState
               ),
               const LoadAssetImage(
                 'correct_icon',
-                width: 15.0,
-                height: 15.0,
+                width: 14.0,
+                height: 14.0,
               ),
               Gaps.hGap8,
               Text(
                 widget.data.userPracticeScore.toString(),
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 12.0,
+                  fontSize: 20.0,
                   color: Colours.color_00B53D,
                 ),
               ),
+              Gaps.hGap2,
               const Text(
                 "分",
                 style: TextStyle(
                   // backgroundColor: Colors.yellow,
                   fontSize: 12.0,
                   color: Colors.black,
+                  height: 2,
                 ),
               ),
             ],
           ),
           Gaps.vGap8,
           Container(
+            margin: const EdgeInsets.only(right: 16),
+
             // margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(20.0),
               color: Colors.white,
             ),
             padding: const EdgeInsets.symmetric(
               horizontal: 18.0,
-              vertical: 10.0,
+              vertical: 12.0,
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Text(
@@ -457,9 +471,9 @@ class _ErrorCorrectionThreeDetailItemState
                     );
                   },
                   child: const LoadAssetImage(
-                    'laba_lan',
-                    width: 17.6,
-                    height: 16.0,
+                    'jiucuo_laba_icon',
+                    width: 24,
+                    height: 24,
                   ),
                 ),
               ],
@@ -486,7 +500,7 @@ class _ErrorCorrectionNotDetailItemState
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -502,14 +516,15 @@ class _ErrorCorrectionNotDetailItemState
                   child: Container(
                     width: 45,
                     height: 15,
-                    color: Colours.color_FFD076,
+                    color: Colours.color_FFE99C,
                   ),
                 ),
                 const Text(
                   "未更正",
                   style: TextStyle(
                     // backgroundColor: Colors.yellow,
-                    fontSize: 17.0,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
                     color: Colors.black,
                   ),
                 ),
@@ -518,14 +533,14 @@ class _ErrorCorrectionNotDetailItemState
           ),
           Gaps.vGap8,
           Container(
-            width: _screenUtil.screenWidth - 40,
+            width: _screenUtil.screenWidth - 60,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
               color: Colors.white,
             ),
             padding: const EdgeInsets.symmetric(
               horizontal: 18.0,
-              vertical: 10.0,
+              vertical: 12.0,
             ),
             child: const Text(
               "你还未更正读音喔~",

@@ -29,6 +29,7 @@ class ChatWebsocket {
     required String characterId,
     // 话题和场景都用sceneID
     String? sceneId,
+    String? lessonId,
     Function()? onConnected,
     required Function(dynamic) onAnswer,
     required Function(String?, String) onEnd,
@@ -39,7 +40,7 @@ class ChatWebsocket {
     _endType = '';
     String sessionId = '';
     try {
-      sessionId = await _connect(characterId, sceneId);
+      sessionId = await _connect(characterId, sceneId, lessonId);
     } catch (e) {
       rethrow;
     }
@@ -106,7 +107,8 @@ class ChatWebsocket {
     await _websocket!.sink.close(WebSocketStatus.normalClosure, 'Session End');
   }
 
-  Future<String> _connect(String characterId, String? sceneId) async {
+  Future<String> _connect(
+      String characterId, String? sceneId, String? lessonId) async {
     String sessionId = const Uuid().v4().replaceAll('-', '');
     String deviceId = await Device.getDeviceId();
     String token = LoginManager.getUserToken();
@@ -118,6 +120,9 @@ class ChatWebsocket {
     //     'wss://api.bubble.shenmo-ai.com/ws/$sessionId?platform=app&device_id=$deviceId&character_id=$characterId&language=en-US&token=$token&use_search=false&use_quivr=false&use_multion=false';
     if (sceneId != null) {
       uri = '$uri&scene_id=$sceneId';
+    }
+    if (lessonId != null) {
+      uri = '$uri&lesson_id=$lessonId';
     }
     Log.e(uri);
 

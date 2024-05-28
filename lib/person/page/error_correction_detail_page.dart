@@ -178,15 +178,13 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                           ],
                         ),
                         Container(
-                          margin: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.only(
+                              left: 16, right: 16, top: 10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.0),
                             color: Colours.color_F9F8FF,
                           ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 18.0,
-                            vertical: 10.0,
-                          ),
+                          padding: const EdgeInsets.only(top: 16, left: 16),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -199,7 +197,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                   ),
                                   Gaps.hGap6,
                                   const Text(
-                                    "AI教师",
+                                    "Tutor",
                                     style: TextStyle(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.bold,
@@ -208,6 +206,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                   ),
                                 ],
                               ),
+                              Gaps.vGap8,
                               Text(
                                 repeatText,
                                 style: const TextStyle(
@@ -218,26 +217,34 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                               ),
                               coverUrl == ""
                                   ? Container()
-                                  : GestureDetector(
-                                      behavior: HitTestBehavior.opaque,
-                                      onTap: () {
-                                        showModalBottomSheet(
-                                          context: context,
-                                          backgroundColor: Colors.transparent,
-                                          barrierColor: Colors.transparent,
-                                          isScrollControlled: true,
-                                          isDismissible: false,
-                                          builder: (_) => PhotoViewSimpleScreen(
-                                            imageProvider:
-                                                NetworkImage(coverUrl),
+                                  : Column(
+                                      children: [
+                                        Gaps.vGap8,
+                                        GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          onTap: () {
+                                            showModalBottomSheet(
+                                              context: context,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              barrierColor: Colors.transparent,
+                                              isScrollControlled: true,
+                                              isDismissible: false,
+                                              builder: (_) =>
+                                                  PhotoViewSimpleScreen(
+                                                imageProvider:
+                                                    NetworkImage(coverUrl),
+                                              ),
+                                            );
+                                          },
+                                          child: LoadImage(
+                                            coverUrl,
+                                            // width: 48.0,
                                           ),
-                                        );
-                                      },
-                                      child: LoadImage(
-                                        coverUrl,
-                                        // width: 48.0,
-                                      ),
+                                        ),
+                                      ],
                                     ),
+                              // Gaps.vGap8,
                               ErrorCorrectionDetailItem(
                                 data: errorDetailData[idx],
                               ),
@@ -284,7 +291,8 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                     )
                                   : Center(
                                       child: Container(
-                                        margin: const EdgeInsets.only(top: 20),
+                                        margin: const EdgeInsets.only(
+                                            top: 24, bottom: 16),
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(20.0),
@@ -302,13 +310,13 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                         )),
                                       ),
                                     ),
-                              Gaps.vGap10,
+                              // Gaps.vGap16,
                             ],
                           ),
                         ),
-                        Gaps.vGap10,
+                        Gaps.vGap24,
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             GestureDetector(
                               behavior: HitTestBehavior.opaque,
@@ -323,9 +331,8 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                     _errorCorrectionDetailPagePresenter
                                         .postSuggestAnswer(
                                             errorDetailData[idx].sentence);
-                                  } else {
-                                    setState(() {});
-                                  }
+                                  } else {}
+                                  setState(() {});
                                 }
                               },
                               child: Container(
@@ -348,6 +355,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                 ),
                               ),
                             ),
+                            Gaps.hGap30,
                             GestureDetector(
                               behavior: HitTestBehavior.opaque,
                               onTap: () {
@@ -361,9 +369,8 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                     _errorCorrectionDetailPagePresenter
                                         .postSuggestAnswer(
                                             errorDetailData[idx].sentence);
-                                  } else {
-                                    setState(() {});
-                                  }
+                                  } else {}
+                                  setState(() {});
                                 }
                               },
                               child: Container(

@@ -64,6 +64,18 @@ class _BackgroundState extends State<Background> {
     super.dispose();
   }
 
+  String imgType(String imgStr) {
+    if (imgStr == "peppa_pig" ||
+        imgStr == "gg_bond" ||
+        imgStr == "mickey" ||
+        imgStr == "eggy" ||
+        imgStr == "ultraman") {
+      return "1";
+    }
+
+    return "2";
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget content(HomeProvider provider) {
@@ -123,7 +135,9 @@ class _BackgroundState extends State<Background> {
                       alignment: Alignment.center,
                       child: LoadAssetImage(
                         motionImage,
-                        format: ImageFormat.gif,
+                        format: imgType(motionImage) == "1"
+                            ? ImageFormat.jpg
+                            : ImageFormat.gif,
                         width: width,
                         height: height,
                         fit: BoxFit.fitHeight,
@@ -141,7 +155,9 @@ class _BackgroundState extends State<Background> {
                     color: Colors.white,
                     child: LoadAssetImage(
                       stillImage,
-                      format: ImageFormat.gif,
+                      format: imgType(stillImage) == "1"
+                          ? ImageFormat.jpg
+                          : ImageFormat.gif,
                       width: width,
                       height: height,
                       fit: BoxFit.fitHeight,

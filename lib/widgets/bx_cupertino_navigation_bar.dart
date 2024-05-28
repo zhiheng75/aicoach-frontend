@@ -110,7 +110,7 @@ class NavigationBackWidget extends StatelessWidget {
       this.onBack,
       this.leftIconPoint,
       this.alignment = Alignment.centerLeft,
-      this.padding = const EdgeInsets.only(left: 7)});
+      this.padding = const EdgeInsets.only(left: 12)});
 
   @override
   Widget build(BuildContext context) {

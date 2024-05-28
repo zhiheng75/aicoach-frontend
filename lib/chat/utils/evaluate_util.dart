@@ -247,6 +247,20 @@ class EvaluateUtil {
   /** 保存评测 */
   Map<String, dynamic> _getParams(
       NormalMessage message, Map<String, dynamic> evaluation) {
+    if (message.typeId == "1") {
+      return {
+        'session_id': message.sessionId,
+        'message': message.text,
+        'message_id': message.id,
+        'type': message.typeId,
+        'accuracy_score': evaluation['accuracy_score'],
+        'fluency_score': evaluation['fluency_score'],
+        'integrity_score': evaluation['integrity_score'],
+        'standard_score': evaluation['standard_score'],
+        'total_score': evaluation['total_score'],
+        'score_detail': evaluation['score_detail'],
+      };
+    }
     return {
       'session_id': message.sessionId,
       'message': message.text,
@@ -280,10 +294,10 @@ class EvaluateUtil {
             onSuccess((result.data ?? {}) as Map<String, dynamic>);
             return;
           }
-          throw Exception();
+          // throw Exception();
         },
         onError: (code, msg) {
-          throw Exception();
+          // throw Exception();
         },
       );
     } catch (e) {

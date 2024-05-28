@@ -559,6 +559,11 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                         widget.controller.setDisabled(false);
                         return;
                       }
+                      if (result['text'] == "") {
+                        Toast.show(
+                          '请说话',
+                        );
+                      }
                       sendMessage(result['text']);
                     });
                     widget.controller.setShowRecord(true);

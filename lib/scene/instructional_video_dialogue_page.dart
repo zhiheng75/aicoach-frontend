@@ -121,6 +121,8 @@ class _InstructionalVideoDialoguePageState
   // late int chatNumberEnd = 0;
   late String ischatEndStr = "0";
   late String repeatWord = "";
+  late String introVideoCoverStr = "";
+  late String isPlayVideo = "0";
 
   void init() {
     _pageState = 'success';
@@ -193,24 +195,25 @@ class _InstructionalVideoDialoguePageState
         characterId: characterId,
         sceneId: sceneId,
         onConnected: () {
-          _pageState = 'success';
-          setState(() {});
-          _homeProvider.addIntroductionMessage();
-          // _homeProvider.addTipMessage('class started！');
-          // 刷新使用时间
-          _homeProvider.getUsageTime(() {
-            // 倒计时
-            _homeProvider.startUsageTimeCutdown(() {
-              showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                barrierColor: Colors.transparent,
-                isScrollControlled: true,
-                isDismissible: false,
-                builder: (_) => ExpirationReminder(),
-              );
-            });
-          });
+          // _pageState = 'success';
+          // setState(() {});
+          // _homeProvider.addIntroductionMessage();
+          // // _homeProvider.addTipMessage('class started！');
+          // // 刷新使用时间
+          // _homeProvider.getUsageTime(() {
+          //   // 倒计时
+          //   _homeProvider.startUsageTimeCutdown(() {
+          //     showModalBottomSheet(
+          //       context: context,
+          //       backgroundColor: Colors.transparent,
+          //       barrierColor: Colors.transparent,
+          //       isScrollControlled: true,
+          //       isDismissible: false,
+          //       builder: (_) => ExpirationReminder(),
+          //     );
+          //   });
+          // });
+
           // // 倒计时
           // _homeProvider.startUsageTimeCutdown(() {
           //   showModalBottomSheet(
@@ -511,7 +514,10 @@ class _InstructionalVideoDialoguePageState
         // connectWebsocket();
         if (introFileType == "video") {
           isVideo = "1";
+          isPlayVideo = "0";
           introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
+          introVideoCoverStr =
+              data[dataIdx].resource[resourceIdx].introVideoCover;
           videoFlow();
         } else if (introFileType == "image") {
           introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
@@ -556,6 +562,8 @@ class _InstructionalVideoDialoguePageState
           // setState(() {
           //   isplay = true;
           // });
+          isPlayVideo = "1";
+
           _controller?.play();
           _controller?.setVolume(1);
 
@@ -763,11 +771,13 @@ class _InstructionalVideoDialoguePageState
   void _onPlaybackPositionChanged() {
     Log.e(_controller?.playbackInfo?.position.toString() ?? "0");
     Log.e(_controller?.videoInfo?.duration.toString() ?? "0");
+    isPlayVideo = "1";
 
     if (_controller?.playbackInfo?.position ==
         _controller?.videoInfo?.duration) {
       startNormaltwoChat();
       //播放完成重置状态
+      isPlayVideo = "0";
     }
 
     setState(() {});
@@ -828,26 +838,42 @@ class _InstructionalVideoDialoguePageState
 
   Widget topWidget() {
     if (introFileType == "video") {
-      return Positioned(
-        top: _screenUtil.statusBarHeight + 80,
-        width: _screenUtil.screenWidth,
-        height: _screenUtil.screenWidth / 16 * 9,
-        child: AspectRatio(
-          aspectRatio: 16 / 9,
-          child: NativeVideoPlayerView(
-            onViewReady: _initController,
+      return Stack(
+        children: [
+          Positioned(
+            top: _screenUtil.statusBarHeight + 80,
+            width: _screenUtil.screenWidth,
+            height: _screenUtil.screenWidth / 16 * 9,
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: NativeVideoPlayerView(
+                onViewReady: _initController,
+              ),
+            ),
           ),
-        ),
+          isPlayVideo == "0"
+              ? Positioned(
+                  top: _screenUtil.statusBarHeight + 80,
+                  width: _screenUtil.screenWidth,
+                  height: _screenUtil.screenWidth / 16 * 9,
+                  child: LoadImage(
+                    introVideoCoverStr,
+                    width: _screenUtil.screenWidth,
+                    height: _screenUtil.screenWidth / 16 * 9,
+                  ),
+                )
+              : Container(),
+        ],
       );
     } else if (introFileType == "image") {
       return Positioned(
         top: _screenUtil.statusBarHeight + 80,
         width: _screenUtil.screenWidth,
-        height: 200,
+        height: _screenUtil.screenWidth / 16 * 9,
         child: LoadImage(
           introFileStr,
-          // width: 100.0,
-          // height: 100.0,
+          width: _screenUtil.screenWidth,
+          height: _screenUtil.screenWidth / 16 * 9,
         ),
       );
     } else {

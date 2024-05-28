@@ -56,7 +56,7 @@ Future<void> main() async {
           // 退到后台
           if (_appLifecycleState == 'AppLifecycleState.inactive' &&
               message == 'AppLifecycleState.paused') {
-            await MediaUtils().stopPlayByAppPaused();
+            // await MediaUtils().stopPlayByAppPaused();
           }
 
           _appLifecycleState = message;
@@ -65,6 +65,8 @@ Future<void> main() async {
         });
 
         runApp(MyApp());
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+
         FlutterBugly.init(
           androidAppId: "1461f76ac6",
           iOSAppId: "2cd012b035",

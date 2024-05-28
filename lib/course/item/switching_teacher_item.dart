@@ -163,6 +163,7 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
+              MediaUtils().stopPlay();
               if (isSele == 0) {
                 isSele = 1;
                 //播放

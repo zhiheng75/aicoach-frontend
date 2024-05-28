@@ -25,10 +25,12 @@ List<Map<String, dynamic>> getTaskList(Message message) {
     }
     Uint8List buffer = message.audio.elementAt(i);
     if (i < message.audio.length - 1) {
-      taskList.add(XunfeiUtil.createFrameDataForEvaluation(1, audio: buffer, audioFrame: audioFrame));
+      taskList.add(XunfeiUtil.createFrameDataForEvaluation(1,
+          audio: buffer, audioFrame: audioFrame));
     } else {
       audioFrame = 4;
-      taskList.add(XunfeiUtil.createFrameDataForEvaluation(2, audio: buffer, audioFrame: audioFrame));
+      taskList.add(XunfeiUtil.createFrameDataForEvaluation(2,
+          audio: buffer, audioFrame: audioFrame));
     }
   }
   return taskList;
@@ -69,7 +71,8 @@ void evaluate(String sessionId, Message message) {
   // 连接websocket
   String date = HttpDate.format(DateTime.now());
   String authorization = XunfeiUtil.getEvaluateAuthorization(date);
-  Uri uri = Uri.parse('wss://ise-api.xfyun.cn:443/v2/open-ise?host=ise-api.xfyun.cn&date=$date&authorization=$authorization');
+  Uri uri = Uri.parse(
+      'wss://ise-api.xfyun.cn:443/v2/open-ise?host=ise-api.xfyun.cn&date=$date&authorization=$authorization');
   try {
     WebSocketChannel channel = WebSocketChannel.connect(uri);
     channel.stream.listen(
@@ -89,6 +92,7 @@ void evaluate(String sessionId, Message message) {
               'device_id': deviceId,
               'message_id': message.id,
               'message': message.text,
+              'type': "1",
               'speech': base64.encode(toWav(speech)),
               'accuracy_score': evaluation['accuracy_score'],
               'fluency_score': evaluation['fluency_score'],
@@ -96,12 +100,11 @@ void evaluate(String sessionId, Message message) {
               'standard_score': evaluation['standard_score'],
               'total_score': evaluation['total_score'],
             },
-            options: Options(
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer IA==*u02jq0h6TdUgA6CJ2UB6aA==*rfIUDa60d92+DKqMZtkG+A==*URKndg3tPT/xab35fJArTg==',
-              }
-            ),
+            options: Options(headers: {
+              'Content-Type': 'application/json',
+              'Authorization':
+                  'Bearer IA==*u02jq0h6TdUgA6CJ2UB6aA==*rfIUDa60d92+DKqMZtkG+A==*URKndg3tPT/xab35fJArTg==',
+            }),
             onError: (code, msg) {
               if (kDebugMode) {
                 print('保存评测结果失败：code=$code msg=$msg');
@@ -177,14 +180,14 @@ void saveAsWav(List<int> data) async {
   if (dir == null) {
     return;
   }
-  File txtdFile = File('${dir.path}/${DateTime.now().millisecondsSinceEpoch}.txt');
+  File txtdFile =
+      File('${dir.path}/${DateTime.now().millisecondsSinceEpoch}.txt');
   Uint8List header = toWav(data);
   txtdFile.writeAsString(base64.encode(header));
 }
 /** 讯飞评测 end */
 
 class ConversationProvider extends ChangeNotifier {
-
   String _sessionId = '';
   List<Message> _messageList = [];
   bool _showTranslation = false;
@@ -253,13 +256,15 @@ class ConversationProvider extends ChangeNotifier {
     return _messageList.last;
   }
 
-  void runEvaluate ([int? index]) {
-    Message message = index != null ? _messageList.elementAt(index) : _messageList.last;
+  void runEvaluate([int? index]) {
+    Message message =
+        index != null ? _messageList.elementAt(index) : _messageList.last;
     evaluate(_sessionId, message);
   }
 
   void runTranslate([int? index]) async {
-    Message message = index != null ? _messageList.elementAt(index) : _messageList.last;
+    Message message =
+        index != null ? _messageList.elementAt(index) : _messageList.last;
     await message.translate();
     notifyListeners();
   }
@@ -287,7 +292,6 @@ class ConversationProvider extends ChangeNotifier {
     _usageTime = 0;
     _cutdownState = -1;
   }
-
 }
 
 class Message {
@@ -346,30 +350,32 @@ class Message {
     Map<String, dynamic> body = XunfeiUtil.createBodyForTranslation(_text);
     String bodySignature = XunfeiUtil.getBodySignatureForTranslation(body);
     String date = HttpDate.format(DateTime.now());
-    String authorization = XunfeiUtil.getTranslateAuthorization(date, bodySignature);
+    String authorization =
+        XunfeiUtil.getTranslateAuthorization(date, bodySignature);
     try {
       Response response = await Dio().post(
         'https://itrans.xfyun.cn/v2/its',
         data: body,
-        options: Options(
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json,version=1.0',
-              'Host': 'itrans.xfyun.cn',
-              'Date': date,
-              'Digest': 'SHA-256=$bodySignature',
-              'Authorization': authorization,
-            }
-        ),
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json,version=1.0',
+          'Host': 'itrans.xfyun.cn',
+          'Date': date,
+          'Digest': 'SHA-256=$bodySignature',
+          'Authorization': authorization,
+        }),
       );
       if (response.statusCode == 200) {
         dynamic result = response.data;
         if (result['code'] == 0) {
-          Map<String, dynamic> data = (result['data'] ?? {}) as Map<String, dynamic>;
+          Map<String, dynamic> data =
+              (result['data'] ?? {}) as Map<String, dynamic>;
           if (data.containsKey('result')) {
-            Map<String, dynamic> translation = (data['result'] ?? {}) as Map<String, dynamic>;
+            Map<String, dynamic> translation =
+                (data['result'] ?? {}) as Map<String, dynamic>;
             if (translation.containsKey('trans_result')) {
-              Map<String, dynamic> transResult = (translation['trans_result'] ?? {}) as Map<String, dynamic>;
+              Map<String, dynamic> transResult =
+                  (translation['trans_result'] ?? {}) as Map<String, dynamic>;
               if (transResult['dst'] != null && transResult['dst'] != '') {
                 _translationState = 'success';
                 _translation = transResult['dst'];

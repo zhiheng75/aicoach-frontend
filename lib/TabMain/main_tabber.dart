@@ -1,5 +1,6 @@
 import 'package:Bubble/core/app_constants.dart';
 import 'package:Bubble/home/home_new.dart';
+import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/tabmain/bottom_bar_item.dart';
 import 'package:Bubble/chat/chat_home_page.dart';
 import 'package:Bubble/course/course_home_page.dart';
@@ -126,7 +127,7 @@ class _MainTabberState extends State<MainTabber> {
     //         border: null,
     //         currentIndex: currentIndex,
     //         inactiveColor: inactiveColor,
-    //         activeColor: activeColor,
+    //         activeColor: Colours.color_8003FD,
     //         backgroundColor: const Color(0xffffffff),
     //         onTap: tabSelect,
     //         items: items,
@@ -142,9 +143,17 @@ class _MainTabberState extends State<MainTabber> {
         children: pages,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
-        selectedItemColor: const Color.fromRGBO(216, 69, 166, 1),
+        selectedFontSize: 11,
+        unselectedFontSize: 11,
+        // useLegacyColorScheme: false,
+        selectedItemColor: Colours.color_8003FD,
+        unselectedItemColor: Colors.black,
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.w500,
+        ),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.w500,
+        ),
         //可设置颜色items
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,

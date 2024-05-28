@@ -311,14 +311,14 @@ class _BottomErrorBarState extends State<BottomErrorBar>
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  LoadAssetImage(
-                    'maikefeng_icon',
-                    width: 24.0,
-                    height: 24.0,
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
+                  // LoadAssetImage(
+                  //   'maikefeng_icon',
+                  //   width: 24.0,
+                  //   height: 24.0,
+                  // ),
+                  // SizedBox(
+                  //   width: 5.0,
+                  // ),
                   Text(
                     '按住更正读音',
                     style: TextStyle(
@@ -400,6 +400,11 @@ class _BottomErrorBarState extends State<BottomErrorBar>
                   );
                   widget.controller.setDisabled(false);
                   return;
+                }
+                if (result['text'] == "") {
+                  Toast.show(
+                    '请说话',
+                  );
                 }
                 if (widget.repeatWord != "") {
                   //这里先调评测,分高传tag分低穿别的

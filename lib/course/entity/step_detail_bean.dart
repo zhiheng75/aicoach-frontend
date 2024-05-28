@@ -51,6 +51,8 @@ class Data {
   String unitName;
   int lessonId;
   String lessonName;
+  String lessonLabel;
+
   String lessonType;
   Objectives objectives;
   String title;
@@ -66,6 +68,7 @@ class Data {
     required this.mistakeCount,
     required this.levelId,
     required this.levelName,
+    required this.lessonLabel,
     required this.title,
     required this.unitId,
     required this.unitName,
@@ -83,6 +86,7 @@ class Data {
         levelId: json["level_id"] ?? 0,
         isUserBuy: json["is_user_buy"] ?? 0,
         reportStatus: json["report_status"],
+        lessonLabel: json["lesson_label"],
         mistakeStatus: json["mistake_status"],
         evaluationStatus: json["evaluation_status"],
         mistakeCount: json["mistake_count"] ?? 0,
@@ -101,6 +105,7 @@ class Data {
         "user_id": userId,
         "step_id": stepId,
         "level_id": levelId,
+        "lesson_label": lessonLabel,
         "is_user_buy": isUserBuy,
         "report_status": reportStatus,
         "mistake_status": mistakeStatus,
@@ -172,6 +177,7 @@ class Resource {
   String? introAudio;
   String? introText;
   String characterAvatar;
+  String introVideoCover;
 
   Resource({
     required this.sceneId,
@@ -186,6 +192,7 @@ class Resource {
     required this.introAudio,
     required this.introText,
     required this.characterAvatar,
+    required this.introVideoCover,
   });
 
   factory Resource.fromJson(Map<String, dynamic> json) => Resource(
@@ -194,6 +201,7 @@ class Resource {
         resourceType: json["resource_type"] ?? 1,
         gameUrl: json["game_url"] ?? "",
         title: json["title"] ?? "",
+        introVideoCover: json["intro_video_cover"] ?? "",
         greetingAudio: json["greeting_audio"] ?? "999999",
         greetingText: json["greeting_text"] ?? "999999",
         introFileType: json["intro_file_type"] ?? "999999",
@@ -215,6 +223,7 @@ class Resource {
         "intro_file": introFile,
         "intro_audio": introAudio,
         "intro_text": introText,
+        "intro_video_cover": introVideoCover,
         "character_avatar": characterAvatar,
       };
 }

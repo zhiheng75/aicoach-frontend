@@ -72,18 +72,20 @@ class _CourseReportVocabularyItemState
         ),
         // color: Colors.black,
         padding: const EdgeInsets.only(left: 6, right: 6, top: 9, bottom: 25),
-        margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
+        margin: const EdgeInsets.only(top: 10, left: 16, right: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Gaps.vGap8,
             Row(
               children: [
+                Gaps.hGap12,
                 const LoadAssetImage(
-                  "home_head_icon",
-                  width: 40.0,
-                  height: 40.0,
+                  "head_cihui_icon",
+                  width: 24.0,
+                  height: 24.0,
                 ),
-                // Gaps.hGap8,
+                Gaps.hGap8,
                 RichText(
                   text: const TextSpan(children: [
                     TextSpan(
@@ -97,14 +99,14 @@ class _CourseReportVocabularyItemState
                         text: "Vocabulary",
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w500,
                           color: Colors.black,
                         )),
                   ]),
                 ),
               ],
             ),
-            // Gaps.vGap11,
+            Gaps.vGap11,
             Container(
               margin: const EdgeInsets.only(left: 12, right: 12),
               child: Wrap(

@@ -491,14 +491,16 @@ class _CourseReportPageState extends State<CourseReportPage>
                               // color: Colors.red,
                               child: Column(
                                 children: [
+                                  Gaps.vGap8,
                                   Row(
                                     children: [
+                                      Gaps.hGap12,
                                       const LoadAssetImage(
-                                        "home_head_icon",
-                                        width: 40.0,
-                                        height: 40.0,
+                                        "head_juxing_icon",
+                                        width: 24.0,
+                                        height: 24.0,
                                       ),
-                                      // Gaps.hGap8,
+                                      Gaps.hGap8,
                                       RichText(
                                         text: const TextSpan(children: [
                                           TextSpan(
@@ -543,14 +545,16 @@ class _CourseReportPageState extends State<CourseReportPage>
                               // color: Colors.red,
                               child: Column(
                                 children: [
+                                  Gaps.vGap8,
                                   Row(
                                     children: [
+                                      Gaps.hGap8,
                                       const LoadAssetImage(
-                                        "home_head_icon",
+                                        "head_nengli_icon",
                                         width: 40.0,
                                         height: 40.0,
                                       ),
-                                      // Gaps.hGap8,
+                                      Gaps.hGap8,
                                       RichText(
                                         text: const TextSpan(children: [
                                           TextSpan(

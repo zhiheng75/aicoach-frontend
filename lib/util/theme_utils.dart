@@ -65,7 +65,7 @@ class ThemeUtils {
         systemNavigationBarColor:
             isDarkMode ? Colours.dark_bg_color : Colors.white,
         systemNavigationBarIconBrightness:
-            isDarkMode ? Brightness.light : Brightness.light,
+            isDarkMode ? Brightness.dark : Brightness.dark,
       );
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     }
