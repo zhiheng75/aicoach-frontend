@@ -113,8 +113,12 @@ class _PersonPageState extends State<PersonPage>
 
     EventBus().on(NotificationUtils.resetInFo, (_) {
       Log.e("进来了");
-      userInfo();
-      _personPagePresenter.getUsageTime();
+      Future.delayed(const Duration(seconds: 1), () {
+        userInfo();
+        _personPagePresenter.getUsageTime();
+
+        // 这里是你想要延迟执行的代码
+      });
     });
 
     EventBus().on(NotificationUtils.resetChat, (idx) {

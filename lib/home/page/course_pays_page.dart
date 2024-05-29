@@ -334,33 +334,38 @@ class _CoursePaysPageState extends State<CoursePaysPage>
   @override
   paySuccess() {
     // TODO: implement paySuccess
-    showPayToast(context: context, message: "支付成功\n前往微信添加\n本课程辅导老师");
-    EventBus().emit(NotificationUtils.paySuccess);
+    // showPayToast(context: context, message: "支付成功\n前往微信添加\n本课程辅导老师");
+    Future.delayed(const Duration(seconds: 5), () {
+      EventBus().emit(NotificationUtils.paySuccess);
 
-//     ConfirmUtils.showSingle(
-//       context: context,
-//       title: "支付成功\n前往微信添加\n本课程辅导老师",
-//       onCancel: () {
-// //         移动应用appid:wxfb033d09d2eecaf0
-// // 小程序appid:wx2140a8026b8cdf74
-// // 跳转路径：pages/mine/add-weChat/add-weChat?user_token=token
+      // 这里是你想要延迟执行的代码
+    });
 
-//         final String? accessToken = SpUtil.getString(Constant.accessToken);
+    ConfirmUtils.showSingle(
+      context: context,
+      title: "支付成功\n前往微信添加\n本课程辅导老师",
+      onCancel: () {
+//         移动应用appid:wxfb033d09d2eecaf0
+// 小程序appid:wx2140a8026b8cdf74
+// 跳转路径：pages/mine/add-weChat/add-weChat?user_token=token
 
-//         //跳转小程序
-//         Fluwx fluwx = Fluwx();
-//         fluwx.registerApi(
-//             appId: "wxfb033d09d2eecaf0",
-//             universalLink: "https://demo.shenmo-ai.net/ios/");
-//         fluwx.open(
-//             target: MiniProgram(
-//                 username: "wx2140a8026b8cdf74",
-//                 path:
-//                     "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
-//                 miniProgramType: WXMiniProgramType.test));
-//         Navigator.of(context).pop();
-//       },
-//     );
+        final String? accessToken = SpUtil.getString(Constant.accessToken);
+        //跳转小程序
+        Fluwx fluwx = Fluwx();
+        fluwx.registerApi(
+            appId: "wxfb033d09d2eecaf0",
+            universalLink: "https://demo.shenmo-ai.net/ios/");
+        fluwx.open(
+            target: MiniProgram(
+                username: "wx2140a8026b8cdf74",
+                path:
+                    "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
+                miniProgramType: WXMiniProgramType.test));
+        EventBus().emit(NotificationUtils.paySuccess);
+
+        Navigator.of(context).pop();
+      },
+    );
   }
 
   @override

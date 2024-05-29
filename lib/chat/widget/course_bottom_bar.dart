@@ -194,6 +194,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     // }
     try {
       _homeProvider.sessionId = await _chatWebsocket.startChat(
+        lessonId: widget.lessonId,
         characterId: characterId,
         sceneId: sceneId,
         onConnected: () {

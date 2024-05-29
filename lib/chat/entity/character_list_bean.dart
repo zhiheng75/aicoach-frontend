@@ -50,6 +50,8 @@ class Datum {
   String stageImg;
   String stillImage;
   String motionImage;
+  String listImage;
+
   String avatarImage;
   String avatarId;
   String greetingText;
@@ -70,6 +72,7 @@ class Datum {
     required this.voiceId,
     required this.authorName,
     required this.imageUrl,
+    required this.listImage,
     required this.coverImageUrl,
     required this.sort,
     required this.stage,
@@ -102,6 +105,7 @@ class Datum {
         stage: json["stage"],
         stageImg: json["stage_img"],
         stillImage: json["still_image"],
+        listImage: json["list_image"] ?? "",
         motionImage: json["motion_image"],
         avatarImage: json["avatar_image"],
         avatarId: json["avatar_id"] ?? "",
@@ -124,6 +128,7 @@ class Datum {
         "voice_id": voiceId,
         "author_name": authorName,
         "image_url": imageUrl,
+        "list_image": listImage,
         "cover_image_url": coverImageUrl,
         "sort": sort,
         "stage": stage,

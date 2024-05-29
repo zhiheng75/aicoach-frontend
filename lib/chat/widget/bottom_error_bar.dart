@@ -412,9 +412,9 @@ class _BottomErrorBarState extends State<BottomErrorBar>
                 } else {
                   sendMessage(result['text']);
                 }
-                // sendMessage(result['text']);
+                sendMessage(result['text']);
               });
-              widget.controller.setShowRecord(true);
+              // widget.controller.setShowRecord(true);
             } catch (e) {
               Toast.show(
                 e.toString().substring(11),

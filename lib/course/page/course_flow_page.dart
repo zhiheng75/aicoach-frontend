@@ -65,6 +65,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   bool isLoding = true;
 
   late String characterIdStr;
+  late String characterImgCoverStr;
   late String characterCoverStr;
 
   late int characterSceneIdStr;
@@ -91,7 +92,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
       // idx
       setState(() {
         characterIdStr = _teacherListBean.data[idx].characterId;
-        characterCoverStr = _teacherListBean.data[idx].imageUrl;
+        characterImgCoverStr = _teacherListBean.data[idx].imageUrl;
+        characterCoverStr = _teacherListBean.data[idx].avatarImage;
         characterSceneDescStr = _teacherListBean.data[idx].slogan;
         characterSceneNameStr = _teacherListBean.data[idx].name;
         characterSceneenNameStr = _teacherListBean.data[idx].authorName;
@@ -120,24 +122,24 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  //   super.didChangeDependencies();
+  // }
 
-  @override
-  void didPopNext() {
-    // TODO: implement didPopNext
-    super.didPopNext();
-    _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
-  }
+  // @override
+  // void didPopNext() {
+  //   // TODO: implement didPopNext
+  //   super.didPopNext();
+  //   _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
+  // }
 
   @override
   void dispose() {
     EventBus().off(NotificationUtils.teachIdx);
     EventBus().off(NotificationUtils.nextResetChat);
-    routeObserver.unsubscribe(this); //取消订阅
+    // routeObserver.unsubscribe(this); //取消订阅
 
     super.dispose();
   }
@@ -162,7 +164,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
       if (teacherListBean.code == 200) {
         if (teacherListBean.data.isNotEmpty) {
           characterIdStr = teacherListBean.data[0].characterId;
-          characterCoverStr = teacherListBean.data[0].imageUrl;
+          characterImgCoverStr = teacherListBean.data[0].imageUrl;
+          characterCoverStr = teacherListBean.data[0].avatarImage;
           characterSceneDescStr = teacherListBean.data[0].slogan;
           characterSceneNameStr = teacherListBean.data[0].name;
           characterSceneenNameStr = teacherListBean.data[0].authorName;
@@ -224,7 +227,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     scene.desc = "";
     scene.name = "";
     scene.enName = "";
-    scene.cover = characterCoverStr;
+    scene.cover = characterImgCoverStr;
     _homeProvider.character.characterId = characterIdStr;
     _homeProvider.character.motionImageD = characterCoverStr;
     _homeProvider.heardcover = characterCoverStr;

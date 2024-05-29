@@ -400,9 +400,9 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                     ),
                   ),
                   Positioned(
-                    // top: 0,
+                    top: 0,
                     left: 0,
-                    bottom: 0,
+                    // bottom: 0,
                     child: ValueListenableBuilder(
                       valueListenable: _bottomBarControll.showRecord,
                       builder: (_, show, __) =>

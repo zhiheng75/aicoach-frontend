@@ -192,6 +192,7 @@ class _InstructionalVideoDialoguePageState
       // String sceneId = _homeProvider.course!.id.toString();
       _homeProvider.scene!.id = int.parse(resourceSceneId);
       _homeProvider.sessionId = await _chatWebsocket.startChat(
+        lessonId: lessonId,
         characterId: characterId,
         sceneId: sceneId,
         onConnected: () {
@@ -1008,9 +1009,8 @@ class _InstructionalVideoDialoguePageState
       builder: (_, provider, __) {
         Widget background = SizedBox(
           height: _screenUtil.screenHeight,
-          child: LoadImage(
-            provider.scene?.cover ?? '',
-          ),
+          width: _screenUtil.screenWidth,
+          child: LoadImage(provider.scene?.cover ?? '', fit: BoxFit.fill),
         );
         double contentTop = _screenUtil.statusBarHeight + 300.0;
         Widget inner;
