@@ -1,6 +1,10 @@
 import 'package:Bubble/course/entity/lesson_report_detail_bean.dart';
+import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -88,24 +92,57 @@ class _CourseReportVocabularyTwoItemState
                   height: 24.0,
                 ),
                 Gaps.hGap8,
-                RichText(
-                  text: const TextSpan(children: [
-                    TextSpan(
-                        text: "词汇  ",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                        )),
-                    TextSpan(
-                        text: "vocabulary",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                        )),
-                  ]),
+                Expanded(
+                  child: RichText(
+                    text: const TextSpan(children: [
+                      TextSpan(
+                          text: "词汇  ",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                          )),
+                      TextSpan(
+                          text: "vocabulary",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          )),
+                    ]),
+                  ),
                 ),
+                GestureDetector(
+                  onTap: () {
+                    String cihuiStr = "";
+                    for (int i = 0; i < widget.vocabulary.length; i++) {
+                      cihuiStr = "$cihuiStr${widget.vocabulary[i].word},";
+                    }
+
+                    DioUtils.instance.requestNetwork<ResultData>(
+                        Method.post, HttpApi.generateAudio,
+                        params: {
+                          'text': cihuiStr,
+                        }, onSuccess: (result) {
+                      if (result?.code == 200) {
+                        Map<String, dynamic> data =
+                            result?.data as Map<String, dynamic>;
+                        MediaUtils().stopPlay();
+                        MediaUtils().play(
+                          url: data['speech_url'],
+                          useAvatar: true,
+                          whenFinished: () {},
+                        );
+                      }
+                    }, onError: (code, msg) {});
+                  },
+                  child: const LoadAssetImage(
+                    "laba_lan",
+                    width: 20.0,
+                    height: 20.0,
+                  ),
+                ),
+                Gaps.hGap8,
               ],
             ),
             Gaps.vGap11,

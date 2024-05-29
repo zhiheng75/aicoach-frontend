@@ -343,6 +343,7 @@ class _ErrorCorrectionDetailTwoItemState
                 Gaps.vGap8,
                 GestureDetector(
                   onTap: () {
+                    MediaUtils().stopPlay();
                     MediaUtils().play(
                       url: widget.excellentExpression.audio,
                       useAvatar: true,

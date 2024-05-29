@@ -12,6 +12,7 @@ import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -560,9 +561,13 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                                 GestureDetector(
                                   behavior: HitTestBehavior.opaque,
                                   onTap: () {
-                                    NavigatorUtils.push(
-                                        context, HomeRouter.coursePaysPage,
-                                        arguments: dataBean);
+                                    if (_checked) {
+                                      NavigatorUtils.push(
+                                          context, HomeRouter.coursePaysPage,
+                                          arguments: dataBean);
+                                    } else {
+                                      Toast.show("请同意会员协议");
+                                    }
                                   },
                                   child: Container(
                                     width: 250.0,

@@ -156,7 +156,7 @@ class _CourseReportPageState extends State<CourseReportPage>
       list.add(PlayBackItem(
           title: lessonReportDetailData
               .data.objectives.sentencePattern[i].sentence,
-          isPaly: false));
+          isPaly: true));
     }
     return list;
   }

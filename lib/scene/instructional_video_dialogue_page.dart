@@ -5,7 +5,10 @@ import 'package:Bubble/chat/entity/character_entity.dart';
 import 'package:Bubble/chat/widget/course_bottom_bar.dart';
 import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/course/entity/step_detail_bean.dart';
+import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/home_router.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
@@ -241,31 +244,7 @@ class _InstructionalVideoDialoguePageState
   }
 
   void onNextSocketEnd() {
-    ConfirmUtils.show(
-      context: context,
-      title: '是否进行下一段对话',
-      buttonDirection: 'vertical',
-      confirmButtonText: '结束',
-      cancelButtonText: '下一段对话',
-      onConfirm: () {
-        endSocket();
-        Navigator.of(context).pop();
-        widget.onEnd();
-      },
-      onCancel: () {
-        // endSocket();
-        forFlow();
-      },
-      child: const Text(
-        '',
-        style: TextStyle(
-          fontSize: 15.0,
-          fontWeight: FontWeight.w400,
-          color: Color(0xFF333333),
-          height: 18.0 / 15.0,
-        ),
-      ),
-    );
+    forFlow();
   }
 
   void onWebsocketAnswer(dynamic answer) {
@@ -483,17 +462,43 @@ class _InstructionalVideoDialoguePageState
     // dataIdx = dataIdx + 1;
     if (resourceIdx < data[dataIdx].resource.length) {
       // resourceIdx = resourceIdx + 1;
+      forstartFlow(dataIdx, resourceIdx);
     } else {
       dataIdx = dataIdx + 1;
       if (dataIdx < data.length) {
         resourceIdx = 0;
+
+        ConfirmUtils.show(
+          context: context,
+          title: '是否进行下一段对话',
+          buttonDirection: 'vertical',
+          confirmButtonText: '结束',
+          cancelButtonText: '下一段对话',
+          onConfirm: () {
+            endSocket();
+            Navigator.of(context).pop();
+            widget.onEnd();
+          },
+          onCancel: () {
+            forstartFlow(dataIdx, resourceIdx);
+
+            // endSocket();
+          },
+          child: const Text(
+            '',
+            style: TextStyle(
+              fontSize: 15.0,
+              fontWeight: FontWeight.w400,
+              color: Color(0xFF333333),
+              height: 18.0 / 15.0,
+            ),
+          ),
+        );
       } else {
         //退出界面
         Navigator.of(context).pop();
       }
     }
-
-    forstartFlow(dataIdx, resourceIdx);
   }
 
   void forstartFlow(int dataIdx, int resourceIdx) {
@@ -522,11 +527,11 @@ class _InstructionalVideoDialoguePageState
           videoFlow();
         } else if (introFileType == "image") {
           introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
-          imgFlow();
+          imgFlowRequestNetwork();
           init();
         } else {
           introFileStr = _homeProvider.character.motionImageD;
-          imgFlow();
+          imgFlowRequestNetwork();
           init();
         }
       });
@@ -535,10 +540,26 @@ class _InstructionalVideoDialoguePageState
 
   //视频顺序
   void videoFlow() {
-    startNormalChat();
+    DioUtils.instance.requestNetwork<ResultData>(
+        Method.post, HttpApi.generateAudio,
+        params: {
+          'text': data[widget.idx].resource[resourceIdx].introText!,
+          'character_id': _homeProvider.character.characterId,
+        }, onSuccess: (result) {
+      if (result?.code == 200) {
+        Map<String, dynamic> data = result?.data as Map<String, dynamic>;
+        startNormalChat(data['text'], data['speech_url']);
+      } else {
+        startNormalChat(data[widget.idx].resource[resourceIdx].introText!,
+            data[widget.idx].resource[resourceIdx].introAudio!);
+      }
+    }, onError: (code, msg) {
+      startNormalChat(data[widget.idx].resource[resourceIdx].introText!,
+          data[widget.idx].resource[resourceIdx].introAudio!);
+    });
   }
 
-  void startNormalChat() async {
+  void startNormalChat(String introText, String introAudio) async {
     await _mediaUtils.stopPlay();
     // await _chatWebsocket.endChat(true);
     // _homeProvider.resetChatParams();
@@ -549,105 +570,44 @@ class _InstructionalVideoDialoguePageState
       // _homeProvider.addIntroductionMessage();
       // _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
-      normalMessage.text = data[widget.idx].resource[resourceIdx].introText!;
-      normalMessage.audioUrl =
-          data[widget.idx].resource[resourceIdx].introAudio!;
+      normalMessage.text = introText;
+      normalMessage.audioUrl = introAudio;
       normalMessage.isTextEnd = true;
       _homeProvider.addNormalMessage(normalMessage);
       _mediaUtils.play(
-        url: data[widget.idx].resource[resourceIdx].introAudio!,
+        url: introAudio,
         useAvatar: true,
         whenFinished: () {
           //通知播放视频
-
-          // setState(() {
-          //   isplay = true;
-          // });
           isPlayVideo = "1";
-
           _controller?.play();
           _controller?.setVolume(1);
-
-          // showModalBottomSheet(
-          //   context: context,
-          //   backgroundColor: Colors.transparent,
-          //   barrierColor: Colors.transparent,
-          //   isScrollControlled: true,
-          //   isDismissible: false,
-          //   clipBehavior: Clip.none,
-          //   enableDrag: false,
-          //   builder: (_) => ClassVideoPage(
-          //     introFileStr: introFileStr,
-          //     onScrollEnd: () {
-          //       // setState(() {
-          //       //   isplay = false;
-          //       // });
-          //       startNormaltwoChat();
-          //     },
-          //   ),
-          // );
-
-          // _bottomBarControll.setDisabled(false);
-          //   _controller.play();
-          // checkVideoCompletion(_controller);
         },
       );
     });
-
-    // await _mediaUtils.stopPlay();
-    // // await _chatWebsocket.endChat(true);
-    // _homeProvider.resetChatParams();
-    // // _homeProvider.character = character;
-    // Future.delayed(Duration.zero, () {
-    //   // _isCharacterChanging = false;
-    //   _bottomBarControll.setDisabled(true);
-    //   _homeProvider.addIntroductionMessage();
-    //   // _homeProvider.addTipMessage('Role-plays started！');
-    //   NormalMessage normalMessage = _homeProvider.createNormalMessage();
-    //   normalMessage.text =
-    //       widget.data[widget.idx].resource[resourceIdx].greetingText!;
-    //   normalMessage.audioUrl =
-    //       widget.data[widget.idx].resource[resourceIdx].greetingAudio!;
-    //   normalMessage.isTextEnd = true;
-    //   _homeProvider.addNormalMessage(normalMessage);
-    //   _mediaUtils.play(
-    //     url: widget.data[widget.idx].resource[resourceIdx].greetingAudio!,
-    //     useAvatar: true,
-    //     whenFinished: () {
-    //       // _bottomBarControll.setDisabled(false);
-    //       _controller.play();
-    //       checkVideoCompletion(_controller);
-    //     },
-    //   );
-    // });
   }
 
-  // void checkVideoCompletion(VideoPlayerController controller) {
-  //   // if (controller.value.isInitialized) {
-  //   // _controller.removeListener(_videoListener);
-  //   // 当视频控制器初始化完成后，开始监听播放事件
-  //   controller.addListener(() {
-  //     isplay = false;
-  //     final Duration position = controller.value.position;
+  void startNormaltwoChatRequestNetwork() {
+    DioUtils.instance.requestNetwork<ResultData>(
+        Method.post, HttpApi.generateAudio,
+        params: {
+          'text': data[widget.idx].resource[resourceIdx].greetingText!,
+          'character_id': _homeProvider.character.characterId,
+        }, onSuccess: (result) {
+      if (result?.code == 200) {
+        Map<String, dynamic> data = result?.data as Map<String, dynamic>;
+        startNormaltwoChat(data['text'], data['speech_url']);
+      } else {
+        startNormalChat(data[widget.idx].resource[resourceIdx].greetingText!,
+            data[widget.idx].resource[resourceIdx].greetingAudio!);
+      }
+    }, onError: (code, msg) {
+      startNormalChat(data[widget.idx].resource[resourceIdx].greetingText!,
+          data[widget.idx].resource[resourceIdx].greetingAudio!);
+    });
+  }
 
-  //     if (position >= controller.value.duration) {
-  //       // 视频正在播放且播放到了末尾，视频播放完成
-  //       Log.e("视频播放完成");
-  //       isplay = true;
-  //       if (isFrist) {
-  //         startNormaltwoChat();
-  //       }
-  //     }
-  //     setState(() {});
-  //     // if (isPlaying && position >= controller.value.duration) {
-  //     //   // 视频正在播放且播放到了末尾，视频播放完成
-  //     //   Log.e("视频播放完成");
-  //     // }
-  //   });
-  //   // }
-  // }
-
-  void startNormaltwoChat() async {
+  void startNormaltwoChat(String introText, String introAudio) async {
     await _mediaUtils.stopPlay();
     // await _chatWebsocket.endChat(true);
     // _homeProvider.resetChatParams();
@@ -678,7 +638,27 @@ class _InstructionalVideoDialoguePageState
   }
 
   //图片及其他顺序
-  void imgFlow() async {
+  void imgFlowRequestNetwork() async {
+    DioUtils.instance.requestNetwork<ResultData>(
+        Method.post, HttpApi.generateAudio,
+        params: {
+          'text': data[widget.idx].resource[resourceIdx].greetingText!,
+          'character_id': _homeProvider.character.characterId,
+        }, onSuccess: (result) {
+      if (result?.code == 200) {
+        Map<String, dynamic> data = result?.data as Map<String, dynamic>;
+        imgFlow(data['text'], data['speech_url']);
+      } else {
+        imgFlow(data[widget.idx].resource[resourceIdx].greetingText!,
+            data[widget.idx].resource[resourceIdx].greetingAudio!);
+      }
+    }, onError: (code, msg) {
+      imgFlow(data[widget.idx].resource[resourceIdx].greetingText!,
+          data[widget.idx].resource[resourceIdx].greetingAudio!);
+    });
+  }
+
+  void imgFlow(String introText, String introAudio) async {
     await _mediaUtils.stopPlay();
     // await _chatWebsocket.endChat(true);
     // _homeProvider.resetChatParams();
@@ -776,7 +756,7 @@ class _InstructionalVideoDialoguePageState
 
     if (_controller?.playbackInfo?.position ==
         _controller?.videoInfo?.duration) {
-      startNormaltwoChat();
+      startNormaltwoChatRequestNetwork();
       //播放完成重置状态
       isPlayVideo = "0";
     }

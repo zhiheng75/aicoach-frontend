@@ -166,6 +166,7 @@ class HttpApi {
   static const String stepDetail = 'step_detail';
 //课程评价
   static const String lessonFeedback = "lesson_feedback";
+  static const String lessonFeedbackDetail = "lesson_feedback_detail";
 
   static const String lessonDetail = 'lesson_detail';
 

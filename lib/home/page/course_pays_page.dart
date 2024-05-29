@@ -357,10 +357,10 @@ class _CoursePaysPageState extends State<CoursePaysPage>
             universalLink: "https://demo.shenmo-ai.net/ios/");
         fluwx.open(
             target: MiniProgram(
-                username: "wx2140a8026b8cdf74",
+                username: "gh_dcd9c62ba779",
                 path:
                     "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
-                miniProgramType: WXMiniProgramType.test));
+                miniProgramType: WXMiniProgramType.release));
         EventBus().emit(NotificationUtils.paySuccess);
 
         Navigator.of(context).pop();

@@ -117,30 +117,30 @@ class _CourseBottomBarState extends State<CourseBottomBar>
       LoginManager.checkLogin(context, () {
         bool isAvailable = true;
 
-        // 新用户采集不花费使用时间
-        if (widget.isCollectInformation != true) {
-          int usageTime = _homeProvider.usageTime;
-          int vipState = _homeProvider.vipState;
-          int expDay = _homeProvider.expDay;
-          // 是否体验到期
-          if (vipState == 0 && (usageTime == 0 || expDay == 0)) {
-            isAvailable = false;
-          }
-          // 是否会员到期
-          if (vipState == 2) {
-            isAvailable = false;
-          }
-          if (!isAvailable) {
-            showModalBottomSheet(
-              context: context,
-              backgroundColor: Colors.transparent,
-              barrierColor: Colors.transparent,
-              isScrollControlled: true,
-              isDismissible: false,
-              builder: (_) => ExpirationReminder(),
-            );
-          }
-        }
+        // // 新用户采集不花费使用时间
+        // if (widget.isCollectInformation != true) {
+        //   int usageTime = _homeProvider.usageTime;
+        //   int vipState = _homeProvider.vipState;
+        //   int expDay = _homeProvider.expDay;
+        //   // 是否体验到期
+        //   if (vipState == 0 && (usageTime == 0 || expDay == 0)) {
+        //     isAvailable = false;
+        //   }
+        //   // 是否会员到期
+        //   if (vipState == 2) {
+        //     isAvailable = false;
+        //   }
+        //   if (!isAvailable) {
+        //     showModalBottomSheet(
+        //       context: context,
+        //       backgroundColor: Colors.transparent,
+        //       barrierColor: Colors.transparent,
+        //       isScrollControlled: true,
+        //       isDismissible: false,
+        //       builder: (_) => ExpirationReminder(),
+        //     );
+        //   }
+        // }
         return isAvailable;
       });
 
@@ -149,30 +149,30 @@ class _CourseBottomBarState extends State<CourseBottomBar>
 
     bool isAvailable = true;
 
-    // 新用户采集不花费使用时间
-    if (widget.isCollectInformation != true) {
-      int usageTime = _homeProvider.usageTime;
-      int vipState = _homeProvider.vipState;
-      int expDay = _homeProvider.expDay;
-      // 是否体验到期
-      if (vipState == 0 && (usageTime == 0 || expDay == 0)) {
-        isAvailable = false;
-      }
-      // 是否会员到期
-      if (vipState == 2) {
-        isAvailable = false;
-      }
-      if (!isAvailable) {
-        showModalBottomSheet(
-          context: context,
-          backgroundColor: Colors.transparent,
-          barrierColor: Colors.transparent,
-          isScrollControlled: true,
-          isDismissible: false,
-          builder: (_) => ExpirationReminder(),
-        );
-      }
-    }
+    // // 新用户采集不花费使用时间
+    // if (widget.isCollectInformation != true) {
+    //   int usageTime = _homeProvider.usageTime;
+    //   int vipState = _homeProvider.vipState;
+    //   int expDay = _homeProvider.expDay;
+    //   // 是否体验到期
+    //   if (vipState == 0 && (usageTime == 0 || expDay == 0)) {
+    //     isAvailable = false;
+    //   }
+    //   // 是否会员到期
+    //   if (vipState == 2) {
+    //     isAvailable = false;
+    //   }
+    //   if (!isAvailable) {
+    //     showModalBottomSheet(
+    //       context: context,
+    //       backgroundColor: Colors.transparent,
+    //       barrierColor: Colors.transparent,
+    //       isScrollControlled: true,
+    //       isDismissible: false,
+    //       builder: (_) => ExpirationReminder(),
+    //     );
+    //   }
+    // }
     return isAvailable;
   }
 
