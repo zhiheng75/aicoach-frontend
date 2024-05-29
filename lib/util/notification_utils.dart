@@ -17,4 +17,5 @@ class NotificationUtils {
 
   static String nextClass = "NEXTCLASS";
   static String paySuccess = "paySuccess";
+  static String errorCorrection = "errorCorrection";
 }

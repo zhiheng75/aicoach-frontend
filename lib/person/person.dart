@@ -140,15 +140,20 @@ class _PersonPageState extends State<PersonPage>
 
   void userInfo() {
     Map<String, dynamic> user = LoginManager.getUserInfo();
-    Log.e(user.toString());
+    Log.e("11111111111$user");
+    String name = '';
 
     // 用户名显示规则 name > nickname > phone
     if (validateInput(user['phone'])) {
       phone = user['phone'];
     }
 
-    String name = '';
-    if (validateInput(user['name']) && user['name'] != '微信用户') {
+    if (validateInput(user['phone'])) {
+      String namephone = '';
+      namephone = user['phone'];
+      String maskedPhoneNumber = namephone.replaceRange(3, 7, '****');
+      name = maskedPhoneNumber;
+    } else if (validateInput(user['name']) && user['name'] != '微信用户') {
       name = user['name'];
     } else if (validateInput(user['nickname'])) {
       name = user['nickname'];

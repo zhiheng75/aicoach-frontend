@@ -134,6 +134,7 @@ class SingleChoice extends StatelessWidget {
                 ),
                 child: Text(
                   title,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 17.0,
                     fontWeight: FontWeight.w400,

@@ -9,7 +9,9 @@ import 'package:Bubble/person/presneter/error_correction_detail_page_presenter.d
 import 'package:Bubble/person/view/error_correction_detail_page_view.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
@@ -287,6 +289,8 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                           errorDetailData[idx]
                                               .userPracticeScore = intValue;
                                         });
+                                        EventBus().emit(
+                                            NotificationUtils.errorCorrection);
                                       },
                                     )
                                   : Center(
@@ -322,6 +326,8 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                               behavior: HitTestBehavior.opaque,
                               onTap: () {
                                 if (idx != 0) {
+                                  _bottomBarControll.setDisabled(false);
+
                                   idx = idx - 1;
                                   repeatTextStr(errorDetailData[idx].sentence);
 
@@ -360,6 +366,8 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                               behavior: HitTestBehavior.opaque,
                               onTap: () {
                                 if (idx + 1 < errorDetailData.length) {
+                                  _bottomBarControll.setDisabled(false);
+
                                   idx = idx + 1;
                                   repeatTextStr(errorDetailData[idx].sentence);
 
@@ -400,9 +408,9 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                     ),
                   ),
                   Positioned(
-                    top: 0,
+                    // top: 0,
                     left: 0,
-                    // bottom: 0,
+                    bottom: 0,
                     child: ValueListenableBuilder(
                       valueListenable: _bottomBarControll.showRecord,
                       builder: (_, show, __) =>

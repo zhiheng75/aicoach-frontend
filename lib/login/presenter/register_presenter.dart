@@ -186,6 +186,8 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         if (validateInput(newWxInfoBean.data.token)) {
           SpUtil.putObject(Constant.userInfoKey, newWxInfoBean.data.toJson());
           SpUtil.putString(Constant.accessToken, newWxInfoBean.data.token);
+          // SpUtil.putString(Constant.phone, newWxInfoBean.data.);
+
           Log.e("======进来了吗=======");
           view.hadBindWechat();
         } else {

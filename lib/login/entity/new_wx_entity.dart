@@ -49,6 +49,7 @@ class NewWxInfoBeanData {
   String unionid;
   String token;
   String id;
+  String phone;
 
   NewWxInfoBeanData({
     required this.openid,
@@ -59,7 +60,7 @@ class NewWxInfoBeanData {
     required this.province,
     required this.country,
     required this.headimgurl,
-    // required this.privilege,
+    required this.phone,
     required this.unionid,
     required this.token,
     required this.id,
@@ -77,6 +78,8 @@ class NewWxInfoBeanData {
         headimgurl: json["headimgurl"].toString() ?? "",
         // privilege: List<dynamic>.from(json["privilege"].map((x) => x)),
         unionid: json["unionid"].toString() ?? "",
+        phone: json["phone"].toString() ?? "",
+
         token: json["token"].toString() ?? "",
         id: json["id"].toString() ?? "",
       );
@@ -90,6 +93,8 @@ class NewWxInfoBeanData {
         "province": province,
         "country": country,
         "headimgurl": headimgurl,
+        "phone": phone,
+
         // "privilege": List<dynamic>.from(privilege.map((x) => x)),
         "unionid": unionid,
         "token": token,

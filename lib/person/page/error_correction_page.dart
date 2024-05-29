@@ -8,6 +8,8 @@ import 'package:Bubble/person/view/error_correction_page_view.dart';
 import 'package:Bubble/person/widget/course_error_class_item.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -104,6 +106,22 @@ class _ErrorCorrectionPageState extends State<ErrorCorrectionPage>
       Colours.color_6EF0F1,
     ],
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    EventBus().on(NotificationUtils.errorCorrection, (_) {
+      _errorCorrectionPagePresenter.getMistakeRecordslist();
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    EventBus().off(NotificationUtils.errorCorrection);
+  }
 
   Widget lodingView() {
     return const Center(

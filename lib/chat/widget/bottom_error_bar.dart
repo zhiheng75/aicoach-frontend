@@ -273,12 +273,12 @@ class _BottomErrorBarState extends State<BottomErrorBar>
           }
           onStart(_);
         },
-        onLongPressMoveUpdate: (detail) {
-          if (disabled) {
-            return;
-          }
-          widget.recordController.fingerDetection(detail.globalPosition);
-        },
+        // onLongPressMoveUpdate: (detail) {
+        //   if (disabled) {
+        //     return;
+        //   }
+        //   widget.recordController.fingerDetection(detail.globalPosition);
+        // },
         onLongPressEnd: (_) {
           if (disabled) {
             return;
@@ -412,9 +412,9 @@ class _BottomErrorBarState extends State<BottomErrorBar>
                 } else {
                   sendMessage(result['text']);
                 }
-                sendMessage(result['text']);
+                // sendMessage(result['text']);
               });
-              // widget.controller.setShowRecord(true);
+              widget.controller.setShowRecord(true);
             } catch (e) {
               Toast.show(
                 e.toString().substring(11),
