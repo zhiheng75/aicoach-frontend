@@ -168,7 +168,7 @@ class _CourseReportPageState extends State<CourseReportPage>
         i++) {
       list.add(PlayBackItem(
           title: lessonReportDetailData.data.objectives.speakingSkills[i].skill,
-          isPaly: false));
+          isPaly: true));
     }
     return list;
   }
