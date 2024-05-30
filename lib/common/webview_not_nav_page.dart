@@ -17,6 +17,7 @@ import 'package:Bubble/util/toast_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -48,11 +49,13 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
   // bool isInSendButton = true;
   late bool isTalk = false;
 
+  final ScreenUtil _screenUtil = ScreenUtil();
+
   @override
   void initState() {
     super.initState();
     oneStartRecord();
-    _recognizeUtil.setLanguage('en');
+    // _recognizeUtil.setLanguage('en');
     // _homeProvider = Provider.of<HomeProvider>(context, listen: false);
 
     _controller = WebViewController()
@@ -61,6 +64,12 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         NavigationDelegate(
           onPageFinished: (url) {
             finished = true;
+            double top = MediaQuery.of(context).padding.top;
+            _controller
+                .runJavaScriptReturningResult('callJStop($top)')
+                .then((result) {
+              print('----js回调----$result');
+            });
             setState(() {});
           },
           onProgress: (int progress) {
@@ -257,8 +266,10 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
     params["completed"] = "1";
 
     DioUtils.instance.requestNetwork<ResultData>(
-        Method.post, HttpApi.stepUpdate, params: params, onSuccess: (result) {},
-        onError: (code, msg) {
+        Method.post, HttpApi.stepUpdate,
+        params: params, onSuccess: (result) {
+      EventBus().emit(NotificationUtils.nextResetChat);
+    }, onError: (code, msg) {
       setState(() {});
     });
   }

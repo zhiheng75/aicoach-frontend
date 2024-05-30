@@ -36,45 +36,24 @@ class LessonFeedbackDetailBean {
 }
 
 class Data {
-  int userId;
-  int anonymous;
-  int lessonId;
-  dynamic resources;
-  int id;
   int star;
   String feedback;
-  DateTime createdAt;
-
+  int anonymous;
   Data({
-    required this.userId,
-    required this.anonymous,
-    required this.lessonId,
-    required this.resources,
-    required this.id,
     required this.star,
+    required this.anonymous,
     required this.feedback,
-    required this.createdAt,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        userId: json["user_id"],
-        anonymous: json["anonymous"],
-        lessonId: json["lesson_id"],
-        resources: json["resources"],
-        id: json["id"],
-        star: json["star"],
-        feedback: json["feedback"],
-        createdAt: DateTime.parse(json["created_at"]),
+        star: json["star"] ?? 0,
+        anonymous: json["anonymous"] ?? 0,
+        feedback: json["feedback"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
-        "user_id": userId,
-        "anonymous": anonymous,
-        "lesson_id": lessonId,
-        "resources": resources,
-        "id": id,
         "star": star,
+        "anonymous": anonymous,
         "feedback": feedback,
-        "created_at": createdAt.toIso8601String(),
       };
 }

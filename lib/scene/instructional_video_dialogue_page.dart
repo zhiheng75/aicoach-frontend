@@ -618,13 +618,12 @@ class _InstructionalVideoDialoguePageState
       // _homeProvider.addIntroductionMessage();
       // _homeProvider.addTipMessage('Role-plays started！');
       NormalMessage normalMessage = _homeProvider.createNormalMessage();
-      normalMessage.text = data[widget.idx].resource[resourceIdx].greetingText!;
-      normalMessage.audioUrl =
-          data[widget.idx].resource[resourceIdx].greetingAudio!;
+      normalMessage.text = introText;
+      normalMessage.audioUrl = introAudio;
       normalMessage.isTextEnd = true;
       _homeProvider.addNormalMessage(normalMessage);
       _mediaUtils.play(
-        url: data[widget.idx].resource[resourceIdx].greetingAudio!,
+        url: introAudio,
         useAvatar: true,
         whenFinished: () {
           setState(() {

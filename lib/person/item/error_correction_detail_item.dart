@@ -8,6 +8,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_sound/public/flutter_sound_player.dart';
 
 class ErrorCorrectionDetailItem extends StatefulWidget {
   final Datum data;
@@ -290,6 +291,18 @@ class ErrorCorrectionDetailTwoItem extends StatefulWidget {
 
 class _ErrorCorrectionDetailTwoItemState
     extends State<ErrorCorrectionDetailTwoItem> {
+  FlutterSoundPlayer? player;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initPlayer();
+  }
+
+  void initPlayer() async {
+    player = await FlutterSoundPlayer().openPlayer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -343,12 +356,16 @@ class _ErrorCorrectionDetailTwoItemState
                 Gaps.vGap8,
                 GestureDetector(
                   onTap: () {
-                    MediaUtils().stopPlay();
-                    MediaUtils().play(
-                      url: widget.excellentExpression.audio,
-                      useAvatar: true,
+                    player!.startPlayer(
+                      fromURI: widget.excellentExpression.audio,
                       whenFinished: () {},
                     );
+                    // MediaUtils().stopPlay();
+                    // MediaUtils().play(
+                    //   url: widget.excellentExpression.audio,
+                    //   useAvatar: true,
+                    //   whenFinished: () {},
+                    // );
                   },
                   child: const LoadAssetImage(
                     'jiucuo_laba_icon',

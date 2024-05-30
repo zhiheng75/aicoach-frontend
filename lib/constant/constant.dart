@@ -48,4 +48,6 @@ class Constant {
   static const String jgMsgKey = "message";
 
   static Jverify jverify = Jverify();
+
+  static const String teacherId = 'teacherId';
 }

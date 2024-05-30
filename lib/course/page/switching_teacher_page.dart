@@ -33,21 +33,26 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
   late int idx = 0;
 
   void onBack() {
-    MediaUtils().stopPlay();
-
     Navigator.pop(context);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    MediaUtils().stopPlay();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return CupertinoPageScaffold(
-      navigationBar: XTCupertinoNavigationBar(
-        backgroundColor: const Color(0xFFFFFFFF),
+      navigationBar: const XTCupertinoNavigationBar(
+        backgroundColor: Color(0xFFFFFFFF),
         border: null,
         padding: EdgeInsetsDirectional.zero,
-        leading: NavigationBackWidget(onBack: onBack),
-        middle: const Text(
+        leading: NavigationBackWidget(),
+        middle: Text(
           "选择外教角色",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),

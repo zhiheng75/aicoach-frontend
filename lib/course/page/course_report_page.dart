@@ -251,7 +251,7 @@ class _CourseReportPageState extends State<CourseReportPage>
                                   padding: EdgeInsetsDirectional.zero,
                                   leading: NavigationBackWidget(),
                                   middle: Text(
-                                    "Bubble AI 学习报告",
+                                    "口语嘟嘟 学习报告",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),

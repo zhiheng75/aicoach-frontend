@@ -42,12 +42,19 @@ class _CoursePaysPageState extends State<CoursePaysPage>
 
   String remainTimeStr = '00:00:00';
   late Timer _timer;
+  late String? accessToken;
+  Fluwx fluwx = Fluwx();
 
   @override
   void initState() {
     super.initState();
     //开始倒计时，这里传入的是秒数
     startCountDown(600);
+    accessToken = SpUtil.getString(Constant.accessToken);
+
+    fluwx.registerApi(
+        appId: "wxfb033d09d2eecaf0",
+        universalLink: "https://demo.shenmo-ai.net/ios/");
   }
 
   //倒计时
@@ -138,24 +145,24 @@ class _CoursePaysPageState extends State<CoursePaysPage>
     // Navigator.of(context).pop();
   }
 
-  void showPayToast({required BuildContext context, required String message}) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog.adaptive(
-          title: Text(message),
-          actions: [
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void showPayToast({required BuildContext context, required String message}) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog.adaptive(
+  //         title: Text(message),
+  //         actions: [
+  //           TextButton(
+  //             child: const Text('OK'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -331,6 +338,36 @@ class _CoursePaysPageState extends State<CoursePaysPage>
     }
   }
 
+  // void alertDialog() {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return AlertDialog(
+  //           title: Text("QQQQ"),
+  //           content: Text("QQQQ"),
+  //           actions: [
+  //             TextButton(
+  //                 onPressed: () {
+  //                   //跳转小程序
+  //                   Fluwx fluwx = Fluwx();
+  //                   fluwx.registerApi(
+  //                       appId: "wxfb033d09d2eecaf0",
+  //                       universalLink: "https://demo.shenmo-ai.net/ios/");
+  //                   fluwx.open(
+  //                       target: MiniProgram(
+  //                           username: "gh_dcd9c62ba779",
+  //                           path:
+  //                               "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
+  //                           miniProgramType: WXMiniProgramType.test));
+  //                   Navigator.of(context).pop();
+  //                 },
+  //                 child: Text("QQQQ")),
+  //             TextButton(onPressed: () {}, child: Text("QQQQ")),
+  //           ],
+  //         );
+  //       });
+  // }
+
   @override
   paySuccess() {
     // TODO: implement paySuccess
@@ -348,21 +385,15 @@ class _CoursePaysPageState extends State<CoursePaysPage>
 //         移动应用appid:wxfb033d09d2eecaf0
 // 小程序appid:wx2140a8026b8cdf74
 // 跳转路径：pages/mine/add-weChat/add-weChat?user_token=token
-
-        final String? accessToken = SpUtil.getString(Constant.accessToken);
+        // alertDialoFg();
         //跳转小程序
-        Fluwx fluwx = Fluwx();
-        fluwx.registerApi(
-            appId: "wxfb033d09d2eecaf0",
-            universalLink: "https://demo.shenmo-ai.net/ios/");
+
         fluwx.open(
             target: MiniProgram(
                 username: "gh_dcd9c62ba779",
                 path:
                     "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
                 miniProgramType: WXMiniProgramType.release));
-        EventBus().emit(NotificationUtils.paySuccess);
-
         Navigator.of(context).pop();
       },
     );

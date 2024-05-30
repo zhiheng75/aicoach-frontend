@@ -29,6 +29,7 @@ import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
+import 'package:Bubble/util/other_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -80,23 +81,40 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   late String titleStr = "";
   final MediaUtils _mediaUtils = MediaUtils();
 
+  late String teacherId = "0";
   @override
   void initState() {
     super.initState();
+
+    String teacherId = SpUtil.getString(Constant.teacherId)!.nullSafe;
+    if (teacherId.isEmpty) {
+      teacherId = "0";
+      SpUtil.putString(Constant.teacherId, "0");
+    } else {
+      teacherId = SpUtil.getString(Constant.teacherId)!;
+    }
 
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     init();
     _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
 
     EventBus().on(NotificationUtils.teachIdx, (idx) {
+      teacherId = idx.toString();
+      SpUtil.putString(Constant.teacherId, idx.toString());
       // idx
       setState(() {
-        characterIdStr = _teacherListBean.data[idx].characterId;
-        characterImgCoverStr = _teacherListBean.data[idx].imageUrl;
-        characterCoverStr = _teacherListBean.data[idx].avatarImage;
-        characterSceneDescStr = _teacherListBean.data[idx].slogan;
-        characterSceneNameStr = _teacherListBean.data[idx].name;
-        characterSceneenNameStr = _teacherListBean.data[idx].authorName;
+        characterIdStr =
+            _teacherListBean.data[int.parse(teacherId)].characterId;
+        characterImgCoverStr =
+            _teacherListBean.data[int.parse(teacherId)].imageUrl;
+        characterCoverStr =
+            _teacherListBean.data[int.parse(teacherId)].avatarImage;
+        characterSceneDescStr =
+            _teacherListBean.data[int.parse(teacherId)].slogan;
+        characterSceneNameStr =
+            _teacherListBean.data[int.parse(teacherId)].name;
+        characterSceneenNameStr =
+            _teacherListBean.data[int.parse(teacherId)].authorName;
       });
     });
 
@@ -163,12 +181,18 @@ class _CourseFlowPageState extends State<CourseFlowPage>
           CharacterListBean.fromJson(characterListMap);
       if (teacherListBean.code == 200) {
         if (teacherListBean.data.isNotEmpty) {
-          characterIdStr = teacherListBean.data[0].characterId;
-          characterImgCoverStr = teacherListBean.data[0].imageUrl;
-          characterCoverStr = teacherListBean.data[0].avatarImage;
-          characterSceneDescStr = teacherListBean.data[0].slogan;
-          characterSceneNameStr = teacherListBean.data[0].name;
-          characterSceneenNameStr = teacherListBean.data[0].authorName;
+          characterIdStr =
+              teacherListBean.data[int.parse(teacherId)].characterId;
+          characterImgCoverStr =
+              teacherListBean.data[int.parse(teacherId)].imageUrl;
+          characterCoverStr =
+              teacherListBean.data[int.parse(teacherId)].avatarImage;
+          characterSceneDescStr =
+              teacherListBean.data[int.parse(teacherId)].slogan;
+          characterSceneNameStr =
+              teacherListBean.data[int.parse(teacherId)].name;
+          characterSceneenNameStr =
+              teacherListBean.data[int.parse(teacherId)].authorName;
 
           _teacherListBean = teacherListBean;
         }

@@ -12,7 +12,7 @@ import 'package:Bubble/net/http_api.dart';
 
 class CurriculumEvaluationPagePresenter
     extends BasePagePresenter<CurriculumEvaluationPageView> {
-  @override
+  // @override
   // void afterInit() {
   //   // TODO: implement afterInit
   //   super.afterInit();
@@ -25,7 +25,7 @@ class CurriculumEvaluationPagePresenter
 
     return requestNetwork<ResultData>(Method.get,
         url: HttpApi.lessonFeedbackDetail,
-        params: params,
+        queryParameters: params,
         isShow: false, onSuccess: (result) {
       Map<String, dynamic> lessonFeedbackDetailMap =
           json.decode(result.toString());

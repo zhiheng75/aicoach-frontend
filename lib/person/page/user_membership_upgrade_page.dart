@@ -1,3 +1,4 @@
+import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/widget/course_equity_item.dart';
@@ -15,6 +16,7 @@ import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/confirm_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
@@ -24,7 +26,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluwx/fluwx.dart';
 import 'package:provider/provider.dart';
+import 'package:sp_util/sp_util.dart';
 
 class UserMembershipUpgradePage extends StatefulWidget {
   const UserMembershipUpgradePage({super.key});
@@ -65,10 +69,18 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   late String rechargeSloganStr = "";
   late String rechargeLessonSloganStr = "";
 
+  Fluwx fluwx = Fluwx();
+  late String? accessToken;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    accessToken = SpUtil.getString(Constant.accessToken);
+
+    fluwx.registerApi(
+        appId: "wxfb033d09d2eecaf0",
+        universalLink: "https://demo.shenmo-ai.net/ios/");
     Map<String, dynamic> user = LoginManager.getUserInfo();
 
     headimgurl = user['headimgurl'];
@@ -769,11 +781,35 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   @override
   void paySuccess() {
     // TODO: implement paySuccess
-    Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    EventBus().emit(NotificationUtils.resetInFo);
-    Future.delayed(const Duration(seconds: 1), () {
-      Navigator.of(context).pop();
-    });
+    if (listData.data[idx].type == 4) {
+      ConfirmUtils.showSingle(
+        context: context,
+        title: "支付成功\n前往微信添加\n本课程辅导老师",
+        onCancel: () {
+//         移动应用appid:wxfb033d09d2eecaf0
+// 小程序appid:wx2140a8026b8cdf74
+// 跳转路径：pages/mine/add-weChat/add-weChat?user_token=token
+          // alertDialoFg();
+          //跳转小程序
+
+          fluwx.open(
+              target: MiniProgram(
+                  username: "gh_dcd9c62ba779",
+                  path:
+                      "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
+                  miniProgramType: WXMiniProgramType.release));
+          Navigator.of(context).pop();
+        },
+      );
+      Provider.of<HomeProvider>(context, listen: false).getUsageTime();
+      EventBus().emit(NotificationUtils.resetInFo);
+    } else {
+      Provider.of<HomeProvider>(context, listen: false).getUsageTime();
+      EventBus().emit(NotificationUtils.resetInFo);
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.of(context).pop();
+      });
+    }
   }
 
   @override

@@ -25,6 +25,7 @@ import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/notification_utils.dart';
+import 'package:Bubble/util/other_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/group_avatar_widget.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -42,6 +43,7 @@ import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/home/entity/banner_list_bean.dart';
+import 'package:sp_util/sp_util.dart';
 
 class HomeTwoPage extends StatefulWidget {
   const HomeTwoPage({super.key});
@@ -543,8 +545,14 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   void initState() {
     // TODO: implement initState
     super.initState();
+
     initDio();
     initUM();
+
+    String teacherId = SpUtil.getString(Constant.teacherId)!.nullSafe;
+    if (teacherId.isEmpty) {
+      SpUtil.putString(Constant.teacherId, "0");
+    }
 
     // 初始化手机号一键登录插件
     initPlatformState();
@@ -604,7 +612,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     }
     DioUtils.instance.dio.options.headers['sysInfo'] = sysInfo;
     DioUtils.instance.dio.options.headers['marketplace'] = platformStr;
-    DioUtils.instance.dio.options.headers['applyName'] = info.appName;
+    // DioUtils.instance.dio.options.headers['applyName'] = info.appName;
   }
 
   void initUM() {
