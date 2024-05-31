@@ -1,4 +1,5 @@
 import 'package:Bubble/chat/entity/character_list_bean.dart';
+import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/course/item/switching_teacher_item.dart';
 import 'package:Bubble/course/presenter/switching_teacher_page_presenter.dart';
 import 'package:Bubble/course/view/switching_teacher_page_view.dart';
@@ -12,6 +13,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sp_util/sp_util.dart';
 
 class SwitchingTeacherPage extends StatefulWidget {
   const SwitchingTeacherPage({super.key});
@@ -31,6 +33,13 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
 
   late List<Datum> teacherData = [];
   late int idx = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    idx = int.parse(SpUtil.getString(Constant.teacherId) ?? "0");
+  }
 
   void onBack() {
     Navigator.pop(context);
@@ -61,68 +70,58 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
         body: SafeArea(
           child: Stack(
             children: [
-              GridView.builder(
-                itemBuilder: (ctx, index) {
-                  return GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      setState(() {
-                        idx = index;
-                      });
-                    },
-                    child: SwitchingTeacherItem(
-                      data: teacherData[index],
-                      isSele: idx == index ? true : false,
-                    ),
-                  );
-                },
-                itemCount: teacherData.length,
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 0,
-                    crossAxisSpacing: 0,
-                    childAspectRatio: (_screenUtil.screenWidth / 2 - 20) /
-                        (_screenUtil.screenWidth / 2 + 30)),
+              Positioned(
+                top: 0,
+                left: 16,
+                right: 16,
+                bottom: 0,
+                child: GridView.builder(
+                  itemBuilder: (ctx, index) {
+                    return GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        setState(() {
+                          idx = index;
+                        });
+                      },
+                      child: SwitchingTeacherItem(
+                        data: teacherData[index],
+                        isSele: idx == index ? true : false,
+                      ),
+                    );
+                  },
+                  itemCount: teacherData.length,
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: (_screenUtil.screenWidth / 2 - 20) /
+                          (_screenUtil.screenWidth / 2 + 30)),
+                ),
               ),
               Positioned(
                   bottom: 0,
-                  left: (_screenUtil.screenWidth - 160) / 2,
+                  child: LoadAssetImage(
+                    'mengban_img',
+                    fit: BoxFit.cover,
+                    height: 65,
+                    width: _screenUtil.screenWidth,
+                  )),
+              Positioned(
+                  bottom: 0,
+                  left: (_screenUtil.screenWidth - 200) / 2,
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
                       EventBus().emit(NotificationUtils.teachIdx, idx);
                       Navigator.of(context).pop();
                     },
-                    child: Container(
-                      height: 50.0,
-                      width: 160,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100.0),
-                        color: const Color(0xFFF8F8F8),
-                        gradient: const LinearGradient(
-                          begin: Alignment.bottomLeft,
-                          end: Alignment.topRight,
-                          colors: [
-                            Colours.color_8256FF,
-                            Colours.color_FF5CDB,
-                          ],
-                        ),
-                      ),
-                      alignment: Alignment.center,
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            '确定',
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
+                    child: const LoadAssetImage(
+                      'teach_con_img',
+                      fit: BoxFit.cover,
+                      width: 200,
+                      height: 77.27,
                     ),
                   )),
             ],

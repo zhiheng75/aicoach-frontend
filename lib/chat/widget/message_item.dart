@@ -315,7 +315,7 @@ class _MessageItemState extends State<MessageItem> {
     // 普通消息
     _message = _message as NormalMessage;
     BoxDecoration decoration = BoxDecoration(
-      color: Colors.white.withOpacity(0.86),
+      color: Colors.white.withOpacity(0.85),
       gradient: _message.speaker == 'ai'
           ? null
           : const LinearGradient(
@@ -364,6 +364,7 @@ class _MessageItemState extends State<MessageItem> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
+                      closeExample();
                       if (message.showTranslation) {
                         closeTranslate();
                         return;
@@ -373,7 +374,7 @@ class _MessageItemState extends State<MessageItem> {
                     child: const LoadAssetImage(
                       'fanyi_hei',
                       width: 18,
-                      height: 16,
+                      height: 18,
                     ),
                   ),
                 ),
@@ -381,6 +382,7 @@ class _MessageItemState extends State<MessageItem> {
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
+                    closeTranslate();
                     if (message.showExample) {
                       closeExample();
                       return;
@@ -389,8 +391,8 @@ class _MessageItemState extends State<MessageItem> {
                   },
                   child: const LoadAssetImage(
                     'shili_zhi',
-                    width: 20,
-                    height: 19,
+                    width: 18,
+                    height: 18,
                   ),
                 ),
               Padding(
@@ -401,9 +403,9 @@ class _MessageItemState extends State<MessageItem> {
                   behavior: HitTestBehavior.opaque,
                   onTap: () => playAudio(message.speaker),
                   child: LoadAssetImage(
-                    message.speaker == 'user' ? 'laba_lan' : 'laba_hei',
-                    width: 17.6,
-                    height: 16,
+                    message.speaker == 'user' ? 'laba_hei' : 'laba_hei',
+                    width: 18,
+                    height: 18,
                   ),
                 ),
               ),
@@ -427,9 +429,9 @@ class _MessageItemState extends State<MessageItem> {
               : (message.translation == 3 ? '翻译失败' : message.translation),
           style: const TextStyle(
             fontSize: 15.0,
-            fontWeight: FontWeight.w400,
-            color: Colours.color_001652,
-            height: 20.0 / 15.0,
+            fontWeight: FontWeight.w500,
+            color: Colors.black,
+            height: 2,
             letterSpacing: 0.05,
           ),
         ),
@@ -449,33 +451,33 @@ class _MessageItemState extends State<MessageItem> {
             ? Text(
                 message.exampleState == 1 ? '获取示例中...' : '获取示例失败',
                 style: const TextStyle(
-                  fontSize: 15,
+                  fontSize: 17,
                   fontWeight: FontWeight.w400,
-                  color: Color(0xFF890073),
+                  color: Colors.black,
                   height: 20 / 15,
                   letterSpacing: 0.05,
                 ),
               )
             : Container(
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 0.8,
-                    style: BorderStyle.solid,
-                    color: const Color(0xFF3400A2),
-                  ),
-                  borderRadius: BorderRadius.circular(8),
+                  // border: Border.all(
+                  //   width: 0.8,
+                  //   style: BorderStyle.solid,
+                  //   color: const Color(0xFF3400A2),
+                  // ),
+                  borderRadius: BorderRadius.circular(12),
                   color: Colors.white,
                 ),
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       message.exampleText,
                       style: const TextStyle(
-                        fontSize: 15,
+                        fontSize: 17,
                         fontWeight: FontWeight.w400,
-                        color: Color(0xFF890073),
+                        color: Colors.black,
                         height: 20 / 15,
                         letterSpacing: 0.05,
                       ),
@@ -657,6 +659,7 @@ class _MessageItemState extends State<MessageItem> {
           }
           // Log.e("================" + one);
         }
+        one = one.replaceAll("{[finish]}", "");
         return one;
       } else if (one.contains("<image>")) {
         RegExpMatch? match = pattern.firstMatch(one);
@@ -671,6 +674,8 @@ class _MessageItemState extends State<MessageItem> {
         String reStr = "<image>$coverUrl</image>";
         String replacedString = one.replaceAll(reStr, "");
         one = replacedString;
+        one = one.replaceAll("{[finish]}", "");
+
         return one;
       } else if (one.contains("<word>")) {
         RegExpMatch? match = pattern.firstMatch(one);
@@ -684,10 +689,11 @@ class _MessageItemState extends State<MessageItem> {
         String reStr = "<word>$coverUrl</word>";
         String replacedString = one.replaceAll(reStr, "");
         one = replacedString;
+        one = one.replaceAll("{[finish]}", "");
         return one;
         // Log.e("================" + one);
       }
-
+      message.text = message.text.replaceAll("{[finish]}", "");
       // if (message.text.contains("<image>")) {
       //   RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
       //   RegExpMatch? match = pattern.firstMatch(message.text);
@@ -744,16 +750,16 @@ class _MessageItemState extends State<MessageItem> {
             ),
             child: Container(
               width: width,
+              // color: Colors.amber,
               decoration: decoration,
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    // _message.text,
                     titMessage(_message),
                     style: const TextStyle(
-                      fontSize: 15.0,
+                      fontSize: 17.0,
                       fontWeight: FontWeight.w400,
                       color: Colours.color_001652,
                       height: 20.0 / 15.0,
@@ -761,15 +767,6 @@ class _MessageItemState extends State<MessageItem> {
                     ),
                   ),
                   createImgExample(_message),
-                  // _message.coverUrl == ''
-                  //     ? Container()
-                  //     :
-                  // _message.coverUrl != ""
-                  //     ? LoadImage(
-                  //         _message.coverUrl,
-                  //         // width: 48.0,
-                  //       )
-                  //     : Container(),
                   const SizedBox(
                     height: 16,
                   ),

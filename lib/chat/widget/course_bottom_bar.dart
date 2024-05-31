@@ -463,11 +463,11 @@ class _CourseBottomBarState extends State<CourseBottomBar>
               height: 50.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100.0),
-                border: Border.all(
-                  width: 1.0,
-                  style: BorderStyle.solid,
-                  color: Colours.color_001652,
-                ),
+                // border: Border.all(
+                //   width: 1.0,
+                //   style: BorderStyle.solid,
+                //   color: Colours.color_001652,
+                // ),
                 color: data == true
                     ? null
                     : disabled
@@ -478,8 +478,8 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                         begin: Alignment.bottomLeft,
                         end: Alignment.topRight,
                         colors: [
-                          Colours.color_9AC3FF,
-                          Colours.color_FF71E0,
+                          Colours.color_8256FF,
+                          Colours.color_FF5CDB,
                         ],
                       )
                     : null,
@@ -492,22 +492,23 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                       fit: BoxFit.fitHeight,
                     )
                   : const Row(
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      // mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         LoadAssetImage(
-                          'maikefeng',
+                          'maikefeng_icon',
                           width: 24.0,
                           height: 24.0,
                         ),
                         SizedBox(
-                          width: 10.0,
+                          width: 5.0,
                         ),
                         Text(
                           '按住说话',
                           style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.w400,
-                            color: Colours.color_001652,
+                            color: Colors.white,
                           ),
                         ),
                       ],

@@ -113,6 +113,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           itemCount: banner.length,
           autoplay: true,
           pagination: const SwiperPagination(),
+          // viewportFraction: 0.8,
+          // layout: SwiperLayout.STACK,
           // control: SwiperControl(),
         ),
       ),

@@ -5,7 +5,6 @@ import '../../home/provider/home_provider.dart';
 import 'message_item.dart';
 
 class MessageList extends StatefulWidget {
-
   const MessageList({
     Key? key,
     required this.controller,
@@ -18,7 +17,6 @@ class MessageList extends StatefulWidget {
 }
 
 class _MessageListState extends State<MessageList> {
-
   @override
   void initState() {
     super.initState();
@@ -60,7 +58,8 @@ class MessageListController {
     await Future.delayed(const Duration(milliseconds: 100));
     double maxScrollExtent = _scrollController.position.maxScrollExtent;
     if (maxScrollExtent > _scrollController.offset) {
-      _scrollController.animateTo(maxScrollExtent, duration: const Duration(milliseconds: 200), curve: Curves.ease);
+      _scrollController.animateTo(maxScrollExtent,
+          duration: const Duration(milliseconds: 200), curve: Curves.ease);
     }
   }
 }

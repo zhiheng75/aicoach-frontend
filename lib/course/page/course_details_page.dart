@@ -64,7 +64,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
         padding: EdgeInsetsDirectional.zero,
         leading: NavigationBackWidget(),
         middle: Text(
-          "课程学习目标",
+          "本课学习目标",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),

@@ -242,4 +242,8 @@ class Colours {
   static const Color color_8003FD = Color.fromRGBO(128, 3, 253, 1);
 
   static const Color color_FFE99C = Color.fromRGBO(255, 233, 156, 1);
+
+  static const Color color_FFFFFF9 = Color.fromRGBO(255, 255, 255, 0.9);
+
+  static const Color color_875EFF = Color.fromRGBO(135, 94, 255, 1);
 }

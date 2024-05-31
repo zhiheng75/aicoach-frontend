@@ -551,8 +551,8 @@ class _CourseReportPageState extends State<CourseReportPage>
                                       Gaps.hGap8,
                                       const LoadAssetImage(
                                         "head_nengli_icon",
-                                        width: 40.0,
-                                        height: 40.0,
+                                        width: 24.0,
+                                        height: 24.0,
                                       ),
                                       Gaps.hGap8,
                                       RichText(

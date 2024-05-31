@@ -32,68 +32,73 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
 
   @override
   Widget build(BuildContext context) {
+    // return Container(
+    //   color: Colors.red,
+    // );
     return Stack(
       children: [
-        Center(
-          child: Container(
-            decoration: widget.isSele
-                ? BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    border: Border.all(
-                      width: 1.0,
-                      style: BorderStyle.solid,
-                      color: Colours.color_E00094,
-                    ))
-                : BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: LoadImage(
-                  widget.data.listImage,
-                  fit: BoxFit.fill,
-                  width: _screenUtil.screenWidth / 2 - 20,
-                  height: _screenUtil.screenWidth / 2 + 30,
-                )),
-          ),
+        Positioned(
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: widget.isSele
+              ? const LoadAssetImage(
+                  "teach_sele_img",
+                )
+              : Container(),
+        ),
+        Positioned(
+          top: 3,
+          bottom: 3,
+          left: 3,
+          right: 3,
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(16.0),
+              child: LoadImage(
+                widget.data.listImage,
+                fit: BoxFit.cover,
+                // width: _screenUtil.screenWidth / 2 - 20,
+                // height: _screenUtil.screenWidth / 2 + 30,
+              )),
         ),
         Positioned(
           // right: 15,
-          bottom: 8,
-          right: 10,
-          left: 10,
+          bottom: 3,
+          right: 3,
+          left: 3,
           // top: 80,
           // width: 50,
-          height: 85,
+          height: 70,
           child: Stack(
             children: <Widget>[
               Container(
                 clipBehavior: Clip.antiAlias,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20)),
+                      bottomLeft: Radius.circular(16),
+                      bottomRight: Radius.circular(16)),
                 ),
                 child: ClipRect(
                   //背景过滤器
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
                     child: Opacity(
-                      opacity: 0.2,
+                      opacity: 0.5,
                       child: Container(
                         // width: 100.0,
-                        height: 80.0,
+                        height: 70.0,
                         decoration: BoxDecoration(color: Colors.grey.shade200),
                         /*  child: Center(
-                        child: Text("天河区扛把子",style:TextStyle(fontSize: 40,color: Colors.black),),
-                      ),*/
+                          child: Text("天河区扛把子",style:TextStyle(fontSize: 40,color: Colors.black),),
+                        ),*/
                       ),
                     ),
                   ),
                 ),
               ),
               Positioned(
-                left: 10,
+                left: 20,
                 right: 10,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,8 +163,8 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
           ),
         ),
         Positioned(
-          right: 15,
-          bottom: 75,
+          right: 25,
+          bottom: 55,
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
@@ -195,7 +200,7 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
                         height: 32.0,
                       )),
           ),
-        )
+        ),
       ],
     );
   }

@@ -9,6 +9,7 @@ import 'package:Bubble/course/entity/step_detail_bean.dart';
 import 'package:Bubble/course/item/course_flow_item.dart';
 import 'package:Bubble/course/page/switching_teacher_page.dart';
 import 'package:Bubble/course/presenter/course_flow_page_presenter.dart';
+import 'package:Bubble/course/view/class_show_view.dart';
 import 'package:Bubble/course/view/course_flow_page_view.dart';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/home_router.dart';
@@ -86,13 +87,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   void initState() {
     super.initState();
 
-    String teacherId = SpUtil.getString(Constant.teacherId)!.nullSafe;
-    if (teacherId.isEmpty) {
-      teacherId = "0";
-      SpUtil.putString(Constant.teacherId, "0");
-    } else {
-      teacherId = SpUtil.getString(Constant.teacherId)!;
-    }
+    teacherId = SpUtil.getString(Constant.teacherId) ?? "0";
 
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     init();
@@ -287,15 +282,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     return MyScrollView(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // Center(
-        //     child: Text(
-        //   stepDetailData.data.title,
-        //   style: const TextStyle(
-        //     fontSize: 13.0,
-        //     fontWeight: FontWeight.w400,
-        //     color: Colours.color_666666,
-        //   ),
-        // )),
         Gaps.vGap4,
         Text(
           stepDetailData.data.lessonName,
@@ -362,6 +348,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                   LoginManager.checkLogin(context, () {
                     if (stepDetailData.data.data[index].isLocked == 0) {
                       gotoCourse(index);
+                      // showImageDialog();
                     } else {
                       Toast.show(
                         '请按顺序完成',
