@@ -650,7 +650,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(

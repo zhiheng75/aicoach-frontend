@@ -463,11 +463,11 @@ class _CourseBottomBarState extends State<CourseBottomBar>
               height: 50.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100.0),
-                // border: Border.all(
-                //   width: 1.0,
-                //   style: BorderStyle.solid,
-                //   color: Colours.color_001652,
-                // ),
+                border: Border.all(
+                  width: 1.0,
+                  style: BorderStyle.solid,
+                  color: Colours.color_001652,
+                ),
                 color: data == true
                     ? null
                     : disabled
@@ -478,12 +478,35 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                         begin: Alignment.bottomLeft,
                         end: Alignment.topRight,
                         colors: [
-                          Colours.color_8256FF,
-                          Colours.color_FF5CDB,
+                          Colours.color_9AC3FF,
+                          Colours.color_FF71E0,
                         ],
                       )
                     : null,
               ),
+              // decoration: BoxDecoration(
+              //   borderRadius: BorderRadius.circular(100.0),
+              //   // border: Border.all(
+              //   //   width: 1.0,
+              //   //   style: BorderStyle.solid,
+              //   //   color: Colours.color_001652,
+              //   // ),
+              //   color: data == true
+              //       ? null
+              //       : disabled
+              //           ? const Color(0xFFF8F8F8)
+              //           : null,
+              //   gradient: data == true || !disabled
+              //       ? const LinearGradient(
+              //           begin: Alignment.bottomLeft,
+              //           end: Alignment.topRight,
+              //           colors: [
+              //             Colours.color_8256FF,
+              //             Colours.color_FF5CDB,
+              //           ],
+              //         )
+              //       : null,
+              // ),
               alignment: Alignment.center,
               child: data == true
                   ? Image.asset(
@@ -496,7 +519,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                       // mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         LoadAssetImage(
-                          'maikefeng_icon',
+                          'maikefeng',
                           width: 24.0,
                           height: 24.0,
                         ),
@@ -508,7 +531,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                           style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.w400,
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                         ),
                       ],

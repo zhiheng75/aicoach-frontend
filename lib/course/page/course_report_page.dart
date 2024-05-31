@@ -86,7 +86,9 @@ class _CourseReportPageState extends State<CourseReportPage>
     return true;
   }
 
-  Widget headWidget(String imgStr, String headStr, String msgStr) {
+  Widget headWidget(
+    String imgStr,
+  ) {
     return SliverToBoxAdapter(
       child: Container(
         height: 80,
@@ -96,51 +98,9 @@ class _CourseReportPageState extends State<CourseReportPage>
           children: [
             LoadAssetImage(
               imgStr,
-              width: 45.0,
-              height: 50.0,
-            ),
-            Gaps.hGap4,
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(headStr,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    )),
-                Stack(
-                  children: [
-                    Positioned(
-                      bottom: 2,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          gradient: const LinearGradient(
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
-                            colors: [
-                              Colours.color_8256FF,
-                              Colours.color_FF5CDB,
-                            ],
-                          ),
-                        ),
-                        width: 250,
-                        height: 5,
-                      ),
-                    ),
-                    Text(
-                      msgStr,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+              height: 50,
+              // width: 45.0,
+              // height: 50.0,
             ),
           ],
         ),
@@ -458,8 +418,29 @@ class _CourseReportPageState extends State<CourseReportPage>
                         SliverToBoxAdapter(
                           child: radar(),
                         ),
-                        headWidget(
-                            "zan_icon", "我的优秀表达", "Excellent expression"),
+                        SliverToBoxAdapter(
+                          child: Container(
+                            height: 80,
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                Gaps.vGap16,
+                                const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    LoadAssetImage(
+                                      "youxiubiaoda",
+                                      height: 55,
+                                      // width: 45.0,
+                                      // height: 50.0,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // headWidget("youxiubiaoda"),
                         SliverList.builder(
                           itemBuilder: (ctx, index) {
                             return GestureDetector(
@@ -472,7 +453,29 @@ class _CourseReportPageState extends State<CourseReportPage>
                           itemCount: lessonReportDetailData
                               .data.excellentExpression.length,
                         ),
-                        headWidget("liwu_icon", "本节课收获", "Learning outcomes"),
+                        SliverToBoxAdapter(
+                          child: Container(
+                            height: 80,
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                Gaps.vGap16,
+                                const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    LoadAssetImage(
+                                      "benkeshouhuo",
+                                      height: 56,
+                                      // width: 45.0,
+                                      // height: 50.0,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // headWidget("benkeshouhuo"),
                         SliverToBoxAdapter(
                           child: CourseReportVocabularyTwoItem(
                               vocabulary: lessonReportDetailData

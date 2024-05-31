@@ -122,7 +122,7 @@ class _InstructionalVideoDialoguePageState
   late int isUserBuy;
   late String levelId;
   late String lessonId;
-
+  late double contentTop;
   late String isShowStr = "1";
   // late int chatNumberEnd = 0;
   late String ischatEndStr = "0";
@@ -136,6 +136,7 @@ class _InstructionalVideoDialoguePageState
 
   late Timer _timer;
   late int _secondsRemaining = 5; // 倒计时10秒
+
   void init() {
     _pageState = 'success';
     setState(() {});
@@ -298,12 +299,12 @@ class _InstructionalVideoDialoguePageState
         _homeProvider.notify();
         _answer = null;
 
-        if (mxtitStr.contains('{[finish]}')) {
-          ischatEndStr = "1";
-          //弹窗点击确定后重新链接
-          _instructionalVideoDialoguePresenter.postStepUpdate(lessonId, stepId);
-          onNextSocketEnd();
-        }
+        // if (mxtitStr.contains('{[finish]}')) {
+        //   ischatEndStr = "1";
+        //   //弹窗点击确定后重新链接
+        //   _instructionalVideoDialoguePresenter.postStepUpdate(lessonId, stepId);
+        //   // onNextSocketEnd();
+        // }
 
         return;
       }
@@ -384,6 +385,8 @@ class _InstructionalVideoDialoguePageState
   @override
   void initState() {
     super.initState();
+    contentTop = _screenUtil.statusBarHeight + 300.0;
+
     WidgetsBinding.instance.addObserver(this);
 
     EventBus().on(NotificationUtils.nextClass, (_) {
@@ -673,12 +676,21 @@ class _InstructionalVideoDialoguePageState
           introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
           introVideoCoverStr =
               data[dataIdx].resource[resourceIdx].introVideoCover;
+          contentTop = _screenUtil.statusBarHeight + 300.0;
+
           videoFlow();
         } else if (introFileType == "image") {
+          isVideo = "0";
+
           introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
+          contentTop = _screenUtil.statusBarHeight + 300.0;
+
           imgFlowRequestNetwork();
           init();
         } else {
+          contentTop = _screenUtil.statusBarHeight + 240.0;
+
+          isVideo = "0";
           introFileStr = _homeProvider.character.motionImageD;
           imgFlowRequestNetwork();
           init();
@@ -737,6 +749,9 @@ class _InstructionalVideoDialoguePageState
   }
 
   void startNormaltwoChatRequestNetwork() {
+    setState(() {
+      isPlayVideo = "0";
+    });
     DioUtils.instance.requestNetwork<ResultData>(
         Method.post, HttpApi.generateAudio,
         params: {
@@ -775,10 +790,10 @@ class _InstructionalVideoDialoguePageState
         url: introAudio,
         useAvatar: true,
         whenFinished: () {
-          setState(() {
-            // isFrist = false;
-            _bottomBarControll.setDisabled(false);
-          });
+          // setState(() {
+          // isFrist = false;
+          _bottomBarControll.setDisabled(false);
+          // });
         },
       );
     });
@@ -900,15 +915,11 @@ class _InstructionalVideoDialoguePageState
 
   void _onPlaybackPositionChanged() {
     isPlayVideo = "1";
-
     if (_controller?.playbackInfo?.position ==
         _controller?.videoInfo?.duration) {
       startNormaltwoChatRequestNetwork();
       //播放完成重置状态
-      isPlayVideo = "0";
     }
-
-    setState(() {});
   }
 
   void _onPlaybackSpeedChanged() {
@@ -1027,36 +1038,20 @@ class _InstructionalVideoDialoguePageState
 
   Widget topWidget() {
     if (introFileType == "video") {
-      return Stack(
-        children: [
-          Positioned(
-            top: _screenUtil.statusBarHeight + 80,
-            width: _screenUtil.screenWidth,
-            height: _screenUtil.screenWidth / 16 * 9,
-            child: AspectRatio(
-              aspectRatio: 16 / 9,
-              child: NativeVideoPlayerView(
-                onViewReady: _initController,
-              ),
-            ),
+      return Positioned(
+        top: _screenUtil.statusBarHeight + 68,
+        width: _screenUtil.screenWidth,
+        height: _screenUtil.screenWidth / 16 * 9,
+        child: AspectRatio(
+          aspectRatio: 16 / 9,
+          child: NativeVideoPlayerView(
+            onViewReady: _initController,
           ),
-          isPlayVideo == "0"
-              ? Positioned(
-                  top: _screenUtil.statusBarHeight + 80,
-                  width: _screenUtil.screenWidth,
-                  height: _screenUtil.screenWidth / 16 * 9,
-                  child: LoadImage(
-                    introVideoCoverStr,
-                    width: _screenUtil.screenWidth,
-                    height: _screenUtil.screenWidth / 16 * 9,
-                  ),
-                )
-              : Container(),
-        ],
+        ),
       );
     } else if (introFileType == "image") {
       return Positioned(
-        top: _screenUtil.statusBarHeight + 80,
+        top: _screenUtil.statusBarHeight + 68,
         width: _screenUtil.screenWidth,
         height: _screenUtil.screenWidth / 16 * 9,
         child: LoadImage(
@@ -1067,7 +1062,7 @@ class _InstructionalVideoDialoguePageState
       );
     } else {
       return Positioned(
-        top: _screenUtil.statusBarHeight + 80,
+        top: _screenUtil.statusBarHeight + 68,
         left: (_screenUtil.screenWidth - 150) / 2,
         // width: 100,
         // height: 100,
@@ -1200,7 +1195,6 @@ class _InstructionalVideoDialoguePageState
           width: _screenUtil.screenWidth,
           child: LoadImage(provider.scene?.cover ?? '', fit: BoxFit.fill),
         );
-        double contentTop = _screenUtil.statusBarHeight + 300.0;
         Widget inner;
         if (_pageState == 'success') {
           inner = Column(
@@ -1292,6 +1286,18 @@ class _InstructionalVideoDialoguePageState
               navbar(),
               topWidget(),
               topFlowWidget(),
+              isPlayVideo == "0" && isVideo == "1"
+                  ? Positioned(
+                      top: _screenUtil.statusBarHeight + 68,
+                      width: _screenUtil.screenWidth,
+                      height: _screenUtil.screenWidth / 16 * 9,
+                      child: LoadImage(
+                        introVideoCoverStr,
+                        width: _screenUtil.screenWidth,
+                        height: _screenUtil.screenWidth / 16 * 9,
+                      ),
+                    )
+                  : Container(),
               Positioned(
                 top: 0,
                 left: 0,

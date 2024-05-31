@@ -3,6 +3,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/widgets/photo_view_simple_screen.dart';
 import 'package:flutter/material.dart';
@@ -415,6 +416,85 @@ class _MessageItemState extends State<MessageItem> {
       );
     }
 
+    String titTwoMessage(String message) {
+      String one = message;
+      RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+      if (one.contains("<image>") && one.contains("<word>")) {
+        for (int i = 0; i < 2; i++) {
+          RegExpMatch? match = pattern.firstMatch(one);
+          late String coverUrl = "";
+
+          if (match != null) {
+            String? tag = match.group(1); // 获取标签名
+            String? content = match.group(2); // 获取内容
+            // Log.e('===============Tag: $tag, Content: $content');
+            coverUrl = content!;
+            if (tag == "image") {
+              //去出来图片content
+            }
+            if (tag == "word") {
+              //取出来文字content
+            }
+            String reStr = "<$tag>$coverUrl</$tag>";
+            String replacedString = one.replaceAll(reStr, "");
+            one = replacedString;
+          }
+          // Log.e("================" + one);
+        }
+        one = one.replaceAll("{[finish]}", "");
+        return one;
+      } else if (one.contains("<image>")) {
+        RegExpMatch? match = pattern.firstMatch(one);
+        late String coverUrl = "";
+
+        if (match != null) {
+          String? tag = match.group(1); // 获取标签名
+          String? content = match.group(2); // 获取内容
+          // Log.e('===============Tag: $tag, Content: $content');
+          coverUrl = content!;
+        }
+        String reStr = "<image>$coverUrl</image>";
+        String replacedString = one.replaceAll(reStr, "");
+        one = replacedString;
+        one = one.replaceAll("{[finish]}", "");
+
+        return one;
+      } else if (one.contains("<word>")) {
+        RegExpMatch? match = pattern.firstMatch(one);
+        late String coverUrl = "";
+        if (match != null) {
+          String? tag = match.group(1); // 获取标签名
+          String? content = match.group(2); // 获取内容
+          // Log.e('===============Tag: $tag, Content: $content');
+          coverUrl = content!;
+        }
+        String reStr = "<word>$coverUrl</word>";
+        String replacedString = one.replaceAll(reStr, "");
+        one = replacedString;
+        one = one.replaceAll("{[finish]}", "");
+        return one;
+        // Log.e("================" + one);
+      }
+      message = message.replaceAll("{[finish]}", "");
+      // if (message.text.contains("<image>")) {
+      //   RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+      //   RegExpMatch? match = pattern.firstMatch(message.text);
+      //   late String coverUrl = "";
+      //   if (match != null) {
+      //     String? tag = match.group(1); // 获取标签名
+      //     String? content = match.group(2); // 获取内容
+      //     // Log.e('===============Tag: $tag, Content: $content');
+      //     coverUrl = content!;
+      //   }
+      //   String one = "<image>$coverUrl</image>";
+      //   String replacedString = message.text.replaceAll(one, "");
+
+      //   return replacedString;
+      // }
+
+      return message;
+    }
+
     Widget createTranslationWidget(NormalMessage message) {
       if (!message.showTranslation) {
         return const SizedBox();
@@ -426,7 +506,9 @@ class _MessageItemState extends State<MessageItem> {
         child: Text(
           message.translateState == 1
               ? '翻译中...'
-              : (message.translation == 3 ? '翻译失败' : message.translation),
+              : (message.translation == 3
+                  ? '翻译失败'
+                  : titTwoMessage(message.translation)),
           style: const TextStyle(
             fontSize: 15.0,
             fontWeight: FontWeight.w500,
@@ -507,10 +589,11 @@ class _MessageItemState extends State<MessageItem> {
 
     Widget createImgExample(NormalMessage message) {
       String one = message.text;
+      Log.e("111111111111" + one);
+
       RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
       if (one.contains("<image>") && one.contains("<word>")) {
         late String coverUrl = "";
-
         for (int i = 0; i < 2; i++) {
           RegExpMatch? match = pattern.firstMatch(one);
 
@@ -521,6 +604,25 @@ class _MessageItemState extends State<MessageItem> {
             if (tag == "image") {
               //去出来图片content
               coverUrl = content!;
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    barrierColor: Colors.transparent,
+                    isScrollControlled: true,
+                    isDismissible: false,
+                    builder: (_) => PhotoViewSimpleScreen(
+                      imageProvider: NetworkImage(coverUrl),
+                    ),
+                  );
+                },
+                child: LoadImage(
+                  coverUrl,
+                  width: 100.0,
+                ),
+              );
             }
             if (tag == "word") {
               //取出来文字content
@@ -559,7 +661,7 @@ class _MessageItemState extends State<MessageItem> {
             },
             child: LoadImage(
               coverUrl,
-              // width: 48.0,
+              width: 100.0,
             ),
           );
         } else {
@@ -767,6 +869,7 @@ class _MessageItemState extends State<MessageItem> {
                     ),
                   ),
                   createImgExample(_message),
+                  // Text("data"),
                   const SizedBox(
                     height: 16,
                   ),
