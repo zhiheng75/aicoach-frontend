@@ -126,7 +126,7 @@ class _HomePageState extends State<HomeNewPage>
     }
     DioUtils.instance.dio.options.headers['sysInfo'] = sysInfo;
     DioUtils.instance.dio.options.headers['marketplace'] = platformStr;
-    DioUtils.instance.dio.options.headers['applyName'] = info.appName;
+    // DioUtils.instance.dio.options.headers['applyName'] = info.appName;
   }
 
   // Future<void> initPlatformState() async {

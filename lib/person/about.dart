@@ -143,7 +143,7 @@ class _AboutPageState extends State<AboutPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Bubble AI',
+                '口语嘟嘟',
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w500,
@@ -165,7 +165,7 @@ class _AboutPageState extends State<AboutPage> {
             height: 16.0,
           ),
           const Text(
-            'Bubble AI是一款基于生成式人工智能的英语口语训练平台。通过与自主研发的AI智能体英语老师实景对话模式，让同学们在有趣且高效的氛围中获得口语能力快速提升。\n Bubble AI用科技与创新探索语言学习提高的无尽可能。结合多年教育科技行业研发经验，创造性地将广受欢迎的海量IP形象、英语语法与句型教学体系、英语升级阅读引擎、大语言模型与自适应学习系统等多个领域的成功实践，整合为一套启发式兴趣对话的英语“口语学习黑科技”。提供家长式陪伴，为学英语的孩子营造出一个沉浸式的语言学习环境。进入Bubble AI的英语对话世界，孩子们一开口说英语，就“完全停不下来”。\nAI时代浪潮下，我们希望与您一路同行。欢迎加入Bubble AI金种子用户社群，与我们一起见证AI时代的未来教育！',
+            '口语嘟嘟是一款基于生成式人工智能的英语口语训练平台。通过与自主研发的AI智能体英语老师实景对话模式，让同学们在有趣且高效的氛围中获得口语能力快速提升。\n 口语嘟嘟用科技与创新探索语言学习提高的无尽可能。结合多年教育科技行业研发经验，创造性地将广受欢迎的海量IP形象、英语语法与句型教学体系、英语升级阅读引擎、大语言模型与自适应学习系统等多个领域的成功实践，整合为一套启发式兴趣对话的英语“口语学习黑科技”。提供家长式陪伴，为学英语的孩子营造出一个沉浸式的语言学习环境。进入口语嘟嘟的英语对话世界，孩子们一开口说英语，就“完全停不下来”。\nAI时代浪潮下，我们希望与您一路同行。欢迎加入口语嘟嘟金种子用户社群，与我们一起见证AI时代的未来教育！',
             style: TextStyle(
               fontSize: 13.0,
               fontWeight: FontWeight.w400,
@@ -203,7 +203,7 @@ class _AboutPageState extends State<AboutPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
-            '加入Bubble AI 金种子用户社群',
+            '加入口语嘟嘟金种子用户社群',
             style: TextStyle(
               fontSize: 15.0,
               fontWeight: FontWeight.w500,
