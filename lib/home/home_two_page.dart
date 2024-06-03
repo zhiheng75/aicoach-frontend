@@ -773,6 +773,12 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                         context,
                         ExamRouter.examPage,
                       );
+                    } else if (examList[index].linkUrl == "5") {
+                      //上课页面
+                      // NavigatorUtils.push(
+                      //   context,
+                      //   ExamRouter.examPage,
+                      // );
                     }
                   }
                 },
