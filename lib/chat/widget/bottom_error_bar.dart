@@ -346,9 +346,9 @@ class _BottomErrorBarState extends State<BottomErrorBar>
         builder: (_, disabled, __) => button(
           disabled: disabled,
           onStart: (detail) async {
-            if (!isAvailable()) {
-              return;
-            }
+            // if (!isAvailable()) {
+            //   return;
+            // }
             try {
               bool hasAgree =
                   SpUtil.getBool(Constant.mediaUtils, defValue: false) ?? false;
@@ -408,7 +408,8 @@ class _BottomErrorBarState extends State<BottomErrorBar>
                 }
                 if (widget.repeatWord != "") {
                   //这里先调评测,分高传tag分低穿别的
-                  sendTwoMessage(result['text'], widget.repeatWord);
+                  // sendTwoMessage(result['text'], widget.repeatWord);
+                  sendMessage(widget.repeatWord);
                 } else {
                   sendMessage(result['text']);
                 }

@@ -1,5 +1,5 @@
 import 'package:Bubble/generated/json/base/json_convert_content.dart';
-import 'package:Bubble/home/entity/teach_list_entity.dart';
+import 'package:Bubble/home/page/entity/teach_list_entity.dart';
 
 TeachListEntity $TeachListEntityFromJson(Map<String, dynamic> json) {
   final TeachListEntity teachListEntity = TeachListEntity();
@@ -19,8 +19,9 @@ TeachListEntity $TeachListEntityFromJson(Map<String, dynamic> json) {
   if (voiceId != null) {
     teachListEntity.voiceId = voiceId;
   }
-  final List<String>? authorName = (json['author_name'] as List<dynamic>?)?.map(
-          (e) => jsonConvert.convert<String>(e) as String).toList();
+  final List<String>? authorName = (json['author_name'] as List<dynamic>?)
+      ?.map((e) => jsonConvert.convert<String>(e) as String)
+      .toList();
   if (authorName != null) {
     teachListEntity.authorName = authorName;
   }

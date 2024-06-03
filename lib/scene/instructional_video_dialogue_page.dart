@@ -132,7 +132,7 @@ class _InstructionalVideoDialoguePageState
 
   late String mxtitStr;
 
-  late bool showDialog = false;
+  late bool isShowDialog = false;
 
   late Timer _timer;
   late int _secondsRemaining = 5; // 倒计时10秒
@@ -151,8 +151,9 @@ class _InstructionalVideoDialoguePageState
     _secondsRemaining = 5;
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(oneSec, (Timer timer) {
-      if (_secondsRemaining < 1) {
-        showDialog = false;
+      if (_secondsRemaining == 0) {
+        timer.cancel();
+        isShowDialog = false;
         _secondsRemaining = 0;
         forstartFlow(dataIdx, resourceIdx);
         setState(() {});
@@ -310,11 +311,12 @@ class _InstructionalVideoDialoguePageState
       }
       _answer!.text += answer;
 
-      mxtitStr = _answer!.text;
+      // mxtitStr = _answer!.text;
       _homeProvider.notify();
       _listScrollController.scrollToEnd();
       return;
     }
+    // Log.e(answer);
     if (answer is Uint8List) {
       _answer!.audio.add(answer);
 
@@ -323,10 +325,6 @@ class _InstructionalVideoDialoguePageState
       }
       if (_listPlayer != null) {
         _listPlayer!.play(answer);
-
-        // chatNumberEnd = chatNumberEnd + 1;
-        // Log.e("11111111111111111111111111chatNumberEnd+1" +
-        //     chatNumberEnd.toString());
       }
     }
   }
@@ -482,24 +480,24 @@ class _InstructionalVideoDialoguePageState
     });
   }
 
-  // showImageDialog() {
-  //   showDialog(
-  //       context: context,
-  //       barrierDismissible: false,
-  //       builder: (BuildContext context) {
-  //         return ClassShowView(() {
-  //           //确定
-  //           resourceIdx = 0;
-  //           forstartFlow(dataIdx, resourceIdx);
-  //         }, () {
-  //           //重新来
-  //           resourceIdx = 0;
+  showImageDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return ClassShowView(() {
+            //确定
+            resourceIdx = 0;
+            forstartFlow(dataIdx, resourceIdx);
+          }, () {
+            //重新来
+            resourceIdx = 0;
 
-  //           dataIdx = dataIdx - 1;
-  //           forstartFlow(dataIdx, resourceIdx);
-  //         });
-  //       });
-  // }
+            dataIdx = dataIdx - 1;
+            forstartFlow(dataIdx, resourceIdx);
+          });
+        });
+  }
 
   Widget showDia() {
     return Container(
@@ -525,10 +523,12 @@ class _InstructionalVideoDialoguePageState
                 children: [
                   GestureDetector(
                     onTap: () {
+                      _timer.cancel();
+
                       //重新开始
                       dataIdx = dataIdx - 1;
                       setState(() {
-                        showDialog = false;
+                        isShowDialog = false;
                       });
                       forstartFlow(dataIdx, resourceIdx);
                     },
@@ -562,9 +562,11 @@ class _InstructionalVideoDialoguePageState
                   Gaps.hGap15,
                   GestureDetector(
                     onTap: () async {
+                      _timer.cancel();
+
                       //下一关
                       setState(() {
-                        showDialog = false;
+                        isShowDialog = false;
                       });
 
                       forstartFlow(dataIdx, resourceIdx);
@@ -615,7 +617,7 @@ class _InstructionalVideoDialoguePageState
       if (dataIdx < data.length) {
         resourceIdx = 0;
 
-        showDialog = true;
+        isShowDialog = true;
         _startTimer();
         setState(() {});
         // showImageDialog();
@@ -1232,21 +1234,7 @@ class _InstructionalVideoDialoguePageState
                   controller: _bottomBarControll,
                   recordController: _recordController,
                   onFinshEnd: (data) {
-                    if (data == true) {
-                      //读完了
-                      // chatNumberEnd = chatNumberEnd - 1;
-                      // Log.e("11111111111111111111111111chatNumberEnd-1" +
-                      //     chatNumberEnd.toString());
-
-                      // if (chatNumberEnd == 0 && ischatEndStr == "1") {
-                      //   //弹窗
-                      //   onNextSocketEnd();
-                      // }
-                    }
-                    // setState(() {
-                    //   _controller.pause();
-                    //   isplay = true;
-                    // });
+                    if (data == true) {}
                   },
                   onScrollEnd: () {
                     _listScrollController.scrollToEnd();
@@ -1307,7 +1295,7 @@ class _InstructionalVideoDialoguePageState
                       Record(show: show, controller: _recordController),
                 ),
               ),
-              showDialog == true
+              isShowDialog == true
                   ? Positioned(
                       top: 0, left: 0, right: 0, bottom: 0, child: showDia())
                   : Positioned(top: 0, child: Container()),

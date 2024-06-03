@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/widgets/load_image.dart';
 
-import '../entity/teach_list_entity.dart';
+import '../page/entity/teach_list_entity.dart';
 
 class TeacherWidget extends StatefulWidget {
   final TeachListEntity teacher;
@@ -38,15 +38,17 @@ class _TeacherWidgetState extends State<TeacherWidget> {
       },
       child: Container(
         height: 100,
-        padding: isSelected ? const EdgeInsets.only(left: 9,right: 9,top: 15,bottom: 10) : const EdgeInsets.only(left: 10,right: 10,top: 15,bottom: 10),
+        padding: isSelected
+            ? const EdgeInsets.only(left: 9, right: 9, top: 15, bottom: 10)
+            : const EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 10),
         decoration: BoxDecoration(
-            borderRadius:const BorderRadius.all(Radius.circular(13)),
+            borderRadius: const BorderRadius.all(Radius.circular(13)),
             border: Border.all(
                 width: isSelected ? 2 : 0.3,
-                color:  isSelected ? Colours.color_00E6D0 : Colours.color_5B8BD2
-            ),
-            color: isSelected ? Colours.hex2color('#DEFFFC') : Colors.transparent
-        ),
+                color:
+                    isSelected ? Colours.color_00E6D0 : Colours.color_5B8BD2),
+            color:
+                isSelected ? Colours.hex2color('#DEFFFC') : Colors.transparent),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,13 +69,23 @@ class _TeacherWidgetState extends State<TeacherWidget> {
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: const TextStyle(
-                  fontSize: 17, color: Colours.color_111B44, height: 18.0 / 17.0),
+                  fontSize: 17,
+                  color: Colours.color_111B44,
+                  height: 18.0 / 17.0),
             ),
             const SizedBox(
               height: 6.0,
             ),
-            Text(widget.teacher.slogan,    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 11),),
-            Text(widget.teacher.character.replaceAll(",", " "),    overflow: TextOverflow.ellipsis,style: const TextStyle(color: Colours.color_546092,fontSize: 11),)
+            Text(
+              widget.teacher.slogan,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: Colours.color_546092, fontSize: 11),
+            ),
+            Text(
+              widget.teacher.character.replaceAll(",", " "),
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: Colours.color_546092, fontSize: 11),
+            )
           ],
         ),
       ),

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:Bubble/chat/entity/character_list_bean.dart';
 import 'package:Bubble/entity/result_entity.dart';
-import 'package:Bubble/home/entity/banner_list_bean.dart';
+import 'package:Bubble/home/page/entity/banner_list_bean.dart';
 import 'package:Bubble/home/view/home_two_page_view.dart';
 import 'package:Bubble/mvp/base_page_presenter.dart';
 import 'package:Bubble/net/dio_utils.dart';

@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-import '../home/entity/teach_list_entity.dart';
+import '../home/page/entity/teach_list_entity.dart';
 import '../routers/fluro_navigator.dart';
 import '../util/websocket_utils.dart';
 import '../widgets/load_image.dart';
@@ -36,18 +36,21 @@ class _ConnectState extends State<ConnectPage> {
   }
 
   void connectWebsocket() {
-    String deviceId = Provider.of<DeviceProvider>(context, listen: false).deviceId;
+    String deviceId =
+        Provider.of<DeviceProvider>(context, listen: false).deviceId;
     String sessionId = const Uuid().v4().replaceAll('-', '');
     // String model = '';
     String language = 'en-US';
     String token = SpUtil.getString(Constant.accessToken) ?? '';
     // String url = 'wss://api.demo.shenmo-ai.net/ws/$sessionId?device_id=$deviceId&llm_model=$model&platform=app&use_search=false&use_quivr=false&use_multion=false&character_id=${widget.teacher.characterId}&language=$language&token=$token';
-    String url = 'wss://api.demo.shenmo-ai.net/ws/$sessionId?device_id=$deviceId&platform=app&use_search=false&use_quivr=false&use_multion=false&character_id=${widget.teacher.characterId}&language=$language&token=$token';
+    String url =
+        'wss://api.demo.shenmo-ai.net/ws/$sessionId?device_id=$deviceId&platform=app&use_search=false&use_quivr=false&use_multion=false&character_id=${widget.teacher.characterId}&language=$language&token=$token';
     WebsocketUtils.createWebsocket(
       'CONVERSATION',
       Uri.parse(url),
       onSuccess: () {
-        ConversationProvider provider = Provider.of<ConversationProvider>(context, listen: false);
+        ConversationProvider provider =
+            Provider.of<ConversationProvider>(context, listen: false);
         provider.sessionId = sessionId;
         provider.clear();
         Future.delayed(const Duration(seconds: 1), () {
@@ -125,7 +128,8 @@ class _ConnectState extends State<ConnectPage> {
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                WebsocketManage? manage = WebsocketUtils.getWebsocket('CONVERSATION');
+                WebsocketManage? manage =
+                    WebsocketUtils.getWebsocket('CONVERSATION');
                 if (manage != null) {
                   WebsocketUtils.closeWebsocket('CONVERSATION');
                 }

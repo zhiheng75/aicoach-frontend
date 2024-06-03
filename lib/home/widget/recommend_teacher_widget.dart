@@ -14,12 +14,11 @@ import '../../res/dimens.dart';
 import '../../routers/fluro_navigator.dart';
 import '../../util/image_utils.dart';
 import '../../util/toast_utils.dart';
-import '../entity/teach_list_entity.dart';
+import '../page/entity/teach_list_entity.dart';
 import '../provider/selecter_teacher_provider.dart';
 import 'teacher_widget.dart';
 
 class RecommendTeacherWidget extends StatefulWidget {
-
   const RecommendTeacherWidget({
     Key? key,
   }) : super(key: key);
@@ -38,26 +37,23 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
     state = 'loading';
     setState(() {});
     DioUtils.instance.requestNetwork<ResultData>(
-      Method.get,
-      HttpApi.teacherList,
-      cancelToken: cancelToken,
-      onSuccess: (result) {
-        if (result != null && result.code == 200) {
-          if (result.data != null && result.data is List) {
-            List<dynamic> list = result.data as List;
-            allTeacher = list.map((item) => TeachListEntity.fromJson(item)).toList();
-            state = 'success';
-          }
-        } else {
-          state = 'fail';
+        Method.get, HttpApi.teacherList, cancelToken: cancelToken,
+        onSuccess: (result) {
+      if (result != null && result.code == 200) {
+        if (result.data != null && result.data is List) {
+          List<dynamic> list = result.data as List;
+          allTeacher =
+              list.map((item) => TeachListEntity.fromJson(item)).toList();
+          state = 'success';
         }
-        setState(() {});
-      },
-      onError: (code, msg) {
+      } else {
         state = 'fail';
-        setState(() {});
       }
-    );
+      setState(() {});
+    }, onError: (code, msg) {
+      state = 'fail';
+      setState(() {});
+    });
   }
 
   @override
@@ -89,38 +85,41 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
         }
 
         if (state == 'success') {
-          child = allTeacher.isNotEmpty ? GridView.builder(
-              padding: const EdgeInsets.all(0),
-              itemCount: allTeacher.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                //设置列数
-                crossAxisCount: 3,
-                //设置横向间距
-                crossAxisSpacing: 12,
-                //设置主轴间距
-                mainAxisSpacing: 13,
-                mainAxisExtent: 173,
-              ),
-              itemBuilder: (BuildContext ctx, int index) {
-                TeachListEntity item = allTeacher.elementAt(index);
-                return TeacherWidget(
-                  teacher: item,
-                  selected: item.characterId == provider.selectedTeacher?.characterId,
-                  onTap: (teacher) {
-                    provider.chooseTeacher(teacher);
-                  },
+          child = allTeacher.isNotEmpty
+              ? GridView.builder(
+                  padding: const EdgeInsets.all(0),
+                  itemCount: allTeacher.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    //设置列数
+                    crossAxisCount: 3,
+                    //设置横向间距
+                    crossAxisSpacing: 12,
+                    //设置主轴间距
+                    mainAxisSpacing: 13,
+                    mainAxisExtent: 173,
+                  ),
+                  itemBuilder: (BuildContext ctx, int index) {
+                    TeachListEntity item = allTeacher.elementAt(index);
+                    return TeacherWidget(
+                      teacher: item,
+                      selected: item.characterId ==
+                          provider.selectedTeacher?.characterId,
+                      onTap: (teacher) {
+                        provider.chooseTeacher(teacher);
+                      },
+                    );
+                  })
+              : const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    LoadAssetImage(
+                      'no_data',
+                      width: 77.0,
+                      height: 77.0,
+                      fit: BoxFit.fill,
+                    ),
+                  ],
                 );
-              }) : const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                LoadAssetImage(
-                  'no_data',
-                  width: 77.0,
-                  height: 77.0,
-                  fit: BoxFit.fill,
-                ),
-              ],
-            );
         }
 
         return DraggableScrollableSheet(
@@ -135,8 +134,7 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(27),
                             topRight: Radius.circular(27)),
-                        color: Colors.white
-                    ),
+                        color: Colors.white),
                   ),
                   Container(
                     decoration: const BoxDecoration(
@@ -162,8 +160,8 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
                           child: Column(
                             children: <Widget>[
                               Padding(
-                                padding:
-                                const EdgeInsets.only(left: 28, right: 20, top: 20, bottom: 31),
+                                padding: const EdgeInsets.only(
+                                    left: 28, right: 20, top: 20, bottom: 31),
                                 child: Row(
                                   children: [
                                     Text(
@@ -172,7 +170,8 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
                                         height: 1,
                                         letterSpacing: 17.0 / Dimens.font_sp15,
                                         color: Colours.color_111B44,
-                                        fontSize: Dimens.font_sp15,),
+                                        fontSize: Dimens.font_sp15,
+                                      ),
                                     ),
                                     const Expanded(child: Gaps.empty),
                                     GestureDetector(
@@ -191,22 +190,22 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
                               ),
                               Expanded(
                                   child: Column(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 28.0,
-                                          ),
-                                          child: child,
-                                        ),
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 28.0,
                                       ),
-                                      if (state == 'success' && allTeacher.isNotEmpty)
-                                        const SizedBox(
-                                          height: 27,
-                                        ),
-                                    ],
-                                  )
-                              ),
+                                      child: child,
+                                    ),
+                                  ),
+                                  if (state == 'success' &&
+                                      allTeacher.isNotEmpty)
+                                    const SizedBox(
+                                      height: 27,
+                                    ),
+                                ],
+                              )),
                             ],
                           ),
                         ),
@@ -226,7 +225,8 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
                                   provider.updateTeacher();
                                 },
                                 child: Container(
-                                  margin: const EdgeInsets.only(left: 28, right: 28),
+                                  margin: const EdgeInsets.only(
+                                      left: 28, right: 28),
                                   height: 47,
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
@@ -248,9 +248,7 @@ class _RecommendTeacherWidgetState extends State<RecommendTeacherWidget> {
                     ),
                   )
                 ],
-              )
-
-              ;
+              );
             });
       },
     );

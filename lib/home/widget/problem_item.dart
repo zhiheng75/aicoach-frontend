@@ -1,4 +1,4 @@
-import 'package:Bubble/home/entity/lesson_detail_bean.dart';
+import 'package:Bubble/home/page/entity/lesson_detail_bean.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:flutter/cupertino.dart';

@@ -31,7 +31,7 @@ class _ProblemTwoItemState extends State<ProblemTwoItem> {
             color: Colors.white,
           ),
           padding: const EdgeInsets.symmetric(
-            horizontal: 5.0,
+            horizontal: 12.0,
             vertical: 15.0,
           ),
           child: RichText(
@@ -40,7 +40,7 @@ class _ProblemTwoItemState extends State<ProblemTwoItem> {
                   text: '问题：',
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.bold,
                     color: Colours.color_FF71CF,
                   )),
               TextSpan(
@@ -61,7 +61,7 @@ class _ProblemTwoItemState extends State<ProblemTwoItem> {
             color: Colors.white,
           ),
           padding: const EdgeInsets.symmetric(
-            horizontal: 5.0,
+            horizontal: 12.0,
             vertical: 15.0,
           ),
           child: RichText(
@@ -70,7 +70,7 @@ class _ProblemTwoItemState extends State<ProblemTwoItem> {
                   text: '解答：',
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.bold,
                     color: Colours.color_FF71CF,
                   )),
               TextSpan(
@@ -105,12 +105,13 @@ class _ProblemTwoItemState extends State<ProblemTwoItem> {
         children: [
           Gaps.vGap8,
           Container(
-            color: Colors.amber,
+            margin: EdgeInsets.only(left: 5),
+            color: Colours.color_FFEB81,
             child: Text(
               widget.questions.questionType,
               style: const TextStyle(
                 fontSize: 17.0,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),

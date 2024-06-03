@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Bubble/home/entity/lesson_detail_bean.dart';
+import 'package:Bubble/home/page/entity/lesson_detail_bean.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/person/presneter/purchase_page_presenter.dart';
 import 'package:Bubble/person/view/purchase_view.dart';
@@ -393,7 +393,7 @@ class _CoursePaysPageState extends State<CoursePaysPage>
                 username: "gh_dcd9c62ba779",
                 path:
                     "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
-                miniProgramType: WXMiniProgramType.release));
+                miniProgramType: WXMiniProgramType.test));
         Navigator.of(context).pop();
       },
     );

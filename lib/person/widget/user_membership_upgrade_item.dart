@@ -21,7 +21,7 @@ class _UserMembershipUpgradeItemState extends State<UserMembershipUpgradeItem> {
           ? BoxDecoration(
               borderRadius: BorderRadius.circular(12.0),
               border: Border.all(
-                width: 1.0,
+                width: 2.0,
                 style: BorderStyle.solid,
                 color: Colours.color_8256FF,
               ),
@@ -31,7 +31,7 @@ class _UserMembershipUpgradeItemState extends State<UserMembershipUpgradeItem> {
               borderRadius: BorderRadius.circular(12.0),
               color: Colors.white,
             ),
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.only(right: 10, left: 10),
       // padding: const EdgeInsets.all(10),
       width: 160,
       height: 160,

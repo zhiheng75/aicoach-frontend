@@ -588,86 +588,70 @@ class _MessageItemState extends State<MessageItem> {
     }
 
     Widget createImgExample(NormalMessage message) {
-      String one = message.text;
-      Log.e("111111111111" + one);
+      if (message.text.contains("<image>") && message.text.contains("<word>")) {
+        RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
 
-      RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
-      if (one.contains("<image>") && one.contains("<word>")) {
+        String one = message.text;
+        Log.e("111111111111" + one);
+
         late String coverUrl = "";
-        for (int i = 0; i < 2; i++) {
-          RegExpMatch? match = pattern.firstMatch(one);
-
-          if (match != null) {
-            String? tag = match.group(1); // 获取标签名
-            String? content = match.group(2); // 获取内容
-            // Log.e('===============Tag: $tag, Content: $content');
-            if (tag == "image") {
-              //去出来图片content
-              coverUrl = content!;
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    backgroundColor: Colors.transparent,
-                    barrierColor: Colors.transparent,
-                    isScrollControlled: true,
-                    isDismissible: false,
-                    builder: (_) => PhotoViewSimpleScreen(
-                      imageProvider: NetworkImage(coverUrl),
-                    ),
-                  );
-                },
-                child: LoadImage(
-                  coverUrl,
-                  width: 100.0,
-                ),
-              );
-            }
-            if (tag == "word") {
-              //取出来文字content
-            }
-            String reStr = "<$tag>$content</$tag>";
-            String replacedString = one.replaceAll(reStr, "");
-            one = replacedString;
-          }
-        }
         // for (int i = 0; i < 2; i++) {
-        //   RegExpMatch? match = pattern.firstMatch(one);
+        RegExpMatch? match = pattern.firstMatch(one);
 
-        //   if (match != null) {
-        //     String? tag = match.group(1); // 获取标签名
-        //     String? content = match.group(2); // 获取内容
-        //     if (tag == "image") {
-        //       coverUrl = content!;
-        //       //去出来图片content
-        //     }
-        //   }
-        // }
-        if (coverUrl != "") {
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                backgroundColor: Colors.transparent,
-                barrierColor: Colors.transparent,
-                isScrollControlled: true,
-                isDismissible: false,
-                builder: (_) => PhotoViewSimpleScreen(
-                  imageProvider: NetworkImage(coverUrl),
-                ),
-              );
-            },
-            child: LoadImage(
-              coverUrl,
-              width: 100.0,
-            ),
-          );
-        } else {
-          return Container();
+        if (match != null) {
+          String? tag = match.group(1); // 获取标签名
+          String? content = match.group(2); // 获取内容
+          // Log.e('===============Tag: $tag, Content: $content');
+          if (tag == "image") {
+            //去出来图片content
+            coverUrl = content!;
+          }
+          if (tag == "word") {
+            //取出来文字content
+          }
+          String reStr = "<$tag>$content</$tag>";
+          String replacedString = one.replaceAll(reStr, "");
+          one = replacedString;
         }
-      } else if (one.contains("<image>")) {
+
+        RegExpMatch? match1 = pattern.firstMatch(one);
+        if (match1 != null) {
+          String? tag = match1.group(1); // 获取标签名
+          String? content = match1.group(2); // 获取内容
+          // Log.e('===============Tag: $tag, Content: $content');
+          if (tag == "image") {
+            //去出来图片content
+            coverUrl = content!;
+          }
+          if (tag == "word") {
+            //取出来文字content
+          }
+          // String reStr = "<$tag>$content</$tag>";
+          // String replacedString = one.replaceAll(reStr, "");
+          // one = replacedString;
+        }
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              barrierColor: Colors.transparent,
+              isScrollControlled: true,
+              isDismissible: false,
+              builder: (_) => PhotoViewSimpleScreen(
+                imageProvider: NetworkImage(coverUrl),
+              ),
+            );
+          },
+          child: LoadImage(
+            coverUrl,
+          ),
+        );
+      } else if (message.text.contains("<image>")) {
+        RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+        String one = message.text;
+        Log.e("111111111111" + one);
         RegExpMatch? match = pattern.firstMatch(one);
         late String coverUrl = "";
 
@@ -700,40 +684,6 @@ class _MessageItemState extends State<MessageItem> {
       } else {
         return Container();
       }
-      // return Container();
-      // if (message.text.contains("<image>")) {
-      //   RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
-      //   RegExpMatch? match = pattern.firstMatch(message.text);
-      //   late String coverUrl = "";
-      //   if (match != null) {
-      //     // String? tag = match.group(1); // 获取标签名
-      //     String? content = match.group(2); // 获取内容
-      //     // Log.e('===============Tag: $tag, Content: $content');
-      //     // print('Tag: $tag, Content: $content');
-      //     coverUrl = content!;
-      //   }
-
-      // return GestureDetector(
-      //   behavior: HitTestBehavior.opaque,
-      //   onTap: () {
-      //     showModalBottomSheet(
-      //       context: context,
-      //       backgroundColor: Colors.transparent,
-      //       barrierColor: Colors.transparent,
-      //       isScrollControlled: true,
-      //       isDismissible: false,
-      //       builder: (_) => PhotoViewSimpleScreen(
-      //         imageProvider: NetworkImage(coverUrl),
-      //       ),
-      //     );
-      //   },
-      //   child: LoadImage(
-      //     coverUrl,
-      //     // width: 48.0,
-      //   ),
-      // );
-      // }
-      // return Container();
     }
 
     String titMessage(NormalMessage message) {

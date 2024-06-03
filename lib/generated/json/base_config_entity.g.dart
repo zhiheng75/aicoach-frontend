@@ -1,5 +1,5 @@
 import 'package:Bubble/generated/json/base/json_convert_content.dart';
-import 'package:Bubble/home/entity/base_config_entity.dart';
+import 'package:Bubble/home/page/entity/base_config_entity.dart';
 
 BaseConfigEntity $BaseConfigEntityFromJson(Map<String, dynamic> json) {
   final BaseConfigEntity baseConfigEntity = BaseConfigEntity();
@@ -7,8 +7,8 @@ BaseConfigEntity $BaseConfigEntityFromJson(Map<String, dynamic> json) {
   if (code != null) {
     baseConfigEntity.code = code;
   }
-  final BaseConfigData? data = jsonConvert.convert<BaseConfigData>(
-      json['data']);
+  final BaseConfigData? data =
+      jsonConvert.convert<BaseConfigData>(json['data']);
   if (data != null) {
     baseConfigEntity.data = data;
   }
@@ -51,9 +51,8 @@ BaseConfigData $BaseConfigDataFromJson(Map<String, dynamic> json) {
     baseConfigData.msg = msg;
   }
   final List<BaseConfigDataData>? data = (json['data'] as List<dynamic>?)
-      ?.map(
-          (e) =>
-      jsonConvert.convert<BaseConfigDataData>(e) as BaseConfigDataData)
+      ?.map((e) =>
+          jsonConvert.convert<BaseConfigDataData>(e) as BaseConfigDataData)
       .toList();
   if (data != null) {
     baseConfigData.data = data;

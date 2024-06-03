@@ -129,7 +129,8 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
 
   Widget userInfoWidget() {
     return Container(
-      height: 90,
+      // height: 100,
+      // color: Colors.black,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -167,19 +168,22 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
               ),
             ],
           ),
-          Gaps.vGap4,
+          Gaps.vGap6,
           Marquee(
             speed: 8,
             child: Container(
+                margin: const EdgeInsets.only(
+                    right: 10, left: 10, top: 3, bottom: 3),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
-                  color: Colours.color_F8F8F8,
+                  color: Colours.color_FFFFFF5,
                 ),
-                padding: const EdgeInsets.all(4),
+                padding: const EdgeInsets.only(
+                    top: 4, bottom: 4, left: 14, right: 14),
                 child: const Text(
                   '用户 ******天，56秒前开通了包月会员',
                   style: TextStyle(
-                    fontSize: 11.0,
+                    fontSize: 12.0,
                     fontWeight: FontWeight.w400,
                     color: Colors.black,
                   ),
@@ -203,8 +207,8 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                 borderRadius: BorderRadius.circular(15),
                 gradient: const LinearGradient(
                   colors: [
-                    Colours.color_E8CCFE,
-                    Colours.color_ACCDFF,
+                    Colours.color_FAF7FF,
+                    Colours.color_F3EEFE,
                   ],
                 )),
             child: Column(
@@ -274,7 +278,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
             ],
           )),
       margin: const EdgeInsets.all(9),
-      padding: const EdgeInsets.only(left: 13, right: 17, top: 6),
+      padding: const EdgeInsets.only(left: 4, right: 2, top: 6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -301,7 +305,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
           // Gaps.vGap4,
           SizedBox(
             // margin: const EdgeInsets.only(top: 10),
-            height: 180.0,
+            height: 160.0,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: listData.data.length,
@@ -321,20 +325,23 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
               },
             ),
           ),
-          Gaps.vGap4,
-          Text(
-            listData.data[idx].type != 1
-                ? rechargeSloganStr
-                : rechargeLessonSloganStr,
-            style: const TextStyle(
-              fontSize: 12.0,
-              fontWeight: FontWeight.w400,
-              color: Colours.color_191919,
+          // Gaps.vGap9,
+          Container(
+            margin: const EdgeInsets.only(left: 18, right: 18, top: 9),
+            child: Text(
+              listData.data[idx].type != 1
+                  ? rechargeSloganStr
+                  : rechargeLessonSloganStr,
+              style: const TextStyle(
+                fontSize: 12.0,
+                fontWeight: FontWeight.w400,
+                color: Colours.color_191919,
+              ),
             ),
           ),
           Gaps.vGap10,
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -346,12 +353,12 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                   // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
                 },
                 child: Container(
-                  width: 120,
+                  width: 122,
                   decoration: payIdx == 0
                       ? BoxDecoration(
-                          borderRadius: BorderRadius.circular(40.0),
+                          borderRadius: BorderRadius.circular(10.0),
                           border: Border.all(
-                            width: 1.0,
+                            width: 2.0,
                             style: BorderStyle.solid,
                             color: Colours.color_8256FF,
                           ),
@@ -361,7 +368,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                           borderRadius: BorderRadius.circular(10.0),
                           color: Colors.white,
                         ),
-                  margin: const EdgeInsets.all(10),
+                  // margin: const EdgeInsets.all(10),
                   padding: const EdgeInsets.all(10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -384,6 +391,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                   ),
                 ),
               ),
+              Gaps.hGap16,
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
@@ -394,22 +402,22 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                   // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
                 },
                 child: Container(
-                  width: 120,
+                  width: 122,
                   decoration: payIdx == 1
                       ? BoxDecoration(
-                          borderRadius: BorderRadius.circular(40.0),
+                          borderRadius: BorderRadius.circular(10.0),
                           border: Border.all(
-                            width: 1.0,
+                            width: 2.0,
                             style: BorderStyle.solid,
                             color: Colours.color_8256FF,
                           ),
                           color: Colors.white,
                         )
                       : BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(10.0),
                           color: Colors.white,
                         ),
-                  margin: const EdgeInsets.all(10),
+                  // margin: const EdgeInsets.all(10),
                   padding: const EdgeInsets.all(10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -440,39 +448,14 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
             onTap: () {
               pay();
             },
-            child: Center(
-              child: Container(
-                width: 250.0,
-                height: 48.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100.0),
-                  // border: Border.all(
-                  //   width: 1.0,
-                  //   style: BorderStyle.solid,
-                  //   color: Colours.color_001652,
-                  // ),
-                  gradient: const LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    colors: [
-                      Colours.color_9AC3FF,
-                      Colours.color_FF71E0,
-                    ],
-                  ),
-                ),
-                alignment: Alignment.center,
-                child: const Text(
-                  '立即购买',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
+            child: const Center(
+                child: LoadAssetImage(
+              'pay_btn_bg',
+              width: 331.0,
+              // height: 24.0,
+            )),
           ),
-          Gaps.vGap10,
+          Gaps.vGap4,
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -517,6 +500,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
               ),
             ],
           ),
+          Gaps.vGap10,
         ],
       ),
     );
@@ -526,35 +510,13 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.only(left: 10),
-        child: Stack(
-          children: [
-            Positioned(
-              bottom: 2,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  gradient: const LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    colors: [
-                      Colours.color_8256FF,
-                      Colours.color_FF5CDB,
-                    ],
-                  ),
-                ),
-                width: 80,
-                height: 5,
-              ),
-            ),
-            Text(
-              headStr,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-          ],
+        child: Text(
+          headStr,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
       ),
     );
@@ -578,7 +540,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
         margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
-          color: Colours.color_F8F8F8,
+          color: Colours.color_FAF8FF,
         ),
         padding: const EdgeInsets.symmetric(
           horizontal: 5.0,
@@ -641,7 +603,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                   width: double.infinity,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: ImageUtils.getAssetImage("person_bg"),
+                          image: ImageUtils.getAssetImage("pay_img_bg"),
                           fit: BoxFit.fill)),
                   child: Stack(children: [
                     NotificationListener<ScrollNotification>(
@@ -663,7 +625,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                         SliverToBoxAdapter(
                           child: Container(
                             // color: Colors.amber,
-                            height: _screenUtil.statusBarHeight + 40,
+                            height: _screenUtil.statusBarHeight + 60,
                           ),
                         ),
                         SliverToBoxAdapter(
@@ -710,13 +672,26 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                             ? otherHeadWidget("quanyi_hrad")
                             : SliverToBoxAdapter(child: Container()),
                         listData.data[idx].type != 1
-                            ? headWidget("常见问题")
+                            ? SliverToBoxAdapter(
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 40, bottom: 14),
+                                  // height: 80,
+                                  child: const LoadAssetImage(
+                                    'wenti_bg',
+                                  ),
+                                ),
+                              )
                             : SliverToBoxAdapter(child: Container()),
                         listData.data[idx].type != 1
                             ? problemWidget()
                             : SliverToBoxAdapter(
                                 child: Container(),
-                              )
+                              ),
+                        SliverToBoxAdapter(
+                          child: Container(
+                            height: 80,
+                          ),
+                        )
                       ]),
                     ),
                     isUpdateAppBar
@@ -735,8 +710,8 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                               ),
                             ))
                         : Positioned(
-                            top: 50,
-                            left: 20,
+                            top: 60,
+                            left: 12,
                             child: GestureDetector(
                                 onTap: () {
                                   NavigatorUtils.goBack(context);
@@ -797,7 +772,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                   username: "gh_dcd9c62ba779",
                   path:
                       "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
-                  miniProgramType: WXMiniProgramType.release));
+                  miniProgramType: WXMiniProgramType.test));
           Navigator.of(context).pop();
         },
       );

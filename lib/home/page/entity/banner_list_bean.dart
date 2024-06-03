@@ -36,14 +36,10 @@ class BannerListBean {
 class Data {
   List<BBanner> banner;
   List<BBanner> lesson;
-  int isChatShow;
-  int isKetShow;
 
   Data({
     required this.banner,
     required this.lesson,
-    required this.isChatShow,
-    required this.isKetShow,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -51,15 +47,11 @@ class Data {
             List<BBanner>.from(json["banner"].map((x) => BBanner.fromJson(x))),
         lesson:
             List<BBanner>.from(json["lesson"].map((x) => BBanner.fromJson(x))),
-        isChatShow: json["is_chat_show"],
-        isKetShow: json["is_ket_show"],
       );
 
   Map<String, dynamic> toJson() => {
         "banner": List<dynamic>.from(banner.map((x) => x.toJson())),
         "lesson": List<dynamic>.from(lesson.map((x) => x.toJson())),
-        "is_chat_show": isChatShow,
-        "is_ket_show": isKetShow,
       };
 }
 

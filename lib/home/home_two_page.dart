@@ -4,11 +4,12 @@ import 'package:Bubble/chat/entity/character_entity.dart';
 import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/entity/result_entity.dart';
-import 'package:Bubble/home/entity/banner_list_bean.dart';
+import 'package:Bubble/home/page/entity/banner_list_bean.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/home/presenter/home_two_page_presenter.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/view/home_two_page_view.dart';
+import 'package:Bubble/home/widget/home_item.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/net/dio_utils.dart';
@@ -42,7 +43,7 @@ import 'package:jverify/jverify.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:Bubble/exam/exam_router.dart';
-import 'package:Bubble/home/entity/banner_list_bean.dart';
+import 'package:Bubble/home/page/entity/banner_list_bean.dart';
 import 'package:sp_util/sp_util.dart';
 
 class HomeTwoPage extends StatefulWidget {
@@ -70,54 +71,73 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   List<BBanner> banner = [];
   List<BBanner> lesson = [];
-  int isChatShow = 0;
-  int isKetShow = 0;
+  // int isChatShow = 0;
+  // int isKetShow = 0;
   int isDefault = 0;
   final ScreenUtil _screenUtil = ScreenUtil();
 
+  // Widget barWidget(BuildContext context) {
+  //   return Container(
+  //     margin: const EdgeInsets.all(10),
+  //     height: 150,
+  //     child: ClipRRect(
+  //       borderRadius: BorderRadius.circular(10.0),
+  //       child: Swiper(
+  //         itemBuilder: (BuildContext context, int index) {
+  //           return LoadImage(
+  //             banner[index].imageUrl,
+  //             fit: BoxFit.cover,
+  //           );
+  //         },
+  //         onTap: (index) {
+  //           if (banner[index].type == 1) {
+  //             NavigatorUtils.goWebViewPage(
+  //                 context, banner[index].title, banner[index].linkUrl);
+  //           } else if (banner[index].type == 2) {
+  //             if (banner[index].linkUrl == "1") {
+  //               //单系统课购买页
+  //               NavigatorUtils.push(
+  //                 context,
+  //                 "${HomeRouter.coursePurchasePage}?levelId=${banner[index].param}",
+  //               );
+  //             } else if (banner[index].linkUrl == "2") {
+  //               //个人中心进入的购买页（引流课购买和课程购买可切换的页面）
+  //             } else if (banner[index].linkUrl == "3") {
+  //               //试听课页面
+  //               NavigatorUtils.push(
+  //                   context,
+  //                   // CourseRouter.courseFlowPage,
+  //                   "${CourseRouter.courseFlowPage}?lessonId=${banner[index].param}");
+  //             }
+  //           }
+  //         },
+  //         itemCount: banner.length,
+  //         autoplay: true,
+  //         pagination: const SwiperPagination(),
+  //         // viewportFraction: 0.8,
+  //         // layout: SwiperLayout.STACK,
+  //         // control: SwiperControl(),
+  //       ),
+  //     ),
+  //   );
+  // }
   Widget barWidget(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      height: 150,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
-        child: Swiper(
-          itemBuilder: (BuildContext context, int index) {
-            return LoadImage(
-              banner[index].imageUrl,
-              fit: BoxFit.cover,
+    return SizedBox(
+      height: 230.0,
+      child: Swiper(
+          outer: true,
+          autoplay: true,
+          fade: 0.8,
+          viewportFraction: 0.8,
+          scale: 0.9,
+          itemBuilder: (c, i) {
+            return Container(
+              color: Colors.grey,
+              child: Text('$i'),
             );
           },
-          onTap: (index) {
-            if (banner[index].type == 1) {
-              NavigatorUtils.goWebViewPage(
-                  context, banner[index].title, banner[index].linkUrl);
-            } else if (banner[index].type == 2) {
-              if (banner[index].linkUrl == "1") {
-                //单系统课购买页
-                NavigatorUtils.push(
-                  context,
-                  "${HomeRouter.coursePurchasePage}?levelId=${banner[index].param}",
-                );
-              } else if (banner[index].linkUrl == "2") {
-                //个人中心进入的购买页（引流课购买和课程购买可切换的页面）
-              } else if (banner[index].linkUrl == "3") {
-                //试听课页面
-                NavigatorUtils.push(
-                    context,
-                    // CourseRouter.courseFlowPage,
-                    "${CourseRouter.courseFlowPage}?lessonId=${banner[index].param}");
-              }
-            }
-          },
-          itemCount: banner.length,
-          autoplay: true,
-          pagination: const SwiperPagination(),
-          // viewportFraction: 0.8,
-          // layout: SwiperLayout.STACK,
-          // control: SwiperControl(),
-        ),
-      ),
+          pagination: const SwiperPagination(alignment: Alignment.topCenter),
+          itemCount: 10),
     );
   }
 
@@ -653,117 +673,190 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        body: SafeArea(
-            child: extended.ExtendedNestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            // return buildSliverHeader();
-            return [
-              const SliverToBoxAdapter(
-                child: Text("   口语嘟嘟 AI",
+          body: SafeArea(
+              child: CustomScrollView(
+        slivers: [
+          const SliverToBoxAdapter(
+            child: SizedBox(
+              height: 40,
+              child: Text("随时都在的口语伙伴",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  )),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: banner.isNotEmpty ? barWidget(context) : Container(),
+          ),
+          SliverToBoxAdapter(
+            child: Row(
+              children: [
+                const Text("场景练习",
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     )),
-              ),
-              SliverToBoxAdapter(
-                child: banner.isNotEmpty ? barWidget(context) : Container(),
-              ),
-              SliverToBoxAdapter(
-                child: isChatShow == 0
-                    ? Container()
-                    : characterList.isNotEmpty
-                        ? peopleWidget(context)
-                        : Container(),
-              ),
-              SliverList.builder(
-                itemBuilder: (ctx, index) {
-                  return GestureDetector(
-                    onTap: () {},
-                    child: courseWidget(lesson[index]),
-                  );
-                },
-                itemCount: lesson.length,
-              ),
-              SliverToBoxAdapter(
-                child: isKetShow == 1 ? mokaoWidget(context) : Container(),
-              ),
-              _categoryList.isNotEmpty
-                  ? SliverPersistentHeader(
-                      pinned: true,
-                      floating: false,
-                      delegate: _SliverAppBarDelegate(
-                        minHeight: 70, //收起的高度
-                        maxHeight: 70,
-                        child: Container(color: Colors.white, child: tabbar()),
-                      ))
-                  : SliverToBoxAdapter(
-                      child: Container(),
-                    ),
-            ];
-          },
-          body: GridView.builder(
+                Gaps.hGap10,
+                const Text("超真实情景 练了就会用",
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        height: 2)),
+              ],
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              margin: const EdgeInsets.all(10),
+              height: 240,
+              child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: 4,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    //设置列数
+                    crossAxisCount: 2,
+                    //设置横向间距
+                    crossAxisSpacing: 10,
+                    //设置主轴间距
+                    mainAxisSpacing: 5,
+                    mainAxisExtent: 120,
+                  ),
+                  itemBuilder: (BuildContext ctx, int index) {
+                    return HomeMapItem();
+                  }),
+            ),
+          ),
+          SliverList.builder(
             itemBuilder: (ctx, index) {
               return GestureDetector(
-                  onTap: () {
-                    selectScene(sceneList[index]);
-                  },
-                  child: Stack(
-                    children: [
-                      Container(
-                        // color: Colors.black,
-                        margin: const EdgeInsets.only(left: 8, right: 8),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            // margin: const EdgeInsets.only(
-                            //     top: 0, left: 8, right: 8, bottom: 0),
-                            // decoration: BoxDecoration(
-                            //   borderRadius: BorderRadius.circular(8.0),
-                            // image: const DecorationImage(
-                            //   image: AssetImage(
-                            //     'assets/images/mkbg.png',
-                            //   ),
-                            //   fit: BoxFit.cover,
-                            // ),
-                            // ),
-                            child: LoadImage(
-                              sceneList[index].cover,
-                              fit: BoxFit.cover,
-                              width: _screenUtil.screenWidth / 2,
-                              // height: 56.0,
-                            )),
-                      ),
-                      Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              sceneList[index].name,
-                              style: const TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Gaps.vGap10
-                          ],
-                        ),
-                      )
-                    ],
-                  ));
+                onTap: () {},
+                child: Container(
+                    height: 280, color: Colors.green, child: Text("11")),
+              );
             },
-            itemCount: sceneList.length,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 0,
-                childAspectRatio: 1.5),
+            itemCount: 2,
           ),
-        )),
-      ),
+        ],
+      ))),
     );
+    // return AnnotatedRegion(
+    //   value: SystemUiOverlayStyle.light,
+    //   child: Scaffold(
+    //     body: SafeArea(
+    //         child: extended.ExtendedNestedScrollView(
+    //       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+    //         // return buildSliverHeader();
+    //         return [
+    // const SliverToBoxAdapter(
+    //   child: Text("   口语嘟嘟 AI",
+    //       style: TextStyle(
+    //         fontSize: 16,
+    //         fontWeight: FontWeight.bold,
+    //         color: Colors.black,
+    //       )),
+    // ),
+    // SliverToBoxAdapter(
+    //   child: banner.isNotEmpty ? barWidget(context) : Container(),
+    // ),
+    //           SliverToBoxAdapter(
+    //             child: isChatShow == 0
+    //                 ? Container()
+    //                 : characterList.isNotEmpty
+    //                     ? peopleWidget(context)
+    //                     : Container(),
+    //           ),
+    // SliverList.builder(
+    //   itemBuilder: (ctx, index) {
+    //     return GestureDetector(
+    //       onTap: () {},
+    //       child: courseWidget(lesson[index]),
+    //     );
+    //   },
+    //   itemCount: lesson.length,
+    // ),
+    //           SliverToBoxAdapter(
+    //             child: isKetShow == 1 ? mokaoWidget(context) : Container(),
+    //           ),
+    //           _categoryList.isNotEmpty
+    //               ? SliverPersistentHeader(
+    //                   pinned: true,
+    //                   floating: false,
+    //                   delegate: _SliverAppBarDelegate(
+    //                     minHeight: 70, //收起的高度
+    //                     maxHeight: 70,
+    //                     child: Container(color: Colors.white, child: tabbar()),
+    //                   ))
+    //               : SliverToBoxAdapter(
+    //                   child: Container(),
+    //                 ),
+    //         ];
+    //       },
+    //       body: GridView.builder(
+    //         itemBuilder: (ctx, index) {
+    //           return GestureDetector(
+    //               onTap: () {
+    //                 selectScene(sceneList[index]);
+    //               },
+    //               child: Stack(
+    //                 children: [
+    //                   Container(
+    //                     // color: Colors.black,
+    //                     margin: const EdgeInsets.only(left: 8, right: 8),
+    //                     child: ClipRRect(
+    //                         borderRadius: BorderRadius.circular(20.0),
+    //                         // margin: const EdgeInsets.only(
+    //                         //     top: 0, left: 8, right: 8, bottom: 0),
+    //                         // decoration: BoxDecoration(
+    //                         //   borderRadius: BorderRadius.circular(8.0),
+    //                         // image: const DecorationImage(
+    //                         //   image: AssetImage(
+    //                         //     'assets/images/mkbg.png',
+    //                         //   ),
+    //                         //   fit: BoxFit.cover,
+    //                         // ),
+    //                         // ),
+    //                         child: LoadImage(
+    //                           sceneList[index].cover,
+    //                           fit: BoxFit.cover,
+    //                           width: _screenUtil.screenWidth / 2,
+    //                           // height: 56.0,
+    //                         )),
+    //                   ),
+    //                   Center(
+    //                     child: Column(
+    //                       mainAxisAlignment: MainAxisAlignment.end,
+    //                       children: [
+    //                         Text(
+    //                           sceneList[index].name,
+    //                           style: const TextStyle(
+    //                             fontSize: 15.0,
+    //                             fontWeight: FontWeight.w400,
+    //                             color: Colors.white,
+    //                           ),
+    //                         ),
+    //                         Gaps.vGap10
+    //                       ],
+    //                     ),
+    //                   )
+    //                 ],
+    //               ));
+    //         },
+    //         itemCount: sceneList.length,
+    //         shrinkWrap: true,
+    //         physics: const NeverScrollableScrollPhysics(),
+    //         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //             crossAxisCount: 2,
+    //             mainAxisSpacing: 20,
+    //             crossAxisSpacing: 0,
+    //             childAspectRatio: 1.5),
+    //       ),
+    //     )),
+    //   ),
+    // );
   }
 
   void selectScene(SceneEntity scene) {
@@ -857,8 +950,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     lesson.clear();
     banner.addAll(data.data.banner);
     lesson.addAll(data.data.lesson);
-    isKetShow = data.data.isKetShow;
-    isChatShow = data.data.isChatShow;
+    // isKetShow = data.data.isKetShow;
+    // isChatShow = data.data.isChatShow;
     setState(() {});
     _homeTwoPagePresenter.getCharacterList();
   }
