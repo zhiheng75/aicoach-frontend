@@ -64,13 +64,16 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   late HomeTwoPagePresenter _homeTwoPagePresenter;
 
   List<Datum> characterList = [];
-  List<String> headData = [];
-  List<CategoryEntity> _categoryList = [];
-  List<SceneEntity> sceneList = [];
-  final ScrollController _scrollController = ScrollController();
+  // List<String> headData = [];
+  // List<CategoryEntity> _categoryList = [];
+  // List<SceneEntity> sceneList = [];
+  // final ScrollController _scrollController = ScrollController();
 
-  List<BBanner> banner = [];
-  List<BBanner> lesson = [];
+  // List<BBanner> banner = [];
+  List<BBanner> lessonList = [];
+  List<BBanner> examList = [];
+  List<SceneList> sceneList = [];
+
   // int isChatShow = 0;
   // int isKetShow = 0;
   int isDefault = 0;
@@ -84,32 +87,32 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   //       borderRadius: BorderRadius.circular(10.0),
   //       child: Swiper(
   //         itemBuilder: (BuildContext context, int index) {
-  //           return LoadImage(
-  //             banner[index].imageUrl,
-  //             fit: BoxFit.cover,
-  //           );
+  // return LoadImage(
+  //   banner[index].imageUrl,
+  //   fit: BoxFit.cover,
+  // );
   //         },
   //         onTap: (index) {
-  //           if (banner[index].type == 1) {
-  //             NavigatorUtils.goWebViewPage(
-  //                 context, banner[index].title, banner[index].linkUrl);
-  //           } else if (banner[index].type == 2) {
-  //             if (banner[index].linkUrl == "1") {
-  //               //单系统课购买页
-  //               NavigatorUtils.push(
-  //                 context,
-  //                 "${HomeRouter.coursePurchasePage}?levelId=${banner[index].param}",
-  //               );
-  //             } else if (banner[index].linkUrl == "2") {
-  //               //个人中心进入的购买页（引流课购买和课程购买可切换的页面）
-  //             } else if (banner[index].linkUrl == "3") {
-  //               //试听课页面
-  //               NavigatorUtils.push(
-  //                   context,
-  //                   // CourseRouter.courseFlowPage,
-  //                   "${CourseRouter.courseFlowPage}?lessonId=${banner[index].param}");
-  //             }
-  //           }
+  // if (banner[index].type == 1) {
+  //   NavigatorUtils.goWebViewPage(
+  //       context, banner[index].title, banner[index].linkUrl);
+  // } else if (banner[index].type == 2) {
+  //   if (banner[index].linkUrl == "1") {
+  //     //单系统课购买页
+  //     NavigatorUtils.push(
+  //       context,
+  //       "${HomeRouter.coursePurchasePage}?levelId=${banner[index].param}",
+  //     );
+  //   } else if (banner[index].linkUrl == "2") {
+  //     //个人中心进入的购买页（引流课购买和课程购买可切换的页面）
+  //   } else if (banner[index].linkUrl == "3") {
+  //     //试听课页面
+  //     NavigatorUtils.push(
+  //         context,
+  //         // CourseRouter.courseFlowPage,
+  //         "${CourseRouter.courseFlowPage}?lessonId=${banner[index].param}");
+  //   }
+  // }
   //         },
   //         itemCount: banner.length,
   //         autoplay: true,
@@ -137,431 +140,431 @@ class _HomeTwoPageState extends State<HomeTwoPage>
             );
           },
           pagination: const SwiperPagination(alignment: Alignment.topCenter),
-          itemCount: 10),
+          itemCount: characterList.length),
     );
   }
 
-  Widget headWidget(String tit) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 15,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Gaps.hGap6,
-          Text(
-            tit,
-            style: const TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
-            ),
-          ),
-          Gaps.hGap6,
-          const LoadAssetImage(
-            "class_vip_icon",
-            width: 30.0,
-            height: 30.0,
-          )
-        ],
-      ),
-    );
-  }
+  // Widget headWidget(String tit) {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(
+  //       left: 15,
+  //     ),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.start,
+  //       children: [
+  //         Gaps.hGap6,
+  //         Text(
+  //           tit,
+  //           style: const TextStyle(
+  //             fontSize: 18.0,
+  //             fontWeight: FontWeight.w400,
+  //             color: Colors.black,
+  //           ),
+  //         ),
+  //         Gaps.hGap6,
+  //         const LoadAssetImage(
+  //           "class_vip_icon",
+  //           width: 30.0,
+  //           height: 30.0,
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget recommendedWidget() {
-    return Row(
-      children: [
-        Container(
-          color: Colors.amber,
-          width: _screenUtil.screenWidth / 2,
-          height: 200,
-          child: Column(
-            children: [
-              Text(
-                "AI口语系统课",
-                style: const TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                "适合1-6年级",
-                style: const TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                "领取一节体验课",
-                style: const TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                "我要学",
-                style: const TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Column(
-          children: [
-            Container(
-              color: Colors.blue,
-              width: _screenUtil.screenWidth / 2,
-              height: 100,
-              child: Column(
-                children: [
-                  Text(
-                    "AI口语系统课",
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    "适合1-6年级",
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    "领取一节体验课",
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    "我要学",
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              color: Colors.deepPurple,
-              width: _screenUtil.screenWidth / 2,
-              height: 100,
-              child: Column(
-                children: [
-                  Text(
-                    "AI口语系统课",
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    "适合1-6年级",
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    "领取一节体验课",
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    "我要学",
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ],
-    );
-  }
+  // Widget recommendedWidget() {
+  //   return Row(
+  //     children: [
+  //       Container(
+  //         color: Colors.amber,
+  //         width: _screenUtil.screenWidth / 2,
+  //         height: 200,
+  //         child: Column(
+  //           children: [
+  //             Text(
+  //               "AI口语系统课",
+  //               style: const TextStyle(
+  //                 fontSize: 18.0,
+  //                 fontWeight: FontWeight.w400,
+  //                 color: Colors.black,
+  //               ),
+  //             ),
+  //             Text(
+  //               "适合1-6年级",
+  //               style: const TextStyle(
+  //                 fontSize: 18.0,
+  //                 fontWeight: FontWeight.w400,
+  //                 color: Colors.black,
+  //               ),
+  //             ),
+  //             Text(
+  //               "领取一节体验课",
+  //               style: const TextStyle(
+  //                 fontSize: 18.0,
+  //                 fontWeight: FontWeight.w400,
+  //                 color: Colors.black,
+  //               ),
+  //             ),
+  //             Text(
+  //               "我要学",
+  //               style: const TextStyle(
+  //                 fontSize: 18.0,
+  //                 fontWeight: FontWeight.w400,
+  //                 color: Colors.black,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       Column(
+  //         children: [
+  //           Container(
+  //             color: Colors.blue,
+  //             width: _screenUtil.screenWidth / 2,
+  //             height: 100,
+  //             child: Column(
+  //               children: [
+  //                 Text(
+  //                   "AI口语系统课",
+  //                   style: const TextStyle(
+  //                     fontSize: 18.0,
+  //                     fontWeight: FontWeight.w400,
+  //                     color: Colors.black,
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   "适合1-6年级",
+  //                   style: const TextStyle(
+  //                     fontSize: 18.0,
+  //                     fontWeight: FontWeight.w400,
+  //                     color: Colors.black,
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   "领取一节体验课",
+  //                   style: const TextStyle(
+  //                     fontSize: 18.0,
+  //                     fontWeight: FontWeight.w400,
+  //                     color: Colors.black,
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   "我要学",
+  //                   style: const TextStyle(
+  //                     fontSize: 18.0,
+  //                     fontWeight: FontWeight.w400,
+  //                     color: Colors.black,
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //           Container(
+  //             color: Colors.deepPurple,
+  //             width: _screenUtil.screenWidth / 2,
+  //             height: 100,
+  //             child: Column(
+  //               children: [
+  //                 Text(
+  //                   "AI口语系统课",
+  //                   style: const TextStyle(
+  //                     fontSize: 18.0,
+  //                     fontWeight: FontWeight.w400,
+  //                     color: Colors.black,
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   "适合1-6年级",
+  //                   style: const TextStyle(
+  //                     fontSize: 18.0,
+  //                     fontWeight: FontWeight.w400,
+  //                     color: Colors.black,
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   "领取一节体验课",
+  //                   style: const TextStyle(
+  //                     fontSize: 18.0,
+  //                     fontWeight: FontWeight.w400,
+  //                     color: Colors.black,
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   "我要学",
+  //                   style: const TextStyle(
+  //                     fontSize: 18.0,
+  //                     fontWeight: FontWeight.w400,
+  //                     color: Colors.black,
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           )
+  //         ],
+  //       ),
+  //     ],
+  //   );
+  // }
 
-  Widget courseWidget(BBanner lesson) {
-    return GestureDetector(
-      onTap: () {
-        //
-        NavigatorUtils.push(
-          context,
-          "${HomeRouter.coursePurchasePage}?levelId=${lesson.param}",
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.all(15),
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          color: Colours.color_F8F8F8,
-        ),
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                lesson.imageUrl,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget courseWidget(BBanner lesson) {
+  //   return GestureDetector(
+  //     onTap: () {
+  //       //
+  //       NavigatorUtils.push(
+  //         context,
+  //         "${HomeRouter.coursePurchasePage}?levelId=${lesson.param}",
+  //       );
+  //     },
+  //     child: Container(
+  //       margin: const EdgeInsets.all(15),
+  //       padding: const EdgeInsets.all(15),
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(8.0),
+  //         color: Colours.color_F8F8F8,
+  //       ),
+  //       child: Column(
+  //         children: [
+  //           ClipRRect(
+  //             borderRadius: BorderRadius.circular(10.0),
+  //             child: Image.network(
+  //               lesson.imageUrl,
+  //               fit: BoxFit.cover,
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Widget peopleWidget(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-            margin:
-                const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                gradient: const LinearGradient(
-                  colors: [
-                    Colours.color_E8CCFE,
-                    Colours.color_ACCDFF,
-                  ],
-                )),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          characterList[isDefault].slogan,
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.color_2C0047,
-                          ),
-                        ),
-                        Gaps.vGap5,
-                        GestureDetector(
-                          onTap: () {
-                            // NavigatorUtils.push(
-                            //   context,
-                            //   "${HomeRouter.homePage}?index=$isDefault",
-                            // );
-                          },
-                          child: Container(
-                              padding: const EdgeInsets.only(
-                                  top: 5, bottom: 5, left: 15, right: 15),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.0),
-                                color: Colours.color_6D388F,
-                              ),
-                              child: const Text(
-                                "自由对话",
-                                style: TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                              )),
-                        ),
-                      ],
-                    )),
-                    const SizedBox(
-                      height: 100,
-                      width: 150,
-                    ),
-                  ],
-                ),
-              ],
-            )),
-        const Positioned(
-            right: 5,
-            bottom: 10,
-            child: LoadAssetImage(
-              "suofeiya_head",
-              width: 170.0,
-              height: 150.0,
-            ))
-      ],
-    );
-  }
+  // Widget peopleWidget(BuildContext context) {
+  //   return Stack(
+  //     children: [
+  //       Container(
+  //           margin:
+  //               const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+  //           padding: const EdgeInsets.all(15),
+  //           decoration: BoxDecoration(
+  //               borderRadius: BorderRadius.circular(15),
+  //               gradient: const LinearGradient(
+  //                 colors: [
+  //                   Colours.color_E8CCFE,
+  //                   Colours.color_ACCDFF,
+  //                 ],
+  //               )),
+  //           child: Column(
+  //             children: [
+  //               Row(
+  //                 children: [
+  //                   Expanded(
+  //                       child: Column(
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     children: [
+  //                       Text(
+  //                         characterList[isDefault].slogan,
+  //                         style: const TextStyle(
+  //                           fontSize: 16.0,
+  //                           fontWeight: FontWeight.w400,
+  //                           color: Colours.color_2C0047,
+  //                         ),
+  //                       ),
+  //                       Gaps.vGap5,
+  //                       GestureDetector(
+  //                         onTap: () {
+  //                           // NavigatorUtils.push(
+  //                           //   context,
+  //                           //   "${HomeRouter.homePage}?index=$isDefault",
+  //                           // );
+  //                         },
+  //                         child: Container(
+  //                             padding: const EdgeInsets.only(
+  //                                 top: 5, bottom: 5, left: 15, right: 15),
+  //                             decoration: BoxDecoration(
+  //                               borderRadius: BorderRadius.circular(20.0),
+  //                               color: Colours.color_6D388F,
+  //                             ),
+  //                             child: const Text(
+  //                               "自由对话",
+  //                               style: TextStyle(
+  //                                 fontSize: 15.0,
+  //                                 fontWeight: FontWeight.w400,
+  //                                 color: Colors.white,
+  //                               ),
+  //                             )),
+  //                       ),
+  //                     ],
+  //                   )),
+  //                   const SizedBox(
+  //                     height: 100,
+  //                     width: 150,
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           )),
+  //       const Positioned(
+  //           right: 5,
+  //           bottom: 10,
+  //           child: LoadAssetImage(
+  //             "suofeiya_head",
+  //             width: 170.0,
+  //             height: 150.0,
+  //           ))
+  //     ],
+  //   );
+  // }
 
-  Widget mokaoWidget(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        NavigatorUtils.push(
-          context,
-          ExamRouter.examPage,
-        );
-      },
-      child: Container(
-          margin: const EdgeInsets.all(8),
-          // height: 80,
-          // width: 280,
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              gradient: const LinearGradient(
-                colors: [
-                  Colours.color_FFF3D8,
-                  Colours.color_E8CCFE,
-                ],
-              )),
-          height: 120,
-          child: Row(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  color: Colors.white,
-                ),
-                padding: const EdgeInsets.all(15),
-                child: const LoadAssetImage(
-                  "mokao_icon",
-                  width: 24.0,
-                  height: 24.0,
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "KET模考",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                      ),
-                    ),
-                    RichText(
-                      text: const TextSpan(children: [
-                        TextSpan(
-                            text: "实景",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Colours.color_FF71CF,
-                            )),
-                        TextSpan(
-                            text: '还原考试',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Colours.color_666666,
-                            )),
-                        TextSpan(
-                            text: '全流程',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Colours.color_FF71CF,
-                            )),
-                      ]),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                  padding: const EdgeInsets.only(
-                      top: 5, bottom: 5, left: 15, right: 15),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    color: Colours.color_6D388F,
-                  ),
-                  child: const Text(
-                    "去看看",
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                    ),
-                  )),
-            ],
-          )),
-    );
-  }
+  // Widget mokaoWidget(BuildContext context) {
+  //   return GestureDetector(
+  //     onTap: () {
+  // NavigatorUtils.push(
+  //   context,
+  //   ExamRouter.examPage,
+  // );
+  //     },
+  //     child: Container(
+  //         margin: const EdgeInsets.all(8),
+  //         // height: 80,
+  //         // width: 280,
+  //         padding: const EdgeInsets.all(15),
+  //         decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(15),
+  //             gradient: const LinearGradient(
+  //               colors: [
+  //                 Colours.color_FFF3D8,
+  //                 Colours.color_E8CCFE,
+  //               ],
+  //             )),
+  //         height: 120,
+  //         child: Row(
+  //           // mainAxisAlignment: MainAxisAlignment.center,
+  //           children: [
+  //             Container(
+  //               width: 60,
+  //               height: 60,
+  //               decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.circular(8.0),
+  //                 color: Colors.white,
+  //               ),
+  //               padding: const EdgeInsets.all(15),
+  //               child: const LoadAssetImage(
+  //                 "mokao_icon",
+  //                 width: 24.0,
+  //                 height: 24.0,
+  //               ),
+  //             ),
+  //             Expanded(
+  //               child: Column(
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 children: [
+  //                   const Text(
+  //                     "KET模考",
+  //                     style: TextStyle(
+  //                       fontSize: 20.0,
+  //                       fontWeight: FontWeight.w400,
+  //                       color: Colors.black,
+  //                     ),
+  //                   ),
+  //                   RichText(
+  //                     text: const TextSpan(children: [
+  //                       TextSpan(
+  //                           text: "实景",
+  //                           style: TextStyle(
+  //                             fontSize: 16,
+  //                             fontWeight: FontWeight.w400,
+  //                             color: Colours.color_FF71CF,
+  //                           )),
+  //                       TextSpan(
+  //                           text: '还原考试',
+  //                           style: TextStyle(
+  //                             fontSize: 16,
+  //                             fontWeight: FontWeight.w400,
+  //                             color: Colours.color_666666,
+  //                           )),
+  //                       TextSpan(
+  //                           text: '全流程',
+  //                           style: TextStyle(
+  //                             fontSize: 16,
+  //                             fontWeight: FontWeight.w400,
+  //                             color: Colours.color_FF71CF,
+  //                           )),
+  //                     ]),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             Container(
+  //                 padding: const EdgeInsets.only(
+  //                     top: 5, bottom: 5, left: 15, right: 15),
+  //                 decoration: BoxDecoration(
+  //                   borderRadius: BorderRadius.circular(20.0),
+  //                   color: Colours.color_6D388F,
+  //                 ),
+  //                 child: const Text(
+  //                   "去看看",
+  //                   style: TextStyle(
+  //                     fontSize: 15.0,
+  //                     fontWeight: FontWeight.w400,
+  //                     color: Colors.white,
+  //                   ),
+  //                 )),
+  //           ],
+  //         )),
+  //   );
+  // }
 
-  Widget tabbar() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(
-            left: 15,
-          ),
-          child: Text(
-            "场景模拟练习",
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 40,
-          child: ListView.builder(
-            itemBuilder: (ctx, index) {
-              return _categoryList[index].name.isNotEmpty
-                  ? GestureDetector(
-                      onTap: () {
-                        changeCategory(index);
-                      },
-                      child: Container(
-                          margin: const EdgeInsets.only(
-                              top: 5, bottom: 5, left: 20, right: 20),
-                          height: 40,
-                          child: Text(
-                            _categoryList[index].name,
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w400,
-                              color: currentIndex == index
-                                  ? Colors.red
-                                  : Colors.black,
-                            ),
-                          )),
-                    )
-                  : Container();
-            },
-            itemCount: _categoryList.length,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            physics: const AlwaysScrollableScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-          ),
-        )
-      ],
-    );
-  }
+  // Widget tabbar() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       const Padding(
+  //         padding: EdgeInsets.only(
+  //           left: 15,
+  //         ),
+  //         child: Text(
+  //           "场景模拟练习",
+  //           style: TextStyle(
+  //             fontSize: 18.0,
+  //             fontWeight: FontWeight.w400,
+  //             color: Colors.black,
+  //           ),
+  //         ),
+  //       ),
+  //       SizedBox(
+  //         height: 40,
+  //         child: ListView.builder(
+  //           itemBuilder: (ctx, index) {
+  //             return _categoryList[index].name.isNotEmpty
+  //                 ? GestureDetector(
+  //                     onTap: () {
+  //                       changeCategory(index);
+  //                     },
+  //                     child: Container(
+  //                         margin: const EdgeInsets.only(
+  //                             top: 5, bottom: 5, left: 20, right: 20),
+  //                         height: 40,
+  //                         child: Text(
+  //                           _categoryList[index].name,
+  //                           style: TextStyle(
+  //                             fontSize: 15.0,
+  //                             fontWeight: FontWeight.w400,
+  //                             color: currentIndex == index
+  //                                 ? Colors.red
+  //                                 : Colors.black,
+  //                           ),
+  //                         )),
+  //                   )
+  //                 : Container();
+  //           },
+  //           itemCount: _categoryList.length,
+  //           padding: const EdgeInsets.symmetric(horizontal: 10),
+  //           physics: const AlwaysScrollableScrollPhysics(),
+  //           scrollDirection: Axis.horizontal,
+  //         ),
+  //       )
+  //     ],
+  //   );
+  // }
 
   @override
   void initState() {
@@ -688,7 +691,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
             ),
           ),
           SliverToBoxAdapter(
-            child: banner.isNotEmpty ? barWidget(context) : Container(),
+            child: characterList.isNotEmpty ? barWidget(context) : Container(),
           ),
           SliverToBoxAdapter(
             child: Row(
@@ -715,7 +718,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
               height: 240,
               child: GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 4,
+                  itemCount: sceneList.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     //设置列数
                     crossAxisCount: 2,
@@ -734,11 +737,52 @@ class _HomeTwoPageState extends State<HomeTwoPage>
             itemBuilder: (ctx, index) {
               return GestureDetector(
                 onTap: () {},
-                child: Container(
-                    height: 280, color: Colors.green, child: Text("11")),
+                child: LoadImage(
+                  lessonList[index].imageUrl,
+                  fit: BoxFit.cover,
+                ),
               );
             },
-            itemCount: 2,
+            itemCount: lessonList.length,
+          ),
+          SliverList.builder(
+            itemBuilder: (ctx, index) {
+              return GestureDetector(
+                onTap: () {
+                  if (examList[index].type == 1) {
+                    NavigatorUtils.goWebViewPage(context, examList[index].title,
+                        examList[index].linkUrl);
+                  } else if (examList[index].type == 2) {
+                    if (examList[index].linkUrl == "1") {
+                      //单系统课购买页
+                      NavigatorUtils.push(
+                        context,
+                        "${HomeRouter.coursePurchasePage}?levelId=${examList[index].param}",
+                      );
+                    } else if (examList[index].linkUrl == "2") {
+                      //个人中心进入的购买页（引流课购买和课程购买可切换的页面）
+                    } else if (examList[index].linkUrl == "3") {
+                      //试听课页面
+                      NavigatorUtils.push(
+                          context,
+                          // CourseRouter.courseFlowPage,
+                          "${CourseRouter.courseFlowPage}?lessonId=${examList[index].param}");
+                    } else if (examList[index].linkUrl == "4") {
+                      //模考
+                      NavigatorUtils.push(
+                        context,
+                        ExamRouter.examPage,
+                      );
+                    }
+                  }
+                },
+                child: LoadImage(
+                  examList[index].imageUrl,
+                  fit: BoxFit.cover,
+                ),
+              );
+            },
+            itemCount: examList.length,
           ),
         ],
       ))),
@@ -883,14 +927,14 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   @override
   void sendCharacterListSuccess(CharacterListBean data) {
     // TODO: implement sendCharacterListSuccess
-    // characterList.clear();
+    characterList.clear();
     characterList.addAll(data.data);
-    for (int i = 0; i < characterList.length; i++) {
-      headData.add(characterList[i].avatarImage);
-      if (characterList[i].isDefault == 1) {
-        isDefault = i;
-      }
-    }
+    // for (int i = 0; i < characterList.length; i++) {
+    //   headData.add(characterList[i].avatarImage);
+    //   if (characterList[i].isDefault == 1) {
+    //     isDefault = i;
+    //   }
+    // }
 
     setState(() {});
 
@@ -898,45 +942,45 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     // _homeProvider.character.characterId = characterId;
     _homeProvider.character.characterId = characterId;
     _homeProvider.character.imageUrl = characterList[0].imageUrl;
-    getCategoryList(characterId);
+    // getCategoryList(characterId);
   }
 
-  void getCategoryList(String characterId) async {
-    DioUtils.instance.requestNetwork<ResultData>(
-        Method.get, HttpApi.appSceneList, onSuccess: (result) {
-      if (result == null || result.data == null) {
-        setState(() {});
-        return;
-      }
-      List<dynamic> data = result.data as List<dynamic>;
-      List<CategoryEntity> list =
-          data.map((item) => CategoryEntity.fromJson(item)).toList();
-      _categoryList = list;
-      setState(() {});
+  // void getCategoryList(String characterId) async {
+  //   DioUtils.instance.requestNetwork<ResultData>(
+  //       Method.get, HttpApi.appSceneList, onSuccess: (result) {
+  //     if (result == null || result.data == null) {
+  //       setState(() {});
+  //       return;
+  //     }
+  //     List<dynamic> data = result.data as List<dynamic>;
+  //     List<CategoryEntity> list =
+  //         data.map((item) => CategoryEntity.fromJson(item)).toList();
+  //     _categoryList = list;
+  //     setState(() {});
 
-      if (_categoryList.isNotEmpty) {
-        changeCategory(0);
-      }
-    }, onError: (code, msg) {
-      setState(() {});
-    });
-  }
+  //     if (_categoryList.isNotEmpty) {
+  //       changeCategory(0);
+  //     }
+  //   }, onError: (code, msg) {
+  //     setState(() {});
+  //   });
+  // }
 
-  void changeCategory(int index) {
-    currentIndex = index;
-    getSceneListByCategory(index);
-    setState(() {});
-  }
+  // void changeCategory(int index) {
+  //   currentIndex = index;
+  //   getSceneListByCategory(index);
+  //   setState(() {});
+  // }
 
-  void getSceneListByCategory(int index) {
-    CategoryEntity category = _categoryList.elementAt(currentIndex);
-    sceneList = category.sceneList;
-    setState(() {});
-    //注释了后期看为什么
-    // Future.delayed(const Duration(milliseconds: 300), () {
-    //   _scrollController.jumpTo(0);
-    // });
-  }
+  // void getSceneListByCategory(int index) {
+  //   CategoryEntity category = _categoryList.elementAt(currentIndex);
+  //   sceneList = category.sceneList;
+  //   setState(() {});
+  //   //注释了后期看为什么
+  //   // Future.delayed(const Duration(milliseconds: 300), () {
+  //   //   _scrollController.jumpTo(0);
+  //   // });
+  // }
 
   @override
   void sendFail(String msg) {
@@ -946,12 +990,14 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   @override
   void sendBannerListSuccess(BannerListBean data) {
     // TODO: implement sendBannerListSuccess
-    banner.clear();
-    lesson.clear();
-    banner.addAll(data.data.banner);
-    lesson.addAll(data.data.lesson);
-    // isKetShow = data.data.isKetShow;
-    // isChatShow = data.data.isChatShow;
+    lessonList.clear();
+    examList.clear();
+    sceneList.clear();
+
+    lessonList.addAll(data.data.lessonList);
+    examList.addAll(data.data.exam);
+    sceneList.addAll(data.data.sceneList);
+
     setState(() {});
     _homeTwoPagePresenter.getCharacterList();
   }

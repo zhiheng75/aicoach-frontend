@@ -53,6 +53,9 @@ class Datum {
   String listImage;
 
   String avatarImage;
+  String coverBgImage;
+  String coverHeadImage;
+
   String avatarId;
   String greetingText;
   String greetingAudio;
@@ -80,6 +83,8 @@ class Datum {
     required this.stillImage,
     required this.motionImage,
     required this.avatarImage,
+    required this.coverBgImage,
+    required this.coverHeadImage,
     required this.avatarId,
     required this.greetingText,
     required this.greetingAudio,
@@ -108,6 +113,8 @@ class Datum {
         listImage: json["list_image"] ?? "",
         motionImage: json["motion_image"],
         avatarImage: json["avatar_image"],
+        coverBgImage: json["cover_bg_image"] ?? "",
+        coverHeadImage: json["cover_head_image"] ?? "",
         avatarId: json["avatar_id"] ?? "",
         greetingText: json["greeting_text"],
         greetingAudio: json["greeting_audio"],
@@ -136,6 +143,8 @@ class Datum {
         "still_image": stillImage,
         "motion_image": motionImage,
         "avatar_image": avatarImage,
+        "cover_bg_image": coverBgImage,
+        "cover_head_image": coverHeadImage,
         "avatar_id": avatarId,
         "greeting_text": greetingText,
         "greeting_audio": greetingAudio,
