@@ -451,8 +451,8 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                       ),
                       otherHeadWidget("class_head"),
                       detailWidget(),
-                      otherHeadWidget("people_head"),
-                      otherHeadWidget("quanyi_hrad"),
+                      // otherHeadWidget("people_head"),
+                      // otherHeadWidget("quanyi_hrad"),
 
                       // SliverGrid.builder(
                       //     itemCount: 6,

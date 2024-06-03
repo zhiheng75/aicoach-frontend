@@ -126,7 +126,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   // }
   Widget barWidget(BuildContext context) {
     return SizedBox(
-      height: 230.0,
+      height: 250.0,
       child: Swiper(
           outer: true,
           autoplay: true,
@@ -134,9 +134,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           viewportFraction: 0.8,
           scale: 0.9,
           itemBuilder: (c, i) {
-            return Container(
-              color: Colors.grey,
-              child: Text('$i'),
+            return LoadImage(
+              characterList[i].coverBgImage,
+              fit: BoxFit.fill,
             );
           },
           pagination: const SwiperPagination(alignment: Alignment.topCenter),
@@ -715,7 +715,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           SliverToBoxAdapter(
             child: Container(
               margin: const EdgeInsets.all(10),
-              height: 240,
+              height: 260,
               child: GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: sceneList.length,
@@ -725,11 +725,11 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                     //设置横向间距
                     crossAxisSpacing: 10,
                     //设置主轴间距
-                    mainAxisSpacing: 5,
+                    mainAxisSpacing: 10,
                     mainAxisExtent: 120,
                   ),
                   itemBuilder: (BuildContext ctx, int index) {
-                    return HomeMapItem();
+                    return HomeMapItem(data: sceneList[index]);
                   }),
             ),
           ),
@@ -882,11 +882,11 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     //                       children: [
     //                         Text(
     //                           sceneList[index].name,
-    //                           style: const TextStyle(
-    //                             fontSize: 15.0,
-    //                             fontWeight: FontWeight.w400,
-    //                             color: Colors.white,
-    //                           ),
+    // style: const TextStyle(
+    //   fontSize: 15.0,
+    //   fontWeight: FontWeight.w400,
+    //   color: Colors.white,
+    // ),
     //                         ),
     //                         Gaps.vGap10
     //                       ],

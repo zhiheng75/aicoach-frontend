@@ -665,12 +665,12 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                         ),
                         // headWidget("课程详情"),
                         detailWidget(),
-                        listData.data[idx].type != 1
-                            ? otherHeadWidget("people_head")
-                            : SliverToBoxAdapter(child: Container()),
-                        listData.data[idx].type != 1
-                            ? otherHeadWidget("quanyi_hrad")
-                            : SliverToBoxAdapter(child: Container()),
+                        // listData.data[idx].type != 1
+                        //     ? otherHeadWidget("people_head")
+                        //     : SliverToBoxAdapter(child: Container()),
+                        // listData.data[idx].type != 1
+                        //     ? otherHeadWidget("quanyi_hrad")
+                        //     : SliverToBoxAdapter(child: Container()),
                         listData.data[idx].type != 1
                             ? SliverToBoxAdapter(
                                 child: Container(
