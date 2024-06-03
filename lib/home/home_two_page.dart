@@ -78,6 +78,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   // int isKetShow = 0;
   int isDefault = 0;
   final ScreenUtil _screenUtil = ScreenUtil();
+  bool isLoding = true;
 
   // Widget barWidget(BuildContext context) {
   //   return Container(
@@ -124,6 +125,13 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   //     ),
   //   );
   // }
+
+  Widget lodingView() {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
   Widget barWidget(BuildContext context) {
     return SizedBox(
       height: 250.0,
@@ -677,121 +685,128 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
           body: SafeArea(
-              child: CustomScrollView(
-        slivers: [
-          const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 40,
-              child: Text("随时都在的口语伙伴",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  )),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: characterList.isNotEmpty ? barWidget(context) : Container(),
-          ),
-          SliverToBoxAdapter(
-            child: Row(
-              children: [
-                const Text("场景练习",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    )),
-                Gaps.hGap10,
-                const Text("超真实情景 练了就会用",
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        height: 2)),
-              ],
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              margin: const EdgeInsets.all(10),
-              height: 260,
-              child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: sceneList.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    //设置列数
-                    crossAxisCount: 2,
-                    //设置横向间距
-                    crossAxisSpacing: 10,
-                    //设置主轴间距
-                    mainAxisSpacing: 10,
-                    mainAxisExtent: 120,
-                  ),
-                  itemBuilder: (BuildContext ctx, int index) {
-                    return HomeMapItem(data: sceneList[index]);
-                  }),
-            ),
-          ),
-          SliverList.builder(
-            itemBuilder: (ctx, index) {
-              return GestureDetector(
-                onTap: () {},
-                child: LoadImage(
-                  lessonList[index].imageUrl,
-                  fit: BoxFit.cover,
-                ),
-              );
-            },
-            itemCount: lessonList.length,
-          ),
-          SliverList.builder(
-            itemBuilder: (ctx, index) {
-              return GestureDetector(
-                onTap: () {
-                  if (examList[index].type == 1) {
-                    NavigatorUtils.goWebViewPage(context, examList[index].title,
-                        examList[index].linkUrl);
-                  } else if (examList[index].type == 2) {
-                    if (examList[index].linkUrl == "1") {
-                      //单系统课购买页
-                      NavigatorUtils.push(
-                        context,
-                        "${HomeRouter.coursePurchasePage}?levelId=${examList[index].param}",
-                      );
-                    } else if (examList[index].linkUrl == "2") {
-                      //个人中心进入的购买页（引流课购买和课程购买可切换的页面）
-                    } else if (examList[index].linkUrl == "3") {
-                      //试听课页面
-                      NavigatorUtils.push(
-                          context,
-                          // CourseRouter.courseFlowPage,
-                          "${CourseRouter.courseFlowPage}?lessonId=${examList[index].param}");
-                    } else if (examList[index].linkUrl == "4") {
-                      //模考
-                      NavigatorUtils.push(
-                        context,
-                        ExamRouter.examPage,
-                      );
-                    } else if (examList[index].linkUrl == "5") {
-                      //上课页面
-                      // NavigatorUtils.push(
-                      //   context,
-                      //   ExamRouter.examPage,
-                      // );
-                    }
-                  }
-                },
-                child: LoadImage(
-                  examList[index].imageUrl,
-                  fit: BoxFit.cover,
-                ),
-              );
-            },
-            itemCount: examList.length,
-          ),
-        ],
-      ))),
+              child: isLoding
+                  ? lodingView()
+                  : CustomScrollView(
+                      slivers: [
+                        const SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 40,
+                            child: Text("随时都在的口语伙伴",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                )),
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: characterList.isNotEmpty
+                              ? barWidget(context)
+                              : Container(),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Row(
+                            children: [
+                              const Text("场景练习",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  )),
+                              Gaps.hGap10,
+                              const Text("超真实情景 练了就会用",
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      height: 2)),
+                            ],
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Container(
+                            margin: const EdgeInsets.all(10),
+                            height: 260,
+                            child: GridView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: sceneList.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  //设置列数
+                                  crossAxisCount: 2,
+                                  //设置横向间距
+                                  crossAxisSpacing: 10,
+                                  //设置主轴间距
+                                  mainAxisSpacing: 10,
+                                  mainAxisExtent: 120,
+                                ),
+                                itemBuilder: (BuildContext ctx, int index) {
+                                  return HomeMapItem(data: sceneList[index]);
+                                }),
+                          ),
+                        ),
+                        SliverList.builder(
+                          itemBuilder: (ctx, index) {
+                            return GestureDetector(
+                              onTap: () {},
+                              child: LoadImage(
+                                lessonList[index].imageUrl,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          },
+                          itemCount: lessonList.length,
+                        ),
+                        SliverList.builder(
+                          itemBuilder: (ctx, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                if (examList[index].type == 1) {
+                                  NavigatorUtils.goWebViewPage(
+                                      context,
+                                      examList[index].title,
+                                      examList[index].linkUrl);
+                                } else if (examList[index].type == 2) {
+                                  if (examList[index].linkUrl == "1") {
+                                    //单系统课购买页
+                                    NavigatorUtils.push(
+                                      context,
+                                      "${HomeRouter.coursePurchasePage}?levelId=${examList[index].param}",
+                                    );
+                                  } else if (examList[index].linkUrl == "2") {
+                                    //个人中心进入的购买页（引流课购买和课程购买可切换的页面）
+                                  } else if (examList[index].linkUrl == "3") {
+                                    //试听课页面
+                                    NavigatorUtils.push(
+                                        context,
+                                        // CourseRouter.courseFlowPage,
+                                        "${CourseRouter.courseFlowPage}?lessonId=${examList[index].param}");
+                                  } else if (examList[index].linkUrl == "4") {
+                                    //模考
+                                    NavigatorUtils.push(
+                                      context,
+                                      ExamRouter.examPage,
+                                    );
+                                  } else if (examList[index].linkUrl == "5") {
+                                    //上课页面
+                                    // NavigatorUtils.push(
+                                    //   context,
+                                    //   ExamRouter.examPage,
+                                    // );
+                                  }
+                                }
+                              },
+                              child: LoadImage(
+                                examList[index].imageUrl,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          },
+                          itemCount: examList.length,
+                        ),
+                      ],
+                    ))),
     );
     // return AnnotatedRegion(
     //   value: SystemUiOverlayStyle.light,
@@ -941,7 +956,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     //     isDefault = i;
     //   }
     // }
-
+    isLoding = false;
     setState(() {});
 
     String characterId = characterList[0].characterId;
@@ -1004,7 +1019,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     examList.addAll(data.data.exam);
     sceneList.addAll(data.data.sceneList);
 
-    setState(() {});
+    // setState(() {});
     _homeTwoPagePresenter.getCharacterList();
   }
 }
