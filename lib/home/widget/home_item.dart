@@ -16,7 +16,7 @@ class _HomeMapItemState extends State<HomeMapItem> {
   Widget build(BuildContext context) {
     return LoadImage(
       widget.data.imageUrl,
-      fit: BoxFit.fill,
+      fit: BoxFit.fitWidth,
     );
     // Stack(
     //   children: [

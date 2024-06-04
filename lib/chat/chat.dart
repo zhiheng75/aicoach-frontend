@@ -337,6 +337,10 @@ class _ChatState extends State<ChatPage>
       init();
     });
 
+    EventBus().on(NotificationUtils.resetChatTwo, (_) {
+      init();
+    });
+
     // EventBus().on('LEAVECHATPAGE', (_) async {
     //   await _mediaUtils.stopPlay();
     //   _bottomBarControll.setDisabled(false);
@@ -585,6 +589,8 @@ class _ChatState extends State<ChatPage>
   void dispose() {
     // EventBus().off('LEAVECHATPAGE');
     EventBus().off(NotificationUtils.resetChat);
+    EventBus().off(NotificationUtils.resetChatTwo);
+
     EventBus().off(NotificationUtils.taberThree);
 
     EventBus().off(NotificationUtils.loginIn);

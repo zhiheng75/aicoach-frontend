@@ -963,7 +963,7 @@ class _PersonPageState extends State<PersonPage>
                 ),
                 Positioned(
                   right: 20,
-                  top: 60,
+                  top: 50,
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
