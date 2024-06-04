@@ -114,7 +114,9 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         } else {
           //只是退出这一页 发通知
           //发一个进行下一步的通知
-          EventBus().emit(NotificationUtils.nextClass);
+          int next = widget.idx;
+          next = next + 1;
+          EventBus().emit(NotificationUtils.nextClass, next.toString());
         }
       })
       ..addJavaScriptChannel('goHome', onMessageReceived: (message) {

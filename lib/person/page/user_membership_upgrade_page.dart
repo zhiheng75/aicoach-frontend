@@ -509,7 +509,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   Widget headWidget(String headStr) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.only(left: 10),
+        padding: const EdgeInsets.only(left: 10, top: 20),
         child: Text(
           headStr,
           style: const TextStyle(
@@ -562,9 +562,12 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   List<Widget> _buildDetailItems() {
     List<Widget> list = [];
     for (int i = 0; i < listData.data[idx].detail.detailImg.length; i++) {
-      list.add(LoadImage(
-        width: _screenUtil.screenWidth,
-        listData.data[idx].detail.detailImg[i],
+      list.add(Container(
+        margin: const EdgeInsets.only(top: 20, left: 9, right: 9),
+        child: LoadImage(
+          width: _screenUtil.screenWidth,
+          listData.data[idx].detail.detailImg[i],
+        ),
       ));
     }
     return list;
@@ -635,24 +638,27 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                           child: classPayWidget(),
                         ),
                         SliverToBoxAdapter(
-                          child: LoadImage(
-                            listData.data[idx].detail.teacherImg,
+                          child: Container(
+                            margin: EdgeInsets.only(top: 10, left: 9, right: 9),
+                            child: LoadImage(
+                              listData.data[idx].detail.teacherImg,
+                            ),
                           ),
                         ),
                         headWidget("用户评价"),
                         SliverToBoxAdapter(
                           child: Container(
-                            margin: const EdgeInsets.only(top: 10),
-                            height: 100.0,
+                            margin: const EdgeInsets.only(top: 10, left: 9),
+                            height: 166.0,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: listData
                                   .data[idx].detail.userFeedbackImg.length,
                               itemBuilder: (context, index) {
-                                return SizedBox(
-                                  width: 150.0,
-                                  child: Card(
-                                    // color: Colors.primaries[index],
+                                return Container(
+                                  margin: EdgeInsets.only(right: 10),
+                                  child: SizedBox(
+                                    width: 238.0,
                                     child: LoadImage(
                                       listData.data[idx].detail
                                           .userFeedbackImg[index],
