@@ -22,7 +22,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:umeng_common_sdk/umeng_common_sdk.dart';
+// import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 import '../chat/chat.dart';
 import '../chat/utils/chat_websocket.dart';
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomeNewPage>
 
   void init() {
     initDio();
-    initUM();
+    // initUM();
 
     // 初始化手机号一键登录插件
     // initPlatformState();
@@ -68,17 +68,17 @@ class _HomePageState extends State<HomeNewPage>
     _homeProvider.getUsageTime();
   }
 
-  void initUM() {
-    String platformStr = Channel.channelios;
-    if (Device.isAndroid) {
-      platformStr = Channel.channelhuawei;
-    } else {
-      platformStr = Channel.channelios;
-    }
-    UmengCommonSdk.initCommon(
-        '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', platformStr);
-    UmengCommonSdk.setPageCollectionModeManual();
-  }
+  // void initUM() {
+  //   String platformStr = Channel.channelios;
+  //   if (Device.isAndroid) {
+  //     platformStr = Channel.channelhuawei;
+  //   } else {
+  //     platformStr = Channel.channelios;
+  //   }
+  //   UmengCommonSdk.initCommon(
+  //       '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', platformStr);
+  //   UmengCommonSdk.setPageCollectionModeManual();
+  // }
 
   void initDio() async {
     final deviceInfoPlugin = DeviceInfoPlugin();
