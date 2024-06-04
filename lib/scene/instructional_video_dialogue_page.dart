@@ -737,6 +737,8 @@ class _InstructionalVideoDialoguePageState
       normalMessage.audioUrl = introAudio;
       normalMessage.isTextEnd = true;
       _homeProvider.addNormalMessage(normalMessage);
+      _listScrollController.scrollToEnd();
+
       _mediaUtils.play(
         url: introAudio,
         useAvatar: true,
@@ -788,6 +790,8 @@ class _InstructionalVideoDialoguePageState
       normalMessage.audioUrl = introAudio;
       normalMessage.isTextEnd = true;
       _homeProvider.addNormalMessage(normalMessage);
+      _listScrollController.scrollToEnd();
+
       _mediaUtils.play(
         url: introAudio,
         useAvatar: true,
@@ -839,6 +843,8 @@ class _InstructionalVideoDialoguePageState
           data[widget.idx].resource[resourceIdx].greetingAudio!;
       normalMessage.isTextEnd = true;
       _homeProvider.addNormalMessage(normalMessage);
+      _listScrollController.scrollToEnd();
+
       _mediaUtils.play(
         url: data[widget.idx].resource[resourceIdx].greetingAudio!,
         useAvatar: true,

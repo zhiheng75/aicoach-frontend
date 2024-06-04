@@ -387,7 +387,6 @@ class _CoursePaysPageState extends State<CoursePaysPage>
 // 跳转路径：pages/mine/add-weChat/add-weChat?user_token=token
         // alertDialoFg();
         //跳转小程序
-
         fluwx.open(
             target: MiniProgram(
                 username: "gh_dcd9c62ba779",

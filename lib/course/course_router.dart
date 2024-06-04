@@ -6,6 +6,7 @@ import 'package:Bubble/course/page/course_flow_page.dart';
 import 'package:Bubble/course/page/course_report_page.dart';
 import 'package:Bubble/course/page/curriculum_evaluation_page.dart';
 import 'package:Bubble/course/page/switching_teacher_page.dart';
+import 'package:Bubble/home/entity/lesson_detail_bean.dart';
 import 'package:Bubble/routers/i_router.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -62,9 +63,19 @@ class CourseRouter implements IRouterProvider {
 
     router.define(switchingTeacherPage,
         handler: Handler(handlerFunc: (_, __) => const SwitchingTeacherPage()));
+    // router.define(certifiedLearningPage,
+    //     handler:
+    //         Handler(handlerFunc: (_, __) => const CertifiedLearningPage()));
+
     router.define(certifiedLearningPage,
-        handler:
-            Handler(handlerFunc: (_, __) => const CertifiedLearningPage()));
+        handler: Handler(handlerFunc: (context, params) {
+      LessonDetailBean lessonDetailBean =
+          ModalRoute.of(context!)?.settings.arguments as LessonDetailBean;
+      // }
+      return CertifiedLearningPage(
+        data: lessonDetailBean,
+      );
+    }));
 
     router.define(curriculumEvaluationPage,
         handler: Handler(handlerFunc: (context, params) {

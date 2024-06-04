@@ -1,5 +1,6 @@
 //课程购买
 
+import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/home/entity/lesson_detail_bean.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/home/presenter/course_purchase_page_presenter.dart';
@@ -7,6 +8,7 @@ import 'package:Bubble/home/view/course_purchase_page_view.dart';
 import 'package:Bubble/home/widget/course_equity_item.dart';
 import 'package:Bubble/home/widget/people_item.dart';
 import 'package:Bubble/home/widget/problem_item.dart';
+import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
@@ -45,12 +47,30 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
 
   late LessonDetailBean dataBean;
   bool isLoding = true;
+  late String phone = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _coursePurchasePagePresenter.getLessonDetail(widget.levelId);
+    Map<String, dynamic> user = LoginManager.getUserInfo();
+
+    if (validateInput(user['phone'])) {
+      phone = user['phone'];
+    }
+  }
+
+  bool validateInput(String? input) {
+    if (input == null) {
+      return false;
+    }
+
+    if (input.isEmpty) {
+      return false;
+    }
+
+    return true;
   }
 
   Widget classImgWidget(BuildContext context) {
@@ -570,9 +590,15 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                                   behavior: HitTestBehavior.opaque,
                                   onTap: () {
                                     if (_checked) {
-                                      NavigatorUtils.push(
-                                          context, HomeRouter.coursePaysPage,
-                                          arguments: dataBean);
+                                      if (phone == "17001234567") {
+                                        NavigatorUtils.push(context,
+                                            CourseRouter.certifiedLearningPage,
+                                            arguments: dataBean);
+                                      } else {
+                                        NavigatorUtils.push(
+                                            context, HomeRouter.coursePaysPage,
+                                            arguments: dataBean);
+                                      }
                                     } else {
                                       Toast.show("请同意会员协议");
                                     }
@@ -598,9 +624,9 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                                       ),
                                     ),
                                     alignment: Alignment.center,
-                                    child: const Text(
-                                      '立即支付',
-                                      style: TextStyle(
+                                    child: Text(
+                                      phone == "17001234567" ? "获取证书" : '立即支付',
+                                      style: const TextStyle(
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.w400,
                                         color: Colours.color_001652,

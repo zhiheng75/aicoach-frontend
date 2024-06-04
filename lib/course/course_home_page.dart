@@ -244,6 +244,7 @@ class _CourseHomePageState extends State<CourseHomePage>
     for (int i = 0; i < xxlist.length; i++) {
       list.add(GestureDetector(
           onTap: () {
+            // showView(xxlist[i].levelId);
             if (xxlist[i].isUserBuy == 1) {
               //去上课
               if (xxlist[i].isLocked == 0) {
