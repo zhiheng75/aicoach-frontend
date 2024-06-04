@@ -1,7 +1,7 @@
 import 'package:Bubble/changeRole/presenter/change_role_presenter.dart';
 import 'package:Bubble/changeRole/view/change_role_view.dart';
 import 'package:Bubble/entity/result_entity.dart';
-import 'package:Bubble/home/page/entity/teach_list_entity.dart';
+import 'package:Bubble/home/entity/teach_list_entity.dart';
 import 'package:Bubble/home/provider/selecter_teacher_provider.dart';
 import 'package:Bubble/home/widget/teacher_widget.dart';
 import 'package:Bubble/mvp/base_page.dart';

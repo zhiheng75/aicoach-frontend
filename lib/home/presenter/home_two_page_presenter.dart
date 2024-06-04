@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:Bubble/chat/entity/character_list_bean.dart';
 import 'package:Bubble/entity/result_entity.dart';
-import 'package:Bubble/home/page/entity/banner_list_bean.dart';
+import 'package:Bubble/home/entity/banner_list_bean.dart';
+import 'package:Bubble/home/entity/bind_teacher_status_bean.dart';
 import 'package:Bubble/home/view/home_two_page_view.dart';
 import 'package:Bubble/mvp/base_page_presenter.dart';
 import 'package:Bubble/net/dio_utils.dart';
@@ -19,7 +21,7 @@ class HomeTwoPagePresenter extends BasePagePresenter<HomeTwoPageView> {
 
   Future getCharacterList() {
     return requestNetwork<ResultData>(Method.get,
-        url: HttpApi.characterList,
+        url: HttpApi.characterHome,
         isShow: false,
         isClose: false, onSuccess: (result) {
       Map<String, dynamic> characterListMap = json.decode(result.toString());
@@ -49,6 +51,24 @@ class HomeTwoPagePresenter extends BasePagePresenter<HomeTwoPageView> {
         view.sendBannerListSuccess(bannerListBean);
       } else {
         view.sendFail(bannerListBean.msg);
+      }
+    }, onError: (code, msg) {
+      view.sendFail("响应异常");
+    });
+  }
+
+  Future getBindTeacherStatus() {
+    return requestNetwork<ResultData>(Method.get,
+        url: HttpApi.bindTeacherStatus, isShow: false, onSuccess: (result) {
+      Map<String, dynamic> bindTeacherStatusMap =
+          json.decode(result.toString());
+      BindTeacherStatusBean bindTeacherStatusBean =
+          BindTeacherStatusBean.fromJson(bindTeacherStatusMap);
+
+      if (bindTeacherStatusBean.code == 200) {
+        view.sendBindTeacherStatusSuccess(bindTeacherStatusBean.data.count);
+      } else {
+        // view.sendFail(bannerListBean.msg);
       }
     }, onError: (code, msg) {
       view.sendFail("响应异常");

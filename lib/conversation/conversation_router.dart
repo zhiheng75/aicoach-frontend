@@ -1,5 +1,5 @@
 import 'package:fluro/fluro.dart';
-import '../home/page/entity/teach_list_entity.dart';
+import '../home/entity/teach_list_entity.dart';
 import '../routers/i_router.dart';
 import 'connect.dart';
 import 'conversation.dart';

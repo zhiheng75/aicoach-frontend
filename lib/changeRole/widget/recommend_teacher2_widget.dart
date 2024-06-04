@@ -3,7 +3,7 @@ import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/load_image.dart';
 
-import '../../home/page/entity/teach_list_entity.dart';
+import '../../home/entity/teach_list_entity.dart';
 
 class RecommendTeacherWidget2 extends StatefulWidget {
   final TeachListEntity entity;

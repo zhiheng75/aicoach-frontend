@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-import '../home/page/entity/teach_list_entity.dart';
+import '../home/entity/teach_list_entity.dart';
 import '../routers/fluro_navigator.dart';
 import '../util/websocket_utils.dart';
 import '../widgets/load_image.dart';

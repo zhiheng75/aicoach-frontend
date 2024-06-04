@@ -1,6 +1,6 @@
 import 'package:Bubble/mvp/mvps.dart';
 
-import '../../home/page/entity/base_config_entity.dart';
+import '../../home/entity/base_config_entity.dart';
 import '../entity/my_good_list_entity.dart';
 import '../entity/wx_pay_entity.dart';
 

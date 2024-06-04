@@ -13,7 +13,7 @@ import 'package:sp_util/sp_util.dart';
 import 'package:tobias/tobias.dart';
 
 import '../../constant/constant.dart';
-import '../../home/page/entity/base_config_entity.dart';
+import '../../home/entity/base_config_entity.dart';
 import '../../method/fluter_native.dart';
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';

@@ -4,12 +4,13 @@ import 'package:Bubble/chat/entity/character_entity.dart';
 import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/entity/result_entity.dart';
-import 'package:Bubble/home/page/entity/banner_list_bean.dart';
+import 'package:Bubble/home/entity/banner_list_bean.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/home/presenter/home_two_page_presenter.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/view/home_two_page_view.dart';
 import 'package:Bubble/home/widget/home_item.dart';
+import 'package:Bubble/home/widget/teacher_show_view.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/net/dio_utils.dart';
@@ -39,11 +40,12 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extended;
 import 'package:Bubble/chat/entity/character_list_bean.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluwx/fluwx.dart';
 import 'package:jverify/jverify.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:Bubble/exam/exam_router.dart';
-import 'package:Bubble/home/page/entity/banner_list_bean.dart';
+import 'package:Bubble/home/entity/banner_list_bean.dart';
 import 'package:sp_util/sp_util.dart';
 
 class HomeTwoPage extends StatefulWidget {
@@ -79,6 +81,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   int isDefault = 0;
   final ScreenUtil _screenUtil = ScreenUtil();
   bool isLoding = true;
+  Fluwx fluwx = Fluwx();
 
   // Widget barWidget(BuildContext context) {
   //   return Container(
@@ -132,6 +135,26 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     );
   }
 
+  showImageDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return TeacherShowView(
+            () {
+              //确定
+              String accessToken = SpUtil.getString(Constant.accessToken) ?? "";
+              fluwx.open(
+                  target: MiniProgram(
+                      username: "gh_dcd9c62ba779",
+                      path:
+                          "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
+                      miniProgramType: WXMiniProgramType.test));
+            },
+          );
+        });
+  }
+
   Widget barWidget(BuildContext context) {
     return SizedBox(
       height: 250.0,
@@ -142,9 +165,15 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           viewportFraction: 0.8,
           scale: 0.9,
           itemBuilder: (c, i) {
-            return LoadImage(
-              characterList[i].coverBgImage,
-              fit: BoxFit.fill,
+            return GestureDetector(
+              onTap: () {
+                EventBus().emit(
+                    NotificationUtils.taberThree, characterList[i].avatarId);
+              },
+              child: LoadImage(
+                characterList[i].coverBgImage,
+                fit: BoxFit.fill,
+              ),
             );
           },
           pagination: const SwiperPagination(alignment: Alignment.topCenter),
@@ -316,13 +345,13 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   // Widget courseWidget(BBanner lesson) {
   //   return GestureDetector(
-  //     onTap: () {
-  //       //
-  //       NavigatorUtils.push(
-  //         context,
-  //         "${HomeRouter.coursePurchasePage}?levelId=${lesson.param}",
-  //       );
-  //     },
+  // onTap: () {
+  //   //
+  //   NavigatorUtils.push(
+  //     context,
+  //     "${HomeRouter.coursePurchasePage}?levelId=${lesson.param}",
+  //   );
+  // },
   //     child: Container(
   //       margin: const EdgeInsets.all(15),
   //       padding: const EdgeInsets.all(15),
@@ -581,7 +610,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
     initDio();
     initUM();
-
+    fluwx.registerApi(
+        appId: "wxfb033d09d2eecaf0",
+        universalLink: "https://demo.shenmo-ai.net/ios/");
     String teacherId = SpUtil.getString(Constant.teacherId)!.nullSafe;
     if (teacherId.isEmpty) {
       SpUtil.putString(Constant.teacherId, "0");
@@ -742,17 +773,39 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                                   mainAxisExtent: 120,
                                 ),
                                 itemBuilder: (BuildContext ctx, int index) {
-                                  return HomeMapItem(data: sceneList[index]);
+                                  return GestureDetector(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          backgroundColor: Colors.transparent,
+                                          barrierColor: Colors.transparent,
+                                          isScrollControlled: true,
+                                          isDismissible: false,
+                                          enableDrag: false,
+                                          builder: (_) => SelectScene(
+                                            cagegoryId:
+                                                sceneList[index].cagegoryId,
+                                          ),
+                                        );
+                                      },
+                                      child:
+                                          HomeMapItem(data: sceneList[index]));
                                 }),
                           ),
                         ),
                         SliverList.builder(
                           itemBuilder: (ctx, index) {
                             return GestureDetector(
-                              onTap: () {},
-                              child: LoadImage(
-                                lessonList[index].imageUrl,
-                                fit: BoxFit.cover,
+                              onTap: () {
+                                EventBus().emit(NotificationUtils.taberTwo);
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                    left: 10, right: 10, bottom: 10),
+                                child: LoadImage(
+                                  lessonList[index].imageUrl,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             );
                           },
@@ -762,44 +815,52 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                           itemBuilder: (ctx, index) {
                             return GestureDetector(
                               onTap: () {
-                                if (examList[index].type == 1) {
-                                  NavigatorUtils.goWebViewPage(
-                                      context,
-                                      examList[index].title,
-                                      examList[index].linkUrl);
-                                } else if (examList[index].type == 2) {
-                                  if (examList[index].linkUrl == "1") {
-                                    //单系统课购买页
-                                    NavigatorUtils.push(
-                                      context,
-                                      "${HomeRouter.coursePurchasePage}?levelId=${examList[index].param}",
-                                    );
-                                  } else if (examList[index].linkUrl == "2") {
-                                    //个人中心进入的购买页（引流课购买和课程购买可切换的页面）
-                                  } else if (examList[index].linkUrl == "3") {
-                                    //试听课页面
-                                    NavigatorUtils.push(
-                                        context,
-                                        // CourseRouter.courseFlowPage,
-                                        "${CourseRouter.courseFlowPage}?lessonId=${examList[index].param}");
-                                  } else if (examList[index].linkUrl == "4") {
-                                    //模考
-                                    NavigatorUtils.push(
-                                      context,
-                                      ExamRouter.examPage,
-                                    );
-                                  } else if (examList[index].linkUrl == "5") {
-                                    //上课页面
-                                    // NavigatorUtils.push(
-                                    //   context,
-                                    //   ExamRouter.examPage,
-                                    // );
-                                  }
-                                }
+                                NavigatorUtils.push(
+                                  context,
+                                  ExamRouter.examPage,
+                                );
+                                // if (examList[index].type == 1) {
+                                //   NavigatorUtils.goWebViewPage(
+                                //       context,
+                                //       examList[index].title,
+                                //       examList[index].linkUrl);
+                                // } else if (examList[index].type == 2) {
+                                //   if (examList[index].linkUrl == "1") {
+                                //     //单系统课购买页
+                                //     NavigatorUtils.push(
+                                //       context,
+                                //       "${HomeRouter.coursePurchasePage}?levelId=${examList[index].param}",
+                                //     );
+                                //   } else if (examList[index].linkUrl == "2") {
+                                //     //个人中心进入的购买页（引流课购买和课程购买可切换的页面）
+                                //   } else if (examList[index].linkUrl == "3") {
+                                //     //试听课页面
+                                //     NavigatorUtils.push(
+                                //         context,
+                                //         // CourseRouter.courseFlowPage,
+                                //         "${CourseRouter.courseFlowPage}?lessonId=${examList[index].param}");
+                                //   } else if (examList[index].linkUrl == "4") {
+                                //     //模考
+                                //     NavigatorUtils.push(
+                                //       context,
+                                //       ExamRouter.examPage,
+                                //     );
+                                //   } else if (examList[index].linkUrl == "5") {
+                                //     //上课页面
+                                //     // NavigatorUtils.push(
+                                //     //   context,
+                                //     //   ExamRouter.examPage,
+                                //     // );
+                                //   }
+                                // }
                               },
-                              child: LoadImage(
-                                examList[index].imageUrl,
-                                fit: BoxFit.cover,
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                    left: 10, right: 10, bottom: 10),
+                                child: LoadImage(
+                                  examList[index].imageUrl,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             );
                           },
@@ -964,6 +1025,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     _homeProvider.character.characterId = characterId;
     _homeProvider.character.imageUrl = characterList[0].imageUrl;
     // getCategoryList(characterId);
+
+    _homeTwoPagePresenter.getBindTeacherStatus();
   }
 
   // void getCategoryList(String characterId) async {
@@ -1022,35 +1085,44 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     // setState(() {});
     _homeTwoPagePresenter.getCharacterList();
   }
-}
-
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate({
-    required this.minHeight,
-    required this.maxHeight,
-    required this.child,
-  });
-
-  final double minHeight;
-  final double maxHeight;
-  final Widget child;
 
   @override
-  double get minExtent => minHeight;
-
-  @override
-  double get maxExtent => max(maxHeight, minHeight);
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return SizedBox.expand(child: child);
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight ||
-        minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
+  void sendBindTeacherStatusSuccess(int data) {
+    // TODO: implement sendBindTeacherStatusSuccess
+    if (data > 0) {
+      //弹窗
+      showImageDialog();
+    }
   }
 }
+
+// class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+//   _SliverAppBarDelegate({
+//     required this.minHeight,
+//     required this.maxHeight,
+//     required this.child,
+//   });
+
+//   final double minHeight;
+//   final double maxHeight;
+//   final Widget child;
+
+//   @override
+//   double get minExtent => minHeight;
+
+//   @override
+//   double get maxExtent => max(maxHeight, minHeight);
+
+//   @override
+//   Widget build(
+//       BuildContext context, double shrinkOffset, bool overlapsContent) {
+//     return SizedBox.expand(child: child);
+//   }
+
+//   @override
+//   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+//     return maxHeight != oldDelegate.maxHeight ||
+//         minHeight != oldDelegate.minHeight ||
+//         child != oldDelegate.child;
+//   }
+// }

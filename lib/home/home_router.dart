@@ -1,5 +1,5 @@
 import 'package:Bubble/common/webview_not_nav_page.dart';
-import 'package:Bubble/home/page/entity/lesson_detail_bean.dart';
+import 'package:Bubble/home/entity/lesson_detail_bean.dart';
 import 'package:Bubble/home/page/course_pays_page.dart';
 import 'package:Bubble/scene/instructional_video_dialogue_page.dart';
 import 'package:Bubble/scene/teaching_dialogue_page.dart';

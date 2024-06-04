@@ -4,7 +4,7 @@ import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../constant/constant.dart';
-import '../page/entity/teach_list_entity.dart';
+import '../entity/teach_list_entity.dart';
 
 class HomeTeacherProvider extends ChangeNotifier {
   // 当前可对话的老师

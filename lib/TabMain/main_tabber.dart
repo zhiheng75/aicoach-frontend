@@ -71,12 +71,20 @@ class _MainTabberState extends State<MainTabber> {
         _controller!.index = 2;
       });
     });
+
+    EventBus().on(NotificationUtils.taberTwo, (_) {
+      setState(() {
+        currentIndex = 1;
+        _controller!.index = 1;
+      });
+    });
   }
 
   @override
   void dispose() {
     EventBus().off(NotificationUtils.loginOut);
     EventBus().off(NotificationUtils.taberThree);
+    EventBus().off(NotificationUtils.taberTwo);
 
     super.dispose();
   }

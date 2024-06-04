@@ -1,6 +1,6 @@
 //课程购买
 
-import 'package:Bubble/home/page/entity/lesson_detail_bean.dart';
+import 'package:Bubble/home/entity/lesson_detail_bean.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/home/presenter/course_purchase_page_presenter.dart';
 import 'package:Bubble/home/view/course_purchase_page_view.dart';

@@ -68,6 +68,7 @@ class _ChatState extends State<ChatPage>
   bool _showSlideTip = false;
 
   late String isNew = "";
+  late String cherid = "";
 
   List<Map<String, String>> characterData = [
     {
@@ -152,7 +153,15 @@ class _ChatState extends State<ChatPage>
         setState(() {});
       }
       Future.delayed(const Duration(milliseconds: 300), () {
-        confirmChangeCharacter(widget.index);
+        if (cherid == "") {
+          confirmChangeCharacter(widget.index);
+        } else {
+          for (int i = 0; i < _characterList.length; i++) {
+            if (cherid == _characterList[i].characterId) {
+              confirmChangeCharacter(i);
+            }
+          }
+        }
       });
     }, onError: (code, msg) {
       Log.d('获取角色列表失败:[error]$msg', tag: '[Function]getCharacterList');
@@ -321,6 +330,11 @@ class _ChatState extends State<ChatPage>
       if (isNew == "2") {
         init();
       }
+    });
+
+    EventBus().on(NotificationUtils.taberThree, (idx) {
+      cherid = idx;
+      init();
     });
 
     // EventBus().on('LEAVECHATPAGE', (_) async {
@@ -571,6 +585,8 @@ class _ChatState extends State<ChatPage>
   void dispose() {
     // EventBus().off('LEAVECHATPAGE');
     EventBus().off(NotificationUtils.resetChat);
+    EventBus().off(NotificationUtils.taberThree);
+
     EventBus().off(NotificationUtils.loginIn);
     EventBus().off(NotificationUtils.loginOut);
 

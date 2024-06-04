@@ -75,7 +75,9 @@ class _HomeTabbarState extends State<HomeTabbar> {
               isScrollControlled: true,
               isDismissible: false,
               enableDrag: false,
-              builder: (_) => const SelectScene(),
+              builder: (_) => const SelectScene(
+                cagegoryId: 0,
+              ),
             );
 
             return;

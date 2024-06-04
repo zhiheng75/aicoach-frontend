@@ -23,8 +23,10 @@ import '../entity/category_entity.dart';
 import '../entity/scene_entity.dart';
 
 class SelectScene extends StatefulWidget {
+  final int cagegoryId;
   const SelectScene({
     Key? key,
+    required this.cagegoryId,
   }) : super(key: key);
 
   @override
@@ -98,7 +100,15 @@ class _SelectSceneState extends State<SelectScene> {
       setState(() {});
 
       if (_categoryList.isNotEmpty) {
-        changeCategory(0);
+        if (widget.cagegoryId == 0) {
+          changeCategory(0);
+        } else {
+          for (int i = 0; i < _categoryList.length; i++) {
+            if (_categoryList[i].id == widget.cagegoryId) {
+              changeCategory(i);
+            }
+          }
+        }
       }
     }, onError: (code, msg) {
       Log.d('getCategoryList fail:[reason]$msg', tag: '获取场景分类');

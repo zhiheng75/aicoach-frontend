@@ -1,4 +1,4 @@
-import 'package:Bubble/home/page/entity/base_config_entity.dart';
+import 'package:Bubble/home/entity/base_config_entity.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/person/presneter/purchase_presenter.dart';

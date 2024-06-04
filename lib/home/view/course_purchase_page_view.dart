@@ -1,4 +1,4 @@
-import 'package:Bubble/home/page/entity/lesson_detail_bean.dart';
+import 'package:Bubble/home/entity/lesson_detail_bean.dart';
 
 import '../../mvp/mvps.dart';
 

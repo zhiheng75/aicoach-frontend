@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:Bubble/conversation/utils/avatar_util.dart';
-import 'package:Bubble/home/page/entity/teach_list_entity.dart';
+import 'package:Bubble/home/entity/teach_list_entity.dart';
 import 'package:Bubble/home/provider/selecter_teacher_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

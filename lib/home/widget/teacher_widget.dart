@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/widgets/load_image.dart';
 
-import '../page/entity/teach_list_entity.dart';
+import '../entity/teach_list_entity.dart';
 
 class TeacherWidget extends StatefulWidget {
   final TeachListEntity teacher;

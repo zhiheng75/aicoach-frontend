@@ -4,7 +4,7 @@ import 'package:flustars_flutter3/flustars_flutter3.dart';
 import '../../mvp/base_page_presenter.dart';
 import '../../net/dio_utils.dart';
 import '../../net/http_api.dart';
-import '../page/entity/base_config_entity.dart';
+import '../entity/base_config_entity.dart';
 import '../view/home_view.dart';
 
 class HomePagePresenter extends BasePagePresenter<HomeView> {

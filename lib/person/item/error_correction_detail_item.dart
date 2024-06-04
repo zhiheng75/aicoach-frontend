@@ -154,6 +154,7 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
                 Gaps.hGap16,
                 GestureDetector(
                   onTap: () {
+                    MediaUtils().stopPlay();
                     MediaUtils().play(
                       url: widget.data.userAudio,
                       useAvatar: true,
@@ -256,6 +257,8 @@ class _ErrorCorrectionOneDetailItemState
                 Gaps.hGap16,
                 GestureDetector(
                   onTap: () {
+                    MediaUtils().stopPlay();
+
                     MediaUtils().play(
                       url: widget.data.suggestionAudio,
                       useAvatar: true,
@@ -482,6 +485,8 @@ class _ErrorCorrectionThreeDetailItemState
                 Gaps.hGap16,
                 GestureDetector(
                   onTap: () {
+                    MediaUtils().stopPlay();
+
                     MediaUtils().play(
                       url: widget.data.userPracticeAudio,
                       useAvatar: true,

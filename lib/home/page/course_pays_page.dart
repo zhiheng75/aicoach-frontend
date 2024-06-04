@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:Bubble/home/page/entity/lesson_detail_bean.dart';
+import 'package:Bubble/home/entity/lesson_detail_bean.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/person/presneter/purchase_page_presenter.dart';
 import 'package:Bubble/person/view/purchase_view.dart';

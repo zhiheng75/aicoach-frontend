@@ -1,5 +1,5 @@
 import 'package:Bubble/generated/json/base/json_convert_content.dart';
-import 'package:Bubble/home/page/entity/base_config_entity.dart';
+import 'package:Bubble/home/entity/base_config_entity.dart';
 
 BaseConfigEntity $BaseConfigEntityFromJson(Map<String, dynamic> json) {
   final BaseConfigEntity baseConfigEntity = BaseConfigEntity();

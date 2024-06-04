@@ -29,7 +29,7 @@ import '../util/image_utils.dart';
 import '../widgets/double_tap_back_exit_app.dart';
 import '../widgets/load_image.dart';
 import '../widgets/popup_window.dart';
-import 'page/entity/teach_list_entity.dart';
+import 'entity/teach_list_entity.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

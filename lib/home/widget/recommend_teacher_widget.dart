@@ -14,7 +14,7 @@ import '../../res/dimens.dart';
 import '../../routers/fluro_navigator.dart';
 import '../../util/image_utils.dart';
 import '../../util/toast_utils.dart';
-import '../page/entity/teach_list_entity.dart';
+import '../entity/teach_list_entity.dart';
 import '../provider/selecter_teacher_provider.dart';
 import 'teacher_widget.dart';
 
