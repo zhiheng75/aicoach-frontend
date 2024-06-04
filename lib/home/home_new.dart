@@ -16,9 +16,11 @@ import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/scene/instructional_video_dialogue_page.dart';
 import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
@@ -255,8 +257,14 @@ class _HomePageState extends State<HomeNewPage>
           clipBehavior: Clip.none,
           enableDrag: false,
           builder: (_) => type == 'topic'
-              ? TopicPage(onEnd: () => changeTab('chat'))
-              : ScenePage(onEnd: () => changeTab('chat')),
+              ? TopicPage(onEnd: () {
+                  changeTab('chat');
+                  EventBus().emit(NotificationUtils.resetChatTwo);
+                })
+              : ScenePage(onEnd: () {
+                  changeTab('chat');
+                  EventBus().emit(NotificationUtils.resetChatTwo);
+                }),
         );
         // 重置tab
         changeTab('');

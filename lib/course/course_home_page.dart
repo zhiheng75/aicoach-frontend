@@ -264,6 +264,7 @@ class _CourseHomePageState extends State<CourseHomePage>
                     // CourseRouter.courseFlowPage,
                     "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
               } else {
+                //判断手机号再说获取证书还是免费学习
                 showView(xxlist[i].levelId);
               }
             }
