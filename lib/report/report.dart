@@ -11,10 +11,12 @@ import 'package:Bubble/report/entity/lesson_reports_bean.dart';
 import 'package:Bubble/report/widget/course_report_class_item.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_data.dart';
 import 'package:Bubble/widgets/load_fail.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
@@ -459,12 +461,14 @@ class _ReportPageState extends State<ReportPage>
           getMore();
         },
         child: Container(
-          width: 102.0,
-          height: 34.0,
+          padding:
+              const EdgeInsets.only(left: 15, right: 15, top: 8, bottom: 8),
+          // width: 102.0,
+          // height: 34.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(40.0),
             color:
-                isSelected ? const Color(0xFF007AFF) : const Color(0xFFF3F5F7),
+                isSelected ? const Color(0xFF0047FF) : const Color(0xFFF3F5F7),
           ),
           alignment: Alignment.center,
           child: Text(
@@ -480,7 +484,7 @@ class _ReportPageState extends State<ReportPage>
     }
 
     Widget tabbar = Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         // barItem('口语课报告', 'chat'),
         // const SizedBox(
@@ -1139,38 +1143,50 @@ class _ReportPageState extends State<ReportPage>
       );
     }
 
-    return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
+    return CupertinoPageScaffold(
+      navigationBar: const XTCupertinoNavigationBar(
+        backgroundColor: Color(0xFFFFFFFF),
+        border: null,
+        padding: EdgeInsetsDirectional.zero,
+        leading: NavigationBackWidget(),
+        middle: Text(
+          "学情报告",
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        child: Column(
-          children: <Widget>[
-            const SizedBox(
-              height: 60.0,
-            ),
-            navbar,
-            const SizedBox(
-              height: 32.0,
-            ),
-            tabbar,
-            const SizedBox(
-              height: 20.0,
-            ),
-            _type == "class"
-                ? _reportsData.length == 1
-                    ? Container()
-                    : twoTabbar()
-                : Container(),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  bottom: _screenUtil.bottomBarHeight,
-                ),
-                child: list,
+      ),
+      child: Scaffold(
+        body: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+          ),
+          child: Column(
+            children: <Widget>[
+              // const SizedBox(
+              //   height: 60.0,
+              // ),
+              // navbar,
+              const SizedBox(
+                height: 16.0,
               ),
-            ),
-          ],
+              tabbar,
+              const SizedBox(
+                height: 20.0,
+              ),
+              _type == "class"
+                  ? _reportsData.length == 1
+                      ? Container()
+                      : twoTabbar()
+                  : Container(),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    bottom: _screenUtil.bottomBarHeight,
+                  ),
+                  child: list,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

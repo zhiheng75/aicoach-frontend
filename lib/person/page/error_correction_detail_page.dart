@@ -272,7 +272,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                       controller: _bottomBarControll,
                                       recordController: _recordController,
                                       onScrollEnd: () {},
-                                      onMapEnd: (data) {
+                                      onMapEnd: (data, totalScoreStr) {
                                         setState(() {
                                           errorDetailData[idx]
                                                   .userPracticeSentence =
@@ -282,8 +282,15 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                               // ignore: prefer_interpolation_to_compose_strings
                                               "https://statics.shenmo-ai.com/" +
                                                   data["user_practice_audio"];
-                                          double value = double.parse(
-                                              data["user_practice_score"]);
+                                          double value;
+                                          if (totalScoreStr.isNotEmpty) {
+                                            value = double.parse(totalScoreStr);
+                                          } else {
+                                            value = double.parse(
+                                                data["user_practice_score"]);
+                                          }
+                                          // double value = double.parse(
+                                          //     data["user_practice_score"]);
                                           int intValue =
                                               value.toInt(); // intValue 的值为 123
                                           errorDetailData[idx]
@@ -335,8 +342,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                       .suggestionAudio
                                       .isEmpty) {
                                     _errorCorrectionDetailPagePresenter
-                                        .postSuggestAnswer(
-                                            errorDetailData[idx].sentence);
+                                        .postSuggestAnswer(repeatText);
                                   } else {}
                                   setState(() {});
                                 }

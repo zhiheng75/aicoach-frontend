@@ -30,7 +30,7 @@ class _ProblemItemState extends State<ProblemItem> {
             color: Colors.white,
           ),
           padding: const EdgeInsets.symmetric(
-            horizontal: 5.0,
+            horizontal: 12.0,
             vertical: 15.0,
           ),
           child: RichText(
@@ -39,7 +39,7 @@ class _ProblemItemState extends State<ProblemItem> {
                   text: '问题：',
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.bold,
                     color: Colours.color_FF71CF,
                   )),
               TextSpan(
@@ -69,7 +69,7 @@ class _ProblemItemState extends State<ProblemItem> {
                   text: '解答：',
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.bold,
                     color: Colours.color_FF71CF,
                   )),
               TextSpan(

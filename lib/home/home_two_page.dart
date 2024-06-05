@@ -156,8 +156,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   }
 
   Widget barWidget(BuildContext context) {
-    return SizedBox(
-      height: 250.0,
+    return Container(
+      // color: Colors.amber,
+      height: 280.0,
       child: Swiper(
           outer: true,
           autoplay: true,
@@ -172,7 +173,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
               },
               child: LoadImage(
                 characterList[i].coverBgImage,
-                fit: BoxFit.fitWidth,
+                fit: BoxFit.fitHeight,
               ),
             );
           },

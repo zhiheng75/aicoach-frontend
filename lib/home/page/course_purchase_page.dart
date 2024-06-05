@@ -10,9 +10,11 @@ import 'package:Bubble/home/widget/people_item.dart';
 import 'package:Bubble/home/widget/problem_item.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
+import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
@@ -78,10 +80,12 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
       height: 200,
       child: GestureDetector(
           onTap: () {},
-          child: LoadImage(
-            dataBean.data.banner,
-            width: 56.0,
-            height: 56.0,
+          child: Container(
+            margin: const EdgeInsets.only(left: 10, right: 10),
+            child: LoadImage(dataBean.data.banner, fit: BoxFit.fill
+                // width: 56.0,
+                // height: 56.0,
+                ),
           )),
     );
   }
@@ -240,7 +244,7 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
             key: keyTab,
             style: const TextStyle(
               fontSize: 20.0,
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
           ),
@@ -270,7 +274,7 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                 dataBean.data.tips,
                 style: const TextStyle(
                   fontSize: 14.0,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                   color: Colors.black,
                 ),
               ),
@@ -309,36 +313,14 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
   Widget headWidget(String headStr) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.only(left: 10),
-        child: Stack(
-          children: [
-            Positioned(
-              bottom: 2,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  gradient: const LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    colors: [
-                      Colours.color_8256FF,
-                      Colours.color_FF5CDB,
-                    ],
-                  ),
-                ),
-                width: 80,
-                height: 5,
-              ),
-            ),
-            Text(
-              headStr,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-          ],
+        padding: const EdgeInsets.only(left: 10, top: 20),
+        child: Text(
+          headStr,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
       ),
     );
@@ -372,7 +354,7 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
         margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
-          color: Colours.color_F8F8F8,
+          color: Colours.color_FAF8FF,
         ),
         padding: const EdgeInsets.symmetric(
           horizontal: 5.0,
@@ -394,9 +376,12 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
   List<Widget> _buildDetailItems() {
     List<Widget> list = [];
     for (int i = 0; i < dataBean.data.detailImg.length; i++) {
-      list.add(LoadImage(
-        dataBean.data.detailImg[i],
-        width: _screenUtil.screenWidth,
+      list.add(Container(
+        margin: const EdgeInsets.only(top: 20, left: 9, right: 9),
+        child: LoadImage(
+          dataBean.data.detailImg[i],
+          width: _screenUtil.screenWidth,
+        ),
       ));
     }
     return list;
@@ -420,283 +405,309 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
           size: Size.infinite,
           child: isLoding
               ? lodingView()
-              : Stack(children: [
-                  NotificationListener<ScrollNotification>(
-                    onNotification: (ScrollNotification notification) {
-                      boxTab ??= keyTab.currentContext!.findRenderObject()
-                          as RenderBox?;
-                      offsetTab = boxTab!.localToGlobal(Offset.zero);
+              : Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image:
+                              ImageUtils.getAssetImage("purchase_one_bg_img"),
+                          fit: BoxFit.fill)),
+                  child: Stack(children: [
+                    NotificationListener<ScrollNotification>(
+                      onNotification: (ScrollNotification notification) {
+                        boxTab ??= keyTab.currentContext!.findRenderObject()
+                            as RenderBox?;
+                        offsetTab = boxTab!.localToGlobal(Offset.zero);
 
-                      if (offsetTab.dy < 110.0) {
-                        isUpdateAppBar = true;
-                        // isUpdatePage = false;
-                        // isUpdateTheme = true;
-                      } else {
-                        isUpdateAppBar = false;
-                        // isUpdatePage = true;
-                        // isUpdateTheme = false;
-                      }
-                      setState(() {});
+                        if (offsetTab.dy < 290.0) {
+                          isUpdateAppBar = true;
+                          // isUpdatePage = false;
+                          // isUpdateTheme = true;
+                        } else {
+                          isUpdateAppBar = false;
+                          // isUpdatePage = true;
+                          // isUpdateTheme = false;
+                        }
+                        setState(() {});
 
-                      return true;
-                    },
-                    child: CustomScrollView(slivers: [
-                      SliverToBoxAdapter(
-                        child: classImgWidget(context),
-                      ),
-                      SliverToBoxAdapter(
-                        child: classDetaileWidget(context),
-                      ),
-                      headWidget("用户评价"),
-                      SliverToBoxAdapter(
-                        child: Container(
-                          margin: const EdgeInsets.only(top: 10),
-                          height: 100.0,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: dataBean.data.userFeedbackImg.length,
-                            itemBuilder: (context, index) {
-                              return SizedBox(
-                                width: 150.0,
-                                child: Card(
-                                  // color: Colors.primaries[index],
-                                  child: LoadImage(
-                                    dataBean.data.userFeedbackImg[index],
+                        return true;
+                      },
+                      child: CustomScrollView(slivers: [
+                        SliverToBoxAdapter(
+                          child: Container(
+                            // color: Colors.amber,
+                            height: _screenUtil.statusBarHeight + 45,
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: classImgWidget(context),
+                        ),
+                        SliverToBoxAdapter(
+                          child: classDetaileWidget(context),
+                        ),
+                        headWidget("用户评价"),
+                        SliverToBoxAdapter(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 10, left: 9),
+                            height: 166.0,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: dataBean.data.userFeedbackImg.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: EdgeInsets.only(right: 10),
+                                  child: SizedBox(
+                                    width: 238.0,
+                                    child: LoadImage(
+                                      dataBean.data.userFeedbackImg[index],
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                      otherHeadWidget("class_head"),
-                      detailWidget(),
-                      // otherHeadWidget("people_head"),
-                      // otherHeadWidget("quanyi_hrad"),
-
-                      // SliverGrid.builder(
-                      //     itemCount: 6,
-                      //     gridDelegate:
-                      //         const SliverGridDelegateWithFixedCrossAxisCount(
-                      //       //设置列数
-                      //       crossAxisCount: 3,
-                      //       //设置横向间距
-                      //       crossAxisSpacing: 0,
-                      //       //设置主轴间距
-                      //       mainAxisSpacing: 0,
-                      //       // mainAxisExtent: 173,
-                      //     ),
-                      //     itemBuilder: (BuildContext ctx, int index) {
-                      //       return PeopleItem(
-                      //         idx: index,
-                      //       );
-                      //     }),
-                      // headWidget("权益"),
-                      // SliverList.builder(
-                      //   itemBuilder: (ctx, index) {
-                      //     return GestureDetector(
-                      //       onTap: () {},
-                      //       child: CourseEquityItem(
-                      //         idx: index,
-                      //       ),
-                      //     );
-                      //   },
-                      //   itemCount: 5,
-                      // ),
-                      SliverToBoxAdapter(
-                        child: Container(
-                          margin: EdgeInsets.only(top: 40, bottom: 14),
-                          // height: 80,
-                          child: const LoadAssetImage(
-                            'wenti_bg',
-                          ),
-                        ),
-                      ),
-                      problemWidget(),
-                      SliverToBoxAdapter(
-                        child: Column(
-                          children: [
-                            Gaps.vGap80,
-                            SizedBox(
-                              height: _screenUtil.bottomBarHeight,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ]),
-                  ),
-                  isUpdateAppBar
-                      ? Positioned(
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          child: XTCupertinoNavigationBar(
-                            backgroundColor: const Color(0xFFFFFFFF),
-                            border: null,
-                            padding: EdgeInsetsDirectional.zero,
-                            leading: const NavigationBackWidget(),
-                            middle: Text(
-                              dataBean.data.levelName,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ))
-                      : Positioned(
-                          top: 50,
-                          left: 20,
-                          child: GestureDetector(
-                              onTap: () {
-                                NavigatorUtils.goBack(context);
+                                );
                               },
-                              child: const LoadAssetImage(
-                                "ic_back_icon",
-                                width: 20.0,
-                                height: 20.0,
-                              ))),
-                  Positioned(
-                      bottom: 0,
-                      // width: _screenUtil.screenWidth,
-                      child: Container(
-                        color: Colours.color_F9F8FF,
-                        width: _screenUtil.screenWidth,
-                        child: Column(
-                          children: [
-                            Gaps.vGap10,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTap: () {
-                                    Fluwx fluwx = Fluwx();
-                                    fluwx.registerApi(
-                                        appId: "wxfb033d09d2eecaf0",
-                                        universalLink:
-                                            "https://demo.shenmo-ai.net/ios/");
-                                    // // MiniProgram
-                                    fluwx.open(
-                                        target: CustomerServiceChat(
-                                            corpId: "wwd0c44d64eb7bcab7",
-                                            url:
-                                                "https://work.weixin.qq.com/kfid/kfc17bc7445bac300b9"));
-                                  },
-                                  child: const LoadAssetImage(
-                                    "zixun_icon",
-                                    width: 40.0,
-                                    height: 40.0,
-                                  ),
-                                ),
-                                GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTap: () {
-                                    if (_checked) {
-                                      if (phone == "17001234567") {
-                                        NavigatorUtils.push(context,
-                                            CourseRouter.certifiedLearningPage,
-                                            arguments: dataBean);
-                                      } else {
-                                        NavigatorUtils.push(
-                                            context, HomeRouter.coursePaysPage,
-                                            arguments: dataBean);
-                                      }
-                                    } else {
-                                      Toast.show("请同意会员协议");
-                                    }
-                                  },
-                                  child: Container(
-                                    width: 250.0,
-                                    height: 48.0,
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(100.0),
-                                      border: Border.all(
-                                        width: 1.0,
-                                        style: BorderStyle.solid,
-                                        color: Colours.color_001652,
-                                      ),
-                                      gradient: const LinearGradient(
-                                        begin: Alignment.bottomLeft,
-                                        end: Alignment.topRight,
-                                        colors: [
-                                          Colours.color_9AC3FF,
-                                          Colours.color_FF71E0,
-                                        ],
-                                      ),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      phone == "17001234567" ? "获取证书" : '立即支付',
-                                      style: const TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colours.color_001652,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
                             ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTap: () {
-                                    _checked = !_checked;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    width: 30,
-                                    height: 30,
-                                    padding: const EdgeInsets.all(10),
-                                    child: LoadAssetImage(
-                                      _checked ? 'yigouxuan' : 'weigouxuan',
-                                      width: 15.0,
-                                      height: 15.0,
-                                    ),
-                                  ),
-                                ),
-                                // const SizedBox(
-                                //   width: 8.0,
-                                // ),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      const TextSpan(
-                                        text: '我已阅读并同意',
-                                        style: TextStyle(
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.w400,
-                                          color: Color(0xFF333333),
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: '会员协议',
-                                        style: const TextStyle(
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.w400,
-                                          color: Color(0xFF0047FF),
-                                        ),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            NavigatorUtils.goWebViewPage(
-                                                context,
-                                                "会员协议",
-                                                "http://www.shenmo-ai.com/tos/");
-                                          },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: _screenUtil.bottomBarHeight - 10,
-                            ),
-                          ],
+                          ),
                         ),
-                      )),
-                ]),
+                        // SliverToBoxAdapter(
+                        //   child: Container(
+                        //     margin: const EdgeInsets.only(top: 10),
+                        //     height: 100.0,
+                        //     child: ListView.builder(
+                        //       scrollDirection: Axis.horizontal,
+                        //       itemCount: dataBean.data.userFeedbackImg.length,
+                        //       itemBuilder: (context, index) {
+                        //         return SizedBox(
+                        //           width: 150.0,
+                        //           child: Card(
+                        //             // color: Colors.primaries[index],
+                        //             child: LoadImage(
+                        //               dataBean.data.userFeedbackImg[index],
+                        //             ),
+                        //           ),
+                        //         );
+                        //       },
+                        //     ),
+                        //   ),
+                        // ),
+                        // otherHeadWidget("class_head"),
+                        detailWidget(),
+                        // otherHeadWidget("people_head"),
+                        // otherHeadWidget("quanyi_hrad"),
+
+                        // SliverGrid.builder(
+                        //     itemCount: 6,
+                        //     gridDelegate:
+                        //         const SliverGridDelegateWithFixedCrossAxisCount(
+                        //       //设置列数
+                        //       crossAxisCount: 3,
+                        //       //设置横向间距
+                        //       crossAxisSpacing: 0,
+                        //       //设置主轴间距
+                        //       mainAxisSpacing: 0,
+                        //       // mainAxisExtent: 173,
+                        //     ),
+                        //     itemBuilder: (BuildContext ctx, int index) {
+                        //       return PeopleItem(
+                        //         idx: index,
+                        //       );
+                        //     }),
+                        // headWidget("权益"),
+                        // SliverList.builder(
+                        //   itemBuilder: (ctx, index) {
+                        //     return GestureDetector(
+                        //       onTap: () {},
+                        //       child: CourseEquityItem(
+                        //         idx: index,
+                        //       ),
+                        //     );
+                        //   },
+                        //   itemCount: 5,
+                        // ),
+                        SliverToBoxAdapter(
+                          child: Container(
+                            margin: EdgeInsets.only(top: 40, bottom: 14),
+                            // height: 80,
+                            child: const LoadAssetImage(
+                              'wenti_bg',
+                            ),
+                          ),
+                        ),
+                        problemWidget(),
+                        SliverToBoxAdapter(
+                          child: Column(
+                            children: [
+                              Gaps.vGap80,
+                              SizedBox(
+                                height: _screenUtil.bottomBarHeight,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ]),
+                    ),
+                    isUpdateAppBar
+                        ? Positioned(
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            child: XTCupertinoNavigationBar(
+                              backgroundColor: const Color(0xFFFFFFFF),
+                              border: null,
+                              padding: EdgeInsetsDirectional.zero,
+                              leading: const NavigationBackWidget(),
+                              middle: Text(
+                                dataBean.data.levelName,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ))
+                        : Positioned(
+                            top: 50,
+                            left: 20,
+                            child: GestureDetector(
+                                onTap: () {
+                                  NavigatorUtils.goBack(context);
+                                },
+                                child: const LoadAssetImage(
+                                  "ic_back_icon",
+                                  width: 20.0,
+                                  height: 20.0,
+                                ))),
+                    Positioned(
+                        bottom: 0,
+                        // width: _screenUtil.screenWidth,
+                        child: Container(
+                          color: Colours.color_F9F8FF,
+                          width: _screenUtil.screenWidth,
+                          child: Column(
+                            children: [
+                              Gaps.vGap10,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTap: () {
+                                      if (phone == "17001234567") {
+                                        NavigatorUtils.push(
+                                            context, PersonalRouter.about);
+                                      } else {
+                                        Fluwx fluwx = Fluwx();
+                                        fluwx.registerApi(
+                                            appId: "wxfb033d09d2eecaf0",
+                                            universalLink:
+                                                "https://demo.shenmo-ai.net/ios/");
+                                        // // MiniProgram
+                                        fluwx.open(
+                                            target: CustomerServiceChat(
+                                                corpId: "wwd0c44d64eb7bcab7",
+                                                url:
+                                                    "https://work.weixin.qq.com/kfid/kfc17bc7445bac300b9"));
+                                      }
+                                    },
+                                    child: Container(
+                                      // color: Colors.amber,
+                                      // width: 100,
+                                      child: const LoadAssetImage(
+                                        "zixun_icon",
+                                        width: 25.0,
+                                        height: 41.0,
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                      behavior: HitTestBehavior.opaque,
+                                      onTap: () {
+                                        if (_checked) {
+                                          if (phone == "17001234567") {
+                                            NavigatorUtils.push(
+                                                context,
+                                                CourseRouter
+                                                    .certifiedLearningPage,
+                                                arguments: dataBean);
+                                          } else {
+                                            NavigatorUtils.push(context,
+                                                HomeRouter.coursePaysPage,
+                                                arguments: dataBean);
+                                          }
+                                        } else {
+                                          Toast.show("请同意会员协议");
+                                        }
+                                      },
+                                      child: Container(
+                                        // color: Colors.black,
+                                        child: LoadAssetImage(
+                                          phone == "17001234567"
+                                              ? "course_purchase_two"
+                                              : "course_purchase_one",
+                                          width: 290.0,
+                                          // height: 52.0,
+                                        ),
+                                      )),
+                                ],
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTap: () {
+                                      _checked = !_checked;
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      width: 30,
+                                      height: 30,
+                                      padding: const EdgeInsets.all(10),
+                                      child: LoadAssetImage(
+                                        _checked ? 'yigouxuan' : 'weigouxuan',
+                                        width: 15.0,
+                                        height: 15.0,
+                                      ),
+                                    ),
+                                  ),
+                                  // const SizedBox(
+                                  //   width: 8.0,
+                                  // ),
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        const TextSpan(
+                                          text: '我已阅读并同意',
+                                          style: TextStyle(
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.w400,
+                                            color: Color(0xFF333333),
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: '会员协议',
+                                          style: const TextStyle(
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.w400,
+                                            color: Color(0xFF0047FF),
+                                          ),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              NavigatorUtils.goWebViewPage(
+                                                  context,
+                                                  "会员协议",
+                                                  "http://www.shenmo-ai.com/tos/");
+                                            },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: _screenUtil.bottomBarHeight - 10,
+                              ),
+                            ],
+                          ),
+                        )),
+                  ]),
+                ),
         ),
       ),
     );

@@ -105,7 +105,7 @@ class _InstructionalVideoDialoguePageState
   // late VideoPlayerController _controller;
 
   late String introFileType;
-  late int dataIdx;
+  late int newDataIdx;
 
   late int resourceIdx = 0;
   late String introFileStr;
@@ -155,7 +155,8 @@ class _InstructionalVideoDialoguePageState
         timer.cancel();
         isShowDialog = false;
         _secondsRemaining = 0;
-        forstartFlow(dataIdx, resourceIdx);
+        // newDataIdx = newDataIdx + 1;
+        forstartFlow(newDataIdx, resourceIdx);
         setState(() {});
       } else {
         setState(() {
@@ -269,6 +270,7 @@ class _InstructionalVideoDialoguePageState
               answer.contains('{[finish]}') ||
               RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
         ischatEndStr = "1";
+        repeatTextStr(_answer!.text);
         //弹窗点击确定后重新链接
         _instructionalVideoDialoguePresenter.postStepUpdate(lessonId, stepId);
         // onNextSocketEnd();
@@ -282,6 +284,7 @@ class _InstructionalVideoDialoguePageState
         if (ischatEndStr == "1") {
           //在这里是播放完成
           Log.e("11111111111111111111111111111这里弹窗");
+          endSocket();
           ischatEndStr = "0";
           onNextSocketEnd();
         }
@@ -290,8 +293,6 @@ class _InstructionalVideoDialoguePageState
     }
     if (answer is String) {
       if (answer.startsWith('[end')) {
-        repeatTextStr(_answer!.text);
-
         _answer!.isTextEnd = true;
         // 音频已全部返回
         if (_listPlayer != null) {
@@ -384,14 +385,15 @@ class _InstructionalVideoDialoguePageState
   void initState() {
     super.initState();
     contentTop = _screenUtil.statusBarHeight + 300.0;
-
+    newDataIdx = widget.idx;
+    resourceIdx = 0;
     WidgetsBinding.instance.addObserver(this);
 
     EventBus().on(NotificationUtils.nextClass, (idx) {
-      dataIdx = dataIdx + 1;
-      // resourceIdx = 0;
-      // forstartFlow(dataIdx, resourceIdx);
-      forFlow();
+      newDataIdx = newDataIdx + 1;
+      resourceIdx = 0;
+      forstartFlow(newDataIdx, resourceIdx);
+      // forFlow();
     });
 
     // 全局监听App状态
@@ -435,9 +437,8 @@ class _InstructionalVideoDialoguePageState
     _pageState = 'success';
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     _homeProvider.ishread = "0";
-    dataIdx = widget.idx;
-    resourceIdx = 0;
-    forstartFlow(dataIdx, resourceIdx);
+
+    forstartFlow(newDataIdx, resourceIdx);
     // 监听App状态
     //   ScreenUtil.init(context);
 // ScreenUtil.registerToBuild(context)
@@ -491,13 +492,13 @@ class _InstructionalVideoDialoguePageState
           return ClassShowView(() {
             //确定
             resourceIdx = 0;
-            forstartFlow(dataIdx, resourceIdx);
+            forstartFlow(newDataIdx, resourceIdx);
           }, () {
             //重新来
             resourceIdx = 0;
 
-            dataIdx = dataIdx - 1;
-            forstartFlow(dataIdx, resourceIdx);
+            newDataIdx = newDataIdx - 1;
+            forstartFlow(newDataIdx, resourceIdx);
           });
         });
   }
@@ -529,11 +530,11 @@ class _InstructionalVideoDialoguePageState
                       _timer.cancel();
 
                       //重新开始
-                      dataIdx = dataIdx - 1;
+                      newDataIdx = newDataIdx - 1;
                       setState(() {
                         isShowDialog = false;
                       });
-                      forstartFlow(dataIdx, resourceIdx);
+                      forstartFlow(newDataIdx, resourceIdx);
                     },
                     child: Container(
                       width: 114,
@@ -572,7 +573,7 @@ class _InstructionalVideoDialoguePageState
                         isShowDialog = false;
                       });
 
-                      forstartFlow(dataIdx, resourceIdx);
+                      forstartFlow(newDataIdx, resourceIdx);
                     },
                     child: Container(
                       width: 114,
@@ -612,12 +613,12 @@ class _InstructionalVideoDialoguePageState
   void forFlow() {
     resourceIdx = resourceIdx + 1;
     // dataIdx = dataIdx + 1;
-    if (resourceIdx < data[dataIdx].resource.length) {
+    if (resourceIdx < data[newDataIdx].resource.length) {
       // resourceIdx = resourceIdx + 1;
-      forstartFlow(dataIdx, resourceIdx);
+      forstartFlow(newDataIdx, resourceIdx);
     } else {
-      dataIdx = dataIdx + 1;
-      if (dataIdx < data.length) {
+      newDataIdx = newDataIdx + 1;
+      if (newDataIdx < data.length) {
         resourceIdx = 0;
 
         isShowDialog = true;
@@ -709,19 +710,19 @@ class _InstructionalVideoDialoguePageState
     DioUtils.instance.requestNetwork<ResultData>(
         Method.post, HttpApi.generateAudio,
         params: {
-          'text': data[widget.idx].resource[resourceIdx].introText!,
+          'text': data[newDataIdx].resource[resourceIdx].introText!,
           'character_id': _homeProvider.character.characterId,
         }, onSuccess: (result) {
       if (result?.code == 200) {
         Map<String, dynamic> data = result?.data as Map<String, dynamic>;
         startNormalChat(data['text'], data['speech_url']);
       } else {
-        startNormalChat(data[widget.idx].resource[resourceIdx].introText!,
-            data[widget.idx].resource[resourceIdx].introAudio!);
+        startNormalChat(data[newDataIdx].resource[resourceIdx].introText!,
+            data[newDataIdx].resource[resourceIdx].introAudio!);
       }
     }, onError: (code, msg) {
-      startNormalChat(data[widget.idx].resource[resourceIdx].introText!,
-          data[widget.idx].resource[resourceIdx].introAudio!);
+      startNormalChat(data[newDataIdx].resource[resourceIdx].introText!,
+          data[newDataIdx].resource[resourceIdx].introAudio!);
     });
   }
 
@@ -762,19 +763,19 @@ class _InstructionalVideoDialoguePageState
     DioUtils.instance.requestNetwork<ResultData>(
         Method.post, HttpApi.generateAudio,
         params: {
-          'text': data[widget.idx].resource[resourceIdx].greetingText!,
+          'text': data[newDataIdx].resource[resourceIdx].greetingText!,
           'character_id': _homeProvider.character.characterId,
         }, onSuccess: (result) {
       if (result?.code == 200) {
         Map<String, dynamic> data = result?.data as Map<String, dynamic>;
         startNormaltwoChat(data['text'], data['speech_url']);
       } else {
-        startNormalChat(data[widget.idx].resource[resourceIdx].greetingText!,
-            data[widget.idx].resource[resourceIdx].greetingAudio!);
+        startNormalChat(data[newDataIdx].resource[resourceIdx].greetingText!,
+            data[newDataIdx].resource[resourceIdx].greetingAudio!);
       }
     }, onError: (code, msg) {
-      startNormalChat(data[widget.idx].resource[resourceIdx].greetingText!,
-          data[widget.idx].resource[resourceIdx].greetingAudio!);
+      startNormalChat(data[newDataIdx].resource[resourceIdx].greetingText!,
+          data[newDataIdx].resource[resourceIdx].greetingAudio!);
     });
   }
 
@@ -814,19 +815,19 @@ class _InstructionalVideoDialoguePageState
     DioUtils.instance.requestNetwork<ResultData>(
         Method.post, HttpApi.generateAudio,
         params: {
-          'text': data[widget.idx].resource[resourceIdx].greetingText!,
+          'text': data[newDataIdx].resource[resourceIdx].greetingText!,
           'character_id': _homeProvider.character.characterId,
         }, onSuccess: (result) {
       if (result?.code == 200) {
         Map<String, dynamic> data = result?.data as Map<String, dynamic>;
         imgFlow(data['text'], data['speech_url']);
       } else {
-        imgFlow(data[widget.idx].resource[resourceIdx].greetingText!,
-            data[widget.idx].resource[resourceIdx].greetingAudio!);
+        imgFlow(data[newDataIdx].resource[resourceIdx].greetingText!,
+            data[newDataIdx].resource[resourceIdx].greetingAudio!);
       }
     }, onError: (code, msg) {
-      imgFlow(data[widget.idx].resource[resourceIdx].greetingText!,
-          data[widget.idx].resource[resourceIdx].greetingAudio!);
+      imgFlow(data[newDataIdx].resource[resourceIdx].greetingText!,
+          data[newDataIdx].resource[resourceIdx].greetingAudio!);
     });
   }
 
@@ -1170,7 +1171,7 @@ class _InstructionalVideoDialoguePageState
   List<Widget> _buildItems() {
     List<Widget> list = [];
     for (int i = 0; i < data.length; i++) {
-      if (i == widget.idx) {
+      if (i == newDataIdx) {
         list.add(
           const SizedBox(
             width: 15,

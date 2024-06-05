@@ -41,8 +41,8 @@ class _CourseReportClassItemState extends State<CourseReportClassItem> {
           children: [
             Gaps.hGap10,
             Container(
-              width: 80,
-              height: 80,
+              width: 64,
+              height: 64,
               // margin: const EdgeInsets.only(top: 10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
@@ -64,16 +64,16 @@ class _CourseReportClassItemState extends State<CourseReportClassItem> {
                     widget.unitData.lessonLabel,
                     style: const TextStyle(
                       fontSize: 20.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
                   const Text(
                     "Lesson",
                     style: TextStyle(
                       fontSize: 13.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      color: Colours.color_FFFFFF60,
                     ),
                   ),
                 ],
@@ -130,7 +130,7 @@ class _CourseReportClassItemState extends State<CourseReportClassItem> {
                     Text(
                       '${widget.unitData.score}',
                       style: TextStyle(
-                        fontSize: 24.0,
+                        fontSize: 26.0,
                         fontWeight: FontWeight.bold,
                         color:
                             getColorByScore(widget.unitData.score.toDouble()),
@@ -140,7 +140,7 @@ class _CourseReportClassItemState extends State<CourseReportClassItem> {
                     const Text(
                       '综合得分',
                       style: TextStyle(
-                        fontSize: 11.0,
+                        fontSize: 12.0,
                         fontWeight: FontWeight.w400,
                         color: Colours.color_999999,
                         letterSpacing: 0.05,
@@ -153,6 +153,7 @@ class _CourseReportClassItemState extends State<CourseReportClassItem> {
                 // ),
               ],
             ),
+            // Gaps.hGap2,
             // Text(
             //   widget.unitData.completed == 0 ? "去上课" : "已完成",
             //   style: TextStyle(
@@ -165,9 +166,11 @@ class _CourseReportClassItemState extends State<CourseReportClassItem> {
             // ),
             const LoadAssetImage(
               "ic_arrow_right",
-              width: 15.0,
-              height: 15.0,
+              width: 24.0,
+              height: 24.0,
             ),
+            // Gaps.hGap2,
+
             // Gaps.hGap10,
           ],
         ));

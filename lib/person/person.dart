@@ -211,7 +211,7 @@ class _PersonPageState extends State<PersonPage>
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage(
-            'assets/images/person_bg.png',
+            'assets/images/purchase_one_bg_img.png',
           ),
           fit: BoxFit.fill,
         ),
@@ -309,7 +309,7 @@ class _PersonPageState extends State<PersonPage>
             ],
           ),
           const SizedBox(
-            height: 6.0,
+            height: 8.0,
           ),
           Text(
             label,

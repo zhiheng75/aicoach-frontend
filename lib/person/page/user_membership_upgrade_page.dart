@@ -628,7 +628,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                         SliverToBoxAdapter(
                           child: Container(
                             // color: Colors.amber,
-                            height: _screenUtil.statusBarHeight + 60,
+                            height: _screenUtil.statusBarHeight + 50,
                           ),
                         ),
                         SliverToBoxAdapter(
@@ -701,6 +701,21 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                       ]),
                     ),
                     isUpdateAppBar
+                        ? Positioned(
+                            top: 0, left: 0, right: 0, child: Container())
+                        : const Positioned(
+                            top: 60,
+                            left: 12,
+                            right: 12,
+                            // height: 80,
+                            child: Center(
+                              child: Text(
+                                "升级会员",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                    isUpdateAppBar
                         ? const Positioned(
                             top: 0,
                             left: 0,
@@ -726,7 +741,8 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                                   "ic_back_icon",
                                   width: 20.0,
                                   height: 20.0,
-                                ))),
+                                )),
+                          ),
                   ]),
                 ),
         ),

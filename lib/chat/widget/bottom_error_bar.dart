@@ -61,7 +61,7 @@ class BottomErrorBar extends StatefulWidget {
   final String suggestionAudioStr;
 
   final Function()? onScrollEnd;
-  final Function(Map<String, dynamic> map)? onMapEnd;
+  final Function(Map<String, dynamic> map, String totalScoreStr)? onMapEnd;
 
   final bool isNormalChat;
 
@@ -77,6 +77,8 @@ class _BottomErrorBarState extends State<BottomErrorBar>
   final MediaUtils _mediaUtils = MediaUtils();
   final RecognizeUtil _recognizeUtil = RecognizeUtil();
   List<Uint8List> _bufferList = [];
+
+  late String totalScoreStr = "";
 
   bool isAvailable() {
     if (!LoginManager.isLogin()) {
@@ -146,7 +148,7 @@ class _BottomErrorBarState extends State<BottomErrorBar>
     insertUserMessage(text, (message) {
       ErrorClassEvaluateUtil().evaluate(message, (Map<String, dynamic> map) {
         Log.e(map.toString());
-        widget.onMapEnd!(map);
+        widget.onMapEnd!(map, totalScoreStr);
       });
     });
   }
@@ -189,12 +191,9 @@ class _BottomErrorBarState extends State<BottomErrorBar>
         Log.e(map["total_score"]);
         // Log.e(map["total_score"]);
         try {
-          double value = double.parse(map["total_score"]);
-          if (value > 60) {
-            sendMessage(word);
-          } else {
-            sendMessage(msg);
-          }
+          totalScoreStr = map["total_score"];
+          // double value = double.parse(map["total_score"]);
+          sendMessage(msg);
         } catch (e) {
           sendMessage(msg);
         }
@@ -406,10 +405,10 @@ class _BottomErrorBarState extends State<BottomErrorBar>
                     '请说话',
                   );
                 }
-                if (widget.repeatWord != "") {
+                if (widget.suggestionSentenceStr != "") {
                   //这里先调评测,分高传tag分低穿别的
-                  // sendTwoMessage(result['text'], widget.repeatWord);
-                  sendMessage(widget.repeatWord);
+                  sendTwoMessage(result['text'], widget.suggestionSentenceStr);
+                  // sendMessage(widget.repeatWord);
                 } else {
                   sendMessage(result['text']);
                 }

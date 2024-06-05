@@ -4,6 +4,8 @@ import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/resources.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/image_utils.dart';
+import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -288,25 +290,37 @@ class _OrderPageState extends State<OrderPage>
       );
     }
 
-    return Scaffold(
-      body: Container(
-        width: _screenUtil.screenWidth,
-        height: _screenUtil.screenHeight,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
+    return CupertinoPageScaffold(
+      navigationBar: const XTCupertinoNavigationBar(
+        backgroundColor: Color(0xFFFFFFFF),
+        border: null,
+        padding: EdgeInsetsDirectional.zero,
+        leading: NavigationBackWidget(),
+        middle: Text(
+          "购买记录",
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        child: Column(
-          children: <Widget>[
-            const SizedBox(
-              height: 60.0,
-            ),
-            const Navbar(
-              title: '购买记录',
-            ),
-            Expanded(
-              child: list,
-            ),
-          ],
+      ),
+      child: Scaffold(
+        body: Container(
+          width: _screenUtil.screenWidth,
+          height: _screenUtil.screenHeight,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+          ),
+          child: Column(
+            children: <Widget>[
+              // const SizedBox(
+              //   height: 60.0,
+              // ),
+              // const Navbar(
+              //   title: '购买记录',
+              // ),
+              Expanded(
+                child: list,
+              ),
+            ],
+          ),
         ),
       ),
     );

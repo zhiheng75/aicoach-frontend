@@ -7,6 +7,7 @@ import 'package:Bubble/course/item/lesson_sele_item.dart';
 import 'package:Bubble/course/presenter/course_home_page_presenter.dart';
 import 'package:Bubble/course/view/course_home_page_view.dart';
 import 'package:Bubble/home/home_router.dart';
+import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
@@ -212,30 +213,32 @@ class _CourseHomePageState extends State<CourseHomePage>
   }
 
   void showView(int levelId) {
-    ConfirmUtils.show(
-      context: context,
-      title: '提示',
-      buttonDirection: 'vertical',
-      confirmButtonText: '暂不购买',
-      cancelButtonText: '立即购买',
-      onConfirm: () {},
-      onCancel: () {
-        //去购买页
-        NavigatorUtils.push(
-          context,
-          "${HomeRouter.coursePurchasePage}?levelId=$levelId",
-        );
-      },
-      child: const Text(
-        '购买课程即可开始学习',
-        style: TextStyle(
-          fontSize: 15.0,
-          fontWeight: FontWeight.w400,
-          color: Color(0xFF333333),
-          height: 18.0 / 15.0,
+    LoginManager.checkLogin(context, () {
+      ConfirmUtils.show(
+        context: context,
+        title: '提示',
+        buttonDirection: 'vertical',
+        confirmButtonText: '暂不购买',
+        cancelButtonText: '立即购买',
+        onConfirm: () {},
+        onCancel: () {
+          //去购买页
+          NavigatorUtils.push(
+            context,
+            "${HomeRouter.coursePurchasePage}?levelId=$levelId",
+          );
+        },
+        child: const Text(
+          '购买课程即可开始学习',
+          style: TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.w400,
+            color: Color(0xFF333333),
+            height: 18.0 / 15.0,
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   List<Widget> _buildItems(
@@ -245,6 +248,7 @@ class _CourseHomePageState extends State<CourseHomePage>
       list.add(GestureDetector(
           onTap: () {
             // showView(xxlist[i].levelId);
+            // return;
             if (xxlist[i].isUserBuy == 1) {
               //去上课
               if (xxlist[i].isLocked == 0) {

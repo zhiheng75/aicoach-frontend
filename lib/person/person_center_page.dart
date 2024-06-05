@@ -377,7 +377,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
           title,
           style: TextStyles.text12_546092,
         ),
-        Gaps.vGap4,
+        Gaps.vGap5,
         RichText(
             text: TextSpan(children: <TextSpan>[
           TextSpan(

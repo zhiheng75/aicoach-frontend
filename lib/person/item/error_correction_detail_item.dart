@@ -21,6 +21,11 @@ class ErrorCorrectionDetailItem extends StatefulWidget {
 
 class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
   late String headimgurl = "";
+  FlutterSoundPlayer? player;
+
+  void initPlayer() async {
+    player = await FlutterSoundPlayer().openPlayer();
+  }
 
   @override
   void initState() {
@@ -32,6 +37,8 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
       headImg = user['headimgurl'];
     }
     headimgurl = headImg;
+    initPlayer();
+
     setState(() {});
   }
 
@@ -154,12 +161,16 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
                 Gaps.hGap16,
                 GestureDetector(
                   onTap: () {
-                    MediaUtils().stopPlay();
-                    MediaUtils().play(
-                      url: widget.data.userAudio,
-                      useAvatar: true,
+                    player!.startPlayer(
+                      fromURI: widget.data.userAudio,
                       whenFinished: () {},
                     );
+                    // MediaUtils().stopPlay();
+                    // MediaUtils().play(
+                    //   url: widget.data.userAudio,
+                    //   useAvatar: true,
+                    //   whenFinished: () {},
+                    // );
                   },
                   child: const LoadAssetImage(
                     'jiucuo_laba_icon',
@@ -397,6 +408,18 @@ class ErrorCorrectionThreeDetailItem extends StatefulWidget {
 
 class _ErrorCorrectionThreeDetailItemState
     extends State<ErrorCorrectionThreeDetailItem> {
+  FlutterSoundPlayer? player;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initPlayer();
+  }
+
+  void initPlayer() async {
+    player = await FlutterSoundPlayer().openPlayer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -485,13 +508,16 @@ class _ErrorCorrectionThreeDetailItemState
                 Gaps.hGap16,
                 GestureDetector(
                   onTap: () {
-                    MediaUtils().stopPlay();
-
-                    MediaUtils().play(
-                      url: widget.data.userPracticeAudio,
-                      useAvatar: true,
+                    player!.startPlayer(
+                      fromURI: widget.data.userPracticeAudio,
                       whenFinished: () {},
                     );
+                    // MediaUtils().stopPlay();
+                    // MediaUtils().play(
+                    //   url: widget.data.userPracticeAudio,
+                    //   useAvatar: true,
+                    //   whenFinished: () {},
+                    // );
                   },
                   child: const LoadAssetImage(
                     'jiucuo_laba_icon',
