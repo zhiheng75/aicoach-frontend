@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Bubble/home/entity/lesson_detail_bean.dart';
+import 'package:Bubble/home/widget/teacher_show_view.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/person/presneter/purchase_page_presenter.dart';
 import 'package:Bubble/person/view/purchase_view.dart';
@@ -368,34 +369,55 @@ class _CoursePaysPageState extends State<CoursePaysPage>
   //       });
   // }
 
+  showImageDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return TeacherShowView(
+            () {
+              //确定
+              String accessToken = SpUtil.getString(Constant.accessToken) ?? "";
+              fluwx.open(
+                  target: MiniProgram(
+                      username: "gh_dcd9c62ba779",
+                      path:
+                          "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
+                      miniProgramType: WXMiniProgramType.test));
+              Navigator.of(context).pop();
+            },
+          );
+        });
+  }
+
   @override
   paySuccess() {
     // TODO: implement paySuccess
     // showPayToast(context: context, message: "支付成功\n前往微信添加\n本课程辅导老师");
-    Future.delayed(const Duration(seconds: 5), () {
-      EventBus().emit(NotificationUtils.paySuccess);
+    // Future.delayed(const Duration(seconds: 5), () {
+    EventBus().emit(NotificationUtils.paySuccess);
 
-      // 这里是你想要延迟执行的代码
-    });
-
-    ConfirmUtils.showSingle(
-      context: context,
-      title: "支付成功\n前往微信添加\n本课程辅导老师",
-      onCancel: () {
-//         移动应用appid:wxfb033d09d2eecaf0
-// 小程序appid:wx2140a8026b8cdf74
-// 跳转路径：pages/mine/add-weChat/add-weChat?user_token=token
-        // alertDialoFg();
-        //跳转小程序
-        fluwx.open(
-            target: MiniProgram(
-                username: "gh_dcd9c62ba779",
-                path:
-                    "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
-                miniProgramType: WXMiniProgramType.test));
-        Navigator.of(context).pop();
-      },
-    );
+    // 这里是你想要延迟执行的代码
+    // });
+    showImageDialog();
+//     ConfirmUtils.showSingle(
+//       context: context,
+//       title: "支付成功\n前往微信添加\n本课程辅导老师",
+//       onCancel: () {
+// //         移动应用appid:wxfb033d09d2eecaf0
+// // 小程序appid:wx2140a8026b8cdf74
+// // 跳转路径：pages/mine/add-weChat/add-weChat?user_token=token
+//         // alertDialoFg();
+//         //跳转小程序
+//         fluwx.open(
+//             target: MiniProgram(
+//                 username: "gh_dcd9c62ba779",
+//                 path:
+//                     "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
+//                 miniProgramType: WXMiniProgramType.test));
+//         Navigator.of(context).pop();
+//       },
+//     );
   }
 
   @override

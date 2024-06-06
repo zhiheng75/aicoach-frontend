@@ -50,4 +50,5 @@ class Constant {
   static Jverify jverify = Jverify();
 
   static const String teacherId = 'teacherId';
+  static const String avatarId = 'avatarId';
 }

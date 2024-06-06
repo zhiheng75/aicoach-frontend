@@ -58,7 +58,7 @@ class Data {
 class Detail {
   int id;
   int userId;
-  DateTime createdAt;
+  String createdAt;
   int isBind;
   int levelId;
   int teacherId;
@@ -73,9 +73,9 @@ class Detail {
   });
 
   factory Detail.fromJson(Map<String, dynamic> json) => Detail(
-        id: json["id"],
-        userId: json["user_id"],
-        createdAt: DateTime.parse(json["created_at"]),
+        id: json["id"] ?? 0,
+        userId: json["user_id"] ?? 0,
+        createdAt: json["created_at"],
         isBind: json["is_bind"],
         levelId: json["level_id"],
         teacherId: json["teacher_id"],
@@ -84,7 +84,7 @@ class Detail {
   Map<String, dynamic> toJson() => {
         "id": id,
         "user_id": userId,
-        "created_at": createdAt.toIso8601String(),
+        "created_at": createdAt,
         "is_bind": isBind,
         "level_id": levelId,
         "teacher_id": teacherId,

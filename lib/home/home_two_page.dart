@@ -168,8 +168,11 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           itemBuilder: (c, i) {
             return GestureDetector(
               onTap: () {
+                SpUtil.putString(
+                    Constant.avatarId, characterList[i].characterId);
+
                 EventBus().emit(
-                    NotificationUtils.taberThree, characterList[i].avatarId);
+                    NotificationUtils.taberThree, characterList[i].characterId);
               },
               child: LoadImage(
                 characterList[i].coverBgImage,

@@ -5,6 +5,7 @@ import 'package:Bubble/home/widget/course_equity_item.dart';
 import 'package:Bubble/home/widget/people_item.dart';
 import 'package:Bubble/home/widget/problem_item.dart';
 import 'package:Bubble/home/widget/problem_two_item.dart';
+import 'package:Bubble/home/widget/teacher_show_view.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/person/entity/goods_bean.dart';
@@ -775,29 +776,50 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => false;
 
+  showImageDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return TeacherShowView(
+            () {
+              //确定
+              String accessToken = SpUtil.getString(Constant.accessToken) ?? "";
+              fluwx.open(
+                  target: MiniProgram(
+                      username: "gh_dcd9c62ba779",
+                      path:
+                          "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
+                      miniProgramType: WXMiniProgramType.test));
+            },
+          );
+        });
+  }
+
   @override
   void paySuccess() {
     // TODO: implement paySuccess
     if (listData.data[idx].type == 4) {
-      ConfirmUtils.showSingle(
-        context: context,
-        title: "支付成功\n前往微信添加\n本课程辅导老师",
-        onCancel: () {
-//         移动应用appid:wxfb033d09d2eecaf0
-// 小程序appid:wx2140a8026b8cdf74
-// 跳转路径：pages/mine/add-weChat/add-weChat?user_token=token
-          // alertDialoFg();
-          //跳转小程序
+      showImageDialog();
+//       ConfirmUtils.showSingle(
+//         context: context,
+//         title: "支付成功\n前往微信添加\n本课程辅导老师",
+//         onCancel: () {
+// //         移动应用appid:wxfb033d09d2eecaf0
+// // 小程序appid:wx2140a8026b8cdf74
+// // 跳转路径：pages/mine/add-weChat/add-weChat?user_token=token
+//           // alertDialoFg();
+//           //跳转小程序
 
-          fluwx.open(
-              target: MiniProgram(
-                  username: "gh_dcd9c62ba779",
-                  path:
-                      "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
-                  miniProgramType: WXMiniProgramType.test));
-          Navigator.of(context).pop();
-        },
-      );
+//           fluwx.open(
+//               target: MiniProgram(
+//                   username: "gh_dcd9c62ba779",
+//                   path:
+//                       "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
+//                   miniProgramType: WXMiniProgramType.test));
+//           Navigator.of(context).pop();
+//         },
+//       );
       Provider.of<HomeProvider>(context, listen: false).getUsageTime();
       EventBus().emit(NotificationUtils.resetInFo);
     } else {
