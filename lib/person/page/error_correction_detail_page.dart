@@ -133,6 +133,13 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
     );
   }
 
+  String repeatAudioStr(String str) {
+    String one = str;
+    String replacedString =
+        one.replaceAll("https://statics.shenmo-ai.com/", "");
+    return replacedString;
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -265,8 +272,8 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                           errorDetailData[idx]
                                                   .suggestionSentence ??
                                               "",
-                                      suggestionAudioStr:
-                                          errorDetailData[idx].suggestionAudio,
+                                      suggestionAudioStr: repeatAudioStr(
+                                          errorDetailData[idx].suggestionAudio),
                                       idStr: errorDetailData[idx].id.toString(),
                                       // chatWebsocket: _chatWebsocket,
                                       controller: _bottomBarControll,

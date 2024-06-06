@@ -346,12 +346,13 @@ class _CourseHomePageState extends State<CourseHomePage>
                     listData.length > 1
                         ? tabbar()
                         : XTCupertinoNavigationBar(
-                            backgroundColor: Color(0xFFFFFFFF),
+                            backgroundColor: const Color(0xFFFFFFFF),
                             border: null,
                             padding: EdgeInsetsDirectional.zero,
                             middle: Text(
                               levelNameStr,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
                     // NavigationBaView(

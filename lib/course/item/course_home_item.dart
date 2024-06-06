@@ -23,6 +23,7 @@ class CourseHomeItem extends StatefulWidget {
 
 class _CourseHomeItemState extends State<CourseHomeItem> {
   String nengli = "";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -30,19 +31,20 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
 
     for (int i = 0; i < widget.unitData.objectives.speakingSkills.length; i++) {
       if (i == 0) {
-        nengli = nengli;
+        nengli = widget.unitData.objectives.speakingSkills[i].skill;
       } else {
         nengli =
             "$nengli ${widget.unitData.objectives.speakingSkills[i].skill}";
       }
     }
+    // nengli = "1111 212121 asdfs";
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        // height: 120,
-        margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
+        height: 115,
+        margin: const EdgeInsets.only(top: 10, left: 16, right: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
           color: widget.backColor,
@@ -112,7 +114,7 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
                     height: 8.0,
                   ),
                   Text(
-                    widget.unitData.lessonDescription != ""
+                    widget.unitData.objectives.speakingSkills.isEmpty
                         ? widget.unitData.lessonDescription
                         : nengli,
                     maxLines: 3,

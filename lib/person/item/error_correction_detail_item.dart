@@ -161,16 +161,19 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
                 Gaps.hGap16,
                 GestureDetector(
                   onTap: () {
-                    player!.startPlayer(
-                      fromURI: widget.data.userAudio,
-                      whenFinished: () {},
-                    );
-                    // MediaUtils().stopPlay();
-                    // MediaUtils().play(
-                    //   url: widget.data.userAudio,
-                    //   useAvatar: true,
-                    //   whenFinished: () {},
-                    // );
+                    if (widget.data.userAudio.contains("wav")) {
+                      player!.startPlayer(
+                        fromURI: widget.data.userAudio,
+                        whenFinished: () {},
+                      );
+                    } else {
+                      MediaUtils().stopPlay();
+                      MediaUtils().play(
+                        url: widget.data.userAudio,
+                        useAvatar: true,
+                        whenFinished: () {},
+                      );
+                    }
                   },
                   child: const LoadAssetImage(
                     'jiucuo_laba_icon',
@@ -199,6 +202,19 @@ class ErrorCorrectionOneDetailItem extends StatefulWidget {
 
 class _ErrorCorrectionOneDetailItemState
     extends State<ErrorCorrectionOneDetailItem> {
+  FlutterSoundPlayer? player;
+
+  void initPlayer() async {
+    player = await FlutterSoundPlayer().openPlayer();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initPlayer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -268,13 +284,19 @@ class _ErrorCorrectionOneDetailItemState
                 Gaps.hGap16,
                 GestureDetector(
                   onTap: () {
-                    MediaUtils().stopPlay();
-
-                    MediaUtils().play(
-                      url: widget.data.suggestionAudio,
-                      useAvatar: true,
-                      whenFinished: () {},
-                    );
+                    if (widget.data.suggestionAudio.contains("wav")) {
+                      player!.startPlayer(
+                        fromURI: widget.data.suggestionAudio,
+                        whenFinished: () {},
+                      );
+                    } else {
+                      MediaUtils().stopPlay();
+                      MediaUtils().play(
+                        url: widget.data.suggestionAudio,
+                        useAvatar: true,
+                        whenFinished: () {},
+                      );
+                    }
                   },
                   child: const LoadAssetImage(
                     'jiucuo_laba_icon',
@@ -508,16 +530,19 @@ class _ErrorCorrectionThreeDetailItemState
                 Gaps.hGap16,
                 GestureDetector(
                   onTap: () {
-                    player!.startPlayer(
-                      fromURI: widget.data.userPracticeAudio,
-                      whenFinished: () {},
-                    );
-                    // MediaUtils().stopPlay();
-                    // MediaUtils().play(
-                    //   url: widget.data.userPracticeAudio,
-                    //   useAvatar: true,
-                    //   whenFinished: () {},
-                    // );
+                    if (widget.data.userPracticeAudio.contains("wav")) {
+                      player!.startPlayer(
+                        fromURI: widget.data.userPracticeAudio,
+                        whenFinished: () {},
+                      );
+                    } else {
+                      MediaUtils().stopPlay();
+                      MediaUtils().play(
+                        url: widget.data.userPracticeAudio,
+                        useAvatar: true,
+                        whenFinished: () {},
+                      );
+                    }
                   },
                   child: const LoadAssetImage(
                     'jiucuo_laba_icon',
