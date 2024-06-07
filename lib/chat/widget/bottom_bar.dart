@@ -107,7 +107,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           int vipState = _homeProvider.vipState;
           int expDay = _homeProvider.expDay;
           // 是否体验到期
-          if (vipState == 0 && (usageTime == 0 || expDay == 0)) {
+          if (vipState == 0 && usageTime == 0) {
             isAvailable = false;
           }
           // 是否会员到期

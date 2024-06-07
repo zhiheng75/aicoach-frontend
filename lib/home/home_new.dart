@@ -10,6 +10,7 @@ import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/main.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/intercept.dart';
+import 'package:Bubble/person/entity/basec_onfig_bean.dart';
 import 'package:Bubble/scene/collect_information.dart';
 import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/util/channel.dart';
@@ -22,6 +23,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 // import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 import '../chat/chat.dart';
@@ -56,6 +58,8 @@ class _HomePageState extends State<HomeNewPage>
   String _currentTab = '';
   late bool _isLogin;
   late StreamSubscription _streamSubscription;
+  late String bubbleAndriodVersionStr = "";
+  late String bubbleAndriodVersionApprovalStr = "";
 
   void init() {
     initDio();
@@ -66,19 +70,49 @@ class _HomePageState extends State<HomeNewPage>
     checkCollectInformation();
     // 获取体验时间
     _homeProvider.getUsageTime();
+    getBaseConfig();
   }
 
-  // void initUM() {
-  //   String platformStr = Channel.channelios;
-  //   if (Device.isAndroid) {
-  //     platformStr = Channel.channelhuawei;
-  //   } else {
-  //     platformStr = Channel.channelios;
-  //   }
-  //   UmengCommonSdk.initCommon(
-  //       '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', platformStr);
-  //   UmengCommonSdk.setPageCollectionModeManual();
-  // }
+  void getBaseConfig() async {
+    final info = await PackageInfo.fromPlatform();
+
+    _homeNewPagePresenter.requestNetwork<ResultData>(Method.get,
+        url: HttpApi.baseConfig, isShow: false, onSuccess: (result) {
+      Log.e(result.toString());
+
+      Map<String, dynamic> ebasecOnfigBeanMap = json.decode(result.toString());
+      BasecOnfigBean basecOnfigBean =
+          BasecOnfigBean.fromJson(ebasecOnfigBeanMap);
+      if (basecOnfigBean != null || basecOnfigBean.data.length != 0) {
+        for (int i = 0; i < basecOnfigBean.data.length; i++) {
+          Datum datum = basecOnfigBean.data[i];
+          if (datum.key == "bubbleAndriodVersion") {
+            bubbleAndriodVersionStr = datum.value;
+          }
+          if (datum.key == "bubbleAndriodVersionApproval") {
+            bubbleAndriodVersionApprovalStr = datum.value;
+          }
+        }
+        if (bubbleAndriodVersionStr == info.buildNumber &&
+            bubbleAndriodVersionApprovalStr == "1") {
+        } else {
+          initUM();
+        }
+      } else {}
+    });
+  }
+
+  void initUM() {
+    String platformStr = Channel.channelios;
+    if (Device.isAndroid) {
+      platformStr = Channel.channelhuawei;
+    } else {
+      platformStr = Channel.channelios;
+    }
+    UmengCommonSdk.initCommon(
+        '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', platformStr);
+    UmengCommonSdk.setPageCollectionModeManual();
+  }
 
   void initDio() async {
     final deviceInfoPlugin = DeviceInfoPlugin();
