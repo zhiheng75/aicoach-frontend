@@ -7,6 +7,7 @@ import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -139,7 +140,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       int vipState = _homeProvider.vipState;
       int expDay = _homeProvider.expDay;
       // 是否体验到期
-      if (vipState == 0 && (usageTime == 0 || expDay == 0)) {
+      if (vipState == 0 && usageTime == 0) {
         isAvailable = false;
       }
       // 是否会员到期
@@ -391,12 +392,12 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           }
           onStart(_);
         },
-        onLongPressMoveUpdate: (detail) {
-          if (disabled) {
-            return;
-          }
-          widget.recordController.fingerDetection(detail.globalPosition);
-        },
+        // onLongPressMoveUpdate: (detail) {
+        //   if (disabled) {
+        //     return;
+        //   }
+        //   widget.recordController.fingerDetection(detail.globalPosition);
+        // },
         onLongPressEnd: (_) {
           if (disabled) {
             return;
@@ -502,6 +503,8 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
               builder: (_, disabled, __) => button(
                 disabled: disabled,
                 onStart: (detail) async {
+                  EventUMStatistics.umengCommonMapEvent("AI学伴-按住说话的次数");
+                  EventUMStatistics.umengCommonMapEvent("场景模拟练习-按住说话的次数");
                   if (!isAvailable()) {
                     return;
                   }

@@ -1,3 +1,4 @@
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart' hide ScreenUtil;
@@ -345,6 +346,8 @@ class _ChatState extends State<ChatPage>
     //   await _mediaUtils.stopPlay();
     //   _bottomBarControll.setDisabled(false);
     // });
+    EventUMStatistics.umengCommonPageCollectionModeAuto();
+    EventUMStatistics.umengCommonOnPageStart("练口语-AI学伴页面停留时长");
   }
 
   @override
@@ -595,6 +598,7 @@ class _ChatState extends State<ChatPage>
 
     EventBus().off(NotificationUtils.loginIn);
     EventBus().off(NotificationUtils.loginOut);
+    EventUMStatistics.umengCommonOnPageEnd("练口语-AI学伴页面停留时长");
 
     super.dispose();
   }

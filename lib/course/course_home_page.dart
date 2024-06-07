@@ -13,6 +13,7 @@ import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/confirm_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
@@ -121,6 +122,7 @@ class _CourseHomePageState extends State<CourseHomePage>
   void initState() {
     // TODO: implement initState
     super.initState();
+
     EventBus().on(NotificationUtils.loginIn, (_) {
       Future.delayed(const Duration(seconds: 1), () {
         _courseHomePagePresenter.getLessonList();
@@ -149,11 +151,14 @@ class _CourseHomePageState extends State<CourseHomePage>
       });
       // 这里是你想要延迟执行的代码
     });
+    EventUMStatistics.umengCommonPageCollectionModeAuto();
   }
 
   @override
   void dispose() {
     super.dispose();
+    EventUMStatistics.umengCommonOnPageEnd("课程列表式-未购正价课");
+    EventUMStatistics.umengCommonOnPageEnd("课程列表式-已购正价课");
     EventBus().off(NotificationUtils.paySuccess);
 
     EventBus().off(NotificationUtils.loginIn);
@@ -252,6 +257,11 @@ class _CourseHomePageState extends State<CourseHomePage>
             if (xxlist[i].isUserBuy == 1) {
               //去上课
               if (xxlist[i].isLocked == 0) {
+                if (xxlist[i].completed == 1) {
+                  EventUMStatistics.umengCommonMapEvent("点击已完成状态课程的点击次数");
+                }
+                EventUMStatistics.umengCommonMapEvent("点击可上课状态体验课课程的点击次数");
+
                 NavigatorUtils.push(
                     context,
                     // CourseRouter.courseFlowPage,
@@ -260,14 +270,21 @@ class _CourseHomePageState extends State<CourseHomePage>
                 Toast.show(
                   '需要老师安排课才能上课',
                 );
+                EventUMStatistics.umengCommonMapEvent("点击未开放课程的点击次数");
               }
             } else {
               if (xxlist[i].isLocked == 0) {
+                if (xxlist[i].completed == 1) {
+                  EventUMStatistics.umengCommonMapEvent("点击已完成状态课程的点击次数");
+                }
+                EventUMStatistics.umengCommonMapEvent("点击可上课状态体验课课程的点击次数");
+
                 NavigatorUtils.push(
                     context,
                     // CourseRouter.courseFlowPage,
                     "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
               } else {
+                EventUMStatistics.umengCommonMapEvent("点击锁定状态正价课课程的点击次数");
                 //判断手机号再说获取证书还是免费学习
                 showView(xxlist[i].levelId);
               }
@@ -453,6 +470,17 @@ class _CourseHomePageState extends State<CourseHomePage>
         levelNameStr = data.data[0].levelName;
       }
       listData.addAll(data.data);
+
+      if (listData.isNotEmpty) {
+        List<UnitList> list1 = listData[0].list[0].list;
+        if (list1.isNotEmpty) {
+          if (list1[0].isUserBuy == 0) {
+            EventUMStatistics.umengCommonOnPageStart("课程列表式-未购正价课");
+          } else {
+            EventUMStatistics.umengCommonOnPageStart("课程列表式-已购正价课");
+          }
+        }
+      }
     });
   }
 

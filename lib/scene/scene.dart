@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:Bubble/util/confirm_utils.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -212,6 +213,16 @@ class _SceneState extends State<ScenePage>
     init();
     // 监听App状态
     WidgetsBinding.instance.addObserver(this);
+
+    EventUMStatistics.umengCommonPageCollectionModeAuto();
+    EventUMStatistics.umengCommonOnPageStart("练口语-场景模拟练习页面停留时长");
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    EventUMStatistics.umengCommonOnPageEnd("练口语-场景模拟练习页面停留时长");
   }
 
   @override

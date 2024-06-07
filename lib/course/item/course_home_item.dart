@@ -114,7 +114,7 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
                     height: 8.0,
                   ),
                   Text(
-                    widget.unitData.objectives.speakingSkills.isEmpty
+                    widget.unitData.lessonDescription != ""
                         ? widget.unitData.lessonDescription
                         : nengli,
                     maxLines: 3,

@@ -10,6 +10,7 @@ import 'package:Bubble/person/view/error_correction_detail_page_view.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
@@ -63,6 +64,14 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
     super.initState();
     _bottomBarControll.setDisabled(false);
     _errorCorrectionDetailPagePresenter.getMistakeDetails(widget.lessonId);
+    EventUMStatistics.umengCommonOnPageStart("【纠错订正】页面停留时长");
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    EventUMStatistics.umengCommonOnPageEnd("【纠错订正】页面停留时长");
   }
 
   void repeatTextStr(String str) {

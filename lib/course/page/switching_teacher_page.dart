@@ -6,6 +6,7 @@ import 'package:Bubble/course/view/switching_teacher_page_view.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/res/resources.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
@@ -39,6 +40,8 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
     // TODO: implement initState
     super.initState();
     idx = int.parse(SpUtil.getString(Constant.teacherId) ?? "0");
+    EventUMStatistics.umengCommonPageCollectionModeAuto();
+    EventUMStatistics.umengCommonOnPageStart("【AI外教选择】页面停留时长");
   }
 
   void onBack() {
@@ -50,6 +53,7 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
     // TODO: implement dispose
     super.dispose();
     MediaUtils().stopPlay();
+    EventUMStatistics.umengCommonOnPageEnd("【AI外教选择】页面停留时长");
   }
 
   @override
@@ -83,6 +87,8 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
                         setState(() {
                           idx = index;
                         });
+                        EventUMStatistics.umengCommonMapEvent(
+                            "外教选择页点击某一外教角色的次数");
                       },
                       child: SwitchingTeacherItem(
                         data: teacherData[index],
@@ -116,6 +122,7 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
                     onTap: () {
                       EventBus().emit(NotificationUtils.teachIdx, idx);
                       Navigator.of(context).pop();
+                      EventUMStatistics.umengCommonMapEvent("外教选择页点击确定按钮的次数");
                     },
                     child: const LoadAssetImage(
                       'teach_con_img',

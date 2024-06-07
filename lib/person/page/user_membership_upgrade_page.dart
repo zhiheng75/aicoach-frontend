@@ -785,12 +785,14 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
             () {
               //确定
               String accessToken = SpUtil.getString(Constant.accessToken) ?? "";
+              String url =
+                  "pages/mine/add-weChat/add-weChat?user_token=$accessToken";
+              var encoded = Uri.encodeFull(url);
               fluwx.open(
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
-                      path:
-                          "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
-                      miniProgramType: WXMiniProgramType.test));
+                      path: encoded,
+                      miniProgramType: WXMiniProgramType.preview));
             },
           );
         });

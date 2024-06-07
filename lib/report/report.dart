@@ -11,6 +11,7 @@ import 'package:Bubble/report/entity/lesson_reports_bean.dart';
 import 'package:Bubble/report/widget/course_report_class_item.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_data.dart';
 import 'package:Bubble/widgets/load_fail.dart';
@@ -312,10 +313,13 @@ class _ReportPageState extends State<ReportPage>
   void initState() {
     super.initState();
     init();
+    EventUMStatistics.umengCommonOnPageStart("【系统课学情报告】页面停留时长");
   }
 
   @override
   void dispose() {
+    EventUMStatistics.umengCommonOnPageEnd("【系统课学情报告】页面停留时长");
+
     if (_cancelToken != null && _loading == 1) {
       _cancelToken!.cancel();
     }

@@ -144,12 +144,14 @@ class _HomeTwoPageState extends State<HomeTwoPage>
             () {
               //确定
               String accessToken = SpUtil.getString(Constant.accessToken) ?? "";
+              String url =
+                  "pages/mine/add-weChat/add-weChat?user_token=$accessToken";
+              var encoded = Uri.encodeFull(url);
               fluwx.open(
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
-                      path:
-                          "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
-                      miniProgramType: WXMiniProgramType.test));
+                      path: encoded,
+                      miniProgramType: WXMiniProgramType.preview));
             },
           );
         });
@@ -828,6 +830,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                                                       .cagegoryId,
                                                 ),
                                               );
+                                              EventUMStatistics
+                                                  .umengCommonMapEvent(
+                                                      "点击场景模拟练习的次数");
                                             },
                                             child: HomeMapItem(
                                                 data: sceneList[index]));

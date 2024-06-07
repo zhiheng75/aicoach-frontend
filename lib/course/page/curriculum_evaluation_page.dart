@@ -8,6 +8,7 @@ import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/resources.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
@@ -63,6 +64,15 @@ class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage>
     } else {
       isLoading = true;
     }
+    EventUMStatistics.umengCommonPageCollectionModeAuto();
+    EventUMStatistics.umengCommonOnPageStart("【课程评价】页面停留时长");
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    EventUMStatistics.umengCommonOnPageEnd("【课程评价】页面停留时长");
   }
 
   Widget lodingView() {
@@ -160,6 +170,8 @@ class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage>
                               setState(() {
                                 starNum = rating;
                               });
+                              EventUMStatistics.umengCommonMapEvent(
+                                  "课程评价-点击五星评分的次数");
                             },
                           ),
                         ],
@@ -260,6 +272,8 @@ class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage>
                       : GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: () {
+                            EventUMStatistics.umengCommonMapEvent(
+                                "课程评价-点击确定按钮的点击次数");
                             if (_controller.text.isNotEmpty) {
                               _curriculumEvaluationPagePresenter
                                   .postLessonFeedback(

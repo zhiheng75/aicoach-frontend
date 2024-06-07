@@ -20,6 +20,7 @@ import 'package:Bubble/scene/presenter/teaching_dialogue_presenter.dart';
 import 'package:Bubble/scene/view/instructional_video_dialogue_view.dart';
 import 'package:Bubble/util/confirm_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
@@ -270,7 +271,6 @@ class _InstructionalVideoDialoguePageState
               answer.contains('{[finish]}') ||
               RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
         ischatEndStr = "1";
-        repeatTextStr(_answer!.text);
         //弹窗点击确定后重新链接
         _instructionalVideoDialoguePresenter.postStepUpdate(lessonId, stepId);
         // onNextSocketEnd();
@@ -300,6 +300,8 @@ class _InstructionalVideoDialoguePageState
         }
         _homeProvider.notify();
         _answer = null;
+        repeatTextStr(_answer!.text);
+        _listScrollController.scrollToEnd();
 
         // if (mxtitStr.contains('{[finish]}')) {
         //   ischatEndStr = "1";
@@ -452,6 +454,8 @@ class _InstructionalVideoDialoguePageState
     //     print('手机解锁了');
     //   }
     // });
+    EventUMStatistics.umengCommonPageCollectionModeAuto();
+    EventUMStatistics.umengCommonOnPageStart("【课程对话】页面停留时长");
   }
 
   @override
@@ -910,6 +914,8 @@ class _InstructionalVideoDialoguePageState
         onPlaybackEnded
         .removeListener(_onPlaybackEnded);
     _controller = null;
+    EventUMStatistics.umengCommonOnPageEnd("【课程对话】页面停留时长");
+
     super.dispose();
   }
 

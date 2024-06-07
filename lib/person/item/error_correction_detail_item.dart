@@ -3,6 +3,7 @@ import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/person/entity/mistake_details_bean.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -174,6 +175,7 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
                         whenFinished: () {},
                       );
                     }
+                    EventUMStatistics.umengCommonMapEvent("纠错订正页-按住说话的次数");
                   },
                   child: const LoadAssetImage(
                     'jiucuo_laba_icon',
@@ -297,6 +299,7 @@ class _ErrorCorrectionOneDetailItemState
                         whenFinished: () {},
                       );
                     }
+                    EventUMStatistics.umengCommonMapEvent("纠错订正页-按住说话的次数");
                   },
                   child: const LoadAssetImage(
                     'jiucuo_laba_icon',
@@ -392,16 +395,20 @@ class _ErrorCorrectionDetailTwoItemState
                 Gaps.vGap8,
                 GestureDetector(
                   onTap: () {
-                    player!.startPlayer(
-                      fromURI: widget.excellentExpression.audio,
-                      whenFinished: () {},
-                    );
-                    // MediaUtils().stopPlay();
-                    // MediaUtils().play(
-                    //   url: widget.excellentExpression.audio,
-                    //   useAvatar: true,
-                    //   whenFinished: () {},
-                    // );
+                    if (widget.excellentExpression.audio.contains("wav")) {
+                      player!.startPlayer(
+                        fromURI: widget.excellentExpression.audio,
+                        whenFinished: () {},
+                      );
+                    } else {
+                      MediaUtils().stopPlay();
+                      MediaUtils().play(
+                        url: widget.excellentExpression.audio,
+                        useAvatar: true,
+                        whenFinished: () {},
+                      );
+                    }
+                    EventUMStatistics.umengCommonMapEvent("系统课学情报告内 点击语音播放的次数");
                   },
                   child: const LoadAssetImage(
                     'jiucuo_laba_icon',
@@ -543,6 +550,7 @@ class _ErrorCorrectionThreeDetailItemState
                         whenFinished: () {},
                       );
                     }
+                    EventUMStatistics.umengCommonMapEvent("纠错订正页-按住说话的次数");
                   },
                   child: const LoadAssetImage(
                     'jiucuo_laba_icon',

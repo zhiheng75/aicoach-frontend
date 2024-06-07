@@ -9,6 +9,7 @@ import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/scene/utils/class_evaluate_util.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -579,6 +580,8 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                 disabled: disabled,
                 onStart: (detail) async {
                   // widget.onStarEnd!();
+                  EventUMStatistics.umengCommonMapEvent("课程对话页 -按住说话的次数");
+
                   if (!isAvailable()) {
                     return;
                   }

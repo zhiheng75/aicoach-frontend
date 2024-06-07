@@ -9,6 +9,7 @@ import 'package:Bubble/person/widget/course_error_class_item.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -183,6 +184,7 @@ class _ErrorCorrectionPageState extends State<ErrorCorrectionPage>
           onTap: () {
             NavigatorUtils.push(context,
                 "${PersonalRouter.errorCorrectionDetailPage}?lessonId=${xxlist[i].lessonId}");
+            EventUMStatistics.umengCommonMapEvent("从单课环节详情页进入纠错的曝光次数");
           },
           child: CourseErrorClassItem(
             index: i + 1,

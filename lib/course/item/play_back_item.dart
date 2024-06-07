@@ -2,6 +2,7 @@ import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/res/colors.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,6 +61,8 @@ class _PlayBackItemState extends State<PlayBackItem> {
                         );
                       }
                     }, onError: (code, msg) {});
+
+                    EventUMStatistics.umengCommonMapEvent("系统课学情报告内 点击语音播放的次数");
                   },
                   child: const LoadAssetImage(
                     "laba_lan",

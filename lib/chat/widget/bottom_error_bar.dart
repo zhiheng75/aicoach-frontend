@@ -12,6 +12,7 @@ import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/scene/utils/class_evaluate_util.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/websocket_utils.dart';
 import 'package:flutter/material.dart';
@@ -348,6 +349,7 @@ class _BottomErrorBarState extends State<BottomErrorBar>
             // if (!isAvailable()) {
             //   return;
             // }
+            EventUMStatistics.umengCommonMapEvent("纠错订正页-按住说话的次数");
             try {
               bool hasAgree =
                   SpUtil.getBool(Constant.mediaUtils, defValue: false) ?? false;

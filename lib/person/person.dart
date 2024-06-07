@@ -7,6 +7,7 @@ import 'package:Bubble/person/entity/permission_bean.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:flutter/material.dart';
@@ -848,6 +849,7 @@ class _PersonPageState extends State<PersonPage>
             GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
+                EventUMStatistics.umengCommonMapEvent("从个人中心进入系统课学情报告的曝光次数");
                 tapMenu(ReportRouter.reportPage);
               },
               child: Column(
