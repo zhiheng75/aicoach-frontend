@@ -140,6 +140,7 @@ class _ReportPageState extends State<ReportPage>
     setState(() {});
     if (_type == 'chat') {
       getChatReportList();
+      EventUMStatistics.umengCommonOnPageStart("个人中心-学情报告列表页停留时长");
     } else if (_type == 'exam') {
       getExamReortList();
     } else if (_type == 'class') {
@@ -313,12 +314,15 @@ class _ReportPageState extends State<ReportPage>
   void initState() {
     super.initState();
     init();
+    EventUMStatistics.umengCommonPageCollectionModeAuto();
+
     EventUMStatistics.umengCommonOnPageStart("【系统课学情报告】页面停留时长");
   }
 
   @override
   void dispose() {
     EventUMStatistics.umengCommonOnPageEnd("【系统课学情报告】页面停留时长");
+    EventUMStatistics.umengCommonOnPageEnd("个人中心-学情报告列表页停留时长");
 
     if (_cancelToken != null && _loading == 1) {
       _cancelToken!.cancel();
@@ -521,6 +525,7 @@ class _ReportPageState extends State<ReportPage>
                 'sessionId': sessionId,
               },
             );
+            EventUMStatistics.umengCommonMapEvent("个人中心-学情报告列表页点击跳转到学情报告详情的次数");
           },
           child: Padding(
             padding: const EdgeInsets.only(

@@ -9,6 +9,7 @@ import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/confirm_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -56,6 +57,9 @@ class _CoursePaysPageState extends State<CoursePaysPage>
     fluwx.registerApi(
         appId: "wxfb033d09d2eecaf0",
         universalLink: "https://demo.shenmo-ai.net/ios/");
+
+    EventUMStatistics.umengCommonPageCollectionModeAuto();
+    EventUMStatistics.umengCommonOnPageStart("收银台页面停留时长");
   }
 
   //倒计时
@@ -290,6 +294,7 @@ class _CoursePaysPageState extends State<CoursePaysPage>
             GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
+                EventUMStatistics.umengCommonMapEvent("收银台点击支付按钮的次数");
                 pay();
               },
               child: Container(
@@ -332,6 +337,8 @@ class _CoursePaysPageState extends State<CoursePaysPage>
   @override
   void dispose() {
     super.dispose();
+    EventUMStatistics.umengCommonOnPageEnd("收银台页面停留时长");
+
     if (_timer != null) {
       if (_timer.isActive) {
         _timer.cancel();
@@ -380,12 +387,14 @@ class _CoursePaysPageState extends State<CoursePaysPage>
               String accessToken = SpUtil.getString(Constant.accessToken) ?? "";
               String url =
                   "pages/mine/add-weChat/add-weChat?user_token=$accessToken";
-              var encoded = Uri.encodeFull(url);
+              var encoded = Uri.encodeComponent(url);
               fluwx.open(
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
                       path: encoded,
                       miniProgramType: WXMiniProgramType.preview));
+              EventUMStatistics.umengCommonMapEvent("添加辅导老师页面曝光次数");
+
               Navigator.of(context).pop();
             },
           );

@@ -15,6 +15,7 @@ import 'package:Bubble/person/item/error_correction_item.dart';
 import 'package:Bubble/report/widget/radar.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/circle_progress_view.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -72,6 +73,12 @@ class _CourseReportPageState extends State<CourseReportPage>
       headImg = user['headimgurl'];
     }
     headimgurl = headImg;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   bool validateInput(String? input) {

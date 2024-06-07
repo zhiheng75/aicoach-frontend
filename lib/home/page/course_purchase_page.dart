@@ -14,6 +14,7 @@ import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
@@ -61,6 +62,15 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
     if (validateInput(user['phone'])) {
       phone = user['phone'];
     }
+    EventUMStatistics.umengCommonPageCollectionModeAuto();
+    EventUMStatistics.umengCommonOnPageStart("正价课购买页面停留时长");
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    EventUMStatistics.umengCommonOnPageEnd("正价课购买页面停留时长");
   }
 
   bool validateInput(String? input) {
@@ -588,6 +598,8 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                                   GestureDetector(
                                     behavior: HitTestBehavior.opaque,
                                     onTap: () {
+                                      EventUMStatistics.umengCommonMapEvent(
+                                          "正价课 咨询按钮点击次数");
                                       if (phone == "17001234567") {
                                         NavigatorUtils.push(
                                             context, PersonalRouter.about);
@@ -618,6 +630,8 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                                   GestureDetector(
                                       behavior: HitTestBehavior.opaque,
                                       onTap: () {
+                                        EventUMStatistics.umengCommonMapEvent(
+                                            "正价课 立即支付按钮点击次数");
                                         if (_checked) {
                                           if (phone == "17001234567") {
                                             NavigatorUtils.push(

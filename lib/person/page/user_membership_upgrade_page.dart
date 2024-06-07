@@ -19,6 +19,7 @@ import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/confirm_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
@@ -99,6 +100,9 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
       }
     }
     userName = name;
+
+    EventUMStatistics.umengCommonPageCollectionModeAuto();
+    EventUMStatistics.umengCommonOnPageStart("个人中心-售卖页停留时长");
   }
 
   bool validateInput(String? input) {
@@ -317,6 +321,13 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                     setState(() {
                       idx = index;
                     });
+                    if (index == 0) {
+                      EventUMStatistics.umengCommonMapEvent(
+                          "个人中心-售卖页引流包支付点击次数");
+                    } else {
+                      EventUMStatistics.umengCommonMapEvent(
+                          "个人中心-售卖页正价课支付点击次数");
+                    }
                   },
                   child: UserMembershipUpgradeItem(
                     isSele: idx == index ? true : false,
@@ -787,12 +798,13 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
               String accessToken = SpUtil.getString(Constant.accessToken) ?? "";
               String url =
                   "pages/mine/add-weChat/add-weChat?user_token=$accessToken";
-              var encoded = Uri.encodeFull(url);
+              var encoded = Uri.encodeComponent(url);
               fluwx.open(
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
                       path: encoded,
                       miniProgramType: WXMiniProgramType.preview));
+              EventUMStatistics.umengCommonMapEvent("添加辅导老师页面曝光次数");
             },
           );
         });
@@ -837,6 +849,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   void dispose() {
     super.dispose();
     EventBus().off(NotificationUtils.resetInFo);
+    EventUMStatistics.umengCommonOnPageEnd("个人中心-售卖页停留时长");
   }
 
   @override
