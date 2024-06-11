@@ -63,14 +63,14 @@ class _HomePageState extends State<HomeNewPage>
 
   void init() {
     initDio();
-    // initUM();
+    initUM();
 
     // 初始化手机号一键登录插件
     // initPlatformState();
     checkCollectInformation();
     // 获取体验时间
     _homeProvider.getUsageTime();
-    getBaseConfig();
+    // getBaseConfig();
   }
 
   void getBaseConfig() async {
@@ -105,7 +105,7 @@ class _HomePageState extends State<HomeNewPage>
   void initUM() {
     String platformStr = Channel.channelios;
     if (Device.isAndroid) {
-      platformStr = Channel.channelhuawei;
+      platformStr = Channel.channelmeizu;
     } else {
       platformStr = Channel.channelios;
     }
@@ -132,7 +132,7 @@ class _HomePageState extends State<HomeNewPage>
       // androidDeviceInfo.board;
       // androidDeviceInfo.model;
       // androidDeviceInfo.version.release;
-      platformStr = Channel.channelhuawei;
+      platformStr = Channel.channelmeizu;
       final Map<String, String> params = <String, String>{};
       params["manufacturer"] = androidDeviceInfo.manufacturer;
       params["id"] = androidDeviceInfo.id;
