@@ -68,7 +68,7 @@ class _HomePageState extends State<HomeNewPage>
 
   void init() {
     // initDio();
-    initUM();
+    // initUM();
 
     // 初始化手机号一键登录插件
     initPlatformState();

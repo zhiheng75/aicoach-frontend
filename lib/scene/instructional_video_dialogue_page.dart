@@ -404,36 +404,36 @@ class _InstructionalVideoDialoguePageState
     });
 
     // 全局监听App状态
-    SystemChannels.lifecycle.setMessageHandler((message) async {
-      // 退到后台
-      // if (_appLifecycleState == 'AppLifecycleState.inactive' ||
-      //     message == 'AppLifecycleState.paused') {}
-      if (message == 'AppLifecycleState.inactive') {
-        if (isShowStr == "1") {
-          // 应用程序已经进入后台 或锁屏
-          ConfirmUtils.showSingle(
-            context: context,
-            title: "请重新开始对话",
-            onCancel: () {
-              endSocket();
-              Navigator.of(context).pop();
-              widget.onEnd();
-            },
-          );
-          isShowStr = "2";
-        }
-        // ConfirmUtils.showSingle(
-        //   context: context,
-        //   title: "请重新开始对话",
-        //   onCancel: () {
-        //     endSocket();
-        //     Navigator.of(context).pop();
-        //     widget.onEnd();
-        //   },
-        // );
-      }
-      return message;
-    });
+    // SystemChannels.lifecycle.setMessageHandler((message) async {
+    //   // 退到后台
+    //   // if (_appLifecycleState == 'AppLifecycleState.inactive' ||
+    //   //     message == 'AppLifecycleState.paused') {}
+    //   if (message == 'AppLifecycleState.inactive') {
+    //     if (isShowStr == "1") {
+    //       // 应用程序已经进入后台 或锁屏
+    //       ConfirmUtils.showSingle(
+    //         context: context,
+    //         title: "请重新开始对话",
+    //         onCancel: () {
+    //           endSocket();
+    //           Navigator.of(context).pop();
+    //           widget.onEnd();
+    //         },
+    //       );
+    //       isShowStr = "2";
+    //     }
+    //     // ConfirmUtils.showSingle(
+    //     //   context: context,
+    //     //   title: "请重新开始对话",
+    //     //   onCancel: () {
+    //     //     endSocket();
+    //     //     Navigator.of(context).pop();
+    //     //     widget.onEnd();
+    //     //   },
+    //     // );
+    //   }
+    //   return message;
+    // });
     // setState(() {
     data = widget.stepDetailData.data.data;
     isUserBuy = widget.stepDetailData.data.isUserBuy;
@@ -870,22 +870,22 @@ class _InstructionalVideoDialoguePageState
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.inactive) {
-      if (isShowStr == "1") {
-        // 应用程序已经进入后台 或锁屏
-        ConfirmUtils.showSingle(
-          context: context,
-          title: "请重新开始对话",
-          onCancel: () {
-            endSocket();
-            Navigator.of(context).pop();
-            widget.onEnd();
-          },
-        );
-        isShowStr = "2";
-      }
-    }
-    _appLifecycleState = state;
+    // if (state == AppLifecycleState.inactive) {
+    //   if (isShowStr == "1") {
+    //     // 应用程序已经进入后台 或锁屏
+    //     ConfirmUtils.showSingle(
+    //       context: context,
+    //       title: "请重新开始对话",
+    //       onCancel: () {
+    //         endSocket();
+    //         Navigator.of(context).pop();
+    //         widget.onEnd();
+    //       },
+    //     );
+    //     isShowStr = "2";
+    //   }
+    // }
+    // _appLifecycleState = state;
     // Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
   }
 

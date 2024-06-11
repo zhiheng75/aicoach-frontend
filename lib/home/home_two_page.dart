@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:Bubble/chat/entity/character_entity.dart';
@@ -33,7 +34,9 @@ import 'package:Bubble/widgets/group_avatar_widget.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:device_identity/device_identity.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
@@ -47,6 +50,8 @@ import 'package:provider/provider.dart';
 import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/home/entity/banner_list_bean.dart';
 import 'package:sp_util/sp_util.dart';
+
+import '../person/entity/basec_onfig_bean.dart';
 
 class HomeTwoPage extends StatefulWidget {
   const HomeTwoPage({super.key});
@@ -82,6 +87,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   final ScreenUtil _screenUtil = ScreenUtil();
   bool isLoding = true;
   Fluwx fluwx = Fluwx();
+
+  late String bubbleAndriodVersionStr = "";
+  late String bubbleAndriodVersionApprovalStr = "";
 
   // Widget barWidget(BuildContext context) {
   //   return Container(
@@ -617,6 +625,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
     initDio();
     initUM();
+    // getBaseConfig();
     fluwx.registerApi(
         appId: "wxfb033d09d2eecaf0",
         universalLink: "https://demo.shenmo-ai.net/ios/");
@@ -636,6 +645,71 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     });
     EventBus().on(NotificationUtils.loginOut, (_) {
       _homeTwoPagePresenter.getBannerList();
+    });
+  }
+
+  // void getAD() async {
+  //   final dio = Dio();
+  //   String url = "";
+  //   String os;
+  //   String omuids;
+
+  //   if (Device.isAndroid) {
+  //     String deviceId;
+  //     int sdk = await getAndroidSdkInt();
+  //     if (sdk >= 10) {
+  //       deviceId = await DeviceIdentity.oaid;
+  //     } else {
+  //       deviceId = await DeviceIdentity.imei;
+  //     }
+  //     os = "android";
+  //     omuids = deviceId;
+  //   } else {
+  //     os = "ios";
+  //     // omuids =
+  //   }
+  //   //https://ad.oceanengine.com/track/activate/?callback=xxxxx&os=1&muid=xxxxxxx
+
+  //   var response = await dio.get('https://www.dmoe.cc/random.php?return=json');
+  //   //转化为Json
+  //   String jsonString = jsonEncode(response.data);
+  //   print(jsonString);
+  // }
+
+  /// 使用前记得初始化
+  Future<int> getAndroidSdkInt() async {
+    AndroidDeviceInfo androidDeviceInfo = await DeviceInfoPlugin().androidInfo;
+
+    if (Constant.isDriverTest) {
+      return -1;
+    }
+    return androidDeviceInfo.version.sdkInt;
+  }
+
+  void getBaseConfig() async {
+    final info = await PackageInfo.fromPlatform();
+
+    _homeTwoPagePresenter.requestNetwork<ResultData>(Method.get,
+        url: HttpApi.baseConfig, isShow: false, onSuccess: (result) {
+      Map<String, dynamic> ebasecOnfigBeanMap = json.decode(result.toString());
+      BasecOnfigBean basecOnfigBean =
+          BasecOnfigBean.fromJson(ebasecOnfigBeanMap);
+      if (basecOnfigBean != null || basecOnfigBean.data.length != 0) {
+        for (int i = 0; i < basecOnfigBean.data.length; i++) {
+          BasecDatum datum = basecOnfigBean.data[i];
+          if (datum.key == "bubbleAndriodVersion") {
+            bubbleAndriodVersionStr = datum.value;
+          }
+          if (datum.key == "bubbleAndriodVersionApproval") {
+            bubbleAndriodVersionApprovalStr = datum.value;
+          }
+        }
+        if (bubbleAndriodVersionStr == info.buildNumber &&
+            bubbleAndriodVersionApprovalStr == "1") {
+        } else {
+          initUM();
+        }
+      } else {}
     });
   }
 
