@@ -166,7 +166,8 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
         content: "模拟考试进行中,\n请尽可能一次性完成整场模拟考试", clickCallback: (index, text) {
       if (index == 1) {
         next = 2;
-        _mediaUtils.stopPlay();
+        MediaUtils().stopPlay();
+        // _mediaUtils.stopPlay();
         Navigator.pop(context);
       }
     });
@@ -199,13 +200,18 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
           // resizeToAvoidBottomInset: false,
           body: Stack(
         children: [
-          const LoadImage(
+          const LoadAssetImage(
             "teacher",
-            holderImg: "teacher",
-            // height: double.infinity,
-            // width: double.infinity,
-            fit: BoxFit.cover,
+            // width: 32.0,
+            // height: 32.0,
           ),
+          // const LoadImage(
+          //   "teacher",
+          //   holderImg: "teacher",
+          //   height: double.infinity,
+          //   width: double.infinity,
+          //   fit: BoxFit.cover,
+          // ),
           Column(
             children: [
               Gaps.vGap50,
@@ -223,9 +229,11 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
                   padding: const EdgeInsets.all(25),
                   width: double.infinity,
                   height: 250,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    color: Colors.black.withOpacity(0.85),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20)), // .circular(20.0),
+                    color: Colors.black,
                   ),
                   child: MyScrollView(
                     children: [
@@ -285,7 +293,7 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
     _mediaUtils.play(
       url: examStepBean.data.introduction.audio,
       whenFinished: () {
-        _mediaUtils.play(
+        MediaUtils().play(
           url: examStepBean.data.introduction.instructionsAudio,
           whenFinished: () {
             if (next == 2) {

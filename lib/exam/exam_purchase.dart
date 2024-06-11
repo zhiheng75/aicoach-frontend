@@ -649,23 +649,27 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
       );
     }
 
-    return Stack(
-      children: [
-        content,
-        Positioned(
-          top: _screenUtil.statusBarHeight,
-          right: 16.0,
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => onBack(),
-            child: const LoadAssetImage(
-              'exam_purchase_close',
-              width: 32.0,
-              height: 32.0,
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            content,
+            Positioned(
+              top: _screenUtil.statusBarHeight,
+              right: 16.0,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => onBack(),
+                child: const LoadAssetImage(
+                  'exam_purchase_close',
+                  width: 32.0,
+                  height: 32.0,
+                ),
+              ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 

@@ -1062,6 +1062,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     // TODO: implement sendCharacterListSuccess
     characterList.clear();
     characterList.addAll(data.data);
+
     // for (int i = 0; i < characterList.length; i++) {
     //   headData.add(characterList[i].avatarImage);
     //   if (characterList[i].isDefault == 1) {
@@ -1133,7 +1134,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     examList.addAll(data.data.exam);
     sceneList.addAll(data.data.sceneList);
 
-    // setState(() {});
+    setState(() {});
     _homeTwoPagePresenter.getCharacterList();
   }
 

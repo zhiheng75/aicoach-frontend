@@ -274,6 +274,8 @@ class _InstructionalVideoDialoguePageState
         //弹窗点击确定后重新链接
         _instructionalVideoDialoguePresenter.postStepUpdate(lessonId, stepId);
         // onNextSocketEnd();
+        _listScrollController.scrollToEnd();
+
         return;
       }
       // _answer = NormalMessage();
@@ -322,6 +324,7 @@ class _InstructionalVideoDialoguePageState
     // Log.e(answer);
     if (answer is Uint8List) {
       _answer!.audio.add(answer);
+      _listScrollController.scrollToEnd();
 
       if (_appLifecycleState == AppLifecycleState.paused) {
         return;
@@ -334,15 +337,17 @@ class _InstructionalVideoDialoguePageState
 
   void onWebsocketEnd(String? reason, String endType) {
     _homeProvider.endUsageTimeCutdown();
-    _bottomBarControll.setDisabled(true);
-    _isConversationEnd = true;
+
     // 异常结束
     if (reason == 'Error') {
-      insertTipMessage('Please switch to new class');
+      // insertTipMessage('Please switch to new class');
+      init();
     }
     // 正常结束
     if (reason == 'Session End' && endType != 'force') {
       // insertTipMessage('Class finished！');
+      _bottomBarControll.setDisabled(true);
+      _isConversationEnd = true;
     }
   }
 
