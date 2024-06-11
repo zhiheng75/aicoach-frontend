@@ -300,9 +300,9 @@ class _InstructionalVideoDialoguePageState
         if (_listPlayer != null) {
           _listPlayer!.setReturnEnd();
         }
+        repeatTextStr(_answer!.text);
         _homeProvider.notify();
         _answer = null;
-        repeatTextStr(_answer!.text);
         _listScrollController.scrollToEnd();
 
         // if (mxtitStr.contains('{[finish]}')) {
