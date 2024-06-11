@@ -199,11 +199,8 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
           // resizeToAvoidBottomInset: false,
           body: Stack(
         children: [
-          const LoadImage(
+          const LoadAssetImage(
             "teacher",
-            holderImg: "teacher",
-            // height: double.infinity,
-            // width: double.infinity,
             fit: BoxFit.cover,
           ),
           Column(
@@ -245,9 +242,11 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
                   padding: const EdgeInsets.all(25),
                   width: double.infinity,
                   height: 250,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    color: Colors.black.withOpacity(0.85),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20)), // .circular(20.0),
+                    color: Colors.black,
                   ),
                   child: MyScrollView(
                     children: [
