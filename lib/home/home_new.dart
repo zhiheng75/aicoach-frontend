@@ -17,13 +17,19 @@ import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
+import 'package:advertising_info/advertising_info.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:crypto/crypto.dart';
+import 'package:device_identity/device_identity.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+
 import 'package:umeng_common_sdk/umeng_common_sdk.dart';
+import 'package:wifi_info_plugin_plus/wifi_info_plugin_plus.dart';
 // import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 import '../chat/chat.dart';
@@ -60,6 +66,14 @@ class _HomePageState extends State<HomeNewPage>
   late StreamSubscription _streamSubscription;
   late String bubbleAndriodVersionStr = "";
   late String bubbleAndriodVersionApprovalStr = "";
+
+  late String url = "";
+  late String imei = "";
+  late String oaid = "";
+  late String androidid = "";
+  late String os = "";
+  late String idfa = "";
+  late String macAddress = "";
 
   void init() {
     initDio();
@@ -161,6 +175,77 @@ class _HomePageState extends State<HomeNewPage>
     DioUtils.instance.dio.options.headers['sysInfo'] = sysInfo;
     DioUtils.instance.dio.options.headers['marketplace'] = platformStr;
     // DioUtils.instance.dio.options.headers['applyName'] = info.appName;
+  }
+
+  WifiInfoWrapper? _wifiObject;
+  Future<void> initPlatformState() async {
+    WifiInfoWrapper? wifiObject;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      wifiObject = await WifiInfoPlugin.wifiDetails;
+    } on PlatformException {}
+    if (!mounted) return;
+
+    setState(() {
+      _wifiObject = wifiObject;
+    });
+  }
+
+  void getAD() async {
+    initPlatformState();
+    //     late String url = "";
+    // late String imei = "";
+    // late String oaid = "";
+    // late String androidid = "";
+    // late String os = "";
+    // late String idfa = "";
+    // late String mac = "";
+
+    if (Device.isAndroid) {
+      int sdk = await getAndroidSdkInt();
+      if (sdk >= 10) {
+        oaid = await DeviceIdentity.oaid;
+      } else {
+        imei = await DeviceIdentity.imei;
+      }
+      androidid = await DeviceIdentity.androidId;
+      os = "0";
+      macAddress =
+          _wifiObject != null ? _wifiObject!.macAddress.toString() : '...';
+    } else {
+      AdvertisingInfo advertisingInfo = await AdvertisingInfo.read();
+
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      macAddress = iosInfo.utsname.machine;
+      os = "1";
+      // String advertising_id = advertisingInfo.id
+      idfa = advertisingInfo.id ?? "";
+    }
+
+    // final dio = Dio();
+    //https://ad.oceanengine.com/track/activate/?callback=xxxxx&os=1&muid=xxxxxxx
+
+    // var response = await dio.get('https://www.dmoe.cc/random.php?return=json');
+    // //转化为Json
+    // String jsonString = jsonEncode(response.data);
+    // print(jsonString);
+  }
+
+  String generateMd5(String data) {
+    var content = new Utf8Encoder().convert(data);
+    var digest = md5.convert(content);
+    return digest.toString();
+  }
+
+  /// 使用前记得初始化
+  Future<int> getAndroidSdkInt() async {
+    AndroidDeviceInfo androidDeviceInfo = await DeviceInfoPlugin().androidInfo;
+
+    if (Constant.isDriverTest) {
+      return -1;
+    }
+    return androidDeviceInfo.version.sdkInt;
   }
 
   // Future<void> initPlatformState() async {

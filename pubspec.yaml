@@ -82,6 +82,10 @@ dependencies:
   vibration_web: 1.6.5
   # 获取当前设备信息 https://github.com/fluttercommunity/plus_plugins/tree/main/packages/device_info_plus
   device_info_plus: 9.0.2
+  wifi_info_plugin_plus: ^2.0.2
+  # unique_ids: ^3.0.0
+  advertising_info: ^0.2.1
+  # simple_wifi_info: ^1.0.0
   package_info: ^2.0.2
 
   # 动画效果 https://github.com/xvrh/lottie-flutter
