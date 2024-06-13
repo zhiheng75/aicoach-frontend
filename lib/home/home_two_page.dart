@@ -51,6 +51,7 @@ import 'package:provider/provider.dart';
 import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/home/entity/banner_list_bean.dart';
 import 'package:sp_util/sp_util.dart';
+import '../widgets/load_fail.dart';
 
 import '../person/entity/basec_onfig_bean.dart';
 
@@ -86,8 +87,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   // int isKetShow = 0;
   int isDefault = 0;
   final ScreenUtil _screenUtil = ScreenUtil();
-  bool isLoding = true;
+  // bool isLoding = true;
   Fluwx fluwx = Fluwx();
+  late String pageState = 'loading';
 
   late String bubbleAndriodVersionStr = "";
   late String bubbleAndriodVersionApprovalStr = "";
@@ -652,7 +654,37 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       _homeTwoPagePresenter.getBannerList();
     });
 
-    getAD();
+    // getAD();
+    userInfo();
+  }
+
+  late String phone = "";
+
+  void userInfo() {
+    Map<String, dynamic> user = LoginManager.getUserInfo();
+
+    // 用户名显示规则 name > nickname > phone
+    if (validateInput(user['phone'])) {
+      phone = user['phone'];
+    }
+  }
+
+  bool validateInput(String? input) {
+    if (input == null) {
+      return false;
+    }
+
+    if (input.isEmpty) {
+      return false;
+    }
+
+    return true;
+  }
+
+  void init() {
+    pageState = 'loading';
+    setState(() {});
+    _homeTwoPagePresenter.getBannerList();
   }
 
   void getAD() async {
@@ -817,198 +849,206 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       ),
     );
 
+    if (pageState == 'loading') {
+      return Container(
+        color: const Color(0xFFEBEDF0),
+        alignment: Alignment.center,
+        child: lodingView(),
+      );
+    }
+
+    if (pageState == 'fail') {
+      return Container(
+        color: const Color(0xFFEBEDF0),
+        alignment: Alignment.center,
+        child: LoadFail(
+          reload: init,
+        ),
+      );
+    }
+
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,
       // removeBottom: true,
       child: Scaffold(
           body: SafeArea(
-              child: isLoding
-                  ? lodingView()
-                  : Stack(
+              child: Stack(
+        children: [
+          bg,
+          SizedBox(
+            width: _screenUtil.screenWidth,
+            height: _screenUtil.screenHeight,
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: _screenUtil.statusBarHeight,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 40,
+                    child: Row(
                       children: [
-                        bg,
-                        SizedBox(
-                          width: _screenUtil.screenWidth,
-                          height: _screenUtil.screenHeight,
-                          child: CustomScrollView(
-                            slivers: [
-                              SliverToBoxAdapter(
-                                child: SizedBox(
-                                  height: _screenUtil.statusBarHeight,
-                                ),
-                              ),
-                              SliverToBoxAdapter(
-                                child: SizedBox(
-                                  height: 40,
-                                  child: Row(
-                                    children: [
-                                      Gaps.hGap26,
-                                      const Text("随时都在的口语伙伴",
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          )),
-                                      // Text(generateMd5(omuids),
-                                      //     style: const TextStyle(
-                                      //       fontSize: 16,
-                                      //       fontWeight: FontWeight.bold,
-                                      //       color: Colors.black,
-                                      //     )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SliverToBoxAdapter(
-                                child: characterList.isNotEmpty
-                                    ? barWidget(context)
-                                    : Container(),
-                              ),
-                              SliverToBoxAdapter(
-                                child: Row(
-                                  children: [
-                                    Gaps.hGap10,
-                                    const Text("场景练习",
-                                        style: TextStyle(
-                                          fontSize: 19,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        )),
-                                    Gaps.hGap10,
-                                    const Text("超真实情景 练了就会用",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                            height: 2)),
-                                  ],
-                                ),
-                              ),
-                              SliverToBoxAdapter(
-                                child: Container(
-                                  margin: const EdgeInsets.all(10),
-                                  height: 240,
-                                  child: GridView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemCount: sceneList.length,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                        //设置列数
-                                        crossAxisCount: 2,
-                                        //设置横向间距
-                                        crossAxisSpacing: 10,
-                                        //设置主轴间距
-                                        mainAxisSpacing: 0,
-                                        mainAxisExtent: 120,
-                                      ),
-                                      itemBuilder:
-                                          (BuildContext ctx, int index) {
-                                        return GestureDetector(
-                                            onTap: () {
-                                              showModalBottomSheet(
-                                                context: context,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                barrierColor:
-                                                    Colors.transparent,
-                                                isScrollControlled: true,
-                                                isDismissible: false,
-                                                enableDrag: false,
-                                                builder: (_) => SelectScene(
-                                                  cagegoryId: sceneList[index]
-                                                      .cagegoryId,
-                                                ),
-                                              );
-                                              EventUMStatistics
-                                                  .umengCommonMapEvent(
-                                                      "点击场景模拟练习的次数");
-                                            },
-                                            child: HomeMapItem(
-                                                data: sceneList[index]));
-                                      }),
-                                ),
-                              ),
-                              SliverList.builder(
-                                itemBuilder: (ctx, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      EventBus()
-                                          .emit(NotificationUtils.taberTwo);
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(
-                                          left: 10, right: 10, bottom: 16),
-                                      child: LoadImage(
-                                        lessonList[index].imageUrl,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                itemCount: lessonList.length,
-                              ),
-                              SliverList.builder(
-                                itemBuilder: (ctx, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      NavigatorUtils.push(
-                                        context,
-                                        ExamRouter.examPage,
-                                      );
-                                      // if (examList[index].type == 1) {
-                                      //   NavigatorUtils.goWebViewPage(
-                                      //       context,
-                                      //       examList[index].title,
-                                      //       examList[index].linkUrl);
-                                      // } else if (examList[index].type == 2) {
-                                      //   if (examList[index].linkUrl == "1") {
-                                      //     //单系统课购买页
-                                      //     NavigatorUtils.push(
-                                      //       context,
-                                      //       "${HomeRouter.coursePurchasePage}?levelId=${examList[index].param}",
-                                      //     );
-                                      //   } else if (examList[index].linkUrl == "2") {
-                                      //     //个人中心进入的购买页（引流课购买和课程购买可切换的页面）
-                                      //   } else if (examList[index].linkUrl == "3") {
-                                      //     //试听课页面
-                                      //     NavigatorUtils.push(
-                                      //         context,
-                                      //         // CourseRouter.courseFlowPage,
-                                      //         "${CourseRouter.courseFlowPage}?lessonId=${examList[index].param}");
-                                      //   } else if (examList[index].linkUrl == "4") {
-                                      //     //模考
-                                      //     NavigatorUtils.push(
-                                      //       context,
-                                      //       ExamRouter.examPage,
-                                      //     );
-                                      //   } else if (examList[index].linkUrl == "5") {
-                                      //     //上课页面
-                                      //     // NavigatorUtils.push(
-                                      //     //   context,
-                                      //     //   ExamRouter.examPage,
-                                      //     // );
-                                      //   }
-                                      // }
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(
-                                          left: 10, right: 10, bottom: 10),
-                                      child: LoadImage(
-                                        examList[index].imageUrl,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                itemCount: examList.length,
-                              ),
-                            ],
-                          ),
-                        ),
+                        Gaps.hGap26,
+                        const Text("随时都在的口语伙伴",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            )),
+                        // Text(generateMd5(omuids),
+                        //     style: const TextStyle(
+                        //       fontSize: 16,
+                        //       fontWeight: FontWeight.bold,
+                        //       color: Colors.black,
+                        //     )),
                       ],
-                    ))),
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: characterList.isNotEmpty
+                      ? barWidget(context)
+                      : Container(),
+                ),
+                SliverToBoxAdapter(
+                  child: Row(
+                    children: [
+                      Gaps.hGap10,
+                      const Text("场景练习",
+                          style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          )),
+                      Gaps.hGap10,
+                      const Text("超真实情景 练了就会用",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              height: 2)),
+                    ],
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    margin: const EdgeInsets.all(10),
+                    height: 240,
+                    child: GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: sceneList.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          //设置列数
+                          crossAxisCount: 2,
+                          //设置横向间距
+                          crossAxisSpacing: 10,
+                          //设置主轴间距
+                          mainAxisSpacing: 0,
+                          mainAxisExtent: 120,
+                        ),
+                        itemBuilder: (BuildContext ctx, int index) {
+                          return GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  backgroundColor: Colors.transparent,
+                                  barrierColor: Colors.transparent,
+                                  isScrollControlled: true,
+                                  isDismissible: false,
+                                  enableDrag: false,
+                                  builder: (_) => SelectScene(
+                                    cagegoryId: sceneList[index].cagegoryId,
+                                  ),
+                                );
+                                EventUMStatistics.umengCommonMapEvent(
+                                    "点击场景模拟练习的次数");
+                              },
+                              child: HomeMapItem(data: sceneList[index]));
+                        }),
+                  ),
+                ),
+                SliverList.builder(
+                  itemBuilder: (ctx, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        EventBus().emit(NotificationUtils.taberTwo);
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                            left: 10, right: 10, bottom: 16),
+                        child: LoadImage(
+                          lessonList[index].imageUrl,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                  itemCount: lessonList.length,
+                ),
+                SliverList.builder(
+                  itemBuilder: (ctx, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        NavigatorUtils.push(
+                          context,
+                          ExamRouter.examPage,
+                        );
+                        // if (examList[index].type == 1) {
+                        //   NavigatorUtils.goWebViewPage(
+                        //       context,
+                        //       examList[index].title,
+                        //       examList[index].linkUrl);
+                        // } else if (examList[index].type == 2) {
+                        //   if (examList[index].linkUrl == "1") {
+                        //     //单系统课购买页
+                        //     NavigatorUtils.push(
+                        //       context,
+                        //       "${HomeRouter.coursePurchasePage}?levelId=${examList[index].param}",
+                        //     );
+                        //   } else if (examList[index].linkUrl == "2") {
+                        //     //个人中心进入的购买页（引流课购买和课程购买可切换的页面）
+                        //   } else if (examList[index].linkUrl == "3") {
+                        //     //试听课页面
+                        //     NavigatorUtils.push(
+                        //         context,
+                        //         // CourseRouter.courseFlowPage,
+                        //         "${CourseRouter.courseFlowPage}?lessonId=${examList[index].param}");
+                        //   } else if (examList[index].linkUrl == "4") {
+                        //     //模考
+                        //     NavigatorUtils.push(
+                        //       context,
+                        //       ExamRouter.examPage,
+                        //     );
+                        //   } else if (examList[index].linkUrl == "5") {
+                        //     //上课页面
+                        //     // NavigatorUtils.push(
+                        //     //   context,
+                        //     //   ExamRouter.examPage,
+                        //     // );
+                        //   }
+                        // }
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                            left: 10, right: 10, bottom: 10),
+                        child: LoadImage(
+                          examList[index].imageUrl,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                  itemCount: examList.length,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ))),
     );
     // return AnnotatedRegion(
     //   value: SystemUiOverlayStyle.light,
@@ -1159,7 +1199,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     //     isDefault = i;
     //   }
     // }
-    isLoding = false;
+    // pageState = 'success';
     setState(() {});
 
     String characterId = characterList[0].characterId;
@@ -1167,8 +1207,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     _homeProvider.character.characterId = characterId;
     _homeProvider.character.imageUrl = characterList[0].imageUrl;
     // getCategoryList(characterId);
-
-    _homeTwoPagePresenter.getBindTeacherStatus();
+    if (phone != "17001234567") {
+      _homeTwoPagePresenter.getBindTeacherStatus();
+    }
   }
 
   // void getCategoryList(String characterId) async {
@@ -1211,6 +1252,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   @override
   void sendFail(String msg) {
     // TODO: implement sendFail
+    pageState = 'fail';
+    setState(() {});
   }
 
   @override
@@ -1223,6 +1266,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     lessonList.addAll(data.data.lessonList);
     examList.addAll(data.data.exam);
     sceneList.addAll(data.data.sceneList);
+    pageState = 'success';
 
     setState(() {});
     _homeTwoPagePresenter.getCharacterList();

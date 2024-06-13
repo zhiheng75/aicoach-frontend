@@ -71,7 +71,7 @@ class HomeTwoPagePresenter extends BasePagePresenter<HomeTwoPageView> {
         // view.sendFail(bannerListBean.msg);
       }
     }, onError: (code, msg) {
-      view.sendFail("响应异常");
+      // view.sendFail("响应异常");
     });
   }
 }
