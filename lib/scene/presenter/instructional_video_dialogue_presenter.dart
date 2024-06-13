@@ -22,8 +22,9 @@ class InstructionalVideoDialoguePresenter
         isShow: false, onSuccess: (result) {
       Map<String, dynamic> resultDataMap = json.decode(result.toString());
       ResultData resultData = ResultData.fromJson(resultDataMap);
+      // EventBus().emit(NotificationUtils.nextResetChat);
+
       if (resultData.code == 200) {
-        EventBus().emit(NotificationUtils.nextResetChat);
         view.sendSuccess(resultData.msg);
       } else {
         view.sendFail(resultData.msg);

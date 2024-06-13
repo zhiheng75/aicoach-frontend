@@ -160,7 +160,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
                                 color: Colors.black,
                               )),
                           TextSpan(
-                              text: "Speaking Skills",
+                              text: "Speaking skills",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,

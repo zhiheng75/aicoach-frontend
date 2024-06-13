@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:Bubble/chat/entity/character_entity.dart';
+import 'package:Bubble/chat/widget/background.dart';
 import 'package:Bubble/chat/widget/course_bottom_bar.dart';
 import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/course/entity/step_detail_bean.dart';
@@ -18,6 +19,7 @@ import 'package:Bubble/scene/page/class_video_page.dart';
 import 'package:Bubble/scene/presenter/instructional_video_dialogue_presenter.dart';
 import 'package:Bubble/scene/presenter/teaching_dialogue_presenter.dart';
 import 'package:Bubble/scene/view/instructional_video_dialogue_view.dart';
+// import 'package:Bubble/scene/widget/top_head_background.dart';
 import 'package:Bubble/util/confirm_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
@@ -104,7 +106,6 @@ class _InstructionalVideoDialoguePageState
   bool _isConversationEnd = false;
 
   // late VideoPlayerController _controller;
-
   late String introFileType;
   late int newDataIdx;
 
@@ -137,6 +138,11 @@ class _InstructionalVideoDialoguePageState
 
   late Timer _timer;
   late int _secondsRemaining = 5; // 倒计时10秒
+
+  late String isOnePlay = "1";
+  // final BackgroundController _backgroundController = BackgroundController();
+
+  late bool isShowbottom = false;
 
   void init() {
     _pageState = 'success';
@@ -756,8 +762,10 @@ class _InstructionalVideoDialoguePageState
         url: introAudio,
         useAvatar: true,
         whenFinished: () {
+          setState(() {
+            isPlayVideo = "1";
+          });
           //通知播放视频
-          isPlayVideo = "1";
           _controller?.play();
           _controller?.setVolume(1);
         },
@@ -766,9 +774,9 @@ class _InstructionalVideoDialoguePageState
   }
 
   void startNormaltwoChatRequestNetwork() {
-    setState(() {
-      isPlayVideo = "0";
-    });
+    // setState(() {
+    //   isPlayVideo = "0";
+    // });
     DioUtils.instance.requestNetwork<ResultData>(
         Method.post, HttpApi.generateAudio,
         params: {
@@ -939,9 +947,16 @@ class _InstructionalVideoDialoguePageState
     isPlayVideo = "1";
     if (_controller?.playbackInfo?.position ==
         _controller?.videoInfo?.duration) {
-      startNormaltwoChatRequestNetwork();
+      if (isOnePlay == "1") {
+        isOnePlay = "2";
+        startNormaltwoChatRequestNetwork();
+      }
       //播放完成重置状态
+      setState(() {
+        isPlayVideo = "0";
+      });
     }
+    setState(() {});
   }
 
   void _onPlaybackSpeedChanged() {
@@ -1057,6 +1072,22 @@ class _InstructionalVideoDialoguePageState
         // ),
         );
   }
+//   Future<bool> videoIsPlaying()async{
+//  _controller!.isPlaying();
+//   }
+
+  Future<bool> get _isPlaying async => await _controller?.isPlaying() ?? false;
+
+  Future<void> _togglePlayback() async {
+    final isPlaying = await _isPlaying;
+    if (isPlaying) {
+      await _controller?.pause();
+    } else {
+      isPlayVideo = "1";
+      await _controller?.play();
+    }
+    setState(() {});
+  }
 
   Widget topWidget() {
     if (introFileType == "video") {
@@ -1064,11 +1095,195 @@ class _InstructionalVideoDialoguePageState
         top: _screenUtil.statusBarHeight + 68,
         width: _screenUtil.screenWidth,
         height: _screenUtil.screenWidth / 16 * 9,
-        child: AspectRatio(
-          aspectRatio: 16 / 9,
-          child: NativeVideoPlayerView(
-            onViewReady: _initController,
-          ),
+        child: Stack(
+          children: [
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: NativeVideoPlayerView(
+                onViewReady: _initController,
+              ),
+            ),
+            Positioned(
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  setState(() {
+                    isShowbottom = !isShowbottom;
+                  });
+                  Future.delayed(const Duration(seconds: 5), () {
+                    setState(() {
+                      isShowbottom = false;
+                    });
+                  });
+                },
+                child: Container(),
+              ),
+            ),
+            isShowbottom
+                ? Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: Container(
+                      width: _screenUtil.screenWidth,
+                      height: 40,
+                      color: Colors.black87,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 10,
+                          ),
+                          InkWell(
+                            onTap: _togglePlayback,
+                            child: Center(
+                              child: FutureBuilder(
+                                future: _isPlaying,
+                                initialData: false,
+                                builder: (
+                                  BuildContext context,
+                                  AsyncSnapshot<bool> snapshot,
+                                ) {
+                                  final isPlaying = snapshot.data ?? false;
+                                  return Icon(
+                                    isPlaying ? Icons.pause : Icons.play_arrow,
+                                    size: 30,
+                                    color: Colors.white,
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          // _isPlaying?
+                          //      IconButton(
+                          //         icon: const Icon(Icons.play_arrow),
+                          //         onPressed: () => _controller?.play(),
+                          //       )
+                          //     : IconButton(
+                          //         icon: const Icon(Icons.pause),
+                          //         onPressed: () => _controller?.pause(),
+                          //       ),
+                          Expanded(
+                            child: Slider(
+                              // min: 0,
+                              activeColor: Colors.blue,
+                              inactiveColor: Colors.white,
+                              // secondaryActiveColor: Colors.red,
+                              thumbColor: Colors.white,
+                              max: (_controller?.videoInfo?.duration ?? 0)
+                                  .toDouble(),
+                              value: (_controller?.playbackInfo?.position ?? 0)
+                                  .toDouble(),
+                              onChanged: (value) =>
+                                  _controller?.seekTo(value.toInt()),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                formatDuration(
+                                  Duration(
+                                      seconds:
+                                          _controller?.playbackInfo?.position ??
+                                              0),
+                                ),
+                                style: const TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const Text(
+                                "/",
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                formatDuration(
+                                  Duration(
+                                      seconds:
+                                          _controller?.videoInfo?.duration ??
+                                              0),
+                                ),
+                                style: const TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            width: 10,
+                          ),
+                          //                       Row(
+                          //                         children: [
+                          //                           Text('''
+                          // Speed: ${_controller?.playbackInfo?.speed.toStringAsFixed(2)}'''),
+                          //                           Expanded(
+                          //                             child: Slider(
+                          //                               value: _controller?.playbackInfo?.speed ?? 1,
+                          //                               onChanged: (value) =>
+                          //                                   _controller?.setPlaybackSpeed(value),
+                          //                               min: 0.25,
+                          //                               max: 2,
+                          //                               divisions: (2 - 0.25) ~/ 0.25,
+                          //                             ),
+                          //                           ),
+                          //                         ],
+                          //                       ),
+                        ],
+                      ),
+                    ))
+                : Container(),
+            // isPlayVideo == "0"
+            //     ? introVideoCoverStr.isNotEmpty
+            //         ? Positioned(
+            //             top: 0,
+            //             width: _screenUtil.screenWidth,
+            //             height: _screenUtil.screenWidth / 16 * 9,
+            //             child: Stack(
+            //               children: [
+            //                 LoadImage(
+            //                   introVideoCoverStr,
+            //                   width: _screenUtil.screenWidth,
+            //                   height: _screenUtil.screenWidth / 16 * 9,
+            //                 ),
+            //                 Center(
+            //                   child: InkWell(
+            //                     onTap: _togglePlayback,
+            //                     child: Center(
+            //                       child: FutureBuilder(
+            //                         future: _isPlaying,
+            //                         initialData: false,
+            //                         builder: (
+            //                           BuildContext context,
+            //                           AsyncSnapshot<bool> snapshot,
+            //                         ) {
+            //                           final isPlaying = snapshot.data ?? false;
+            //                           return Icon(
+            //                             isPlaying
+            //                                 ? Icons.pause
+            //                                 : Icons.play_arrow,
+            //                             size: 50,
+            //                             color: Colors.white,
+            //                           );
+            //                         },
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //           )
+            //         : Container()
+            //     : Container(),
+          ],
         ),
       );
     } else if (introFileType == "image") {
@@ -1089,13 +1304,40 @@ class _InstructionalVideoDialoguePageState
         // width: 100,
         // height: 100,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(200.0),
-          child: LoadImage(
-            introFileStr,
-            width: 150.0,
-            height: 150.0,
-          ),
-        ),
+            borderRadius: BorderRadius.circular(200.0),
+            child: StreamBuilder(
+              stream: AvatarController().getStream(),
+              builder: (_, snapshot) {
+                dynamic data = snapshot.data;
+                // if (data == true) {
+                //   if (widget.onFinshEnd != null) {
+                //     widget.onFinshEnd!(data);
+                //   }
+                // }
+                return data == true
+                    ? LoadImage(
+                        _homeProvider.character.motionImage,
+                        format: ImageFormat.gif,
+                        width: 150.0,
+                        height: 150.0,
+                      )
+                    : LoadImage(
+                        _homeProvider.character.stillImage,
+                        format: ImageFormat.gif,
+                        width: 150.0,
+                        height: 150.0,
+                      );
+              },
+            )
+            //  Background(controller: _backgroundController),
+
+            //  LoadImage(
+            //   introFileStr,
+            //   format: ImageFormat.gif,
+            //   width: 150.0,
+            //   height: 150.0,
+            // ),
+            ),
       );
       // introFileStr =
       //     widget.data[widget.idx].resource[resourceIdx].characterAvatar;
@@ -1294,18 +1536,18 @@ class _InstructionalVideoDialoguePageState
               navbar(),
               topWidget(),
               topFlowWidget(),
-              isPlayVideo == "0" && isVideo == "1"
-                  ? Positioned(
-                      top: _screenUtil.statusBarHeight + 68,
-                      width: _screenUtil.screenWidth,
-                      height: _screenUtil.screenWidth / 16 * 9,
-                      child: LoadImage(
-                        introVideoCoverStr,
-                        width: _screenUtil.screenWidth,
-                        height: _screenUtil.screenWidth / 16 * 9,
-                      ),
-                    )
-                  : Container(),
+              // isPlayVideo == "0" && isVideo == "1"
+              //     ? Positioned(
+              //         top: _screenUtil.statusBarHeight + 68,
+              //         width: _screenUtil.screenWidth,
+              //         height: _screenUtil.screenWidth / 16 * 9,
+              //         child: LoadImage(
+              //           introVideoCoverStr,
+              //           width: _screenUtil.screenWidth,
+              //           height: _screenUtil.screenWidth / 16 * 9,
+              //         ),
+              //       )
+              //     : Container(),
               Positioned(
                 top: 0,
                 left: 0,
@@ -1344,6 +1586,6 @@ class _InstructionalVideoDialoguePageState
   @override
   void sendSuccess(String data) {
     // TODO: implement sendSuccess
-    // EventBus().emit(NotificationUtils.nextResetChat);
+    EventBus().emit(NotificationUtils.nextResetChat);
   }
 }

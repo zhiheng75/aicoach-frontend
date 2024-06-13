@@ -186,6 +186,7 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
 
   @override
   void dispose() {
+    MediaUtils().stopPlay();
     // _cancelToken!.cancel(); // 取消延迟操作
     super.dispose();
   }
@@ -290,7 +291,7 @@ class _MockExaminationOnePageState extends State<MockExaminationOnePage>
     ENText = examStepBean.data.introduction.en;
     instructionsAudio = examStepBean.data.introduction.instructions;
 
-    _mediaUtils.play(
+    MediaUtils().play(
       url: examStepBean.data.introduction.audio,
       whenFinished: () {
         MediaUtils().play(

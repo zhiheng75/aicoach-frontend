@@ -11,6 +11,7 @@ import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/person/person.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +91,8 @@ class _MainTabberState extends State<MainTabber> {
   }
 
   void tabSelect(int index) {
+    MediaUtils().stopPlay();
+
     if (index == 3) {
       if (LoginManager.isLogin()) {
         EventBus().emit(NotificationUtils.resetChat, index.toString());

@@ -362,21 +362,25 @@ class _CourseHomePageState extends State<CourseHomePage>
                   children: [
                     listData.length > 1
                         ? tabbar()
-                        : XTCupertinoNavigationBar(
-                            backgroundColor: const Color(0xFFFFFFFF),
-                            border: null,
-                            padding: EdgeInsetsDirectional.zero,
-                            middle: Text(
-                              levelNameStr,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
+                        : listData.length > 0
+                            ? XTCupertinoNavigationBar(
+                                backgroundColor: const Color(0xFFFFFFFF),
+                                border: null,
+                                padding: EdgeInsetsDirectional.zero,
+                                middle: Text(
+                                  levelNameStr,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            : Container(),
                     // NavigationBaView(
                     //     title: levelNameStr,
                     //   ),
                     // Center(child: SizedBox(width: 300, child: tabbar())),
-                    Expanded(child: _refreshListView()),
+                    listData.length > 0
+                        ? Expanded(child: _refreshListView())
+                        : Container(),
                   ],
                 ),
         )));

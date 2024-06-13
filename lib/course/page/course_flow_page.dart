@@ -70,6 +70,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   late String characterIdStr;
   late String characterImgCoverStr;
   late String characterCoverStr;
+  late String characterCoverStillImageStr;
+  late String characterCovermotionImageStr;
 
   late int characterSceneIdStr;
   late String characterSceneDescStr;
@@ -84,9 +86,13 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   final MediaUtils _mediaUtils = MediaUtils();
 
   late String teacherId = "0";
+
+  late List<CourseDatum> dataList;
+
   @override
   void initState() {
     super.initState();
+
     EventUMStatistics.umengCommonPageCollectionModeAuto();
     EventUMStatistics.umengCommonOnPageStart("【单课环节详情】页面停留时长");
 
@@ -107,6 +113,10 @@ class _CourseFlowPageState extends State<CourseFlowPage>
             _teacherListBean.data[int.parse(teacherId)].imageUrl;
         characterCoverStr =
             _teacherListBean.data[int.parse(teacherId)].avatarImage;
+        characterCoverStillImageStr =
+            _teacherListBean.data[int.parse(teacherId)].stillImage;
+        characterCovermotionImageStr =
+            _teacherListBean.data[int.parse(teacherId)].motionImage;
         characterSceneDescStr =
             _teacherListBean.data[int.parse(teacherId)].slogan;
         characterSceneNameStr =
@@ -120,6 +130,19 @@ class _CourseFlowPageState extends State<CourseFlowPage>
       _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
     });
     intPermission();
+  }
+
+  @override
+  void didChangeDependencies() {
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didPopNext() {
+    // TODO: implement didPopNext
+    super.didPopNext();
+    _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
   }
 
   void intPermission() async {
@@ -187,6 +210,10 @@ class _CourseFlowPageState extends State<CourseFlowPage>
               teacherListBean.data[int.parse(teacherId)].imageUrl;
           characterCoverStr =
               teacherListBean.data[int.parse(teacherId)].avatarImage;
+          characterCoverStillImageStr =
+              teacherListBean.data[int.parse(teacherId)].stillImage;
+          characterCovermotionImageStr =
+              teacherListBean.data[int.parse(teacherId)].motionImage;
           characterSceneDescStr =
               teacherListBean.data[int.parse(teacherId)].slogan;
           characterSceneNameStr =
@@ -254,7 +281,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     scene.enName = "";
     scene.cover = characterImgCoverStr;
     _homeProvider.character.characterId = characterIdStr;
-    _homeProvider.character.motionImageD = characterCoverStr;
+    _homeProvider.character.motionImage = characterCovermotionImageStr;
+    _homeProvider.character.stillImage = characterCoverStillImageStr;
     _homeProvider.heardcover = characterCoverStr;
     _homeProvider.ishread = characterCoverStr;
 
@@ -397,7 +425,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     child: Container(
                       width: 110,
                       height: 110,
-
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(
@@ -607,11 +634,12 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   @override
   void sendSuccess(StepDetailBean stepDetailBean) {
     // TODO: implement sendSuccess
-    setState(() {
-      isLoding = false;
-      stepDetailData = stepDetailBean;
-      mistakeCountInt = stepDetailData.data.mistakeCount;
-      titleStr = "Lesson ${stepDetailData.data.lessonLabel}";
-    });
+    isLoding = false;
+    stepDetailData = stepDetailBean;
+    // dataList.clear();
+    // dataList.addAll(stepDetailBean.data.data);
+    mistakeCountInt = stepDetailData.data.mistakeCount;
+    titleStr = "Lesson ${stepDetailData.data.lessonLabel}";
+    setState(() {});
   }
 }

@@ -75,10 +75,10 @@ class Detail {
   factory Detail.fromJson(Map<String, dynamic> json) => Detail(
         id: json["id"] ?? 0,
         userId: json["user_id"] ?? 0,
-        createdAt: json["created_at"],
-        isBind: json["is_bind"],
-        levelId: json["level_id"],
-        teacherId: json["teacher_id"],
+        createdAt: json["created_at"] ?? "",
+        isBind: json["is_bind"] ?? 0,
+        levelId: json["level_id"] ?? 0,
+        teacherId: json["teacher_id"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {

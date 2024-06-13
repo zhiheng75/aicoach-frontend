@@ -34,6 +34,7 @@ import 'package:Bubble/widgets/group_avatar_widget.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:crypto/crypto.dart';
 import 'package:device_identity/device_identity.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
@@ -90,6 +91,10 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   late String bubbleAndriodVersionStr = "";
   late String bubbleAndriodVersionApprovalStr = "";
+
+  late String url = "";
+  late String os = "";
+  late String omuids = "";
 
   // Widget barWidget(BuildContext context) {
   //   return Container(
@@ -646,35 +651,40 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     EventBus().on(NotificationUtils.loginOut, (_) {
       _homeTwoPagePresenter.getBannerList();
     });
+
+    getAD();
   }
 
-  // void getAD() async {
-  //   final dio = Dio();
-  //   String url = "";
-  //   String os;
-  //   String omuids;
+  void getAD() async {
+    final dio = Dio();
 
-  //   if (Device.isAndroid) {
-  //     String deviceId;
-  //     int sdk = await getAndroidSdkInt();
-  //     if (sdk >= 10) {
-  //       deviceId = await DeviceIdentity.oaid;
-  //     } else {
-  //       deviceId = await DeviceIdentity.imei;
-  //     }
-  //     os = "android";
-  //     omuids = deviceId;
-  //   } else {
-  //     os = "ios";
-  //     // omuids =
-  //   }
-  //   //https://ad.oceanengine.com/track/activate/?callback=xxxxx&os=1&muid=xxxxxxx
+    if (Device.isAndroid) {
+      String deviceId;
+      int sdk = await getAndroidSdkInt();
+      if (sdk >= 10) {
+        deviceId = await DeviceIdentity.oaid;
+      } else {
+        deviceId = await DeviceIdentity.imei;
+      }
+      os = "android";
+      omuids = deviceId;
+    } else {
+      os = "ios";
+      omuids = "";
+    }
+    //https://ad.oceanengine.com/track/activate/?callback=xxxxx&os=1&muid=xxxxxxx
 
-  //   var response = await dio.get('https://www.dmoe.cc/random.php?return=json');
-  //   //转化为Json
-  //   String jsonString = jsonEncode(response.data);
-  //   print(jsonString);
-  // }
+    // var response = await dio.get('https://www.dmoe.cc/random.php?return=json');
+    // //转化为Json
+    // String jsonString = jsonEncode(response.data);
+    // print(jsonString);
+  }
+
+  String generateMd5(String data) {
+    var content = new Utf8Encoder().convert(data);
+    var digest = md5.convert(content);
+    return digest.toString();
+  }
 
   /// 使用前记得初始化
   Future<int> getAndroidSdkInt() async {
@@ -840,6 +850,12 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
                                           )),
+                                      // Text(generateMd5(omuids),
+                                      //     style: const TextStyle(
+                                      //       fontSize: 16,
+                                      //       fontWeight: FontWeight.bold,
+                                      //       color: Colors.black,
+                                      //     )),
                                     ],
                                   ),
                                 ),

@@ -288,7 +288,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   void sendMessage(String text) async {
     // 连接
     try {
-      await connectWebsocket();
+      // await connectWebsocket();
     } catch (e) {
       Log.d('connect websocket fail:[error]${e.toString()}',
           tag: 'sendMessage');
