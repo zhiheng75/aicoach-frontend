@@ -1,3 +1,4 @@
+import 'package:Bubble/home/utils/douyin_util.dart';
 import 'package:dio/dio.dart';
 import 'package:sp_util/sp_util.dart';
 
@@ -64,6 +65,8 @@ class BindPhonePresenter extends BasePagePresenter<BindPhoneView> {
         if (data.code == 200) {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
+          DYUtil().evaluate("1");
+
           view.wechatLoginSuccess("登录成功");
         } else {
           view.wechatLoginFail(data.msg);

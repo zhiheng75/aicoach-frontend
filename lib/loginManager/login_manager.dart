@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:Bubble/constant/constant.dart';
+import 'package:Bubble/home/utils/douyin_util.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
@@ -349,7 +350,7 @@ class LoginManager {
         if (data.code == 200) {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
-
+          DYUtil().evaluate("1");
           // Constant.jverify.dismissLoginAuthView();
           NavigatorUtils.push(context, PersonalRouter.person);
         }

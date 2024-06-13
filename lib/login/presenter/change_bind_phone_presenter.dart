@@ -1,3 +1,4 @@
+import 'package:Bubble/home/utils/douyin_util.dart';
 import 'package:dio/dio.dart';
 import 'package:sp_util/sp_util.dart';
 
@@ -11,7 +12,6 @@ import '../view/bind_phone_view.dart';
 import '../view/change_bind_phone_view.dart';
 
 class ChangeBindPhonePresenter extends BasePagePresenter<ChangeBindPhoneView> {
-
   late LoginInfoDataData data;
 
   Future sendSms(String phoneNum) {
@@ -21,16 +21,16 @@ class ChangeBindPhonePresenter extends BasePagePresenter<ChangeBindPhoneView> {
         url: HttpApi.smsLogin,
         queryParameters: params,
         isShow: true, onSuccess: (data) {
-          if (data != null) {
-            if (data.code == 200) {
-              view.sendSuccess("发送成功");
-            } else {
-              view.sendFail(data.msg);
-            }
-          } else {
-            view.sendFail("响应异常");
-          }
-        });
+      if (data != null) {
+        if (data.code == 200) {
+          view.sendSuccess("发送成功");
+        } else {
+          view.sendFail(data.msg);
+        }
+      } else {
+        view.sendFail("响应异常");
+      }
+    });
   }
 
   Future toBind(String phoneNum, String smsCode) {
@@ -48,24 +48,22 @@ class ChangeBindPhonePresenter extends BasePagePresenter<ChangeBindPhoneView> {
     params['province'] = data.province;
     params['unionid'] = data.unionid;
 
-
     return requestNetwork<LoginInfoData>(Method.post,
         url: HttpApi.wechatLogin,
         params: params,
         options: op,
-        isShow: true,
-        onSuccess: (data) {
-          if (data != null) {
-            if (data.code == 200) {
+        isShow: true, onSuccess: (data) {
+      if (data != null) {
+        if (data.code == 200) {
+          SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
+          SpUtil.putString(Constant.accessToken, data.data.token);
+          DYUtil().evaluate("1");
 
-              SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
-              SpUtil.putString(Constant.accessToken, data.data.token);
-              view.bindSuccess("登录成功");
-            } else {
-              view.bindFail(data.msg);
-            }
-          }
-        });
+          view.bindSuccess("登录成功");
+        } else {
+          view.bindFail(data.msg);
+        }
+      }
+    });
   }
-
 }

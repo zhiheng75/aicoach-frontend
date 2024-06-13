@@ -3,6 +3,7 @@ import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/provider/selecter_teacher_provider.dart';
 import 'package:Bubble/setting/provider/device_provider.dart';
 import 'package:Bubble/util/media_utils.dart';
+import 'package:device_identity/device_identity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,7 +39,7 @@ Future<void> main() async {
     await SpUtil.getInstance();
 
     /// device_identity初始化
-    // await DeviceIdentity.register();
+    await DeviceIdentity.register();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     // 设置音频配置
@@ -95,9 +96,9 @@ class MyApp extends StatelessWidget {
     interceptors.add(AdapterInterceptor());
     configDio(
       // 测试
-      // baseUrl: 'https://api.bubble.shenmo-ai.net/',
+      baseUrl: 'https://api.bubble.shenmo-ai.net/',
       // 正式
-      baseUrl: 'https://api.bubble.shenmo-ai.com/',
+      // baseUrl: 'https://api.bubble.shenmo-ai.com/',
       interceptors: interceptors,
     );
   }

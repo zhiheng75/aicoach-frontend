@@ -1,5 +1,6 @@
 import 'package:Bubble/home/entity/base_config_entity.dart';
 import 'package:Bubble/home/home_router.dart';
+import 'package:Bubble/home/utils/douyin_util.dart';
 import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/person/presneter/purchase_presenter.dart';
 import 'package:Bubble/person/presneter/purchase_view.dart';
@@ -556,6 +557,7 @@ class _PurchasePageState extends State<PurchasePage>
 
   @override
   void paySuccess() {
+    DYUtil().evaluate("2");
     NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
   }
 

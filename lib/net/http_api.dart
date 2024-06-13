@@ -62,6 +62,7 @@ class HttpApi {
 
   //获取基础配置
   static const String baseConfig = "variable_list";
+  static const String clickMatch = "click_match";
 
   //一键登录
   static const String keyLogin = "jg_login";

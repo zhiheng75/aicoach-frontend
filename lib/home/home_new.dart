@@ -5,7 +5,9 @@ import 'dart:math';
 
 import 'package:Bubble/chat/entity/topic_entity.dart';
 import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/home/entity/click_match_bean.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
+import 'package:Bubble/home/utils/douyin_util.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/main.dart';
 import 'package:Bubble/net/dio_utils.dart';
@@ -85,6 +87,8 @@ class _HomePageState extends State<HomeNewPage>
     // 获取体验时间
     _homeProvider.getUsageTime();
     // getBaseConfig();
+    // getAD();
+    DYUtil().evaluate("0");
   }
 
   void getBaseConfig() async {
@@ -119,7 +123,7 @@ class _HomePageState extends State<HomeNewPage>
   void initUM() {
     String platformStr = Channel.channelios;
     if (Device.isAndroid) {
-      platformStr = Channel.channelmeizu;
+      platformStr = Channel.dyhuiyi;
     } else {
       platformStr = Channel.channelios;
     }
@@ -146,7 +150,7 @@ class _HomePageState extends State<HomeNewPage>
       // androidDeviceInfo.board;
       // androidDeviceInfo.model;
       // androidDeviceInfo.version.release;
-      platformStr = Channel.channelmeizu;
+      platformStr = Channel.dyhuiyi;
       final Map<String, String> params = <String, String>{};
       params["manufacturer"] = androidDeviceInfo.manufacturer;
       params["id"] = androidDeviceInfo.id;
@@ -223,13 +227,40 @@ class _HomePageState extends State<HomeNewPage>
       idfa = advertisingInfo.id ?? "";
     }
 
-    // final dio = Dio();
-    //https://ad.oceanengine.com/track/activate/?callback=xxxxx&os=1&muid=xxxxxxx
+    final Map<String, String> params = <String, String>{};
+    params["imei"] = generateMd5(imei);
+    params["oaid"] = oaid;
+    params["androidid"] = generateMd5(androidid);
+    params["os"] = os;
+    params["idfa"] = idfa;
+    params["mac"] = macAddress;
 
-    // var response = await dio.get('https://www.dmoe.cc/random.php?return=json');
-    // //转化为Json
-    // String jsonString = jsonEncode(response.data);
-    // print(jsonString);
+    // DioUtils.instance.requestNetwork<ResultData>(Method.get, HttpApi.clickMatch,
+    //     queryParameters: params, onSuccess: (result) {
+    //   // DioUtils.instance.requestNetwork<ResultData>(Method.get,
+    //   //     url: HttpApi.clickMatch,
+    //   //     queryParameters: params,
+    //   //     isShow: false, onSuccess: (result) {
+    //   Log.e(result.toString());
+
+    //   Map<String, dynamic> ebasecOnfigBeanMap = json.decode(result.toString());
+    //   ClickMatchBean clickMatchBean =
+    //       ClickMatchBean.fromJson(ebasecOnfigBeanMap);
+    //   if (clickMatchBean.code == 200) {
+    //     douyin(imei, os, oaid, idfa, clickMatchBean.data.callback, "0");
+    //   }
+    // });
+  }
+
+  void douyin(String imei, String os, String oaid, String idfa, String callback,
+      String eventType) async {
+    final dio = Dio();
+    url =
+        "https://ad.oceanengine.com/track/activate/?callback=$callback&os=$os&imei=${generateMd5(imei)}&oaid=${generateMd5(oaid)}&idfa=$idfa&event_type=$eventType";
+    var response = await dio.get(url);
+    //转化为Json
+    String jsonString = jsonEncode(response.data);
+    print(jsonString);
   }
 
   String generateMd5(String data) {
