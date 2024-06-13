@@ -353,7 +353,7 @@ class _CourseHomePageState extends State<CourseHomePage>
     //   );
     // }
     return AnnotatedRegion(
-        value: SystemUiOverlayStyle.light,
+        value: SystemUiOverlayStyle.dark,
         child: Scaffold(
             body: SafeArea(
           child: isLoding
@@ -363,16 +363,27 @@ class _CourseHomePageState extends State<CourseHomePage>
                     listData.length > 1
                         ? tabbar()
                         : listData.length > 0
-                            ? XTCupertinoNavigationBar(
-                                backgroundColor: const Color(0xFFFFFFFF),
-                                border: null,
-                                padding: EdgeInsetsDirectional.zero,
-                                middle: Text(
+                            ? Container(
+                                height: 30,
+                                color: Colors.white,
+                                child: Text(
                                   levelNameStr,
                                   style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                 ),
                               )
+                            // XTCupertinoNavigationBar(
+                            //     backgroundColor: const Color(0xFFFFFFFF),
+                            //     border: null,
+                            //     padding: EdgeInsetsDirectional.zero,
+                            // middle: Text(
+                            //   levelNameStr,
+                            //   style: const TextStyle(
+                            //       fontWeight: FontWeight.bold),
+                            // ),
+                            //   )
                             : Container(),
                     // NavigationBaView(
                     //     title: levelNameStr,

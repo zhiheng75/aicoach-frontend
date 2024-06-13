@@ -85,7 +85,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage>
     super.build(context);
 
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(

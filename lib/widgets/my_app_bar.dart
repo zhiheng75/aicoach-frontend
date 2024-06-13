@@ -99,7 +99,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: Material(
         color: bgColor,
         child: SafeArea(

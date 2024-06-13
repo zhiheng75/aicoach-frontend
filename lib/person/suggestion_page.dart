@@ -65,7 +65,7 @@ class _SuggestionPageState extends State<SuggestionPage>
   Widget build(BuildContext context) {
     super.build(context);
     return AnnotatedRegion(
-        value: SystemUiOverlayStyle.light,
+        value: SystemUiOverlayStyle.dark,
         child: Scaffold(
           body: GestureDetector(
             onTap: () {

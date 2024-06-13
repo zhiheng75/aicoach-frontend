@@ -108,7 +108,7 @@ class _CheckCodePageState extends State<CheckCodePage>
   Widget build(BuildContext context) {
     super.build(context);
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
@@ -369,7 +369,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   Widget build(BuildContext context) {
     super.build(context);
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(

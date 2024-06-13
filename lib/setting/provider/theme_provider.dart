@@ -15,7 +15,7 @@ extension ThemeModeExtension on ThemeMode {
 
 class ThemeProvider extends ChangeNotifier {
   /// 是否跟随系统
-  bool get isFollowSystem => getThemeMode() == ThemeMode.system;
+  bool get isFollowSystem => getThemeMode() == ThemeMode.dark;
 
   void syncTheme() {
     final String theme = SpUtil.getString(Constant.theme) ?? '';
@@ -35,19 +35,19 @@ class ThemeProvider extends ChangeNotifier {
       case 'Dark':
         return ThemeMode.dark;
       case 'Light':
-        return ThemeMode.light;
+        return ThemeMode.dark;
       default:
-        return ThemeMode.system;
+        return ThemeMode.dark;
     }
   }
 
   /// 暗黑模式判断
   bool isDark(BuildContext context) {
     if (!isPriorityApp) {
-      return Theme.of(context).brightness == Brightness.light;
+      return Theme.of(context).brightness == Brightness.dark;
     } else {
       if (isFollowSystem) {
-        return Theme.of(context).brightness == Brightness.light;
+        return Theme.of(context).brightness == Brightness.dark;
       } else {
         return getThemeColor() == Colours.app_main;
       }
@@ -63,7 +63,7 @@ class ThemeProvider extends ChangeNotifier {
     return ThemeData(
       primaryColor: isDarkMode ? Colours.dark_app_main : Colours.app_main,
       colorScheme: ColorScheme.fromSwatch().copyWith(
-        brightness: isDarkMode ? Brightness.light : Brightness.light,
+        brightness: isDarkMode ? Brightness.dark : Brightness.dark,
         secondary: isDarkMode ? Colours.dark_app_main : Colours.app_main,
         error: isDarkMode ? Colours.dark_red : Colours.red,
       ),
@@ -95,16 +95,16 @@ class ThemeProvider extends ChangeNotifier {
       ),
       appBarTheme: AppBarTheme(
         elevation: 0.0,
-        color: isDarkMode ? Colours.dark_bg_color : Colors.white,
+        color: isDarkMode ? Colours.dark_bg_color : Colors.black,
         // systemOverlayStyle: isDarkMode ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       dividerTheme: DividerThemeData(
           color: isDarkMode ? Colours.dark_line : Colours.line,
           space: 0.6,
           thickness: 0.6),
       cupertinoOverrideTheme: CupertinoThemeData(
-        brightness: isDarkMode ? Brightness.light : Brightness.light,
+        brightness: isDarkMode ? Brightness.dark : Brightness.dark,
       ),
       visualDensity: VisualDensity.standard,
     );

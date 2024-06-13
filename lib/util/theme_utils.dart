@@ -10,7 +10,7 @@ import 'device_utils.dart';
 
 class ThemeUtils {
   static bool isDark(BuildContext context) {
-    return Theme.of(context).brightness == Brightness.light;
+    return Theme.of(context).brightness == Brightness.dark;
   }
 
   static Color? getDarkColor(BuildContext context, Color darkColor) {
@@ -43,9 +43,9 @@ class ThemeUtils {
         Stream.value(1).delay(const Duration(milliseconds: 200)).listen((_) {
       bool isDark = false;
       if (mode == ThemeMode.dark ||
-          (mode == ThemeMode.system &&
+          (mode == ThemeMode.dark &&
               PlatformDispatcher.instance.platformBrightness ==
-                  Brightness.light)) {
+                  Brightness.dark)) {
         isDark = true;
       }
       setSystemBarStyle(isDark: isDark);
@@ -57,7 +57,7 @@ class ThemeUtils {
   static void setSystemBarStyle({bool? isDark}) {
     if (Device.isAndroid) {
       final bool isDarkMode = isDark ??
-          PlatformDispatcher.instance.platformBrightness == Brightness.light;
+          PlatformDispatcher.instance.platformBrightness == Brightness.dark;
       debugPrint('isDark: $isDarkMode');
       final SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
         /// 透明状态栏

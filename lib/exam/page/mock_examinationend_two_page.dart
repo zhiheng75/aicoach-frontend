@@ -573,7 +573,7 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
     super.build(context);
 
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         body: Column(children: [
           XTCupertinoNavigationBar(

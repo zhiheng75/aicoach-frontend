@@ -66,6 +66,11 @@ Future<void> main() async {
 
         runApp(MyApp());
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+        // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        //     overlays: [SystemUiOverlay.top]);
+        // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        //   statusBarColor: Colors.red, // 修改状态栏颜色
+        // ));
 
         FlutterBugly.init(
           androidAppId: "1461f76ac6",

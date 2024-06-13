@@ -112,7 +112,7 @@ class _MyTextFieldState extends State<MyTextField> {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-    final bool isDark = themeData.brightness == Brightness.light;
+    final bool isDark = themeData.brightness == Brightness.dark;
 
     Widget textField = TextField(
       style: widget.txtStyle,

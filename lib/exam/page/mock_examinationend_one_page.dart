@@ -220,7 +220,7 @@ class _MockExaminationendOnePageState extends State<MockExaminationendOnePage>
     super.build(context);
     bcontext = context;
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Stack(

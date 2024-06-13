@@ -49,7 +49,7 @@ class _PersonalCenterPageState extends State<PersonalCenterPage>
   Widget build(BuildContext context) {
     super.build(context);
     return AnnotatedRegion(
-        value: SystemUiOverlayStyle.light,
+        value: SystemUiOverlayStyle.dark,
         child: Scaffold(
             body: Stack(
           children: [

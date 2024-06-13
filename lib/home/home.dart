@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage>
     super.build(context);
     return DoubleTapBackExitApp(
         child: AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: Consumer<HomeTeacherProvider>(
         builder: (_, provider, __) {
           TeachListEntity? teacher = provider.teacher;

@@ -18,21 +18,20 @@ class _OnlySmsPageState extends State<OnlySmsPage> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion(
-        value: SystemUiOverlayStyle.light,
-        child:Scaffold(
+        value: SystemUiOverlayStyle.dark,
+        child: Scaffold(
           body: Container(
-            padding:const EdgeInsets.only(left: 20,right: 20),
+            padding: const EdgeInsets.only(left: 20, right: 20),
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colours.color_00FFB4,
-                    Colours.color_0E90FF,
-                    Colours.color_DA2FFF,
-                  ],
-                )
-            ),
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colours.color_00FFB4,
+                Colours.color_0E90FF,
+                Colours.color_DA2FFF,
+              ],
+            )),
             child: Column(
               children: [
                 const MyAppBar(
@@ -41,7 +40,7 @@ class _OnlySmsPageState extends State<OnlySmsPage> {
                 Gaps.vGap50,
                 Container(
                   alignment: Alignment.centerLeft,
-                  child:  Text(
+                  child: Text(
                     "Bubble",
                     style: TextStyles.textBold26,
                   ),
@@ -49,22 +48,23 @@ class _OnlySmsPageState extends State<OnlySmsPage> {
                 Gaps.vGap50,
                 Container(
                   alignment: Alignment.centerLeft,
-                  child:  Text(
+                  child: Text(
                     "请输入验证码",
-                    style: TextStyle(fontSize: Dimens.font_sp18, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: Dimens.font_sp18, color: Colors.white),
                   ),
                 ),
                 Container(
                   alignment: Alignment.centerLeft,
-                  child:  Text(
+                  child: Text(
                     "已发送短信到",
-                    style: TextStyle(fontSize: Dimens.font_sp18, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: Dimens.font_sp18, color: Colors.white),
                   ),
                 ),
               ],
             ),
           ),
-        )
-    );
+        ));
   }
 }

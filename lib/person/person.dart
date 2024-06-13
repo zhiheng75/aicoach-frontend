@@ -761,6 +761,7 @@ class _PersonPageState extends State<PersonPage>
         children: <Widget>[
           menuItem('customer_service_icon', '联系客服', '', onPress: () {
             if (phone == "17001234567") {
+              // NavigatorUtils.push(context, PersonalRouter.about);
               tapMenu(PersonalRouter.about);
             } else {
               Fluwx fluwx = Fluwx();

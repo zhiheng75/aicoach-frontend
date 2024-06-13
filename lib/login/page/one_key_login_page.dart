@@ -27,8 +27,7 @@ class _KeyLoginPageState extends State<KeyLoginPage>
     with
         BasePageMixin<KeyLoginPage, OneKeyLoginPresenter>,
         AutomaticKeepAliveClientMixin<KeyLoginPage>
-    implements OneKeyLoginView{
-
+    implements OneKeyLoginView {
   late OneKeyLoginPresenter _presenter;
 
   List<JVCustomWidget> jgListWidget = [];
@@ -47,8 +46,6 @@ class _KeyLoginPageState extends State<KeyLoginPage>
 
   String _result = "token=";
 
-
-
   @override
   void initState() {
     super.initState();
@@ -59,20 +56,17 @@ class _KeyLoginPageState extends State<KeyLoginPage>
   Widget build(BuildContext context) {
     super.build(context);
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.light,
-        child:Scaffold(
-          resizeToAvoidBottomInset:false,
+        value: SystemUiOverlayStyle.dark,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: ImageUtils.getAssetImage(
-                        "login_bg_img2"),
+                    image: ImageUtils.getAssetImage("login_bg_img2"),
                     fit: BoxFit.fill)),
           ),
-        )
-    );
+        ));
   }
-
 
   /// SDK 请求授权一键登录
   void loginAuth() {
@@ -112,7 +106,6 @@ class _KeyLoginPageState extends State<KeyLoginPage>
         uiConfig.numberColor = Colors.white.value;
         uiConfig.numberSize = 35;
 
-
         uiConfig.sloganOffsetY = 480;
         uiConfig.sloganVerticalLayoutItem = JVIOSLayoutItem.ItemNumber;
         uiConfig.sloganTextColor = Colours.color_546092.value;
@@ -130,7 +123,8 @@ class _KeyLoginPageState extends State<KeyLoginPage>
         uiConfig.loginBtnPressedImage = "purchase_btn_img"; //图片必须存在
         uiConfig.loginBtnUnableImage = "purchase_btn_img"; //图片必须存在
 
-        uiConfig.privacyHintToast = true; //only android 设置隐私条款不选中时点击登录按钮默认显示toast。
+        uiConfig.privacyHintToast =
+            true; //only android 设置隐私条款不选中时点击登录按钮默认显示toast。
 
         uiConfig.privacyState = true; //设置默认勾选
         uiConfig.privacyCheckboxSize = 14;
@@ -171,7 +165,6 @@ class _KeyLoginPageState extends State<KeyLoginPage>
         jgListWidget.add(otherNumberLoginType());
         jgListWidget.add(tipsWidget());
 
-
         /// 步骤 1：调用接口设置 UI
         Constant.jverify.setCustomAuthorizationView(true, uiConfig,
             landscapeConfig: uiConfig, widgets: jgListWidget);
@@ -206,14 +199,15 @@ class _KeyLoginPageState extends State<KeyLoginPage>
   }
 
   //其他号码登录
-  JVCustomWidget otherNumberLoginType(){
-    const String btnWidgetId = "jv_add_custom_button";// 标识控件 id
-    JVCustomWidget textWidget = JVCustomWidget(btnWidgetId, JVCustomWidgetType.button);
+  JVCustomWidget otherNumberLoginType() {
+    const String btnWidgetId = "jv_add_custom_button"; // 标识控件 id
+    JVCustomWidget textWidget =
+        JVCustomWidget(btnWidgetId, JVCustomWidgetType.button);
     textWidget.title = "其他登录方式";
     textWidget.left = 30;
-    textWidget.top = 580 ;
+    textWidget.top = 580;
     textWidget.width = 320;
-    textWidget.height  = 45;
+    textWidget.height = 45;
     textWidget.titleColor = Colours.color_3389FF.value;
     textWidget.titleFont = 16;
     textWidget.isShowUnderline = false;
@@ -229,18 +223,18 @@ class _KeyLoginPageState extends State<KeyLoginPage>
       }
     });
     return textWidget;
-
   }
 
   //登录及注册文案
-  JVCustomWidget tipsWidget(){
-    const String txtWidget = "jv_add_custom_txt1";// 标识控件 id
-    JVCustomWidget textWidget = JVCustomWidget(txtWidget, JVCustomWidgetType.textView);
+  JVCustomWidget tipsWidget() {
+    const String txtWidget = "jv_add_custom_txt1"; // 标识控件 id
+    JVCustomWidget textWidget =
+        JVCustomWidget(txtWidget, JVCustomWidgetType.textView);
     textWidget.title = "未注册手机号验证后生成新账户";
     textWidget.left = 25;
-    textWidget.top = 315 ;
+    textWidget.top = 315;
     textWidget.width = 200;
-    textWidget.height  = 40;
+    textWidget.height = 40;
     textWidget.titleFont = 13;
     textWidget.backgroundColor = Colors.transparent.value;
     textWidget.titleColor = Colors.white.value;
@@ -260,10 +254,9 @@ class _KeyLoginPageState extends State<KeyLoginPage>
   void loginSuccess() {
     Constant.jverify.dismissLoginAuthView();
     Toast.show("登录成功");
-    NavigatorUtils.push(context, PersonalRouter.person,replace: true);
+    NavigatorUtils.push(context, PersonalRouter.person, replace: true);
   }
 
   @override
-
   bool get wantKeepAlive => true;
 }

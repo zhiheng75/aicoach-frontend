@@ -17,10 +17,9 @@ import '../util/image_utils.dart';
 import '../widgets/load_image.dart';
 
 class reportPage extends StatefulWidget {
+  final StudyListDataData entity;
 
-  final StudyListDataData  entity;
-
-  const reportPage(this.entity,{Key? key}) : super(key: key);
+  const reportPage(this.entity, {Key? key}) : super(key: key);
 
   @override
   State<reportPage> createState() => _reportPageState();
@@ -39,14 +38,13 @@ class _reportPageState extends State<reportPage>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _myReportPresenter.getReport(widget.entity.sessionId);
     });
-
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: Scaffold(
           body: Container(
         decoration: const BoxDecoration(
@@ -84,46 +82,55 @@ class _reportPageState extends State<reportPage>
                   child: Column(
                     children: [
                       talkAmount(
-                         _myReportPresenter.sessionAmount , _myReportPresenter.sessionTime/*TimeUtils.formatDateYMDTime(1630399935000)*/),
+                          _myReportPresenter.sessionAmount,
+                          _myReportPresenter
+                              .sessionTime /*TimeUtils.formatDateYMDTime(1630399935000)*/),
                       Gaps.vGap50,
                       CircularPercentIndicator(
                         radius: 95.0,
                         lineWidth: 5.0,
                         percent: _myReportPresenter.rankScore,
-                        center:  Column(
+                        center: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               "${_myReportPresenter.score}",
-                              style:const TextStyle(
-                                  fontSize: 60, color: Colours.color_00DBAF,fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                  fontSize: 60,
+                                  color: Colours.color_00DBAF,
+                                  fontWeight: FontWeight.bold),
                             ),
 
                             RichText(
                                 text: TextSpan(
                                     text: '超过',
                                     style: const TextStyle(
-                                        color: Colours.color_00DBAF, fontSize: 15),
+                                        color: Colours.color_00DBAF,
+                                        fontSize: 15),
                                     children: <TextSpan>[
-                                      TextSpan(
-                                          text: _myReportPresenter.rank.isEmpty?"--%":"${_myReportPresenter.rank}",
-                                          style: const TextStyle(
-                                              color: Colours.color_925DFF,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold)),
-                                      const TextSpan(
-                                          text: "该年龄段用户",
-                                          style:
-                                          TextStyle(color: Colours.color_00DBAF, fontSize: 15)),
-                                    ])),
-
+                                  TextSpan(
+                                      text: _myReportPresenter.rank.isEmpty
+                                          ? "--%"
+                                          : "${_myReportPresenter.rank}",
+                                      style: const TextStyle(
+                                          color: Colours.color_925DFF,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold)),
+                                  const TextSpan(
+                                      text: "该年龄段用户",
+                                      style: TextStyle(
+                                          color: Colours.color_00DBAF,
+                                          fontSize: 15)),
+                                ])),
 
                             // Text("超过94%该年龄段用户"),
                             Gaps.vGap8,
-                            const Text("满分为100分",style: TextStyle(fontSize: 10,color: Colours.color_BABFD6),),
-
-
+                            const Text(
+                              "满分为100分",
+                              style: TextStyle(
+                                  fontSize: 10, color: Colours.color_BABFD6),
+                            ),
                           ],
                         ),
                         progressColor: Colours.color_00DBAF,
@@ -144,7 +151,7 @@ class _reportPageState extends State<reportPage>
                         ),
                       ),
                     ),
-                     Center(
+                    Center(
                       child: Text(
                         "对话内容解析",
                         style: TextStyle(
@@ -276,7 +283,7 @@ class _reportPageState extends State<reportPage>
   //   return list;
   // }
 
-  Widget talkAmount( amount, String time) {
+  Widget talkAmount(amount, String time) {
     return Row(
       children: [
         const LoadAssetImage(

@@ -709,7 +709,7 @@ class _MockExaminationTwoPageState extends State<MockExaminationTwoPage>
     super.build(context);
     bcontext = context;
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: WillPopScope(
         onWillPop: () async {
           //这里可以响应物理返回键

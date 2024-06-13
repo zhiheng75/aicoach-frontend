@@ -32,7 +32,7 @@ class _MyOrderPageState extends State<MyOrderPage>
   Widget build(BuildContext context) {
     super.build(context);
     return AnnotatedRegion(
-        value: SystemUiOverlayStyle.light,
+        value: SystemUiOverlayStyle.dark,
         child: Scaffold(
             body: Container(
           decoration: const BoxDecoration(

@@ -142,7 +142,7 @@ class _ChangeRolePageState extends State<ChangeRolePage>
         }
 
         return AnnotatedRegion(
-            value: SystemUiOverlayStyle.light,
+            value: SystemUiOverlayStyle.dark,
             child: Scaffold(
               body: Stack(
                 children: [

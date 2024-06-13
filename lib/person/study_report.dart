@@ -21,19 +21,18 @@ class StudyReportPage extends StatefulWidget {
   State<StudyReportPage> createState() => _StudyReportPageState();
 }
 
-class _StudyReportPageState extends State<StudyReportPage> with BasePageMixin<StudyReportPage,StudyReportPresenter>,
-    AutomaticKeepAliveClientMixin<StudyReportPage>
-    implements StudyReportView
-{
-
+class _StudyReportPageState extends State<StudyReportPage>
+    with
+        BasePageMixin<StudyReportPage, StudyReportPresenter>,
+        AutomaticKeepAliveClientMixin<StudyReportPage>
+    implements StudyReportView {
   late StudyReportPresenter _presenter;
-
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle.light,
+        value: SystemUiOverlayStyle.dark,
         child: Scaffold(
           body: Container(
             decoration: const BoxDecoration(
@@ -41,13 +40,15 @@ class _StudyReportPageState extends State<StudyReportPage> with BasePageMixin<St
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
                     colors: [
-                      Colours.color_00E6D0,
-                      Colours.color_006CFF,
-                      Colours.color_D74DFF,
-                    ],
-                    stops: [0.0,0.2,1]
-                )
-            ),
+                  Colours.color_00E6D0,
+                  Colours.color_006CFF,
+                  Colours.color_D74DFF,
+                ],
+                    stops: [
+                  0.0,
+                  0.2,
+                  1
+                ])),
             child: Column(
               children: [
                 const MyAppBar(
@@ -56,32 +57,38 @@ class _StudyReportPageState extends State<StudyReportPage> with BasePageMixin<St
                   backgroundColor: Colours.transflate,
                 ),
                 Expanded(
-                    child:Container(
-                      width: ScreenUtil.getScreenW(context),
-                      padding:const EdgeInsets.only(left: Dimens.gap_dp28,right:Dimens.gap_dp28),
-                      decoration:const BoxDecoration(
-                          borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight:  Radius.circular(20)),
-                          color: Colors.white
-                      ),
-                      child: _presenter.mList.isNotEmpty?
-                      ListView.builder(
-                          shrinkWrap:true,
+                    child: Container(
+                  width: ScreenUtil.getScreenW(context),
+                  padding: const EdgeInsets.only(
+                      left: Dimens.gap_dp28, right: Dimens.gap_dp28),
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20)),
+                      color: Colors.white),
+                  child: _presenter.mList.isNotEmpty
+                      ? ListView.builder(
+                          shrinkWrap: true,
                           itemCount: _presenter.mList.length,
-                          itemBuilder: (context,index){
-                            return StudyReportWidget(_presenter.mList[index],(){
-                              NavigatorUtils.push(context, ReportRouter.reportPage,arguments:_presenter.mList[index],);
+                          itemBuilder: (context, index) {
+                            return StudyReportWidget(_presenter.mList[index],
+                                () {
+                              NavigatorUtils.push(
+                                context,
+                                ReportRouter.reportPage,
+                                arguments: _presenter.mList[index],
+                              );
                             });
-                          }):const StateLayout(
-                      type: StateType.empty,
-                      hintText: "暂无记录",
-                    ),
-                    ) ),
-
+                          })
+                      : const StateLayout(
+                          type: StateType.empty,
+                          hintText: "暂无记录",
+                        ),
+                )),
               ],
             ),
           ),
-        )
-    );
+        ));
   }
 
   @override
@@ -95,8 +102,6 @@ class _StudyReportPageState extends State<StudyReportPage> with BasePageMixin<St
 
   @override
   void studyListInfo(List<StudyListDataData> list) {
-    setState(() {
-
-    });
+    setState(() {});
   }
 }
