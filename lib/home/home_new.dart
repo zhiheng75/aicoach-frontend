@@ -235,21 +235,21 @@ class _HomePageState extends State<HomeNewPage>
     params["idfa"] = idfa;
     params["mac"] = macAddress;
 
-    // DioUtils.instance.requestNetwork<ResultData>(Method.get, HttpApi.clickMatch,
-    //     queryParameters: params, onSuccess: (result) {
-    //   // DioUtils.instance.requestNetwork<ResultData>(Method.get,
-    //   //     url: HttpApi.clickMatch,
-    //   //     queryParameters: params,
-    //   //     isShow: false, onSuccess: (result) {
-    //   Log.e(result.toString());
+    DioUtils.instance.requestNetwork<ResultData>(Method.get, HttpApi.clickMatch,
+        queryParameters: params, onSuccess: (result) {
+      // DioUtils.instance.requestNetwork<ResultData>(Method.get,
+      //     url: HttpApi.clickMatch,
+      //     queryParameters: params,
+      //     isShow: false, onSuccess: (result) {
+      Log.e(result.toString());
 
-    //   Map<String, dynamic> ebasecOnfigBeanMap = json.decode(result.toString());
-    //   ClickMatchBean clickMatchBean =
-    //       ClickMatchBean.fromJson(ebasecOnfigBeanMap);
-    //   if (clickMatchBean.code == 200) {
-    //     douyin(imei, os, oaid, idfa, clickMatchBean.data.callback, "0");
-    //   }
-    // });
+      Map<String, dynamic> ebasecOnfigBeanMap = json.decode(result.toString());
+      ClickMatchBean clickMatchBean =
+          ClickMatchBean.fromJson(ebasecOnfigBeanMap);
+      if (clickMatchBean.code == 200) {
+        douyin(imei, os, oaid, idfa, clickMatchBean.data.callback, "0");
+      }
+    });
   }
 
   void douyin(String imei, String os, String oaid, String idfa, String callback,
