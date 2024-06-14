@@ -5,6 +5,7 @@ import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/entity/click_match_bean.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:advertising_info/advertising_info.dart';
 import 'package:crypto/crypto.dart';
@@ -72,9 +73,9 @@ class DYUtil {
     }
 
     final Map<String, String> params = <String, String>{};
-    params["imei"] = imei;
+    params["imei"] = generateMd5(imei);
     params["oaid"] = oaid;
-    params["androidid"] = androidid;
+    params["androidid"] = generateMd5(androidid);
     params["os"] = os;
     params["idfa"] = idfa;
     params["mac"] = macAddress;
@@ -98,8 +99,14 @@ class DYUtil {
   void douyin(String imei, String os, String oaid, String idfa, String callback,
       String eventType) async {
     final dio = Dio();
+    // String douyin = "";
+    // if (imei.length == 0) {
+    //   douyin = oaid;
+    // } else {
+    //   douyin = imei;
+    // }
     url =
-        "https://ad.oceanengine.com/track/activate/?callback=$callback&os=$os&imei=${generateMd5(imei)}&oaid=${generateMd5(oaid)}&idfa=$idfa&event_type=$eventType";
+        "https://ad.oceanengine.com/track/activate/?callback=$callback&os=$os&imei=${generateMd5(imei)}&oaid=$oaid&idfa=$idfa&event_type=$eventType";
     var response = await dio.get(url);
     //转化为Json
     String jsonString = jsonEncode(response.data);

@@ -39,7 +39,7 @@ Future<void> main() async {
     await SpUtil.getInstance();
 
     /// device_identity初始化
-    await DeviceIdentity.register();
+    // await DeviceIdentity.register();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     // 设置音频配置

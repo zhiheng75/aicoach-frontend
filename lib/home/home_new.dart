@@ -123,7 +123,7 @@ class _HomePageState extends State<HomeNewPage>
   void initUM() {
     String platformStr = Channel.channelios;
     if (Device.isAndroid) {
-      platformStr = Channel.dyhuiyi;
+      platformStr = Channel.dytoufang;
     } else {
       platformStr = Channel.channelios;
     }
@@ -150,7 +150,7 @@ class _HomePageState extends State<HomeNewPage>
       // androidDeviceInfo.board;
       // androidDeviceInfo.model;
       // androidDeviceInfo.version.release;
-      platformStr = Channel.dyhuiyi;
+      platformStr = Channel.dytoufang;
       final Map<String, String> params = <String, String>{};
       params["manufacturer"] = androidDeviceInfo.manufacturer;
       params["id"] = androidDeviceInfo.id;
