@@ -81,7 +81,6 @@ dependencies:
   # 获取当前设备信息 https://github.com/fluttercommunity/plus_plugins/tree/main/packages/device_info_plus
   device_info_plus: 9.0.2
   package_info: ^2.0.2
-
   # 动画效果 https://github.com/xvrh/lottie-flutter
   lottie: ^2.6.0
   #进度条

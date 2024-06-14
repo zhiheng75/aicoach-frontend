@@ -31,8 +31,10 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:native_video_player/native_video_player.dart';
 import 'package:provider/provider.dart';
+import 'package:volume_controller/volume_controller.dart';
 
 import '../chat/entity/message_entity.dart';
 import '../chat/utils/chat_websocket.dart';
@@ -50,6 +52,12 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // final RouteObserver<Route<dynamic>> routeObserver = RouteObserver();
+
+class VolumeUtil {
+  static Future<double> getVolume() async {
+    return VolumeController().getVolume();
+  }
+}
 
 class InstructionalVideoDialoguePage extends StatefulWidget {
   // final List<CourseDatum> data;
@@ -761,13 +769,14 @@ class _InstructionalVideoDialoguePageState
       _mediaUtils.play(
         url: introAudio,
         useAvatar: true,
-        whenFinished: () {
+        whenFinished: () async {
           setState(() {
             isPlayVideo = "1";
           });
           //通知播放视频
           _controller?.play();
-          _controller?.setVolume(1);
+          double volume = await VolumeUtil.getVolume();
+          _controller?.setVolume(volume);
         },
       );
     });
