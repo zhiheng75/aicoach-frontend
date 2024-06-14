@@ -9,6 +9,7 @@ import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:sp_util/sp_util.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 import '../../constant/constant.dart';
 import '../../entity/empty_response_entity.dart';
@@ -72,6 +73,9 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           SpUtil.putString(Constant.accessToken, data.data.token);
           SpUtil.putString(Constant.phone, phoneNum);
           DYUtil().evaluate("1");
+          UmengCommonSdk.onEvent('event', {
+            'name': "登录成功",
+          });
           // view.wechatLoginSuccess("登录成功");
           view.loginSuccess();
         } else {
@@ -117,7 +121,9 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           SpUtil.putString(Constant.accessToken, data.data.token);
           SpUtil.putString(Constant.phone, phoneNum);
           DYUtil().evaluate("1");
-
+          UmengCommonSdk.onEvent('event', {
+            'name': "登录成功",
+          });
           view.loginSuccess();
         } else {
           Toast.show(data.msg);
@@ -138,7 +144,9 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         if (data.code == 200) {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
-
+          UmengCommonSdk.onEvent('event', {
+            'name': "登录成功",
+          });
           DYUtil().evaluate("1");
           view.loginSuccess();
         }
@@ -186,7 +194,9 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           SpUtil.putString(Constant.accessToken, newWxInfoBean.data.token);
           Log.e("======进来了吗=======");
           DYUtil().evaluate("1");
-
+          UmengCommonSdk.onEvent('event', {
+            'name': "登录成功",
+          });
           view.hadBindWechat();
         } else {
           //没绑定

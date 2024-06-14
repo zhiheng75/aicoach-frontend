@@ -1,6 +1,7 @@
 import 'package:Bubble/home/utils/douyin_util.dart';
 import 'package:dio/dio.dart';
 import 'package:sp_util/sp_util.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 import '../../constant/constant.dart';
 import '../../entity/empty_response_entity.dart';
@@ -58,7 +59,9 @@ class ChangeBindPhonePresenter extends BasePagePresenter<ChangeBindPhoneView> {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
           DYUtil().evaluate("1");
-
+          UmengCommonSdk.onEvent('event', {
+            'name': "登录成功",
+          });
           view.bindSuccess("登录成功");
         } else {
           view.bindFail(data.msg);

@@ -9,6 +9,7 @@ import 'package:Bubble/util/toast_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
 import 'package:flutter/material.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 // import 'package:jverify/jverify.dart';
 
 import '../login/entity/login_info_entity.dart';
@@ -351,6 +352,9 @@ class LoginManager {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
           DYUtil().evaluate("1");
+          UmengCommonSdk.onEvent('event', {
+            'name': "登录成功",
+          });
           // Constant.jverify.dismissLoginAuthView();
           NavigatorUtils.push(context, PersonalRouter.person);
         }

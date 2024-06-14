@@ -1,6 +1,7 @@
 import 'package:Bubble/home/utils/douyin_util.dart';
 import 'package:Bubble/mvp/base_page_presenter.dart';
 import 'package:sp_util/sp_util.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 import '../../constant/constant.dart';
 import '../../net/dio_utils.dart';
@@ -20,7 +21,9 @@ class OneKeyLoginPresenter extends BasePagePresenter<OneKeyLoginView> {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
           DYUtil().evaluate("1");
-
+          UmengCommonSdk.onEvent('event', {
+            'name': "登录成功",
+          });
           view.loginSuccess();
         }
       }

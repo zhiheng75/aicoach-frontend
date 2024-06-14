@@ -1,6 +1,7 @@
 import 'package:Bubble/home/entity/base_config_entity.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/home/utils/douyin_util.dart';
+import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/person/presneter/purchase_presenter.dart';
 import 'package:Bubble/person/presneter/purchase_view.dart';
@@ -11,6 +12,7 @@ import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 import '../mvp/base_page.dart';
 import '../res/colors.dart';
@@ -45,6 +47,29 @@ class _PurchasePageState extends State<PurchasePage>
   late PurchasePresenter _purchasePresenter;
   int selectIndex = 0;
   String category = "";
+  String userPhone = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Map<String, dynamic> user = LoginManager.getUserInfo();
+    if (validateInput(user['phone'])) {
+      userPhone = user['phone'].toString();
+    }
+  }
+
+  bool validateInput(String? input) {
+    if (input == null) {
+      return false;
+    }
+
+    if (input.isEmpty) {
+      return false;
+    }
+
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -558,6 +583,10 @@ class _PurchasePageState extends State<PurchasePage>
   @override
   void paySuccess() {
     DYUtil().evaluate("2");
+    UmengCommonSdk.onEvent('event', {
+      'pay': "支付成功",
+      "userPhone": userPhone,
+    });
     NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
   }
 
