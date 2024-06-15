@@ -163,7 +163,8 @@ class MediaUtils {
       return;
     }
     if (pcmBuffer != null) {
-      BufferPlayer bufferPlayer = BufferPlayer(pcmBuffer, whenFinished, useAvatar);
+      BufferPlayer bufferPlayer =
+          BufferPlayer(pcmBuffer, whenFinished, useAvatar);
       bufferPlayer.loadingStreamController = loadingStreamController;
       _currentPlayer = bufferPlayer;
       bufferPlayer.play(() => null);
@@ -178,10 +179,12 @@ class MediaUtils {
     }
   }
 
-  ListPlayer createListPlay(Function() whenFinished, [bool isNormalChat = false]) {
+  ListPlayer createListPlay(Function() whenFinished,
+      [bool isNormalChat = false]) {
     ListPlayer listPlayer = ListPlayer(whenFinished, isNormalChat);
     // 如果存在单一播放就不赋值
-    if (_currentPlayer == null || (_currentPlayer != null && _currentPlayer!.isEnd)) {
+    if (_currentPlayer == null ||
+        (_currentPlayer != null && _currentPlayer!.isEnd)) {
       listPlayer.notPlaceHolder();
       _listPlayer = listPlayer;
     }
@@ -196,7 +199,7 @@ class MediaUtils {
         await player.stop();
       }
       if (player is FilePlayer) {
-       await player.stop();
+        await player.stop();
       }
     }
     if (_listPlayer != null) {
@@ -213,24 +216,38 @@ class MediaUtils {
 }
 
 class VolumeUtil {
-
   static Future<double> getVolume() async {
     return VolumeController().getVolume();
   }
-
 }
 
 class AudioConfig {
-
   static Future<void> addAudioConfig() async {
     final session = await AudioSession.instance;
-    await session.configure(const AudioSessionConfiguration(
+    // await session.configure(const AudioSessionConfiguration(
+    //   avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+    //   avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.defaultToSpeaker,
+    //   avAudioSessionMode: AVAudioSessionMode.defaultMode,
+    //   avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+    //   avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+    //   androidAudioAttributes: AndroidAudioAttributes(
+    //     contentType: AndroidAudioContentType.speech,
+    //     flags: AndroidAudioFlags.none,
+    //     usage: AndroidAudioUsage.voiceCommunication,
+    //   ),
+    //   androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+    //   androidWillPauseWhenDucked: true,
+    // ));
+    await session.configure(AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
-      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.defaultToSpeaker,
-      avAudioSessionMode: AVAudioSessionMode.defaultMode,
-      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionCategoryOptions:
+          AVAudioSessionCategoryOptions.allowBluetooth |
+              AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+      avAudioSessionRouteSharingPolicy:
+          AVAudioSessionRouteSharingPolicy.defaultPolicy,
       avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-      androidAudioAttributes: AndroidAudioAttributes(
+      androidAudioAttributes: const AndroidAudioAttributes(
         contentType: AndroidAudioContentType.speech,
         flags: AndroidAudioFlags.none,
         usage: AndroidAudioUsage.voiceCommunication,
@@ -239,14 +256,13 @@ class AudioConfig {
       androidWillPauseWhenDucked: true,
     ));
   }
-
 }
 
 class AudioConvertUtil {
-
   static Future<String> saveMp3Buffer(Uint8List buffer) async {
     String dirPath = await PathUtils.getTemporaryFolderPath();
-    String fileName = '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.mp3';
+    String fileName =
+        '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.mp3';
     String path = '$dirPath/$fileName';
     File file = File(path);
     if (!file.existsSync()) {
@@ -262,7 +278,8 @@ class AudioConvertUtil {
 
   static Future<String> downloadMp3(String url) async {
     String dirPath = await PathUtils.getTemporaryFolderPath();
-    String fileName = '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.mp3';
+    String fileName =
+        '${DateTime.now().millisecondsSinceEpoch}_${const Uuid().v1().replaceAll('-', '')}.mp3';
     String path = '$dirPath/$fileName';
     try {
       await Dio().download(url, path);
@@ -282,7 +299,8 @@ class AudioConvertUtil {
       bytes.addAll(element.toList());
     }
     try {
-      Uint8List wav = await FlutterSoundHelper().pcmToWaveBuffer(inputBuffer: Uint8List.fromList(bytes));
+      Uint8List wav = await FlutterSoundHelper()
+          .pcmToWaveBuffer(inputBuffer: Uint8List.fromList(bytes));
       return wav;
     } catch (e) {
       return Uint8List(0);
@@ -292,20 +310,16 @@ class AudioConvertUtil {
   static Uint8List convertWavToPcm(Uint8List wavBytes) {
     return FlutterSoundHelper().waveToPCMBuffer(inputBuffer: wavBytes);
   }
-
 }
 
 class Player {
-
   Player();
   // 步骤 convert-格式转换 waitPlay-等待播放 loadPlay-加载播放 play-播放 finished-结束
   // String step = '';
   bool isEnd = false;
-
 }
 
 class BufferPlayer extends Player {
-
   BufferPlayer(this.pcm, this.whenFinished, this.useAvatar);
 
   List<Uint8List> pcm;
@@ -339,11 +353,9 @@ class BufferPlayer extends Player {
     }
     whenFinished();
   }
-
 }
 
 class FilePlayer extends Player {
-
   FilePlayer(this.whenFinished, this.useAvatar);
 
   String? url;
@@ -478,7 +490,6 @@ class ListPlayer {
 
 // 利用StreamController进行音频播放流程控制
 class AudioPlayController {
-
   AudioPlayController({
     String? url,
     List<Uint8List>? pcmBuffer,
@@ -614,7 +625,7 @@ class AudioPlayController {
         if (_loadingStreamController != null) {
           _loadingStreamController!.add(false);
         }
-      } catch(e) {
+      } catch (e) {
         Log.d('播放异常而结束');
         _streamController = null;
         _whenFinished();
