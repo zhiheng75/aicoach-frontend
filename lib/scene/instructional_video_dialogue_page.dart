@@ -220,7 +220,7 @@ class _InstructionalVideoDialoguePageState
 
   void connectWebsocket() async {
     try {
-      // _chatWebsocket.endChat(true);
+      _chatWebsocket.endChat(true);
       String characterId = _homeProvider.character.characterId;
       String sceneId = resourceSceneId; //_homeProvider.scene!.id.toString();
       // String sceneId = _homeProvider.course!.id.toString();
@@ -356,7 +356,12 @@ class _InstructionalVideoDialoguePageState
     // 异常结束
     if (reason == 'Error') {
       // insertTipMessage('Please switch to new class');
-      init();
+      // init();
+      onReold("您的网络不太顺畅，请检查网络情况。");
+    }
+    if (reason == 'keepalive ping timeout') {
+      //超时断开走这里
+      onReold("离开太久了!");
     }
     // 正常结束
     if (reason == 'Session End' && endType != 'force') {
@@ -369,6 +374,34 @@ class _InstructionalVideoDialoguePageState
   void insertTipMessage(String tip) {
     _homeProvider.addTipMessage(tip);
     _listScrollController.scrollToEnd();
+  }
+
+  void onReold(String message) {
+    ConfirmUtils.show(
+      context: context,
+      title: '提示',
+      // buttonDirection: 'vertical',
+      confirmButtonText: '重新加载',
+      cancelButtonText: '取消',
+      onConfirm: () {
+        //刷新
+        forstartFlow(newDataIdx, resourceIdx);
+      },
+      onCancel: () {
+        endSocket();
+        Navigator.of(context).pop();
+        widget.onEnd();
+      },
+      child: Text(
+        message,
+        style: const TextStyle(
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+          color: Color(0xFF333333),
+          height: 18.0 / 15.0,
+        ),
+      ),
+    );
   }
 
   void onConversationEnd() {
@@ -1511,6 +1544,7 @@ class _InstructionalVideoDialoguePageState
                   onScrollEnd: () {
                     _listScrollController.scrollToEnd();
                   },
+                  onError: () {},
                 ),
               ),
             ],

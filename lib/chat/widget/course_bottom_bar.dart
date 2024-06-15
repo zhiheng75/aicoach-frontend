@@ -41,6 +41,7 @@ class CourseBottomBar extends StatefulWidget {
     this.isNormalChat = false,
     this.onScrollEnd,
     this.onFinshEnd,
+    this.onError,
     required this.lessonId,
     required this.stepId,
     required this.sceneId,
@@ -55,6 +56,8 @@ class CourseBottomBar extends StatefulWidget {
   bool? isCollectInformation;
   String? language;
   final Function()? onScrollEnd;
+  final Function()? onError;
+
   final Function(bool isfinsh)? onFinshEnd;
   final String lessonId;
   final String stepId;
@@ -277,8 +280,12 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     widget.controller.setDisabled(true);
     // 异常结束
     if (reason == 'Error') {
-      insertTipMessage('Please switch to new roles, topics, or scene');
+      if (widget.onError != null) {
+        widget.onError!();
+      }
+      // insertTipMessage('Please switch to new roles, topics, or scene');
     }
+    if (reason == 'keepalive ping timeout') {}
     // 正常结束
     if (reason == 'Session End' && endType == 'normal') {
       // insertTipMessage('Conversation finished！');
