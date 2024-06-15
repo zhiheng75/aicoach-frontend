@@ -220,7 +220,7 @@ class _InstructionalVideoDialoguePageState
 
   void connectWebsocket() async {
     try {
-      _chatWebsocket.endChat(true);
+      // _chatWebsocket.endChat(true);
       String characterId = _homeProvider.character.characterId;
       String sceneId = resourceSceneId; //_homeProvider.scene!.id.toString();
       // String sceneId = _homeProvider.course!.id.toString();
