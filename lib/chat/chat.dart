@@ -315,6 +315,9 @@ class _ChatState extends State<ChatPage>
     // init();
 
     EventBus().on(NotificationUtils.resetChat, (idx) {
+      if (idx != "2") {
+        _chatWebsocket.endChat(true);
+      }
       setState(() {
         isNew = idx;
       });

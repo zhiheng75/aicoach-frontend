@@ -933,44 +933,75 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                     ],
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: Container(
-                    margin: const EdgeInsets.all(10),
-                    height: 240,
-                    child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: sceneList.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          //设置列数
-                          crossAxisCount: 2,
-                          //设置横向间距
-                          crossAxisSpacing: 10,
-                          //设置主轴间距
-                          mainAxisSpacing: 0,
-                          mainAxisExtent: 120,
-                        ),
-                        itemBuilder: (BuildContext ctx, int index) {
-                          return GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  backgroundColor: Colors.transparent,
-                                  barrierColor: Colors.transparent,
-                                  isScrollControlled: true,
-                                  isDismissible: false,
-                                  enableDrag: false,
-                                  builder: (_) => SelectScene(
-                                    cagegoryId: sceneList[index].cagegoryId,
-                                  ),
-                                );
-                                EventUMStatistics.umengCommonMapEvent(
-                                    "点击场景模拟练习的次数");
-                              },
-                              child: HomeMapItem(data: sceneList[index]));
-                        }),
-                  ),
-                ),
+                SliverGrid.builder(
+                    itemCount: sceneList.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      //设置列数
+                      crossAxisCount: 2,
+                      //设置横向间距
+                      crossAxisSpacing: 10,
+                      //设置主轴间距
+                      mainAxisSpacing: 0,
+                      mainAxisExtent: 120,
+                    ),
+                    itemBuilder: (BuildContext ctx, int index) {
+                      return GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              backgroundColor: Colors.transparent,
+                              barrierColor: Colors.transparent,
+                              isScrollControlled: true,
+                              isDismissible: false,
+                              enableDrag: false,
+                              builder: (_) => SelectScene(
+                                cagegoryId: sceneList[index].cagegoryId,
+                              ),
+                            );
+                            EventUMStatistics.umengCommonMapEvent(
+                                "点击场景模拟练习的次数");
+                          },
+                          child: HomeMapItem(data: sceneList[index]));
+                    }),
+                // SliverToBoxAdapter(
+                //   child: Container(
+                //     margin: const EdgeInsets.all(10),
+                //     height: 240,
+                //     child: GridView.builder(
+                //         physics: const NeverScrollableScrollPhysics(),
+                //         itemCount: sceneList.length,
+                //         gridDelegate:
+                //             const SliverGridDelegateWithFixedCrossAxisCount(
+                //           //设置列数
+                //           crossAxisCount: 2,
+                //           //设置横向间距
+                //           crossAxisSpacing: 10,
+                //           //设置主轴间距
+                //           mainAxisSpacing: 0,
+                //           mainAxisExtent: 120,
+                //         ),
+                //         itemBuilder: (BuildContext ctx, int index) {
+                //           return GestureDetector(
+                //               onTap: () {
+                //                 showModalBottomSheet(
+                //                   context: context,
+                //                   backgroundColor: Colors.transparent,
+                //                   barrierColor: Colors.transparent,
+                //                   isScrollControlled: true,
+                //                   isDismissible: false,
+                //                   enableDrag: false,
+                //                   builder: (_) => SelectScene(
+                //                     cagegoryId: sceneList[index].cagegoryId,
+                //                   ),
+                //                 );
+                //                 EventUMStatistics.umengCommonMapEvent(
+                //                     "点击场景模拟练习的次数");
+                //               },
+                //               child: HomeMapItem(data: sceneList[index]));
+                //         }),
+                //   ),
+                // ),
                 SliverList.builder(
                   itemBuilder: (ctx, index) {
                     return GestureDetector(

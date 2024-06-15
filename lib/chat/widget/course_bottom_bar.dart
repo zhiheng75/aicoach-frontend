@@ -313,7 +313,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
           });
         },
         onFail: () {
-          insertTipMessage('Please switch to new roles, topics, or scene');
+          // insertTipMessage('Please switch to new roles, topics, or scene');
         },
       );
     }
