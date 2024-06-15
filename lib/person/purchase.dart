@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Bubble/home/utils/douyin_util.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/person/entity/basec_onfig_bean.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 import '../entity/result_entity.dart';
 import '../home/provider/home_provider.dart';
@@ -683,6 +685,11 @@ class _PurchasePageState extends State<PurchasePage>
     // 刷新使用时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
     EventBus().emit("YQM");
+    DYUtil().evaluate("2");
+    UmengCommonSdk.onEvent('event', {
+      'pay': "支付成功",
+      "userPhone": userPhone,
+    });
     Future.delayed(const Duration(seconds: 1), () {
       Navigator.of(context).pop();
     });
