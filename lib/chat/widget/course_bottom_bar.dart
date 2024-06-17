@@ -83,7 +83,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   // ai音频播放
   ListPlayer? _listPlayer;
   // app状态
-  // AppLifecycleState? _appLifecycleState;
+  AppLifecycleState? _appLifecycleState;
 
   void getExample() {
     LoginManager.checkLogin(context, () {
@@ -266,9 +266,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     }
     if (answer is Uint8List) {
       _answer!.audio.add(answer);
-      // if (_appLifecycleState == AppLifecycleState.paused) {
-      //   return;
-      // }
+      if (_appLifecycleState == AppLifecycleState.paused) {
+        return;
+      }
       if (_listPlayer != null) {
         _listPlayer!.play(answer);
       }

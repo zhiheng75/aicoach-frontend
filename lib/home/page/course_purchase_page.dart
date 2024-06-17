@@ -86,18 +86,15 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
   }
 
   Widget classImgWidget(BuildContext context) {
-    return SizedBox(
-      height: 200,
-      child: GestureDetector(
-          onTap: () {},
-          child: Container(
-            margin: const EdgeInsets.only(left: 10, right: 10),
-            child: LoadImage(dataBean.data.banner, fit: BoxFit.fill
-                // width: 56.0,
-                // height: 56.0,
-                ),
-          )),
-    );
+    return GestureDetector(
+        onTap: () {},
+        child: Container(
+          margin: const EdgeInsets.only(left: 10, right: 10),
+          child: LoadImage(dataBean.data.banner, fit: BoxFit.fill
+              // width: 56.0,
+              // height: 56.0,
+              ),
+        ));
   }
 
   Widget aiTeacherWidget() {
@@ -249,67 +246,75 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            dataBean.data.levelName,
-            key: keyTab,
-            style: const TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          Gaps.vGap4,
-          Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  color: Colours.color_FFD076,
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 2.0,
-                ),
-                child: const Text(
-                  "附赠",
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400,
+          Container(
+            margin: const EdgeInsets.only(left: 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  dataBean.data.levelName,
+                  key: keyTab,
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                 ),
-              ),
-              Gaps.hGap6,
-              Text(
-                dataBean.data.tips,
-                style: const TextStyle(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                Gaps.vGap4,
+                Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: Colours.color_FFD076,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 2.0,
+                      ),
+                      child: const Text(
+                        "附赠",
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    Gaps.hGap6,
+                    Text(
+                      dataBean.data.tips,
+                      style: const TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          Gaps.vGap4,
-          Row(
-            children: [
-              const Text(
-                "￥",
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w400,
-                  color: Colours.color_542DEC,
+                Gaps.vGap4,
+                Row(
+                  children: [
+                    const Text(
+                      "￥",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colours.color_542DEC,
+                      ),
+                    ),
+                    Text(
+                      "${dataBean.data.price}",
+                      style: const TextStyle(
+                        fontSize: 36.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colours.color_542DEC,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              Text(
-                "${dataBean.data.price}",
-                style: const TextStyle(
-                  fontSize: 36.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colours.color_542DEC,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
           LoadImage(
             dataBean.data.teacherImg,
@@ -533,13 +538,16 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                         //   itemCount: 5,
                         // ),
                         SliverToBoxAdapter(
-                          child: Container(
-                            margin: EdgeInsets.only(top: 40, bottom: 14),
-                            // height: 80,
-                            child: const LoadAssetImage(
-                              'wenti_bg',
-                            ),
-                          ),
+                          child: dataBean.data.questions.isEmpty
+                              ? Container()
+                              : Container(
+                                  margin: const EdgeInsets.only(
+                                      top: 40, bottom: 14),
+                                  // height: 80,
+                                  child: const LoadAssetImage(
+                                    'wenti_bg',
+                                  ),
+                                ),
                         ),
                         problemWidget(),
                         SliverToBoxAdapter(
@@ -571,8 +579,8 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                               ),
                             ))
                         : Positioned(
-                            top: 50,
-                            left: 20,
+                            top: 60,
+                            left: 13,
                             child: GestureDetector(
                                 onTap: () {
                                   NavigatorUtils.goBack(context);

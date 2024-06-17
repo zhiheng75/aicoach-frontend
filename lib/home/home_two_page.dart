@@ -174,34 +174,110 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   }
 
   Widget barWidget(BuildContext context) {
-    return Container(
-      // color: Colors.amber,
-      height: 280.0,
-      child: Swiper(
-          outer: true,
-          autoplay: true,
-          fade: 0.8,
-          viewportFraction: 0.85,
-          scale: 0.92,
-          itemBuilder: (c, i) {
-            return GestureDetector(
-              onTap: () {
-                SpUtil.putString(
-                    Constant.avatarId, characterList[i].characterId);
+    return Stack(
+      children: [
+        Positioned(
+          child: Column(
+            children: [
+              Gaps.vGap12,
+              SizedBox(
+                // color: Colors.amber,
+                height: 215.0.h,
+                child: Swiper(
+                    autoplay: true,
+                    pagination: SwiperPagination(
+                        margin: const EdgeInsets.all(
+                          0,
+                        ),
+                        builder: DotSwiperPaginationBuilder(
+                            color: Colours.color_D9D9D9,
+                            activeColor: Colours.color_7C7C7C,
+                            // space: 1,
+                            size: 3.h,
+                            activeSize: 3.h)),
+                    outer: true,
+                    // autoplay: true,
+                    // fade: 0.8,
+                    // viewportFraction: 0.85,
+                    scale: 0.92,
+                    itemBuilder: (c, i) {
+                      return GestureDetector(
+                        onTap: () {
+                          SpUtil.putString(
+                              Constant.avatarId, characterList[i].characterId);
 
-                EventBus().emit(
-                    NotificationUtils.taberThree, characterList[i].characterId);
-              },
-              child: LoadImage(
-                characterList[i].coverBgImage,
-                fit: BoxFit.fitHeight,
+                          EventBus().emit(NotificationUtils.taberThree,
+                              characterList[i].characterId);
+                        },
+                        child: LoadImage(
+                          characterList[i].coverBgImage,
+                          fit: BoxFit.fitWidth,
+                        ),
+                      );
+                    },
+                    // pagination: const SwiperPagination(alignment: Alignment.topCenter),
+                    itemCount: characterList.length),
               ),
-            );
-          },
-          pagination: const SwiperPagination(alignment: Alignment.topCenter),
-          itemCount: characterList.length),
+            ],
+          ),
+        ),
+        Row(
+          children: [
+            Gaps.hGap12,
+            Text("随时都在的口语伙伴",
+                style: TextStyle(
+                  fontSize: 17.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                )),
+            // Text(generateMd5(omuids),
+            //     style: const TextStyle(
+            //       fontSize: 16,
+            //       fontWeight: FontWeight.bold,
+            //       color: Colors.black,
+            //     )),
+          ],
+        )
+      ],
     );
   }
+
+  // Widget barWidget(BuildContext context) {
+  //   return Container(
+  //     // color: Colors.amber,
+  //     height: 235.0.h,
+  //     child: Swiper(
+  //         autoplay: true,
+  //         pagination: SwiperPagination(
+  //             builder: DotSwiperPaginationBuilder(
+  //                 color: Colours.color_D9D9D9,
+  //                 activeColor: Colours.color_7C7C7C,
+  //                 size: 3.h,
+  //                 activeSize: 3.h)),
+  //         outer: true,
+  //         // autoplay: true,
+  //         // fade: 0.8,
+  //         // viewportFraction: 0.85,
+  //         // scale: 0.92,
+  //         itemBuilder: (c, i) {
+  //           return GestureDetector(
+  //             onTap: () {
+  //               SpUtil.putString(
+  //                   Constant.avatarId, characterList[i].characterId);
+
+  //               EventBus().emit(
+  //                   NotificationUtils.taberThree, characterList[i].characterId);
+  //             },
+  //             child: LoadImage(
+  //               characterList[i].coverBgImage,
+  //               fit: BoxFit.fitWidth,
+  //             ),
+  //           );
+  //         },
+  //         // pagination: const SwiperPagination(alignment: Alignment.topCenter),
+  //         itemCount: characterList.length),
+  //   );
+  // }
 
   // Widget headWidget(String tit) {
   //   return Padding(
@@ -876,7 +952,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
               child: Stack(
         children: [
           bg,
-          SizedBox(
+          Container(
+            margin: EdgeInsets.only(left: 12.w, right: 12.w),
             width: _screenUtil.screenWidth,
             height: _screenUtil.screenHeight,
             child: CustomScrollView(
@@ -886,65 +963,69 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                     height: _screenUtil.statusBarHeight,
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 40,
-                    child: Row(
-                      children: [
-                        Gaps.hGap26,
-                        const Text("随时都在的口语伙伴",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            )),
-                        // Text(generateMd5(omuids),
-                        //     style: const TextStyle(
-                        //       fontSize: 16,
-                        //       fontWeight: FontWeight.bold,
-                        //       color: Colors.black,
-                        //     )),
-                      ],
-                    ),
-                  ),
-                ),
+                // SliverToBoxAdapter(
+                //   child: SizedBox(
+                //     // height: 40,
+                //     child: Row(
+                //       children: [
+                //         Gaps.hGap12,
+                //         Text("随时都在的口语伙伴",
+                //             style: TextStyle(
+                //               fontSize: 17.sp,
+                //               fontWeight: FontWeight.bold,
+                //               color: Colors.black,
+                //             )),
+                //         // Text(generateMd5(omuids),
+                //         //     style: const TextStyle(
+                //         //       fontSize: 16,
+                //         //       fontWeight: FontWeight.bold,
+                //         //       color: Colors.black,
+                //         //     )),
+                //       ],
+                //     ),
+                //   ),
+                // ),
                 SliverToBoxAdapter(
                   child: characterList.isNotEmpty
                       ? barWidget(context)
                       : Container(),
                 ),
                 SliverToBoxAdapter(
-                  child: Row(
-                    children: [
-                      Gaps.hGap10,
-                      const Text("场景练习",
-                          style: TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          )),
-                      Gaps.hGap10,
-                      const Text("超真实情景 练了就会用",
-                          style: TextStyle(
-                              fontSize: 14,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 8.h, bottom: 10.h),
+                    child: Row(
+                      children: [
+                        Gaps.hGap12,
+                        Text("场景练习",
+                            style: TextStyle(
+                              fontSize: 17.sp,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
-                              height: 2)),
-                    ],
+                            )),
+                        Gaps.hGap10,
+                        Text("超真实情景 练了就会用",
+                            style: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                height: 2)),
+                      ],
+                    ),
                   ),
                 ),
                 SliverGrid.builder(
                     itemCount: sceneList.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      //设置列数
-                      crossAxisCount: 2,
-                      //设置横向间距
-                      crossAxisSpacing: 10,
-                      //设置主轴间距
-                      mainAxisSpacing: 0,
-                      mainAxisExtent: 120,
-                    ),
+                            //设置列数
+                            crossAxisCount: 2,
+                            //设置横向间距
+                            crossAxisSpacing: 10,
+                            //设置主轴间距
+                            mainAxisSpacing: 10,
+                            childAspectRatio: 168 / 100
+                            // mainAxisExtent: 120,
+                            ),
                     itemBuilder: (BuildContext ctx, int index) {
                       return GestureDetector(
                           onTap: () {
@@ -964,6 +1045,11 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                           },
                           child: HomeMapItem(data: sceneList[index]));
                     }),
+                SliverToBoxAdapter(
+                  child: Container(
+                    height: 16.h,
+                  ),
+                ),
                 // SliverToBoxAdapter(
                 //   child: Container(
                 //     margin: const EdgeInsets.all(10),
@@ -1009,8 +1095,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                         EventBus().emit(NotificationUtils.taberTwo);
                       },
                       child: Container(
-                        margin: const EdgeInsets.only(
-                            left: 10, right: 10, bottom: 16),
+                        margin: EdgeInsets.only(bottom: 16.h),
                         child: LoadImage(
                           lessonList[index].imageUrl,
                           fit: BoxFit.cover,
@@ -1064,8 +1149,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                         // }
                       },
                       child: Container(
-                        margin: const EdgeInsets.only(
-                            left: 10, right: 10, bottom: 10),
+                        margin: EdgeInsets.only(
+                          bottom: 16.h,
+                        ),
                         child: LoadImage(
                           examList[index].imageUrl,
                           fit: BoxFit.cover,

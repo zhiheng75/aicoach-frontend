@@ -59,7 +59,7 @@ Future<void> main() async {
             // await MediaUtils().stopPlayByAppPaused();
           }
 
-          // _appLifecycleState = message;
+          _appLifecycleState = message;
 
           return message;
         });

@@ -14,21 +14,27 @@ class HomeMapItem extends StatefulWidget {
 class _HomeMapItemState extends State<HomeMapItem> {
   @override
   Widget build(BuildContext context) {
-    return LoadImage(
-      widget.data.imageUrl,
-      fit: BoxFit.fitWidth,
+    return Container(
+      // color: Colors.amber,
+      child: LoadImage(
+        widget.data.imageUrl,
+        fit: BoxFit.fitWidth,
+      ),
     );
-    // Stack(
+    //     Stack(
     //   children: [
     //     Positioned(
     //       top: 0,
     //       bottom: 0,
     //       left: 0,
     //       right: 0,
-    //       child: LoadImage(
-    //         widget.data.imageUrl,
-    //         fit: BoxFit.fill,
+    //       child: Container(
+    //         color: Colors.amber,
     //       ),
+    //       // child: LoadImage(
+    //       //   widget.data.imageUrl,
+    //       //   fit: BoxFit.fill,
+    //       // ),
     //     ),
     //     Column(
     //       children: [

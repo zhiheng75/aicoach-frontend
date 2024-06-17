@@ -38,17 +38,6 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
     return Stack(
       children: [
         Positioned(
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: widget.isSele
-              ? const LoadAssetImage(
-                  "teach_sele_img",
-                )
-              : Container(),
-        ),
-        Positioned(
           top: 3,
           bottom: 3,
           left: 3,
@@ -161,6 +150,17 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
               )
             ],
           ),
+        ),
+        Positioned(
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: widget.isSele
+              ? const LoadAssetImage(
+                  "teach_sele_img",
+                )
+              : Container(),
         ),
         Positioned(
           right: 25,

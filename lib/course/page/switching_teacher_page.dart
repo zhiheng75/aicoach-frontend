@@ -98,12 +98,11 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
                   },
                   itemCount: teacherData.length,
                   shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 10,
-                      childAspectRatio: (_screenUtil.screenWidth / 2 - 20) /
-                          (_screenUtil.screenWidth / 2 + 30)),
+                      childAspectRatio: 163 / 211),
                 ),
               ),
               Positioned(

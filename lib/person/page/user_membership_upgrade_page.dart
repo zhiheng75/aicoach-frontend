@@ -691,13 +691,17 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                         //     : SliverToBoxAdapter(child: Container()),
                         listData.data[idx].type != 1
                             ? SliverToBoxAdapter(
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 40, bottom: 14),
-                                  // height: 80,
-                                  child: const LoadAssetImage(
-                                    'wenti_bg',
-                                  ),
-                                ),
+                                child:
+                                    listData.data[idx].detail.questions.isEmpty
+                                        ? Container()
+                                        : Container(
+                                            margin: const EdgeInsets.only(
+                                                top: 40, bottom: 14),
+                                            // height: 80,
+                                            child: const LoadAssetImage(
+                                              'wenti_bg',
+                                            ),
+                                          ),
                               )
                             : SliverToBoxAdapter(child: Container()),
                         listData.data[idx].type != 1

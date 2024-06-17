@@ -574,9 +574,9 @@ class _MessageItemState extends State<MessageItem> {
                           behavior: HitTestBehavior.opaque,
                           onTap: () => playAudio('example'),
                           child: const LoadAssetImage(
-                            'laba_lan',
-                            width: 17.6,
-                            height: 16,
+                            'laba_hei',
+                            width: 18,
+                            height: 18,
                           ),
                         ),
                       ],

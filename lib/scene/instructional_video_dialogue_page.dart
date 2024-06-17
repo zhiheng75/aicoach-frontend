@@ -439,7 +439,7 @@ class _InstructionalVideoDialoguePageState
   @override
   void initState() {
     super.initState();
-    contentTop = _screenUtil.statusBarHeight + 300.0;
+    contentTop = _screenUtil.statusBarHeight + _screenUtil.screenWidth / 16 * 9;
     newDataIdx = widget.idx;
     resourceIdx = 0;
     WidgetsBinding.instance.addObserver(this);
@@ -739,19 +739,23 @@ class _InstructionalVideoDialoguePageState
           introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
           introVideoCoverStr =
               data[dataIdx].resource[resourceIdx].introVideoCover;
-          contentTop = _screenUtil.statusBarHeight + 300.0;
+          contentTop = _screenUtil.statusBarHeight +
+              _screenUtil.screenWidth / 16 * 9 +
+              80;
 
           videoFlow();
         } else if (introFileType == "image") {
           isVideo = "0";
 
           introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
-          contentTop = _screenUtil.statusBarHeight + 300.0;
+          contentTop = _screenUtil.statusBarHeight +
+              _screenUtil.screenWidth / 16 * 9 +
+              80;
 
           imgFlowRequestNetwork();
           init();
         } else {
-          contentTop = _screenUtil.statusBarHeight + 240.0;
+          contentTop = _screenUtil.statusBarHeight + 240;
 
           isVideo = "0";
           introFileStr = _homeProvider.character.motionImageD;
@@ -1516,7 +1520,6 @@ class _InstructionalVideoDialoguePageState
                     }
                     return Container(
                       width: _screenUtil.screenWidth,
-
                       // color: Colors.transparent,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16.0,
@@ -1526,6 +1529,7 @@ class _InstructionalVideoDialoguePageState
                   },
                 ),
               ),
+              Gaps.vGap10,
               Padding(
                 padding: EdgeInsets.only(
                   bottom: _screenUtil.bottomBarHeight + 16.0,
