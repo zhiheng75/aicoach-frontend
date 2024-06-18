@@ -15,6 +15,7 @@ import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/websocket_utils.dart';
+import 'package:Bubble/widgets/load.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -149,6 +150,7 @@ class _BottomErrorBarState extends State<BottomErrorBar>
     insertUserMessage(text, (message) {
       ErrorClassEvaluateUtil().evaluate(message, (Map<String, dynamic> map) {
         Log.e(map.toString());
+        LoadingDialog.hidden();
         widget.onMapEnd!(map, totalScoreStr);
       });
     });
@@ -407,6 +409,7 @@ class _BottomErrorBarState extends State<BottomErrorBar>
                     '请说话',
                   );
                 }
+                LoadingDialog.show(context);
                 if (widget.suggestionSentenceStr != "") {
                   //这里先调评测,分高传tag分低穿别的
                   sendTwoMessage(result['text'], widget.suggestionSentenceStr);

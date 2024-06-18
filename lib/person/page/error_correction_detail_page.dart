@@ -57,6 +57,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
   late String coverUrl = "";
   late String repeatWord = "";
   late String repeatText = "";
+  late String fishText = "下一页";
 
   @override
   void initState() {
@@ -364,6 +365,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                 }
                               },
                               child: Container(
+                                width: 80,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20.0),
                                   color: Colours.color_F8F8F8,
@@ -372,13 +374,15 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                   horizontal: 18.0,
                                   vertical: 10.0,
                                 ),
-                                child: Text(
-                                  "上一页",
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: idx == 0
-                                        ? Colours.color_999999
-                                        : Colors.black,
+                                child: Center(
+                                  child: Text(
+                                    "上一页",
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: idx == 0
+                                          ? Colours.color_999999
+                                          : Colors.black,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -388,11 +392,14 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                               behavior: HitTestBehavior.opaque,
                               onTap: () {
                                 if (idx + 1 < errorDetailData.length) {
+                                  fishText = "下一页";
                                   _bottomBarControll.setDisabled(false);
 
                                   idx = idx + 1;
                                   repeatTextStr(errorDetailData[idx].sentence);
-
+                                  if (idx + 1 == errorDetailData.length) {
+                                    fishText = "返回";
+                                  }
                                   if (errorDetailData[idx]
                                       .suggestionAudio
                                       .isEmpty) {
@@ -400,10 +407,13 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                         .postSuggestAnswer(
                                             errorDetailData[idx].sentence);
                                   } else {}
-                                  setState(() {});
+                                } else {
+                                  Navigator.pop(context);
                                 }
+                                setState(() {});
                               },
                               child: Container(
+                                width: 80,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20.0),
                                   color: Colours.color_F8F8F8,
@@ -412,13 +422,16 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                   horizontal: 18.0,
                                   vertical: 10.0,
                                 ),
-                                child: Text(
-                                  "下一页",
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: idx + 1 < errorDetailData.length
-                                        ? Colors.black
-                                        : Colours.color_999999,
+                                child: Center(
+                                  child: Text(
+                                    fishText,
+                                    style: const TextStyle(
+                                      fontSize: 14.0,
+                                      // color: idx + 1 < errorDetailData.length
+                                      //     ? Colors.black
+                                      //     : Colours.color_999999,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                               ),

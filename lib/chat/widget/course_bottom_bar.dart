@@ -384,7 +384,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     _recognizeUtil.setLanguage(widget.language ?? 'en');
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     // 监听App状态
-    // WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     EventBus().on('LOGINOUT', (_) {
       setState(() {
@@ -400,15 +400,15 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    // _appLifecycleState = state;
-    // Future.delayed(Duration.zero, () async {
-    //   await _mediaUtils.stopPlay();
-    // });
+    _appLifecycleState = state;
+    Future.delayed(Duration.zero, () async {
+      await _mediaUtils.stopPlay();
+    });
   }
 
   @override
   void dispose() {
-    // WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -636,6 +636,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                           widget.recordController.isInSendButton.value;
                       // 取消发送
                       if (!isInSendButton) {
+                        widget.controller.setDisabled(false);
                         return;
                       }
                       if (result['success'] == false) {
@@ -646,7 +647,12 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                         widget.controller.setDisabled(false);
                         return;
                       }
-                      // String textStr = result['text'];
+
+                      String textStr = result['text'];
+                      if (textStr.isEmpty) {
+                        widget.controller.setDisabled(false);
+                        return;
+                      }
                       if (widget.repeatWord != "") {
                         //这里先调评测,分高传tag分低穿别的
                         sendTwoMessage(result['text'], widget.repeatWord);
@@ -656,6 +662,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                     });
                     widget.controller.setShowRecord(true);
                   } catch (e) {
+                    widget.controller.setDisabled(false);
                     Toast.show(
                       e.toString().substring(11),
                       duration: 1000,

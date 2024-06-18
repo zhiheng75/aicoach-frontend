@@ -10,7 +10,6 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import 'xunfei_util.dart';
 
 class RecognizeUtil {
-
   RecognizeUtil();
 
   String _language = 'en';
@@ -37,7 +36,11 @@ class RecognizeUtil {
             return;
           }
           if (_websocket != null) {
-            Map<String, dynamic> data = _language == 'cn' ? XunfeiUtil.createFrameDataForRecognizationForCN(event.frame, audio: event.buffer) : XunfeiUtil.createFrameDataForRecognization(event.frame, audio: event.buffer);
+            Map<String, dynamic> data = _language == 'cn'
+                ? XunfeiUtil.createFrameDataForRecognizationForCN(event.frame,
+                    audio: event.buffer)
+                : XunfeiUtil.createFrameDataForRecognization(event.frame,
+                    audio: event.buffer);
             _websocket!.sink.add(jsonEncode(data));
           }
         },
@@ -64,23 +67,29 @@ class RecognizeUtil {
     }
   }
 
-  Future<void> _connectXfRecognization(Function(Map<String, dynamic>) onSuccess) async {
+  Future<void> _connectXfRecognization(
+      Function(Map<String, dynamic>) onSuccess) async {
     try {
       String date = HttpDate.format(DateTime.now());
-      String uri = 'wss://iat-api.xfyun.cn:443/v2/iat?host=iat-api.xfyun.cn&date=$date&authorization=${XunfeiUtil.getRecognizeAuthorization(date)}';
+      String uri =
+          'wss://iat-api.xfyun.cn:443/v2/iat?host=iat-api.xfyun.cn&date=$date&authorization=${XunfeiUtil.getRecognizeAuthorization(date)}';
       _websocket = WebSocketChannel.connect(Uri.parse(uri));
       // 发送首帧数（参数）
-      Map<String, dynamic> data = _language == 'cn' ? XunfeiUtil.createFrameDataForRecognizationForCN(0) : XunfeiUtil.createFrameDataForRecognization(0);
+      Map<String, dynamic> data = _language == 'cn'
+          ? XunfeiUtil.createFrameDataForRecognizationForCN(0)
+          : XunfeiUtil.createFrameDataForRecognization(0);
       _websocket!.sink.add(jsonEncode(data));
       _websocket!.stream.listen(
         (message) async {
-          Map<String, dynamic> result = XunfeiUtil.getRecognizeResult(jsonDecode(message));
+          Map<String, dynamic> result =
+              XunfeiUtil.getRecognizeResult(jsonDecode(message));
           if (result['code'] != 0) {
             _recognizeResult = {
               'success': false,
               'message': '发生异常，请重新操作',
             };
-            await _disconnectXfRecognization(WebSocketStatus.normalClosure, result['message']);
+            await _disconnectXfRecognization(
+                WebSocketStatus.normalClosure, result['message']);
             return;
           }
           _recognizedText += result['text'];
@@ -91,14 +100,16 @@ class RecognizeUtil {
                 'success': false,
                 'message': '未检测到语音，请重新操作',
               };
-              await _disconnectXfRecognization(WebSocketStatus.normalClosure, 'Fail');
+              await _disconnectXfRecognization(
+                  WebSocketStatus.normalClosure, 'Fail');
               return;
             }
             _recognizeResult = {
               'success': true,
               'text': _recognizedText,
             };
-            await _disconnectXfRecognization(WebSocketStatus.normalClosure, 'Normal');
+            await _disconnectXfRecognization(
+                WebSocketStatus.normalClosure, 'Normal');
           }
         },
         onDone: () async {
@@ -109,12 +120,13 @@ class RecognizeUtil {
             'success': false,
             'message': '发生异常，请重新操作',
           };
-          await _disconnectXfRecognization(WebSocketStatus.abnormalClosure, error.toString());
+          await _disconnectXfRecognization(
+              WebSocketStatus.abnormalClosure, error.toString());
         },
         cancelOnError: true,
       );
     } catch (e) {
-     rethrow;
+      rethrow;
     }
   }
 
@@ -141,11 +153,9 @@ class RecognizeUtil {
       _subscription = null;
     }
   }
-
 }
 
 class UnRecognizedData {
-
   UnRecognizedData([int? frame, Uint8List? buffer]) {
     if (frame != null) {
       _frame = frame;
@@ -161,5 +171,4 @@ class UnRecognizedData {
 
   int get frame => _frame;
   Uint8List get buffer => _buffer;
-
 }

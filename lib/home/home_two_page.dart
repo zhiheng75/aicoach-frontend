@@ -174,71 +174,43 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   }
 
   Widget barWidget(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned(
-          child: Column(
-            children: [
-              Gaps.vGap12,
-              SizedBox(
-                // color: Colors.amber,
-                height: 215.0.h,
-                child: Swiper(
-                    autoplay: true,
-                    pagination: SwiperPagination(
-                        margin: const EdgeInsets.all(
-                          0,
-                        ),
-                        builder: DotSwiperPaginationBuilder(
-                            color: Colours.color_D9D9D9,
-                            activeColor: Colours.color_7C7C7C,
-                            // space: 1,
-                            size: 3.h,
-                            activeSize: 3.h)),
-                    outer: true,
-                    // autoplay: true,
-                    // fade: 0.8,
-                    // viewportFraction: 0.85,
-                    scale: 0.92,
-                    itemBuilder: (c, i) {
-                      return GestureDetector(
-                        onTap: () {
-                          SpUtil.putString(
-                              Constant.avatarId, characterList[i].characterId);
-
-                          EventBus().emit(NotificationUtils.taberThree,
-                              characterList[i].characterId);
-                        },
-                        child: LoadImage(
-                          characterList[i].coverBgImage,
-                          fit: BoxFit.fitWidth,
-                        ),
-                      );
-                    },
-                    // pagination: const SwiperPagination(alignment: Alignment.topCenter),
-                    itemCount: characterList.length),
+    return SizedBox(
+      // color: Colors.amber,
+      height: 215.0.h,
+      child: Swiper(
+          autoplay: true,
+          pagination: SwiperPagination(
+              margin: const EdgeInsets.all(
+                0,
               ),
-            ],
-          ),
-        ),
-        Row(
-          children: [
-            Gaps.hGap12,
-            Text("随时都在的口语伙伴",
-                style: TextStyle(
-                  fontSize: 17.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                )),
-            // Text(generateMd5(omuids),
-            //     style: const TextStyle(
-            //       fontSize: 16,
-            //       fontWeight: FontWeight.bold,
-            //       color: Colors.black,
-            //     )),
-          ],
-        )
-      ],
+              builder: DotSwiperPaginationBuilder(
+                  color: Colours.color_D9D9D9,
+                  activeColor: Colours.color_7C7C7C,
+                  // space: 1,
+                  size: 3.h,
+                  activeSize: 3.h)),
+          outer: true,
+          // autoplay: true,
+          // fade: 0.8,
+          // viewportFraction: 0.85,
+          scale: 0.92,
+          itemBuilder: (c, i) {
+            return GestureDetector(
+              onTap: () {
+                SpUtil.putString(
+                    Constant.avatarId, characterList[i].characterId);
+
+                EventBus().emit(
+                    NotificationUtils.taberThree, characterList[i].characterId);
+              },
+              child: LoadImage(
+                characterList[i].coverBgImage,
+                fit: BoxFit.fitWidth,
+              ),
+            );
+          },
+          // pagination: const SwiperPagination(alignment: Alignment.topCenter),
+          itemCount: characterList.length),
     );
   }
 
@@ -963,28 +935,28 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                     height: _screenUtil.statusBarHeight,
                   ),
                 ),
-                // SliverToBoxAdapter(
-                //   child: SizedBox(
-                //     // height: 40,
-                //     child: Row(
-                //       children: [
-                //         Gaps.hGap12,
-                //         Text("随时都在的口语伙伴",
-                //             style: TextStyle(
-                //               fontSize: 17.sp,
-                //               fontWeight: FontWeight.bold,
-                //               color: Colors.black,
-                //             )),
-                //         // Text(generateMd5(omuids),
-                //         //     style: const TextStyle(
-                //         //       fontSize: 16,
-                //         //       fontWeight: FontWeight.bold,
-                //         //       color: Colors.black,
-                //         //     )),
-                //       ],
-                //     ),
-                //   ),
-                // ),
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    // height: 40,
+                    child: Row(
+                      children: [
+                        Gaps.hGap12,
+                        Text("随时都在的口语伙伴",
+                            style: TextStyle(
+                              fontSize: 17.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            )),
+                        // Text(generateMd5(omuids),
+                        //     style: const TextStyle(
+                        //       fontSize: 16,
+                        //       fontWeight: FontWeight.bold,
+                        //       color: Colors.black,
+                        //     )),
+                      ],
+                    ),
+                  ),
+                ),
                 SliverToBoxAdapter(
                   child: characterList.isNotEmpty
                       ? barWidget(context)

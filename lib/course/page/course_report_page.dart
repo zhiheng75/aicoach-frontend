@@ -1,6 +1,7 @@
 //课程报告
 import 'dart:math';
 
+import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/course/entity/lesson_report_detail_bean.dart';
 import 'package:Bubble/course/item/course_report_select_item.dart';
 import 'package:Bubble/course/item/course_report_vocabulary_item.dart';
@@ -21,9 +22,13 @@ import 'package:Bubble/widgets/circle_progress_view.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/star_rating.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluwx/fluwx.dart';
+import 'package:sp_util/sp_util.dart';
 
 class CourseReportPage extends StatefulWidget {
   final String lessonId;
@@ -46,6 +51,7 @@ class _CourseReportPageState extends State<CourseReportPage>
   late String userName = "";
   late String headimgurl = "";
   double star = 0;
+  Fluwx fluwx = Fluwx();
 
   @override
   void initState() {
@@ -53,6 +59,10 @@ class _CourseReportPageState extends State<CourseReportPage>
     super.initState();
     _courseReportPagePresenter.getStepDetail(widget.lessonId);
     Map<String, dynamic> user = LoginManager.getUserInfo();
+
+    fluwx.registerApi(
+        appId: "wxfb033d09d2eecaf0",
+        universalLink: "https://demo.shenmo-ai.net/ios/");
 
     String name = '';
     if (validateInput(user['name']) && user['name'] != '微信用户') {
@@ -186,6 +196,100 @@ class _CourseReportPageState extends State<CourseReportPage>
     );
   }
 
+  void shareView() {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        isDismissible: true,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return _shareWidget(
+            context,
+          );
+        });
+  }
+
+  void creatShare() {
+    String accessToken = SpUtil.getString(Constant.accessToken) ?? "";
+
+    String title = "$userName的${lessonReportDetailData.data.levelName}学情报告";
+    // String description = "内容";
+    String webPageUrl =
+        "pages/mine/objectives/objectivesReport?lesson_id=${widget.lessonId}&user_token=$accessToken";
+
+    var encoded = Uri.encodeComponent(webPageUrl);
+    var model = WeChatShareMiniProgramModel(
+        webPageUrl: encoded, //分享内容的网页链接
+        miniProgramType: WXMiniProgramType.release,
+        userName: "gh_dcd9c62ba779", //原始id 小程序的 看好 原始id 不是appid
+        title: title, //分享的小程序标题
+        // description: description, //分享的小程序描述
+        thumbnail: WeChatImage.asset(
+          'assets/images/share_wxxxx.png',
+        )); // 分享的小程序缩略图
+    fluwx.share(model);
+  }
+
+  Widget _shareWidget(
+    BuildContext context,
+  ) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Color(0xFFF5F5F5),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(12.0),
+          topRight: Radius.circular(12.0),
+        ),
+      ),
+      child: SafeArea(
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Color(0xFFF5F5F5),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(12.0),
+              topRight: Radius.circular(12.0),
+            ),
+          ),
+          height: 180,
+          child: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    creatShare();
+                  },
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 5.0),
+                        child: Padding(
+                            padding: EdgeInsets.all(8),
+                            child: LoadAssetImage(
+                              "share_wx_icon",
+                              width: 40,
+                              height: 40,
+                            )),
+                      ),
+                      Text(
+                        "微信好友",
+                        style:
+                            TextStyle(fontSize: 12, color: Color(0xFF9398A3)),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -217,6 +321,19 @@ class _CourseReportPageState extends State<CourseReportPage>
                                   border: null,
                                   padding: EdgeInsetsDirectional.zero,
                                   leading: NavigationBackWidget(),
+                                  // trailing: GestureDetector(
+                                  //     onTap: () {
+                                  //       shareView();
+                                  //     },
+                                  //     child: Container(
+                                  //       margin:
+                                  //           const EdgeInsets.only(right: 10),
+                                  //       child: const LoadAssetImage(
+                                  //         'share_wx_btn',
+                                  //         width: 24,
+                                  //         height: 24,
+                                  //       ),
+                                  //     )),
                                   middle: Text(
                                     "口语嘟嘟 学习报告",
                                     style:
