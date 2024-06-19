@@ -224,7 +224,7 @@ class _CourseReportPageState extends State<CourseReportPage>
     var model = WeChatShareMiniProgramModel(
         webPageUrl: encoded, //分享内容的网页链接
         path: webPageUrl,
-        miniProgramType: WXMiniProgramType.preview,
+        miniProgramType: WXMiniProgramType.release,
         userName: "gh_dcd9c62ba779", //原始id 小程序的 看好 原始id 不是appid
         title: title, //分享的小程序标题
         // description: description, //分享的小程序描述

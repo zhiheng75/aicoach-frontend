@@ -67,9 +67,6 @@ class _HomePageState extends State<HomeNewPage>
   late StreamSubscription _streamSubscription;
 
   void init() {
-    // initDio();
-    // initUM();
-
     // 初始化手机号一键登录插件
     initPlatformState();
     // 获取体验时间
@@ -90,53 +87,6 @@ class _HomePageState extends State<HomeNewPage>
     // UmengCommonSdk.initCommon(
     //     '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', platformStr);
     // UmengCommonSdk.setPageCollectionModeManual();
-  }
-
-  void initDio() async {
-    final deviceInfoPlugin = DeviceInfoPlugin();
-    BaseDeviceInfo deviceInfo = await deviceInfoPlugin.deviceInfo;
-    final allInfo = deviceInfo.data;
-    final info = await PackageInfo.fromPlatform();
-
-//手机品牌加型号
-    DioUtils.instance.dio.options.headers['version'] = info.version;
-    DioUtils.instance.dio.options.headers['buildNumber'] = info.buildNumber;
-    String platformStr = Channel.channelios;
-    String sysInfo = "";
-
-    if (Device.isAndroid) {
-      AndroidDeviceInfo androidDeviceInfo =
-          await DeviceInfoPlugin().androidInfo;
-
-      platformStr = Channel.channelhuawei;
-      final Map<String, String> params = <String, String>{};
-      params["manufacturer"] = androidDeviceInfo.manufacturer;
-      params["id"] = androidDeviceInfo.id;
-      params["brand"] = androidDeviceInfo.brand;
-      params["board"] = androidDeviceInfo.board;
-      params["model"] = androidDeviceInfo.model;
-      params["version"] = androidDeviceInfo.version.release;
-      params["device"] = androidDeviceInfo.device;
-      params["display"] = androidDeviceInfo.display;
-
-      sysInfo = params.toString(); //allInfo.toString();
-    } else {
-      IosDeviceInfo iosDeviceInfo = await DeviceInfoPlugin().iosInfo;
-
-      platformStr = Channel.channelios;
-      final Map<String, String> params = <String, String>{};
-      params["version"] = iosDeviceInfo.systemVersion;
-      params["model"] = iosDeviceInfo.model;
-      params["localizedModel"] = iosDeviceInfo.localizedModel;
-      params["isPhysicalDevice"] = iosDeviceInfo.isPhysicalDevice ? "1" : "0";
-      params["systemName"] = iosDeviceInfo.systemName;
-      params["machine"] = iosDeviceInfo.utsname.machine;
-
-      sysInfo = params.toString();
-    }
-    DioUtils.instance.dio.options.headers['sysInfo'] = sysInfo;
-    DioUtils.instance.dio.options.headers['marketplace'] = platformStr;
-    // DioUtils.instance.dio.options.headers['applyName'] = info.appName;
   }
 
   Future<void> initPlatformState() async {
@@ -259,11 +209,15 @@ class _HomePageState extends State<HomeNewPage>
           builder: (_) => type == 'topic'
               ? TopicPage(onEnd: () {
                   changeTab('chat');
-                  EventBus().emit(NotificationUtils.resetChatTwo);
+                  Future.delayed(Duration(seconds: 1), () {
+                    EventBus().emit(NotificationUtils.resetChatTwo);
+                  });
                 })
               : ScenePage(onEnd: () {
                   changeTab('chat');
-                  EventBus().emit(NotificationUtils.resetChatTwo);
+                  Future.delayed(Duration(seconds: 1), () {
+                    EventBus().emit(NotificationUtils.resetChatTwo);
+                  });
                 }),
         );
         // 重置tab

@@ -46,6 +46,8 @@ class Gaps {
   static Widget vGap40 = SizedBox(height: Dimens.h_dp40);
   static Widget vGap50 = SizedBox(height: Dimens.h_dp50);
   static Widget vGap60 = SizedBox(height: Dimens.h_dp60);
+  static Widget vGap70 = SizedBox(height: Dimens.h_dp70);
+
   static Widget vGap80 = SizedBox(height: Dimens.h_dp80);
   static Widget vGap85 = SizedBox(height: Dimens.h_dp85);
   static Widget vGap100 = SizedBox(height: Dimens.h_dp100);

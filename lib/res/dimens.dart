@@ -141,6 +141,8 @@ class Dimens {
   static double h_dp48 = 48.h;
   static double h_dp50 = 50.h;
   static double h_dp60 = 60.h;
+  static double h_dp70 = 70.h;
+
   static double h_dp80 = 80.h;
   static double h_dp85 = 85.h;
   static double h_dp100 = 100.h;

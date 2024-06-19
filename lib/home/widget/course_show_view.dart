@@ -4,6 +4,7 @@ import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CourseShowView extends StatefulWidget {
   final String message;
@@ -31,21 +32,24 @@ class _CourseShowViewState extends State<CourseShowView> {
         backgroundColor: Colors.transparent,
         body: Center(
           child: Container(
-            height: 206,
-            width: 270,
+            height: 220.h,
+            width: 270.w,
             decoration: BoxDecoration(
               image: DecorationImage(
                   image: ImageUtils.getAssetImage("course_show_img"),
-                  fit: BoxFit.fitHeight),
+                  fit: BoxFit.fitWidth),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Gaps.vGap50,
+                Gaps.vGap70,
                 const Text(
                   "您已购买课程",
-                  style: TextStyle(fontSize: 18, color: Colors.black),
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
                 ),
                 Gaps.vGap8,
                 Text(
@@ -53,7 +57,7 @@ class _CourseShowViewState extends State<CourseShowView> {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 15, color: Colors.black),
                 ),
-                Gaps.vGap12,
+                Gaps.vGap24,
                 GestureDetector(
                   onTap: () {
                     NavigatorUtils.goBack(context);
