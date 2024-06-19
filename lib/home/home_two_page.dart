@@ -166,7 +166,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
                       path: encoded,
-                      miniProgramType: WXMiniProgramType.release));
+                      miniProgramType: WXMiniProgramType.preview));
               EventUMStatistics.umengCommonMapEvent("添加辅导老师页面曝光次数");
             },
           );
@@ -512,11 +512,11 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   //       const Positioned(
   //           right: 5,
   //           bottom: 10,
-  //           child: LoadAssetImage(
-  //             "suofeiya_head",
-  //             width: 170.0,
-  //             height: 150.0,
-  //           ))
+  // child: LoadAssetImage(
+  //   "suofeiya_head",
+  //   width: 170.0,
+  //   height: 150.0,
+  // ))
   //     ],
   //   );
   // }
@@ -1064,7 +1064,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                   itemBuilder: (ctx, index) {
                     return GestureDetector(
                       onTap: () {
-                        EventBus().emit(NotificationUtils.taberTwo);
+                        EventBus().emit(NotificationUtils.taberTwo,
+                            lessonList[index].param);
                       },
                       child: Container(
                         margin: EdgeInsets.only(bottom: 16.h),

@@ -7,6 +7,8 @@ import 'dart:io';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/setting/provider/device_provider.dart';
+import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -77,7 +79,6 @@ class _ChatInputState extends State<ChatInput> {
   // 对话
   ConversationProvider? provider;
   Message? message;
-
 
   void init() async {
     provider = Provider.of<ConversationProvider>(context, listen: false);
@@ -248,7 +249,8 @@ class _ChatInputState extends State<ChatInput> {
     }
     Uint8List buffer = bufferListNeedSend.removeAt(0);
     bufferList.add(buffer);
-    Map<String, dynamic> data = XunfeiUtil.createFrameDataForRecognization(frame, audio: buffer);
+    Map<String, dynamic> data =
+        XunfeiUtil.createFrameDataForRecognization(frame, audio: buffer);
     recognizer!.send(jsonEncode(data));
     isRunning = false;
 
@@ -261,7 +263,8 @@ class _ChatInputState extends State<ChatInput> {
 
     // 连接websocket
     String date = HttpDate.format(DateTime.now());
-    String uri = 'wss://iat-api.xfyun.cn:443/v2/iat?host=iat-api.xfyun.cn&date=$date&authorization=${XunfeiUtil.getRecognizeAuthorization(date)}';
+    String uri =
+        'wss://iat-api.xfyun.cn:443/v2/iat?host=iat-api.xfyun.cn&date=$date&authorization=${XunfeiUtil.getRecognizeAuthorization(date)}';
     WebsocketUtils.createWebsocket(
       "RECOGNIZE",
       Uri.parse(uri),
@@ -272,7 +275,8 @@ class _ChatInputState extends State<ChatInput> {
         // 发送首帧
         Uint8List buffer = Uint8List(0);
         bufferList.add(buffer);
-        Map<String, dynamic> data = XunfeiUtil.createFrameDataForRecognization(0, audio: buffer);
+        Map<String, dynamic> data =
+            XunfeiUtil.createFrameDataForRecognization(0, audio: buffer);
         recognizer!.send(jsonEncode(data));
 
         recognizerState = 'CONNECTED';
@@ -321,6 +325,9 @@ class _ChatInputState extends State<ChatInput> {
         if (!isVadInNext && text == '' && message == null) {
           closeRecognization();
           Toast.show('未检测到语音，请说话', duration: 1000);
+          EventBus().emit(
+            NotificationUtils.resetANChat,
+          );
           return;
         }
         // 识别部分语音
@@ -488,7 +495,10 @@ class _ChatInputState extends State<ChatInput> {
 
   void playSpeech() {
     if (aiSpeechList.isEmpty) {
-      if (playerState == 0 && isTextReturnComplete && inputType == 'audio' && !isInputting) {
+      if (playerState == 0 &&
+          isTextReturnComplete &&
+          inputType == 'audio' &&
+          !isInputting) {
         startRecord();
       }
       return;
@@ -507,12 +517,11 @@ class _ChatInputState extends State<ChatInput> {
     playerState = 1;
     Uint8List speech = aiSpeechList.removeAt(0);
     player!.startPlayer(
-      fromDataBuffer: speech,
-      whenFinished: () {
-        playerState = 0;
-        playSpeech();
-      }
-    );
+        fromDataBuffer: speech,
+        whenFinished: () {
+          playerState = 0;
+          playSpeech();
+        });
   }
 
   void initAI() {
@@ -532,7 +541,10 @@ class _ChatInputState extends State<ChatInput> {
             provider!.runTranslate();
             message = null;
             // 避免语音播放结束无法进行下一步
-            if (aiSpeechList.isEmpty && playerState == 0 && inputType == 'audio' && !isInputting) {
+            if (aiSpeechList.isEmpty &&
+                playerState == 0 &&
+                inputType == 'audio' &&
+                !isInputting) {
               startRecord();
             }
             return;
@@ -597,27 +609,23 @@ class _ChatInputState extends State<ChatInput> {
   }
 
   Future<void> addConversationRecord() async {
-    String deviceId = Provider.of<DeviceProvider>(context, listen: false).deviceId;
-    await DioUtils.instance.requestNetwork(
-      Method.post,
-      HttpApi.addConversationRecord,
-      params: {
-        'session_id': provider!.sessionId,
-        // 'device_id': await Device.getDeviceId(),
-        'device_id': deviceId,
-        'duration': provider!.usageTime,
-      },
-      onSuccess: (_) {
-        if (kDebugMode) {
-          print('addConversationRecord: $_');
-        }
-      },
-      onError: (code, msg) {
-        if (kDebugMode) {
-          print('addConversationRecord: code=$code msg=$msg');
-        }
+    String deviceId =
+        Provider.of<DeviceProvider>(context, listen: false).deviceId;
+    await DioUtils.instance
+        .requestNetwork(Method.post, HttpApi.addConversationRecord, params: {
+      'session_id': provider!.sessionId,
+      // 'device_id': await Device.getDeviceId(),
+      'device_id': deviceId,
+      'duration': provider!.usageTime,
+    }, onSuccess: (_) {
+      if (kDebugMode) {
+        print('addConversationRecord: $_');
       }
-    );
+    }, onError: (code, msg) {
+      if (kDebugMode) {
+        print('addConversationRecord: code=$code msg=$msg');
+      }
+    });
   }
 
   @override
@@ -731,5 +739,6 @@ class ChatInputController {
   late Function() _endConversation;
 
   Function() get endConversation => _endConversation;
-  set endConversation(Function() endConversation) => _endConversation = endConversation;
+  set endConversation(Function() endConversation) =>
+      _endConversation = endConversation;
 }

@@ -346,36 +346,6 @@ class _CoursePaysPageState extends State<CoursePaysPage>
     }
   }
 
-  // void alertDialog() {
-  //   showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return AlertDialog(
-  //           title: Text("QQQQ"),
-  //           content: Text("QQQQ"),
-  //           actions: [
-  //             TextButton(
-  //                 onPressed: () {
-  //                   //跳转小程序
-  //                   Fluwx fluwx = Fluwx();
-  //                   fluwx.registerApi(
-  //                       appId: "wxfb033d09d2eecaf0",
-  //                       universalLink: "https://demo.shenmo-ai.net/ios/");
-  //                   fluwx.open(
-  //                       target: MiniProgram(
-  //                           username: "gh_dcd9c62ba779",
-  //                           path:
-  //                               "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
-  //                           miniProgramType: WXMiniProgramType.test));
-  //                   Navigator.of(context).pop();
-  //                 },
-  //                 child: Text("QQQQ")),
-  //             TextButton(onPressed: () {}, child: Text("QQQQ")),
-  //           ],
-  //         );
-  //       });
-  // }
-
   showImageDialog() {
     showDialog(
         context: context,
@@ -392,7 +362,7 @@ class _CoursePaysPageState extends State<CoursePaysPage>
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
                       path: encoded,
-                      miniProgramType: WXMiniProgramType.release));
+                      miniProgramType: WXMiniProgramType.preview));
               EventUMStatistics.umengCommonMapEvent("添加辅导老师页面曝光次数");
 
               Navigator.of(context).pop();
@@ -411,24 +381,6 @@ class _CoursePaysPageState extends State<CoursePaysPage>
     // 这里是你想要延迟执行的代码
     // });
     showImageDialog();
-//     ConfirmUtils.showSingle(
-//       context: context,
-//       title: "支付成功\n前往微信添加\n本课程辅导老师",
-//       onCancel: () {
-// //         移动应用appid:wxfb033d09d2eecaf0
-// // 小程序appid:wx2140a8026b8cdf74
-// // 跳转路径：pages/mine/add-weChat/add-weChat?user_token=token
-//         // alertDialoFg();
-//         //跳转小程序
-//         fluwx.open(
-//             target: MiniProgram(
-//                 username: "gh_dcd9c62ba779",
-//                 path:
-//                     "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
-//                 miniProgramType: WXMiniProgramType.test));
-//         Navigator.of(context).pop();
-//       },
-//     );
   }
 
   @override

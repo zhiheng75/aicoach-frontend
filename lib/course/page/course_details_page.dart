@@ -72,112 +72,119 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
           body: SafeArea(
               child: CustomScrollView(slivers: [
         SliverToBoxAdapter(
-          child: CourseReportVocabularyItem(
-              vocabulary: widget.stepDetailBean.data.objectives.vocabulary),
+          child: widget.stepDetailBean.data.objectives.vocabulary.isNotEmpty
+              ? CourseReportVocabularyItem(
+                  vocabulary: widget.stepDetailBean.data.objectives.vocabulary)
+              : Container(),
         ),
         SliverToBoxAdapter(
-          child: Container(
-            color: Colors.white,
-            child: Container(
-              margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-                color: Colours.color_F9F8FF,
-              ),
-              // color: Colors.red,
-              child: Column(
-                children: [
-                  Gaps.vGap8,
-                  Row(
-                    children: [
-                      Gaps.hGap12,
-                      const LoadAssetImage(
-                        "head_juxing_icon",
-                        width: 24.0,
-                        height: 24.0,
-                      ),
-                      Gaps.hGap8,
-                      RichText(
-                        text: const TextSpan(children: [
-                          TextSpan(
-                              text: "句型  ",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              )),
-                          TextSpan(
-                              text: "Sentence pattern",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              )),
-                        ]),
-                      ),
-                    ],
+          child: widget
+                  .stepDetailBean.data.objectives.sentencePattern.isNotEmpty
+              ? Container(
+                  color: Colors.white,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      color: Colours.color_F9F8FF,
+                    ),
+                    // color: Colors.red,
+                    child: Column(
+                      children: [
+                        Gaps.vGap8,
+                        Row(
+                          children: [
+                            Gaps.hGap6,
+                            const LoadAssetImage(
+                              "head_juxing_icon",
+                              width: 24.0,
+                              height: 24.0,
+                            ),
+                            Gaps.hGap8,
+                            RichText(
+                              text: const TextSpan(children: [
+                                TextSpan(
+                                    text: "句型  ",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    )),
+                                TextSpan(
+                                    text: "Sentence pattern",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    )),
+                              ]),
+                            ),
+                          ],
+                        ),
+                        Gaps.vGap11,
+                        Column(
+                          children: _buildPatternItems(),
+                        ),
+                      ],
+                    ),
                   ),
-                  Gaps.vGap11,
-                  Column(
-                    children: _buildPatternItems(),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                )
+              : Container(),
         ),
         SliverToBoxAdapter(
-          child: Container(
-            color: Colors.white,
-            child: Container(
-              margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-                color: Colours.color_F9F8FF,
-              ),
-              // color: Colors.red,
-              child: Column(
-                children: [
-                  Gaps.vGap8,
-                  Row(
-                    children: [
-                      Gaps.hGap8,
-                      const LoadAssetImage(
-                        "head_nengli_icon",
-                        width: 24.0,
-                        height: 24.0,
-                      ),
-                      Gaps.hGap8,
-                      RichText(
-                        text: const TextSpan(children: [
-                          TextSpan(
-                              text: "能力  ",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              )),
-                          TextSpan(
-                              text: "Speaking skills",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                              )),
-                        ]),
-                      ),
-                    ],
+          child: widget.stepDetailBean.data.objectives.speakingSkills.isNotEmpty
+              ? Container(
+                  color: Colors.white,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      color: Colours.color_F9F8FF,
+                    ),
+                    // color: Colors.red,
+                    child: Column(
+                      children: [
+                        Gaps.vGap8,
+                        Row(
+                          children: [
+                            Gaps.hGap8,
+                            const LoadAssetImage(
+                              "head_nengli_icon",
+                              width: 24.0,
+                              height: 24.0,
+                            ),
+                            Gaps.hGap8,
+                            RichText(
+                              text: const TextSpan(children: [
+                                TextSpan(
+                                    text: "能力  ",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    )),
+                                TextSpan(
+                                    text: "Speaking skills",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black,
+                                    )),
+                              ]),
+                            ),
+                          ],
+                        ),
+                        Gaps.vGap11,
+                        Column(
+                          children: _buildSkillsItems(),
+                        ),
+                      ],
+                    ),
                   ),
-                  Gaps.vGap11,
-                  Column(
-                    children: _buildSkillsItems(),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                )
+              : Container(),
         ),
         SliverToBoxAdapter(
           child: Gaps.vGap30,

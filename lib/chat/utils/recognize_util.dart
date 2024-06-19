@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'xunfei_util.dart';
@@ -100,8 +102,12 @@ class RecognizeUtil {
                 'success': false,
                 'message': '未检测到语音，请重新操作',
               };
+
               await _disconnectXfRecognization(
                   WebSocketStatus.normalClosure, 'Fail');
+              EventBus().emit(
+                NotificationUtils.resetANChat,
+              );
               return;
             }
             _recognizeResult = {

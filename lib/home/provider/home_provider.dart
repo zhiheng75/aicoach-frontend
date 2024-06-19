@@ -3,7 +3,9 @@ import 'dart:async';
 
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/scene/entity/course_entity.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../chat/entity/character_entity.dart';
@@ -349,6 +351,7 @@ class HomeProvider extends ChangeNotifier {
         normalMessage.translateState = 3;
       }
       notifyListeners();
+      EventBus().emit(NotificationUtils.messageEnd);
     });
 
     normalMessage.translateState = 1;
@@ -395,6 +398,7 @@ class HomeProvider extends ChangeNotifier {
         if (normalMessage.showExample) {
           notifyListeners();
         }
+        EventBus().emit(NotificationUtils.messageEnd);
       },
       onError: (code, msg) {
         normalMessage.exampleState = 3;

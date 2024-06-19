@@ -79,7 +79,9 @@ class _EvaluationState extends State<Evaluation> {
           return;
         }
         Map<String, dynamic> data = result.data as Map<String, dynamic>;
-        _standardAnswer = data['text'] != null && data['text'] != '' ? data['text'] : '暂无地道表达';
+        _standardAnswer = data['text'] != null && data['text'] != ''
+            ? data['text']
+            : '暂无地道表达';
         _isGetting = false;
         if (mounted) {
           setState(() {});
@@ -118,30 +120,28 @@ class _EvaluationState extends State<Evaluation> {
     if (type == 'standard') {
       _ttsCancelToken = CancelToken();
       DioUtils.instance.requestNetwork<ResultData>(
-        Method.post,
-        HttpApi.generateAudio,
-        params: {
-          'text': widget.message.text,
-        },
-        onSuccess: (result) {
-          _ttsCancelToken = null;
-          if (result == null || result.data == null || (result.data as Map<String, dynamic>)['speech_url'] == null) {
-            return;
-          }
-          if (_audioType == 'standard') {
-            Map<String, dynamic> data = result.data as Map<String, dynamic>;
-            _mediaUtils.play(
-              url: data['speech_url'],
-              whenFinished: () {
-                _audioType = '';
-              },
-            );
-          }
-        },
-        onError: (code, msg) {
-          _ttsCancelToken = null;
+          Method.post, HttpApi.generateAudio,
+          params: {
+            'text': widget.message.text,
+          }, onSuccess: (result) {
+        _ttsCancelToken = null;
+        if (result == null ||
+            result.data == null ||
+            (result.data as Map<String, dynamic>)['speech_url'] == null) {
+          return;
         }
-      );
+        if (_audioType == 'standard') {
+          Map<String, dynamic> data = result.data as Map<String, dynamic>;
+          _mediaUtils.play(
+            url: data['speech_url'],
+            whenFinished: () {
+              _audioType = '';
+            },
+          );
+        }
+      }, onError: (code, msg) {
+        _ttsCancelToken = null;
+      });
     }
   }
 
@@ -177,9 +177,9 @@ class _EvaluationState extends State<Evaluation> {
               width: 16.0,
             ),
             const LoadAssetImage(
-              'laba_zhi',
-              width: 17.6,
-              height: 16.0,
+              'jiucuo_laba_icon',
+              width: 24,
+              height: 24,
             ),
           ],
         ),
@@ -189,10 +189,14 @@ class _EvaluationState extends State<Evaluation> {
     Widget evaluate = const SizedBox();
     if (widget.message.evaluation.isNotEmpty) {
       Map<String, dynamic> evaluation = widget.message.evaluation;
-      RadarItem top = RadarItem('完整度', double.parse(evaluation['integrity_score']), const Color(0xFF6195D2));
-      RadarItem bottom = RadarItem('流畅度', double.parse(evaluation['fluency_score']), const Color(0xFFFF71CF));
-      RadarItem left = RadarItem('发音', double.parse(evaluation['standard_score']), const Color(0xFFB3E3FF));
-      RadarItem right = RadarItem('语法', double.parse(evaluation['accuracy_score']), const Color(0xFFFFD076));
+      RadarItem top = RadarItem('完整度',
+          double.parse(evaluation['integrity_score']), const Color(0xFF6195D2));
+      RadarItem bottom = RadarItem('流畅度',
+          double.parse(evaluation['fluency_score']), const Color(0xFFFF71CF));
+      RadarItem left = RadarItem('发音',
+          double.parse(evaluation['standard_score']), const Color(0xFFB3E3FF));
+      RadarItem right = RadarItem('语法',
+          double.parse(evaluation['accuracy_score']), const Color(0xFFFFD076));
       List<RadarItem> scoreList = [
         top,
         bottom,

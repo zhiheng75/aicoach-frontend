@@ -7,8 +7,10 @@ import 'package:Bubble/course/item/lesson_sele_item.dart';
 import 'package:Bubble/course/presenter/course_home_page_presenter.dart';
 import 'package:Bubble/course/view/course_home_page_view.dart';
 import 'package:Bubble/home/home_router.dart';
+import 'package:Bubble/home/widget/course_show_view.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
+import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/confirm_utils.dart';
@@ -45,6 +47,7 @@ class _CourseHomePageState extends State<CourseHomePage>
   late List<Datum> listData = [];
   bool isLoding = true;
   late String levelNameStr = "";
+  late String levelidStr = "";
 
   List<Color> colorBackData = [
     Colours.color_F9F8FF,
@@ -151,6 +154,12 @@ class _CourseHomePageState extends State<CourseHomePage>
       });
       // 这里是你想要延迟执行的代码
     });
+
+    EventBus().on(NotificationUtils.taberTwo, (idx) {
+      levelidStr = idx;
+      _courseHomePagePresenter.getLessonList();
+    });
+
     EventUMStatistics.umengCommonPageCollectionModeAuto();
   }
 
@@ -160,6 +169,7 @@ class _CourseHomePageState extends State<CourseHomePage>
     EventUMStatistics.umengCommonOnPageEnd("课程列表式-未购正价课");
     EventUMStatistics.umengCommonOnPageEnd("课程列表式-已购正价课");
     EventBus().off(NotificationUtils.paySuccess);
+    EventBus().off(NotificationUtils.taberTwo);
 
     EventBus().off(NotificationUtils.loginIn);
     EventBus().off(NotificationUtils.loginOut);
@@ -169,6 +179,36 @@ class _CourseHomePageState extends State<CourseHomePage>
   Widget tabbar() {
     return SizedBox(
       height: 50,
+      width: 300,
+      // color: Colors.amber,
+      child: ListView.builder(
+        itemBuilder: (ctx, index) {
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              setState(() {
+                curTabIndex = index;
+              });
+            },
+            child: LessonSeleItem(
+              tit: listData[index].levelName,
+              sele: curTabIndex == index ? true : false,
+            ),
+          );
+        },
+        itemCount: listData.length,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        physics: const AlwaysScrollableScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+      ),
+    );
+  }
+
+  Widget tabbarTwo() {
+    return SizedBox(
+      height: 50,
+      // width: 300,
+      // color: Colors.amber,
       child: ListView.builder(
         itemBuilder: (ctx, index) {
           return GestureDetector(
@@ -230,7 +270,8 @@ class _CourseHomePageState extends State<CourseHomePage>
           //去购买页
           NavigatorUtils.push(
             context,
-            "${HomeRouter.coursePurchasePage}?levelId=$levelId",
+            "${PersonalRouter.userMembershipUpgradePage}?levelId=$levelId",
+            // "${HomeRouter.coursePurchasePage}?levelId=$levelId",
           );
         },
         child: const Text(
@@ -244,6 +285,17 @@ class _CourseHomePageState extends State<CourseHomePage>
         ),
       );
     });
+  }
+
+  showImageDialog(String message) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CourseShowView(
+            message: message,
+          );
+        });
   }
 
   List<Widget> _buildItems(
@@ -267,9 +319,10 @@ class _CourseHomePageState extends State<CourseHomePage>
                     // CourseRouter.courseFlowPage,
                     "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
               } else {
-                Toast.show(
-                  '需要老师安排课才能上课',
-                );
+                showImageDialog(xxlist[i].unlockDate);
+                // Toast.show(
+                //   '需要老师安排课才能上课',
+                // );
                 EventUMStatistics.umengCommonMapEvent("点击未开放课程的点击次数");
               }
             } else {
@@ -361,8 +414,10 @@ class _CourseHomePageState extends State<CourseHomePage>
               : Column(
                   children: [
                     listData.length > 1
-                        ? tabbar()
-                        : listData.length > 0
+                        ? listData.length == 2
+                            ? tabbar()
+                            : tabbarTwo()
+                        : listData.isNotEmpty
                             ? Container(
                                 height: 30,
                                 color: Colors.white,
@@ -389,7 +444,7 @@ class _CourseHomePageState extends State<CourseHomePage>
                     //     title: levelNameStr,
                     //   ),
                     // Center(child: SizedBox(width: 300, child: tabbar())),
-                    listData.length > 0
+                    listData.isNotEmpty
                         ? Expanded(child: _refreshListView())
                         : Container(),
                   ],
@@ -477,26 +532,30 @@ class _CourseHomePageState extends State<CourseHomePage>
 
   @override
   void sendSuccess(LessonListBean data) {
-    setState(() {
-      listData = [];
+    listData = [];
 
-      isLoding = false;
-      if (data.data.isNotEmpty) {
-        levelNameStr = data.data[0].levelName;
+    isLoding = false;
+    if (data.data.isNotEmpty) {
+      levelNameStr = data.data[0].levelName;
+    }
+    listData.addAll(data.data);
+    for (int i = 0; i < data.data.length; i++) {
+      Datum datum = data.data[i];
+      if (datum.levelId.toString() == levelidStr) {
+        curTabIndex = i;
       }
-      listData.addAll(data.data);
-
-      if (listData.isNotEmpty) {
-        List<UnitList> list1 = listData[0].list[0].list;
-        if (list1.isNotEmpty) {
-          if (list1[0].isUserBuy == 0) {
-            EventUMStatistics.umengCommonOnPageStart("课程列表式-未购正价课");
-          } else {
-            EventUMStatistics.umengCommonOnPageStart("课程列表式-已购正价课");
-          }
+    }
+    if (listData.isNotEmpty) {
+      List<UnitList> list1 = listData[0].list[0].list;
+      if (list1.isNotEmpty) {
+        if (list1[0].isUserBuy == 0) {
+          EventUMStatistics.umengCommonOnPageStart("课程列表式-未购正价课");
+        } else {
+          EventUMStatistics.umengCommonOnPageStart("课程列表式-已购正价课");
         }
       }
-    });
+    }
+    setState(() {});
   }
 
   @override

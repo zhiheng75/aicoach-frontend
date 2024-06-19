@@ -86,7 +86,7 @@ class _CourseReportVocabularyTwoItemState
             Gaps.vGap8,
             Row(
               children: [
-                Gaps.hGap12,
+                Gaps.hGap4,
                 const LoadAssetImage(
                   "head_cihui_icon",
                   width: 24.0,
@@ -139,9 +139,9 @@ class _CourseReportVocabularyTwoItemState
                     EventUMStatistics.umengCommonMapEvent("系统课学情报告内 点击语音播放的次数");
                   },
                   child: const LoadAssetImage(
-                    "laba_lan",
-                    width: 20.0,
-                    height: 20.0,
+                    "jiucuo_laba_icon",
+                    width: 24,
+                    height: 24,
                   ),
                 ),
                 Gaps.hGap8,

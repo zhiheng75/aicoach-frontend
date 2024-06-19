@@ -54,9 +54,17 @@ class PersonalRouter implements IRouterProvider {
       );
     }));
 
+    // router.define(userMembershipUpgradePage,
+    //     handler:
+    //         Handler(handlerFunc: (_, __) => const UserMembershipUpgradePage()));
+
     router.define(userMembershipUpgradePage,
-        handler:
-            Handler(handlerFunc: (_, __) => const UserMembershipUpgradePage()));
+        handler: Handler(handlerFunc: (context, params) {
+      String levelId = params['levelId']!.first;
+      return UserMembershipUpgradePage(
+        levelId: levelId,
+      );
+    }));
 
     router.define(person,
         handler: Handler(handlerFunc: (_, __) => const PersonPage()));

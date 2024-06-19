@@ -43,42 +43,41 @@ class _AdviseState extends State<Advise> {
 
   void getAdviseList() {
     DioUtils.instance.requestNetwork<ResultData>(
-      Method.get,
-      widget.type == 'exam' ? HttpApi.examScoreSuggestion : HttpApi.scoreSuggestion,
-      cancelToken: _cancelToken,
-      queryParameters: {
-        'session_id': widget.sessionId,
-      },
-      onSuccess: (result) {
-        if (result == null || result.data == null) {
-          _state = 'fail';
-          if (mounted) {
-            setState(() {});
-          }
-          return;
-        }
-        Map<String, dynamic> data = result.data as Map<String, dynamic>;
-        if (data['sentence_list'] != null && data['sentence_list'] is List) {
-          List<AdviseEntity> adviseList = [];
-          for(dynamic item in data['sentence_list']) {
-            AdviseEntity advise = AdviseEntity.fromJson(item);
-            advise.type = data['type'] ?? 2;
-            adviseList.add(advise);
-          }
-          _adviseList = adviseList;
-        }
-        _state = 'success';
-        if (mounted) {
-          setState(() {});
-        }
-      },
-      onError: (code, msg) {
+        Method.get,
+        widget.type == 'exam'
+            ? HttpApi.examScoreSuggestion
+            : HttpApi.scoreSuggestion,
+        cancelToken: _cancelToken,
+        queryParameters: {
+          'session_id': widget.sessionId,
+        }, onSuccess: (result) {
+      if (result == null || result.data == null) {
         _state = 'fail';
         if (mounted) {
           setState(() {});
         }
+        return;
       }
-    );
+      Map<String, dynamic> data = result.data as Map<String, dynamic>;
+      if (data['sentence_list'] != null && data['sentence_list'] is List) {
+        List<AdviseEntity> adviseList = [];
+        for (dynamic item in data['sentence_list']) {
+          AdviseEntity advise = AdviseEntity.fromJson(item);
+          advise.type = data['type'] ?? 2;
+          adviseList.add(advise);
+        }
+        _adviseList = adviseList;
+      }
+      _state = 'success';
+      if (mounted) {
+        setState(() {});
+      }
+    }, onError: (code, msg) {
+      _state = 'fail';
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -99,9 +98,11 @@ class _AdviseState extends State<Advise> {
         padding: EdgeInsets.only(
           bottom: _screenUtil.bottomBarHeight + 16.0,
         ),
-        child: _state == 'fail' ? LoadFail(
-          reload: init,
-        ) : const LoadData(),
+        child: _state == 'fail'
+            ? LoadFail(
+                reload: init,
+              )
+            : const LoadData(),
       );
     }
 
@@ -140,9 +141,9 @@ class _AdviseState extends State<Advise> {
                   width: 8.0,
                 ),
                 const LoadAssetImage(
-                  'laba_lan',
-                  width: 17.6,
-                  height: 16.0,
+                  'jiucuo_laba_icon',
+                  width: 24,
+                  height: 24,
                 ),
               ],
             ),
@@ -193,7 +194,8 @@ class _AdviseState extends State<Advise> {
                   '你的回答',
                   onPress: () async {
                     // 点击其他的
-                    if (_adviseEntityInPlay != null && advise != _adviseEntityInPlay) {
+                    if (_adviseEntityInPlay != null &&
+                        advise != _adviseEntityInPlay) {
                       await _adviseEntityInPlay!.stopAll();
                     }
                     advise.playUserVoice();
@@ -204,7 +206,8 @@ class _AdviseState extends State<Advise> {
                   '试一下这样说',
                   onPress: () async {
                     // 点击其他的
-                    if (_adviseEntityInPlay != null && advise != _adviseEntityInPlay) {
+                    if (_adviseEntityInPlay != null &&
+                        advise != _adviseEntityInPlay) {
                       await _adviseEntityInPlay!.stopAll();
                     }
                     advise.playStandardVoice();
@@ -249,8 +252,7 @@ class _AdviseState extends State<Advise> {
                             color: Colors.black,
                             height: 24.0 / 14.0,
                             letterSpacing: 0.05,
-                          )
-                      ),
+                          )),
                       const TextSpan(
                           text: '分',
                           style: TextStyle(
@@ -259,8 +261,7 @@ class _AdviseState extends State<Advise> {
                             color: Color(0xFF666666),
                             height: 24.0 / 10.0,
                             letterSpacing: 0.05,
-                          )
-                      ),
+                          )),
                     ],
                   ),
                 ),

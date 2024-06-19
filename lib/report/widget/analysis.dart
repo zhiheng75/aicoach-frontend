@@ -28,7 +28,6 @@ class Analysis extends StatefulWidget {
 }
 
 class _AnalysisState extends State<Analysis> {
-
   final ScreenUtil _screenUtil = ScreenUtil();
   // 状态 loading-加载中 fail-失败 success-成功
   String _state = 'loading';
@@ -61,13 +60,14 @@ class _AnalysisState extends State<Analysis> {
         Map<String, dynamic> data = result.data as Map<String, dynamic>;
         if (data['sentence_list'] != null && data['sentence_list'] is List) {
           List<AnalysisEntity> analysisList = [];
-          for(dynamic item in data['sentence_list']) {
+          for (dynamic item in data['sentence_list']) {
             AnalysisEntity analysis = AnalysisEntity.fromJson(item);
             analysis.type = data['type'] ?? 2;
             if (item['list'] != null && item['list'] is List) {
               List<PronounceEntity> pronounceList = [];
-              for(dynamic pronounceItem in item['list']) {
-                PronounceEntity pronounce = PronounceEntity.fromJson(pronounceItem);
+              for (dynamic pronounceItem in item['list']) {
+                PronounceEntity pronounce =
+                    PronounceEntity.fromJson(pronounceItem);
                 if (item['speech_url'] != null && item['speech_url'] != '') {
                   pronounce.audio = item['speech_url'];
                 }
@@ -115,14 +115,15 @@ class _AnalysisState extends State<Analysis> {
         padding: EdgeInsets.only(
           bottom: _screenUtil.bottomBarHeight + 16.0,
         ),
-        child: _state == 'fail' ? LoadFail(
-          reload: init,
-        ) : const LoadData(),
+        child: _state == 'fail'
+            ? LoadFail(
+                reload: init,
+              )
+            : const LoadData(),
       );
     }
 
     Widget analysisItem(AnalysisEntity analysis) {
-
       Widget session(String label, {required Widget child}) {
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -248,7 +249,8 @@ class _AnalysisState extends State<Analysis> {
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () async {
                                   // 点击其他的
-                                  if (_pronounceEntityInPlay != null && item != _pronounceEntityInPlay) {
+                                  if (_pronounceEntityInPlay != null &&
+                                      item != _pronounceEntityInPlay) {
                                     await _pronounceEntityInPlay!.stopAll();
                                   }
                                   item.playUserVoice();
@@ -271,9 +273,9 @@ class _AnalysisState extends State<Analysis> {
                                       width: 8.0,
                                     ),
                                     LoadAssetImage(
-                                      'laba_lan',
-                                      width: 17.6,
-                                      height: 16.0,
+                                      'jiucuo_laba_icon',
+                                      width: 24,
+                                      height: 24,
                                     ),
                                   ],
                                 ),
@@ -282,7 +284,8 @@ class _AnalysisState extends State<Analysis> {
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () async {
                                   // 点击其他的
-                                  if (_pronounceEntityInPlay != null && item != _pronounceEntityInPlay) {
+                                  if (_pronounceEntityInPlay != null &&
+                                      item != _pronounceEntityInPlay) {
                                     await _pronounceEntityInPlay!.stopAll();
                                   }
                                   item.playStandardVoice();
@@ -305,9 +308,9 @@ class _AnalysisState extends State<Analysis> {
                                       width: 8.0,
                                     ),
                                     LoadAssetImage(
-                                      'laba_lan',
-                                      width: 17.6,
-                                      height: 16.0,
+                                      'jiucuo_laba_icon',
+                                      width: 24,
+                                      height: 24,
                                     ),
                                   ],
                                 ),
@@ -355,8 +358,7 @@ class _AnalysisState extends State<Analysis> {
                             color: Colors.black,
                             height: 24.0 / 14.0,
                             letterSpacing: 0.05,
-                          )
-                      ),
+                          )),
                       const TextSpan(
                           text: '分',
                           style: TextStyle(
@@ -365,8 +367,7 @@ class _AnalysisState extends State<Analysis> {
                             color: Color(0xFF666666),
                             height: 24.0 / 10.0,
                             letterSpacing: 0.05,
-                          )
-                      ),
+                          )),
                     ],
                   ),
                 ),
@@ -414,7 +415,8 @@ class _AnalysisState extends State<Analysis> {
     }
 
     return Column(
-      children: _analysisList.map((analysis) => analysisItem(analysis)).toList(),
+      children:
+          _analysisList.map((analysis) => analysisItem(analysis)).toList(),
     );
   }
 }

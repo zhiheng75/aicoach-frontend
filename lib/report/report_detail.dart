@@ -423,7 +423,9 @@ class _ReportDetailPageState extends State<ReportDetailPage>
             onTap: () {
               // NavigatorUtils.push(context, PersonalRouter.purchase);
               NavigatorUtils.push(
-                  context, PersonalRouter.userMembershipUpgradePage);
+                context,
+                "${PersonalRouter.userMembershipUpgradePage}?levelId=9999999",
+              );
             },
             child: Container(
               width: 87.0,

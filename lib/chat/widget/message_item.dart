@@ -3,8 +3,10 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/photo_view_simple_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -371,6 +373,7 @@ class _MessageItemState extends State<MessageItem> {
                         return;
                       }
                       openTranslate();
+                      EventBus().emit(NotificationUtils.messageEnd);
                     },
                     child: const LoadAssetImage(
                       'fanyi_hei',
@@ -389,6 +392,7 @@ class _MessageItemState extends State<MessageItem> {
                       return;
                     }
                     openExample();
+                    EventBus().emit(NotificationUtils.messageEnd);
                   },
                   child: const LoadAssetImage(
                     'shili_zhi',

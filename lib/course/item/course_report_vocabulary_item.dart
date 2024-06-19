@@ -76,10 +76,10 @@ class _CourseReportVocabularyItemState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Gaps.vGap8,
+            Gaps.vGap6,
             Row(
               children: [
-                Gaps.hGap12,
+                Gaps.hGap4,
                 const LoadAssetImage(
                   "head_cihui_icon",
                   width: 24.0,

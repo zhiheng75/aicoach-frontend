@@ -15,12 +15,12 @@ class _LessonSeleItemState extends State<LessonSeleItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: 80,
+      width: 120,
       height: 50,
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.only(top: 8, bottom: 8, right: 10, left: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25.0),
-        color: widget.sele ? Colours.color_007AFF : Colours.color_F8F8F8,
+        color: widget.sele ? Colours.color_007AFF : Colours.color_F9F8FF,
       ),
       padding: const EdgeInsets.only(right: 8, left: 8.0),
       child: Center(

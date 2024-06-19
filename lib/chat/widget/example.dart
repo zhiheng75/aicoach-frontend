@@ -30,7 +30,6 @@ class Example extends StatefulWidget {
 }
 
 class _ExampleState extends State<Example> {
-
   final ScreenUtil _screenUtil = ScreenUtil();
   late HomeProvider _homeProvider;
   final MediaUtils _mediaUtils = MediaUtils();
@@ -104,9 +103,11 @@ class _ExampleState extends State<Example> {
     if (_pageState != 'success') {
       example = Container(
         alignment: Alignment.center,
-        child: _pageState == 'fail' ? LoadFail(
-          reload: init,
-        ) : const LoadData(),
+        child: _pageState == 'fail'
+            ? LoadFail(
+                reload: init,
+              )
+            : const LoadData(),
       );
     } else {
       example = Column(
@@ -143,9 +144,9 @@ class _ExampleState extends State<Example> {
             behavior: HitTestBehavior.opaque,
             onTap: playAudio,
             child: const LoadAssetImage(
-              'laba',
-              width: 17.6,
-              height: 16.0,
+              'jiucuo_laba_icon',
+              width: 24,
+              height: 24,
             ),
           ),
         ],

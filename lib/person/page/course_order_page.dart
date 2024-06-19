@@ -120,8 +120,8 @@ class _CourseOrderPageState extends State<CourseOrderPage>
                     if (phone == "17001234567") {
                       NavigatorUtils.push(context, PersonalRouter.purchase);
                     } else {
-                      NavigatorUtils.push(
-                          context, PersonalRouter.userMembershipUpgradePage);
+                      NavigatorUtils.push(context,
+                          "${PersonalRouter.userMembershipUpgradePage}?levelId=9999999");
                     }
                   },
                   child: Container(

@@ -33,7 +33,12 @@ import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
 
 class UserMembershipUpgradePage extends StatefulWidget {
-  const UserMembershipUpgradePage({super.key});
+  final String levelId;
+
+  const UserMembershipUpgradePage({
+    super.key,
+    required this.levelId,
+  });
 
   @override
   State<UserMembershipUpgradePage> createState() =>
@@ -781,10 +786,20 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   @override
   void sendSuccess(GoodsBean data) {
     // TODO: implement sendSuccess
-    setState(() {
-      isLoding = false;
-      listData = data;
-    });
+    isLoding = false;
+    listData = data;
+    if (widget.levelId == "9999999") {
+      idx = 0;
+    } else {
+      for (int i = 0; i < listData.data.length; i++) {
+        Datum data = listData.data[i];
+        if (data.levelId.toString() == widget.levelId) {
+          idx = i;
+        }
+      }
+    }
+
+    setState(() {});
   }
 
   @override
@@ -807,7 +822,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
                       path: encoded,
-                      miniProgramType: WXMiniProgramType.release));
+                      miniProgramType: WXMiniProgramType.preview));
               EventUMStatistics.umengCommonMapEvent("添加辅导老师页面曝光次数");
             },
           );
@@ -819,25 +834,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
     // TODO: implement paySuccess
     if (listData.data[idx].type == 4) {
       showImageDialog();
-//       ConfirmUtils.showSingle(
-//         context: context,
-//         title: "支付成功\n前往微信添加\n本课程辅导老师",
-//         onCancel: () {
-// //         移动应用appid:wxfb033d09d2eecaf0
-// // 小程序appid:wx2140a8026b8cdf74
-// // 跳转路径：pages/mine/add-weChat/add-weChat?user_token=token
-//           // alertDialoFg();
-//           //跳转小程序
 
-//           fluwx.open(
-//               target: MiniProgram(
-//                   username: "gh_dcd9c62ba779",
-//                   path:
-//                       "pages/mine/add-weChat/add-weChat?user_token=$accessToken",
-//                   miniProgramType: WXMiniProgramType.test));
-//           Navigator.of(context).pop();
-//         },
-//       );
       Provider.of<HomeProvider>(context, listen: false).getUsageTime();
       EventBus().emit(NotificationUtils.resetInFo);
     } else {

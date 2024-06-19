@@ -144,8 +144,10 @@ class ExpirationReminder extends StatelessWidget {
           onTap: () {
             // NavigatorUtils.push(context, PersonalRouter.purchase,
             //     replace: true);
-            NavigatorUtils.push(
-                context, PersonalRouter.userMembershipUpgradePage,
+            // "${HomeRouter.coursePurchasePage}?levelId=$levelId",
+
+            NavigatorUtils.push(context,
+                "${PersonalRouter.userMembershipUpgradePage}?levelId=9999999",
                 replace: true);
           },
           child: Container(

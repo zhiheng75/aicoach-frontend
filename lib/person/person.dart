@@ -404,7 +404,7 @@ class _PersonPageState extends State<PersonPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             userInfo,
-            Gaps.vGap10,
+            Gaps.vGap13,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -554,56 +554,104 @@ class _PersonPageState extends State<PersonPage>
                     ),
                   ],
                 ),
-              ],
-            ),
-            Positioned(
-              right: 5,
-              top: 10,
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  if (phone == "17001234567") {
-                    NavigatorUtils.push(context, PersonalRouter.purchase);
-                  } else {
-                    NavigatorUtils.push(
-                        context, PersonalRouter.userMembershipUpgradePage);
-                  }
-                  EventUMStatistics.umengCommonMapEvent("个人中心-购买入口点击次数");
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      gradient: const LinearGradient(
-                        colors: [
-                          Colours.color_8256FF,
-                          Colours.color_FF5CDB,
-                        ],
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                        // stops: [0.28, 0.9],
-                      )),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14.0,
-                    vertical: 7.0,
-                  ),
-                  child: Text(
-                    islog
-                        ? ""
-                        : phone == "17001234567"
-                            ? "领取"
-                            : permissionBeanData.data.isMember == 1
-                                ? '立即续费'
-                                : '立即开通',
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      height: 20.0 / 15.0,
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    if (phone == "17001234567") {
+                      NavigatorUtils.push(context, PersonalRouter.purchase);
+                    } else {
+                      NavigatorUtils.push(
+                        context,
+                        "${PersonalRouter.userMembershipUpgradePage}?levelId=9999999",
+                      );
+                    }
+                    EventUMStatistics.umengCommonMapEvent("个人中心-购买入口点击次数");
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        gradient: const LinearGradient(
+                          colors: [
+                            Colours.color_8256FF,
+                            Colours.color_FF5CDB,
+                          ],
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.topRight,
+                          // stops: [0.28, 0.9],
+                        )),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14.0,
+                      vertical: 7.0,
+                    ),
+                    child: Text(
+                      islog
+                          ? ""
+                          : phone == "17001234567"
+                              ? "领取"
+                              : permissionBeanData.data.isMember == 1
+                                  ? '立即续费'
+                                  : '立即开通',
+                      style: const TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        height: 20.0 / 15.0,
+                      ),
                     ),
                   ),
-                ),
-              ),
-            )
+                )
+              ],
+            ),
+            // Positioned(
+            //   right: 5,
+            //   top: 10,
+            //   child: GestureDetector(
+            //     behavior: HitTestBehavior.opaque,
+            //     onTap: () {
+            //       if (phone == "17001234567") {
+            //         NavigatorUtils.push(context, PersonalRouter.purchase);
+            //       } else {
+            //         NavigatorUtils.push(
+            //           context,
+            //           "${PersonalRouter.userMembershipUpgradePage}?levelId=9999999",
+            //         );
+            //       }
+            //       EventUMStatistics.umengCommonMapEvent("个人中心-购买入口点击次数");
+            //     },
+            //     child: Container(
+            //       decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(30),
+            //           gradient: const LinearGradient(
+            //             colors: [
+            //               Colours.color_8256FF,
+            //               Colours.color_FF5CDB,
+            //             ],
+            //             begin: Alignment.bottomLeft,
+            //             end: Alignment.topRight,
+            //             // stops: [0.28, 0.9],
+            //           )),
+            //       padding: const EdgeInsets.symmetric(
+            //         horizontal: 14.0,
+            //         vertical: 7.0,
+            //       ),
+            //       child: Text(
+            //         islog
+            //             ? ""
+            //             : phone == "17001234567"
+            //                 ? "领取"
+            //                 : permissionBeanData.data.isMember == 1
+            //                     ? '立即续费'
+            //                     : '立即开通',
+            //         style: const TextStyle(
+            //           fontSize: 15.0,
+            //           fontWeight: FontWeight.bold,
+            //           color: Colors.white,
+            //           height: 20.0 / 15.0,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // )
           ],
         ),
       );
@@ -946,7 +994,27 @@ class _PersonPageState extends State<PersonPage>
                     child: Column(
                       children: <Widget>[
                         SizedBox(
-                          height: _screenUtil.statusBarHeight + 40,
+                          height: _screenUtil.statusBarHeight + 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                tapshezhiMenu();
+                              },
+                              child: const LoadAssetImage(
+                                "shezhi",
+                                width: 24.0,
+                                height: 24.0,
+                              ),
+                            ),
+                            // Gaps.hGap4,
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10.0,
                         ),
                         studyInfo(),
                         const SizedBox(
@@ -969,21 +1037,21 @@ class _PersonPageState extends State<PersonPage>
                     ),
                   ),
                 ),
-                Positioned(
-                  right: 20,
-                  top: 50,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      tapshezhiMenu();
-                    },
-                    child: const LoadAssetImage(
-                      "shezhi",
-                      width: 24.0,
-                      height: 24.0,
-                    ),
-                  ),
-                ),
+                // Positioned(
+                //   right: 20,
+                //   top: 50,
+                //   child: GestureDetector(
+                //     behavior: HitTestBehavior.opaque,
+                //     onTap: () {
+                //       tapshezhiMenu();
+                //     },
+                //     child: const LoadAssetImage(
+                //       "shezhi",
+                //       width: 24.0,
+                //       height: 24.0,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
     );

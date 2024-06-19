@@ -11,6 +11,7 @@ import 'package:Bubble/scene/utils/class_evaluate_util.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -395,15 +396,21 @@ class _CourseBottomBarState extends State<CourseBottomBar>
         );
       });
     });
+
+    EventBus().on(NotificationUtils.resetANChat, (_) {
+      widget.controller.setShowRecord(false);
+    });
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
+    Log.e("是不是出去了并且打电话来了");
+    if (state == AppLifecycleState.inactive) {}
     _appLifecycleState = state;
-    Future.delayed(Duration.zero, () async {
-      await _mediaUtils.stopPlay();
-    });
+    // Future.delayed(Duration.zero, () async {
+    //   await _mediaUtils.stopPlay();
+    // });
   }
 
   @override

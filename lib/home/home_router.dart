@@ -18,7 +18,7 @@ class HomeRouter implements IRouterProvider {
   static String homePage = '/home';
   static String tabberPage = '/tabber';
   static String scenePage = '/scenePage';
-  static String coursePurchasePage = '/CoursePurchasePage';
+  // static String coursePurchasePage = '/CoursePurchasePage';
   static String coursePaysPage = '/CoursePaysPage';
   static String instructionalVideoDialoguePage =
       '/InstructionalVideoDialoguePage';
@@ -50,15 +50,15 @@ class HomeRouter implements IRouterProvider {
     router.define(tabberPage,
         handler: Handler(handlerFunc: (_, __) => const MainTabber()));
 
-    router.define(coursePurchasePage,
-        handler: Handler(handlerFunc: (_, params) {
-      //人物
-      String levelId = params['levelId']!.first;
-      // int idx = int.parse(index);
-      return CoursePurchasePage(
-        levelId: levelId,
-      );
-    }));
+    // router.define(coursePurchasePage,
+    //     handler: Handler(handlerFunc: (_, params) {
+    //   //人物
+    //   String levelId = params['levelId']!.first;
+    //   // int idx = int.parse(index);
+    //   return CoursePurchasePage(
+    //     levelId: levelId,
+    //   );
+    // }));
 
     router.define(scenePage,
         handler: Handler(

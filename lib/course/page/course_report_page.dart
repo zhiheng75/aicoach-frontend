@@ -16,6 +16,7 @@ import 'package:Bubble/person/item/error_correction_item.dart';
 import 'package:Bubble/report/widget/radar.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/circle_progress_view.dart';
@@ -52,6 +53,7 @@ class _CourseReportPageState extends State<CourseReportPage>
   late String headimgurl = "";
   double star = 0;
   Fluwx fluwx = Fluwx();
+  bool isWx = false;
 
   @override
   void initState() {
@@ -83,6 +85,7 @@ class _CourseReportPageState extends State<CourseReportPage>
       headImg = user['headimgurl'];
     }
     headimgurl = headImg;
+    isWX();
   }
 
   @override
@@ -216,11 +219,12 @@ class _CourseReportPageState extends State<CourseReportPage>
     // String description = "内容";
     String webPageUrl =
         "pages/mine/objectives/objectivesReport?lesson_id=${widget.lessonId}&user_token=$accessToken";
-
+    // String webPageUrl = "pages/subPack/index/index";
     var encoded = Uri.encodeComponent(webPageUrl);
     var model = WeChatShareMiniProgramModel(
         webPageUrl: encoded, //分享内容的网页链接
-        miniProgramType: WXMiniProgramType.release,
+        path: webPageUrl,
+        miniProgramType: WXMiniProgramType.preview,
         userName: "gh_dcd9c62ba779", //原始id 小程序的 看好 原始id 不是appid
         title: title, //分享的小程序标题
         // description: description, //分享的小程序描述
@@ -290,6 +294,21 @@ class _CourseReportPageState extends State<CourseReportPage>
     );
   }
 
+  Future<void> isWX() async {
+    if (Device.isAndroid) {
+      isWx = true;
+    } else {
+      Fluwx fluwx = Fluwx();
+      if (await fluwx.isWeChatInstalled) {
+        isWx = true;
+      } else {
+        isWx = false;
+      }
+    }
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -316,25 +335,28 @@ class _CourseReportPageState extends State<CourseReportPage>
                             delegate: _SliverAppBarDelegate(
                                 minHeight: 120,
                                 maxHeight: 120,
-                                child: const XTCupertinoNavigationBar(
-                                  backgroundColor: Color.fromRGBO(1, 1, 1, 0),
+                                child: XTCupertinoNavigationBar(
+                                  backgroundColor:
+                                      const Color.fromRGBO(1, 1, 1, 0),
                                   border: null,
                                   padding: EdgeInsetsDirectional.zero,
-                                  leading: NavigationBackWidget(),
-                                  // trailing: GestureDetector(
-                                  //     onTap: () {
-                                  //       shareView();
-                                  //     },
-                                  //     child: Container(
-                                  //       margin:
-                                  //           const EdgeInsets.only(right: 10),
-                                  //       child: const LoadAssetImage(
-                                  //         'share_wx_btn',
-                                  //         width: 24,
-                                  //         height: 24,
-                                  //       ),
-                                  //     )),
-                                  middle: Text(
+                                  leading: const NavigationBackWidget(),
+                                  trailing: isWx
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            shareView();
+                                          },
+                                          child: Container(
+                                            margin: const EdgeInsets.only(
+                                                right: 10),
+                                            child: const LoadAssetImage(
+                                              'share_wx_btn',
+                                              width: 24,
+                                              height: 24,
+                                            ),
+                                          ))
+                                      : Container(),
+                                  middle: const Text(
                                     "口语嘟嘟 学习报告",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
@@ -538,7 +560,6 @@ class _CourseReportPageState extends State<CourseReportPage>
                             ),
                           ),
                         ),
-
                         SliverToBoxAdapter(
                           child: radar(),
                         ),
@@ -601,115 +622,127 @@ class _CourseReportPageState extends State<CourseReportPage>
                         ),
                         // headWidget("benkeshouhuo"),
                         SliverToBoxAdapter(
-                          child: CourseReportVocabularyTwoItem(
-                              vocabulary: lessonReportDetailData
-                                  .data.objectives.vocabulary),
+                          child: lessonReportDetailData
+                                  .data.objectives.vocabulary.isNotEmpty
+                              ? CourseReportVocabularyTwoItem(
+                                  vocabulary: lessonReportDetailData
+                                      .data.objectives.vocabulary)
+                              : Container(),
                         ),
                         SliverToBoxAdapter(
-                          child: Container(
-                            color: Colors.white,
-                            child: Container(
-                              margin: const EdgeInsets.all(8),
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Colours.color_F9F8FF,
-                              ),
-                              // color: Colors.red,
-                              child: Column(
-                                children: [
-                                  Gaps.vGap8,
-                                  Row(
-                                    children: [
-                                      Gaps.hGap12,
-                                      const LoadAssetImage(
-                                        "head_juxing_icon",
-                                        width: 24.0,
-                                        height: 24.0,
-                                      ),
-                                      Gaps.hGap8,
-                                      RichText(
-                                        text: const TextSpan(children: [
-                                          TextSpan(
-                                              text: "句型  ",
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.black,
-                                              )),
-                                          TextSpan(
-                                              text: "Sentence pattern",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.black,
-                                              )),
-                                        ]),
-                                      ),
-                                    ],
+                          child: lessonReportDetailData
+                                  .data.objectives.sentencePattern.isNotEmpty
+                              ? Container(
+                                  color: Colors.white,
+                                  child: Container(
+                                    margin: const EdgeInsets.all(8),
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Colours.color_F9F8FF,
+                                    ),
+                                    // color: Colors.red,
+                                    child: Column(
+                                      children: [
+                                        Gaps.vGap8,
+                                        Row(
+                                          children: [
+                                            Gaps.hGap6,
+                                            const LoadAssetImage(
+                                              "head_juxing_icon",
+                                              width: 24.0,
+                                              height: 24.0,
+                                            ),
+                                            Gaps.hGap8,
+                                            RichText(
+                                              text: const TextSpan(children: [
+                                                TextSpan(
+                                                    text: "句型  ",
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Colors.black,
+                                                    )),
+                                                TextSpan(
+                                                    text: "Sentence pattern",
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Colors.black,
+                                                    )),
+                                              ]),
+                                            ),
+                                          ],
+                                        ),
+                                        Gaps.vGap11,
+                                        Column(
+                                          children: _buildPatternItems(),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Gaps.vGap11,
-                                  Column(
-                                    children: _buildPatternItems(),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                                )
+                              : Container(),
                         ),
                         // headWidget("Speak Skill", "12"),
-
                         SliverToBoxAdapter(
-                          child: Container(
-                            color: Colors.white,
-                            child: Container(
-                              margin: const EdgeInsets.all(8),
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Colours.color_F9F8FF,
-                              ),
-                              // color: Colors.red,
-                              child: Column(
-                                children: [
-                                  Gaps.vGap8,
-                                  Row(
-                                    children: [
-                                      Gaps.hGap8,
-                                      const LoadAssetImage(
-                                        "head_nengli_icon",
-                                        width: 24.0,
-                                        height: 24.0,
-                                      ),
-                                      Gaps.hGap8,
-                                      RichText(
-                                        text: const TextSpan(children: [
-                                          TextSpan(
-                                              text: "能力  ",
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.black,
-                                              )),
-                                          TextSpan(
-                                              text: "Speaking skills",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.black,
-                                              )),
-                                        ]),
-                                      ),
-                                    ],
+                          child: lessonReportDetailData
+                                  .data.objectives.speakingSkills.isNotEmpty
+                              ? Container(
+                                  color: Colors.white,
+                                  child: Container(
+                                    margin: const EdgeInsets.all(8),
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Colours.color_F9F8FF,
+                                    ),
+                                    // color: Colors.red,
+                                    child: Column(
+                                      children: [
+                                        Gaps.vGap8,
+                                        Row(
+                                          children: [
+                                            Gaps.hGap8,
+                                            const LoadAssetImage(
+                                              "head_nengli_icon",
+                                              width: 24.0,
+                                              height: 24.0,
+                                            ),
+                                            Gaps.hGap8,
+                                            RichText(
+                                              text: const TextSpan(children: [
+                                                TextSpan(
+                                                    text: "能力  ",
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Colors.black,
+                                                    )),
+                                                TextSpan(
+                                                    text: "Speaking skills",
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Colors.black,
+                                                    )),
+                                              ]),
+                                            ),
+                                          ],
+                                        ),
+                                        Gaps.vGap11,
+                                        Column(
+                                          children: _buildSkillsItems(),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Gaps.vGap11,
-                                  Column(
-                                    children: _buildSkillsItems(),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                                )
+                              : Container(),
                         ),
                         SliverToBoxAdapter(
                           child: Gaps.vGap30,

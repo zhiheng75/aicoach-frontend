@@ -35,21 +35,26 @@ class LessonListBean {
 
 class Datum {
   String levelName;
+  int levelId;
+
   List<LevelList> list;
 
   Datum({
     required this.levelName,
+    required this.levelId,
     required this.list,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         levelName: json["level_name"],
+        levelId: json["level_id"],
         list: List<LevelList>.from(
             json["list"].map((x) => LevelList.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "level_name": levelName,
+        "level_id": levelId,
         "list": List<dynamic>.from(list.map((x) => x.toJson())),
       };
 }
@@ -84,6 +89,7 @@ class UnitList {
   int lessonId;
   String lessonName;
   String lessonLabel;
+  String unlockDate;
 
   String lessonType;
   String lessonDescription;
@@ -102,6 +108,7 @@ class UnitList {
     required this.unitName,
     required this.lessonId,
     required this.lessonName,
+    required this.unlockDate,
     required this.lessonType,
     required this.lessonDescription,
     required this.isUserBuy,
@@ -120,6 +127,8 @@ class UnitList {
         unitName: json["unit_name"],
         lessonId: json["lesson_id"],
         lessonName: json["lesson_name"],
+        unlockDate: json["unlock_date"],
+
         lessonType: json["lesson_type"] ?? "",
         isUserBuy: json["is_user_buy"] ?? 0,
         completed: json["completed"],
@@ -135,6 +144,7 @@ class UnitList {
         "lesson_description": lessonDescription,
         "unit_id": unitId,
         "unit_name": unitName,
+        "unlock_date": unlockDate,
         "lesson_id": lessonId,
         "lesson_name": lessonName,
         "lesson_type": lessonType,

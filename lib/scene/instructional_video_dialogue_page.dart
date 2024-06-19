@@ -12,6 +12,7 @@ import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
@@ -449,6 +450,10 @@ class _InstructionalVideoDialoguePageState
       resourceIdx = 0;
       forstartFlow(newDataIdx, resourceIdx);
       // forFlow();
+    });
+
+    EventBus().on(NotificationUtils.messageEnd, (idx) {
+      _listScrollController.scrollToEnd();
     });
 
     // 全局监听App状态
@@ -952,6 +957,8 @@ class _InstructionalVideoDialoguePageState
     routeObserver.unsubscribe(this); //取消订阅
 
     EventBus().off(NotificationUtils.nextClass);
+    EventBus().off(NotificationUtils.messageEnd);
+
     _homeProvider.ishread = "";
     WidgetsBinding.instance.removeObserver(this);
 
@@ -1347,44 +1354,33 @@ class _InstructionalVideoDialoguePageState
     } else {
       return Positioned(
         top: _screenUtil.statusBarHeight + 68,
-        left: (_screenUtil.screenWidth - 150) / 2,
+        left: (_screenUtil.screenWidth - 167) / 2,
         // width: 100,
         // height: 100,
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(200.0),
-            child: StreamBuilder(
-              stream: AvatarController().getStream(),
-              builder: (_, snapshot) {
-                dynamic data = snapshot.data;
-                // if (data == true) {
-                //   if (widget.onFinshEnd != null) {
-                //     widget.onFinshEnd!(data);
-                //   }
-                // }
-                return data == true
-                    ? LoadImage(
-                        _homeProvider.character.motionImage,
-                        format: ImageFormat.gif,
-                        width: 150.0,
-                        height: 150.0,
-                      )
-                    : LoadImage(
-                        _homeProvider.character.stillImage,
-                        format: ImageFormat.gif,
-                        width: 150.0,
-                        height: 150.0,
-                      );
-              },
-            )
-            //  Background(controller: _backgroundController),
-
-            //  LoadImage(
-            //   introFileStr,
-            //   format: ImageFormat.gif,
-            //   width: 150.0,
-            //   height: 150.0,
-            // ),
-            ),
+        child: StreamBuilder(
+          stream: AvatarController().getStream(),
+          builder: (_, snapshot) {
+            dynamic data = snapshot.data;
+            // if (data == true) {
+            //   if (widget.onFinshEnd != null) {
+            //     widget.onFinshEnd!(data);
+            //   }
+            // }
+            return data == true
+                ? LoadImage(
+                    _homeProvider.character.motionImage,
+                    format: ImageFormat.gif,
+                    // width: 180.0,
+                    height: 180.0,
+                  )
+                : LoadImage(
+                    _homeProvider.character.stillImage,
+                    format: ImageFormat.gif,
+                    // width: 150.0,
+                    height: 180.0,
+                  );
+          },
+        ),
       );
       // introFileStr =
       //     widget.data[widget.idx].resource[resourceIdx].characterAvatar;
@@ -1435,13 +1431,17 @@ class _InstructionalVideoDialoguePageState
 //到课程购买页
                     NavigatorUtils.push(
                       context,
-                      "${HomeRouter.coursePurchasePage}?levelId=$levelId",
+                      "${PersonalRouter.userMembershipUpgradePage}?levelId=$levelId",
+                      // "${HomeRouter.coursePurchasePage}?levelId=$levelId",
                     );
                   },
-                  child: const LoadAssetImage(
-                    'class_vip_icon',
-                    width: 32.0,
-                    height: 32.0,
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    child: const LoadAssetImage(
+                      'class_vip_icon',
+                      width: 32.0,
+                      height: 32.0,
+                    ),
                   ),
                 )
         ],
