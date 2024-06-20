@@ -463,6 +463,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
           // ignore: unrelated_type_equality_checks
           status == PhoneStateStatus.CALL_STARTED) {
         widget.controller.setDisabled(false);
+        //  await MediaUtils().stopPlayByAppPaused();
       }
       Log.e(status.status.name);
     });
