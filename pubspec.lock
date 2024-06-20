@@ -1061,6 +1061,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "5.4.0"
+  phone_state:
+    dependency: "direct main"
+    description:
+      name: phone_state
+      sha256: b68ddbde95915400808b14d680d20439a4320212ad13ea9a0962fe833c5b0079
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.4"
   photo_manager:
     dependency: transitive
     description:

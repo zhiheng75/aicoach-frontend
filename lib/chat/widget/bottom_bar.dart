@@ -245,9 +245,9 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
     }
     if (answer is Uint8List) {
       _answer!.audio.add(answer);
-      // if (_appLifecycleState == AppLifecycleState.paused) {
-      //   return;
-      // }
+      if (_appLifecycleState == AppLifecycleState.paused) {
+        return;
+      }
       if (_listPlayer != null) {
         _listPlayer!.play(answer);
       }
@@ -346,7 +346,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    // _appLifecycleState = state;
+    _appLifecycleState = state;
     Future.delayed(Duration.zero, () async {
       await _mediaUtils.stopPlay();
     });

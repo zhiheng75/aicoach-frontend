@@ -139,6 +139,8 @@ dependencies:
   liquid_swipe: ^3.1.0
   photo_view: ^0.15.0
   native_video_player: ^1.2.0+3
+  phone_state: ^1.0.4
+  # flutter_phone_directed: ^0.1.0
   # screen_manager: ^1.1.0
 
 dev_dependencies:

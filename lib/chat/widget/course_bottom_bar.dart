@@ -8,12 +8,15 @@ import 'package:Bubble/exam/entity/mock_message_entity.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/scene/utils/class_evaluate_util.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
 
@@ -30,6 +33,7 @@ import '../utils/evaluate_util.dart';
 import '../utils/recognize_util.dart';
 import 'example.dart';
 import 'record.dart';
+import 'package:phone_state/phone_state.dart';
 
 class CourseBottomBar extends StatefulWidget {
   CourseBottomBar({
@@ -85,6 +89,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   ListPlayer? _listPlayer;
   // app状态
   AppLifecycleState? _appLifecycleState;
+
+  PhoneState status = PhoneState.nothing();
+  bool granted = false;
 
   void getExample() {
     LoginManager.checkLogin(context, () {
@@ -378,6 +385,19 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     onSuccess(message);
   }
 
+  Future<bool> requestPermission() async {
+    var status = await Permission.phone.request();
+
+    return switch (status) {
+      PermissionStatus.denied ||
+      PermissionStatus.restricted ||
+      PermissionStatus.limited ||
+      PermissionStatus.permanentlyDenied =>
+        false,
+      PermissionStatus.provisional || PermissionStatus.granted => true,
+    };
+  }
+
   @override
   void initState() {
     super.initState();
@@ -399,6 +419,51 @@ class _CourseBottomBarState extends State<CourseBottomBar>
 
     EventBus().on(NotificationUtils.resetANChat, (_) {
       widget.controller.setShowRecord(false);
+    });
+
+    // 全局监听App状态
+    SystemChannels.lifecycle.setMessageHandler((message) async {
+      // 退到后台
+      // ignore: unrelated_type_equality_checks
+      // if (message == 'AppLifecycleState.paused') {
+      //   await MediaUtils().stopPlayByAppPaused();
+      // }
+      // if (message == 'AppLifecycleState.resumed') {}
+
+      // _appLifecycleState = message;
+
+      return message;
+    });
+    // requestPermission();
+    if (Device.isIOS) {
+      setStream();
+    } else {
+      and();
+    }
+  }
+
+  void and() async {
+    bool temp = await requestPermission();
+    setState(() {
+      granted = temp;
+      if (granted) {
+        setStream();
+      }
+    });
+  }
+
+  void setStream() {
+    PhoneState.stream.listen((event) {
+      status = event;
+      // ignore: unrelated_type_equality_checks
+      if (status == PhoneStateStatus.CALL_INCOMING ||
+          // ignore: unrelated_type_equality_checks
+          status == PhoneStateStatus.CALL_ENDED ||
+          // ignore: unrelated_type_equality_checks
+          status == PhoneStateStatus.CALL_STARTED) {
+        widget.controller.setDisabled(false);
+      }
+      Log.e(status.status.name);
     });
   }
 
