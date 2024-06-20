@@ -79,6 +79,7 @@ class DYUtil {
     params["os"] = os;
     params["idfa"] = idfa;
     params["mac"] = macAddress;
+    params["event_type"] = message;
 
     DioUtils.instance.requestNetwork<ResultData>(Method.get, HttpApi.clickMatch,
         queryParameters: params, onSuccess: (result) {
