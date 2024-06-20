@@ -78,6 +78,8 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
 
   Fluwx fluwx = Fluwx();
   late String? accessToken;
+  late ListView listView;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -277,6 +279,32 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   }
 
   Widget classPayWidget() {
+    listView = ListView.builder(
+      controller: _scrollController,
+      // semanticChildCount: 1,
+      scrollDirection: Axis.horizontal,
+      itemCount: listData.data.length,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            setState(() {
+              idx = index;
+            });
+            if (index == 0) {
+              EventUMStatistics.umengCommonMapEvent("个人中心-售卖页引流包支付点击次数");
+            } else {
+              EventUMStatistics.umengCommonMapEvent("个人中心-售卖页正价课支付点击次数");
+            }
+          },
+          child: UserMembershipUpgradeItem(
+            isSele: idx == index ? true : false,
+            data: listData.data[index],
+          ),
+        );
+      },
+    );
+
     return Container(
       // height: 100,
       decoration: BoxDecoration(
@@ -292,31 +320,32 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Gaps.hGap8,
-              const LoadAssetImage(
-                'zhuanshi',
-                width: 48.0,
-                height: 48.0,
-              ),
-              Gaps.hGap4,
-              Text(
-                "升级会员",
-                key: keyTab,
-                style: const TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          ),
-          // Gaps.vGap4,
+          // Row(
+          //   children: [
+          //     Gaps.hGap8,
+          //     const LoadAssetImage(
+          //       'zhuanshi',
+          //       width: 48.0,
+          //       height: 48.0,
+          //     ),
+          //     Gaps.hGap4,
+          //     Text(
+          //       "升级会员",
+          //       key: keyTab,
+          //       style: const TextStyle(
+          //         fontSize: 20.0,
+          //         fontWeight: FontWeight.bold,
+          //         color: Colors.black,
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          Gaps.vGap20,
           SizedBox(
             // margin: const EdgeInsets.only(top: 10),
             height: 160.0,
             child: ListView.builder(
+              // semanticChildCount: 1,
               scrollDirection: Axis.horizontal,
               itemCount: listData.data.length,
               itemBuilder: (context, index) {
@@ -856,15 +885,15 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   @override
   void sendMemberStateSuccess(MemberStateBean data) {
     // TODO: implement sendMemberStateSuccess
-    if (data.code == 200) {
-      if (data.data.isMember == 1) {
-        userVIP = "会员";
-      } else if (data.data.isMember == 2) {
-        userVIP = "会员已到期 ";
-      } else {
-        userVIP = "暂未开通会员";
-      }
-    }
+    // if (data.code == 200) {
+    //   if (data.data.isMember == 1) {
+    //     userVIP = "会员";
+    //   } else if (data.data.isMember == 2) {
+    //     userVIP = "会员已到期 ";
+    //   } else {
+    //     userVIP = "暂未开通会员";
+    //   }
+    // }
     setState(() {});
 
 // userVIP
