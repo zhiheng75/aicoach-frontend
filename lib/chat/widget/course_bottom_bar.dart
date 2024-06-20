@@ -422,24 +422,25 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     });
 
     // 全局监听App状态
-    SystemChannels.lifecycle.setMessageHandler((message) async {
-      // 退到后台
-      // ignore: unrelated_type_equality_checks
-      // if (message == 'AppLifecycleState.paused') {
-      //   await MediaUtils().stopPlayByAppPaused();
-      // }
-      // if (message == 'AppLifecycleState.resumed') {}
+    // SystemChannels.lifecycle.setMessageHandler((message) async {
+    // 退到后台
+    // ignore: unrelated_type_equality_checks
+    // if (message == 'AppLifecycleState.paused') {
+    //   await MediaUtils().stopPlayByAppPaused();
+    // }
+    // if (message == 'AppLifecycleState.resumed') {}
 
-      // _appLifecycleState = message;
+    // _appLifecycleState = message;
 
-      return message;
-    });
+    //   return message;
+    // });
     // requestPermission();
-    if (Device.isIOS) {
-      setStream();
-    } else {
-      and();
-    }
+
+    // if (Device.isIOS) {
+    //   setStream();
+    // } else {
+    //   and();
+    // }
   }
 
   void and() async {
