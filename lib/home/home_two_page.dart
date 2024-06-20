@@ -167,7 +167,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
                       path: url,
-                      miniProgramType: WXMiniProgramType.release));
+                      miniProgramType: WXMiniProgramType.preview));
               EventUMStatistics.umengCommonMapEvent("添加辅导老师页面曝光次数");
             },
           );
@@ -934,6 +934,11 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                 SliverToBoxAdapter(
                   child: SizedBox(
                     height: _screenUtil.statusBarHeight,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: Device.isAndroid ? 8 : 0,
                   ),
                 ),
                 SliverToBoxAdapter(

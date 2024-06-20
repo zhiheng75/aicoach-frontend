@@ -214,17 +214,18 @@ class _CourseReportPageState extends State<CourseReportPage>
 
   void creatShare() {
     String accessToken = SpUtil.getString(Constant.accessToken) ?? "";
+    var token = Uri.encodeComponent(accessToken);
 
     String title = "$userName的${lessonReportDetailData.data.levelName}学情报告";
     // String description = "内容";
     String webPageUrl =
-        "pages/mine/objectives/objectivesReport?lesson_id=${widget.lessonId}&user_token=$accessToken";
+        "pages/mine/objectives/objectivesReport?lesson_id=${widget.lessonId}&user_token=$token";
     // String webPageUrl = "pages/subPack/index/index";
     var encoded = Uri.encodeComponent(webPageUrl);
     var model = WeChatShareMiniProgramModel(
         webPageUrl: encoded, //分享内容的网页链接
         path: webPageUrl,
-        miniProgramType: WXMiniProgramType.release,
+        miniProgramType: WXMiniProgramType.preview,
         userName: "gh_dcd9c62ba779", //原始id 小程序的 看好 原始id 不是appid
         title: title, //分享的小程序标题
         // description: description, //分享的小程序描述

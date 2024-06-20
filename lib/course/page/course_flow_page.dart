@@ -38,6 +38,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
 
@@ -88,6 +89,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   late String teacherId = "0";
 
   late List<CourseDatum> dataList;
+  final ScreenUtil _screenUtil = ScreenUtil();
 
   @override
   void initState() {
@@ -400,7 +402,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
         ),
         Gaps.vGap10,
         Container(
-          margin: const EdgeInsets.only(left: 16, right: 16),
+          margin: const EdgeInsets.only(left: 15, right: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -423,8 +425,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                       });
                     },
                     child: Container(
-                      width: 110,
-                      height: 110,
+                      width: (_screenUtil.screenWidth - 60) / 3,
+                      height: (_screenUtil.screenWidth - 60) / 3,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(
@@ -472,8 +474,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                       });
                     },
                     child: Container(
-                      width: 110,
-                      height: 110,
+                      width: (_screenUtil.screenWidth - 60) / 3,
+                      height: (_screenUtil.screenWidth - 60) / 3,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(
@@ -543,8 +545,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                       });
                     },
                     child: Container(
-                      width: 110,
-                      height: 110,
+                      width: (_screenUtil.screenWidth - 60) / 3,
+                      height: (_screenUtil.screenWidth - 60) / 3,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(

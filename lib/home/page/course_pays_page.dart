@@ -362,7 +362,7 @@ class _CoursePaysPageState extends State<CoursePaysPage>
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
                       path: url,
-                      miniProgramType: WXMiniProgramType.release));
+                      miniProgramType: WXMiniProgramType.preview));
               EventUMStatistics.umengCommonMapEvent("添加辅导老师页面曝光次数");
 
               Navigator.of(context).pop();

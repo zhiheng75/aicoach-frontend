@@ -454,7 +454,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   }
 
   void setStream() {
-    PhoneState.stream.listen((event) {
+    PhoneState.stream.listen((event) async {
       status = event;
       // ignore: unrelated_type_equality_checks
       if (status == PhoneStateStatus.CALL_INCOMING ||
@@ -463,7 +463,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
           // ignore: unrelated_type_equality_checks
           status == PhoneStateStatus.CALL_STARTED) {
         widget.controller.setDisabled(false);
-        //  await MediaUtils().stopPlayByAppPaused();
+        await MediaUtils().stopPlayByAppPaused();
       }
       Log.e(status.status.name);
     });
@@ -472,7 +472,6 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    Log.e("是不是出去了并且打电话来了");
     if (state == AppLifecycleState.inactive) {}
     _appLifecycleState = state;
     // Future.delayed(Duration.zero, () async {
@@ -673,6 +672,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                     if (!hasAgree) {
                       Toast.show("录音音频使用说明:用于对话场景", duration: 6000);
                       SpUtil.putBool(Constant.mediaUtils, true);
+                      widget.controller.setShowRecord(false);
                     }
 
                     // 检查权限
@@ -680,6 +680,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                         await _mediaUtils.checkMicrophonePermission();
                     if (isRequest) {
                       Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
+                      widget.controller.setShowRecord(false);
                       return;
                     }
                     // 开始录音
