@@ -15,7 +15,7 @@ import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/routers/routers.dart';
 import 'package:Bubble/setting/provider/locale_provider.dart';
 import 'package:Bubble/setting/provider/theme_provider.dart';
-import 'package:Bubble/util/device_utils.dart';
+// import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/handle_error_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/theme_utils.dart';
@@ -157,10 +157,10 @@ class MyApp extends StatelessWidget {
       navigatorKey: Constant.navigatorKey,
       builder: (BuildContext context, Widget? child) {
         /// 仅针对安卓
-        if (Device.isAndroid) {
-          /// 切换深色模式会触发此方法，这里设置导航栏颜色
-          ThemeUtils.setSystemNavigationBar(provider.getThemeMode());
-        }
+        // if (Device.isAndroid) {
+        /// 切换深色模式会触发此方法，这里设置导航栏颜色
+        ThemeUtils.setSystemNavigationBar(provider.getThemeMode());
+        // }
 
         /// 保证文字大小不受手机系统设置影响
         return MediaQuery(

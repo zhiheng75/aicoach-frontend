@@ -12,8 +12,6 @@ class Channel {
   static String channelali = "ali";
   static String channelsanxing = "sanxing";
   static String channelmeizu = "meizu";
-  static String dyhuiyi = "dyhuiyi";
-  static String dylanwei = "dylanwei";
-  static String dyvivoWB = "dyvivoWB";
   static String dytoufang = "dytoufang";
+  static String dyvivoWB = "dyvivoWB";
 }
