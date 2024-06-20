@@ -866,7 +866,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
                       path: url,
-                      miniProgramType: WXMiniProgramType.preview));
+                      miniProgramType: WXMiniProgramType.release));
               EventUMStatistics.umengCommonMapEvent("添加辅导老师页面曝光次数");
             },
           );
