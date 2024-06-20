@@ -1066,70 +1066,6 @@ class _InstructionalVideoDialoguePageState
     );
   }
 
-  Widget topMengWidget() {
-    return Positioned(
-        top: 0,
-        width: _screenUtil.screenWidth,
-        // height: _screenUtil.screenWidth / 16 * 9,
-        child: Container(
-          width: _screenUtil.screenWidth,
-          height: 400,
-          decoration: BoxDecoration(
-            // borderRadius: BorderRadius.circular(20.0),
-            // border: Border.all(
-            //   width: 1.0,
-            //   style: BorderStyle.solid,
-            //   color: Colours.color_001652,
-            // ),
-            gradient: const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color.fromRGBO(255, 255, 255, 0),
-                Color.fromRGBO(255, 255, 255, 0),
-                Color.fromRGBO(255, 255, 255, 0),
-                Color.fromRGBO(255, 255, 255, 0),
-                Color.fromRGBO(255, 255, 255, 0),
-                Color.fromRGBO(255, 255, 255, 0),
-                Color.fromRGBO(255, 255, 255, 0),
-                Color.fromRGBO(255, 255, 255, 0),
-                Color.fromRGBO(255, 255, 255, 0),
-                Color.fromRGBO(255, 255, 255, 0),
-                Color.fromRGBO(255, 255, 255, 0),
-                Color.fromRGBO(255, 255, 255, 0),
-                Color.fromRGBO(255, 255, 255, 0.95),
-                Color.fromRGBO(255, 255, 255, 0.95),
-                Color.fromRGBO(255, 255, 255, 0.95),
-
-                Color.fromRGBO(255, 255, 255, 0.1),
-
-                // Colors.white70,
-                // Colors.white60,
-                // Colors.white54,
-                // Colors.white38,
-                // Colors.white30,
-                // Colors.white24,
-                // Colors.white24,
-                // Colors.white24,
-                // Colors.white12,
-                // Colors.white12,
-                // Colors.white12,
-                // Colors.white10,
-              ],
-            ),
-          ),
-        )
-        //  LoadImage(
-        //   "class_top_meng",
-        //   width: _screenUtil.screenWidth,
-        //   height: 63,
-        // ),
-        );
-  }
-//   Future<bool> videoIsPlaying()async{
-//  _controller!.isPlaying();
-//   }
-
   Future<bool> get _isPlaying async => await _controller?.isPlaying() ?? false;
 
   Future<void> _togglePlayback() async {
@@ -1580,22 +1516,9 @@ class _InstructionalVideoDialoguePageState
                 left: 0,
                 child: content,
               ),
-              // topMengWidget(),
               navbar(),
               topWidget(),
               topFlowWidget(),
-              // isPlayVideo == "0" && isVideo == "1"
-              //     ? Positioned(
-              //         top: _screenUtil.statusBarHeight + 68,
-              //         width: _screenUtil.screenWidth,
-              //         height: _screenUtil.screenWidth / 16 * 9,
-              //         child: LoadImage(
-              //           introVideoCoverStr,
-              //           width: _screenUtil.screenWidth,
-              //           height: _screenUtil.screenWidth / 16 * 9,
-              //         ),
-              //       )
-              //     : Container(),
               Positioned(
                 top: 0,
                 left: 0,
