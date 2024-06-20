@@ -840,7 +840,7 @@ class _PersonPageState extends State<PersonPage>
           menuItem(
             'person_guanyu',
             '关于我们',
-            'v2.0.3',
+            'v2.0.4',
             onPress: () => tapMenu(PersonalRouter.about),
           ),
 

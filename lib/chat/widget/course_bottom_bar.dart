@@ -436,11 +436,11 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     // });
     // requestPermission();
 
-    // if (Device.isIOS) {
-    //   setStream();
-    // } else {
-    //   and();
-    // }
+    if (Device.isIOS) {
+      setStream();
+    } else {
+      and();
+    }
   }
 
   void and() async {
@@ -457,14 +457,14 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     PhoneState.stream.listen((event) async {
       status = event;
       // ignore: unrelated_type_equality_checks
-      if (status == PhoneStateStatus.CALL_INCOMING ||
-          // ignore: unrelated_type_equality_checks
-          status == PhoneStateStatus.CALL_ENDED ||
-          // ignore: unrelated_type_equality_checks
-          status == PhoneStateStatus.CALL_STARTED) {
-        widget.controller.setDisabled(false);
-        await MediaUtils().stopPlayByAppPaused();
-      }
+      // if (status == PhoneStateStatus.CALL_INCOMING ||
+      //     // ignore: unrelated_type_equality_checks
+      //     status == PhoneStateStatus.CALL_ENDED ||
+      //     // ignore: unrelated_type_equality_checks
+      //     status == PhoneStateStatus.CALL_STARTED) {
+      await _mediaUtils.stopPlay();
+      widget.controller.setDisabled(false);
+      // }
       Log.e(status.status.name);
     });
   }
