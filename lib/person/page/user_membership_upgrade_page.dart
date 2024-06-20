@@ -807,6 +807,16 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
     return _userMembershipUpgradepagePresenter;
   }
 
+  void _scrollToIndex(int index) {
+    // 滚动到指定位置
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent *
+          (index / listData.data.length),
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  }
+
   @override
   void sendFail(String msg) {
     // TODO: implement sendFail
@@ -829,6 +839,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
     }
 
     setState(() {});
+    _scrollToIndex(idx);
   }
 
   @override
@@ -843,14 +854,18 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
           return TeacherShowView(
             () {
               //确定
+              // String accessToken = SpUtil.getString(Constant.accessToken) ?? "";
+              // String url =
+              //     "pages/mine/add-weChat/add-weChat?user_token=$accessToken";
+              // var encoded = Uri.encodeComponent(url);
               String accessToken = SpUtil.getString(Constant.accessToken) ?? "";
+              var encoded = Uri.encodeComponent(accessToken);
               String url =
-                  "pages/mine/add-weChat/add-weChat?user_token=$accessToken";
-              var encoded = Uri.encodeComponent(url);
+                  "pages/mine/add-weChat/add-weChat?user_token=$encoded";
               fluwx.open(
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
-                      path: encoded,
+                      path: url,
                       miniProgramType: WXMiniProgramType.release));
               EventUMStatistics.umengCommonMapEvent("添加辅导老师页面曝光次数");
             },

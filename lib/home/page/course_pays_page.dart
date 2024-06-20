@@ -355,13 +355,13 @@ class _CoursePaysPageState extends State<CoursePaysPage>
             () {
               //确定
               String accessToken = SpUtil.getString(Constant.accessToken) ?? "";
+              var encoded = Uri.encodeComponent(accessToken);
               String url =
-                  "pages/mine/add-weChat/add-weChat?user_token=$accessToken";
-              var encoded = Uri.encodeComponent(url);
+                  "pages/mine/add-weChat/add-weChat?user_token=$encoded";
               fluwx.open(
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
-                      path: encoded,
+                      path: url,
                       miniProgramType: WXMiniProgramType.release));
               EventUMStatistics.umengCommonMapEvent("添加辅导老师页面曝光次数");
 

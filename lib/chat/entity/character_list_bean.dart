@@ -51,6 +51,7 @@ class Datum {
   String stillImage;
   String motionImage;
   String listImage;
+  String listMotionImage;
 
   String avatarImage;
   String coverBgImage;
@@ -76,6 +77,7 @@ class Datum {
     required this.authorName,
     required this.imageUrl,
     required this.listImage,
+    required this.listMotionImage,
     required this.coverImageUrl,
     required this.sort,
     required this.stage,
@@ -111,6 +113,7 @@ class Datum {
         stageImg: json["stage_img"],
         stillImage: json["still_image"] ?? "",
         listImage: json["list_image"] ?? "",
+        listMotionImage: json["list_motion_image"] ?? "",
         motionImage: json["motion_image"] ?? "",
         avatarImage: json["avatar_image"],
         coverBgImage: json["cover_bg_image"] ?? "",
@@ -136,6 +139,7 @@ class Datum {
         "author_name": authorName,
         "image_url": imageUrl,
         "list_image": listImage,
+        "list_motion_image": listMotionImage,
         "cover_image_url": coverImageUrl,
         "sort": sort,
         "stage": stage,

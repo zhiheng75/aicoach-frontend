@@ -45,7 +45,9 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
           child: ClipRRect(
               borderRadius: BorderRadius.circular(16.0),
               child: LoadImage(
-                isSele == 0 ? widget.data.listImage : widget.data.motionImage,
+                isSele == 0
+                    ? widget.data.listImage
+                    : widget.data.listMotionImage,
                 fit: BoxFit.cover,
                 // width: _screenUtil.screenWidth / 2 - 20,
                 // height: _screenUtil.screenWidth / 2 + 30,
