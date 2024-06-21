@@ -700,12 +700,12 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                       if (shoRecord) {
                         // 识别失败
                         if (result['success'] == false) {
-                          widget.controller.setShowRecord(false);
                           await _mediaUtils.stopRecord();
                           Toast.show(
                             result['message'],
                             duration: 1000,
                           );
+                          widget.controller.setShowRecord(false);
                         }
                         return;
                       }
