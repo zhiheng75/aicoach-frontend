@@ -123,7 +123,7 @@ class _HomePageState extends State<HomeNewPage>
   void initUM() {
     String platformStr = Channel.channelios;
     if (Device.isAndroid) {
-      platformStr = Channel.channelbaidu;
+      platformStr = Channel.channelxiaomi;
     } else {
       platformStr = Channel.channelios;
     }
