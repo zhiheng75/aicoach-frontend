@@ -418,7 +418,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     });
 
     EventBus().on(NotificationUtils.resetANChat, (_) {
-      widget.controller.setShowRecord(false);
+      Future.delayed(const Duration(seconds: 1), () {
+        widget.controller.setShowRecord(false);
+      });
     });
 
     // 全局监听App状态
