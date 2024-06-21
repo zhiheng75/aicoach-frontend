@@ -46,8 +46,6 @@ PODS:
     - Flutter
   - package_info (0.0.1):
     - Flutter
-  - package_info_plus (0.4.5):
-    - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -85,12 +83,12 @@ PODS:
     - UMDevice
   - url_launcher_ios (0.0.1):
     - Flutter
-  - vibration (1.7.5):
-    - Flutter
   - video_player_avfoundation (0.0.1):
     - Flutter
     - FlutterMacOS
   - volume_controller (0.0.1):
+    - Flutter
+  - wakelock (0.0.1):
     - Flutter
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
@@ -112,7 +110,6 @@ DEPENDENCIES:
   - jverify (from `.symlinks/plugins/jverify/ios`)
   - native_video_player (from `.symlinks/plugins/native_video_player/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
-  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - phone_state (from `.symlinks/plugins/phone_state/ios`)
@@ -125,9 +122,9 @@ DEPENDENCIES:
   - tobias (from `.symlinks/plugins/tobias/ios`)
   - umeng_common_sdk (from `.symlinks/plugins/umeng_common_sdk/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
-  - vibration (from `.symlinks/plugins/vibration/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
   - volume_controller (from `.symlinks/plugins/volume_controller/ios`)
+  - wakelock (from `.symlinks/plugins/wakelock/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 SPEC REPOS:
@@ -173,8 +170,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/native_video_player/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
-  package_info_plus:
-    :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
@@ -199,12 +194,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/umeng_common_sdk/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
-  vibration:
-    :path: ".symlinks/plugins/vibration/ios"
   video_player_avfoundation:
     :path: ".symlinks/plugins/video_player_avfoundation/darwin"
   volume_controller:
     :path: ".symlinks/plugins/volume_controller/ios"
+  wakelock:
+    :path: ".symlinks/plugins/wakelock/ios"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
@@ -214,7 +209,7 @@ SPEC CHECKSUMS:
   Bugly: b8715e6ec4004b7f7fbffab0643ba80545aee3da
   camera_avfoundation: 8b8d780bcfb6a4a02b0fbe2b4bd17b5b71946e68
   device_identity: ad27231cb8754e5bc63ce2225e2e1d95d374ca88
-  device_info_plus: 7545d84d8d1b896cb16a4ff98c19f07ec4b298ea
+  device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_bugly: c9800f4d5bc5bdc27ffdde3417a26ba44266e0c3
   flutter_keychain: 01aabf894ffe8b01adfda1d9df21c210c1b4b452
@@ -230,7 +225,6 @@ SPEC CHECKSUMS:
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   native_video_player: d12af78a1a4a8cf09775a5177d5b392def6fd23c
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
-  package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
   permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
   phone_state: 699623cef1a83f28ea66bc1d33cf0a65bdb1ffb1
@@ -245,9 +239,9 @@ SPEC CHECKSUMS:
   UMDevice: f67106f8f1a8bc465ba20d376d896e178be66ba7
   umeng_common_sdk: a8abd7f86dfd013dbbeeae587ee143760c6582f2
   url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
-  vibration: 7d883d141656a1c1a6d8d238616b2042a51a1241
   video_player_avfoundation: e9e6f9cae7d7a6d9b43519b0aab382bca60fcfd1
   volume_controller: 531ddf792994285c9b17f9d8a7e4dcdd29b3eae9
+  wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   webview_flutter_wkwebview: 4f3e50f7273d31e5500066ed267e3ae4309c5ae4
   WechatOpenSDK-XCFramework: acdeeda129efbef9532bca8a10c24e1b4b8c7d69
 

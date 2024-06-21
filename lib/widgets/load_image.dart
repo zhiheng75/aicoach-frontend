@@ -32,17 +32,18 @@ class LoadImage extends StatelessWidget {
     // final Widget holder =
     //     LoadAssetImage(holderImg, height: height, width: width, fit: fit);
     final Widget holder = Container(
-      color: Colors.grey[100],
+      color: Colors.grey[50],
       height: height,
       width: width,
     );
     // if (image.isNotEmpty) {
     return CachedNetworkImage(
       imageUrl: image,
-      placeholder: (_, __) => LoadingAnimationWidget.waveDots(
-        color: Colors.white,
-        size: 20.0,
-      ),
+      placeholder: (_, __) => holder,
+      // LoadingAnimationWidget.waveDots(
+      //   color: Colors.white,
+      //   size: 20.0,
+      // ),
       errorWidget: (_, __, dynamic error) => holder,
       width: width,
       height: height,

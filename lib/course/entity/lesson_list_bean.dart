@@ -89,7 +89,7 @@ class UnitList {
   int lessonId;
   String lessonName;
   String lessonLabel;
-  String unlockDate;
+  // String unlockDate;
 
   String lessonType;
   String lessonDescription;
@@ -108,7 +108,7 @@ class UnitList {
     required this.unitName,
     required this.lessonId,
     required this.lessonName,
-    required this.unlockDate,
+    // required this.unlockDate,
     required this.lessonType,
     required this.lessonDescription,
     required this.isUserBuy,
@@ -127,7 +127,7 @@ class UnitList {
         unitName: json["unit_name"],
         lessonId: json["lesson_id"],
         lessonName: json["lesson_name"],
-        unlockDate: json["unlock_date"],
+        // unlockDate: json["unlock_date"],
 
         lessonType: json["lesson_type"] ?? "",
         isUserBuy: json["is_user_buy"] ?? 0,
@@ -144,7 +144,7 @@ class UnitList {
         "lesson_description": lessonDescription,
         "unit_id": unitId,
         "unit_name": unitName,
-        "unlock_date": unlockDate,
+        // "unlock_date": unlockDate,
         "lesson_id": lessonId,
         "lesson_name": lessonName,
         "lesson_type": lessonType,

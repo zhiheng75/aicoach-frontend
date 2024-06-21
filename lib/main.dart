@@ -23,6 +23,7 @@ import 'package:Bubble/util/handle_error_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/theme_utils.dart';
 import 'package:umeng_common_sdk/umeng_common_sdk.dart';
+import 'package:wakelock/wakelock.dart';
 
 import 'home/splash_page.dart';
 import 'net/dio_utils.dart';
@@ -63,7 +64,8 @@ Future<void> main() async {
 
           return message;
         });
-
+        WidgetsFlutterBinding.ensureInitialized();
+        Wakelock.enable();
         runApp(MyApp());
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
         // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
@@ -117,9 +119,9 @@ class MyApp extends StatelessWidget {
     interceptors.add(AdapterInterceptor());
     configDio(
       // 测试
-      // baseUrl: 'https://api.bubble.shenmo-ai.net/',
+      baseUrl: 'https://api.bubble.shenmo-ai.net/',
       // 正式
-      baseUrl: 'https://api.bubble.shenmo-ai.com/',
+      // baseUrl: 'https://api.bubble.shenmo-ai.com/',
       interceptors: interceptors,
     );
   }

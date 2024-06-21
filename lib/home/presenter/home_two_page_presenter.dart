@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:Bubble/chat/entity/character_list_bean.dart';
+import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/entity/banner_list_bean.dart';
 import 'package:Bubble/home/entity/bind_teacher_status_bean.dart';
@@ -9,21 +10,36 @@ import 'package:Bubble/home/view/home_two_page_view.dart';
 import 'package:Bubble/mvp/base_page_presenter.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
+import 'package:sp_util/sp_util.dart';
 
 class HomeTwoPagePresenter extends BasePagePresenter<HomeTwoPageView> {
   @override
   void afterInit() {
     // TODO: implement afterInit
     super.afterInit();
-    getBannerList();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      getBannerList();
+      getCharacterList();
+    });
     // getCharacterList();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // SpUtil.getObj(
+    //     Constant.characterHome,
+    //     (v) => {
+    //           if (v.isNotEmpty)
+    //             {
+    //               view.sendCharacterListSuccess(v as CharacterListBean),
+    //             }
+    //         });
   }
 
   Future getCharacterList() {
     return requestNetwork<ResultData>(Method.get,
-        url: HttpApi.characterHome,
-        isShow: false,
-        isClose: false, onSuccess: (result) {
+        isShow: false, url: HttpApi.characterHome, onSuccess: (result) {
       Map<String, dynamic> characterListMap = json.decode(result.toString());
       CharacterListBean goodsListBean =
           CharacterListBean.fromJson(characterListMap);
@@ -40,9 +56,7 @@ class HomeTwoPagePresenter extends BasePagePresenter<HomeTwoPageView> {
 
   Future getBannerList() {
     return requestNetwork<ResultData>(Method.get,
-        url: HttpApi.bannerList,
-        isShow: false,
-        isClose: false, onSuccess: (result) {
+        isShow: false, url: HttpApi.bannerList, onSuccess: (result) {
       Map<String, dynamic> bannerListBeanMap = json.decode(result.toString());
       BannerListBean bannerListBean =
           BannerListBean.fromJson(bannerListBeanMap);

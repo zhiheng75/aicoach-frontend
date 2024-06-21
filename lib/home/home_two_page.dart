@@ -51,6 +51,7 @@ import 'package:provider/provider.dart';
 import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/home/entity/banner_list_bean.dart';
 import 'package:sp_util/sp_util.dart';
+import 'package:wakelock/wakelock.dart';
 import '../widgets/load_fail.dart';
 
 import '../person/entity/basec_onfig_bean.dart';
@@ -678,7 +679,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    // Wakelock.enable();
     initDio();
     initUM();
     // getBaseConfig();
@@ -834,15 +835,14 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       sysInfo = params.toString(); //allInfo.toString();
     } else {
       IosDeviceInfo iosDeviceInfo = await DeviceInfoPlugin().iosInfo;
-
       platformStr = Channel.channelios;
       final Map<String, String> params = <String, String>{};
-      params["version"] = iosDeviceInfo.systemVersion;
-      params["model"] = iosDeviceInfo.model;
-      params["localizedModel"] = iosDeviceInfo.localizedModel;
+      params["version"] = iosDeviceInfo.systemVersion!;
+      params["model"] = iosDeviceInfo.model!;
+      params["localizedModel"] = iosDeviceInfo.localizedModel!;
       params["isPhysicalDevice"] = iosDeviceInfo.isPhysicalDevice ? "1" : "0";
-      params["systemName"] = iosDeviceInfo.systemName;
-      params["machine"] = iosDeviceInfo.utsname.machine;
+      params["systemName"] = iosDeviceInfo.systemName!;
+      params["machine"] = iosDeviceInfo.utsname.machine!;
 
       sysInfo = params.toString();
     }
@@ -1296,6 +1296,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     //   }
     // }
     // pageState = 'success';
+    pageState = 'success';
+
     setState(() {});
 
     String characterId = characterList[0].characterId;
@@ -1364,8 +1366,12 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     sceneList.addAll(data.data.sceneList);
     pageState = 'success';
 
+    SpUtil.putObjectList(Constant.lessonList, data.data.lessonList);
+    SpUtil.putObjectList(Constant.exam, data.data.exam);
+    SpUtil.putObjectList(Constant.sceneList, data.data.sceneList);
+
     setState(() {});
-    _homeTwoPagePresenter.getCharacterList();
+    // _homeTwoPagePresenter.getCharacterList();
   }
 
   @override

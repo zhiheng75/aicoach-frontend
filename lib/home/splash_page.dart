@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/net/intercept.dart';
 import 'package:Bubble/util/channel.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -69,8 +71,13 @@ class _SplashPageState extends State<SplashPage> {
         context: context,
         barrierDismissible: false,
         builder: (_) => AgreementDialog(() {
-              SpUtil.putBool(Constant.agreement, true);
-              _gotoHome();
+              DioUtils.instance.requestNetwork<ResultData>(
+                  Method.get, HttpApi.baseConfig,
+                  onSuccess: (result) {}, onError: (code, msg) {});
+              Future.delayed(const Duration(milliseconds: 500), () {
+                SpUtil.putBool(Constant.agreement, true);
+                _gotoHome();
+              });
             }));
   }
 
@@ -117,15 +124,15 @@ class _SplashPageState extends State<SplashPage> {
       sysInfo = params.toString(); //allInfo.toString();
     } else {
       IosDeviceInfo iosDeviceInfo = await DeviceInfoPlugin().iosInfo;
-
+      // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       platformStr = Channel.channelios;
       final Map<String, String> params = <String, String>{};
-      params["version"] = iosDeviceInfo.systemVersion;
-      params["model"] = iosDeviceInfo.model;
-      params["localizedModel"] = iosDeviceInfo.localizedModel;
+      params["version"] = iosDeviceInfo.systemVersion!;
+      params["model"] = iosDeviceInfo.model!;
+      params["localizedModel"] = iosDeviceInfo.localizedModel!;
       params["isPhysicalDevice"] = iosDeviceInfo.isPhysicalDevice ? "1" : "0";
-      params["systemName"] = iosDeviceInfo.systemName;
-      params["machine"] = iosDeviceInfo.utsname.machine;
+      params["systemName"] = iosDeviceInfo.systemName!;
+      params["machine"] = iosDeviceInfo.utsname.machine!;
 
       sysInfo = params.toString();
     }

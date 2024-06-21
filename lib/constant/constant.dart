@@ -51,4 +51,9 @@ class Constant {
 
   static const String teacherId = 'teacherId';
   static const String avatarId = 'avatarId';
+
+  static const String characterHome = 'characterHome';
+  static const String lessonList = 'lessonList';
+  static const String exam = 'exam';
+  static const String sceneList = 'sceneList';
 }

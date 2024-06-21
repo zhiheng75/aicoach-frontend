@@ -15,6 +15,7 @@ class HttpApi {
   static const String teacherTwoList = "teacher_list";
 //课程目录
   static const String lessonList = "lesson_list";
+  static const String lessonTime = "lesson_time";
 
   static const String bannerList = "banner_list";
   static const String bindTeacherStatus = "bind_teacher_status";

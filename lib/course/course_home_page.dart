@@ -319,7 +319,10 @@ class _CourseHomePageState extends State<CourseHomePage>
                     // CourseRouter.courseFlowPage,
                     "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
               } else {
-                showImageDialog(xxlist[i].unlockDate);
+                _courseHomePagePresenter.getLessonTime(
+                    xxlist[i].lessonId.toString(),
+                    xxlist[i].levelId.toString());
+                // showImageDialog(xxlist[i].unlockDate);
                 // Toast.show(
                 //   '需要老师安排课才能上课',
                 // );
@@ -561,4 +564,10 @@ class _CourseHomePageState extends State<CourseHomePage>
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => false;
+
+  @override
+  void sendTimeSuccess(String data) {
+    // TODO: implement sendTimeSuccess
+    showImageDialog(data);
+  }
 }

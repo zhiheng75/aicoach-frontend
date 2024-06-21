@@ -22,7 +22,7 @@ import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:common_utils/common_utils.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+// import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jverify/jverify.dart';
@@ -42,7 +42,7 @@ import '../widgets/double_tap_back_exit_app.dart';
 import 'presenter/home_new_page_presenter.dart';
 import 'view/home_new_view.dart';
 import 'widget/home_tabbar.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+// import 'package:device_info_plus/device_info_plus.dart';
 
 class HomeNewPage extends StatefulWidget {
   final int index;
@@ -113,8 +113,7 @@ class _HomePageState extends State<HomeNewPage>
     _homeNewPagePresenter.requestNetwork<ResultData>(
       Method.get,
       url: HttpApi.collectInformation,
-      isShow: true,
-      isClose: true,
+      isShow: false,
       onSuccess: (result) {
         if (result == null ||
             result.code != 200 ||

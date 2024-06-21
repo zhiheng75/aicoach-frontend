@@ -36,6 +36,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:native_video_player/native_video_player.dart';
 import 'package:provider/provider.dart';
 import 'package:volume_controller/volume_controller.dart';
+import 'package:wakelock/wakelock.dart';
 
 import '../chat/entity/message_entity.dart';
 import '../chat/utils/chat_websocket.dart';
@@ -440,6 +441,7 @@ class _InstructionalVideoDialoguePageState
   @override
   void initState() {
     super.initState();
+    Wakelock.enable();
     contentTop = _screenUtil.statusBarHeight + _screenUtil.screenWidth / 16 * 9;
     newDataIdx = widget.idx;
     resourceIdx = 0;
@@ -953,6 +955,7 @@ class _InstructionalVideoDialoguePageState
   bool isPlaybackLoopEnabled = false;
   @override
   void dispose() {
+    Wakelock.disable();
     _mediaUtils.stopPlay();
     routeObserver.unsubscribe(this); //取消订阅
 
@@ -1547,7 +1550,7 @@ class _InstructionalVideoDialoguePageState
   }
 
   @override
-  bool get wantKeepAlive => false;
+  bool get wantKeepAlive => true;
 
   @override
   void sendFail(String msg) {
