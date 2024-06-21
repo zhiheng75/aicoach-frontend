@@ -8,12 +8,14 @@ class BottomBarItem extends BottomNavigationBarItem {
           icon: Image.asset(
             "assets/images/${iconName}_nor.png",
             width: 24,
+            fit: BoxFit.fitWidth,
             gaplessPlayback: true,
           ),
           activeIcon: Image.asset(
             "assets/images/$iconName.png",
             // "assets/images/$iconName.png",
             width: 24,
+            fit: BoxFit.fitWidth,
             gaplessPlayback: true,
           ),
         );

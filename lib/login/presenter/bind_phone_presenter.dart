@@ -1,3 +1,5 @@
+import 'package:Bubble/util/douyin_util.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:dio/dio.dart';
 import 'package:sp_util/sp_util.dart';
 
@@ -64,6 +66,11 @@ class BindPhonePresenter extends BasePagePresenter<BindPhoneView> {
         if (data.code == 200) {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
+          DYUtil().evaluate("1");
+          EventUMStatistics.umengCommonMapEvent(
+            "登录成功",
+          );
+
           view.wechatLoginSuccess("登录成功");
         } else {
           view.wechatLoginFail(data.msg);

@@ -18,6 +18,7 @@ import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/confirm_utils.dart';
+import 'package:Bubble/util/douyin_util.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/image_utils.dart';
@@ -318,6 +319,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
       margin: const EdgeInsets.all(9),
       padding: const EdgeInsets.only(left: 4, right: 2, top: 6),
       child: Column(
+        key: keyTab,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Row(
@@ -750,21 +752,21 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                         )
                       ]),
                     ),
-                    isUpdateAppBar
-                        ? Positioned(
-                            top: 0, left: 0, right: 0, child: Container())
-                        : const Positioned(
-                            top: 60,
-                            left: 12,
-                            right: 12,
-                            // height: 80,
-                            child: Center(
-                              child: Text(
-                                "升级会员",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
+                    // isUpdateAppBar
+                    //     ? Positioned(
+                    //         top: 0, left: 0, right: 0, child: Container())
+                    //     : const Positioned(
+                    //         top: 60,
+                    //         left: 12,
+                    //         right: 12,
+                    //         // height: 80,
+                    //         child: Center(
+                    //           child: Text(
+                    //             "升级会员",
+                    //             style: TextStyle(fontWeight: FontWeight.bold),
+                    //           ),
+                    //         ),
+                    //       ),
                     isUpdateAppBar
                         ? const Positioned(
                             top: 0,
@@ -776,7 +778,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                               padding: EdgeInsetsDirectional.zero,
                               leading: NavigationBackWidget(),
                               middle: Text(
-                                "升级会员",
+                                "",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ))
@@ -888,6 +890,10 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
         Navigator.of(context).pop();
       });
     }
+    DYUtil().evaluate("2");
+    EventUMStatistics.umengCommonMapEvent(
+      "支付成功",
+    );
   }
 
   @override

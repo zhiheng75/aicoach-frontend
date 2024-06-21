@@ -33,7 +33,7 @@ class _MainTabberState extends State<MainTabber> {
 
   List<BottomNavigationBarItem> items = [
     BottomBarItem("tab_home", "首页"),
-    BottomBarItem("tab_course", "上课"),
+    BottomBarItem("tab_course", "课程"),
     BottomBarItem("tab_spoken", "练口语"),
     BottomBarItem("tab_mine", "我的"),
   ];

@@ -4,6 +4,8 @@ import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/douyin_util.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
@@ -343,7 +345,10 @@ class LoginManager {
         if (data.code == 200) {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
-
+          DYUtil().evaluate("1");
+          EventUMStatistics.umengCommonMapEvent(
+            "登录成功",
+          );
           Constant.jverify.dismissLoginAuthView();
           NavigatorUtils.push(context, PersonalRouter.person);
         }

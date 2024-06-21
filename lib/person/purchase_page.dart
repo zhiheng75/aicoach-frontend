@@ -5,6 +5,8 @@ import 'package:Bubble/person/presneter/purchase_presenter.dart';
 import 'package:Bubble/person/presneter/purchase_view.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/util/douyin_util.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/material.dart';
@@ -556,6 +558,10 @@ class _PurchasePageState extends State<PurchasePage>
 
   @override
   void paySuccess() {
+    DYUtil().evaluate("2");
+    EventUMStatistics.umengCommonMapEvent(
+      "支付成功",
+    );
     NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
   }
 

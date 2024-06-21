@@ -25,6 +25,7 @@ import 'package:Bubble/scene/widget/select_scene.dart';
 import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/confirm_utils.dart';
 import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/util/douyin_util.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/notification_utils.dart';
@@ -680,6 +681,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     // TODO: implement initState
     super.initState();
     // Wakelock.enable();
+    DYUtil().evaluate("0");
+
     initDio();
     initUM();
     // getBaseConfig();

@@ -8,6 +8,7 @@ import 'package:Bubble/person/view/purchase_view.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/confirm_utils.dart';
+import 'package:Bubble/util/douyin_util.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/notification_utils.dart';
@@ -377,7 +378,10 @@ class _CoursePaysPageState extends State<CoursePaysPage>
     // showPayToast(context: context, message: "支付成功\n前往微信添加\n本课程辅导老师");
     // Future.delayed(const Duration(seconds: 5), () {
     EventBus().emit(NotificationUtils.paySuccess);
-
+    DYUtil().evaluate("2");
+    EventUMStatistics.umengCommonMapEvent(
+      "支付成功",
+    );
     // 这里是你想要延迟执行的代码
     // });
     showImageDialog();

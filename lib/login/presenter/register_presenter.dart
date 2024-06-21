@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/entity/user_info_entity.dart';
+import 'package:Bubble/util/douyin_util.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load.dart';
@@ -71,7 +73,10 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
           SpUtil.putString(Constant.phone, phoneNum);
-
+          DYUtil().evaluate("1");
+          EventUMStatistics.umengCommonMapEvent(
+            "登录成功",
+          );
           // view.wechatLoginSuccess("登录成功");
           view.loginSuccess();
         } else {
@@ -117,6 +122,10 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           SpUtil.putString(Constant.accessToken, data.data.token);
           SpUtil.putString(Constant.phone, phoneNum);
 
+          DYUtil().evaluate("1");
+          EventUMStatistics.umengCommonMapEvent(
+            "登录成功",
+          );
           view.loginSuccess();
         } else {
           LoadingDialog.hidden();
@@ -141,7 +150,10 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         if (data.code == 200) {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
-
+          DYUtil().evaluate("1");
+          EventUMStatistics.umengCommonMapEvent(
+            "登录成功",
+          );
           view.loginSuccess();
         }
       }
@@ -187,7 +199,10 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           SpUtil.putObject(Constant.userInfoKey, newWxInfoBean.data.toJson());
           SpUtil.putString(Constant.accessToken, newWxInfoBean.data.token);
           // SpUtil.putString(Constant.phone, newWxInfoBean.data.);
-
+          DYUtil().evaluate("1");
+          EventUMStatistics.umengCommonMapEvent(
+            "登录成功",
+          );
           Log.e("======进来了吗=======");
           view.hadBindWechat();
         } else {

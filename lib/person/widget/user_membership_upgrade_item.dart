@@ -40,8 +40,9 @@ class _UserMembershipUpgradeItemState extends State<UserMembershipUpgradeItem> {
         children: [
           Text(
             widget.data.name,
+            textAlign: TextAlign.center,
             style: const TextStyle(
-              fontSize: 20.0,
+              fontSize: 18.0,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),

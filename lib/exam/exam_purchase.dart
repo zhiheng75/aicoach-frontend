@@ -10,8 +10,10 @@ import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/person/presneter/purchase_page_presenter.dart';
 import 'package:Bubble/person/view/purchase_view.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/douyin_util.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
@@ -740,6 +742,10 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
 
   @override
   paySuccess() {
+    DYUtil().evaluate("2");
+    EventUMStatistics.umengCommonMapEvent(
+      "支付成功",
+    );
     // TODO: implement paySuccess
     Navigator.of(context).pop();
     // EventBus().emit('PAY');

@@ -6,8 +6,10 @@ import 'dart:io';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/person/entity/basec_onfig_bean.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/douyin_util.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/confirm_utils.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/gestures.dart';
@@ -682,6 +684,10 @@ class _PurchasePageState extends State<PurchasePage>
 
   @override
   paySuccess() {
+    DYUtil().evaluate("2");
+    EventUMStatistics.umengCommonMapEvent(
+      "支付成功",
+    );
     // 刷新使用时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
     EventBus().emit(NotificationUtils.resetInFo);
