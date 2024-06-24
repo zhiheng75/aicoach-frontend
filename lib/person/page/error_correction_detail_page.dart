@@ -277,6 +277,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                     ),
                               errorDetailData[idx].userPracticeAudio.isEmpty
                                   ? BottomErrorBar(
+                                      context: context,
                                       repeatWord: repeatWord,
                                       suggestionSentenceStr:
                                           errorDetailData[idx]
@@ -398,7 +399,7 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                   idx = idx + 1;
                                   repeatTextStr(errorDetailData[idx].sentence);
                                   if (idx + 1 == errorDetailData.length) {
-                                    fishText = "返回";
+                                    fishText = "完成";
                                   }
                                   if (errorDetailData[idx]
                                       .suggestionAudio

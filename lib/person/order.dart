@@ -257,7 +257,7 @@ class _OrderPageState extends State<OrderPage>
                       } else {
                         NavigatorUtils.push(
                           context,
-                          "${PersonalRouter.userMembershipUpgradePage}?levelId=9999999",
+                          "${PersonalRouter.userMembershipUpgradePage}?levelId=0&goodsLabel=0",
                         );
                       }
                     },

@@ -35,10 +35,12 @@ import 'package:sp_util/sp_util.dart';
 
 class UserMembershipUpgradePage extends StatefulWidget {
   final String levelId;
+  final String goodsLabel;
 
   const UserMembershipUpgradePage({
     super.key,
     required this.levelId,
+    required this.goodsLabel,
   });
 
   @override
@@ -280,31 +282,31 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   }
 
   Widget classPayWidget() {
-    listView = ListView.builder(
-      controller: _scrollController,
-      // semanticChildCount: 1,
-      scrollDirection: Axis.horizontal,
-      itemCount: listData.data.length,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            setState(() {
-              idx = index;
-            });
-            if (index == 0) {
-              EventUMStatistics.umengCommonMapEvent("个人中心-售卖页引流包支付点击次数");
-            } else {
-              EventUMStatistics.umengCommonMapEvent("个人中心-售卖页正价课支付点击次数");
-            }
-          },
-          child: UserMembershipUpgradeItem(
-            isSele: idx == index ? true : false,
-            data: listData.data[index],
-          ),
-        );
-      },
-    );
+    // listView = ListView.builder(
+    //   controller: _scrollController,
+    //   // semanticChildCount: 1,
+    //   scrollDirection: Axis.horizontal,
+    //   itemCount: listData.data.length,
+    //   itemBuilder: (context, index) {
+    //     return GestureDetector(
+    //       behavior: HitTestBehavior.opaque,
+    //       onTap: () {
+    //         setState(() {
+    //           idx = index;
+    //         });
+    //         if (index == 0) {
+    //           EventUMStatistics.umengCommonMapEvent("个人中心-售卖页引流包支付点击次数");
+    //         } else {
+    //           EventUMStatistics.umengCommonMapEvent("个人中心-售卖页正价课支付点击次数");
+    //         }
+    //       },
+    //       child: UserMembershipUpgradeItem(
+    //         isSele: idx == index ? true : false,
+    //         data: listData.data[index],
+    //       ),
+    //     );
+    //   },
+    // );
 
     return Container(
       // height: 100,
@@ -347,7 +349,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
             // margin: const EdgeInsets.only(top: 10),
             height: 160.0,
             child: ListView.builder(
-              // semanticChildCount: 1,
+              controller: _scrollController,
               scrollDirection: Axis.horizontal,
               itemCount: listData.data.length,
               itemBuilder: (context, index) {
@@ -811,12 +813,18 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
 
   void _scrollToIndex(int index) {
     // 滚动到指定位置
+    // _scrollController.
     _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent *
-          (index / listData.data.length),
+      index * 180,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
+    // _scrollController.animateTo(
+    //   _scrollController.position.maxScrollExtent *
+    //       (index / listData.data.length),
+    //   duration: const Duration(milliseconds: 300),
+    //   curve: Curves.easeOut,
+    // );
   }
 
   @override
@@ -829,19 +837,32 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
     // TODO: implement sendSuccess
     isLoding = false;
     listData = data;
-    if (widget.levelId == "9999999") {
-      idx = 0;
+    if (widget.goodsLabel == "0") {
+      if (widget.levelId == "0") {
+        idx = 0;
+      } else {
+        for (int i = 0; i < listData.data.length; i++) {
+          Datum data = listData.data[i];
+          if (data.levelId.toString() == widget.levelId) {
+            idx = i;
+          }
+        }
+      }
     } else {
       for (int i = 0; i < listData.data.length; i++) {
         Datum data = listData.data[i];
-        if (data.levelId.toString() == widget.levelId) {
+        if (data.id.toString() == widget.goodsLabel) {
           idx = i;
         }
       }
     }
 
+    // idx = 3;
     setState(() {});
-    _scrollToIndex(idx);
+    Future.delayed(const Duration(milliseconds: 100), () {
+      // 这里是你想要延迟执行的代码
+      _scrollToIndex(idx);
+    });
   }
 
   @override

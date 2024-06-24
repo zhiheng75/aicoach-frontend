@@ -89,7 +89,7 @@ class Datum {
         channelPrice: json["channel_price"],
         type: json["type"],
         limit: json["limit"],
-        levelId: json["level_id"] ?? 6666666666,
+        levelId: json["level_id"] ?? 0,
         purchaseTime: json["purchase_time"],
         detail: Detail.fromJson(json["detail"]),
       );
@@ -147,7 +147,7 @@ class Detail {
 
   factory Detail.fromJson(Map<String, dynamic> json) => Detail(
         id: json["id"],
-        levelId: json["level_id"] ?? 66666666666,
+        levelId: json["level_id"] ?? 0,
         goodsId: json["goods_id"],
         levelName: json["level_name"],
         tips: json["tips"],

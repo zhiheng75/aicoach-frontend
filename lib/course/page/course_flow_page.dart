@@ -59,6 +59,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     with
         BasePageMixin<CourseFlowPage, CourseFlowPagePresenter>,
         RouteAware,
+        WidgetsBindingObserver,
         AutomaticKeepAliveClientMixin<CourseFlowPage>
     implements CourseFlowPageView {
   late HomeProvider _homeProvider;
@@ -94,6 +95,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
 
     EventUMStatistics.umengCommonPageCollectionModeAuto();
     EventUMStatistics.umengCommonOnPageStart("【单课环节详情】页面停留时长");
@@ -182,7 +184,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
 
     EventBus().off(NotificationUtils.teachIdx);
     EventBus().off(NotificationUtils.nextResetChat);
-    // routeObserver.unsubscribe(this); //取消订阅
+    routeObserver.unsubscribe(this); //取消订阅
+    WidgetsBinding.instance.removeObserver(this);
 
     super.dispose();
   }

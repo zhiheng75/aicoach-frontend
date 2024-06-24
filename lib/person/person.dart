@@ -562,7 +562,7 @@ class _PersonPageState extends State<PersonPage>
                     } else {
                       NavigatorUtils.push(
                         context,
-                        "${PersonalRouter.userMembershipUpgradePage}?levelId=9999999",
+                        "${PersonalRouter.userMembershipUpgradePage}?levelId=0&goodsLabel=0",
                       );
                     }
                     EventUMStatistics.umengCommonMapEvent("个人中心-购买入口点击次数");

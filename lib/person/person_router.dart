@@ -64,8 +64,11 @@ class PersonalRouter implements IRouterProvider {
     router.define(userMembershipUpgradePage,
         handler: Handler(handlerFunc: (context, params) {
       String levelId = params['levelId']!.first;
+      String goodsLabel = params['goodsLabel']!.first;
+
       return UserMembershipUpgradePage(
         levelId: levelId,
+        goodsLabel: goodsLabel,
       );
     }));
 

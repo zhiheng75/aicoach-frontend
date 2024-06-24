@@ -38,6 +38,7 @@ class Data {
   int userId;
   int levelId;
   int stepId;
+  int goodsLabel;
 
   int isUserBuy;
 
@@ -61,6 +62,7 @@ class Data {
     required this.data,
     required this.userId,
     required this.stepId,
+    required this.goodsLabel,
     required this.isUserBuy,
     required this.reportStatus,
     required this.mistakeStatus,
@@ -83,6 +85,7 @@ class Data {
             json["data"].map((x) => CourseDatum.fromJson(x))),
         userId: json["user_id"] ?? 0,
         stepId: json["step_id"] ?? 0,
+        goodsLabel: json["goods_label"] ?? 0,
         levelId: json["level_id"] ?? 0,
         isUserBuy: json["is_user_buy"] ?? 0,
         reportStatus: json["report_status"],
@@ -104,6 +107,7 @@ class Data {
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
         "user_id": userId,
         "step_id": stepId,
+        "goods_label": goodsLabel,
         "level_id": levelId,
         "lesson_label": lessonLabel,
         "is_user_buy": isUserBuy,

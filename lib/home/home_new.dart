@@ -75,20 +75,6 @@ class _HomePageState extends State<HomeNewPage>
     checkCollectInformation();
   }
 
-  void initUM() {
-    EventUMStatistics.umengCommonInit();
-
-    // String platformStr = Channel.channelios;
-    // if (Device.isAndroid) {
-    //   platformStr = Channel.channelmeizu;
-    // } else {
-    //   platformStr = Channel.channelios;
-    // }
-    // UmengCommonSdk.initCommon(
-    //     '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', platformStr);
-    // UmengCommonSdk.setPageCollectionModeManual();
-  }
-
   Future<void> initPlatformState() async {
     // 初始化 SDK 之前添加监听
     Constant.jverify.addSDKSetupCallBackListener((JVSDKSetupEvent event) {

@@ -424,7 +424,7 @@ class _ReportDetailPageState extends State<ReportDetailPage>
               // NavigatorUtils.push(context, PersonalRouter.purchase);
               NavigatorUtils.push(
                 context,
-                "${PersonalRouter.userMembershipUpgradePage}?levelId=9999999",
+                "${PersonalRouter.userMembershipUpgradePage}?levelId=0&goodsLabel=0",
               );
             },
             child: Container(

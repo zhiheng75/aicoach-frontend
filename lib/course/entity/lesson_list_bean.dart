@@ -84,6 +84,8 @@ class UnitList {
   // int userId;
   int levelId;
   String levelName;
+  int goodsLabel;
+
   int unitId;
   String unitName;
   int lessonId;
@@ -103,6 +105,7 @@ class UnitList {
     // required this.userId,
     required this.levelId,
     required this.levelName,
+    required this.goodsLabel,
     required this.lessonLabel,
     required this.unitId,
     required this.unitName,
@@ -121,6 +124,7 @@ class UnitList {
         // userId: json["user_id"],
         levelId: json["level_id"],
         levelName: json["level_name"],
+        goodsLabel: json["goods_label"] ?? 0,
         lessonLabel: json["lesson_label"],
         lessonDescription: json["lesson_description"],
         unitId: json["unit_id"],
@@ -141,6 +145,7 @@ class UnitList {
         "level_id": levelId,
         "level_name": levelName,
         "lesson_label": lessonLabel,
+        "goods_label": goodsLabel,
         "lesson_description": lessonDescription,
         "unit_id": unitId,
         "unit_name": unitName,

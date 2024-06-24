@@ -38,6 +38,7 @@ import 'record.dart';
 class BottomErrorBar extends StatefulWidget {
   BottomErrorBar({
     Key? key,
+    required this.context,
     // required this.chatWebsocket,
     required this.controller,
     required this.recordController,
@@ -55,6 +56,7 @@ class BottomErrorBar extends StatefulWidget {
 
   // final ChatWebsocket chatWebsocket;
   final BottomErrorBarController controller;
+  final BuildContext context;
   final RecordController recordController;
   bool? isCollectInformation;
   String? language;
@@ -409,7 +411,7 @@ class _BottomErrorBarState extends State<BottomErrorBar>
                     '请说话',
                   );
                 }
-                LoadingDialog.show(context);
+                LoadingDialog.show(widget.context);
                 if (widget.suggestionSentenceStr != "") {
                   //这里先调评测,分高传tag分低穿别的
                   sendTwoMessage(result['text'], widget.suggestionSentenceStr);

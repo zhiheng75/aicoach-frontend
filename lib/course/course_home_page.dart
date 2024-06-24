@@ -257,7 +257,7 @@ class _CourseHomePageState extends State<CourseHomePage>
     );
   }
 
-  void showView(int levelId) {
+  void showView(int levelId, int goodsLabel) {
     LoginManager.checkLogin(context, () {
       ConfirmUtils.show(
         context: context,
@@ -270,7 +270,7 @@ class _CourseHomePageState extends State<CourseHomePage>
           //去购买页
           NavigatorUtils.push(
             context,
-            "${PersonalRouter.userMembershipUpgradePage}?levelId=$levelId",
+            "${PersonalRouter.userMembershipUpgradePage}?levelId=$levelId&goodsLabel=$goodsLabel",
             // "${HomeRouter.coursePurchasePage}?levelId=$levelId",
           );
         },
@@ -342,7 +342,7 @@ class _CourseHomePageState extends State<CourseHomePage>
               } else {
                 EventUMStatistics.umengCommonMapEvent("点击锁定状态正价课课程的点击次数");
                 //判断手机号再说获取证书还是免费学习
-                showView(xxlist[i].levelId);
+                showView(xxlist[i].levelId, xxlist[i].goodsLabel);
               }
             }
           },

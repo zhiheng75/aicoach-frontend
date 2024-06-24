@@ -133,6 +133,8 @@ class _InstructionalVideoDialoguePageState
   late List<CourseDatum> data;
   late int isUserBuy;
   late String levelId;
+  late String goodsLabel;
+
   late String lessonId;
   late double contentTop;
   late String isShowStr = "1";
@@ -494,6 +496,7 @@ class _InstructionalVideoDialoguePageState
     isUserBuy = widget.stepDetailData.data.isUserBuy;
     levelId = widget.stepDetailData.data.levelId.toString();
     lessonId = widget.stepDetailData.data.lessonId.toString();
+    goodsLabel = widget.stepDetailData.data.goodsLabel.toString();
     // });
 
     _pageState = 'success';
@@ -1370,7 +1373,7 @@ class _InstructionalVideoDialoguePageState
 //到课程购买页
                     NavigatorUtils.push(
                       context,
-                      "${PersonalRouter.userMembershipUpgradePage}?levelId=$levelId",
+                      "${PersonalRouter.userMembershipUpgradePage}?levelId=$levelId&goodsLabel=$goodsLabel",
                       // "${HomeRouter.coursePurchasePage}?levelId=$levelId",
                     );
                   },
