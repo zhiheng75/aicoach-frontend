@@ -702,9 +702,11 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     EventBus().on(NotificationUtils.loginIn, (_) {
       _homeTwoPagePresenter.getBannerList();
+      _homeTwoPagePresenter.getCharacterList();
     });
     EventBus().on(NotificationUtils.loginOut, (_) {
       _homeTwoPagePresenter.getBannerList();
+      _homeTwoPagePresenter.getCharacterList();
     });
 
     // getAD();

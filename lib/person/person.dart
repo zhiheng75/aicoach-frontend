@@ -829,7 +829,7 @@ class _PersonPageState extends State<PersonPage>
             'community_icon',
             '加入社群',
             '',
-            onPress: () => tapMenu(PersonalRouter.about),
+            onPress: () => tapMenu(PersonalRouter.joinCommunityPage),
           ),
           menuItem(
             'person_fankui',

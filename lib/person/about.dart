@@ -5,6 +5,7 @@ import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/person/entity/version_bean.dart';
 import 'package:Bubble/person/widget/illustration.dart';
+import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/setting/entity/updata_info_entity.dart';
 import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/device_utils.dart';
@@ -165,7 +166,20 @@ class _AboutPageState extends State<AboutPage> {
             height: 16.0,
           ),
           const Text(
-            '口语嘟嘟是一款基于生成式人工智能的英语口语训练平台。通过与自主研发的AI智能体英语老师实景对话模式，让同学们在有趣且高效的氛围中获得口语能力快速提升。\n 口语嘟嘟用科技与创新探索语言学习提高的无尽可能。结合多年教育科技行业研发经验，创造性地将广受欢迎的海量IP形象、英语语法与句型教学体系、英语升级阅读引擎、大语言模型与自适应学习系统等多个领域的成功实践，整合为一套启发式兴趣对话的英语“口语学习黑科技”。提供家长式陪伴，为学英语的孩子营造出一个沉浸式的语言学习环境。进入口语嘟嘟的英语对话世界，孩子们一开口说英语，就“完全停不下来”。\nAI时代浪潮下，我们希望与您一路同行。欢迎加入口语嘟嘟金种子用户社群，与我们一起见证AI时代的未来教育！',
+            '       口语嘟嘟是一款基于生成式人工智能的英语口语训练平台。通过与自主研发的AI智能体英语老师实景对话模式，让同学们在有趣且高效的氛围中获得口语能力快速提升。\n        口语嘟嘟用科技与创新探索语言学习提高的无尽可能。结合多年教育科技行业研发经验，创造性地将广受欢迎的海量IP形象、英语语法与句型教学体系、英语升级阅读引擎、大语言模型与自适应学习系统等多个领域的成功实践，整合为一套启发式兴趣对话的英语“口语学习黑科技”。提供家长式陪伴，为学英语的孩子营造出一个沉浸式的语言学习环境。进入口语嘟嘟的英语对话世界，孩子们一开口说英语，就“完全停不下来”。\n        AI时代浪潮下，我们希望与您一路同行。欢迎加入口语嘟嘟金种子用户社群，与我们一起见证AI时代的未来教育！',
+            style: TextStyle(
+              fontSize: 13.0,
+              fontWeight: FontWeight.w400,
+              color: Color(0xFF333333),
+              height: 18.0 / 13.0,
+              letterSpacing: 0.05,
+            ),
+          ),
+          const SizedBox(
+            height: 16.0,
+          ),
+          const Text(
+            "欢迎添加客服微信\n加入口语嘟嘟金种子用户群\n客服微信:BubbleAPP",
             style: TextStyle(
               fontSize: 13.0,
               fontWeight: FontWeight.w400,
@@ -314,52 +328,62 @@ class _AboutPageState extends State<AboutPage> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(
-              height: _screenUtil.screenHeight - 120,
-              child: MyScrollView(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  // const SizedBox(
-                  //   height: 60.0,
-                  // ),
-                  // const Navbar(
-                  //   title: '关于我们',
-                  // ),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      // GestureDetector(
-                      //     onTap: () {
-                      //       Log.e("msg");
-                      //       showDialog(
-                      //         context: context,
-                      //         barrierColor: Colors.transparent,
-                      //         barrierDismissible: false,
-                      //         useSafeArea: false,
-                      //         builder: (_) => const UpDataView(),
-                      //       );
-                      //     },
-                      //     child: const Text("点这里")),
-                      aboutUs,
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                      customerService,
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                      footer,
-                      const SizedBox(
-                        height: 16.0,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            const SizedBox(
+              height: 16.0,
             ),
+            aboutUs,
+            const Expanded(child: Gaps.empty),
+            footer,
+            const SizedBox(
+              height: 26.0,
+            ),
+            // SizedBox(
+            //   height: _screenUtil.screenHeight - 120,
+            //   child: MyScrollView(
+            //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: <Widget>[
+            //       // const SizedBox(
+            //       //   height: 60.0,
+            //       // ),
+            //       // const Navbar(
+            //       //   title: '关于我们',
+            //       // ),
+            //       const SizedBox(
+            //         height: 16.0,
+            //       ),
+            //       Column(
+            //         mainAxisSize: MainAxisSize.min,
+            //         children: <Widget>[
+            //           // GestureDetector(
+            //           //     onTap: () {
+            //           //       Log.e("msg");
+            //           //       showDialog(
+            //           //         context: context,
+            //           //         barrierColor: Colors.transparent,
+            //           //         barrierDismissible: false,
+            //           //         useSafeArea: false,
+            //           //         builder: (_) => const UpDataView(),
+            //           //       );
+            //           //     },
+            //           //     child: const Text("点这里")),
+            //           aboutUs,
+            //           // const Expanded(child: Gaps.empty),
+            //           // const SizedBox(
+            //           //   height: 16.0,
+            //           // ),
+            //           // customerService,
+            //           // const SizedBox(
+            //           //   height: 16.0,
+            //           // ),
+            //           footer,
+            //           const SizedBox(
+            //             height: 16.0,
+            //           ),
+            //         ],
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),
