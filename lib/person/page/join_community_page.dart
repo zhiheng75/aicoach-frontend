@@ -210,11 +210,11 @@ class _JoinCommunityPageState extends State<JoinCommunityPage> {
         color: Colors.white,
       ),
       padding: const EdgeInsets.all(24.0),
-      child: const Column(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(
+          const Text(
             '识别图片加入【口语嘟嘟英语口语】官方学习群',
             style: TextStyle(
               fontSize: 15.0,
@@ -223,18 +223,24 @@ class _JoinCommunityPageState extends State<JoinCommunityPage> {
               height: 24.0 / 15.0,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 16.0,
           ),
-          LoadImage(
-            "http://statics.shenmo-ai.com/qywxkf.jpg",
+          Image.network(
+            'http://statics.shenmo-ai.com/qywxkf.jpg', // 替换为你的图片URL
+            fit: BoxFit.cover,
             width: 200,
             height: 200,
           ),
-          SizedBox(
+          // const LoadImage(
+          //   "http://statics.shenmo-ai.com/qywxkf.jpg",
+          //   width: 200,
+          //   height: 200,
+          // ),
+          const SizedBox(
             height: 16.0,
           ),
-          Text(
+          const Text(
             '群内定期发布实用英语小知识,还有大量优惠活动不定期发布',
             style: TextStyle(
               fontSize: 15.0,
@@ -243,10 +249,10 @@ class _JoinCommunityPageState extends State<JoinCommunityPage> {
               height: 24.0 / 15.0,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 16.0,
           ),
-          Text(
+          const Text(
             '您还可以在群里提出反馈与建议,我们会快速响应,一起让【口语嘟嘟】变得更好',
             style: TextStyle(
               fontSize: 15.0,
