@@ -45,8 +45,6 @@ Future<void> main() async {
         /// sp初始化
         await SpUtil.getInstance();
 
-        /// device_identity初始化
-        await DeviceIdentity.register();
         SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
         // 设置音频配置
@@ -93,7 +91,6 @@ class MyApp extends StatelessWidget {
   MyApp({super.key, this.home, this.theme}) {
     Log.init();
     initDio();
-    initUM();
     Routes.initRoutes();
   }
 
@@ -124,19 +121,6 @@ class MyApp extends StatelessWidget {
       baseUrl: 'https://api.bubble.shenmo-ai.com/',
       interceptors: interceptors,
     );
-  }
-
-  void initUM() {
-    EventUMStatistics.umengCommonInit();
-    // String platformStr = Channel.channelios;
-    // if (Device.isAndroid) {
-    //   platformStr = Channel.channelhuawei;
-    // } else {
-    //   platformStr = Channel.channelios;
-    // }
-    // UmengCommonSdk.initCommon(
-    //     '65bc5ac795b14f599d216dd6', '65bc5a9595b14f599d216d93', platformStr);
-    // UmengCommonSdk.setPageCollectionModeManual();
   }
 
   @override

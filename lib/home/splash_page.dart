@@ -8,6 +8,7 @@ import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/net/intercept.dart';
 import 'package:Bubble/util/channel.dart';
+import 'package:device_identity/device_identity.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart';
@@ -82,6 +83,8 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void _gotoHome() async {
+    /// device_identity初始化
+    await DeviceIdentity.register();
     initDio();
     await Device.initDeviceInfo();
 

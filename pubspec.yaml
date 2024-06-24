@@ -137,7 +137,7 @@ dependencies:
   sticky_headers: ^0.3.0+2
   # 轮播图
   card_swiper: ^3.0.1
-  liquid_swipe: ^3.1.0
+  # liquid_swipe: ^3.1.0
   photo_view: ^0.15.0
   native_video_player: ^1.2.0+3
   phone_state: ^1.0.4
