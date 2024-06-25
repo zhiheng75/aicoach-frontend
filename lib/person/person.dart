@@ -6,14 +6,17 @@ import 'package:Bubble/net/net.dart';
 import 'package:Bubble/person/entity/permission_bean.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluwx/fluwx.dart';
+import 'package:package_info/package_info.dart';
 
 import '../mvp/base_page.dart';
 import '../report/report_router.dart';
@@ -47,7 +50,27 @@ class _PersonPageState extends State<PersonPage>
   late String headimgurl = "";
   late String phone = "";
   late int totalTime = 0;
+  // late String versionStr = "2.0.7";
+
+  String version = 'v2.0.7';
+
+  PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+  );
+
   void init() {}
+
+  Future<void> _initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
+    version = "v${_packageInfo.version}";
+  }
+
   late HomeProvider _homeProvider;
 
   void getStudyInfo() {
@@ -100,6 +123,8 @@ class _PersonPageState extends State<PersonPage>
   @override
   void initState() {
     super.initState();
+    _initPackageInfo();
+
     // userInfo();
     // _personPagePresenter.getUsageTime();
     EventBus().on('LOGINOUT', (_) {
@@ -840,7 +865,7 @@ class _PersonPageState extends State<PersonPage>
           menuItem(
             'person_guanyu',
             '关于我们',
-            'v2.0.6',
+            version,
             onPress: () => tapMenu(PersonalRouter.about),
           ),
 
