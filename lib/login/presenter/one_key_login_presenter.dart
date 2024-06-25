@@ -22,7 +22,7 @@ class OneKeyLoginPresenter extends BasePagePresenter<OneKeyLoginView> {
           SpUtil.putString(Constant.accessToken, data.data.token);
           DYUtil().evaluate("1");
           EventUMStatistics.umengCommonMapEvent(
-            "登录成功",
+            "click_index_login",
           );
           view.loginSuccess();
         }

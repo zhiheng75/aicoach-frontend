@@ -353,7 +353,8 @@ class _BottomErrorBarState extends State<BottomErrorBar>
             // if (!isAvailable()) {
             //   return;
             // }
-            EventUMStatistics.umengCommonMapEvent("纠错订正页-按住说话的次数");
+            EventUMStatistics.umengCommonMapEvent(
+                "click_index_error_correcting_dialog");
             try {
               bool hasAgree =
                   SpUtil.getBool(Constant.mediaUtils, defValue: false) ?? false;

@@ -64,15 +64,14 @@ class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage>
     } else {
       isLoading = true;
     }
-    EventUMStatistics.umengCommonPageCollectionModeAuto();
-    EventUMStatistics.umengCommonOnPageStart("【课程评价】页面停留时长");
+    EventUMStatistics.umengCommonOnPageStart("curriculum_evaluation_page");
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    EventUMStatistics.umengCommonOnPageEnd("【课程评价】页面停留时长");
+    EventUMStatistics.umengCommonOnPageEnd("curriculum_evaluation_page");
   }
 
   Widget lodingView() {
@@ -170,8 +169,6 @@ class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage>
                               setState(() {
                                 starNum = rating;
                               });
-                              EventUMStatistics.umengCommonMapEvent(
-                                  "课程评价-点击五星评分的次数");
                             },
                           ),
                         ],
@@ -272,8 +269,6 @@ class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage>
                       : GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: () {
-                            EventUMStatistics.umengCommonMapEvent(
-                                "课程评价-点击确定按钮的点击次数");
                             if (_controller.text.isNotEmpty) {
                               _curriculumEvaluationPagePresenter
                                   .postLessonFeedback(

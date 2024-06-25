@@ -175,7 +175,6 @@ class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
                         whenFinished: () {},
                       );
                     }
-                    EventUMStatistics.umengCommonMapEvent("纠错订正页-按住说话的次数");
                   },
                   child: const LoadAssetImage(
                     'jiucuo_laba_icon',
@@ -299,7 +298,6 @@ class _ErrorCorrectionOneDetailItemState
                         whenFinished: () {},
                       );
                     }
-                    EventUMStatistics.umengCommonMapEvent("纠错订正页-按住说话的次数");
                   },
                   child: const LoadAssetImage(
                     'jiucuo_laba_icon',
@@ -408,7 +406,6 @@ class _ErrorCorrectionDetailTwoItemState
                         whenFinished: () {},
                       );
                     }
-                    EventUMStatistics.umengCommonMapEvent("系统课学情报告内 点击语音播放的次数");
                   },
                   child: const LoadAssetImage(
                     'jiucuo_laba_icon',
@@ -550,7 +547,6 @@ class _ErrorCorrectionThreeDetailItemState
                         whenFinished: () {},
                       );
                     }
-                    EventUMStatistics.umengCommonMapEvent("纠错订正页-按住说话的次数");
                   },
                   child: const LoadAssetImage(
                     'jiucuo_laba_icon',

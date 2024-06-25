@@ -75,7 +75,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           SpUtil.putString(Constant.phone, phoneNum);
           DYUtil().evaluate("1");
           EventUMStatistics.umengCommonMapEvent(
-            "登录成功",
+            "click_index_login",
           );
           // view.wechatLoginSuccess("登录成功");
           view.loginSuccess();
@@ -124,7 +124,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
 
           DYUtil().evaluate("1");
           EventUMStatistics.umengCommonMapEvent(
-            "登录成功",
+            "click_index_login",
           );
           view.loginSuccess();
         } else {
@@ -152,7 +152,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           SpUtil.putString(Constant.accessToken, data.data.token);
           DYUtil().evaluate("1");
           EventUMStatistics.umengCommonMapEvent(
-            "登录成功",
+            "click_index_login",
           );
           view.loginSuccess();
         }
@@ -201,7 +201,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           // SpUtil.putString(Constant.phone, newWxInfoBean.data.);
           DYUtil().evaluate("1");
           EventUMStatistics.umengCommonMapEvent(
-            "登录成功",
+            "click_index_login",
           );
           Log.e("======进来了吗=======");
           view.hadBindWechat();

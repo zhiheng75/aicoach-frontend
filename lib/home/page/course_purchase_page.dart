@@ -62,15 +62,14 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
     if (validateInput(user['phone'])) {
       phone = user['phone'];
     }
-    EventUMStatistics.umengCommonPageCollectionModeAuto();
-    EventUMStatistics.umengCommonOnPageStart("正价课购买页面停留时长");
+    EventUMStatistics.umengCommonOnPageStart("course_purchase_page");
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    EventUMStatistics.umengCommonOnPageEnd("正价课购买页面停留时长");
+    EventUMStatistics.umengCommonOnPageEnd("course_purchase_page");
   }
 
   bool validateInput(String? input) {
@@ -607,7 +606,7 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                                     behavior: HitTestBehavior.opaque,
                                     onTap: () {
                                       EventUMStatistics.umengCommonMapEvent(
-                                          "正价课 咨询按钮点击次数");
+                                          "click_index_regular_price_class_consultation");
                                       if (phone == "17001234567") {
                                         NavigatorUtils.push(
                                             context, PersonalRouter.about);
@@ -638,8 +637,6 @@ class _CoursePurchasePageState extends State<CoursePurchasePage>
                                   GestureDetector(
                                       behavior: HitTestBehavior.opaque,
                                       onTap: () {
-                                        EventUMStatistics.umengCommonMapEvent(
-                                            "正价课 立即支付按钮点击次数");
                                         if (_checked) {
                                           if (phone == "17001234567") {
                                             NavigatorUtils.push(

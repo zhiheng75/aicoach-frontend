@@ -743,9 +743,7 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
   @override
   paySuccess() {
     DYUtil().evaluate("2");
-    EventUMStatistics.umengCommonMapEvent(
-      "支付成功",
-    );
+
     // TODO: implement paySuccess
     Navigator.of(context).pop();
     // EventBus().emit('PAY');

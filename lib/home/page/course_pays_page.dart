@@ -59,8 +59,7 @@ class _CoursePaysPageState extends State<CoursePaysPage>
         appId: "wxfb033d09d2eecaf0",
         universalLink: "https://demo.shenmo-ai.net/ios/");
 
-    EventUMStatistics.umengCommonPageCollectionModeAuto();
-    EventUMStatistics.umengCommonOnPageStart("收银台页面停留时长");
+    EventUMStatistics.umengCommonOnPageStart("course_pays_page");
   }
 
   //倒计时
@@ -295,7 +294,8 @@ class _CoursePaysPageState extends State<CoursePaysPage>
             GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
-                EventUMStatistics.umengCommonMapEvent("收银台点击支付按钮的次数");
+                EventUMStatistics.umengCommonMapEvent(
+                    "click_index_course_payment");
                 pay();
               },
               child: Container(
@@ -338,7 +338,7 @@ class _CoursePaysPageState extends State<CoursePaysPage>
   @override
   void dispose() {
     super.dispose();
-    EventUMStatistics.umengCommonOnPageEnd("收银台页面停留时长");
+    EventUMStatistics.umengCommonOnPageEnd("course_pays_page");
 
     if (_timer != null) {
       if (_timer.isActive) {
@@ -364,7 +364,8 @@ class _CoursePaysPageState extends State<CoursePaysPage>
                       username: "gh_dcd9c62ba779",
                       path: url,
                       miniProgramType: WXMiniProgramType.release));
-              EventUMStatistics.umengCommonMapEvent("添加辅导老师页面曝光次数");
+              EventUMStatistics.umengCommonMapEvent(
+                  "click_index_go_to_add_a_tutor");
 
               Navigator.of(context).pop();
             },
@@ -379,9 +380,7 @@ class _CoursePaysPageState extends State<CoursePaysPage>
     // Future.delayed(const Duration(seconds: 5), () {
     EventBus().emit(NotificationUtils.paySuccess);
     DYUtil().evaluate("2");
-    EventUMStatistics.umengCommonMapEvent(
-      "支付成功",
-    );
+
     // 这里是你想要延迟执行的代码
     // });
     showImageDialog();

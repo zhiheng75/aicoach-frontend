@@ -40,8 +40,7 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
     // TODO: implement initState
     super.initState();
     idx = int.parse(SpUtil.getString(Constant.teacherId) ?? "0");
-    EventUMStatistics.umengCommonPageCollectionModeAuto();
-    EventUMStatistics.umengCommonOnPageStart("【AI外教选择】页面停留时长");
+    EventUMStatistics.umengCommonOnPageStart("switching_teacher_page");
   }
 
   void onBack() {
@@ -53,7 +52,7 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
     // TODO: implement dispose
     super.dispose();
     MediaUtils().stopPlay();
-    EventUMStatistics.umengCommonOnPageEnd("【AI外教选择】页面停留时长");
+    EventUMStatistics.umengCommonOnPageEnd("switching_teacher_page");
   }
 
   @override
@@ -87,8 +86,6 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
                         setState(() {
                           idx = index;
                         });
-                        EventUMStatistics.umengCommonMapEvent(
-                            "外教选择页点击某一外教角色的次数");
                       },
                       child: SwitchingTeacherItem(
                         data: teacherData[index],
@@ -121,7 +118,6 @@ class _SwitchingTeacherPageState extends State<SwitchingTeacherPage>
                     onTap: () {
                       EventBus().emit(NotificationUtils.teachIdx, idx);
                       Navigator.of(context).pop();
-                      EventUMStatistics.umengCommonMapEvent("外教选择页点击确定按钮的次数");
                     },
                     child: const LoadAssetImage(
                       'teach_con_img',

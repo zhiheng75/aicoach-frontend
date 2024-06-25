@@ -111,8 +111,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
     }
     userName = name;
 
-    EventUMStatistics.umengCommonPageCollectionModeAuto();
-    EventUMStatistics.umengCommonOnPageStart("个人中心-售卖页停留时长");
+    EventUMStatistics.umengCommonOnPageStart("user_membership_upgrade_page");
   }
 
   bool validateInput(String? input) {
@@ -294,11 +293,6 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
     //         setState(() {
     //           idx = index;
     //         });
-    //         if (index == 0) {
-    //           EventUMStatistics.umengCommonMapEvent("个人中心-售卖页引流包支付点击次数");
-    //         } else {
-    //           EventUMStatistics.umengCommonMapEvent("个人中心-售卖页正价课支付点击次数");
-    //         }
     //       },
     //       child: UserMembershipUpgradeItem(
     //         isSele: idx == index ? true : false,
@@ -359,13 +353,8 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                     setState(() {
                       idx = index;
                     });
-                    if (index == 0) {
-                      EventUMStatistics.umengCommonMapEvent(
-                          "个人中心-售卖页引流包支付点击次数");
-                    } else {
-                      EventUMStatistics.umengCommonMapEvent(
-                          "个人中心-售卖页正价课支付点击次数");
-                    }
+                    EventUMStatistics.umengCommonMapEvent(
+                        "click_index_go_to_personal_buy");
                   },
                   child: UserMembershipUpgradeItem(
                     isSele: idx == index ? true : false,
@@ -890,7 +879,8 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                       username: "gh_dcd9c62ba779",
                       path: url,
                       miniProgramType: WXMiniProgramType.release));
-              EventUMStatistics.umengCommonMapEvent("添加辅导老师页面曝光次数");
+              EventUMStatistics.umengCommonMapEvent(
+                  "click_index_go_to_add_a_tutor");
             },
           );
         });
@@ -912,16 +902,13 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
       });
     }
     DYUtil().evaluate("2");
-    EventUMStatistics.umengCommonMapEvent(
-      "支付成功",
-    );
   }
 
   @override
   void dispose() {
     super.dispose();
     EventBus().off(NotificationUtils.resetInFo);
-    EventUMStatistics.umengCommonOnPageEnd("个人中心-售卖页停留时长");
+    EventUMStatistics.umengCommonOnPageEnd("user_membership_upgrade_page");
   }
 
   @override

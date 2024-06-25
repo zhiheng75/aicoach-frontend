@@ -662,7 +662,8 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                 disabled: disabled,
                 onStart: (detail) async {
                   // widget.onStarEnd!();
-                  EventUMStatistics.umengCommonMapEvent("课程对话页 -按住说话的次数");
+                  EventUMStatistics.umengCommonMapEvent(
+                      "click_index_class_dialog");
 
                   if (!isAvailable()) {
                     return;

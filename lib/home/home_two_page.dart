@@ -33,6 +33,7 @@ import 'package:Bubble/util/other_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/group_avatar_widget.dart';
 import 'package:Bubble/widgets/load_image.dart';
+import 'package:advertising_info/advertising_info.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:crypto/crypto.dart';
@@ -84,6 +85,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   List<BBanner> lessonList = [];
   List<BBanner> examList = [];
   List<SceneList> sceneList = [];
+  late String phone = "";
 
   // int isChatShow = 0;
   // int isKetShow = 0;
@@ -170,7 +172,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                       username: "gh_dcd9c62ba779",
                       path: url,
                       miniProgramType: WXMiniProgramType.release));
-              EventUMStatistics.umengCommonMapEvent("添加辅导老师页面曝光次数");
+              EventUMStatistics.umengCommonMapEvent(
+                  "click_index_go_to_add_a_tutor");
             },
           );
         });
@@ -205,6 +208,25 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
                 EventBus().emit(
                     NotificationUtils.taberThree, characterList[i].characterId);
+
+                String str = characterList[i].characterId;
+                if (str == "eggy") {
+                  //蛋仔
+                  EventUMStatistics.umengCommonMapEvent(
+                      "click_index_carousel_Egg_chat");
+                } else if (str == "sophia") {
+                  //索菲亚
+                  EventUMStatistics.umengCommonMapEvent(
+                      "click_index_carousel_Sophie_chat");
+                } else if (str == "gg_bond") {
+                  //猪猪妹
+                  EventUMStatistics.umengCommonMapEvent(
+                      "click_index_carousel_GG_chat");
+                } else if (str == "harry_potter") {
+                  //Harley
+                  EventUMStatistics.umengCommonMapEvent(
+                      "view_index_carousel_Hally_chat");
+                }
               },
               child: LoadImage(
                 characterList[i].coverBgImage,
@@ -681,7 +703,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     // TODO: implement initState
     super.initState();
     // Wakelock.enable();
-    DYUtil().evaluate("0");
+
+    // DYUtil().evaluate("0");
 
     initDio();
     initUM();
@@ -709,11 +732,20 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       _homeTwoPagePresenter.getCharacterList();
     });
 
-    // getAD();
     userInfo();
+    DYUtil().evaluate("0");
+    getidfa();
   }
 
-  late String phone = "";
+  void getidfa() async {
+    AdvertisingInfo advertisingInfo = await AdvertisingInfo.read();
+    bool? isLAT = advertisingInfo.isLimitAdTrackingEnabled;
+    if (!isLAT!) {
+      DYUtil().evaluate("0");
+    }
+    // Log.e();advertisingInfo.authorizationStatus;
+    // if(advertisingInfo.authorizationStatus == notDetermined)
+  }
 
   void userInfo() {
     Map<String, dynamic> user = LoginManager.getUserInfo();
@@ -740,47 +772,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     pageState = 'loading';
     setState(() {});
     _homeTwoPagePresenter.getBannerList();
-  }
-
-  void getAD() async {
-    final dio = Dio();
-
-    if (Device.isAndroid) {
-      String deviceId;
-      int sdk = await getAndroidSdkInt();
-      if (sdk >= 10) {
-        deviceId = await DeviceIdentity.oaid;
-      } else {
-        deviceId = await DeviceIdentity.imei;
-      }
-      os = "android";
-      omuids = deviceId;
-    } else {
-      os = "ios";
-      omuids = "";
-    }
-    //https://ad.oceanengine.com/track/activate/?callback=xxxxx&os=1&muid=xxxxxxx
-
-    // var response = await dio.get('https://www.dmoe.cc/random.php?return=json');
-    // //转化为Json
-    // String jsonString = jsonEncode(response.data);
-    // print(jsonString);
-  }
-
-  String generateMd5(String data) {
-    var content = new Utf8Encoder().convert(data);
-    var digest = md5.convert(content);
-    return digest.toString();
-  }
-
-  /// 使用前记得初始化
-  Future<int> getAndroidSdkInt() async {
-    AndroidDeviceInfo androidDeviceInfo = await DeviceInfoPlugin().androidInfo;
-
-    if (Constant.isDriverTest) {
-      return -1;
-    }
-    return androidDeviceInfo.version.sdkInt;
   }
 
   void getBaseConfig() async {
@@ -1023,8 +1014,20 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                                 cagegoryId: sceneList[index].cagegoryId,
                               ),
                             );
-                            EventUMStatistics.umengCommonMapEvent(
-                                "点击场景模拟练习的次数");
+
+                            if (index == 0) {
+                              EventUMStatistics.umengCommonMapEvent(
+                                  "click_index_scene_1");
+                            } else if (index == 1) {
+                              EventUMStatistics.umengCommonMapEvent(
+                                  "click_index_scene_2");
+                            } else if (index == 2) {
+                              EventUMStatistics.umengCommonMapEvent(
+                                  "click_index_scene_3");
+                            } else if (index == 3) {
+                              EventUMStatistics.umengCommonMapEvent(
+                                  "click_index_scene_4");
+                            }
                           },
                           child: HomeMapItem(data: sceneList[index]));
                     }),
@@ -1064,8 +1067,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                 //                     cagegoryId: sceneList[index].cagegoryId,
                 //                   ),
                 //                 );
-                //                 EventUMStatistics.umengCommonMapEvent(
-                //                     "点击场景模拟练习的次数");
                 //               },
                 //               child: HomeMapItem(data: sceneList[index]));
                 //         }),
@@ -1077,6 +1078,13 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                       onTap: () {
                         EventBus().emit(NotificationUtils.taberTwo,
                             lessonList[index].param);
+                        if (index == 0) {
+                          EventUMStatistics.umengCommonMapEvent(
+                              "click_index_coursesEx_button");
+                        } else if (index == 1) {
+                          EventUMStatistics.umengCommonMapEvent(
+                              "click_index_coursesL1_button");
+                        }
                       },
                       child: Container(
                         margin: EdgeInsets.only(bottom: 16.h),
@@ -1097,6 +1105,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                           context,
                           ExamRouter.examPage,
                         );
+                        EventUMStatistics.umengCommonMapEvent(
+                            "click_index_examKET_button");
                         // if (examList[index].type == 1) {
                         //   NavigatorUtils.goWebViewPage(
                         //       context,

@@ -115,8 +115,7 @@ class _ErrorCorrectionPageState extends State<ErrorCorrectionPage>
     EventBus().on(NotificationUtils.errorCorrection, (_) {
       _errorCorrectionPagePresenter.getMistakeRecordslist();
     });
-    EventUMStatistics.umengCommonPageCollectionModeAuto();
-    EventUMStatistics.umengCommonOnPageStart("个人中心-纠错列表页停留时长");
+    EventUMStatistics.umengCommonOnPageStart("error_correction_page");
   }
 
   @override
@@ -124,7 +123,7 @@ class _ErrorCorrectionPageState extends State<ErrorCorrectionPage>
     // TODO: implement dispose
     super.dispose();
     EventBus().off(NotificationUtils.errorCorrection);
-    EventUMStatistics.umengCommonOnPageEnd("个人中心-纠错列表页停留时长");
+    EventUMStatistics.umengCommonOnPageEnd("error_correction_page");
   }
 
   Widget lodingView() {
@@ -187,8 +186,6 @@ class _ErrorCorrectionPageState extends State<ErrorCorrectionPage>
           onTap: () {
             NavigatorUtils.push(context,
                 "${PersonalRouter.errorCorrectionDetailPage}?lessonId=${xxlist[i].lessonId}");
-            EventUMStatistics.umengCommonMapEvent("从单课环节详情页进入纠错的曝光次数");
-            EventUMStatistics.umengCommonMapEvent("个人中心-纠错列表页点击跳转到纠错详情的次数");
           },
           child: CourseErrorClassItem(
             index: i + 1,

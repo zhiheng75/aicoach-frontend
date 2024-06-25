@@ -214,15 +214,14 @@ class _SceneState extends State<ScenePage>
     // 监听App状态
     WidgetsBinding.instance.addObserver(this);
 
-    EventUMStatistics.umengCommonPageCollectionModeAuto();
-    EventUMStatistics.umengCommonOnPageStart("练口语-场景模拟练习页面停留时长");
+    EventUMStatistics.umengCommonOnPageStart("scene_page");
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    EventUMStatistics.umengCommonOnPageEnd("练口语-场景模拟练习页面停留时长");
+    EventUMStatistics.umengCommonOnPageEnd("scene_page");
   }
 
   @override

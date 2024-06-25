@@ -61,7 +61,7 @@ class ChangeBindPhonePresenter extends BasePagePresenter<ChangeBindPhoneView> {
           view.bindSuccess("登录成功");
           DYUtil().evaluate("1");
           EventUMStatistics.umengCommonMapEvent(
-            "登录成功",
+            "click_index_login",
           );
         } else {
           view.bindFail(data.msg);

@@ -43,15 +43,14 @@ class _CourseOrderPageState extends State<CourseOrderPage>
     if (validateInput(user['phone'])) {
       phone = user['phone'];
     }
-    EventUMStatistics.umengCommonPageCollectionModeAuto();
-    EventUMStatistics.umengCommonOnPageStart("我的课程页面停留时长");
+    EventUMStatistics.umengCommonOnPageStart("course_order_page");
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    EventUMStatistics.umengCommonOnPageEnd("我的课程页面停留时长");
+    EventUMStatistics.umengCommonOnPageEnd("course_order_page");
   }
 
   bool validateInput(String? input) {

@@ -65,14 +65,14 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
     super.initState();
     _bottomBarControll.setDisabled(false);
     _errorCorrectionDetailPagePresenter.getMistakeDetails(widget.lessonId);
-    EventUMStatistics.umengCommonOnPageStart("【纠错订正】页面停留时长");
+    EventUMStatistics.umengCommonOnPageStart("error_correction_detail_page");
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    EventUMStatistics.umengCommonOnPageEnd("【纠错订正】页面停留时长");
+    EventUMStatistics.umengCommonOnPageEnd("error_correction_detail_page");
   }
 
   void repeatTextStr(String str) {

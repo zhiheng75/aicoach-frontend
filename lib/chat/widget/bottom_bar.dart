@@ -503,8 +503,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
               builder: (_, disabled, __) => button(
                 disabled: disabled,
                 onStart: (detail) async {
-                  EventUMStatistics.umengCommonMapEvent("AI学伴-按住说话的次数");
-                  EventUMStatistics.umengCommonMapEvent("场景模拟练习-按住说话的次数");
+                  EventUMStatistics.umengCommonMapEvent("click_index_dialogue");
                   if (!isAvailable()) {
                     return;
                   }

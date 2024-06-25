@@ -97,8 +97,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    EventUMStatistics.umengCommonPageCollectionModeAuto();
-    EventUMStatistics.umengCommonOnPageStart("【单课环节详情】页面停留时长");
+    EventUMStatistics.umengCommonOnPageStart("course_flow_page");
 
     teacherId = SpUtil.getString(Constant.teacherId) ?? "0";
 
@@ -180,7 +179,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
 
   @override
   void dispose() {
-    EventUMStatistics.umengCommonOnPageEnd("【单课环节详情】页面停留时长");
+    EventUMStatistics.umengCommonOnPageEnd("course_flow_page");
 
     EventBus().off(NotificationUtils.teachIdx);
     EventBus().off(NotificationUtils.nextResetChat);
@@ -277,7 +276,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     List<CourseDatum> data = stepDetailData.data.data;
     CourseDatum dataIdx = stepDetailData.data.data[idx];
     characterSceneIdStr = dataIdx.resource[0].sceneId!;
-    EventUMStatistics.umengCommonMapEvent(dataIdx.stepName);
+    EventUMStatistics.umengCommonMapEvent("click_index_go_to_class");
 
     SceneEntity scene = SceneEntity();
     scene.id = characterSceneIdStr;
@@ -334,7 +333,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
         // Gaps.vGap10,
         GestureDetector(
           onTap: () {
-            EventUMStatistics.umengCommonMapEvent("点击切换AI外教的次数");
+            EventUMStatistics.umengCommonMapEvent(
+                "click_index_foreign_teacher_switching");
 
             NavigatorUtils.push(context, CourseRouter.courseDetailsPage,
                 arguments: stepDetailData);
@@ -413,15 +413,13 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                 children: [
                   GestureDetector(
                     onTap: () {
-                      EventUMStatistics.umengCommonMapEvent("点击学情报告的次数");
+                      EventUMStatistics.umengCommonMapEvent(
+                          "click_index_go_to_study_report");
 
                       LoginManager.checkLogin(context, () {
                         if (stepDetailData.data.reportStatus == 0) {
                           Toast.show("课程完成后才可查看学习报告");
                         } else {
-                          EventUMStatistics.umengCommonMapEvent(
-                              "从单课环节详情页进入系统课学情报告的曝光次数");
-
                           NavigatorUtils.push(context,
                               "${CourseRouter.courseReportPage}?lessonId=${widget.lessonId}");
                         }
@@ -462,15 +460,13 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                 children: [
                   GestureDetector(
                     onTap: () {
-                      EventUMStatistics.umengCommonMapEvent("点击纠错的次数");
+                      EventUMStatistics.umengCommonMapEvent(
+                          "click_index_go_to_error_correction");
 
                       LoginManager.checkLogin(context, () {
                         if (stepDetailData.data.mistakeStatus == 0) {
                           Toast.show("课程完成后才可以纠错");
                         } else {
-                          EventUMStatistics.umengCommonMapEvent(
-                              "从单课环节详情页进入纠错的曝光次数");
-
                           NavigatorUtils.push(context,
                               "${PersonalRouter.errorCorrectionDetailPage}?lessonId=${widget.lessonId}");
                         }
@@ -536,7 +532,8 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     onTap: () {
                       LoginManager.checkLogin(context, () {
                         // selectScene(sceneList[index]);
-                        EventUMStatistics.umengCommonMapEvent("点击课程评价的次数");
+                        EventUMStatistics.umengCommonMapEvent(
+                            "click_index_go_to_curriculum_evaluation");
 
                         if (stepDetailData.data.evaluationStatus == 0) {
                           Toast.show("课程完成后才可评价");

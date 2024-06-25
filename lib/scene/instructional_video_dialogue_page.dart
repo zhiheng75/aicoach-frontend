@@ -517,8 +517,8 @@ class _InstructionalVideoDialoguePageState
     //     print('手机解锁了');
     //   }
     // });
-    EventUMStatistics.umengCommonPageCollectionModeAuto();
-    EventUMStatistics.umengCommonOnPageStart("【课程对话】页面停留时长");
+    EventUMStatistics.umengCommonOnPageStart(
+        "instructional_video_dialogue_page");
   }
 
   @override
@@ -987,7 +987,7 @@ class _InstructionalVideoDialoguePageState
         onPlaybackEnded
         .removeListener(_onPlaybackEnded);
     _controller = null;
-    EventUMStatistics.umengCommonOnPageEnd("【课程对话】页面停留时长");
+    EventUMStatistics.umengCommonOnPageEnd("instructional_video_dialogue_page");
 
     super.dispose();
   }

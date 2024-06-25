@@ -68,7 +68,7 @@ class BindPhonePresenter extends BasePagePresenter<BindPhoneView> {
           SpUtil.putString(Constant.accessToken, data.data.token);
           DYUtil().evaluate("1");
           EventUMStatistics.umengCommonMapEvent(
-            "登录成功",
+            "click_index_login",
           );
 
           view.wechatLoginSuccess("登录成功");

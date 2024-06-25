@@ -559,9 +559,7 @@ class _PurchasePageState extends State<PurchasePage>
   @override
   void paySuccess() {
     DYUtil().evaluate("2");
-    EventUMStatistics.umengCommonMapEvent(
-      "支付成功",
-    );
+
     NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
   }
 

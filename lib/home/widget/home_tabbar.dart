@@ -1,5 +1,6 @@
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -79,7 +80,8 @@ class _HomeTabbarState extends State<HomeTabbar> {
                 cagegoryId: 0,
               ),
             );
-
+            EventUMStatistics.umengCommonMapEvent(
+                "click_index_scene_connection");
             return;
           }
           widget.changeTab(value);

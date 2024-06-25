@@ -136,7 +136,6 @@ class _CourseReportVocabularyTwoItemState
                         );
                       }
                     }, onError: (code, msg) {});
-                    EventUMStatistics.umengCommonMapEvent("系统课学情报告内 点击语音播放的次数");
                   },
                   child: const LoadAssetImage(
                     "jiucuo_laba_icon",

@@ -685,9 +685,7 @@ class _PurchasePageState extends State<PurchasePage>
   @override
   paySuccess() {
     DYUtil().evaluate("2");
-    EventUMStatistics.umengCommonMapEvent(
-      "支付成功",
-    );
+
     // 刷新使用时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
     EventBus().emit(NotificationUtils.resetInFo);

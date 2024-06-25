@@ -565,7 +565,8 @@ class _PersonPageState extends State<PersonPage>
                         "${PersonalRouter.userMembershipUpgradePage}?levelId=0&goodsLabel=0",
                       );
                     }
-                    EventUMStatistics.umengCommonMapEvent("个人中心-购买入口点击次数");
+                    EventUMStatistics.umengCommonMapEvent(
+                        "click_index_go_to_personal_buy");
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -616,7 +617,6 @@ class _PersonPageState extends State<PersonPage>
             //           "${PersonalRouter.userMembershipUpgradePage}?levelId=9999999",
             //         );
             //       }
-            //       EventUMStatistics.umengCommonMapEvent("个人中心-购买入口点击次数");
             //     },
             //     child: Container(
             //       decoration: BoxDecoration(
@@ -876,7 +876,6 @@ class _PersonPageState extends State<PersonPage>
               behavior: HitTestBehavior.opaque,
               onTap: () {
                 tapMenu(ReportRouter.courseOrderPage);
-                EventUMStatistics.umengCommonMapEvent("个人中心-我的课程点击次数");
               },
               child: Column(
                 children: [
@@ -901,9 +900,6 @@ class _PersonPageState extends State<PersonPage>
               behavior: HitTestBehavior.opaque,
               onTap: () {
                 tapMenu(ReportRouter.reportPage);
-
-                EventUMStatistics.umengCommonMapEvent("从个人中心进入系统课学情报告的曝光次数");
-                EventUMStatistics.umengCommonMapEvent("个人中心-学情报告点击次数");
               },
               child: Column(
                 children: [
@@ -928,7 +924,6 @@ class _PersonPageState extends State<PersonPage>
               behavior: HitTestBehavior.opaque,
               onTap: () {
                 tapMenu(PersonalRouter.errorCorrectionPage);
-                EventUMStatistics.umengCommonMapEvent("个人中心-纠错点击次数");
               },
               child: Column(
                 children: [

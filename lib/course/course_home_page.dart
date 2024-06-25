@@ -159,15 +159,13 @@ class _CourseHomePageState extends State<CourseHomePage>
       levelidStr = idx;
       _courseHomePagePresenter.getLessonList();
     });
-
-    EventUMStatistics.umengCommonPageCollectionModeAuto();
+    EventUMStatistics.umengCommonOnPageStart("course_home_page");
   }
 
   @override
   void dispose() {
     super.dispose();
-    EventUMStatistics.umengCommonOnPageEnd("课程列表式-未购正价课");
-    EventUMStatistics.umengCommonOnPageEnd("课程列表式-已购正价课");
+    EventUMStatistics.umengCommonOnPageEnd("course_home_page");
     EventBus().off(NotificationUtils.paySuccess);
     EventBus().off(NotificationUtils.taberTwo);
 
@@ -258,6 +256,8 @@ class _CourseHomePageState extends State<CourseHomePage>
   }
 
   void showView(int levelId, int goodsLabel) {
+    EventUMStatistics.umengCommonMapEvent("click_index_go_buy");
+
     LoginManager.checkLogin(context, () {
       ConfirmUtils.show(
         context: context,
@@ -307,13 +307,10 @@ class _CourseHomePageState extends State<CourseHomePage>
             // showView(xxlist[i].levelId);
             // return;
             if (xxlist[i].isUserBuy == 1) {
+              EventUMStatistics.umengCommonMapEvent("click_index_go_to_class");
+
               //去上课
               if (xxlist[i].isLocked == 0) {
-                if (xxlist[i].completed == 1) {
-                  EventUMStatistics.umengCommonMapEvent("点击已完成状态课程的点击次数");
-                }
-                EventUMStatistics.umengCommonMapEvent("点击可上课状态体验课课程的点击次数");
-
                 NavigatorUtils.push(
                     context,
                     // CourseRouter.courseFlowPage,
@@ -326,21 +323,14 @@ class _CourseHomePageState extends State<CourseHomePage>
                 // Toast.show(
                 //   '需要老师安排课才能上课',
                 // );
-                EventUMStatistics.umengCommonMapEvent("点击未开放课程的点击次数");
               }
             } else {
               if (xxlist[i].isLocked == 0) {
-                if (xxlist[i].completed == 1) {
-                  EventUMStatistics.umengCommonMapEvent("点击已完成状态课程的点击次数");
-                }
-                EventUMStatistics.umengCommonMapEvent("点击可上课状态体验课课程的点击次数");
-
                 NavigatorUtils.push(
                     context,
                     // CourseRouter.courseFlowPage,
                     "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
               } else {
-                EventUMStatistics.umengCommonMapEvent("点击锁定状态正价课课程的点击次数");
                 //判断手机号再说获取证书还是免费学习
                 showView(xxlist[i].levelId, xxlist[i].goodsLabel);
               }
@@ -550,13 +540,7 @@ class _CourseHomePageState extends State<CourseHomePage>
     }
     if (listData.isNotEmpty) {
       List<UnitList> list1 = listData[0].list[0].list;
-      if (list1.isNotEmpty) {
-        if (list1[0].isUserBuy == 0) {
-          EventUMStatistics.umengCommonOnPageStart("课程列表式-未购正价课");
-        } else {
-          EventUMStatistics.umengCommonOnPageStart("课程列表式-已购正价课");
-        }
-      }
+      if (list1.isNotEmpty) {}
     }
     setState(() {});
   }
