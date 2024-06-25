@@ -10,6 +10,7 @@ import 'package:Bubble/home/home_two_page.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/person/person.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
@@ -171,6 +172,15 @@ class _MainTabberState extends State<MainTabber> {
         items: items,
         onTap: (index) {
           tabSelect(index);
+          if (index == 0) {
+            EventUMStatistics.umengCommonMapEvent("click_Nav_Index_button");
+          } else if (index == 1) {
+            EventUMStatistics.umengCommonMapEvent("click_Nav_Course_button");
+          } else if (index == 2) {
+            EventUMStatistics.umengCommonMapEvent("click_Nav_Exercise_button");
+          } else if (index == 3) {
+            EventUMStatistics.umengCommonMapEvent("click_Nav_Profile_button");
+          }
           // if (index == 3) {
           //   if (LoginManager.isLogin()) {
           //     setState(() {
