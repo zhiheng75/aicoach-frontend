@@ -59,7 +59,7 @@ class _UserMembershipUpgradeItemState extends State<UserMembershipUpgradeItem> {
                 ),
               ),
               Text(
-                widget.data.price.toString(),
+                widget.data.price,
                 style: const TextStyle(
                   fontSize: 36.0,
                   fontWeight: FontWeight.bold,

@@ -942,7 +942,7 @@ class _ExamPageState extends State<ExamPage>
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(
-                    'assets/images/mkbg.png',
+                    'assets/images/person_bg.png',
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -962,6 +962,7 @@ class _ExamPageState extends State<ExamPage>
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
+                  Gaps.vGap20,
                   body(),
                 ],
               )),

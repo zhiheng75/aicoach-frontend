@@ -79,7 +79,7 @@ class _CourseReportVocabularyItemState
             Gaps.vGap6,
             Row(
               children: [
-                Gaps.hGap4,
+                Gaps.hGap8,
                 const LoadAssetImage(
                   "head_cihui_icon",
                   width: 24.0,

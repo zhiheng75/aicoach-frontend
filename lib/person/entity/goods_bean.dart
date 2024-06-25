@@ -36,7 +36,7 @@ class Datum {
   int id;
   String name;
   String desc;
-  double price;
+  String price;
   int status;
   DateTime createdAt;
   String? unit;
@@ -77,7 +77,7 @@ class Datum {
         id: json["id"],
         name: json["name"],
         desc: json["desc"],
-        price: json["price"]?.toDouble(),
+        price: json["price"].toString(),
         status: json["status"],
         createdAt: DateTime.parse(json["created_at"]),
         unit: json["unit"],

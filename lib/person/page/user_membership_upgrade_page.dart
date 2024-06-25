@@ -128,7 +128,7 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
 
   void pay() {
     int _goodsId = listData.data[idx].id;
-    double _goodPrice = listData.data[idx].price;
+    String _goodPrice = listData.data[idx].price;
 
     if (_pay == 'wxpay') {
       _userMembershipUpgradepagePresenter.wxChatPay(_goodsId, _goodPrice, true);
@@ -281,27 +281,6 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   }
 
   Widget classPayWidget() {
-    // listView = ListView.builder(
-    //   controller: _scrollController,
-    //   // semanticChildCount: 1,
-    //   scrollDirection: Axis.horizontal,
-    //   itemCount: listData.data.length,
-    //   itemBuilder: (context, index) {
-    //     return GestureDetector(
-    //       behavior: HitTestBehavior.opaque,
-    //       onTap: () {
-    //         setState(() {
-    //           idx = index;
-    //         });
-    //       },
-    //       child: UserMembershipUpgradeItem(
-    //         isSele: idx == index ? true : false,
-    //         data: listData.data[index],
-    //       ),
-    //     );
-    //   },
-    // );
-
     return Container(
       // height: 100,
       decoration: BoxDecoration(
