@@ -11,6 +11,7 @@ import 'package:Bubble/home/presenter/home_two_page_presenter.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/view/home_two_page_view.dart';
 import 'package:Bubble/home/widget/home_item.dart';
+import 'package:Bubble/home/widget/player_widget.dart';
 import 'package:Bubble/home/widget/teacher_show_view.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
@@ -884,6 +885,16 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    // return Container(
+    //   child: Column(
+    //     children: [
+    //       Container(
+    //         height: 100,
+    //       ),
+    //       PlayerWidget(),
+    //     ],
+    //   ),
+    // );
 
     Widget bg = Container(
       width: _screenUtil.screenWidth,

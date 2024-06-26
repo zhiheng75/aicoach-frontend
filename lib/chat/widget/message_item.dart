@@ -36,7 +36,7 @@ class _MessageItemState extends State<MessageItem> {
   final ScreenUtil _screenUtil = ScreenUtil();
   final MediaUtils _mediaUtils = MediaUtils();
   String _audioType = '';
-
+  double valueau = 10.0;
   late String coverUrl = '';
   void openTranslate() {
     if (!(widget.message as NormalMessage).isTextEnd) {
@@ -823,6 +823,48 @@ class _MessageItemState extends State<MessageItem> {
                     ),
                   ),
                   createImgExample(_message),
+                  Container(
+                      color: Colors.amber,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              LoadAssetImage(
+                                'class_vip_icon',
+                                width: 32.0,
+                                height: 32.0,
+                              ),
+                              Slider(
+                                min: 0,
+                                activeColor: Colors.blue,
+                                inactiveColor: Colors.white,
+                                // secondaryActiveColor: Colors.red,
+                                thumbColor: Colors.white,
+                                max: 30.0,
+                                value: valueau,
+                                onChanged: (value) {
+                                  valueau = value;
+                                  setState(() {});
+                                },
+                              ),
+                              Text(
+                                "0:15",
+                                style: const TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            "歌名",
+                            style: const TextStyle(
+                              fontSize: 15.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      )),
                   // Text("data"),
                   const SizedBox(
                     height: 16,

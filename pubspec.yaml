@@ -143,6 +143,7 @@ dependencies:
   phone_state: ^1.0.4
   advertising_info: ^0.2.1
   wakelock: ^0.6.2
+  audioplayers: ^5.2.1
   # flutter_phone_directed: ^0.1.0
   # screen_manager: ^1.1.0
 

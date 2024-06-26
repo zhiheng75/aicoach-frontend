@@ -23,7 +23,6 @@ class ErrorCorrectionDetailItem extends StatefulWidget {
 class _ErrorCorrectionDetailItemState extends State<ErrorCorrectionDetailItem> {
   late String headimgurl = "";
   FlutterSoundPlayer? player;
-
   void initPlayer() async {
     player = await FlutterSoundPlayer().openPlayer();
   }
