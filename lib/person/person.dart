@@ -115,6 +115,8 @@ class _PersonPageState extends State<PersonPage>
   @override
   void dispose() {
     super.dispose();
+    EventUMStatistics.umengCommonOnPageEnd("person_page");
+
     EventBus().off(NotificationUtils.resetChat);
     EventBus().off(NotificationUtils.resetInFo);
     EventBus().off("LOGINOUT");
@@ -162,6 +164,9 @@ class _PersonPageState extends State<PersonPage>
     init();
     // getAvailableTime();
     userInfo();
+    Future.delayed(const Duration(seconds: 1), () {
+      EventUMStatistics.umengCommonOnPageStart("person_page");
+    });
   }
 
   void userInfo() {

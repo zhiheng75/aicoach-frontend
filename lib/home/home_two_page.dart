@@ -705,10 +705,12 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     // Wakelock.enable();
 
     // DYUtil().evaluate("0");
-    EventUMStatistics.umengCommonOnPageStart("home_two_page");
 
     initDio();
     initUM();
+
+    EventUMStatistics.umengCommonOnPageStart("home_two_page");
+
     // getBaseConfig();
     fluwx.registerApi(
         appId: "wxfb033d09d2eecaf0",

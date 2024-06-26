@@ -159,7 +159,9 @@ class _CourseHomePageState extends State<CourseHomePage>
       levelidStr = idx;
       _courseHomePagePresenter.getLessonList();
     });
-    EventUMStatistics.umengCommonOnPageStart("course_home_page");
+    Future.delayed(const Duration(seconds: 1), () {
+      EventUMStatistics.umengCommonOnPageStart("course_home_page");
+    });
   }
 
   @override

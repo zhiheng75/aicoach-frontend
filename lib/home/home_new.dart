@@ -209,6 +209,9 @@ class _HomePageState extends State<HomeNewPage>
         changeTab('');
       });
     });
+    Future.delayed(const Duration(seconds: 1), () {
+      EventUMStatistics.umengCommonOnPageStart("home_new_page");
+    });
   }
 
   @override
@@ -230,6 +233,8 @@ class _HomePageState extends State<HomeNewPage>
 
   @override
   void dispose() {
+    EventUMStatistics.umengCommonOnPageEnd("home_new_page");
+
     routeObserver.unsubscribe(this);
     _streamSubscription.cancel();
     super.dispose();

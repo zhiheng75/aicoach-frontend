@@ -8,6 +8,7 @@ import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/net/intercept.dart';
 import 'package:Bubble/util/channel.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:device_identity/device_identity.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
@@ -86,6 +87,8 @@ class _SplashPageState extends State<SplashPage> {
     /// device_identity初始化
     await DeviceIdentity.register();
     initDio();
+    initUM();
+
     await Device.initDeviceInfo();
 
     // ignore: use_build_context_synchronously
@@ -93,6 +96,10 @@ class _SplashPageState extends State<SplashPage> {
 
     // ignore: use_build_context_synchronously
     NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
+  }
+
+  void initUM() {
+    EventUMStatistics.umengCommonInit();
   }
 
   void initDio() async {
