@@ -715,10 +715,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   void initState() {
     // TODO: implement initState
     super.initState();
-    // Wakelock.enable();
-
-    // DYUtil().evaluate("0");
-
     initDio();
     initUM();
 
@@ -747,8 +743,11 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     });
     _initPackageInfo();
     userInfo();
-    DYUtil().evaluate("0");
-    getidfa();
+    if (Device.isAndroid) {
+      DYUtil().evaluate("0");
+    } else {
+      getidfa();
+    }
     Future.delayed(const Duration(seconds: 2), () {
       EventUMStatistics.umengCommonOnPageStart("home_two_page");
       getStandardAnswer();
