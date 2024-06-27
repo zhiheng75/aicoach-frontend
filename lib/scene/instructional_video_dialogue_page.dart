@@ -341,13 +341,13 @@ class _InstructionalVideoDialoguePageState
         return;
       }
       _answer!.text += answer;
-
+      Log.e(answer);
       // mxtitStr = _answer!.text;
       _homeProvider.notify();
       _listScrollController.scrollToEnd();
       return;
     }
-    // Log.e(answer);
+
     if (answer is Uint8List) {
       _answer!.audio.add(answer);
       _listScrollController.scrollToEnd();

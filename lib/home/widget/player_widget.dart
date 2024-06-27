@@ -156,13 +156,17 @@ class _PlayerWidgetState extends State<PlayerWidget> {
       // color: Colors.amber,
       child: Stack(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20.0),
-            child: LoadImage(
-              imgUrl,
-              fit: BoxFit.fitWidth,
-              width: 290,
-              height: 90,
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: _isPlaying ? _pause : _play,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              child: LoadImage(
+                imgUrl,
+                fit: BoxFit.fitWidth,
+                width: 290,
+                height: 90,
+              ),
             ),
           ),
           Container(
