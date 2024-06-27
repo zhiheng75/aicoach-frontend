@@ -155,6 +155,13 @@ class _InstructionalVideoDialoguePageState
   // final BackgroundController _backgroundController = BackgroundController();
 
   late bool isShowbottom = false;
+  bool isLoding = true;
+
+  Widget lodingView() {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
 
   void init() {
     _pageState = 'success';
@@ -188,38 +195,38 @@ class _InstructionalVideoDialoguePageState
   void repeatTextStr(String str) {
     String one = str;
     RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
-    if (one.contains("<image>") && one.contains("<word>")) {
-      for (int i = 0; i < 2; i++) {
-        RegExpMatch? match = pattern.firstMatch(one);
-
-        if (match != null) {
-          String? tag = match.group(1); // 获取标签名
-          String? content = match.group(2); // 获取内容
-          if (tag == "image") {
-            //去出来图片content
-            // coverUrl = content!;
-          }
-          if (tag == "word") {
-            //取出来文字content
-            repeatWord = content!;
-          }
-          String reStr = "<$tag>$content</$tag>";
-          String replacedString = one.replaceAll(reStr, "");
-          one = replacedString;
-        }
-      }
-    } else if (one.contains("<word>")) {
+    // if (one.contains("<image>") && one.contains("<word>")) {
+    for (int i = 0; i < 6; i++) {
       RegExpMatch? match = pattern.firstMatch(one);
 
       if (match != null) {
         String? tag = match.group(1); // 获取标签名
         String? content = match.group(2); // 获取内容
-        Log.e('===============Tag: $tag, Content: $content');
-        repeatWord = content!;
+        if (tag == "image") {
+          //去出来图片content
+          // coverUrl = content!;
+        }
+        if (tag == "word") {
+          //取出来文字content
+          repeatWord = content!;
+        }
+        String reStr = "<$tag>$content</$tag>";
+        String replacedString = one.replaceAll(reStr, "");
+        one = replacedString;
       }
-    } else {
-      repeatWord = "";
     }
+    // } else if (one.contains("<word>")) {
+    //   RegExpMatch? match = pattern.firstMatch(one);
+
+    //   if (match != null) {
+    //     String? tag = match.group(1); // 获取标签名
+    //     String? content = match.group(2); // 获取内容
+    //     Log.e('===============Tag: $tag, Content: $content');
+    //     repeatWord = content!;
+    //   }
+    // } else {
+    //   repeatWord = "";
+    // }
   }
 
   void connectWebsocket() async {
@@ -519,6 +526,11 @@ class _InstructionalVideoDialoguePageState
     // });
     EventUMStatistics.umengCommonOnPageStart(
         "instructional_video_dialogue_page");
+
+    Future.delayed(const Duration(milliseconds: 200), () {
+      isLoding = false;
+      setState(() {});
+    });
   }
 
   @override
@@ -1164,9 +1176,8 @@ class _InstructionalVideoDialoguePageState
                           Expanded(
                             child: Slider(
                               // min: 0,
-                              activeColor: Colors.blue,
-                              inactiveColor: Colors.white,
-                              // secondaryActiveColor: Colors.red,
+                              activeColor: Colors.white,
+                              inactiveColor: Colors.white54,
                               thumbColor: Colors.white,
                               max: (_controller?.videoInfo?.duration ?? 0)
                                   .toDouble(),
@@ -1514,32 +1525,38 @@ class _InstructionalVideoDialoguePageState
         );
 
         return Scaffold(
-          body: Stack(
-            children: [
-              background,
-              Positioned(
-                top: contentTop,
-                left: 0,
-                child: content,
-              ),
-              navbar(),
-              topWidget(),
-              topFlowWidget(),
-              Positioned(
-                top: 0,
-                left: 0,
-                child: ValueListenableBuilder(
-                  valueListenable: _bottomBarControll.showRecord,
-                  builder: (_, show, __) =>
-                      Record(show: show, controller: _recordController),
+          body: isLoding == true
+              ? lodingView()
+              : Stack(
+                  children: [
+                    background,
+                    Positioned(
+                      top: contentTop,
+                      left: 0,
+                      child: content,
+                    ),
+                    navbar(),
+                    topWidget(),
+                    topFlowWidget(),
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      child: ValueListenableBuilder(
+                        valueListenable: _bottomBarControll.showRecord,
+                        builder: (_, show, __) =>
+                            Record(show: show, controller: _recordController),
+                      ),
+                    ),
+                    isShowDialog == true
+                        ? Positioned(
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            child: showDia())
+                        : Positioned(top: 0, child: Container()),
+                  ],
                 ),
-              ),
-              isShowDialog == true
-                  ? Positioned(
-                      top: 0, left: 0, right: 0, bottom: 0, child: showDia())
-                  : Positioned(top: 0, child: Container()),
-            ],
-          ),
         );
       },
     );

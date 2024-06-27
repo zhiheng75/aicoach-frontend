@@ -17,6 +17,8 @@ import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/person/entity/version_bean.dart';
+import 'package:Bubble/person/widget/illustration.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
@@ -99,9 +101,19 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   late String bubbleAndriodVersionStr = "";
   late String bubbleAndriodVersionApprovalStr = "";
 
-  late String url = "";
-  late String os = "";
-  late String omuids = "";
+  PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+  );
+
+  Future<void> _initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
+  }
 
   // Widget barWidget(BuildContext context) {
   //   return Container(
@@ -616,11 +628,11 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   //                           )),
   //                       TextSpan(
   //                           text: '全流程',
-  //                           style: TextStyle(
-  //                             fontSize: 16,
-  //                             fontWeight: FontWeight.w400,
-  //                             color: Colours.color_FF71CF,
-  //                           )),
+  // style: TextStyle(
+  //   fontSize: 16,
+  //   fontWeight: FontWeight.w400,
+  //   color: Colours.color_FF71CF,
+  // )),
   //                     ]),
   //                   ),
   //                 ],
@@ -710,8 +722,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     initDio();
     initUM();
 
-    EventUMStatistics.umengCommonOnPageStart("home_two_page");
-
     // getBaseConfig();
     fluwx.registerApi(
         appId: "wxfb033d09d2eecaf0",
@@ -735,10 +745,70 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       _homeTwoPagePresenter.getBannerList();
       _homeTwoPagePresenter.getCharacterList();
     });
-
+    _initPackageInfo();
     userInfo();
     DYUtil().evaluate("0");
     getidfa();
+    Future.delayed(const Duration(seconds: 2), () {
+      EventUMStatistics.umengCommonOnPageStart("home_two_page");
+      getStandardAnswer();
+    });
+  }
+
+  void getStandardAnswer() {
+    String platformStr = "android";
+
+    if (Device.isAndroid) {
+      platformStr = Channel.channelhuawei;
+    } else {
+      platformStr = Channel.channelios;
+    }
+    _homeTwoPagePresenter.requestNetwork<ResultData>(
+      Method.get,
+      url: HttpApi.version,
+      queryParameters: {
+        'platform': platformStr,
+      },
+      isShow: false,
+      isClose: false,
+      onSuccess: (result) {
+        //  _homeTwoPagePresenter.requestNetwork<ResultData>(
+        //     Method.get,
+        //     HttpApi.version,
+        // queryParameters: {
+        //   'platform': platformStr,
+        // },
+        //     onSuccess: (result) {
+        Map<String, dynamic> versionBeanMap = json.decode(result.toString());
+        VersionBean versionBean = VersionBean.fromJson(versionBeanMap);
+        if (versionBean.code == 200) {
+          if (versionBean.data.versionCode >
+              int.parse(_packageInfo.buildNumber)) {
+            showUpViewDialog(versionBean);
+          }
+        }
+      },
+      onError: (code, msg) {},
+    );
+  }
+
+  showUpViewDialog(VersionBean versionBean) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.transparent,
+      barrierDismissible: false,
+      useSafeArea: false,
+      builder: (_) => UpDataView(
+        versionBean: versionBean,
+        onSuccess: () {
+          // String url = "https://www.baidu.com";
+          // Utils.launchWebURL(url);
+
+          Utils.launchWebURL(versionBean.data.package);
+          // openUrl(versionBean.data.package);
+        },
+      ),
+    );
   }
 
   void getidfa() async {
@@ -806,9 +876,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   }
 
   void initDio() async {
-    final deviceInfoPlugin = DeviceInfoPlugin();
-    BaseDeviceInfo deviceInfo = await deviceInfoPlugin.deviceInfo;
-    final allInfo = deviceInfo.data;
     final info = await PackageInfo.fromPlatform();
 
 //手机品牌加型号
@@ -832,7 +899,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       params["device"] = androidDeviceInfo.device;
       params["display"] = androidDeviceInfo.display;
 
-      sysInfo = params.toString(); //allInfo.toString();
+      sysInfo = params.toString();
     } else {
       IosDeviceInfo iosDeviceInfo = await DeviceInfoPlugin().iosInfo;
       platformStr = Channel.channelios;
@@ -848,7 +915,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     }
     DioUtils.instance.dio.options.headers['sysInfo'] = sysInfo;
     DioUtils.instance.dio.options.headers['marketplace'] = platformStr;
-    // DioUtils.instance.dio.options.headers['applyName'] = info.appName;
   }
 
   void initUM() {
@@ -885,16 +951,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    // return Container(
-    //   child: Column(
-    //     children: [
-    //       Container(
-    //         height: 100,
-    //       ),
-    //       PlayerWidget(),
-    //     ],
-    //   ),
-    // );
 
     Widget bg = Container(
       width: _screenUtil.screenWidth,

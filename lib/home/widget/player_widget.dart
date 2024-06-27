@@ -1,14 +1,15 @@
 import 'dart:async';
 
+import 'package:Bubble/widgets/load_image.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 // This code is also used in the example.md. Please keep it up to date.
 class PlayerWidget extends StatefulWidget {
-  // final AudioPlayer player;
+  final String playerUrl;
 
   const PlayerWidget({
-    // required this.player,
+    required this.playerUrl,
     super.key,
   });
 
@@ -42,6 +43,10 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
   String _durationText = "00:00";
   String _positionText = "00:00";
+  String playerUrlStr = "";
+
+  String nameText = "";
+  String imgUrl = "";
 
   @override
   void initState() {
@@ -55,13 +60,28 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
     // Start the player as soon as the app is displayed.
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await player.setSourceUrl(
-          'https://statics.shenmo-ai.com/audio/20240304-131948-bf9c44b4.mp3');
+      await player.setSourceUrl(widget.playerUrl);
+      // await player.setSourceUrl(
+      //     'https://statics.shenmo-ai.com/audio/20240304-131948-bf9c44b4.mp3');
+      // await player.setSourceUrl(
+      //     'https://statics.shenmo-ai.com/audio/1718930601400_4267a3802f6711ef95418f696044b8e0.wav');
+      //
       // await player.resume();
       // await player.play(UrlSource('https://example.com/my-audio.wav'));
       // await player.play(UrlSource(
       //     'https://statics.shenmo-ai.com/audio/20240304-131948-bf9c44b4.mp3'));
     });
+
+    playerUrlStr = widget.playerUrl;
+    List<String> fruits = playerUrlStr.split('/'); // 使用逗号作为分隔符
+    nameText = fruits.last;
+    nameText = nameText.substring(0, nameText.indexOf('.'));
+    nameText = Uri.decodeComponent(nameText);
+
+    // imgUrl = playerUrlStr.substring(0, playerUrlStr.indexOf('.'));
+    imgUrl = playerUrlStr.substring(0, playerUrlStr.length - 4);
+    imgUrl = "$imgUrl.jpg";
+    setState(() {});
 
     _playerState = player.state;
     player.getDuration().then(
@@ -129,56 +149,101 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).primaryColor;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            !_isPlaying
-                ? IconButton(
-                    key: const Key('play_button'),
-                    onPressed: _isPlaying ? null : _play,
-                    iconSize: 48.0,
-                    icon: const Icon(Icons.play_arrow),
-                    color: color,
-                  )
-                : IconButton(
-                    key: const Key('pause_button'),
-                    onPressed: _isPlaying ? _pause : null,
-                    iconSize: 48.0,
-                    icon: const Icon(Icons.pause),
-                    color: color,
+    return Container(
+      // padding: const EdgeInsets.all(10),
+      width: 290,
+      height: 90,
+      // color: Colors.amber,
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: LoadImage(
+              imgUrl,
+              fit: BoxFit.fitWidth,
+              width: 290,
+              height: 90,
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: <Widget>[
+                    !_isPlaying
+                        ? GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: _isPlaying ? null : _play,
+                            child: const LoadAssetImage(
+                              "audio_play",
+                              width: 24.0,
+                              height: 24.0,
+                            ),
+                          )
+                        : GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: _isPlaying ? _pause : null,
+                            child: const LoadAssetImage(
+                              "audio_paused",
+                              width: 24.0,
+                              height: 24.0,
+                            ),
+                          ),
+                    Slider(
+                      activeColor: Colors.white,
+                      inactiveColor: Colors.white54,
+                      thumbColor: Colors.white,
+                      onChanged: (value) {
+                        final duration = _duration;
+                        if (duration == null) {
+                          return;
+                        }
+                        final position = value * duration.inMilliseconds;
+                        player.seek(Duration(milliseconds: position.round()));
+                      },
+                      value: (_position != null &&
+                              _duration != null &&
+                              _position!.inMilliseconds > 0 &&
+                              _position!.inMilliseconds <
+                                  _duration!.inMilliseconds)
+                          ? _position!.inMilliseconds /
+                              _duration!.inMilliseconds
+                          : 0.0,
+                    ),
+                    Text(
+                      _position != null
+                          ? _positionText
+                          : _duration != null
+                              ? _durationText
+                              : '0',
+                      // _position != null
+                      //     ? '$_positionText/$_durationText'
+                      //     : _duration != null
+                      //         ? _durationText
+                      //         : '',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  nameText,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
                   ),
-            Slider(
-              onChanged: (value) {
-                final duration = _duration;
-                if (duration == null) {
-                  return;
-                }
-                final position = value * duration.inMilliseconds;
-                player.seek(Duration(milliseconds: position.round()));
-              },
-              value: (_position != null &&
-                      _duration != null &&
-                      _position!.inMilliseconds > 0 &&
-                      _position!.inMilliseconds < _duration!.inMilliseconds)
-                  ? _position!.inMilliseconds / _duration!.inMilliseconds
-                  : 0.0,
+                ),
+              ],
             ),
-            Text(
-              _position != null
-                  ? '$_positionText/$_durationText'
-                  : _duration != null
-                      ? _durationText
-                      : '',
-              style: const TextStyle(fontSize: 16.0),
-            ),
-          ],
-        ),
-        Text("happy birds sing a song"),
-      ],
+          ),
+        ],
+      ),
     );
   }
 

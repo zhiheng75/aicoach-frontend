@@ -3,6 +3,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:Bubble/home/widget/player_widget.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
@@ -423,66 +424,48 @@ class _MessageItemState extends State<MessageItem> {
     String titTwoMessage(String message) {
       String one = message;
       RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
-      if (one.contains("<image>") && one.contains("<word>")) {
-        for (int i = 0; i < 2; i++) {
-          RegExpMatch? match = pattern.firstMatch(one);
-          late String coverUrl = "";
+      // if (one.contains("<image>") && one.contains("<word>")) {
+      for (int i = 0; i < 6; i++) {
+        RegExpMatch? match = pattern.firstMatch(one);
+        late String coverUrl = "";
 
-          if (match != null) {
-            String? tag = match.group(1); // 获取标签名
-            String? content = match.group(2); // 获取内容
-            // Log.e('===============Tag: $tag, Content: $content');
-            coverUrl = content!;
-            if (tag == "image") {
-              //去出来图片content
-            }
-            if (tag == "word") {
-              //取出来文字content
-            }
-            String reStr = "<$tag>$coverUrl</$tag>";
-            String replacedString = one.replaceAll(reStr, "");
-            one = replacedString;
+        if (match != null) {
+          String? tag = match.group(1); // 获取标签名
+          String? content = match.group(2); // 获取内容
+          // Log.e('===============Tag: $tag, Content: $content');
+          coverUrl = content!;
+          if (tag == "image") {
+            //去出来图片content
           }
-          // Log.e("================" + one);
+          if (tag == "word") {
+            //取出来文字content
+          }
+          String reStr = "<$tag>$coverUrl</$tag>";
+          String replacedString = one.replaceAll(reStr, "");
+          one = replacedString;
         }
-        one = one.replaceAll("{[finish]}", "");
-        return one;
-      } else if (one.contains("<image>")) {
-        RegExpMatch? match = pattern.firstMatch(one);
-        late String coverUrl = "";
-
-        if (match != null) {
-          String? tag = match.group(1); // 获取标签名
-          String? content = match.group(2); // 获取内容
-          // Log.e('===============Tag: $tag, Content: $content');
-          coverUrl = content!;
-        }
-        String reStr = "<image>$coverUrl</image>";
-        String replacedString = one.replaceAll(reStr, "");
-        one = replacedString;
-        one = one.replaceAll("{[finish]}", "");
-
-        return one;
-      } else if (one.contains("<word>")) {
-        RegExpMatch? match = pattern.firstMatch(one);
-        late String coverUrl = "";
-        if (match != null) {
-          String? tag = match.group(1); // 获取标签名
-          String? content = match.group(2); // 获取内容
-          // Log.e('===============Tag: $tag, Content: $content');
-          coverUrl = content!;
-        }
-        String reStr = "<word>$coverUrl</word>";
-        String replacedString = one.replaceAll(reStr, "");
-        one = replacedString;
-        one = one.replaceAll("{[finish]}", "");
-        return one;
         // Log.e("================" + one);
       }
-      message = message.replaceAll("{[finish]}", "");
-      // if (message.text.contains("<image>")) {
-      //   RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
-      //   RegExpMatch? match = pattern.firstMatch(message.text);
+      one = one.replaceAll("{[finish]}", "");
+      return one;
+      // } else if (one.contains("<image>")) {
+      //   RegExpMatch? match = pattern.firstMatch(one);
+      //   late String coverUrl = "";
+
+      //   if (match != null) {
+      //     String? tag = match.group(1); // 获取标签名
+      //     String? content = match.group(2); // 获取内容
+      //     // Log.e('===============Tag: $tag, Content: $content');
+      //     coverUrl = content!;
+      //   }
+      //   String reStr = "<image>$coverUrl</image>";
+      //   String replacedString = one.replaceAll(reStr, "");
+      //   one = replacedString;
+      //   one = one.replaceAll("{[finish]}", "");
+
+      //   return one;
+      // } else if (one.contains("<word>")) {
+      //   RegExpMatch? match = pattern.firstMatch(one);
       //   late String coverUrl = "";
       //   if (match != null) {
       //     String? tag = match.group(1); // 获取标签名
@@ -490,13 +473,31 @@ class _MessageItemState extends State<MessageItem> {
       //     // Log.e('===============Tag: $tag, Content: $content');
       //     coverUrl = content!;
       //   }
-      //   String one = "<image>$coverUrl</image>";
-      //   String replacedString = message.text.replaceAll(one, "");
-
-      //   return replacedString;
+      //   String reStr = "<word>$coverUrl</word>";
+      //   String replacedString = one.replaceAll(reStr, "");
+      //   one = replacedString;
+      //   one = one.replaceAll("{[finish]}", "");
+      //   return one;
+      //   // Log.e("================" + one);
       // }
+      // message = message.replaceAll("{[finish]}", "");
+      // // if (message.text.contains("<image>")) {
+      // //   RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+      // //   RegExpMatch? match = pattern.firstMatch(message.text);
+      // //   late String coverUrl = "";
+      // //   if (match != null) {
+      // //     String? tag = match.group(1); // 获取标签名
+      // //     String? content = match.group(2); // 获取内容
+      // //     // Log.e('===============Tag: $tag, Content: $content');
+      // //     coverUrl = content!;
+      // //   }
+      // //   String one = "<image>$coverUrl</image>";
+      // //   String replacedString = message.text.replaceAll(one, "");
 
-      return message;
+      // //   return replacedString;
+      // // }
+
+      // return message;
     }
 
     Widget createTranslationWidget(NormalMessage message) {
@@ -592,14 +593,13 @@ class _MessageItemState extends State<MessageItem> {
     }
 
     Widget createImgExample(NormalMessage message) {
-      if (message.text.contains("<image>") && message.text.contains("<word>")) {
-        RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+      // if (message.text.contains("<image>") && message.text.contains("<word>")) {
+      RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
 
-        String one = message.text;
-        Log.e("111111111111" + one);
+      String one = message.text;
 
-        late String coverUrl = "";
-        // for (int i = 0; i < 2; i++) {
+      late String coverUrl = "";
+      for (int i = 0; i < 6; i++) {
         RegExpMatch? match = pattern.firstMatch(one);
 
         if (match != null) {
@@ -609,6 +609,24 @@ class _MessageItemState extends State<MessageItem> {
           if (tag == "image") {
             //去出来图片content
             coverUrl = content!;
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  backgroundColor: Colors.transparent,
+                  barrierColor: Colors.transparent,
+                  isScrollControlled: true,
+                  isDismissible: false,
+                  builder: (_) => PhotoViewSimpleScreen(
+                    imageProvider: NetworkImage(coverUrl),
+                  ),
+                );
+              },
+              child: LoadImage(
+                coverUrl,
+              ),
+            );
           }
           if (tag == "word") {
             //取出来文字content
@@ -617,142 +635,140 @@ class _MessageItemState extends State<MessageItem> {
           String replacedString = one.replaceAll(reStr, "");
           one = replacedString;
         }
+      }
+      // RegExpMatch? match1 = pattern.firstMatch(one);
+      // if (match1 != null) {
+      //   String? tag = match1.group(1); // 获取标签名
+      //   String? content = match1.group(2); // 获取内容
+      //   // Log.e('===============Tag: $tag, Content: $content');
+      //   if (tag == "image") {
+      //     //去出来图片content
+      //     coverUrl = content!;
+      //   }
+      //   if (tag == "word") {
+      //     //取出来文字content
+      //   }
+      //   // String reStr = "<$tag>$content</$tag>";
+      //   // String replacedString = one.replaceAll(reStr, "");
+      //   // one = replacedString;
+      // }
 
-        RegExpMatch? match1 = pattern.firstMatch(one);
-        if (match1 != null) {
-          String? tag = match1.group(1); // 获取标签名
-          String? content = match1.group(2); // 获取内容
-          // Log.e('===============Tag: $tag, Content: $content');
-          if (tag == "image") {
-            //去出来图片content
-            coverUrl = content!;
-          }
-          if (tag == "word") {
-            //取出来文字content
-          }
-          // String reStr = "<$tag>$content</$tag>";
-          // String replacedString = one.replaceAll(reStr, "");
-          // one = replacedString;
-        }
-        return GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              backgroundColor: Colors.transparent,
-              barrierColor: Colors.transparent,
-              isScrollControlled: true,
-              isDismissible: false,
-              builder: (_) => PhotoViewSimpleScreen(
-                imageProvider: NetworkImage(coverUrl),
-              ),
-            );
-          },
-          child: LoadImage(
-            coverUrl,
-          ),
-        );
-      } else if (message.text.contains("<image>")) {
-        RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
-        String one = message.text;
-        Log.e("111111111111" + one);
+      // } else if (message.text.contains("<image>")) {
+      //   RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+      //   String one = message.text;
+      //   Log.e("111111111111" + one);
+      //   RegExpMatch? match = pattern.firstMatch(one);
+      //   late String coverUrl = "";
+
+      //   if (match != null) {
+      //     String? tag = match.group(1); // 获取标签名
+      //     String? content = match.group(2); // 获取内容
+      //     // Log.e('===============Tag: $tag, Content: $content');
+      //     coverUrl = content!;
+      //   }
+
+      //   return GestureDetector(
+      //     behavior: HitTestBehavior.opaque,
+      //     onTap: () {
+      //       showModalBottomSheet(
+      //         context: context,
+      //         backgroundColor: Colors.transparent,
+      //         barrierColor: Colors.transparent,
+      //         isScrollControlled: true,
+      //         isDismissible: false,
+      //         builder: (_) => PhotoViewSimpleScreen(
+      //           imageProvider: NetworkImage(coverUrl),
+      //         ),
+      //       );
+      //     },
+      //     child: LoadImage(
+      //       coverUrl,
+      //       // width: 48.0,
+      //     ),
+      //   );
+      // } else {
+      return Container();
+      // }
+    }
+
+    Widget createAudioExample(NormalMessage message) {
+      // if (message.text.contains("<image>") && message.text.contains("<word>")) {
+      RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+
+      String one = message.text;
+
+      late String audioUrl = "";
+      for (int i = 0; i < 6; i++) {
         RegExpMatch? match = pattern.firstMatch(one);
-        late String coverUrl = "";
 
         if (match != null) {
           String? tag = match.group(1); // 获取标签名
           String? content = match.group(2); // 获取内容
           // Log.e('===============Tag: $tag, Content: $content');
-          coverUrl = content!;
-        }
-
-        return GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              backgroundColor: Colors.transparent,
-              barrierColor: Colors.transparent,
-              isScrollControlled: true,
-              isDismissible: false,
-              builder: (_) => PhotoViewSimpleScreen(
-                imageProvider: NetworkImage(coverUrl),
-              ),
+          if (tag == "audio") {
+            //去出来图片content
+            audioUrl = content!;
+            return PlayerWidget(
+              playerUrl: audioUrl,
             );
-          },
-          child: LoadImage(
-            coverUrl,
-            // width: 48.0,
-          ),
-        );
-      } else {
-        return Container();
+          }
+          if (tag == "word") {
+            //取出来文字content
+          }
+          String reStr = "<$tag>$content</$tag>";
+          String replacedString = one.replaceAll(reStr, "");
+          one = replacedString;
+        }
       }
+
+      return Container();
     }
 
     String titMessage(NormalMessage message) {
       String one = message.text;
       RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
-      if (one.contains("<image>") && one.contains("<word>")) {
-        for (int i = 0; i < 2; i++) {
-          RegExpMatch? match = pattern.firstMatch(one);
-          late String coverUrl = "";
+      // if (one.contains("<image>") && one.contains("<word>")) {
+      for (int i = 0; i < 6; i++) {
+        RegExpMatch? match = pattern.firstMatch(one);
+        late String coverUrl = "";
 
-          if (match != null) {
-            String? tag = match.group(1); // 获取标签名
-            String? content = match.group(2); // 获取内容
-            // Log.e('===============Tag: $tag, Content: $content');
-            coverUrl = content!;
-            if (tag == "image") {
-              //去出来图片content
-            }
-            if (tag == "word") {
-              //取出来文字content
-            }
-            String reStr = "<$tag>$coverUrl</$tag>";
-            String replacedString = one.replaceAll(reStr, "");
-            one = replacedString;
+        if (match != null) {
+          String? tag = match.group(1); // 获取标签名
+          String? content = match.group(2); // 获取内容
+          // Log.e('===============Tag: $tag, Content: $content');
+          coverUrl = content!;
+          if (tag == "image") {
+            //去出来图片content
           }
-          // Log.e("================" + one);
+          if (tag == "word") {
+            //取出来文字content
+          }
+          String reStr = "<$tag>$coverUrl</$tag>";
+          String replacedString = one.replaceAll(reStr, "");
+          one = replacedString;
         }
-        one = one.replaceAll("{[finish]}", "");
-        return one;
-      } else if (one.contains("<image>")) {
-        RegExpMatch? match = pattern.firstMatch(one);
-        late String coverUrl = "";
-
-        if (match != null) {
-          String? tag = match.group(1); // 获取标签名
-          String? content = match.group(2); // 获取内容
-          // Log.e('===============Tag: $tag, Content: $content');
-          coverUrl = content!;
-        }
-        String reStr = "<image>$coverUrl</image>";
-        String replacedString = one.replaceAll(reStr, "");
-        one = replacedString;
-        one = one.replaceAll("{[finish]}", "");
-
-        return one;
-      } else if (one.contains("<word>")) {
-        RegExpMatch? match = pattern.firstMatch(one);
-        late String coverUrl = "";
-        if (match != null) {
-          String? tag = match.group(1); // 获取标签名
-          String? content = match.group(2); // 获取内容
-          // Log.e('===============Tag: $tag, Content: $content');
-          coverUrl = content!;
-        }
-        String reStr = "<word>$coverUrl</word>";
-        String replacedString = one.replaceAll(reStr, "");
-        one = replacedString;
-        one = one.replaceAll("{[finish]}", "");
-        return one;
         // Log.e("================" + one);
       }
-      message.text = message.text.replaceAll("{[finish]}", "");
-      // if (message.text.contains("<image>")) {
-      //   RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
-      //   RegExpMatch? match = pattern.firstMatch(message.text);
+      one = one.replaceAll("{[finish]}", "");
+      return one;
+      // } else if (one.contains("<image>")) {
+      //   RegExpMatch? match = pattern.firstMatch(one);
+      //   late String coverUrl = "";
+
+      //   if (match != null) {
+      //     String? tag = match.group(1); // 获取标签名
+      //     String? content = match.group(2); // 获取内容
+      //     // Log.e('===============Tag: $tag, Content: $content');
+      //     coverUrl = content!;
+      //   }
+      //   String reStr = "<image>$coverUrl</image>";
+      //   String replacedString = one.replaceAll(reStr, "");
+      //   one = replacedString;
+      //   one = one.replaceAll("{[finish]}", "");
+
+      //   return one;
+      // } else if (one.contains("<word>")) {
+      //   RegExpMatch? match = pattern.firstMatch(one);
       //   late String coverUrl = "";
       //   if (match != null) {
       //     String? tag = match.group(1); // 获取标签名
@@ -760,13 +776,31 @@ class _MessageItemState extends State<MessageItem> {
       //     // Log.e('===============Tag: $tag, Content: $content');
       //     coverUrl = content!;
       //   }
-      //   String one = "<image>$coverUrl</image>";
-      //   String replacedString = message.text.replaceAll(one, "");
-
-      //   return replacedString;
+      //   String reStr = "<word>$coverUrl</word>";
+      //   String replacedString = one.replaceAll(reStr, "");
+      //   one = replacedString;
+      //   one = one.replaceAll("{[finish]}", "");
+      //   return one;
+      //   // Log.e("================" + one);
       // }
+      // message.text = message.text.replaceAll("{[finish]}", "");
+      // // if (message.text.contains("<image>")) {
+      // //   RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+      // //   RegExpMatch? match = pattern.firstMatch(message.text);
+      // //   late String coverUrl = "";
+      // //   if (match != null) {
+      // //     String? tag = match.group(1); // 获取标签名
+      // //     String? content = match.group(2); // 获取内容
+      // //     // Log.e('===============Tag: $tag, Content: $content');
+      // //     coverUrl = content!;
+      // //   }
+      // //   String one = "<image>$coverUrl</image>";
+      // //   String replacedString = message.text.replaceAll(one, "");
 
-      return message.text;
+      // //   return replacedString;
+      // // }
+
+      // return message.text;
     }
 
     return Row(
@@ -823,48 +857,50 @@ class _MessageItemState extends State<MessageItem> {
                     ),
                   ),
                   createImgExample(_message),
-                  Container(
-                      color: Colors.amber,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              LoadAssetImage(
-                                'class_vip_icon',
-                                width: 32.0,
-                                height: 32.0,
-                              ),
-                              Slider(
-                                min: 0,
-                                activeColor: Colors.blue,
-                                inactiveColor: Colors.white,
-                                // secondaryActiveColor: Colors.red,
-                                thumbColor: Colors.white,
-                                max: 30.0,
-                                value: valueau,
-                                onChanged: (value) {
-                                  valueau = value;
-                                  setState(() {});
-                                },
-                              ),
-                              Text(
-                                "0:15",
-                                style: const TextStyle(
-                                  fontSize: 15.0,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            "歌名",
-                            style: const TextStyle(
-                              fontSize: 15.0,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      )),
+                  createAudioExample(_message),
+
+                  // Container(
+                  //     color: Colors.amber,
+                  //     child: Column(
+                  //       children: [
+                  //         Row(
+                  //           children: [
+                  //             LoadAssetImage(
+                  //               'class_vip_icon',
+                  //               width: 32.0,
+                  //               height: 32.0,
+                  //             ),
+                  //             Slider(
+                  //               min: 0,
+                  //               activeColor: Colors.blue,
+                  //               inactiveColor: Colors.white,
+                  //               // secondaryActiveColor: Colors.red,
+                  //               thumbColor: Colors.white,
+                  //               max: 30.0,
+                  //               value: valueau,
+                  //               onChanged: (value) {
+                  //                 valueau = value;
+                  //                 setState(() {});
+                  //               },
+                  //             ),
+                  //             Text(
+                  //               "0:15",
+                  //               style: const TextStyle(
+                  //                 fontSize: 15.0,
+                  //                 color: Colors.white,
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //         Text(
+                  //           "歌名",
+                  //           style: const TextStyle(
+                  //             fontSize: 15.0,
+                  //             color: Colors.white,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     )),
                   // Text("data"),
                   const SizedBox(
                     height: 16,
