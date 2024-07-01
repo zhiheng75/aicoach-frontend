@@ -409,7 +409,7 @@ class _BottomErrorBarState extends State<BottomErrorBar>
                 }
                 if (result['text'] == "") {
                   Toast.show(
-                    '请说话',
+                    '抱歉，没听到您的声音，请您重复一遍，谢谢！',
                   );
                 }
                 LoadingDialog.show(widget.context);

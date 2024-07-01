@@ -402,7 +402,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           if (disabled) {
             return;
           }
-          onEnd(_);
+            onEnd(_);
         },
         child: StreamBuilder(
           stream: AvatarController().getStream(),
@@ -563,7 +563,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                       }
                       if (result['text'] == "") {
                         Toast.show(
-                          '请说话',
+                          '抱歉，没听到您的声音，请您重复一遍，谢谢！',
                         );
                       }
                       sendMessage(result['text']);

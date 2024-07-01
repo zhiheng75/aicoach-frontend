@@ -324,7 +324,7 @@ class _ChatInputState extends State<ChatInput> {
         // 无语音
         if (!isVadInNext && text == '' && message == null) {
           closeRecognization();
-          Toast.show('未检测到语音，请说话', duration: 1000);
+          Toast.show('抱歉，没听到您的声音，请您重复一遍，谢谢！', duration: 1000);
           EventBus().emit(
             NotificationUtils.resetANChat,
           );

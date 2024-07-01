@@ -100,7 +100,7 @@ class RecognizeUtil {
             if (_recognizedText == '') {
               _recognizeResult = {
                 'success': false,
-                'message': '未检测到语音，请重新操作',
+                'message': '抱歉，没听到您的声音，请您重复一遍，谢谢！',
               };
 
               await _disconnectXfRecognization(
