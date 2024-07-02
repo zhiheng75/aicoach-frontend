@@ -183,14 +183,11 @@ class _HomePageState extends State<HomeNewPage>
         _homeProvider.scene = scene;
       }
       Future.delayed(Duration.zero, () {
-        showModalBottomSheet(
+        showDialog(
           context: context,
-          backgroundColor: Colors.transparent,
           barrierColor: Colors.transparent,
-          isScrollControlled: true,
-          isDismissible: false,
-          clipBehavior: Clip.none,
-          enableDrag: false,
+          barrierDismissible: false,
+          useSafeArea: false,
           builder: (_) => type == 'topic'
               ? TopicPage(onEnd: () {
                   changeTab('chat');

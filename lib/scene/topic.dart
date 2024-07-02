@@ -240,8 +240,9 @@ class _TopicState extends State<TopicPage>
                     sigmaY: 7.0,
                   ),
                   child: LoadImage(
+                    width: _screenUtil.screenWidth,
                     provider.topic?.cover ?? '',
-                    fit: BoxFit.fitHeight,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),

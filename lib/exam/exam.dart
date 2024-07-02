@@ -317,10 +317,10 @@ class _ExamPageState extends State<ExamPage>
     }
 
     Widget desc = Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.0),
-        color: Colors.white,
-      ),
+      // decoration: BoxDecoration(
+      //   borderRadius: BorderRadius.circular(12.0),
+      //   color: Colors.white,
+      // ),
       child: Container(
         width: _screenUtil.screenWidth - 32.0,
         decoration: const BoxDecoration(
@@ -812,6 +812,7 @@ class _ExamPageState extends State<ExamPage>
         child: MyScrollView(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Gaps.vGap20,
             // const SizedBox(
             //   height: 60,
             // ),
@@ -960,7 +961,6 @@ class _ExamPageState extends State<ExamPage>
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Gaps.vGap20,
                   body(),
                 ],
               )),

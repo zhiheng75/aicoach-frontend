@@ -250,8 +250,9 @@ class _SceneState extends State<ScenePage>
                     sigmaY: 7.0,
                   ),
                   child: LoadImage(
+                    width: _screenUtil.screenWidth,
                     provider.scene?.cover ?? '',
-                    fit: BoxFit.fitHeight,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
