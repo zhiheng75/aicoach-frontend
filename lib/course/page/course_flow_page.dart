@@ -38,6 +38,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
@@ -304,17 +305,17 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     }
   }
 
-  void selectScene(SceneEntity scene) {
-    LoginManager.checkLogin(context, () {
-      _homeProvider.sceneStreamController
-          .add({'type': 'scene', 'data': scene.toJson()});
+  // void selectScene(SceneEntity scene) {
+  //   LoginManager.checkLogin(context, () {
+  //     _homeProvider.sceneStreamController
+  //         .add({'type': 'scene', 'data': scene.toJson()});
 
-      _homeProvider.resetChatParams();
+  //     _homeProvider.resetChatParams();
 
-      _homeProvider.scene = scene;
-      return;
-    });
-  }
+  //     _homeProvider.scene = scene;
+  //     return;
+  //   });
+  // }
 
   Widget body() {
     return MyScrollView(
@@ -438,18 +439,19 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                       ),
                       // padding: const EdgeInsets.all(30),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                            height: 65,
-                          ),
-                          const Text(
+                          Text(
                             "学习报告",
                             style: TextStyle(
-                              fontSize: 14.0,
+                              fontSize: 14.0.sp,
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
                             ),
-                          )
+                          ),
+                          Container(
+                            height: 20.h,
+                          ),
                         ],
                       ),
                     ),
@@ -484,18 +486,19 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                         ),
                       ),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                            height: 65,
-                          ),
-                          const Text(
+                          Text(
                             "纠错",
                             style: TextStyle(
-                              fontSize: 14.0,
+                              fontSize: 14.0.sp,
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
                             ),
-                          )
+                          ),
+                          Container(
+                            height: 20.h,
+                          ),
                         ],
                       ),
                     ),
@@ -556,18 +559,19 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                         ),
                       ),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                            height: 65,
-                          ),
-                          const Text(
+                          Text(
                             "课程评价",
                             style: TextStyle(
-                              fontSize: 14.0,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
                             ),
-                          )
+                          ),
+                          Container(
+                            height: 20.h,
+                          ),
                         ],
                       ),
                     ),

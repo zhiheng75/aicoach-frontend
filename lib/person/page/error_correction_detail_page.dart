@@ -242,13 +242,11 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
                                         GestureDetector(
                                           behavior: HitTestBehavior.opaque,
                                           onTap: () {
-                                            showModalBottomSheet(
+                                            showDialog(
                                               context: context,
-                                              backgroundColor:
-                                                  Colors.transparent,
                                               barrierColor: Colors.transparent,
-                                              isScrollControlled: true,
-                                              isDismissible: false,
+                                              barrierDismissible: false,
+                                              useSafeArea: false,
                                               builder: (_) =>
                                                   PhotoViewSimpleScreen(
                                                 imageProvider:

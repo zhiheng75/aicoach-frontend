@@ -60,7 +60,7 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
           left: 3,
           // top: 80,
           // width: 50,
-          height: 70,
+          height: 50.h,
           child: Stack(
             children: <Widget>[
               Container(
@@ -78,7 +78,7 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
                       opacity: 0.5,
                       child: Container(
                         // width: 100.0,
-                        height: 70.0,
+                        height: 70.h,
                         decoration: BoxDecoration(color: Colors.grey.shade200),
                         /*  child: Center(
                           child: Text("天河区扛把子",style:TextStyle(fontSize: 40,color: Colors.black),),
@@ -91,6 +91,7 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
               Positioned(
                 left: 20,
                 right: 10,
+                // bottom: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -166,7 +167,7 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
         ),
         Positioned(
           right: 25,
-          bottom: 55,
+          bottom: 40.h,
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {

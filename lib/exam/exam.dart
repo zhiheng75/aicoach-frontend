@@ -328,7 +328,7 @@ class _ExamPageState extends State<ExamPage>
             image: AssetImage(
               'assets/images/exam_bg.png',
             ),
-            fit: BoxFit.fitHeight,
+            fit: BoxFit.fitWidth,
           ),
         ),
         padding: const EdgeInsets.symmetric(
@@ -860,13 +860,11 @@ class _ExamPageState extends State<ExamPage>
                   onTap: () {
                     if (LoginManager.isLogin()) {
                       // checkMicrophonePermission();
-                      showModalBottomSheet(
+                      showDialog(
                         context: context,
-                        backgroundColor: Colors.transparent,
                         barrierColor: Colors.transparent,
-                        isScrollControlled: true,
-                        isDismissible: false,
-                        enableDrag: false,
+                        barrierDismissible: false,
+                        useSafeArea: false,
                         builder: (_) => ExamPurchasePage(
                           onPurchased: () {
                             getStudyInfo();

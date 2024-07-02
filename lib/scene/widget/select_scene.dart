@@ -25,9 +25,12 @@ import '../entity/scene_entity.dart';
 
 class SelectScene extends StatefulWidget {
   final int cagegoryId;
+  final String homePage;
+
   const SelectScene({
     Key? key,
     required this.cagegoryId,
+    required this.homePage,
   }) : super(key: key);
 
   @override
@@ -162,8 +165,8 @@ class _SelectSceneState extends State<SelectScene> {
 
         return;
       }
-      _homeProvider.sceneStreamController
-          .add({'type': 'scene', 'data': scene.toJson()});
+      _homeProvider.sceneStreamController.add(
+          {'type': 'scene', 'data': scene.toJson(), "page": widget.homePage});
 
       _homeProvider.resetChatParams();
 

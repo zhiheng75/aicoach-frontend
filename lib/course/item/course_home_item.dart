@@ -43,7 +43,7 @@ class _CourseHomeItemState extends State<CourseHomeItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 115,
+        // height: 115,
         margin: const EdgeInsets.only(top: 10, left: 16, right: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),

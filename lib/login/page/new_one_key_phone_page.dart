@@ -152,7 +152,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                     widget.typeLogin == "1"
                         ? Container(
                             margin: const EdgeInsets.only(top: 20),
-                            height: Dimens.h_dp40,
+                            // height: Dimens.h_dp40,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius:
@@ -298,7 +298,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                               //     "${LoginRouter.keyCheckCodePage}?PhoneNumber=18611667447");
                             },
                             child: Container(
-                              height: Dimens.h_dp40,
+                              // height: Dimens.h_dp40,
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.circular(Dimens.h_dp40),

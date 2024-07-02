@@ -462,53 +462,55 @@ class UpDataView extends StatelessWidget {
                       Gaps.vGap8,
                       sessionChild(versionBean.data.message),
                       Gaps.vGap16,
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              //去外部界面
-                              onSuccess();
-                            },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(24),
-                                  color: Colours.color_examination,
-                                ),
-                                width: 200,
-                                height: 40,
-                                child: const Center(
-                                  child: Text(
-                                    "立即升级",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                    ),
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                //去外部界面
+                                onSuccess();
+                              },
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(24),
+                                    color: Colours.color_examination,
                                   ),
-                                )),
-                          ),
-                          versionBean.data.forceUpdate
-                              ? Container()
-                              : Gaps.vGap8,
-                          versionBean.data.forceUpdate
-                              ? Container()
-                              : GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTap: () => Navigator.of(context).pop(),
-                                  child: const SizedBox(
-                                      width: 100,
-                                      height: 20,
-                                      child: Center(
-                                        child: Text(
-                                          "不再提示",
-                                          style: TextStyle(
-                                              fontSize: 13,
-                                              color: Colours.color_999999),
-                                        ),
-                                      )),
-                                ),
-                        ],
+                                  width: 200,
+                                  height: 40,
+                                  child: const Center(
+                                    child: Text(
+                                      "立即升级",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )),
+                            ),
+                            versionBean.data.forceUpdate
+                                ? Container()
+                                : Gaps.vGap8,
+                            versionBean.data.forceUpdate
+                                ? Container()
+                                : GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTap: () => Navigator.of(context).pop(),
+                                    child: const SizedBox(
+                                        width: 100,
+                                        height: 20,
+                                        child: Center(
+                                          child: Text(
+                                            "不再提示",
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                color: Colours.color_999999),
+                                          ),
+                                        )),
+                                  ),
+                          ],
+                        ),
                       )
                     ],
                   ),

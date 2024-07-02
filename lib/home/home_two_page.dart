@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:Bubble/chat/entity/character_entity.dart';
@@ -192,10 +193,14 @@ class _HomeTwoPageState extends State<HomeTwoPage>
         });
   }
 
+  bool get isIPad {
+    // return Platform.isIOS && MediaQuery.of(context).size.width > 500;
+    return MediaQuery.of(context).size.width > 500;
+  }
+
   Widget barWidget(BuildContext context) {
     return SizedBox(
-      // color: Colors.amber,
-      height: 215.0.h,
+      height: isIPad ? 300.h : 215.0.h,
       child: Swiper(
           autoplay: true,
           pagination: SwiperPagination(
@@ -1073,17 +1078,27 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                     itemBuilder: (BuildContext ctx, int index) {
                       return GestureDetector(
                           onTap: () {
-                            showModalBottomSheet(
+                            showDialog(
                               context: context,
-                              backgroundColor: Colors.transparent,
                               barrierColor: Colors.transparent,
-                              isScrollControlled: true,
-                              isDismissible: false,
-                              enableDrag: false,
+                              barrierDismissible: false,
+                              useSafeArea: false,
                               builder: (_) => SelectScene(
-                                cagegoryId: sceneList[index].cagegoryId,
-                              ),
+                                  cagegoryId: sceneList[index].cagegoryId,
+                                  homePage: "1"),
                             );
+
+                            // showModalBottomSheet(
+                            //   context: context,
+                            //   backgroundColor: Colors.transparent,
+                            //   barrierColor: Colors.transparent,
+                            //   isScrollControlled: true,
+                            //   isDismissible: false,
+                            //   enableDrag: false,
+                            //   builder: (_) => SelectScene(
+                            //       cagegoryId: sceneList[index].cagegoryId,
+                            //       homePage: "1"),
+                            // );
 
                             if (index == 0) {
                               EventUMStatistics.umengCommonMapEvent(
@@ -1347,16 +1362,16 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     // );
   }
 
-  void selectScene(SceneEntity scene) {
-    LoginManager.checkLogin(context, () {
-      _homeProvider.sceneStreamController
-          .add({'type': 'scene', 'data': scene.toJson()});
+  // void selectScene(SceneEntity scene) {
+  //   LoginManager.checkLogin(context, () {
+  //     _homeProvider.sceneStreamController
+  //         .add({'type': 'scene', 'data': scene.toJson()});
 
-      _homeProvider.resetChatParams();
+  //     _homeProvider.resetChatParams();
 
-      _homeProvider.scene = scene;
-    });
-  }
+  //     _homeProvider.scene = scene;
+  //   });
+  // }
 
   @override
   HomeTwoPagePresenter createPresenter() {

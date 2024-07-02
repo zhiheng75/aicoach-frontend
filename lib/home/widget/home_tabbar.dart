@@ -69,17 +69,22 @@ class _HomeTabbarState extends State<HomeTabbar> {
           // LoginManager.checkLogin(context, () {
           // 场景则弹窗
           if (value == 'scene') {
-            showModalBottomSheet(
+            showDialog(
               context: context,
-              backgroundColor: Colors.transparent,
               barrierColor: Colors.transparent,
-              isScrollControlled: true,
-              isDismissible: false,
-              enableDrag: false,
-              builder: (_) => const SelectScene(
-                cagegoryId: 0,
-              ),
+              barrierDismissible: false,
+              useSafeArea: false,
+              builder: (_) => const SelectScene(cagegoryId: 0, homePage: "0"),
             );
+            // showModalBottomSheet(
+            //   context: context,
+            //   backgroundColor: Colors.transparent,
+            //   barrierColor: Colors.transparent,
+            //   isScrollControlled: true,
+            //   isDismissible: false,
+            //   enableDrag: false,
+            //   builder: (_) => const SelectScene(cagegoryId: 0, homePage: "0"),
+            // );
             EventUMStatistics.umengCommonMapEvent(
                 "click_index_scene_connection");
             return;

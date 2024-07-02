@@ -124,19 +124,31 @@ class _CourseOrderPageState extends State<CourseOrderPage>
                     }
                   },
                   child: Container(
-                    width: 200,
-                    height: Dimens.h_dp40,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: ImageUtils.getAssetImage("btn_bg_img"),
-                            fit: BoxFit.fill)),
-                    child: Center(
-                      child: Text(
-                        "升级会员",
-                        style: TextStyle(
-                            color: Colours.color_001652,
-                            fontSize: Dimens.font_sp18),
-                      ),
+                    // width: 200,
+                    // height: ,
+                    // height: Dimens.h_dp40,
+                    // decoration: BoxDecoration(
+                    //     image: DecorationImage(
+                    //         image: ImageUtils.getAssetImage("btn_bg_img"),
+                    //         fit: BoxFit.fill)),
+                    child: Stack(
+                      children: [
+                        const Center(
+                          child: LoadAssetImage(
+                            "btn_bg_img",
+                            // width: 11,
+                            // height: 11,
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            "升级会员",
+                            style: TextStyle(
+                                color: Colours.color_001652,
+                                fontSize: Dimens.font_sp18),
+                          ),
+                        ),
+                      ],
                     ),
                   )),
           const SizedBox(

@@ -140,7 +140,7 @@ class _BackgroundState extends State<Background> {
                             : ImageFormat.gif,
                         width: width,
                         height: height,
-                        fit: BoxFit.fitHeight,
+                        fit: BoxFit.fitWidth,
                       )
                       // LoadImage(
                       //   motionImage,
@@ -160,7 +160,7 @@ class _BackgroundState extends State<Background> {
                           : ImageFormat.gif,
                       width: width,
                       height: height,
-                      fit: BoxFit.fitHeight,
+                      fit: BoxFit.fitWidth,
                     ),
                     // LoadImage(
                     //   stillImage,

@@ -660,7 +660,7 @@ class _InstructionalVideoDialoguePageState
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: ImageUtils.getAssetImage(
-                              "queding_img",
+                              "class_qurding_img",
                             ),
                             fit: BoxFit.fill),
                       ),

@@ -481,13 +481,11 @@ class _MockExaminationendTwoPageState extends State<MockExaminationendTwoPage>
                       SystemChrome.setPreferredOrientations([
                         DeviceOrientation.portraitUp,
                       ]);
-                      showModalBottomSheet(
+                      showDialog(
                         context: context,
-                        backgroundColor: Colors.transparent,
                         barrierColor: Colors.transparent,
-                        isScrollControlled: true,
-                        isDismissible: false,
-                        enableDrag: false,
+                        barrierDismissible: false,
+                        useSafeArea: false,
                         builder: (_) => ExamPurchasePage(
                           onPurchased: () {
                             EventBus().emit('PAY');

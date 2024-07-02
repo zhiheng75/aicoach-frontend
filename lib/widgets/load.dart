@@ -42,8 +42,8 @@ class _LoadingDialog extends Dialog {
           ///弹框大小
           child: Container(
             ///弹框背景和圆角
-            height: 88.0,
-            width: 120.0,
+            // height: 88.0,
+            // width: 120.0,
             decoration: const ShapeDecoration(
               color: Color(0xFF3A3A3A),
               shape: RoundedRectangleBorder(

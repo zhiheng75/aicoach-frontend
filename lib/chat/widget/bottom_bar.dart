@@ -402,7 +402,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           if (disabled) {
             return;
           }
-            onEnd(_);
+          onEnd(_);
         },
         child: StreamBuilder(
           stream: AvatarController().getStream(),

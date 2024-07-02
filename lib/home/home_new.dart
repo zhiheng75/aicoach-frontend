@@ -199,14 +199,16 @@ class _HomePageState extends State<HomeNewPage>
                   });
                 })
               : ScenePage(onEnd: () {
-                  changeTab('chat');
-                  Future.delayed(Duration(seconds: 1), () {
-                    EventBus().emit(NotificationUtils.resetChatTwo);
-                  });
+                  if (value['page'] == "0") {
+                    changeTab('chat');
+                    Future.delayed(Duration(seconds: 1), () {
+                      EventBus().emit(NotificationUtils.resetChatTwo);
+                    });
+                  }
                 }),
         );
         // 重置tab
-        changeTab('');
+        // changeTab('');
       });
     });
     Future.delayed(const Duration(seconds: 1), () {

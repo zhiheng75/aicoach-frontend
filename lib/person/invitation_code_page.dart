@@ -104,7 +104,7 @@ class _InvitationCodePageState extends State<InvitationCodePage>
                           // Gaps.vGap20,
                           Container(
                             margin: const EdgeInsets.all(20),
-                            height: Dimens.h_dp40,
+                            // height: Dimens.h_dp40,
                             decoration: BoxDecoration(
                               borderRadius:
                                   BorderRadius.circular(Dimens.h_dp40),
