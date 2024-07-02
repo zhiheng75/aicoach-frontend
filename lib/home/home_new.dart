@@ -191,14 +191,14 @@ class _HomePageState extends State<HomeNewPage>
           builder: (_) => type == 'topic'
               ? TopicPage(onEnd: () {
                   changeTab('chat');
-                  Future.delayed(Duration(seconds: 1), () {
+                  Future.delayed(const Duration(seconds: 1), () {
                     EventBus().emit(NotificationUtils.resetChatTwo);
                   });
                 })
               : ScenePage(onEnd: () {
                   if (value['page'] == "0") {
                     changeTab('chat');
-                    Future.delayed(Duration(seconds: 1), () {
+                    Future.delayed(const Duration(seconds: 1), () {
                       EventBus().emit(NotificationUtils.resetChatTwo);
                     });
                   }
