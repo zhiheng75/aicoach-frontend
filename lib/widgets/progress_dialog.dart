@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../res/gaps.dart';
 
@@ -30,8 +31,8 @@ class ProgressDialog extends Dialog {
       type: MaterialType.transparency,
       child: Center(
         child: Container(
-          height: 88.0,
-          width: 120.0,
+          height: 88.0.h,
+          width: 120.0.w,
           decoration: const ShapeDecoration(
             color: Color(0xFF3A3A3A),
             shape: RoundedRectangleBorder(

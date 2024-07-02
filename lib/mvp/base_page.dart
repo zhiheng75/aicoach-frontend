@@ -7,17 +7,17 @@ import '../widgets/progress_dialog.dart';
 import 'base_presenter.dart';
 import 'mvps.dart';
 
-mixin BasePageMixin<T extends StatefulWidget, P extends BasePresenter> on State<T> implements IMvpView {
-
+mixin BasePageMixin<T extends StatefulWidget, P extends BasePresenter>
+    on State<T> implements IMvpView {
   P? presenter;
 
   P createPresenter();
-  
+
   @override
   BuildContext getContext() {
     return context;
   }
-  
+
   @override
   void closeProgress() {
     if (mounted && _isShowDialog) {
@@ -37,8 +37,10 @@ mixin BasePageMixin<T extends StatefulWidget, P extends BasePresenter> on State<
         showDialog<void>(
           context: context,
           barrierDismissible: false,
-          barrierColor: const Color(0x00FFFFFF), // 默认dialog背景色为半透明黑色，这里修改为透明（1.20添加属性）
-          builder:(_) {
+          barrierColor:
+              const Color(0x00FFFFFF), // 默认dialog背景色为半透明黑色，这里修改为透明（1.20添加属性）
+          builder: (_) {
+            // ignore: deprecated_member_use
             return WillPopScope(
               onWillPop: () async {
                 // 拦截到返回键，证明dialog被手动关闭
@@ -49,7 +51,7 @@ mixin BasePageMixin<T extends StatefulWidget, P extends BasePresenter> on State<
             );
           },
         );
-      } catch(e) {
+      } catch (e) {
         /// 异常原因主要是页面没有build完成就调用Progress。
         debugPrint(e.toString());
       }
@@ -60,10 +62,9 @@ mixin BasePageMixin<T extends StatefulWidget, P extends BasePresenter> on State<
   void showToast(String string) {
     Toast.show(string);
   }
-  
+
   /// 可自定义Progress
   Widget buildProgress() => const ProgressDialog(hintText: '正在加载...');
-
 
   void showLoading(BuildContext context) {
     LoadingDialog.show(context);
@@ -72,7 +73,6 @@ mixin BasePageMixin<T extends StatefulWidget, P extends BasePresenter> on State<
   void hideLoading() {
     LoadingDialog.hidden();
   }
-
 
   @override
   void didChangeDependencies() {
@@ -110,5 +110,4 @@ mixin BasePageMixin<T extends StatefulWidget, P extends BasePresenter> on State<
     presenter?.initState();
     super.initState();
   }
-  
 }
