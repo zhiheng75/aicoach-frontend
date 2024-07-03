@@ -24,10 +24,10 @@ class MyTextField extends StatefulWidget {
     this.getVCode,
     this.keyName,
     this.underLineColor = Colours.color_001652,
-    this.txtStyle = const TextStyle(color: Colors.white, fontSize: 20),
-    this.hintStyle = const TextStyle(color: Colors.white, fontSize: 20),
+    this.txtStyle = const TextStyle(color: Colors.black, fontSize: 20),
+    this.hintStyle = const TextStyle(color: Colors.black, fontSize: 20),
     this.closeColor = Colours.color_001652,
-    this.countDownColor = Colours.color_001652,
+    this.countDownColor = Colors.black,
   });
 
   final TextEditingController controller;
@@ -213,7 +213,7 @@ class _MyTextFieldState extends State<MyTextField> {
       getVCodeButton = MyButton(
         key: const Key('getVerificationCode'),
         onPressed: _clickable ? _getVCode : null,
-        fontSize: Dimens.font_sp12,
+        fontSize: 12.0,
         text: _clickable ? "获取验证码" : '$_currentSecond s',
         textColor: widget.countDownColor,
         disabledTextColor: widget.countDownColor,

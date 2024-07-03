@@ -247,6 +247,8 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                           onTap: () {
                             NavigatorUtils.goWebViewPage(context, "隐私政策",
                                 "http://www.shenmo-ai.com/privacy_policy/");
+                            // NavigatorUtils.goWebViewPage(context, "隐私政策",
+                            //     "https://mini-game-dev.shenmo-ai.com/web/index.html ");
                           },
                           child: const Text("隐私政策",
                               style: TextStyle(
@@ -263,6 +265,8 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                           onTap: () {
                             NavigatorUtils.goWebViewPage(context, "服务协议",
                                 "http://www.shenmo-ai.com/tos/");
+                            // NavigatorUtils.goWebViewPage(context, "服务协议",
+                            //     "https://books.shenmo-ai.com/mobile?character_id=li_bai&v=1&tag=prod&cat=1");
                           },
                           child: const Text(
                             "服务协议",

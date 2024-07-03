@@ -256,6 +256,7 @@ class _CourseReportPageState extends State<CourseReportPage>
             ),
           ),
           height: 180,
+          width: 2000,
           child: SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

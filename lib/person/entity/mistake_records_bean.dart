@@ -87,6 +87,7 @@ class ListList {
   int lessonId;
   String lessonName;
   String lessonLabel;
+  String createdAt;
 
   String lessonType;
   String objectives;
@@ -98,6 +99,7 @@ class ListList {
     required this.levelId,
     required this.levelName,
     required this.lessonLabel,
+    required this.createdAt,
     required this.unitId,
     required this.unitName,
     required this.lessonId,
@@ -115,6 +117,7 @@ class ListList {
         lessonLabel: json["lesson_label"],
         unitId: json["unit_id"],
         unitName: json["unit_name"],
+        createdAt: json["created_at"] ?? "",
         lessonId: json["lesson_id"],
         lessonName: json["lesson_name"],
         lessonType: json["lesson_type"],

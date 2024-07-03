@@ -60,7 +60,7 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
           left: 3,
           // top: 80,
           // width: 50,
-          height: 50.h,
+          height: 60.h,
           child: Stack(
             children: <Widget>[
               Container(
@@ -167,7 +167,7 @@ class _SwitchingTeacherItemState extends State<SwitchingTeacherItem> {
         ),
         Positioned(
           right: 25,
-          bottom: 40.h,
+          bottom: 50.h,
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {

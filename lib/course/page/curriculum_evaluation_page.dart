@@ -195,7 +195,11 @@ class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage>
                               borderRadius:
                                   BorderRadius.all(Radius.circular(13)),
                               color: Colours.color_F8F8F8),
-                          child: Text(lessonFeedbackDetailData.data.feedback))
+                          child: Text(
+                            lessonFeedbackDetailData.data.feedback,
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 13),
+                          ))
                       : Container(
                           margin: const EdgeInsets.all(10),
                           padding: const EdgeInsets.all(10),
@@ -254,10 +258,10 @@ class _CurriculumEvaluationPageState extends State<CurriculumEvaluationPage>
                                 ),
                         ),
                         // Gaps.hGap10,
-                        Text(
+                        const Text(
                           "匿名评价",
-                          style: TextStyle(
-                              fontSize: Dimens.font_sp12, color: Colours.black),
+                          style:
+                              TextStyle(fontSize: 12.0, color: Colours.black),
                         ),
                         Gaps.hGap26,
                       ],

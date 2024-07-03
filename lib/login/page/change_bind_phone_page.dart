@@ -172,16 +172,14 @@ class _ChangeBindPhonePageState extends State<ChangeBindPhonePage>
       MyTextField(
         focusNode: _nodeText2,
         txtStyle: const TextStyle(
-            fontSize: 17,
-            color: Colours.color_111B44,
-            fontWeight: FontWeight.bold),
-        hintStyle: const TextStyle(fontSize: 17, color: Colours.color_B7BFD9),
+            fontSize: 17, color: Colors.black, fontWeight: FontWeight.bold),
+        hintStyle: const TextStyle(fontSize: 17, color: Colors.black),
         controller: _vCodeController,
         maxLength: 6,
         underLineColor: Colours.color_5B8BD2,
         keyboardType: TextInputType.number,
-        countDownColor: Colours.color_546092,
-        closeColor: Colours.color_546092,
+        countDownColor: Colors.black,
+        closeColor: Colors.black,
         hintText: "输入验证码",
         getVCode: () async {
           if (_phoneController.text.isNotEmpty) {

@@ -868,18 +868,18 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   @override
   void paySuccess() {
     // TODO: implement paySuccess
-    if (listData.data[idx].type == 4) {
-      showImageDialog();
+    // if (listData.data[idx].type == 4) {
+    showImageDialog();
 
-      Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-      EventBus().emit(NotificationUtils.resetInFo);
-    } else {
-      Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-      EventBus().emit(NotificationUtils.resetInFo);
-      Future.delayed(const Duration(seconds: 1), () {
-        Navigator.of(context).pop();
-      });
-    }
+    Provider.of<HomeProvider>(context, listen: false).getUsageTime();
+    EventBus().emit(NotificationUtils.resetInFo);
+    // } else {
+    //   Provider.of<HomeProvider>(context, listen: false).getUsageTime();
+    //   EventBus().emit(NotificationUtils.resetInFo);
+    //   Future.delayed(const Duration(seconds: 1), () {
+    //     Navigator.of(context).pop();
+    //   });
+    // }
     DYUtil().evaluate("2");
   }
 

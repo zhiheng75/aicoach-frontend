@@ -29,6 +29,7 @@ import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -126,7 +127,7 @@ class _InstructionalVideoDialoguePageState
 
   late String stepId;
 
-  late String titStr;
+  late String titStr = "";
   late String isVideo = "0";
   late bool isplay = false;
 
@@ -1346,8 +1347,9 @@ class _InstructionalVideoDialoguePageState
   }
 
   Widget navbar() {
-    return Container(
+    return SizedBox(
       height: _screenUtil.statusBarHeight + 84,
+      width: _screenUtil.screenWidth,
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -1368,12 +1370,13 @@ class _InstructionalVideoDialoguePageState
             ),
           ),
           Expanded(
-              child: Center(
-                  child: Text(
-            titStr ?? "",
-            style: const TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold),
-          ))),
+            child: Center(
+                child: Text(
+              titStr,
+              style: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.bold),
+            )),
+          ),
           isUserBuy == 1
               ? Container(
                   width: 35,
@@ -1535,7 +1538,7 @@ class _InstructionalVideoDialoguePageState
                       left: 0,
                       child: content,
                     ),
-                    navbar(),
+                    Positioned(top: 0, left: 0, right: 0, child: navbar()),
                     topWidget(),
                     topFlowWidget(),
                     Positioned(

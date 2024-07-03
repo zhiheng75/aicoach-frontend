@@ -363,7 +363,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                       color: Colors.black,
                     )),
                 Expanded(
-                  child: Text("Learning targe",
+                  child: Text("Learning target",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,

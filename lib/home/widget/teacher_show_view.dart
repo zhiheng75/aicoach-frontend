@@ -97,30 +97,30 @@ class _TeacherShowViewState extends State<TeacherShowView> {
                     ),
                   ),
                 ),
-                Gaps.vGap10,
-                GestureDetector(
-                  onTap: () {
-                    NavigatorUtils.goBack(context);
-                  },
-                  child: Container(
-                    width: 114,
-                    height: 20,
-                    // decoration: BoxDecoration(
-                    //   image: DecorationImage(
-                    //       image: ImageUtils.getAssetImage(
-                    //         "quxiao_img",
-                    //       ),
-                    //       fit: BoxFit.fill),
-                    // ),
-                    child: const Center(
-                      child: Text(
-                        "仍不添加",
-                        style: TextStyle(
-                            fontSize: 13, color: Colours.color_999999),
-                      ),
-                    ),
-                  ),
-                ),
+                // Gaps.vGap10,
+                // GestureDetector(
+                //   onTap: () {
+                //     NavigatorUtils.goBack(context);
+                //   },
+                //   child: Container(
+                //     width: 114,
+                //     height: 20,
+                //     // decoration: BoxDecoration(
+                //     //   image: DecorationImage(
+                //     //       image: ImageUtils.getAssetImage(
+                //     //         "quxiao_img",
+                //     //       ),
+                //     //       fit: BoxFit.fill),
+                //     // ),
+                //     child: const Center(
+                //       child: Text(
+                //         "仍不添加",
+                //         style: TextStyle(
+                //             fontSize: 13, color: Colours.color_999999),
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

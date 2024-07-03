@@ -95,9 +95,9 @@ class _CourseErrorClassItemState extends State<CourseErrorClassItem> {
                   const SizedBox(
                     height: 8.0,
                   ),
-                  const Text(
-                    "学习时间:",
-                    style: TextStyle(
+                  Text(
+                    "学习时间:${widget.unitData.createdAt}",
+                    style: const TextStyle(
                       fontSize: 13.0,
                       fontWeight: FontWeight.w400,
                       color: Colours.color_666666,
