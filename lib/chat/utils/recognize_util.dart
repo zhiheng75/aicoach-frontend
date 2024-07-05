@@ -50,7 +50,7 @@ class RecognizeUtil {
           await _releaseSubscription();
         },
         onError: (_) async {
-          await _releaseSubscription();
+          await _releaseErrorSubscription();
         },
         cancelOnError: false,
       );
@@ -59,6 +59,9 @@ class RecognizeUtil {
         'success': false,
         'message': '发生异常，请重新操作',
       });
+      EventBus().emit(
+        NotificationUtils.resetANChat,
+      );
     }
   }
 
@@ -88,8 +91,11 @@ class RecognizeUtil {
           if (result['code'] != 0) {
             _recognizeResult = {
               'success': false,
-              'message': '发生异常，请重新操作',
+              'message': '抱歉，没听到您的声音，请您重复一遍，谢谢！',
             };
+            // EventBus().emit(
+            //   NotificationUtils.resetANChat,
+            // );
             await _disconnectXfRecognization(
                 WebSocketStatus.normalClosure, result['message']);
             return;
@@ -102,18 +108,21 @@ class RecognizeUtil {
                 'success': false,
                 'message': '抱歉，没听到您的声音，请您重复一遍，谢谢！',
               };
-
+              // EventBus().emit(
+              //   NotificationUtils.resetANChat,
+              // );
               await _disconnectXfRecognization(
                   WebSocketStatus.normalClosure, 'Fail');
-              EventBus().emit(
-                NotificationUtils.resetANChat,
-              );
+
               return;
             }
             _recognizeResult = {
               'success': true,
               'text': _recognizedText,
             };
+            // EventBus().emit(
+            //   NotificationUtils.resetANChat,
+            // );
             await _disconnectXfRecognization(
                 WebSocketStatus.normalClosure, 'Normal');
           }
@@ -124,14 +133,20 @@ class RecognizeUtil {
         onError: (error) async {
           _recognizeResult = {
             'success': false,
-            'message': '发生异常，请重新操作',
+            'message': '抱歉，没听到您的声音，请您重复一遍，谢谢！',
           };
+          EventBus().emit(
+            NotificationUtils.resetANChat,
+          );
           await _disconnectXfRecognization(
               WebSocketStatus.abnormalClosure, error.toString());
         },
         cancelOnError: true,
       );
     } catch (e) {
+      EventBus().emit(
+        NotificationUtils.resetANChat,
+      );
       rethrow;
     }
   }
@@ -158,6 +173,16 @@ class RecognizeUtil {
       await _subscription!.cancel();
       _subscription = null;
     }
+  }
+
+  Future<void> _releaseErrorSubscription() async {
+    if (_subscription != null) {
+      await _subscription!.cancel();
+      _subscription = null;
+    }
+    EventBus().emit(
+      NotificationUtils.resetANChat,
+    );
   }
 }
 

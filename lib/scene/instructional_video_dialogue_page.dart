@@ -973,7 +973,7 @@ class _InstructionalVideoDialoguePageState
   void dispose() {
     Wakelock.disable();
     _mediaUtils.stopPlay();
-    routeObserver.unsubscribe(this); //取消订阅
+    endSocket();
 
     EventBus().off(NotificationUtils.nextClass);
     EventBus().off(NotificationUtils.messageEnd);
@@ -1001,6 +1001,7 @@ class _InstructionalVideoDialoguePageState
         .removeListener(_onPlaybackEnded);
     _controller = null;
     EventUMStatistics.umengCommonOnPageEnd("instructional_video_dialogue_page");
+    routeObserver.unsubscribe(this); //取消订阅
 
     super.dispose();
   }

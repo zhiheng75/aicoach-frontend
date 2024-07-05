@@ -418,7 +418,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     });
 
     EventBus().on(NotificationUtils.resetANChat, (_) {
-      Future.delayed(const Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () async {
+        await _mediaUtils.stopPlay();
+        widget.controller.setDisabled(false);
         widget.controller.setShowRecord(false);
       });
     });
@@ -465,6 +467,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
       //     // ignore: unrelated_type_equality_checks
       //     status == PhoneStateStatus.CALL_STARTED) {
       await _mediaUtils.stopPlay();
+      widget.controller.setShowRecord(false);
       widget.controller.setDisabled(false);
       // }
       Log.e(status.status.name);
@@ -597,21 +600,21 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                       height: 50.0,
                       fit: BoxFit.fitHeight,
                     )
-                  : const Row(
+                  : Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       // mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        LoadAssetImage(
+                        const LoadAssetImage(
                           'maikefeng',
                           width: 24.0,
                           height: 24.0,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5.0,
                         ),
                         Text(
-                          '按住说话',
-                          style: TextStyle(
+                          disabled ? "AI 识别中" : '按住说话',
+                          style: const TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
@@ -707,6 +710,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                             duration: 1000,
                           );
                           widget.controller.setShowRecord(false);
+                          widget.controller.setDisabled(false);
                         }
                         return;
                       }

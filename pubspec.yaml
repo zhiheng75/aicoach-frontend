@@ -87,7 +87,7 @@ dependencies:
   #进度条
   percent_indicator: ^4.0.1
   # websocket https://github.com/dart-lang/web_socket_channel
-  web_socket_channel: ^2.4.0
+  web_socket_channel: ^3.0.0
   # flutter_sound https://github.com/canardoux/flutter_sound
   flutter_sound: ^9.2.13
   # flutter_sound: ^9.4.6
@@ -159,7 +159,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
   json_serializable: ^6.2.0
-  build_runner: ^2.0.0
+  # build_runner: ^2.0.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
