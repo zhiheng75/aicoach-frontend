@@ -81,7 +81,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   final ScreenUtil _screenUtil = ScreenUtil();
   late HomeProvider _homeProvider;
   final MediaUtils _mediaUtils = MediaUtils();
-  final RecognizeUtil _recognizeUtil = RecognizeUtil();
+  RecognizeUtil _recognizeUtil = RecognizeUtil();
   List<Uint8List> _bufferList = [];
   // ai回答消息
   NormalMessage? _answer;
@@ -285,7 +285,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
 
   void onWebsocketEnd(String? reason, String endType) {
     _homeProvider.endUsageTimeCutdown();
-    widget.controller.setDisabled(true);
+    // widget.controller.setDisabled(true);
     // 异常结束
     if (reason == 'Error') {
       if (widget.onError != null) {
@@ -419,25 +419,32 @@ class _CourseBottomBarState extends State<CourseBottomBar>
 
     EventBus().on(NotificationUtils.resetANChat, (_) {
       Future.delayed(const Duration(seconds: 1), () async {
-        await _mediaUtils.stopPlay();
+        await _mediaUtils.stopTwoPlay();
         widget.controller.setDisabled(false);
         widget.controller.setShowRecord(false);
       });
     });
 
     // 全局监听App状态
-    // SystemChannels.lifecycle.setMessageHandler((message) async {
-    // 退到后台
-    // ignore: unrelated_type_equality_checks
-    // if (message == 'AppLifecycleState.paused') {
-    //   await MediaUtils().stopPlayByAppPaused();
-    // }
-    // if (message == 'AppLifecycleState.resumed') {}
+    SystemChannels.lifecycle.setMessageHandler((message) async {
+      // 退到后台
+      // ignore: unrelated_type_equality_checks
+      if (message == 'AppLifecycleState.paused') {
+        // await MediaUtils().stopPlayByAppPaused();
+        await _mediaUtils.stopTwoPlay();
+        widget.controller.setShowRecord(false);
+        widget.controller.setDisabled(false);
+      }
+      if (message == 'AppLifecycleState.resumed') {
+        await _mediaUtils.stopTwoPlay();
+        widget.controller.setShowRecord(false);
+        widget.controller.setDisabled(false);
+      }
 
-    // _appLifecycleState = message;
+      // _appLifecycleState = message;
 
-    //   return message;
-    // });
+      return message;
+    });
     // requestPermission();
 
     if (Device.isIOS) {
@@ -466,7 +473,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
       //     status == PhoneStateStatus.CALL_ENDED ||
       //     // ignore: unrelated_type_equality_checks
       //     status == PhoneStateStatus.CALL_STARTED) {
-      await _mediaUtils.stopPlay();
+      await _mediaUtils.stopTwoPlay();
       widget.controller.setShowRecord(false);
       widget.controller.setDisabled(false);
       // }
@@ -474,15 +481,19 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     });
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.inactive) {}
-    _appLifecycleState = state;
-    // Future.delayed(Duration.zero, () async {
-    //   await _mediaUtils.stopPlay();
-    // });
-  }
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   super.didChangeAppLifecycleState(state);
+  //   if (state == AppLifecycleState.inactive) {}
+  //   _appLifecycleState = state;
+
+  //   Future.delayed(Duration.zero, () async {
+  //     await _mediaUtils.stopTwoPlay();
+  //   });
+  //   // Future.delayed(Duration.zero, () async {
+  //   //   await _mediaUtils.stopPlay();
+  //   // });
+  // }
 
   @override
   void dispose() {
@@ -689,14 +700,20 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                       widget.controller.setShowRecord(false);
                       return;
                     }
+                    _recognizeUtil = RecognizeUtil();
+                    _recognizeUtil.setLanguage(widget.language ?? 'en');
                     // 开始录音
                     _bufferList = [];
                     _mediaUtils.startRecord(onData: (buffer) {
                       _bufferList.add(buffer);
                       _recognizeUtil.pushAudioBuffer(1, buffer);
+                      Log.e("111111111111111");
                     }, onComplete: (buffer) {
                       _recognizeUtil.pushAudioBuffer(2, buffer ?? Uint8List(0));
+                      _bufferList.add(buffer ?? Uint8List(0));
+                      Log.e("22222222222222");
                     });
+
                     // 设置识别
                     _recognizeUtil.recognize((result) async {
                       bool shoRecord = widget.controller.showRecord.value;
@@ -727,6 +744,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                           duration: 1000,
                         );
                         widget.controller.setDisabled(false);
+                        widget.controller.setShowRecord(false);
                         return;
                       }
 

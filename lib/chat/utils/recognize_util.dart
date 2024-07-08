@@ -6,6 +6,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -59,9 +60,7 @@ class RecognizeUtil {
         'success': false,
         'message': '发生异常，请重新操作',
       });
-      EventBus().emit(
-        NotificationUtils.resetANChat,
-      );
+      onSuccess(_recognizeResult);
     }
   }
 
@@ -93,9 +92,7 @@ class RecognizeUtil {
               'success': false,
               'message': '抱歉，没听到您的声音，请您重复一遍，谢谢！',
             };
-            // EventBus().emit(
-            //   NotificationUtils.resetANChat,
-            // );
+            onSuccess(_recognizeResult);
             await _disconnectXfRecognization(
                 WebSocketStatus.normalClosure, result['message']);
             return;
@@ -108,21 +105,15 @@ class RecognizeUtil {
                 'success': false,
                 'message': '抱歉，没听到您的声音，请您重复一遍，谢谢！',
               };
-              // EventBus().emit(
-              //   NotificationUtils.resetANChat,
-              // );
+              onSuccess(_recognizeResult);
               await _disconnectXfRecognization(
                   WebSocketStatus.normalClosure, 'Fail');
-
               return;
             }
             _recognizeResult = {
               'success': true,
               'text': _recognizedText,
             };
-            // EventBus().emit(
-            //   NotificationUtils.resetANChat,
-            // );
             await _disconnectXfRecognization(
                 WebSocketStatus.normalClosure, 'Normal');
           }
@@ -135,18 +126,18 @@ class RecognizeUtil {
             'success': false,
             'message': '抱歉，没听到您的声音，请您重复一遍，谢谢！',
           };
-          EventBus().emit(
-            NotificationUtils.resetANChat,
-          );
+          onSuccess(_recognizeResult);
           await _disconnectXfRecognization(
               WebSocketStatus.abnormalClosure, error.toString());
         },
         cancelOnError: true,
       );
     } catch (e) {
-      EventBus().emit(
-        NotificationUtils.resetANChat,
-      );
+      _recognizeResult = {
+        'success': false,
+        'message': '发生异常，请重新操作',
+      };
+      onSuccess(_recognizeResult);
       rethrow;
     }
   }
@@ -156,6 +147,7 @@ class RecognizeUtil {
       'success': false,
       'message': '已取消',
     };
+
     await _disconnectXfRecognization(WebSocketStatus.normalClosure, 'Cancel');
   }
 

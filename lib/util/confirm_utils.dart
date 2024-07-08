@@ -259,7 +259,7 @@ class Confirm extends StatelessWidget {
               ),
               Expanded(
                 child: button(
-                  '确定',
+                  confirmButtonText ?? '确定',
                   onPress: () {
                     Navigator.of(context).pop();
                     onConfirm();

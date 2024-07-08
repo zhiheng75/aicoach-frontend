@@ -250,7 +250,7 @@ class _CheckCodePageState extends State<CheckCodePage>
     // TODO: implement loginSuccess
     Navigator.pop(context);
     if (widget.typeLogin == "0") {
-      Constant.jverify.dismissLoginAuthView();
+      // Constant.jverify.dismissLoginAuthView();
       hideLoading();
     }
 

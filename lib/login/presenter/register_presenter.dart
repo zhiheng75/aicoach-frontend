@@ -10,6 +10,7 @@ import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load.dart';
 import 'package:dio/dio.dart';
+import 'package:jpush_flutter/jpush_flutter.dart';
 import 'package:sp_util/sp_util.dart';
 
 import '../../constant/constant.dart';
@@ -77,6 +78,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           EventUMStatistics.umengCommonMapEvent(
             "click_index_login",
           );
+
           // view.wechatLoginSuccess("登录成功");
           view.loginSuccess();
         } else {
@@ -126,6 +128,14 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           EventUMStatistics.umengCommonMapEvent(
             "click_index_login",
           );
+          JPush().setup(
+            appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
+            channel: "theChannel",
+            production: false,
+            debug: true,
+          );
+          JPush().setAlias(data.data.id.toString()).then((map) {});
+          //
           view.loginSuccess();
         } else {
           LoadingDialog.hidden();
@@ -154,6 +164,13 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           EventUMStatistics.umengCommonMapEvent(
             "click_index_login",
           );
+          JPush().setup(
+            appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
+            channel: "theChannel",
+            production: false,
+            debug: true,
+          );
+          JPush().setAlias(data.data.id.toString()).then((map) {});
           view.loginSuccess();
         }
       }
@@ -203,6 +220,13 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           EventUMStatistics.umengCommonMapEvent(
             "click_index_login",
           );
+          JPush().setup(
+            appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
+            channel: "theChannel",
+            production: false,
+            debug: true,
+          );
+          JPush().setAlias(newWxInfoBean.data.id.toString()).then((map) {});
           Log.e("======进来了吗=======");
           view.hadBindWechat();
         } else {

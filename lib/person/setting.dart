@@ -10,6 +10,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluwx/fluwx.dart';
+import 'package:jpush_flutter/jpush_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:Bubble/widgets/my_alert.dart';
 
@@ -465,7 +466,14 @@ class _SettingPageState extends State<SettingPage>
                               NavigatorUtils.goBack(context);
                               //
                               EventBus().emit(NotificationUtils.loginOut);
-
+                              JPush().setup(
+                                appKey:
+                                    "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
+                                channel: "theChannel",
+                                production: false,
+                                debug: true,
+                              );
+                              JPush().deleteAlias();
                               // EventBus().emit(NotificationUtils.loginIn);
                             }
                           });

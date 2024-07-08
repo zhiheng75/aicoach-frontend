@@ -26,6 +26,7 @@ import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/scene/entity/category_entity.dart';
 import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/scene/widget/select_scene.dart';
+import 'package:Bubble/test/demo.dart';
 import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/confirm_utils.dart';
 import 'package:Bubble/util/device_utils.dart';
@@ -51,7 +52,8 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
 import 'package:Bubble/chat/entity/character_list_bean.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluwx/fluwx.dart';
-import 'package:jverify/jverify.dart';
+import 'package:jpush_flutter/jpush_flutter.dart';
+// import 'package:jverify/jverify.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:Bubble/exam/exam_router.dart';
@@ -101,6 +103,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   late String bubbleAndriodVersionStr = "";
   late String bubbleAndriodVersionApprovalStr = "";
+
+  final JPush jpush = JPush();
 
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Unknown',
@@ -732,8 +736,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       SpUtil.putString(Constant.teacherId, "0");
     }
 
-    // 初始化手机号一键登录插件
+    // 初始化极光推送
     initPlatformState();
+    // initPlatformPhoneState();
     // 获取体验时间
     // _homeProvider.getUsageTime();
 
@@ -925,23 +930,64 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     EventUMStatistics.umengCommonInit();
   }
 
+// Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    // 初始化 SDK 之前添加监听
-    Constant.jverify.addSDKSetupCallBackListener((JVSDKSetupEvent event) {
-      LogUtil.d("receive sdk setup call back event :${event.toMap()}");
-    });
+    String? platformVersion;
 
-    Constant.jverify.setDebugMode(true); // 打开调试模式
-    Constant.jverify.setup(
-        appKey: "d213d60b209d0807dc4146f4", //"你自己应用的 AppKey",
-        channel: "devloper-default"); // 初始化sdk,  appKey 和 channel 只对ios设置有效
+    try {
+      jpush.addEventHandler(
+          onReceiveNotification: (Map<String, dynamic> message) async {
+        print("flutter onReceiveNotification: $message");
+      }, onOpenNotification: (Map<String, dynamic> message) async {
+        print("flutter onOpenNotification: $message");
+      }, onReceiveMessage: (Map<String, dynamic> message) async {
+        print("flutter onReceiveMessage: $message");
+      }, onReceiveNotificationAuthorization:
+              (Map<String, dynamic> message) async {
+        print("flutter onReceiveNotificationAuthorization: $message");
+      });
+    } on PlatformException {
+      platformVersion = 'Failed to get platform version.';
+    }
+
+    jpush.setup(
+      appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
+      channel: "theChannel",
+      production: false,
+      debug: true,
+    );
+    if (Platform.isIOS) {
+      jpush.applyPushAuthority(
+          const NotificationSettingsIOS(sound: true, alert: true, badge: true));
+    }
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    jpush.getRegistrationID().then((rid) {
+      print("flutter get registration id : $rid");
+    });
+    jpush.clearAllNotifications();
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
     if (!mounted) return;
-
-    /// 授权页面点击时间监听
-    Constant.jverify.addAuthPageEventListener((JVAuthPageEvent event) {
-      LogUtil.d("receive auth page event :${event.toMap()}");
-    });
   }
+
+  // Future<void> initPlatformPhoneState() async {
+  //   // 初始化 SDK 之前添加监听
+  //   Constant.jverify.addSDKSetupCallBackListener((JVSDKSetupEvent event) {
+  //     LogUtil.d("receive sdk setup call back event :${event.toMap()}");
+  //   });
+
+  //   Constant.jverify.setDebugMode(true); // 打开调试模式
+  //   Constant.jverify.setup(
+  //       appKey: "0ce313d976a06a8f651f2252", //"你自己应用的 AppKey",
+  //       channel: "devloper-default"); // 初始化sdk,  appKey 和 channel 只对ios设置有效
+  //   if (!mounted) return;
+
+  //   /// 授权页面点击时间监听
+  //   Constant.jverify.addAuthPageEventListener((JVAuthPageEvent event) {
+  //     LogUtil.d("receive auth page event :${event.toMap()}");
+  //   });
+  // }
 
   @override
   void dispose() {
@@ -955,6 +1001,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    // return const Demo();
 
     Widget bg = Container(
       width: _screenUtil.screenWidth,

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:jverify/jverify.dart';
+// import 'package:jverify/jverify.dart';
 
 class Constant {
   /// App运行在Release环境时，inProduction为true；当App运行在Debug和Profile环境时，inProduction为false
@@ -47,7 +47,7 @@ class Constant {
 
   static const String jgMsgKey = "message";
 
-  static Jverify jverify = Jverify();
+  // static Jverify jverify = Jverify();
 
   static const String teacherId = 'teacherId';
   static const String avatarId = 'avatarId';

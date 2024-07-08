@@ -1,6 +1,7 @@
 import 'package:Bubble/util/douyin_util.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:dio/dio.dart';
+import 'package:jpush_flutter/jpush_flutter.dart';
 import 'package:sp_util/sp_util.dart';
 
 import '../../constant/constant.dart';

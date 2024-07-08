@@ -210,6 +210,24 @@ class MediaUtils {
     AvatarController().stopSpeak();
   }
 
+  Future<void> stopTwoPlay() async {
+    if (_currentPlayer != null) {
+      Player player = _currentPlayer!;
+      _currentPlayer = null;
+      if (player is BufferPlayer) {
+        await player.stop();
+      }
+      if (player is FilePlayer) {
+        await player.stop();
+      }
+    }
+    if (_listPlayer != null) {
+      ListPlayer listPlayer = _listPlayer!;
+      _listPlayer = null;
+      await listPlayer.stop();
+    }
+  }
+
   Future<void> stopPlayByAppPaused() async {
     await stopPlay();
   }

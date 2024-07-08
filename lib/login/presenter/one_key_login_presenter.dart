@@ -24,6 +24,7 @@ class OneKeyLoginPresenter extends BasePagePresenter<OneKeyLoginView> {
           EventUMStatistics.umengCommonMapEvent(
             "click_index_login",
           );
+
           view.loginSuccess();
         }
       }

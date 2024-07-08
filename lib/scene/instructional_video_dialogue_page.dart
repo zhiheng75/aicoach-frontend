@@ -36,6 +36,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:native_video_player/native_video_player.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import 'package:volume_controller/volume_controller.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -157,7 +158,7 @@ class _InstructionalVideoDialoguePageState
 
   late bool isShowbottom = false;
   bool isLoding = true;
-
+  late String sessionId;
   Widget lodingView() {
     return const Center(
       child: CircularProgressIndicator(),
@@ -183,6 +184,8 @@ class _InstructionalVideoDialoguePageState
         isShowDialog = false;
         _secondsRemaining = 0;
         // newDataIdx = newDataIdx + 1;
+        sessionId = const Uuid().v4().replaceAll('-', '');
+
         forstartFlow(newDataIdx, resourceIdx);
         setState(() {});
       } else {
@@ -241,6 +244,7 @@ class _InstructionalVideoDialoguePageState
         lessonId: lessonId,
         characterId: characterId,
         sceneId: sceneId,
+        sessionIdStr: sessionId,
         onConnected: () {
           // _pageState = 'success';
           // setState(() {});
@@ -365,21 +369,21 @@ class _InstructionalVideoDialoguePageState
   void onWebsocketEnd(String? reason, String endType) {
     _homeProvider.endUsageTimeCutdown();
 
-    // 异常结束
-    if (reason == 'Error') {
-      // insertTipMessage('Please switch to new class');
-      // init();
-      onReold("您的网络不太顺畅，请检查网络情况。");
-    }
-    if (reason == 'keepalive ping timeout') {
-      //超时断开走这里
-      onReold("离开太久了!");
-    }
     // 正常结束
     if (reason == 'Session End' && endType != 'force') {
       // insertTipMessage('Class finished！');
       _bottomBarControll.setDisabled(true);
       _isConversationEnd = true;
+    } else if (reason == 'Error') {
+      // 异常结束
+      // insertTipMessage('Please switch to new class');
+      // init();
+      onReold("您的网络不太顺畅，请检查网络情况。");
+    } else if (reason == 'keepalive ping timeout') {
+      //超时断开走这里
+      onReold("离开太久了!");
+    } else {
+      onReold("离开太久了!");
     }
   }
 
@@ -460,6 +464,8 @@ class _InstructionalVideoDialoguePageState
     EventBus().on(NotificationUtils.nextClass, (idx) {
       newDataIdx = newDataIdx + 1;
       resourceIdx = 0;
+      sessionId = const Uuid().v4().replaceAll('-', '');
+
       forstartFlow(newDataIdx, resourceIdx);
       // forFlow();
     });
@@ -510,7 +516,7 @@ class _InstructionalVideoDialoguePageState
     _pageState = 'success';
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     _homeProvider.ishread = "0";
-
+    sessionId = const Uuid().v4().replaceAll('-', '');
     forstartFlow(newDataIdx, resourceIdx);
     // 监听App状态
     //   ScreenUtil.init(context);
@@ -564,24 +570,24 @@ class _InstructionalVideoDialoguePageState
     });
   }
 
-  showImageDialog() {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return ClassShowView(() {
-            //确定
-            resourceIdx = 0;
-            forstartFlow(newDataIdx, resourceIdx);
-          }, () {
-            //重新来
-            resourceIdx = 0;
+  // showImageDialog() {
+  //   showDialog(
+  //       context: context,
+  //       barrierDismissible: false,
+  //       builder: (BuildContext context) {
+  //         return ClassShowView(() {
+  //           //确定
+  //           resourceIdx = 0;
+  //           forstartFlow(newDataIdx, resourceIdx);
+  //         }, () {
+  //           //重新来
+  //           resourceIdx = 0;
 
-            newDataIdx = newDataIdx - 1;
-            forstartFlow(newDataIdx, resourceIdx);
-          });
-        });
-  }
+  //           newDataIdx = newDataIdx - 1;
+  //           forstartFlow(newDataIdx, resourceIdx);
+  //         });
+  //       });
+  // }
 
   Widget showDia() {
     return Container(
@@ -614,6 +620,8 @@ class _InstructionalVideoDialoguePageState
                       setState(() {
                         isShowDialog = false;
                       });
+                      sessionId = const Uuid().v4().replaceAll('-', '');
+
                       forstartFlow(newDataIdx, resourceIdx);
                     },
                     child: Container(
@@ -652,6 +660,7 @@ class _InstructionalVideoDialoguePageState
                       setState(() {
                         isShowDialog = false;
                       });
+                      sessionId = const Uuid().v4().replaceAll('-', '');
 
                       forstartFlow(newDataIdx, resourceIdx);
                     },
@@ -695,6 +704,8 @@ class _InstructionalVideoDialoguePageState
     // dataIdx = dataIdx + 1;
     if (resourceIdx < data[newDataIdx].resource.length) {
       // resourceIdx = resourceIdx + 1;
+      sessionId = const Uuid().v4().replaceAll('-', '');
+
       forstartFlow(newDataIdx, resourceIdx);
     } else {
       newDataIdx = newDataIdx + 1;
@@ -945,27 +956,27 @@ class _InstructionalVideoDialoguePageState
     });
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    // if (state == AppLifecycleState.inactive) {
-    //   if (isShowStr == "1") {
-    //     // 应用程序已经进入后台 或锁屏
-    //     ConfirmUtils.showSingle(
-    //       context: context,
-    //       title: "请重新开始对话",
-    //       onCancel: () {
-    //         endSocket();
-    //         Navigator.of(context).pop();
-    //         widget.onEnd();
-    //       },
-    //     );
-    //     isShowStr = "2";
-    //   }
-    // }
-    // _appLifecycleState = state;
-    // Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
-  }
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   super.didChangeAppLifecycleState(state);
+  //   // if (state == AppLifecycleState.inactive) {
+  //   //   if (isShowStr == "1") {
+  //   //     // 应用程序已经进入后台 或锁屏
+  //   //     ConfirmUtils.showSingle(
+  //   //       context: context,
+  //   //       title: "请重新开始对话",
+  //   //       onCancel: () {
+  //   //         endSocket();
+  //   //         Navigator.of(context).pop();
+  //   //         widget.onEnd();
+  //   //       },
+  //   //     );
+  //   //     isShowStr = "2";
+  //   //   }
+  //   // }
+  //   // _appLifecycleState = state;
+  //   // Future.delayed(Duration.zero, () async => await _mediaUtils.stopPlay());
+  // }
 
   bool isAutoplayEnabled = false;
   bool isPlaybackLoopEnabled = false;
@@ -1500,7 +1511,7 @@ class _InstructionalVideoDialoguePageState
                   controller: _bottomBarControll,
                   recordController: _recordController,
                   onFinshEnd: (data) {
-                    if (data == true) {}
+                    // if (data == true) {}
                   },
                   onScrollEnd: () {
                     _listScrollController.scrollToEnd();

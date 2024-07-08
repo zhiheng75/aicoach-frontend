@@ -30,6 +30,7 @@ class ChatWebsocket {
     // 话题和场景都用sceneID
     String? sceneId,
     String? lessonId,
+    String? sessionIdStr,
     Function()? onConnected,
     required Function(dynamic) onAnswer,
     required Function(String?, String) onEnd,
@@ -40,7 +41,7 @@ class ChatWebsocket {
     _endType = '';
     String sessionId = '';
     try {
-      sessionId = await _connect(characterId, sceneId, lessonId);
+      sessionId = await _connect(characterId, sceneId, lessonId, sessionIdStr);
     } catch (e) {
       rethrow;
     }
@@ -108,9 +109,13 @@ class ChatWebsocket {
     await _websocket!.sink.close(WebSocketStatus.normalClosure, 'Session End');
   }
 
-  Future<String> _connect(
-      String characterId, String? sceneId, String? lessonId) async {
+  Future<String> _connect(String characterId, String? sceneId, String? lessonId,
+      String? sessionIdStr) async {
     String sessionId = const Uuid().v4().replaceAll('-', '');
+    if (sessionIdStr!.isNotEmpty) {
+      sessionId = sessionIdStr;
+    }
+
     String deviceId = await Device.getDeviceId();
     String token = LoginManager.getUserToken();
     // 测试

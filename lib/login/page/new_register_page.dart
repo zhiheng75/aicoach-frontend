@@ -11,7 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluwx/fluwx.dart';
-import 'package:jverify/jverify.dart';
+// import 'package:jverify/jverify.dart';
 
 import '../../constant/constant.dart';
 import '../../dialog/agreement_dialog.dart';
@@ -536,7 +536,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
   @override
   void loginSuccess() {
     if (widget.isKeyLogin) {
-      Constant.jverify.dismissLoginAuthView();
+      // Constant.jverify.dismissLoginAuthView();
       hideLoading();
     }
     NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);

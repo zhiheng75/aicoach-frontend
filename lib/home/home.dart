@@ -16,7 +16,7 @@ import 'package:Bubble/home/widget/recommend_teacher_widget.dart';
 import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
-import 'package:jverify/jverify.dart';
+// import 'package:jverify/jverify.dart';
 import 'package:provider/provider.dart';
 import '../conversation/conversation_router.dart';
 import '../entity/result_entity.dart';
@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    // initPlatformState();
     init();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
@@ -473,21 +473,21 @@ class _HomePageState extends State<HomePage>
   //   );
   // }
 
-  Future<void> initPlatformState() async {
-    // 初始化 SDK 之前添加监听
-    Constant.jverify.addSDKSetupCallBackListener((JVSDKSetupEvent event) {
-      LogUtil.d("receive sdk setup call back event :${event.toMap()}");
-    });
+  // Future<void> initPlatformState() async {
+  //   // 初始化 SDK 之前添加监听
+  //   Constant.jverify.addSDKSetupCallBackListener((JVSDKSetupEvent event) {
+  //     LogUtil.d("receive sdk setup call back event :${event.toMap()}");
+  //   });
 
-    Constant.jverify.setDebugMode(true); // 打开调试模式
-    Constant.jverify.setup(
-        appKey: "d213d60b209d0807dc4146f4", //"你自己应用的 AppKey",
-        channel: "devloper-default"); // 初始化sdk,  appKey 和 channel 只对ios设置有效
-    if (!mounted) return;
+  //   Constant.jverify.setDebugMode(true); // 打开调试模式
+  //   Constant.jverify.setup(
+  //       appKey: "0ce313d976a06a8f651f2252", //"你自己应用的 AppKey",
+  //       channel: "devloper-default"); // 初始化sdk,  appKey 和 channel 只对ios设置有效
+  //   if (!mounted) return;
 
-    /// 授权页面点击时间监听
-    Constant.jverify.addAuthPageEventListener((JVAuthPageEvent event) {
-      LogUtil.d("receive auth page event :${event.toMap()}");
-    });
-  }
+  //   /// 授权页面点击时间监听
+  //   Constant.jverify.addAuthPageEventListener((JVAuthPageEvent event) {
+  //     LogUtil.d("receive auth page event :${event.toMap()}");
+  //   });
+  // }
 }
