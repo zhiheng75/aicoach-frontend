@@ -209,7 +209,11 @@ class _HomePageState extends State<HomeNewPage>
       });
     });
     Future.delayed(const Duration(seconds: 1), () {
+      EventUMStatistics.umengCommonOnPageEnd("home_two_page");
+
+      EventUMStatistics.umengCommonOnPageEnd("course_home_page");
       EventUMStatistics.umengCommonOnPageStart("home_new_page");
+      EventUMStatistics.umengCommonOnPageEnd("person_page");
     });
   }
 

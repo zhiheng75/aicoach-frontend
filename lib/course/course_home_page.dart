@@ -9,6 +9,7 @@ import 'package:Bubble/course/view/course_home_page_view.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/home/widget/course_show_view.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
+import 'package:Bubble/main.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/colors.dart';
@@ -38,6 +39,7 @@ class CourseHomePage extends StatefulWidget {
 class _CourseHomePageState extends State<CourseHomePage>
     with
         BasePageMixin<CourseHomePage, CourseHomePagePresenter>,
+        WidgetsBindingObserver,
         RouteAware,
         AutomaticKeepAliveClientMixin<CourseHomePage>
     implements CourseHomePageView {
@@ -160,8 +162,44 @@ class _CourseHomePageState extends State<CourseHomePage>
       _courseHomePagePresenter.getLessonList();
     });
     Future.delayed(const Duration(seconds: 1), () {
+      EventUMStatistics.umengCommonOnPageEnd("home_two_page");
+
       EventUMStatistics.umengCommonOnPageStart("course_home_page");
+      EventUMStatistics.umengCommonOnPageEnd("home_new_page");
+      EventUMStatistics.umengCommonOnPageEnd("person_page");
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didPush() {
+    // TODO: implement didPush
+    super.didPush();
+    //从其他页面过来
+  }
+
+  @override
+  void didPushNext() {
+    // TODO: implement didPushNext
+    super.didPushNext();
+  }
+
+  @override
+  void didPopNext() {
+    // TODO: implement didPopNext
+    super.didPopNext();
+    _courseHomePagePresenter.getLessonList();
+  }
+
+  @override
+  void didPop() {
+    ///从B退回到A的是调用
+    super.didPop();
   }
 
   @override

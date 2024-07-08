@@ -40,6 +40,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
 
@@ -488,6 +489,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+                          // LottieBuilder.asset(name)
                           Text(
                             "纠错",
                             style: TextStyle(

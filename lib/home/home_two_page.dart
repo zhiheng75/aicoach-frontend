@@ -15,6 +15,7 @@ import 'package:Bubble/home/widget/home_item.dart';
 import 'package:Bubble/home/widget/player_widget.dart';
 import 'package:Bubble/home/widget/teacher_show_view.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
+import 'package:Bubble/main.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
@@ -74,7 +75,9 @@ class HomeTwoPage extends StatefulWidget {
 class _HomeTwoPageState extends State<HomeTwoPage>
     with
         BasePageMixin<HomeTwoPage, HomeTwoPagePresenter>,
-        AutomaticKeepAliveClientMixin<HomeTwoPage>
+        AutomaticKeepAliveClientMixin<HomeTwoPage>,
+        WidgetsBindingObserver,
+        RouteAware
     implements HomeTwoPageView {
   int currentIndex = 0;
   late HomeProvider _homeProvider;
@@ -735,6 +738,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     if (teacherId.isEmpty) {
       SpUtil.putString(Constant.teacherId, "0");
     }
+    WidgetsBinding.instance.addObserver(this);
 
     // 初始化极光推送
     initPlatformState();
@@ -760,8 +764,21 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     }
     Future.delayed(const Duration(seconds: 2), () {
       EventUMStatistics.umengCommonOnPageStart("home_two_page");
+
+      EventUMStatistics.umengCommonOnPageEnd("course_home_page");
+      EventUMStatistics.umengCommonOnPageEnd("home_new_page");
+      EventUMStatistics.umengCommonOnPageEnd("person_page");
       getStandardAnswer();
     });
+    // Future.delayed(const Duration(seconds: 8), () {
+    //   EventUMStatistics.umengCommonOnPageEnd("home_two_page");
+    // });
+  }
+
+  @override
+  void didChangeDependencies() {
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+    super.didChangeDependencies();
   }
 
   void getStandardAnswer() {
@@ -990,10 +1007,36 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   // }
 
   @override
+  void didPush() {
+    // TODO: implement didPush
+    super.didPush();
+    //从其他页面过来
+  }
+
+  @override
+  void didPushNext() {
+    // TODO: implement didPushNext
+    super.didPushNext();
+  }
+
+  @override
+  void didPopNext() {
+    // TODO: implement didPopNext
+    super.didPopNext();
+  }
+
+  @override
+  void didPop() {
+    ///从B退回到A的是调用
+    super.didPop();
+  }
+
+  @override
   void dispose() {
     EventBus().off(NotificationUtils.loginIn);
     EventBus().off(NotificationUtils.loginOut);
     EventUMStatistics.umengCommonOnPageEnd("home_two_page");
+    WidgetsBinding.instance.removeObserver(this);
 
     super.dispose();
   }

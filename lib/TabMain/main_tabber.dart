@@ -60,6 +60,8 @@ class _MainTabberState extends State<MainTabber> {
     _controller!.index = 0;
     currentIndex = 0;
     tabSelect(currentIndex);
+    tabUMSelect(currentIndex);
+
     EventBus().on(NotificationUtils.loginOut, (_) {
       setState(() {
         currentIndex = 0;
@@ -122,6 +124,34 @@ class _MainTabberState extends State<MainTabber> {
     }
   }
 
+  void tabUMSelect(int index) {
+    if (index == 0) {
+      EventUMStatistics.umengCommonOnPageStart("home_two_page");
+
+      EventUMStatistics.umengCommonOnPageEnd("course_home_page");
+      EventUMStatistics.umengCommonOnPageEnd("home_new_page");
+      EventUMStatistics.umengCommonOnPageEnd("person_page");
+    } else if (index == 1) {
+      EventUMStatistics.umengCommonOnPageEnd("home_two_page");
+
+      EventUMStatistics.umengCommonOnPageStart("course_home_page");
+      EventUMStatistics.umengCommonOnPageEnd("home_new_page");
+      EventUMStatistics.umengCommonOnPageEnd("person_page");
+    } else if (index == 2) {
+      EventUMStatistics.umengCommonOnPageEnd("home_two_page");
+
+      EventUMStatistics.umengCommonOnPageEnd("course_home_page");
+      EventUMStatistics.umengCommonOnPageStart("home_new_page");
+      EventUMStatistics.umengCommonOnPageEnd("person_page");
+    } else if (index == 3) {
+      EventUMStatistics.umengCommonOnPageEnd("home_two_page");
+
+      EventUMStatistics.umengCommonOnPageEnd("course_home_page");
+      EventUMStatistics.umengCommonOnPageEnd("home_new_page");
+      EventUMStatistics.umengCommonOnPageStart("person_page");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // tabContext = context;
@@ -181,6 +211,7 @@ class _MainTabberState extends State<MainTabber> {
           } else if (index == 3) {
             EventUMStatistics.umengCommonMapEvent("click_Nav_Profile_button");
           }
+          tabUMSelect(index);
           // if (index == 3) {
           //   if (LoginManager.isLogin()) {
           //     setState(() {
