@@ -9,7 +9,6 @@ import 'package:device_identity/device_identity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bugly/flutter_bugly.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
@@ -35,54 +34,41 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver();
 String? _appLifecycleState;
 
 Future<void> main() async {
-  FlutterBugly.postCatchedException(
-    () {
-      /// 异常处理
-      handleError(() async {
-        /// 确保初始化完成
-        WidgetsFlutterBinding.ensureInitialized();
+  /// 异常处理
+  handleError(() async {
+    /// 确保初始化完成
+    WidgetsFlutterBinding.ensureInitialized();
 
-        /// sp初始化
-        await SpUtil.getInstance();
+    /// sp初始化
+    await SpUtil.getInstance();
 
-        SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-        // 设置音频配置
-        await AudioConfig.addAudioConfig();
+    // 设置音频配置
+    await AudioConfig.addAudioConfig();
 
-        // 全局监听App状态
-        SystemChannels.lifecycle.setMessageHandler((message) async {
-          // 退到后台
-          if (_appLifecycleState == 'AppLifecycleState.inactive' &&
-              message == 'AppLifecycleState.paused') {
-            await MediaUtils().stopPlayByAppPaused();
-          }
+    // 全局监听App状态
+    SystemChannels.lifecycle.setMessageHandler((message) async {
+      // 退到后台
+      if (_appLifecycleState == 'AppLifecycleState.inactive' &&
+          message == 'AppLifecycleState.paused') {
+        await MediaUtils().stopPlayByAppPaused();
+      }
 
-          _appLifecycleState = message;
+      _appLifecycleState = message;
 
-          return message;
-        });
-        // WidgetsFlutterBinding.ensureInitialized();
-        // Wakelock.enable();
-        runApp(MyApp());
-        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-        // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        //     overlays: [SystemUiOverlay.top]);
-        // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        //   statusBarColor: Colors.red, // 修改状态栏颜色
-        // ));
-
-        FlutterBugly.init(
-          androidAppId: "1461f76ac6",
-          iOSAppId: "2cd012b035",
-        );
-      });
-    },
-    debugUpload: false,
-    // handler: (details) {
-    //   LogUtils.i('error====>${details.toString()}');
-    // }
-  );
+      return message;
+    });
+    // WidgetsFlutterBinding.ensureInitialized();
+    // Wakelock.enable();
+    runApp(MyApp());
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+    //     overlays: [SystemUiOverlay.top]);
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //   statusBarColor: Colors.red, // 修改状态栏颜色
+    // ));
+  });
 
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
 }

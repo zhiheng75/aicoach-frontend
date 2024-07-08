@@ -60,7 +60,7 @@ class _MainTabberState extends State<MainTabber> {
     _controller!.index = 0;
     currentIndex = 0;
     tabSelect(currentIndex);
-    tabUMSelect(currentIndex);
+    // tabUMSelect(currentIndex);
 
     EventBus().on(NotificationUtils.loginOut, (_) {
       setState(() {
@@ -211,7 +211,7 @@ class _MainTabberState extends State<MainTabber> {
           } else if (index == 3) {
             EventUMStatistics.umengCommonMapEvent("click_Nav_Profile_button");
           }
-          tabUMSelect(index);
+          // tabUMSelect(index);
           // if (index == 3) {
           //   if (LoginManager.isLogin()) {
           //     setState(() {

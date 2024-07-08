@@ -112,9 +112,9 @@ class ChatWebsocket {
   Future<String> _connect(String characterId, String? sceneId, String? lessonId,
       String? sessionIdStr) async {
     String sessionId = const Uuid().v4().replaceAll('-', '');
-    if (sessionIdStr!.isNotEmpty) {
-      sessionId = sessionIdStr;
-    }
+    // if (sessionIdStr!.isNotEmpty) {
+    //   sessionId = sessionIdStr;
+    // }
 
     String deviceId = await Device.getDeviceId();
     String token = LoginManager.getUserToken();

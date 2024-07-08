@@ -167,9 +167,9 @@ class _PersonPageState extends State<PersonPage>
     Future.delayed(const Duration(seconds: 1), () {
       EventUMStatistics.umengCommonOnPageEnd("home_two_page");
 
-      EventUMStatistics.umengCommonOnPageEnd("course_home_page");
-      EventUMStatistics.umengCommonOnPageEnd("home_new_page");
-      EventUMStatistics.umengCommonOnPageStart("person_page");
+      // EventUMStatistics.umengCommonOnPageEnd("course_home_page");
+      // EventUMStatistics.umengCommonOnPageEnd("home_new_page");
+      // EventUMStatistics.umengCommonOnPageStart("person_page");
     });
   }
 

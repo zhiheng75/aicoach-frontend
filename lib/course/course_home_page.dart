@@ -164,9 +164,9 @@ class _CourseHomePageState extends State<CourseHomePage>
     Future.delayed(const Duration(seconds: 1), () {
       EventUMStatistics.umengCommonOnPageEnd("home_two_page");
 
-      EventUMStatistics.umengCommonOnPageStart("course_home_page");
-      EventUMStatistics.umengCommonOnPageEnd("home_new_page");
-      EventUMStatistics.umengCommonOnPageEnd("person_page");
+      // EventUMStatistics.umengCommonOnPageStart("course_home_page");
+      // EventUMStatistics.umengCommonOnPageEnd("home_new_page");
+      // EventUMStatistics.umengCommonOnPageEnd("person_page");
     });
   }
 

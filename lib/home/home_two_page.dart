@@ -765,9 +765,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     Future.delayed(const Duration(seconds: 2), () {
       EventUMStatistics.umengCommonOnPageStart("home_two_page");
 
-      EventUMStatistics.umengCommonOnPageEnd("course_home_page");
-      EventUMStatistics.umengCommonOnPageEnd("home_new_page");
-      EventUMStatistics.umengCommonOnPageEnd("person_page");
+      // EventUMStatistics.umengCommonOnPageEnd("course_home_page");
+      // EventUMStatistics.umengCommonOnPageEnd("home_new_page");
+      // EventUMStatistics.umengCommonOnPageEnd("person_page");
       getStandardAnswer();
     });
     // Future.delayed(const Duration(seconds: 8), () {
