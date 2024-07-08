@@ -466,14 +466,14 @@ class _SettingPageState extends State<SettingPage>
                               NavigatorUtils.goBack(context);
                               //
                               EventBus().emit(NotificationUtils.loginOut);
-                              JPush().setup(
-                                appKey:
-                                    "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
-                                channel: "theChannel",
-                                production: false,
-                                debug: true,
-                              );
-                              JPush().deleteAlias();
+                              // JPush().setup(
+                              //   appKey:
+                              //       "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
+                              //   channel: "theChannel",
+                              //   production: false,
+                              //   debug: true,
+                              // );
+                              // JPush().deleteAlias();
                               // EventBus().emit(NotificationUtils.loginIn);
                             }
                           });

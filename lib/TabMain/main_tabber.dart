@@ -60,7 +60,7 @@ class _MainTabberState extends State<MainTabber> {
     _controller!.index = 0;
     currentIndex = 0;
     tabSelect(currentIndex);
-    // tabUMSelect(currentIndex);
+    tabUMSelect(currentIndex);
 
     EventBus().on(NotificationUtils.loginOut, (_) {
       setState(() {

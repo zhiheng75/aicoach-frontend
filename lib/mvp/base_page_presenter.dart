@@ -116,9 +116,9 @@ class BasePagePresenter<V extends IMvpView> extends BasePresenter<V> {
   //           Toast.show("上传成功");
   //         }
   //     );
-  //   } catch(e) {
-  //     view.showToast('图片上传失败！');
-  //   }
+  // } catch(e) {
+  //   view.showToast('图片上传失败！');
+  // }
   //   return imgPath;
   // }
 

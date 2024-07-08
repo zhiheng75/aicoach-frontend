@@ -115,7 +115,7 @@ dependencies:
   in_app_purchase: ^3.1.11
   #极光
   # jverify: ^2.4.4
-  jpush_flutter: ^3.0.4
+  jpush_flutter: ^3.0.5
   #flutter_keychain https://github.com/jeroentrappers/flutter_keychain
   flutter_keychain: ^2.4.0
   #fluwx https://github.com/OpenFlutter/fluwx

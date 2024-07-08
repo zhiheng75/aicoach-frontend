@@ -128,13 +128,13 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           EventUMStatistics.umengCommonMapEvent(
             "click_index_login",
           );
-          JPush().setup(
-            appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
-            channel: "theChannel",
-            production: false,
-            debug: true,
-          );
-          JPush().setAlias(data.data.id.toString()).then((map) {});
+          // JPush().setup(
+          //   appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
+          //   channel: "theChannel",
+          //   production: false,
+          //   debug: true,
+          // );
+          // JPush().setAlias(data.data.id.toString()).then((map) {});
           //
           view.loginSuccess();
         } else {
@@ -164,13 +164,13 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           EventUMStatistics.umengCommonMapEvent(
             "click_index_login",
           );
-          JPush().setup(
-            appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
-            channel: "theChannel",
-            production: false,
-            debug: true,
-          );
-          JPush().setAlias(data.data.id.toString()).then((map) {});
+          // JPush().setup(
+          //   appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
+          //   channel: "theChannel",
+          //   production: false,
+          //   debug: true,
+          // );
+          // JPush().setAlias(data.data.id.toString()).then((map) {});
           view.loginSuccess();
         }
       }
@@ -220,13 +220,13 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           EventUMStatistics.umengCommonMapEvent(
             "click_index_login",
           );
-          JPush().setup(
-            appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
-            channel: "theChannel",
-            production: false,
-            debug: true,
-          );
-          JPush().setAlias(newWxInfoBean.data.id.toString()).then((map) {});
+          // JPush().setup(
+          //   appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
+          //   channel: "theChannel",
+          //   production: false,
+          //   debug: true,
+          // );
+          // JPush().setAlias(newWxInfoBean.data.id.toString()).then((map) {});
           Log.e("======进来了吗=======");
           view.hadBindWechat();
         } else {

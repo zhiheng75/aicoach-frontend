@@ -742,6 +742,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
     // 初始化极光推送
     initPlatformState();
+
     // initPlatformPhoneState();
     // 获取体验时间
     // _homeProvider.getUsageTime();
@@ -948,6 +949,51 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   }
 
 // Platform messages are asynchronous, so we initialize in an async method.
+  // Future<void> initPlatformState() async {
+  //   String? platformVersion;
+  //   try {
+  //     try {
+  //       if (await jpush.isNotificationEnabled()) {}
+  //       jpush.addEventHandler(
+  //           onReceiveNotification: (Map<String, dynamic> message) async {
+  //         print("flutter onReceiveNotification: $message");
+  //       }, onOpenNotification: (Map<String, dynamic> message) async {
+  //         print("flutter onOpenNotification: $message");
+  //       }, onReceiveMessage: (Map<String, dynamic> message) async {
+  //         print("flutter onReceiveMessage: $message");
+  //       }, onReceiveNotificationAuthorization:
+  //               (Map<String, dynamic> message) async {
+  //         print("flutter onReceiveNotificationAuthorization: $message");
+  //       });
+  //     } on PlatformException {
+  //       platformVersion = 'Failed to get platform version.';
+  //     }
+
+  //     jpush.setup(
+  //       appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
+  //       channel: "theChannel",
+  //       production: false,
+  //       debug: true,
+  //     );
+  //     if (Platform.isIOS) {
+  //       jpush.applyPushAuthority(const NotificationSettingsIOS(
+  //           sound: true, alert: true, badge: true));
+  //     }
+  //     // Platform messages may fail, so we use a try/catch PlatformException.
+  //     jpush.getRegistrationID().then((rid) {
+  //       print("flutter get registration id : $rid");
+  //     });
+
+  //     jpush.clearAllNotifications();
+  //     // ignore: empty_catches
+  //   } catch (e) {}
+
+  //   // If the widget was removed from the tree while the asynchronous platform
+  //   // message was in flight, we want to discard the reply rather than calling
+  //   // setState to update our non-existent appearance.
+  //   // if (!mounted) return;
+  // }
+  // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     String? platformVersion;
 
@@ -962,32 +1008,44 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       }, onReceiveNotificationAuthorization:
               (Map<String, dynamic> message) async {
         print("flutter onReceiveNotificationAuthorization: $message");
+      }, onNotifyMessageUnShow: (Map<String, dynamic> message) async {
+        print("flutter onNotifyMessageUnShow: $message");
+      }, onInAppMessageShow: (Map<String, dynamic> message) async {
+        print("flutter onInAppMessageShow: $message");
+      }, onCommandResult: (Map<String, dynamic> message) async {
+        print("flutter onCommandResult: $message");
+      }, onInAppMessageClick: (Map<String, dynamic> message) async {
+        print("flutter onInAppMessageClick: $message");
+      }, onConnected: (Map<String, dynamic> message) async {
+        print("flutter onConnected: $message");
       });
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
 
+    jpush.setAuth(enable: true);
     jpush.setup(
       appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
       channel: "theChannel",
       production: false,
       debug: true,
     );
-    if (Platform.isIOS) {
-      jpush.applyPushAuthority(
-          const NotificationSettingsIOS(sound: true, alert: true, badge: true));
-    }
+    // jpush.applyPushAuthority(
+    //     const NotificationSettingsIOS(sound: true, alert: true, badge: true));
+
     // Platform messages may fail, so we use a try/catch PlatformException.
     jpush.getRegistrationID().then((rid) {
       print("flutter get registration id : $rid");
     });
-    jpush.clearAllNotifications();
+
+    // iOS要是使用应用内消息，请在页面进入离开的时候配置pageEnterTo 和  pageLeave 函数，参数为页面名。
+    // jpush.pageEnterTo("HomePage"); // 在离开页面的时候请调用 jpush.pageLeave("HomePage");
+
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
   }
-
   // Future<void> initPlatformPhoneState() async {
   //   // 初始化 SDK 之前添加监听
   //   Constant.jverify.addSDKSetupCallBackListener((JVSDKSetupEvent event) {
