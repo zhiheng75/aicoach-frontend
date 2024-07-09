@@ -1030,14 +1030,14 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       production: false,
       debug: true,
     );
-    // jpush.applyPushAuthority(
-    //     const NotificationSettingsIOS(sound: true, alert: true, badge: true));
+    jpush.applyPushAuthority(
+        const NotificationSettingsIOS(sound: true, alert: true, badge: true));
 
     // Platform messages may fail, so we use a try/catch PlatformException.
     jpush.getRegistrationID().then((rid) {
       print("flutter get registration id : $rid");
     });
-
+    jpush.clearNotification();
     // iOS要是使用应用内消息，请在页面进入离开的时候配置pageEnterTo 和  pageLeave 函数，参数为页面名。
     // jpush.pageEnterTo("HomePage"); // 在离开页面的时候请调用 jpush.pageLeave("HomePage");
 
