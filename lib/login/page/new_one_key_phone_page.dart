@@ -25,9 +25,14 @@ import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_only_img_bar.dart';
 import 'package:Bubble/widgets/my_text_field.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:Bubble/login/presenter/register_presenter.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../home/home_router.dart';
 import '../../mvp/base_page.dart';
@@ -60,6 +65,8 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   bool _isSelect = false;
 
   bool isWx = false;
+  final ScreenUtil _screenUtil = ScreenUtil();
+
   void _verify() {
     final String name = _phoneController.text;
     final String vCode = _vCodeController.text;
@@ -110,6 +117,44 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     };
   }
 
+  Widget navbar() {
+    return Container(
+      // color: Colors.amber,
+      height: _screenUtil.statusBarHeight + 40,
+      width: _screenUtil.screenWidth,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 60,
+          ),
+          Row(
+            children: [
+              Container(
+                width: 15,
+              ),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () async {
+                  NavigatorUtils.goBack(context);
+                },
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: Image.asset(
+                    width: 20,
+                    height: 26,
+                    'assets/images/ic_back_icon.png',
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -121,106 +166,189 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: ImageUtils.getAssetImage("login_bg_img"),
+                  image: ImageUtils.getAssetImage("login_two_bg_img"),
                   fit: BoxFit.fill)),
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MyOnlyImgBar(
-                  alignment: Alignment.centerLeft,
-                  backgroundColor: Colours.transflate,
-                  width: Dimens.w_dp32,
-                  height: Dimens.h_dp32,
-                  actionUrl: "round_close_img",
-                  onActionPress: () {
-                    NavigatorUtils.goBack(context);
-                  }),
+              navbar(),
+
+              // MyOnlyImgBar(
+              //     alignment: Alignment.centerLeft,
+              //     backgroundColor: Colours.transflate,
+              //     width: Dimens.w_dp32,
+              //     height: Dimens.h_dp32,
+              //     actionUrl: "round_close_img",
+              //     onActionPress: () {
+              //       NavigatorUtils.goBack(context);
+              //     }),
               Expanded(
                   child: Container(
                 padding: const EdgeInsets.only(left: 42, right: 42, top: 70),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    widget.typeLogin == "1"
-                        ? Text(
-                            "手机号码登录",
-                            style: TextStyle(
-                                fontSize: Dimens.font_sp17,
-                                color: Colours.black),
-                          )
-                        : Gaps.vGap2,
-                    widget.typeLogin == "1"
-                        ? Container(
-                            margin: const EdgeInsets.only(top: 20),
-                            // height: Dimens.h_dp40,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(Dimens.h_dp40),
-                              color: Colors.white70,
-                            ),
-                            child: Row(
-                              children: [
-                                Gaps.hGap16,
-                                Text(
-                                  "+86",
-                                  style: TextStyle(
-                                      color: Colours.color_9BA9BE,
-                                      fontSize: Dimens.font_sp18),
-                                ),
-                                Gaps.hGap16,
-                                Expanded(
-                                  child: MyTextField(
-                                    key: const Key('phone'),
-                                    txtStyle: const TextStyle(
-                                      fontSize: 20,
-                                      color: Colours.color_001652,
-                                    ),
-                                    hintStyle: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colours.color_001652),
-                                    focusNode: _nodeText1,
-                                    controller: _phoneController,
-                                    maxLength: 11,
-                                    keyboardType: TextInputType.phone,
-                                    hintText: "输入手机号",
-                                    underLineColor: Colours.color_00,
-                                    countDownColor: Colours.color_001652,
-                                  ),
-                                ),
-                                Gaps.hGap16,
-                              ],
-                            ),
-                          )
-                        : Container(
-                            height: Dimens.h_dp40,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(Dimens.h_dp40),
-                              color: Colors.white70,
-                            ),
-                            child: Center(
-                              child: Text(
-                                "186****1111",
+                    // widget.typeLogin == "1"
+                    //     ? Text(
+                    //         "手机号码登录",
+                    //         style: TextStyle(
+                    //             fontSize: Dimens.font_sp17,
+                    //             color: Colours.black),
+                    //       )
+                    //     : Gaps.vGap2,
+                    // widget.typeLogin == "1"
+                    //     ? Container(
+                    //         margin: const EdgeInsets.only(top: 20),
+                    //         // height: Dimens.h_dp40,
+                    //         width: double.infinity,
+                    //         decoration: BoxDecoration(
+                    //           borderRadius:
+                    //               BorderRadius.circular(Dimens.h_dp40),
+                    //           color: Colors.white70,
+                    //         ),
+                    //         child: Row(
+                    //           children: [
+                    //             Gaps.hGap16,
+                    //             Text(
+                    //               "+86",
+                    //               style: TextStyle(
+                    //                   color: Colours.color_9BA9BE,
+                    //                   fontSize: Dimens.font_sp18),
+                    //             ),
+                    //             Gaps.hGap16,
+                    //             Expanded(
+                    //               child: MyTextField(
+                    //                 key: const Key('phone'),
+                    //                 txtStyle: const TextStyle(
+                    //                   fontSize: 20,
+                    //                   color: Colours.color_001652,
+                    //                 ),
+                    //                 hintStyle: const TextStyle(
+                    //                     fontSize: 20,
+                    //                     color: Colours.color_001652),
+                    //                 focusNode: _nodeText1,
+                    //                 controller: _phoneController,
+                    //                 maxLength: 11,
+                    //                 keyboardType: TextInputType.phone,
+                    //                 hintText: "输入手机号",
+                    //                 underLineColor: Colours.color_00,
+                    //                 countDownColor: Colours.color_001652,
+                    //               ),
+                    //             ),
+                    //             Gaps.hGap16,
+                    //           ],
+                    //         ),
+                    //       )
+                    //     : Container(
+                    //         height: Dimens.h_dp40,
+                    //         decoration: BoxDecoration(
+                    //           borderRadius:
+                    //               BorderRadius.circular(Dimens.h_dp40),
+                    //           color: Colors.white70,
+                    //         ),
+                    //         child: Center(
+                    //           child: Text(
+                    //             "186****1111",
+                    //             style: TextStyle(
+                    //                 color: Colours.color_001652,
+                    //                 fontSize: Dimens.font_sp18),
+                    //           ),
+                    //         ),
+                    //       ),
+                    // Gaps.vGap24,
+                    // Container(
+                    //   alignment: Alignment.center,
+                    //   child: const Text(
+                    //     "未注册手机号验证后生成新账号",
+                    //     style: TextStyle(
+                    //         color: Colours.color_001652, fontSize: 13),
+                    //   ),
+                    // ),
+                    const Expanded(child: Gaps.empty),
+                    GestureDetector(
+                        onTap: () {
+                          if (_isSelect) {
+                            NavigatorUtils.push(
+                              context,
+                              replace: true,
+                              LoginRouter.keyLoginPhonePage,
+                            );
+                            // _registerPresenter.sendSms(
+                            //     _phoneController.text.trim(), false);
+                          } else {
+                            Toast.show("请同意服务协议");
+                          }
+
+                          // NavigatorUtils.push(context,
+                          //     "${LoginRouter.keyCheckCodePage}?PhoneNumber=18611667447");
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                          // height: Dimens.h_dp40,
+                          margin: const EdgeInsets.only(bottom: 16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(Dimens.h_dp40),
+                            color: Colors.black,
+                            // border: Border.all(width: 1, color: Colors.black),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const LoadAssetImage(
+                                "login_phone_icon",
+                                width: 17.0,
+                                height: 20.0,
+                              ),
+                              Gaps.hGap12,
+                              Text(
+                                "手机号登录",
                                 style: TextStyle(
-                                    color: Colours.color_001652,
+                                    color: Colors.white,
                                     fontSize: Dimens.font_sp18),
                               ),
-                            ),
+                            ],
                           ),
-                    Gaps.vGap24,
-                    Container(
-                      alignment: Alignment.center,
-                      child: const Text(
-                        "未注册手机号验证后生成新账号",
-                        style: TextStyle(
-                            color: Colours.color_001652, fontSize: 13),
-                      ),
-                    ),
-                    const Expanded(child: Gaps.empty),
+                        )),
+                    isWx
+                        ? GestureDetector(
+                            onTap: () {
+                              if (_isSelect) {
+                                weChatLogin();
+                              } else {
+                                Toast.show("请同意服务协议");
+                              }
+                            },
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.only(top: 10, bottom: 10),
+                              margin: const EdgeInsets.only(bottom: 16),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(Dimens.h_dp40),
+                                color: Colors.white,
+                                // border: Border.all(width: 1, color: Colors.black),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const LoadAssetImage(
+                                    "login_wx_icon",
+                                    width: 24.0,
+                                    height: 20.0,
+                                  ),
+                                  Gaps.hGap12,
+                                  Text(
+                                    "微信登录",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: Dimens.font_sp18),
+                                  ),
+                                ],
+                              ),
+                            ))
+                        : Container(),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      // crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         GestureDetector(
                           onTap: () {
@@ -239,188 +367,72 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                           ),
                         ),
                         // Gaps.hGap10,
-                        const Text(
-                          "我已阅读并同意",
-                          style: TextStyle(fontSize: 14, color: Colours.black),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            NavigatorUtils.goWebViewPage(context, "隐私政策",
-                                "http://www.shenmo-ai.com/privacy_policy/");
-                            // NavigatorUtils.goWebViewPage(context, "隐私政策",
-                            //     "https://mini-game-dev.shenmo-ai.com/web/index.html ");
-                          },
-                          child: const Text("隐私政策",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colours.color_0047FF,
-                                  decoration: TextDecoration.underline)),
-                        ),
-                        const Text(
-                          "和",
-                          style: TextStyle(
-                              fontSize: 14, color: Colours.color_546092),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            NavigatorUtils.goWebViewPage(context, "服务协议",
-                                "http://www.shenmo-ai.com/tos/");
-                            // NavigatorUtils.goWebViewPage(context, "服务协议",
-                            //     "https://books.shenmo-ai.com/mobile?character_id=li_bai&v=1&tag=prod&cat=1");
-                          },
-                          child: const Text(
-                            "服务协议",
-                            style: TextStyle(
-                                color: Colours.color_0047FF,
-                                fontSize: 14,
-                                decoration: TextDecoration.underline),
-                          ),
+                        Expanded(
+                          child: RichText(
+                              // RichText
+                              text: TextSpan(
+                                  text: '已阅读并同意',
+                                  style: const TextStyle(
+                                    color: Colours.color_333333,
+                                    fontSize: 14.0,
+                                  ),
+                                  children: <TextSpan>[
+                                TextSpan(
+                                    text: '《隐私协议》',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        NavigatorUtils.goWebViewPage(
+                                            context,
+                                            "隐私协议",
+                                            "http://www.shenmo-ai.com/privacy_policy/");
+                                      },
+                                    style: const TextStyle(
+                                      color: Colours.color_333333,
+                                      fontSize: 14.0,
+                                    )),
+                                const TextSpan(
+                                    text: "、",
+                                    style: TextStyle(
+                                      color: Colours.color_333333,
+                                      fontSize: 14.0,
+                                    )),
+                                TextSpan(
+                                    text: '《服务协议》',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        NavigatorUtils.goWebViewPage(
+                                            context,
+                                            "服务协议",
+                                            "http://www.shenmo-ai.com/tos/");
+                                      },
+                                    style: const TextStyle(
+                                      color: Colours.color_333333,
+                                      fontSize: 14.0,
+                                    )),
+                                const TextSpan(
+                                    text: '及',
+                                    style: TextStyle(
+                                      color: Colours.color_333333,
+                                      fontSize: 14.0,
+                                    )),
+                                TextSpan(
+                                    text: '《儿童个人信息保护声明》',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        NavigatorUtils.goWebViewPage(
+                                            context,
+                                            "儿童个人信息保护声明",
+                                            "http://www.shenmo-ai.com/bubble-ai_kids/");
+                                      },
+                                    style: const TextStyle(
+                                      color: Colours.color_333333,
+                                      fontSize: 14.0,
+                                    )),
+                              ])),
                         ),
                       ],
                     ),
-                    Gaps.vGap24,
-                    widget.typeLogin == "1"
-                        ? GestureDetector(
-                            onTap: () {
-                              if (_isSelect) {
-                                if (_phoneController.text.length == 11) {
-                                  NavigatorUtils.push(
-                                    context,
-                                    replace: true,
-                                    "${LoginRouter.keyCheckCodePage}?PhoneNumber=${_phoneController.text.trim()}&typeLogin=${widget.typeLogin}",
-                                  );
-                                  _registerPresenter.sendSms(
-                                      _phoneController.text.trim(), false);
-                                } else {
-                                  Toast.show("手机号无效");
-                                }
-                              } else {
-                                Toast.show("请同意服务协议");
-                              }
 
-                              // NavigatorUtils.push(context,
-                              //     "${LoginRouter.keyCheckCodePage}?PhoneNumber=18611667447");
-                            },
-                            child: Container(
-                              // height: Dimens.h_dp40,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(Dimens.h_dp40),
-                                color: Colors.white70,
-                                border:
-                                    Border.all(width: 1, color: Colors.black),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "发送短信验证码",
-                                  style: TextStyle(
-                                      color: Colours.color_001652,
-                                      fontSize: Dimens.font_sp18),
-                                ),
-                              ),
-                            ))
-                        : GestureDetector(
-                            onTap: () {
-                              // if (_phoneController.text.isEmpty) {
-                              //   Toast.show("手机号无效");
-                              // } else if (!_isSelect) {
-                              //   Toast.show("请同意服务协议");
-                              // }
-                            },
-                            child: Container(
-                              height: Dimens.h_dp40,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: ImageUtils.getAssetImage(
-                                          "btn_bg_img"),
-                                      fit: BoxFit.fill)),
-                              child: Center(
-                                child: Text(
-                                  "本机号码一键登录",
-                                  style: TextStyle(
-                                      color: Colours.color_001652,
-                                      fontSize: Dimens.font_sp18),
-                                ),
-                              ),
-                            )),
-                    Gaps.vGap24,
-                    widget.typeLogin == "1"
-                        ? Gaps.vGap40
-                        : GestureDetector(
-                            onTap: () {
-                              NavigatorUtils.push(
-                                context,
-                                clearStack: true,
-                                "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
-                              );
-                            },
-                            child: Container(
-                              height: Dimens.h_dp40,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(Dimens.h_dp40),
-                                color: Colors.white70,
-                                border:
-                                    Border.all(width: 1, color: Colors.black),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "其他手机号登录",
-                                  style: TextStyle(
-                                      color: Colours.color_001652,
-                                      fontSize: Dimens.font_sp18),
-                                ),
-                              ),
-                            )),
-                    Gaps.vGap20,
-                    isWx
-                        ? Container(
-                            alignment: Alignment.center,
-                            child: const Text(
-                              "其他登录方式",
-                              style: TextStyle(
-                                  color: Colours.color_001652, fontSize: 13),
-                            ),
-                          )
-                        : Container(),
-                    Gaps.vGap20,
-                    isWx
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  // NavigatorUtils.push(
-                                  //   context,
-                                  //   clearStack: true,
-                                  //   "${LoginRouter.newBindPhonePage}?needKeyLogin=0",
-                                  // );
-                                  weChatLogin();
-                                },
-                                child: const LoadAssetImage(
-                                  "wechat_login_img",
-                                  width: 40,
-                                  height: 40,
-                                ),
-                              ),
-                              // Gaps.hGap16,
-                              // GestureDetector(
-                              //   onTap: () {
-                              //     // NavigatorUtils.push(
-                              //     //   context,
-                              //     //   clearStack: true,
-                              //     //   "${LoginRouter.newBindPhonePage}?needKeyLogin=1",
-                              //     // );
-                              //   },
-                              //   child: const LoadAssetImage(
-                              //     "qq_login_img",
-                              //     width: 40,
-                              //     height: 40,
-                              //   ),
-                              // ),
-                            ],
-                          )
-                        : Container(),
                     Gaps.vGap50,
                   ],
                 ),

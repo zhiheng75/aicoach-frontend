@@ -11,6 +11,7 @@ import 'package:Bubble/login/view/register_view.dart';
 import 'package:Bubble/login/view/verification_box.dart';
 import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/colors.dart';
+import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
@@ -18,6 +19,7 @@ import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/my_only_img_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
 
@@ -58,6 +60,7 @@ class _CheckCodePageState extends State<CheckCodePage>
   bool canResend = false;
 
   final String _verfiCode = "";
+  final ScreenUtil _screenUtil = ScreenUtil();
 
   ///启动倒计时器
   void _startTimer() {
@@ -104,6 +107,44 @@ class _CheckCodePageState extends State<CheckCodePage>
     super.dispose();
   }
 
+  Widget navbar() {
+    return Container(
+      // color: Colors.amber,
+      height: _screenUtil.statusBarHeight + 40,
+      width: _screenUtil.screenWidth,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 60,
+          ),
+          Row(
+            children: [
+              Container(
+                width: 15,
+              ),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () async {
+                  NavigatorUtils.goBack(context);
+                },
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: Image.asset(
+                    width: 20,
+                    height: 26,
+                    'assets/images/ic_back_icon.png',
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -114,54 +155,64 @@ class _CheckCodePageState extends State<CheckCodePage>
         body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: ImageUtils.getAssetImage("login_bg_img"),
+                    image: ImageUtils.getAssetImage("login_two_bg_img"),
                     fit: BoxFit.fill)),
             height: double.infinity,
             width: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MyOnlyImgBar(
-                    alignment: Alignment.centerLeft,
-                    backgroundColor: Colours.transflate,
-                    width: 32.0,
-                    height: 32.0,
-                    actionUrl: "white_close_img",
-                    onActionPress: () {
-                      NavigatorUtils.goBack(context);
-                    }),
-                const Padding(
-                  padding: EdgeInsets.only(top: 108, left: 30, right: 16),
-                  child: Text(
-                    "请输入验证码:",
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: Colours.color_001652,
-                      // fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 30,
+                navbar(),
+                // const Padding(
+                //   padding: EdgeInsets.only(top: 108, left: 30, right: 16),
+                //   child: Text(
+                //     "请输入验证码:",
+                //     style: TextStyle(
+                //       fontSize: 17,
+                //       color: Colours.color_001652,
+                //       // fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                // ),
+                Container(
+                  padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Hi,欢迎来到口语嘟嘟",
+                        style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.black),
                       ),
-                      child: Text(
-                        "已发送验证码到 ${widget.phoneNumber} ",
+                      const Text(
+                        "登录后更精彩，即将开始流利口语",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.black),
+                      ),
+                      Gaps.vGap33,
+                      Text(
+                        "已发送验证码至  ${widget.phoneNumber} ",
                         style: const TextStyle(
                           fontSize: 13,
                           color: Colours.color_001652,
                           // fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                  canResend
-                      ? GestureDetector(
+                ),
+                _verificationBox(),
+                Gaps.vGap10,
+                canResend
+                    ? Padding(
+                        padding: const EdgeInsets.only(
+                          left: 30,
+                        ),
+                        child: GestureDetector(
                           onTap: () {
                             if (canResend) {
                               resendCode();
@@ -173,28 +224,24 @@ class _CheckCodePageState extends State<CheckCodePage>
                           child: const Text(
                             "重新发送",
                             style: TextStyle(
-                              fontSize: 15,
-                              color: Color(0xFF4884F3),
+                              fontSize: 12,
+                              color: Colours.color_333333,
                             ),
                           ),
-                        )
-                      : Row(
-                          children: [
-                            Text(
-                              "$_seconds",
-                              style: const TextStyle(
-                                fontSize: 15,
-                                color: Color(0xFF4884F3),
-                              ),
-                            ),
-                            const Text("秒"),
-                          ],
                         ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                ]),
-                _verificationBox()
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(
+                          left: 30,
+                        ),
+                        child: Text(
+                          "$_seconds秒后重新发送",
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colours.color_333333,
+                          ),
+                        ),
+                      ),
               ],
             )),
       ),
@@ -214,8 +261,8 @@ class _CheckCodePageState extends State<CheckCodePage>
           itemWidget: 45,
           borderWidth: 1,
           borderColor: Colours.color_001652,
-          borderRadius: 4,
-          textStyle: const TextStyle(color: Color(0xFF666666), fontSize: 27),
+          borderRadius: 16,
+          textStyle: const TextStyle(color: Colors.black, fontSize: 27),
           showCursor: true,
           unfocus: false,
         ),
@@ -320,6 +367,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   bool canResend = false;
 
   final String _verfiCode = "";
+  final ScreenUtil _screenUtil = ScreenUtil();
 
   ///启动倒计时器
   void _startTimer() {
@@ -365,6 +413,44 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
     super.dispose();
   }
 
+  Widget navbar() {
+    return Container(
+      // color: Colors.amber,
+      height: _screenUtil.statusBarHeight + 40,
+      width: _screenUtil.screenWidth,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 60,
+          ),
+          Row(
+            children: [
+              Container(
+                width: 15,
+              ),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () async {
+                  NavigatorUtils.goBack(context);
+                },
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: Image.asset(
+                    width: 20,
+                    height: 26,
+                    'assets/images/ic_back_icon.png',
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -375,57 +461,68 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
         body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: ImageUtils.getAssetImage("login_bg_img"),
+                    image: ImageUtils.getAssetImage("login_two_bg_img"),
                     fit: BoxFit.fill)),
             height: double.infinity,
             width: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MyOnlyImgBar(
-                    alignment: Alignment.centerLeft,
-                    backgroundColor: Colours.transflate,
-                    width: 32.0,
-                    height: 32.0,
-                    actionUrl: "white_close_img",
-                    onActionPress: () {
-                      NavigatorUtils.goBack(context);
-                    }),
-                const Padding(
-                  padding: EdgeInsets.only(top: 108, left: 30, right: 16),
-                  child: Text(
-                    "请输入验证码:",
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: Colours.color_001652,
-                      // fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 30,
+                navbar(),
+                // const Padding(
+                //   padding: EdgeInsets.only(top: 108, left: 30, right: 16),
+                //   child: Text(
+                //     "请输入验证码:",
+                //     style: TextStyle(
+                //       fontSize: 17,
+                //       color: Colours.color_001652,
+                //       // fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                // ),
+                Container(
+                  padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Hi,欢迎来到口语嘟嘟",
+                        style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.black),
                       ),
-                      child: Text(
-                        "已发送验证码到 ${widget.phoneNumber} ",
+                      const Text(
+                        "登录后更精彩，即将开始流利口语",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colours.black),
+                      ),
+                      Gaps.vGap33,
+                      Text(
+                        "已发送验证码至  ${widget.phoneNumber} ",
                         style: const TextStyle(
                           fontSize: 13,
                           color: Colours.color_001652,
                           // fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                  canResend
-                      ? GestureDetector(
+                ),
+                _verificationBox(),
+                Gaps.vGap10,
+                canResend
+                    ? Padding(
+                        padding: const EdgeInsets.only(
+                          left: 30,
+                        ),
+                        child: GestureDetector(
                           onTap: () {
                             if (canResend) {
                               resendCode();
+                              RegisterPresenter.disHttpKeySendSms();
                               _registerPresenter.sendSms(
                                   widget.phoneNumber, true);
                             }
@@ -433,28 +530,24 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
                           child: const Text(
                             "重新发送",
                             style: TextStyle(
-                              fontSize: 15,
-                              color: Color(0xFF4884F3),
+                              fontSize: 12,
+                              color: Colours.color_333333,
                             ),
                           ),
-                        )
-                      : Row(
-                          children: [
-                            Text(
-                              "$_seconds",
-                              style: const TextStyle(
-                                fontSize: 15,
-                                color: Color(0xFF4884F3),
-                              ),
-                            ),
-                            const Text("秒"),
-                          ],
                         ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                ]),
-                _verificationBox()
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(
+                          left: 30,
+                        ),
+                        child: Text(
+                          "$_seconds秒后重新发送",
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colours.color_333333,
+                          ),
+                        ),
+                      ),
               ],
             )),
       ),
@@ -469,13 +562,13 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
         child: VerificationBox(
           count: 6,
           onSubmitted: (code) {
-            _bind(code);
+            verifyCode(code);
           },
           itemWidget: 45,
           borderWidth: 1,
           borderColor: Colours.color_001652,
-          borderRadius: 4,
-          textStyle: const TextStyle(color: Color(0xFF666666), fontSize: 27),
+          borderRadius: 16,
+          textStyle: const TextStyle(color: Colors.black, fontSize: 27),
           showCursor: true,
           unfocus: false,
         ),

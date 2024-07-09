@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'package:Bubble/res/colors.dart';
 import 'package:flutter/material.dart';
 
 import 'verification_box_cursor.dart';
@@ -77,7 +78,9 @@ class VerificationBoxItem extends StatelessWidget {
     var text = _buildText();
     var widget;
     if (type == VerificationBoxItemType.box) {
-      widget = _buildBoxDecoration(text, borderColor);
+      widget = data == ""
+          ? _buildBoxDecoration(text, borderColor)
+          : _buildNotBoxDecoration(text, borderColor);
     } else {
       widget = _buildUnderlineDecoration(text, borderColor);
     }
@@ -98,6 +101,14 @@ class VerificationBoxItem extends StatelessWidget {
     );
   }
 
+//  decoration: BoxDecoration(
+//                             borderRadius: BorderRadius.circular(Dimens.h_dp40),
+//                             color: _clickable
+//                                 ? Colors.black
+//                                 : Colours.color_737373,
+//                             // border: Border.all(width: 1, color: Colors.black),
+//                           )
+
   ///
   /// 绘制盒子类型
   ///
@@ -106,7 +117,21 @@ class VerificationBoxItem extends StatelessWidget {
       alignment: Alignment.center,
       decoration: decoration ??
           BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadius),
+            color: Colours.color_7373733,
+            // border: Border.all(color: borderColor, width: borderWidth)
+          ),
+      child: child,
+    );
+  }
+
+  _buildNotBoxDecoration(Widget child, Color borderColor) {
+    return Container(
+      alignment: Alignment.center,
+      decoration: decoration ??
+          BoxDecoration(
               borderRadius: BorderRadius.circular(borderRadius),
+              color: Colours.color_7373733,
               border: Border.all(color: borderColor, width: borderWidth)),
       child: child,
     );

@@ -5,6 +5,7 @@ import 'dart:ffi';
 import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/page/change_bind_phone_page.dart';
 import 'package:Bubble/login/page/check_code_page.dart';
+import 'package:Bubble/login/page/login_phone_page.dart';
 import 'package:Bubble/login/page/new_bind_phone_page.dart';
 import 'package:Bubble/login/page/new_one_key_phone_page.dart';
 import 'package:Bubble/login/page/one_key_login_page.dart';
@@ -37,6 +38,8 @@ class LoginRouter implements IRouterProvider {
   static String keyCheckCodePage = "/login/CheckCodePage";
   static String keyCheckTwoCodePage = "/login/CheckTwoCodePage";
 
+  static String keyLoginPhonePage = "/LoginPhonePage";
+
   static String phoneLoginPage = "/login/PhoneLoginPage";
   static String newOneKeyPhonePage = "/login/NewOneKeyPhonePage";
 
@@ -58,6 +61,8 @@ class LoginRouter implements IRouterProvider {
     }));
     router.define(registerPage,
         handler: Handler(handlerFunc: (_, __) => const RegisterPage()));
+    router.define(keyLoginPhonePage,
+        handler: Handler(handlerFunc: (_, __) => const LoginPhonePage()));
     router.define(smsLoginPage,
         handler: Handler(handlerFunc: (_, __) => const SMSLoginPage()));
     router.define(keyLoginPage,

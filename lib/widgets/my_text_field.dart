@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:Bubble/res/styles.dart';
+import 'package:Bubble/util/log_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:Bubble/res/colors.dart';
@@ -20,7 +22,9 @@ class MyTextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.hintText = '',
     this.focusNode,
+    this.textMessage,
     this.isInputPwd = false,
+    this.isDelete = true,
     this.getVCode,
     this.keyName,
     this.underLineColor = Colours.color_001652,
@@ -28,8 +32,9 @@ class MyTextField extends StatefulWidget {
     this.hintStyle = const TextStyle(color: Colors.black, fontSize: 20),
     this.closeColor = Colours.color_001652,
     this.countDownColor = Colors.black,
+    this.textAlign = TextAlign.start,
   });
-
+  final Function(String)? textMessage;
   final TextEditingController controller;
   final int maxLength;
   final bool autoFocus;
@@ -41,11 +46,13 @@ class MyTextField extends StatefulWidget {
 
   /// 用于集成测试寻找widget
   final String? keyName;
+  final TextAlign textAlign;
   final Color underLineColor;
   final TextStyle txtStyle;
   final TextStyle hintStyle;
   final Color countDownColor;
   final Color closeColor;
+  final bool isDelete;
 
   @override
   _MyTextFieldState createState() => _MyTextFieldState();
@@ -115,6 +122,7 @@ class _MyTextFieldState extends State<MyTextField> {
     final bool isDark = themeData.brightness == Brightness.dark;
 
     Widget textField = TextField(
+      textAlign: widget.textAlign,
       style: widget.txtStyle,
       focusNode: widget.focusNode,
       maxLength: widget.maxLength,
@@ -128,6 +136,12 @@ class _MyTextFieldState extends State<MyTextField> {
       },
       onSubmitted: (e) => {
         widget.focusNode?.unfocus(),
+      },
+      onChanged: (value) {
+        Log.e(value);
+        if (widget.textMessage != null) {
+          widget.textMessage!(value);
+        }
       },
       onEditingComplete: () => {
         FocusScope.of(context).requestFocus(widget.focusNode),
@@ -251,10 +265,11 @@ class _MyTextFieldState extends State<MyTextField> {
           children: <Widget>[
             /// _isShowDelete参数动态变化，为了不破坏树结构使用Visibility，false时放一个空Widget。
             /// 对于其他参数，为初始配置参数，基本可以确定树结构，就不做空Widget处理。
-            Visibility(
-              visible: _isShowDelete,
-              child: clearButton ?? Gaps.empty,
-            ),
+            if (widget.isDelete)
+              Visibility(
+                visible: _isShowDelete,
+                child: clearButton ?? Gaps.empty,
+              ),
             if (widget.isInputPwd) Gaps.hGap15,
             if (widget.isInputPwd) pwdVisible,
             if (widget.getVCode != null) Gaps.hGap15,

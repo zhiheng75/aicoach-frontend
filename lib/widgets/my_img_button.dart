@@ -6,13 +6,13 @@ import '../res/dimens.dart';
 import '../util/theme_utils.dart';
 
 class MyImgButton extends StatelessWidget {
-
   const MyImgButton({
     super.key,
     this.minHeight = 20.0,
     this.minWidth = 20.0,
     this.padding = const EdgeInsets.symmetric(horizontal: 16.0),
-    required this.onPressed, required this.url,
+    required this.onPressed,
+    required this.url,
   });
 
   final double? minHeight;
@@ -24,8 +24,11 @@ class MyImgButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: onPressed,
-      child: LoadAssetImage(url,width: minWidth,height: minHeight,)
-    );
+        onPressed: onPressed,
+        child: LoadAssetImage(
+          url,
+          width: minWidth,
+          height: minHeight,
+        ));
   }
 }
