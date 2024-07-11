@@ -13,6 +13,7 @@ import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/view/home_two_page_view.dart';
 import 'package:Bubble/home/widget/home_item.dart';
 import 'package:Bubble/home/widget/player_widget.dart';
+import 'package:Bubble/home/widget/push_show_view.dart';
 import 'package:Bubble/home/widget/teacher_show_view.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/main.dart';
@@ -195,6 +196,21 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                       miniProgramType: WXMiniProgramType.release));
               EventUMStatistics.umengCommonMapEvent(
                   "click_index_go_to_add_a_tutor");
+            },
+          );
+        });
+  }
+
+  showPushDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return PushShowView(
+            () {
+              //确定
+              jpush.openSettingsForNotification();
+              // jpush.resumePush();
             },
           );
         });
@@ -771,9 +787,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       // EventUMStatistics.umengCommonOnPageEnd("person_page");
       getStandardAnswer();
     });
-    // Future.delayed(const Duration(seconds: 8), () {
-    //   EventUMStatistics.umengCommonOnPageEnd("home_two_page");
-    // });
   }
 
   @override
@@ -948,6 +961,12 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     EventUMStatistics.umengCommonInit();
   }
 
+  int getCurrentTime() {
+    // 获取当前时间
+    DateTime now = DateTime.now();
+    return now.millisecondsSinceEpoch;
+  }
+
 // Platform messages are asynchronous, so we initialize in an async method.
   // Future<void> initPlatformState() async {
   //   String? platformVersion;
@@ -1026,18 +1045,40 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     jpush.setAuth(enable: true);
     jpush.setup(
       appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
-      channel: "theChannel",
+      channel: "kouyududu",
       production: false,
       debug: true,
     );
     jpush.applyPushAuthority(
         const NotificationSettingsIOS(sound: true, alert: true, badge: true));
+    jpush.isNotificationEnabled().then((bool value) {
+      if (!value) {
+        //弹出提示;
+        //存储时间记录对比,
+
+        int dateTimer = SpUtil.getInt(Constant.dateTimer) ?? 0;
+        if (dateTimer == 0) {
+          SpUtil.putInt(Constant.dateTimer, getCurrentTime());
+        } else {
+          DateTime now = DateTime.now();
+          DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(dateTimer);
+          Duration difference = now.difference(dateTime);
+          int daysDifference = difference.inDays;
+          if (daysDifference > 5) {
+            SpUtil.putInt(Constant.dateTimer, getCurrentTime());
+            showPushDialog();
+          }
+        }
+      }
+    }).catchError((onError) {});
 
     // Platform messages may fail, so we use a try/catch PlatformException.
     jpush.getRegistrationID().then((rid) {
       print("flutter get registration id : $rid");
     });
+
     jpush.clearNotification();
+
     // iOS要是使用应用内消息，请在页面进入离开的时候配置pageEnterTo 和  pageLeave 函数，参数为页面名。
     // jpush.pageEnterTo("HomePage"); // 在离开页面的时候请调用 jpush.pageLeave("HomePage");
 

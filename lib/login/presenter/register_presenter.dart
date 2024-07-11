@@ -130,7 +130,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           );
           JPush().setup(
             appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
-            channel: "theChannel",
+            channel: "kouyududu",
             production: false,
             debug: true,
           );
@@ -166,7 +166,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           );
           JPush().setup(
             appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
-            channel: "theChannel",
+            channel: "kouyududu",
             production: false,
             debug: true,
           );
@@ -222,7 +222,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           );
           JPush().setup(
             appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
-            channel: "theChannel",
+            channel: "kouyududu",
             production: false,
             debug: true,
           );

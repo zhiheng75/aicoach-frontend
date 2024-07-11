@@ -56,4 +56,6 @@ class Constant {
   static const String lessonList = 'lessonList';
   static const String exam = 'exam';
   static const String sceneList = 'sceneList';
+
+  static const String dateTimer = 'dateTimer';
 }

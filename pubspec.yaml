@@ -173,9 +173,14 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/
     - assets/images/
     - assets/images/state/
     - assets/avatar/
+    - assets/introduction_one_page/
+    - assets/introduction_one_page/images/
+    - assets/introduction_two_page/
+    - assets/introduction_two_page/images/
 
   fonts:
     - family: RobotoThin

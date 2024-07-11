@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:flustars_flutter3/flustars_flutter3.dart' hide ScreenUtil;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluwx/fluwx.dart';
 import 'package:jpush_flutter/jpush_flutter.dart';
@@ -44,8 +45,7 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage>
     with
         BasePageMixin<SettingPage, SettingPagePresenter>,
-        AutomaticKeepAliveClientMixin<SettingPage>,
-        WidgetsBindingObserver
+        AutomaticKeepAliveClientMixin<SettingPage>
     implements SettingView {
   late SettingPagePresenter _settingPagePresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
@@ -64,13 +64,21 @@ class _SettingPageState extends State<SettingPage>
 
   ///获取通知权限状态
   void getPermissionNoticeStatus() async {
-    try {
-      PermissionStatus permission = await Permission.notification.status;
-      _isAccessNotice = permission == PermissionStatus.granted;
-      if (mounted) setState(() {});
-    } catch (e) {
-      print(e);
-    }
+    final JPush jpush = JPush();
+
+    jpush.isNotificationEnabled().then((bool value) {
+      setState(() {
+        _isAccessNotice = value;
+      });
+    }).catchError((onError) {});
+
+    // try {
+    //   PermissionStatus permission = await Permission.notification.status;
+    //   _isAccessNotice = permission == PermissionStatus.granted;
+    //   if (mounted) setState(() {});
+    // } catch (e) {
+    //   print(e);
+    // }
   }
 
   void bindWx() async {
@@ -221,22 +229,21 @@ class _SettingPageState extends State<SettingPage>
   void initState() {
     super.initState();
     init();
-    WidgetsBinding.instance.addObserver(this);
+    // 全局监听App状态
+    SystemChannels.lifecycle.setMessageHandler((message) async {
+      // 退到后台
+      if (message == 'AppLifecycleState.resumed') {
+        getPermissionNoticeStatus();
+      }
+
+      return message;
+    });
     getPermissionNoticeStatus();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      getPermissionNoticeStatus();
-    }
-    super.didChangeAppLifecycleState(state);
   }
 
   @override
@@ -469,7 +476,7 @@ class _SettingPageState extends State<SettingPage>
                               JPush().setup(
                                 appKey:
                                     "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
-                                channel: "theChannel",
+                                channel: "kouyududu",
                                 production: false,
                                 debug: true,
                               );

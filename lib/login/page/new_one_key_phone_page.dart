@@ -8,6 +8,7 @@ import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/login/entity/login_info_entity.dart';
 import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/login_router.dart';
+import 'package:Bubble/login/page/login_banner.dart';
 import 'package:Bubble/login/view/register_view.dart';
 import 'package:Bubble/method/fluter_native.dart';
 import 'package:Bubble/person/person_router.dart';
@@ -33,6 +34,7 @@ import 'package:flutter/services.dart';
 import 'package:Bubble/login/presenter/register_presenter.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../../home/home_router.dart';
 import '../../mvp/base_page.dart';
@@ -168,102 +170,38 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
               image: DecorationImage(
                   image: ImageUtils.getAssetImage("login_two_bg_img"),
                   fit: BoxFit.fill)),
-          child: Column(
+          child: Stack(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              LoginBanner(
+                  imageList: const [
+                    'assets/introduction_one_page/yindao1.json',
+                    'assets/introduction_two_page/yd2.json',
+                    'assets/introduction_one_page/yindao1.json',
+                    'assets/introduction_two_page/yd2.json',
+                  ],
+                  topImageList: const [
+                    'login_banner_one',
+                    'login_banner_two',
+                    'login_banner_three',
+                    'login_banner_four',
+                  ],
+                  height: _screenUtil.screenHeight,
+                  indicatorType: IndicatorType.rectangle,
+                  indicatorRadius: 5,
+                  indicatorWidth: 20,
+                  indicatorUnWidth: 5,
+                  indicatorHeight: 5,
+                  bannerClick: (position) {}),
               navbar(),
+              // Lottie.asset('assets/introduction_two_page/yd2.json',
+              //     repeat: false),
 
-              // MyOnlyImgBar(
-              //     alignment: Alignment.centerLeft,
-              //     backgroundColor: Colours.transflate,
-              //     width: Dimens.w_dp32,
-              //     height: Dimens.h_dp32,
-              //     actionUrl: "round_close_img",
-              //     onActionPress: () {
-              //       NavigatorUtils.goBack(context);
-              //     }),
-              Expanded(
-                  child: Container(
+              Container(
                 padding: const EdgeInsets.only(left: 42, right: 42, top: 70),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // widget.typeLogin == "1"
-                    //     ? Text(
-                    //         "手机号码登录",
-                    //         style: TextStyle(
-                    //             fontSize: Dimens.font_sp17,
-                    //             color: Colours.black),
-                    //       )
-                    //     : Gaps.vGap2,
-                    // widget.typeLogin == "1"
-                    //     ? Container(
-                    //         margin: const EdgeInsets.only(top: 20),
-                    //         // height: Dimens.h_dp40,
-                    //         width: double.infinity,
-                    //         decoration: BoxDecoration(
-                    //           borderRadius:
-                    //               BorderRadius.circular(Dimens.h_dp40),
-                    //           color: Colors.white70,
-                    //         ),
-                    //         child: Row(
-                    //           children: [
-                    //             Gaps.hGap16,
-                    //             Text(
-                    //               "+86",
-                    //               style: TextStyle(
-                    //                   color: Colours.color_9BA9BE,
-                    //                   fontSize: Dimens.font_sp18),
-                    //             ),
-                    //             Gaps.hGap16,
-                    //             Expanded(
-                    //               child: MyTextField(
-                    //                 key: const Key('phone'),
-                    //                 txtStyle: const TextStyle(
-                    //                   fontSize: 20,
-                    //                   color: Colours.color_001652,
-                    //                 ),
-                    //                 hintStyle: const TextStyle(
-                    //                     fontSize: 20,
-                    //                     color: Colours.color_001652),
-                    //                 focusNode: _nodeText1,
-                    //                 controller: _phoneController,
-                    //                 maxLength: 11,
-                    //                 keyboardType: TextInputType.phone,
-                    //                 hintText: "输入手机号",
-                    //                 underLineColor: Colours.color_00,
-                    //                 countDownColor: Colours.color_001652,
-                    //               ),
-                    //             ),
-                    //             Gaps.hGap16,
-                    //           ],
-                    //         ),
-                    //       )
-                    //     : Container(
-                    //         height: Dimens.h_dp40,
-                    //         decoration: BoxDecoration(
-                    //           borderRadius:
-                    //               BorderRadius.circular(Dimens.h_dp40),
-                    //           color: Colors.white70,
-                    //         ),
-                    //         child: Center(
-                    //           child: Text(
-                    //             "186****1111",
-                    //             style: TextStyle(
-                    //                 color: Colours.color_001652,
-                    //                 fontSize: Dimens.font_sp18),
-                    //           ),
-                    //         ),
-                    //       ),
-                    // Gaps.vGap24,
-                    // Container(
-                    //   alignment: Alignment.center,
-                    //   child: const Text(
-                    //     "未注册手机号验证后生成新账号",
-                    //     style: TextStyle(
-                    //         color: Colours.color_001652, fontSize: 13),
-                    //   ),
-                    // ),
                     const Expanded(child: Gaps.empty),
                     GestureDetector(
                         onTap: () {
@@ -273,14 +211,9 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                               replace: true,
                               LoginRouter.keyLoginPhonePage,
                             );
-                            // _registerPresenter.sendSms(
-                            //     _phoneController.text.trim(), false);
                           } else {
                             Toast.show("请同意服务协议");
                           }
-
-                          // NavigatorUtils.push(context,
-                          //     "${LoginRouter.keyCheckCodePage}?PhoneNumber=18611667447");
                         },
                         child: Container(
                           padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -432,11 +365,10 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                         ),
                       ],
                     ),
-
                     Gaps.vGap50,
                   ],
                 ),
-              ))
+              )
             ],
           ),
         ),
