@@ -48,7 +48,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:advertising_info/advertising_info.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:common_utils/common_utils.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+// import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:crypto/crypto.dart';
 import 'package:device_identity/device_identity.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -72,6 +72,7 @@ import 'package:wakelock/wakelock.dart';
 import '../widgets/load_fail.dart';
 
 import '../person/entity/basec_onfig_bean.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class HomeTwoPage extends StatefulWidget {
   const HomeTwoPage({super.key});
@@ -116,7 +117,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   late String bubbleAndriodVersionApprovalStr = "";
 
   final JPush jpush = JPush();
-  late StreamSubscription<List<ConnectivityResult>> subscription;
+  late StreamSubscription<ConnectivityResult> subscription;
 
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Unknown',
@@ -779,13 +780,20 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     Future.delayed(const Duration(seconds: 1), () {
       subscription = Connectivity()
           .onConnectivityChanged
-          .listen((List<ConnectivityResult> result) {
-        // Received changes in available connectivity types!
-        // ignore: unrelated_type_equality_checks
+          .listen((ConnectivityResult result) {
+        // Got a new connectivity status!
         if (result == ConnectivityResult.none) {
           onNoNetwork();
         }
       });
+
+      // subscription = Connectivity()
+      //     .onConnectivityChanged
+      //     .listen((List<ConnectivityResult> result) {
+      //   // Received changes in available connectivity types!
+      //   // ignore: unrelated_type_equality_checks
+
+      // });
     });
 
     // getBaseConfig();
@@ -1223,6 +1231,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     EventBus().off(NotificationUtils.loginOut);
     EventUMStatistics.umengCommonOnPageEnd("home_two_page");
     WidgetsBinding.instance.removeObserver(this);
+    subscription.cancel();
 
     super.dispose();
   }

@@ -146,7 +146,7 @@ dependencies:
   wakelock: ^0.6.2
   audioplayers: ^5.2.1
   photo_manager: ^3.2.0
-  connectivity_plus: ^6.0.3
+  connectivity_plus: ^5.0.2
   # flutter_phone_directed: ^0.1.0
   # screen_manager: ^1.1.0
 
