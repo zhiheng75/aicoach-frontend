@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:dio/dio.dart';
 
 import '../net/dio_utils.dart';
@@ -60,6 +61,8 @@ class BasePagePresenter<V extends IMvpView> extends BasePresenter<V> {
         onSuccess?.call(data);
       },
       onError: (code, msg) {
+        // Toast.show("当前无网络，请检查网络连接");
+
         _onError(code, msg, onError);
       },
     );

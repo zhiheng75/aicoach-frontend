@@ -19,6 +19,7 @@ import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/change_notifier_manage.dart';
 import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
@@ -120,7 +121,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   }
 
   Widget navbar() {
-    return Container(
+    return SizedBox(
       // color: Colors.amber,
       height: _screenUtil.statusBarHeight + 40,
       width: _screenUtil.screenWidth,
@@ -138,7 +139,12 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () async {
-                  NavigatorUtils.goBack(context);
+                  if (widget.typeLogin == "2") {
+                    NavigatorUtils.push(context, HomeRouter.tabberPage,
+                        replace: true);
+                  } else {
+                    NavigatorUtils.goBack(context);
+                  }
                 },
                 child: SizedBox(
                   width: 20,
@@ -177,8 +183,8 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                   imageList: const [
                     'assets/introduction_one_page/yindao1.json',
                     'assets/introduction_two_page/yd2.json',
-                    'assets/introduction_one_page/yindao1.json',
-                    'assets/introduction_two_page/yd2.json',
+                    'assets/introduction_three_page/yindao3.json',
+                    'assets/introduction_four_page/yindao4.json',
                   ],
                   topImageList: const [
                     'login_banner_one',
@@ -205,11 +211,13 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                     const Expanded(child: Gaps.empty),
                     GestureDetector(
                         onTap: () {
+                          EventUMStatistics.umengCommonMapEvent(
+                              "click_login_number");
                           if (_isSelect) {
                             NavigatorUtils.push(
                               context,
                               replace: true,
-                              LoginRouter.keyLoginPhonePage,
+                              "${LoginRouter.keyLoginPhonePage}?typeLogin=${widget.typeLogin}",
                             );
                           } else {
                             Toast.show("请同意服务协议");
@@ -245,6 +253,8 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                     isWx
                         ? GestureDetector(
                             onTap: () {
+                              EventUMStatistics.umengCommonMapEvent(
+                                  "click_login_wechat");
                               if (_isSelect) {
                                 weChatLogin();
                               } else {
@@ -436,14 +446,17 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     //   print(v),
     // });
     Log.e("======登录成功=======");
-    Navigator.pop(context);
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
     // NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
     EventBus().emit(NotificationUtils.loginIn);
     EventBus().emit(NotificationUtils.resetInFo);
-
+    if (widget.typeLogin == "2") {
+      NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
+    } else {
+      Navigator.pop(context);
+    }
     // NavigatorUtils.goBack(context);
   }
 
@@ -460,7 +473,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
 
   @override
   void sendSmsSuccess() {
-    NavigatorUtils.push(context, LoginRouter.onlySmsPage);
+    // NavigatorUtils.push(context, LoginRouter.onlySmsPage);
   }
 
   @override
@@ -469,7 +482,8 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   @override
   void newwechatSuccess(NewWxInfoBeanData data) {
     // TODO: implement newwechatSuccess
-    NavigatorUtils.push(context, LoginRouter.newBindPhonePage,
+    NavigatorUtils.push(context,
+        "${LoginRouter.newBindPhonePage}?typeLogin=${widget.typeLogin}",
         arguments: data, replace: true);
   }
 }

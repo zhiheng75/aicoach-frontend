@@ -102,7 +102,7 @@ class PurchasePagePresenter extends BasePagePresenter<PurchaseView> {
 
       // }
     }, onError: (code, msg) {
-      Toast.show(msg);
+      // Toast.show(msg);
     });
   }
 
@@ -235,7 +235,7 @@ class PurchasePagePresenter extends BasePagePresenter<PurchaseView> {
         Toast.show(e.toString());
       }
     }, onError: (code, msg) {
-      Toast.show(msg);
+      // Toast.show(msg);
     });
   }
 

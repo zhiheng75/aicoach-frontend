@@ -61,8 +61,16 @@ class LoginRouter implements IRouterProvider {
     }));
     router.define(registerPage,
         handler: Handler(handlerFunc: (_, __) => const RegisterPage()));
-    router.define(keyLoginPhonePage,
-        handler: Handler(handlerFunc: (_, __) => const LoginPhonePage()));
+
+    // router.define(keyLoginPhonePage,
+    //     handler: Handler(handlerFunc: (_, __) => const LoginPhonePage()));
+
+    router.define(keyLoginPhonePage, handler: Handler(handlerFunc: (_, params) {
+      //0 一键登录  1 其他登录
+      String keyLogin = params['typeLogin']!.first;
+      return LoginPhonePage(typeLogin: keyLogin);
+    }));
+
     router.define(smsLoginPage,
         handler: Handler(handlerFunc: (_, __) => const SMSLoginPage()));
     router.define(keyLoginPage,
@@ -85,10 +93,12 @@ class LoginRouter implements IRouterProvider {
       String phoneNumberStr = params['PhoneNumber']!.first;
       NewWxInfoBeanData entity =
           ModalRoute.of(context!)?.settings.arguments as NewWxInfoBeanData;
+      String typeLogin = params['typeLogin']!.first;
 
       return CheckTwoCodePage(
         phoneNumber: phoneNumberStr,
         wechatData: entity,
+        typeLogin: typeLogin,
       );
     }));
 
@@ -130,8 +140,9 @@ class LoginRouter implements IRouterProvider {
       Log.e(entity.openid);
 
       Log.e("===============");
+      String keyLogin = params['typeLogin']!.first;
 
-      return NewBindPhonePage(wechatData: entity);
+      return NewBindPhonePage(wechatData: entity, typeLogin: keyLogin);
     }));
 
     // router.define(resetPasswordPage, handler: Handler(handlerFunc: (_, __) => const ResetPasswordPage()));

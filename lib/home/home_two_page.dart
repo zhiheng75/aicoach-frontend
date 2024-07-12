@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -7,10 +8,12 @@ import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/course/course_router.dart';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/entity/banner_list_bean.dart';
+import 'package:Bubble/home/entity/system_maintenance_bean.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/home/presenter/home_two_page_presenter.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/view/home_two_page_view.dart';
+import 'package:Bubble/home/widget/System_Maintenance_view.dart';
 import 'package:Bubble/home/widget/home_item.dart';
 import 'package:Bubble/home/widget/player_widget.dart';
 import 'package:Bubble/home/widget/push_show_view.dart';
@@ -28,6 +31,7 @@ import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/scene/entity/category_entity.dart';
 import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/scene/widget/select_scene.dart';
+import 'package:Bubble/test/connectivity_test.dart';
 import 'package:Bubble/test/demo.dart';
 import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/confirm_utils.dart';
@@ -35,6 +39,7 @@ import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/douyin_util.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/util/other_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
@@ -43,6 +48,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:advertising_info/advertising_info.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:crypto/crypto.dart';
 import 'package:device_identity/device_identity.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -57,6 +63,7 @@ import 'package:fluwx/fluwx.dart';
 import 'package:jpush_flutter/jpush_flutter.dart';
 // import 'package:jverify/jverify.dart';
 import 'package:package_info/package_info.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:Bubble/exam/exam_router.dart';
 import 'package:Bubble/home/entity/banner_list_bean.dart';
@@ -109,6 +116,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   late String bubbleAndriodVersionApprovalStr = "";
 
   final JPush jpush = JPush();
+  late StreamSubscription<List<ConnectivityResult>> subscription;
 
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Unknown',
@@ -739,12 +747,46 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   //   );
   // }
 
+  void onNoNetwork() {
+    ConfirmUtils.show(
+      context: context,
+      title: '网络连接失败',
+      // buttonDirection: 'vertical',
+      confirmButtonText: '设置',
+      cancelButtonText: '取消',
+      onConfirm: () {
+        openAppSettings();
+      },
+      onCancel: () {},
+      child: const Text(
+        "检测到网络权限可能未开启,您可以在${"设置"}中检查蜂窝移动网络",
+        style: TextStyle(
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+          color: Color(0xFF333333),
+          height: 18.0 / 15.0,
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     initDio();
     initUM();
+    Future.delayed(const Duration(seconds: 1), () {
+      subscription = Connectivity()
+          .onConnectivityChanged
+          .listen((List<ConnectivityResult> result) {
+        // Received changes in available connectivity types!
+        // ignore: unrelated_type_equality_checks
+        if (result == ConnectivityResult.none) {
+          onNoNetwork();
+        }
+      });
+    });
 
     // getBaseConfig();
     fluwx.registerApi(
@@ -787,6 +829,51 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       // EventUMStatistics.umengCommonOnPageEnd("person_page");
       getStandardAnswer();
     });
+    Future.delayed(const Duration(milliseconds: 300), () {
+      systemMaintenance();
+    });
+  }
+
+  void systemMaintenance() async {
+    try {
+      final dio = Dio();
+      // String douyin = "";
+      // if (imei.length == 0) {
+      //   douyin = oaid;
+      // } else {
+      //   douyin = imei;
+      // }
+      // // 正式
+      // String url = "https://statics.shenmo-ai.com/system_maintenance_prod.json";
+      // // 测试
+      String url = "https://statics.shenmo-ai.com/system_maintenance_dev.json";
+      var response = await dio.get(url);
+      //转化为Json
+      String jsonString = jsonEncode(response.data);
+      print(jsonString);
+
+      Map<String, dynamic> systemMaintenanceBeanMap = json.decode(jsonString);
+      SystemMaintenanceBean systemMaintenanceBean =
+          SystemMaintenanceBean.fromJson(systemMaintenanceBeanMap);
+      if (systemMaintenanceBean.status == 1) {
+        Log.e(systemMaintenanceBean.remainingTime);
+        showSystemMaintenanceDialog(systemMaintenanceBean.remainingTime);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  showSystemMaintenanceDialog(String msg) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.transparent,
+      barrierDismissible: false,
+      useSafeArea: false,
+      builder: (_) => SystemMaintenanceView(
+        msg: msg,
+      ),
+    );
   }
 
   @override
@@ -1144,7 +1231,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    // return const Demo();
+    // return const ConnectivityTest();
 
     Widget bg = Container(
       width: _screenUtil.screenWidth,

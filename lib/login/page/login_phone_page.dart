@@ -37,7 +37,8 @@ import '../../mvp/base_page.dart';
 import 'package:fluwx/fluwx.dart';
 
 class LoginPhonePage extends StatefulWidget {
-  const LoginPhonePage({super.key});
+  final String typeLogin;
+  const LoginPhonePage({Key? key, required this.typeLogin}) : super(key: key);
 
   @override
   State<LoginPhonePage> createState() => _LoginPhonePageState();
@@ -45,50 +46,15 @@ class LoginPhonePage extends StatefulWidget {
 
 class _LoginPhonePageState extends State<LoginPhonePage>
     with
-        // ChangeNotifierMixin<LoginPhonePage>,
         BasePageMixin<LoginPhonePage, RegisterPresenter>,
         AutomaticKeepAliveClientMixin<LoginPhonePage>
-    implements
-        RegisterView {
+    implements RegisterView {
   //定义一个controller
   final TextEditingController _phoneController = TextEditingController();
-  // final TextEditingController _vCodeController = TextEditingController();
   final FocusNode _nodeText1 = FocusNode();
-  // final FocusNode _nodeText2 = FocusNode();
   bool _clickable = false;
   late RegisterPresenter _registerPresenter;
-  // bool _isSelect = true;
   final ScreenUtil _screenUtil = ScreenUtil();
-
-  // bool isWx = false;
-  // void _verify() {
-  //   final String name = _phoneController.text;
-  //   final String vCode = _vCodeController.text;
-  //   bool clickable = true;
-  //   if (name.isEmpty || name.length < 11) {
-  //     clickable = false;
-  //   }
-  //   if (vCode.isEmpty || vCode.length != 4) {
-  //     clickable = false;
-  //   }
-
-  //   if (clickable != _clickable) {
-  //     setState(() {
-  //       _clickable = clickable;
-  //     });
-  //   }
-  // }
-
-  // @override
-  // Map<ChangeNotifier?, List<VoidCallback>?>? changeNotifier() {
-  //   final List<VoidCallback> callbacks = <VoidCallback>[_verify];
-  //   return <ChangeNotifier, List<VoidCallback>?>{
-  //     _phoneController: callbacks,
-  //     _vCodeController: callbacks,
-  //     _nodeText1: null,
-  //     _nodeText2: null,
-  //   };
-  // }
 
   @override
   void initState() {
@@ -96,7 +62,7 @@ class _LoginPhonePageState extends State<LoginPhonePage>
   }
 
   Widget navbar() {
-    return Container(
+    return SizedBox(
       // color: Colors.amber,
       height: _screenUtil.statusBarHeight + 40,
       width: _screenUtil.screenWidth,
@@ -114,7 +80,12 @@ class _LoginPhonePageState extends State<LoginPhonePage>
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () async {
-                  NavigatorUtils.goBack(context);
+                  if (widget.typeLogin == "2") {
+                    NavigatorUtils.push(context, HomeRouter.tabberPage,
+                        replace: true);
+                  } else {
+                    NavigatorUtils.goBack(context);
+                  }
                 },
                 child: SizedBox(
                   width: 20,
@@ -178,31 +149,13 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                           fontWeight: FontWeight.w400,
                           color: Colours.color_333333),
                     ),
-                    // Center(
-                    //   child: Column(
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: <Widget>[
-                    //       TextField(
-                    //         decoration: InputDecoration(hintText: 'Enter text'),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                     Container(
                       margin: const EdgeInsets.only(top: 20),
-                      // height: Dimens.h_dp40,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(Dimens.h_dp40),
-                        // color: _clickable
-                        //     ? Colors.black
-                        //     : Colours.color_737373,
                         border: Border.all(width: 1, color: Colors.black),
                       ),
-                      // decoration: BoxDecoration(
-                      //   borderRadius: BorderRadius.circular(Dimens.h_dp40),
-                      //   color: Colors.white70,
-                      // ),
                       child: MyTextField(
                         key: const Key('phone'),
                         textAlign: TextAlign.center,
@@ -236,19 +189,11 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                           if (_clickable == false) return;
 
                           if (_phoneController.text.length == 11) {
-                            NavigatorUtils.push(
-                              context,
-                              replace: true,
-                              "${LoginRouter.keyCheckCodePage}?PhoneNumber=${_phoneController.text.trim()}&typeLogin=1",
-                            );
                             _registerPresenter.sendSms(
                                 _phoneController.text.trim(), false);
                           } else {
                             Toast.show("手机号无效");
                           }
-
-                          // NavigatorUtils.push(context,
-                          //     "${LoginRouter.keyCheckCodePage}?PhoneNumber=18611667447");
                         },
                         child: Container(
                           padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -270,77 +215,6 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                             ),
                           ),
                         )),
-                    // Container(
-                    //   alignment: Alignment.center,
-                    //   child: const Text(
-                    //     "未注册手机号验证后生成新账号",
-                    //     style: TextStyle(
-                    //         color: Colours.color_001652, fontSize: 13),
-                    //   ),
-                    // ),
-                    // const Expanded(child: Gaps.empty),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   // crossAxisAlignment: CrossAxisAlignment.center,
-                    //   children: [
-                    //     GestureDetector(
-                    //       onTap: () {
-                    //         _isSelect = !_isSelect;
-                    //         setState(() {});
-                    //       },
-                    //       child: Container(
-                    //         width: 30,
-                    //         height: 30,
-                    //         alignment: Alignment.center,
-                    //         child: LoadAssetImage(
-                    //           _isSelect ? "select_img2" : "unselect_img2",
-                    //           width: 15.0,
-                    //           height: 15.0,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     // Gaps.hGap10,
-                    //     const Text(
-                    //       "我已阅读并同意",
-                    //       style: TextStyle(fontSize: 14, color: Colours.black),
-                    //     ),
-                    //     GestureDetector(
-                    //       onTap: () {
-                    //         NavigatorUtils.goWebViewPage(context, "隐私政策",
-                    //             "http://www.shenmo-ai.com/privacy_policy/");
-                    //         // NavigatorUtils.goWebViewPage(context, "隐私政策",
-                    //         //     "https://mini-game-dev.shenmo-ai.com/web/index.html ");
-                    //       },
-                    //       child: const Text("隐私政策",
-                    //           style: TextStyle(
-                    //               fontSize: 14,
-                    //               color: Colours.color_0047FF,
-                    //               decoration: TextDecoration.underline)),
-                    //     ),
-                    //     const Text(
-                    //       "和",
-                    //       style: TextStyle(
-                    //           fontSize: 14, color: Colours.color_546092),
-                    //     ),
-                    //     GestureDetector(
-                    //       onTap: () {
-                    //         NavigatorUtils.goWebViewPage(context, "服务协议",
-                    //             "http://www.shenmo-ai.com/tos/");
-                    //         // NavigatorUtils.goWebViewPage(context, "服务协议",
-                    //         //     "https://books.shenmo-ai.com/mobile?character_id=li_bai&v=1&tag=prod&cat=1");
-                    //       },
-                    //       child: const Text(
-                    //         "服务协议",
-                    //         style: TextStyle(
-                    //             color: Colours.color_0047FF,
-                    //             fontSize: 14,
-                    //             decoration: TextDecoration.underline),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    // Gaps.vGap24,
-                    // Gaps.vGap50,
                   ],
                 ),
               ))
@@ -350,52 +224,6 @@ class _LoginPhonePageState extends State<LoginPhonePage>
       ),
     );
   }
-
-  // ///微信授权
-  // weChatLogin() async {
-  //   if (_isSelect) {
-  //     // if (Device.isAndroid) {
-  //     //   FlutterToNative.jumpToWechatLogin().then((value) => {
-  //     //         // _wechatCode = value,
-  //     //         // Log.e("===========>$_wechatCode"),
-  //     //         _registerPresenter.getWxInfo(value)
-  //     //       });
-  //     // } else {
-  //     //   Log.e("===========>");
-  //     Fluwx fluwx = Fluwx();
-
-  //     fluwx.registerApi(
-  //         appId: "wxfb033d09d2eecaf0",
-  //         universalLink: "https://demo.shenmo-ai.net/ios/");
-  //     if (await fluwx.isWeChatInstalled) {
-  //       fluwx
-  //           .authBy(
-  //               which: NormalAuth(
-  //                   scope: 'snsapi_userinfo', state: 'wechat_sdk_demo_test'))
-  //           .then((data) {});
-  //       fluwx.addSubscriber((response) {
-  //         if (response is WeChatAuthResponse) {
-  //           // Log.e("===========>");
-  //           // Log.e(response.code ?? "");
-  //           // Log.e("===========>");
-
-  //           String? result = response.code;
-  //           _registerPresenter.getWxInfo(response.code ?? "");
-  //           // setState(() {
-  //           // String result =
-  //           //     'state :${response.state} \n code:${response.code}';
-  //           // print(result);
-  //           // });
-  //         }
-  //       });
-  //     } else {
-  //       Toast.show("没有安装微信");
-  //     }
-  //     // }
-  //   } else {
-  //     Toast.show("请同意服务协议");
-  //   }
-  // }
 
   @override
   RegisterPresenter createPresenter() {
@@ -427,7 +255,11 @@ class _LoginPhonePageState extends State<LoginPhonePage>
 
   @override
   void sendSmsSuccess() {
-    NavigatorUtils.push(context, LoginRouter.onlySmsPage);
+    NavigatorUtils.push(
+      context,
+      replace: true,
+      "${LoginRouter.keyCheckCodePage}?PhoneNumber=${_phoneController.text.trim()}&typeLogin=${widget.typeLogin}",
+    );
   }
 
   @override

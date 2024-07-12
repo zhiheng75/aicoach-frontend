@@ -35,9 +35,10 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         cancelToken: cancelToken,
         isShow: isShowLoading, onSuccess: (data) {
       if (data != null && data.code == 200) {
-        Toast.show("短信发送成功，请注意查收");
+        Toast.show("短信验证码已发送");
+        view.sendSmsSuccess();
       } else {
-        Toast.show("发送失败");
+        Toast.show("短信验证码发送失败");
       }
     });
   }
@@ -100,7 +101,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         isShow: isShowLoading, onSuccess: (data) {
       if (data != null) {
         if (data.code == 200) {
-          Toast.show("登录成功");
+          Toast.show("验证成功");
           // MyUserInfoData myUserInfo = MyUserInfoData();
           // myUserInfo.id = data.data.id;
           // myUserInfo.email = data.data.email??"";
@@ -145,7 +146,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
       } else {
         LoadingDialog.hidden();
 
-        Toast.show("登录失败");
+        Toast.show("验证码错误");
       }
       EventBus().emit('ERROR');
     });

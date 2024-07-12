@@ -64,7 +64,7 @@ class _CheckCodePageState extends State<CheckCodePage>
 
   ///启动倒计时器
   void _startTimer() {
-    _seconds = 30;
+    _seconds = 60;
     canResend = false;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_seconds == 0) {
@@ -126,7 +126,12 @@ class _CheckCodePageState extends State<CheckCodePage>
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () async {
-                  NavigatorUtils.goBack(context);
+                  if (widget.typeLogin == "2") {
+                    NavigatorUtils.push(context, HomeRouter.tabberPage,
+                        replace: true);
+                  } else {
+                    NavigatorUtils.goBack(context);
+                  }
                 },
                 child: SizedBox(
                   width: 20,
@@ -295,16 +300,21 @@ class _CheckCodePageState extends State<CheckCodePage>
   @override
   void loginSuccess() {
     // TODO: implement loginSuccess
-    Navigator.pop(context);
-    if (widget.typeLogin == "0") {
-      // Constant.jverify.dismissLoginAuthView();
-      hideLoading();
-    }
+    // if (widget.typeLogin == "0") {
+    //   // Constant.jverify.dismissLoginAuthView();
+    //   hideLoading();
+    // }
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
     EventBus().emit(NotificationUtils.loginIn);
     EventBus().emit(NotificationUtils.resetInFo);
+
+    if (widget.typeLogin == "2") {
+      NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
+    } else {
+      Navigator.pop(context);
+    }
 
     // NavigatorUtils.push(
     //   context,
@@ -342,9 +352,13 @@ class CheckTwoCodePage extends StatefulWidget {
   final String phoneNumber;
   //微信登录绑定
   final NewWxInfoBeanData wechatData;
+  final String typeLogin;
 
   const CheckTwoCodePage(
-      {super.key, required this.phoneNumber, required this.wechatData});
+      {super.key,
+      required this.phoneNumber,
+      required this.wechatData,
+      required this.typeLogin});
 
   @override
   State<CheckTwoCodePage> createState() => _CheckTwoCodePageState();
@@ -361,7 +375,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   Timer? _timer;
 
   ///当前倒计时秒数
-  int? _seconds = 30;
+  int? _seconds = 60;
 
   ///能否重新发送
   bool canResend = false;
@@ -371,7 +385,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
 
   ///启动倒计时器
   void _startTimer() {
-    _seconds = 30;
+    _seconds = 60;
     canResend = false;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_seconds == 0) {
@@ -432,7 +446,12 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () async {
-                  NavigatorUtils.goBack(context);
+                  if (widget.typeLogin == "2") {
+                    NavigatorUtils.push(context, HomeRouter.tabberPage,
+                        replace: true);
+                  } else {
+                    NavigatorUtils.goBack(context);
+                  }
                 },
                 child: SizedBox(
                   width: 20,
@@ -578,9 +597,9 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
 
   void verifyCode(String code) {
     print(code);
-    RegisterPresenter.disHttpKeySendSms();
+    // RegisterPresenter.disHttpKeySendSms();
 
-    _registerPresenter.register(widget.phoneNumber, code, false);
+    _registerPresenter.toBind(widget.phoneNumber, code, widget.wechatData);
   }
 
   void _bind(String code) {
@@ -606,12 +625,15 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   @override
   void loginSuccess() {
     // TODO: implement loginSuccess
-    Navigator.pop(context);
-
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
     EventBus().emit(NotificationUtils.loginIn);
     EventBus().emit(NotificationUtils.resetInFo);
+    if (widget.typeLogin == "2") {
+      NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
+    } else {
+      Navigator.pop(context);
+    }
   }
 
   @override

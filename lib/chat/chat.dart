@@ -276,10 +276,10 @@ class _ChatState extends State<ChatPage>
         onSuccess(list);
       },
       onError: (code, msg) {
-        Toast.show(
-          msg,
-          duration: 1000,
-        );
+        // Toast.show(
+        //   msg,
+        //   duration: 1000,
+        // );
       },
     );
   }

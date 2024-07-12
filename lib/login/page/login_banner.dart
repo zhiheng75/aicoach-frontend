@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:Bubble/res/colors.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/material.dart';
@@ -142,6 +143,15 @@ class _CarouselState extends State<LoginBanner> with WidgetsBindingObserver {
   void _onPageChanged(int index) {
     // Log.e("msg============$index");
     var position = index % widget.imageList!.length;
+    if (position == 0) {
+      EventUMStatistics.umengCommonMapEvent("view_login_carousel_1");
+    } else if (position == 1) {
+      EventUMStatistics.umengCommonMapEvent("view_login_carousel_2");
+    } else if (position == 2) {
+      EventUMStatistics.umengCommonMapEvent("view_login_carousel_3");
+    } else if (position == 3) {
+      EventUMStatistics.umengCommonMapEvent("view_login_carousel_4");
+    }
     setState(() {
       _currentPage = position;
       _pagePosition = index;
@@ -158,7 +168,7 @@ class _CarouselState extends State<LoginBanner> with WidgetsBindingObserver {
           _pauseTimer();
           _isClick = true;
           setState(() {
-            opacity = 0.0;
+            opacity = 0.5;
           });
         }
 
@@ -205,7 +215,7 @@ class _CarouselState extends State<LoginBanner> with WidgetsBindingObserver {
               }
             },
             child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 400),
+              duration: const Duration(milliseconds: 300),
               opacity: opacity,
               child: PageView.builder(
                   controller: _controller,
@@ -239,7 +249,7 @@ class _CarouselState extends State<LoginBanner> with WidgetsBindingObserver {
   * */
   Widget getBannerIndicators() {
     return Positioned(
-      bottom: 180.h,
+      bottom: 200.h,
       left: 0,
       right: 0,
       child: _buildIndicators(MainAxisAlignment.center),

@@ -26,6 +26,23 @@ class LoginManager {
     return token.isNotEmpty;
   }
 
+  static void checkOneLogin(BuildContext context, Function toNext) {
+    final String accessToken = SpUtil.getString(Constant.accessToken).nullSafe;
+
+    // NavigatorUtils.push(context, LoginRouter.myApp);
+    // return;
+
+    if (accessToken.isNotEmpty) {
+      toNext();
+    } else {
+      //跳转登录()
+      NavigatorUtils.push(
+        context,
+        "${LoginRouter.newOneKeyPhonePage}?typeLogin=2",
+      );
+    }
+  }
+
   static void checkLogin(BuildContext context, Function toNext) {
     final String accessToken = SpUtil.getString(Constant.accessToken).nullSafe;
 

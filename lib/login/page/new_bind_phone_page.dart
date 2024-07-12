@@ -1,3 +1,4 @@
+import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/login/entity/login_info_entity.dart';
 import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/login_router.dart';
@@ -16,11 +17,14 @@ import 'package:Bubble/widgets/my_only_img_bar.dart';
 import 'package:Bubble/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NewBindPhonePage extends StatefulWidget {
   final NewWxInfoBeanData wechatData;
+  final String typeLogin;
 
-  const NewBindPhonePage({Key? key, required this.wechatData})
+  const NewBindPhonePage(
+      {Key? key, required this.wechatData, required this.typeLogin})
       : super(key: key);
 
   @override
@@ -35,25 +39,64 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
   // final bool isKeyLogin = false;
   late BindPhonePresenter _bindPhonePresenter;
 
-  bool _isSelect = false;
-
   //定义一个controller
   final TextEditingController _phoneController = TextEditingController();
-  // final TextEditingController _vCodeController = TextEditingController();
   final FocusNode _nodeText1 = FocusNode();
-  // final FocusNode _nodeText2 = FocusNode();
-
-  String typeLogin = "0";
+  bool _clickable = false;
+  final ScreenUtil _screenUtil = ScreenUtil();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+  }
+
+  Widget navbar() {
+    return SizedBox(
+      // color: Colors.amber,
+      height: _screenUtil.statusBarHeight + 40,
+      width: _screenUtil.screenWidth,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 60,
+          ),
+          Row(
+            children: [
+              Container(
+                width: 15,
+              ),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () async {
+                  if (widget.typeLogin == "2") {
+                    NavigatorUtils.push(context, HomeRouter.tabberPage,
+                        replace: true);
+                  } else {
+                    NavigatorUtils.goBack(context);
+                  }
+                },
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: Image.asset(
+                    width: 20,
+                    height: 26,
+                    'assets/images/ic_back_icon.png',
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -61,229 +104,106 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: ImageUtils.getAssetImage("login_bg_img"),
+                  image: ImageUtils.getAssetImage("login_two_bg_img"),
                   fit: BoxFit.fill)),
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              typeLogin == "1"
-                  ? Gaps.vGap12
-                  : MyOnlyImgBar(
-                      alignment: Alignment.centerLeft,
-                      backgroundColor: Colours.transflate,
-                      width: Dimens.w_dp32,
-                      height: Dimens.h_dp32,
-                      actionUrl: "round_close_img",
-                      onActionPress: () {
-                        NavigatorUtils.goBack(context);
-                      }),
+              navbar(),
               Expanded(
                   child: Container(
-                padding: EdgeInsets.only(
-                    left: 42,
-                    right: 42,
-                    top: typeLogin == "1" ? Dimens.h_dp168 : Dimens.h_dp60),
+                padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "绑定手机号",
+                    const Text(
+                      "Hi,欢迎来到口语嘟嘟",
                       style: TextStyle(
-                          fontSize: Dimens.font_sp17, color: Colours.black),
+                          fontSize: 28,
+                          fontWeight: FontWeight.w400,
+                          color: Colours.black),
                     ),
-                    Gaps.vGap12,
-                    Container(
-                      alignment: Alignment.center,
-                      child: const Text(
-                        "根据国家网络安全法要求，需完成手机号绑定才能使用本产品。",
-                        style: TextStyle(
-                            color: Colours.color_001652, fontSize: 13),
-                      ),
+                    const Text(
+                      "登录后更精彩，即将开始流利口语",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colours.black),
                     ),
-                    Gaps.vGap12,
+                    Gaps.vGap33,
+                    const Text(
+                      "未注册手机验证后即完成注册",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colours.color_333333),
+                    ),
                     Container(
-                      height: Dimens.h_dp40,
+                      margin: const EdgeInsets.only(top: 20),
+                      width: double.infinity,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(Dimens.h_dp40),
-                        color: Colors.white70,
+                        border: Border.all(width: 1, color: Colors.black),
                       ),
-                      child: Row(
-                        children: [
-                          Gaps.hGap16,
-                          Text(
-                            "+86",
-                            style: TextStyle(
-                                color: Colours.color_9BA9BE,
-                                fontSize: Dimens.font_sp18),
-                          ),
-                          typeLogin == "1" ? Gaps.hGap4 : Gaps.hGap16,
-                          Expanded(
-                            child: Center(
-                              child: typeLogin == "1"
-                                  ? Text(
-                                      "186****1111",
-                                      style: TextStyle(
-                                          color: Colours.color_001652,
-                                          fontSize: Dimens.font_sp18),
-                                    )
-                                  : MyTextField(
-                                      key: const Key('phone'),
-                                      txtStyle: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colours.color_001652,
-                                      ),
-                                      hintStyle: const TextStyle(
-                                          fontSize: 20,
-                                          color: Colours.color_001652),
-                                      focusNode: _nodeText1,
-                                      controller: _phoneController,
-                                      maxLength: 11,
-                                      keyboardType: TextInputType.phone,
-                                      hintText: "输入手机号",
-                                      underLineColor: Colours.color_00,
-                                      countDownColor: Colours.color_001652,
-                                    ),
-                            ),
-                          ),
-                          Gaps.hGap16,
-                        ],
+                      child: MyTextField(
+                        key: const Key('phone'),
+                        textAlign: TextAlign.center,
+                        isDelete: false,
+                        textMessage: (message) {
+                          if (message.length == 11) {
+                            _clickable = true;
+                          } else {
+                            _clickable = false;
+                          }
+                          setState(() {});
+                        },
+                        txtStyle: const TextStyle(
+                          fontSize: 20,
+                          color: Colours.color_001652,
+                        ),
+                        hintStyle: const TextStyle(
+                            fontSize: 20, color: Colours.color_001652),
+                        focusNode: _nodeText1,
+                        controller: _phoneController,
+                        maxLength: 11,
+                        keyboardType: TextInputType.phone,
+                        hintText: "请输入手机号",
+                        underLineColor: Colours.color_00,
+                        countDownColor: Colours.color_001652,
                       ),
                     ),
-                    Gaps.vGap12,
-                    typeLogin == "1"
-                        ? Container(
-                            alignment: Alignment.center,
-                            child: const Text(
-                              "中国联通认证",
-                              style: TextStyle(
-                                  color: Colours.color_001652, fontSize: 13),
-                            ),
-                          )
-                        : Gaps.vGap12,
-                    const Expanded(child: Gaps.empty),
+                    Gaps.vGap24,
                     GestureDetector(
                         onTap: () {
-                          // NavigatorUtils.push(
-                          //   context,
-                          //   LoginRouter.phoneLoginPage,
-                          // );
-                          // judgementPhone();
-                          // _bindPhonePresenter.sendSms(_phoneController.text);
-                          if (_isSelect) {
-                            if (_phoneController.text.length == 11) {
-                              NavigatorUtils.push(
-                                  context,
-                                  arguments: widget.wechatData,
-                                  replace: true,
-                                  "${LoginRouter.keyCheckTwoCodePage}?PhoneNumber=${_phoneController.text.trim()}");
-                            } else {
-                              Toast.show("手机号无效");
-                            }
+                          if (_clickable == false) return;
+
+                          if (_phoneController.text.length == 11) {
+                            _bindPhonePresenter
+                                .sendSms(_phoneController.text.trim());
                           } else {
-                            Toast.show("请同意服务协议");
+                            Toast.show("手机号无效");
                           }
                         },
                         child: Container(
-                          height: Dimens.h_dp40,
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                          // height: Dimens.h_dp40,
+                          margin: const EdgeInsets.only(bottom: 16),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(Dimens.h_dp40),
-                            color: Colors.white70,
-                            border: Border.all(width: 1, color: Colors.black),
+                            color: _clickable
+                                ? Colors.black
+                                : Colours.color_737373,
+                            // border: Border.all(width: 1, color: Colors.black),
                           ),
                           child: Center(
                             child: Text(
-                              typeLogin == "1" ? "绑定手机号" : "下一步",
+                              "获取验证码录",
                               style: TextStyle(
-                                  color: Colours.color_001652,
+                                  color: Colors.white,
                                   fontSize: Dimens.font_sp18),
                             ),
                           ),
                         )),
-                    Gaps.vGap12,
-                    typeLogin == "1"
-                        ? GestureDetector(
-                            onTap: () {
-                              // NavigatorUtils.push(
-                              //   context,
-                              //   "${LoginRouter.newBindPhonePage}?needKeyLogin=0",
-                              // );
-                            },
-                            child: SizedBox(
-                              height: Dimens.h_dp20,
-                              // decoration: BoxDecoration(
-                              //   borderRadius: BorderRadius.circular(Dimens.h_dp40),
-                              //   color: Colors.white70,
-                              //   border: Border.all(width: 1, color: Colors.black),
-                              // ),
-                              child: Center(
-                                child: Text(
-                                  "绑定其他手机号",
-                                  style: TextStyle(
-                                      color: Colours.color_001652,
-                                      fontSize: Dimens.font_sp12),
-                                ),
-                              ),
-                            ))
-                        : Gaps.vGap20,
-                    Gaps.vGap80,
-                    GestureDetector(
-                      onTap: () {
-                        _isSelect = !_isSelect;
-                        setState(() {});
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            child: LoadAssetImage(
-                              _isSelect ? "select_img2" : "unselect_img2",
-                              width: 11,
-                              height: 11,
-                            ),
-                          ),
-                          Gaps.hGap10,
-                          Text(
-                            "我以阅读并同意",
-                            style: TextStyle(
-                                fontSize: Dimens.font_sp12,
-                                color: Colours.black),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              NavigatorUtils.goWebViewPage(context, "隐私政策",
-                                  "http://www.shenmo-ai.com/privacy_policy/");
-                            },
-                            child: Text("隐私政策",
-                                style: TextStyle(
-                                    fontSize: Dimens.font_sp12,
-                                    color: Colours.color_0047FF,
-                                    decoration: TextDecoration.underline)),
-                          ),
-                          Text(
-                            "和",
-                            style: TextStyle(
-                                fontSize: Dimens.font_sp12,
-                                color: Colours.color_546092),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              NavigatorUtils.goWebViewPage(context, "服务协议",
-                                  "http://www.shenmo-ai.com/tos/");
-                            },
-                            child: Text(
-                              "服务协议",
-                              style: TextStyle(
-                                  color: Colours.color_0047FF,
-                                  fontSize: Dimens.font_sp12,
-                                  decoration: TextDecoration.underline),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Gaps.vGap50,
                   ],
                 ),
               ))
@@ -292,16 +212,6 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
         ),
       ),
     );
-  }
-
-  bool judgementPhone() {
-    if (_phoneController.text.length == 11) {
-      _bindPhonePresenter.sendSms(_phoneController.text.trim());
-      return true;
-    } else {
-      Toast.show("手机号无效");
-      return false;
-    }
   }
 
   @override
@@ -318,6 +228,11 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
   @override
   void sendSuccess(String msg) {
     // TODO: implement sendSuccess
+    NavigatorUtils.push(
+        context,
+        arguments: widget.wechatData,
+        replace: true,
+        "${LoginRouter.keyCheckTwoCodePage}?PhoneNumber=${_phoneController.text.trim()}&typeLogin=${widget.typeLogin}");
   }
 
   @override

@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/home_router.dart';
+import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/net/intercept.dart';
@@ -57,7 +58,7 @@ class _SplashPageState extends State<SplashPage> {
   void _initSplash() {
     Provider.of<DeviceProvider>(context, listen: false).getDeviceId();
     _subscription =
-        Stream.value(1).delay(const Duration(milliseconds: 1000)).listen((_) {
+        Stream.value(1).delay(const Duration(milliseconds: 2000)).listen((_) {
       bool hasAgree =
           SpUtil.getBool(Constant.agreement, defValue: false) ?? false;
       if (hasAgree) {
@@ -95,7 +96,11 @@ class _SplashPageState extends State<SplashPage> {
     // NavigatorUtils.push(context, HomeRouter.homePage, replace: true);
 
     // ignore: use_build_context_synchronously
-    NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
+    LoginManager.checkOneLogin(context, () {
+      NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
+    });
+
+    // ignore: use_build_context_synchronously
   }
 
   void initUM() {
@@ -160,18 +165,10 @@ class _SplashPageState extends State<SplashPage> {
               image: DecorationImage(
                   image: ImageUtils.getAssetImage("splash_bg"),
                   fit: BoxFit.fill)),
-          child: const FractionallyAlignedSizedBox(
-            heightFactor: 0.3,
-            widthFactor: 0.6,
-            leftFactor: 0.2,
-            topFactor: 0.3,
-            child: Column(
-              children: [
-                LoadAssetImage(
-                  "splash_icon",
-                  width: 150,
-                ),
-              ],
+          child: const Center(
+            child: LoadAssetImage(
+              "splash_icon",
+              // width: 150,
             ),
           ),
         )));

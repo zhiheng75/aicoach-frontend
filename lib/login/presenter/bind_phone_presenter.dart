@@ -1,5 +1,6 @@
 import 'package:Bubble/util/douyin_util.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:jpush_flutter/jpush_flutter.dart';
 import 'package:sp_util/sp_util.dart';
@@ -23,15 +24,18 @@ class BindPhonePresenter extends BasePagePresenter<BindPhoneView> {
     return requestNetwork<EmptyResponseData>(Method.post,
         url: HttpApi.smsLogin,
         queryParameters: params,
-        cancelToken: cancelToken,
-        isShow: true, onSuccess: (data) {
+        isShow: false, onSuccess: (data) {
       if (data != null) {
         if (data.code == 200) {
+          Toast.show("短信验证码已发送");
+
           view.sendSuccess("发送成功");
         } else {
+          Toast.show("短信验证码发送失败");
           view.sendFail(data.msg);
         }
       } else {
+        Toast.show("短信验证码发送失败");
         view.sendFail("响应异常");
       }
     });
