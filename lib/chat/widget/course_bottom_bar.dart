@@ -407,16 +407,6 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     // 监听App状态
     WidgetsBinding.instance.addObserver(this);
 
-    EventBus().on('LOGINOUT', (_) {
-      setState(() {
-        LoginManager.toLoginOut();
-        NavigatorUtils.push(
-          context,
-          "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
-        );
-      });
-    });
-
     EventBus().on(NotificationUtils.resetANChat, (_) {
       Future.delayed(const Duration(seconds: 1), () async {
         await _mediaUtils.stopTwoPlay();

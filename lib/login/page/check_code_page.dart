@@ -110,7 +110,7 @@ class _CheckCodePageState extends State<CheckCodePage>
   Widget navbar() {
     return Container(
       // color: Colors.amber,
-      height: _screenUtil.statusBarHeight + 40,
+      height: _screenUtil.statusBarHeight + 60,
       width: _screenUtil.screenWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,9 +133,10 @@ class _CheckCodePageState extends State<CheckCodePage>
                     NavigatorUtils.goBack(context);
                   }
                 },
-                child: SizedBox(
-                  width: 20,
-                  height: 20,
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  width: 30,
+                  height: 30,
                   child: Image.asset(
                     width: 20,
                     height: 26,
@@ -157,98 +158,112 @@ class _CheckCodePageState extends State<CheckCodePage>
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: ImageUtils.getAssetImage("login_two_bg_img"),
-                    fit: BoxFit.fill)),
-            height: double.infinity,
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                navbar(),
-                // const Padding(
-                //   padding: EdgeInsets.only(top: 108, left: 30, right: 16),
-                //   child: Text(
-                //     "请输入验证码:",
-                //     style: TextStyle(
-                //       fontSize: 17,
-                //       color: Colours.color_001652,
-                //       // fontWeight: FontWeight.bold,
-                //     ),
-                //   ),
-                // ),
-                Container(
-                  padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Hi,欢迎来到口语嘟嘟",
-                        style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.black),
-                      ),
-                      const Text(
-                        "登录后更精彩，即将开始流利口语",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.black),
-                      ),
-                      Gaps.vGap33,
-                      Text(
-                        "已发送验证码至  ${widget.phoneNumber} ",
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: Colours.color_001652,
-                          // fontWeight: FontWeight.bold,
+        // ignore: deprecated_member_use
+        body: WillPopScope(
+          onWillPop: () async {
+            //这里可以响应物理返回键
+            if (widget.typeLogin == "2") {
+              NavigatorUtils.push(context, HomeRouter.tabberPage,
+                  replace: true);
+            } else {
+              NavigatorUtils.goBack(context);
+            }
+            return false;
+          },
+          child: Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: ImageUtils.getAssetImage("login_two_bg_img"),
+                      fit: BoxFit.fill)),
+              height: double.infinity,
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  navbar(),
+                  // const Padding(
+                  //   padding: EdgeInsets.only(top: 108, left: 30, right: 16),
+                  //   child: Text(
+                  //     "请输入验证码:",
+                  //     style: TextStyle(
+                  //       fontSize: 17,
+                  //       color: Colours.color_001652,
+                  //       // fontWeight: FontWeight.bold,
+                  //     ),
+                  //   ),
+                  // ),
+                  Container(
+                    padding:
+                        const EdgeInsets.only(left: 30, right: 30, top: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Hi,欢迎来到口语嘟嘟",
+                          style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w400,
+                              color: Colours.black),
                         ),
-                      ),
-                    ],
+                        const Text(
+                          "登录后更精彩，即将开始流利口语",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Colours.black),
+                        ),
+                        Gaps.vGap33,
+                        Text(
+                          "已发送验证码至  ${widget.phoneNumber} ",
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: Colours.color_001652,
+                            // fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                _verificationBox(),
-                Gaps.vGap10,
-                canResend
-                    ? Padding(
-                        padding: const EdgeInsets.only(
-                          left: 30,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            if (canResend) {
-                              resendCode();
-                              RegisterPresenter.disHttpKeySendSms();
-                              _registerPresenter.sendSms(
-                                  widget.phoneNumber, true);
-                            }
-                          },
-                          child: const Text(
-                            "重新发送",
-                            style: TextStyle(
+                  _verificationBox(),
+                  Gaps.vGap10,
+                  canResend
+                      ? Padding(
+                          padding: const EdgeInsets.only(
+                            left: 30,
+                          ),
+                          child: GestureDetector(
+                            onTap: () {
+                              if (canResend) {
+                                resendCode();
+                                RegisterPresenter.disHttpKeySendSms();
+                                _registerPresenter.sendSms(
+                                    widget.phoneNumber, true);
+                              }
+                            },
+                            child: const Text(
+                              "重新发送",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colours.color_333333,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.only(
+                            left: 30,
+                          ),
+                          child: Text(
+                            "$_seconds秒后重新发送",
+                            style: const TextStyle(
                               fontSize: 12,
                               color: Colours.color_333333,
                             ),
                           ),
                         ),
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.only(
-                          left: 30,
-                        ),
-                        child: Text(
-                          "$_seconds秒后重新发送",
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colours.color_333333,
-                          ),
-                        ),
-                      ),
-              ],
-            )),
+                ],
+              )),
+        ),
       ),
     );
   }
@@ -278,7 +293,7 @@ class _CheckCodePageState extends State<CheckCodePage>
   void verifyCode(String code) {
     print(code);
 
-    _registerPresenter.register(widget.phoneNumber, code, true);
+    _registerPresenter.register(widget.phoneNumber, code, false);
   }
 
   ///重新发送验证码
@@ -346,6 +361,11 @@ class _CheckCodePageState extends State<CheckCodePage>
   void newwechatSuccess(NewWxInfoBeanData data) {
     // TODO: implement newwechatSuccess
   }
+
+  @override
+  void codeError() {
+    // TODO: implement codeError
+  }
 }
 
 class CheckTwoCodePage extends StatefulWidget {
@@ -409,7 +429,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
     Log.e(widget.phoneNumber);
     // Log.e(widget.isKeyLogin as String);
     super.initState();
-    Future.delayed(Duration(milliseconds: 200), () {
+    Future.delayed(const Duration(milliseconds: 200), () {
       _registerPresenter.sendSms(widget.phoneNumber, false);
       _startTimer();
     });
@@ -430,7 +450,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   Widget navbar() {
     return Container(
       // color: Colors.amber,
-      height: _screenUtil.statusBarHeight + 40,
+      height: _screenUtil.statusBarHeight + 60,
       width: _screenUtil.screenWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -453,9 +473,10 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
                     NavigatorUtils.goBack(context);
                   }
                 },
-                child: SizedBox(
-                  width: 20,
-                  height: 20,
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  width: 30,
+                  height: 30,
                   child: Image.asset(
                     width: 20,
                     height: 26,
@@ -663,5 +684,10 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   @override
   void loginError(String msg) {
     // TODO: implement loginError
+  }
+
+  @override
+  void codeError() {
+    // TODO: implement codeError
   }
 }

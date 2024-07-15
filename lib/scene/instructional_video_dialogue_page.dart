@@ -1371,9 +1371,10 @@ class _InstructionalVideoDialoguePageState
             onTap: () async {
               onBack();
             },
-            child: SizedBox(
-              width: 20,
-              height: 20,
+            child: Container(
+              padding: const EdgeInsets.all(5),
+              width: 30,
+              height: 30,
               child: Image.asset(
                 width: 20,
                 height: 26,

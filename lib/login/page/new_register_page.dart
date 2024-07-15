@@ -587,4 +587,9 @@ class _NewRegisterPageState extends State<NewRegisterPage>
   void newwechatSuccess(NewWxInfoBeanData data) {
     // TODO: implement newwechatSuccess
   }
+
+  @override
+  void codeError() {
+    // TODO: implement codeError
+  }
 }

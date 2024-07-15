@@ -354,10 +354,10 @@ class _SettingPageState extends State<SettingPage>
                             arguments: LoginInfoDataData.fromJson(_userInfo),
                           );
                         },
-                        child: const Text(
-                          // _isBindedPhone ? '去换绑' : '去绑定',
-                          '去换绑',
-                          style: TextStyle(
+                        child: Text(
+                          _isBindedPhone ? '去换绑' : '去绑定',
+                          // '去换绑',
+                          style: const TextStyle(
                             fontSize: 15.0,
                             fontWeight: FontWeight.w400,
                             color: Color(0xFF666666),

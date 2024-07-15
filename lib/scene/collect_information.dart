@@ -41,7 +41,12 @@ class CollectInformationPage extends StatefulWidget {
   State<CollectInformationPage> createState() => _SceneState();
 }
 
-class _SceneState extends State<CollectInformationPage> with BasePageMixin<CollectInformationPage, CollectInformationPagePresenter>, AutomaticKeepAliveClientMixin<CollectInformationPage>, WidgetsBindingObserver implements CollectInformationView {
+class _SceneState extends State<CollectInformationPage>
+    with
+        BasePageMixin<CollectInformationPage, CollectInformationPagePresenter>,
+        AutomaticKeepAliveClientMixin<CollectInformationPage>,
+        WidgetsBindingObserver
+    implements CollectInformationView {
   final ChatWebsocket _chatWebsocket = ChatWebsocket();
   final MediaUtils _mediaUtils = MediaUtils();
   late HomeProvider _homeProvider;
@@ -98,7 +103,9 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
   void onWebsocketAnswer(dynamic answer) {
     if (_answer == null) {
       // 结束标记
-      if (answer is String && (answer.contains('[end_session]') || RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
+      if (answer is String &&
+          (answer.contains('[end_session]') ||
+              RegExp(r'\[end=[0-9a-zA-Z]{16}\]').hasMatch(answer))) {
         return;
       }
       // _answer = NormalMessage();
@@ -135,7 +142,6 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
       }
     }
   }
-
 
   void onWebsocketEnd(String? reason, String endType) {
     _bottomBarControll.setDisabled(true);
@@ -178,7 +184,7 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
   Widget build(BuildContext context) {
     super.build(context);
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async => true,
       child: Consumer<HomeProvider>(
         builder: (_, provider, __) {
           Widget background = SizedBox(
@@ -275,23 +281,24 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
                   padding: EdgeInsets.only(
                     bottom: _screenUtil.bottomBarHeight + 16.0,
                   ),
-                  child: _isConversationEnd ? endButton : BottomBar(
-                    chatWebsocket: _chatWebsocket,
-                    controller: _bottomBarControll,
-                    recordController: _recordController,
-                    isCollectInformation: true,
-                    onScrollEnd: () {
-                      _listScrollController.scrollToEnd();
-                    },
-                  ),
+                  child: _isConversationEnd
+                      ? endButton
+                      : BottomBar(
+                          chatWebsocket: _chatWebsocket,
+                          controller: _bottomBarControll,
+                          recordController: _recordController,
+                          isCollectInformation: true,
+                          onScrollEnd: () {
+                            _listScrollController.scrollToEnd();
+                          },
+                        ),
                 ),
               ],
             );
           } else {
             inner = Column(
               children: <Widget>[
-                if (_pageState == 'loading')
-                  const LoadData(),
+                if (_pageState == 'loading') const LoadData(),
                 if (_pageState == 'fail')
                   LoadFail(
                     reload: init,
@@ -319,7 +326,8 @@ class _SceneState extends State<CollectInformationPage> with BasePageMixin<Colle
                 left: 0,
                 child: ValueListenableBuilder(
                   valueListenable: _bottomBarControll.showRecord,
-                  builder: (_, show, __) => Record(show: show, controller: _recordController),
+                  builder: (_, show, __) =>
+                      Record(show: show, controller: _recordController),
                 ),
               ),
             ],

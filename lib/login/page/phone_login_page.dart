@@ -357,6 +357,11 @@ class _PhoneLoginPageState extends State<PhoneLoginPage>
     // TODO: implement newwechatSuccess
   }
 
+  @override
+  void codeError() {
+    // TODO: implement codeError
+  }
+
   // void _showAgreement(int state) {
   //   showDialog<void>(
   //       context: context,

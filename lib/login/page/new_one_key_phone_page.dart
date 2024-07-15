@@ -15,7 +15,9 @@ import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/res/resources.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/confirm_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/change_notifier_manage.dart';
 import 'package:Bubble/util/device_utils.dart';
@@ -123,7 +125,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   Widget navbar() {
     return SizedBox(
       // color: Colors.amber,
-      height: _screenUtil.statusBarHeight + 40,
+      height: _screenUtil.statusBarHeight + 60,
       width: _screenUtil.screenWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,9 +148,10 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                     NavigatorUtils.goBack(context);
                   }
                 },
-                child: SizedBox(
-                  width: 20,
-                  height: 20,
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  width: 30,
+                  height: 30,
                   child: Image.asset(
                     width: 20,
                     height: 26,
@@ -163,6 +166,78 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     );
   }
 
+  void onAgreement() {
+    ConfirmUtils.show(
+      context: context,
+      title: '同意隐私条款',
+      // buttonDirection: 'vertical',
+      confirmButtonText: '我同意',
+      cancelButtonText: '不同意',
+      onConfirm: () {
+        // //刷新
+        setState(() {
+          _isSelect = true;
+        });
+      },
+      onCancel: () {},
+      child: RichText(
+          // RichText
+          text: TextSpan(
+              text: '已阅读并同意',
+              style: const TextStyle(
+                color: Colours.color_333333,
+                fontSize: 14.0,
+              ),
+              children: <TextSpan>[
+            TextSpan(
+                text: '《隐私协议》',
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    NavigatorUtils.goWebViewPage(context, "隐私协议",
+                        "http://www.shenmo-ai.com/privacy_policy/");
+                  },
+                style: const TextStyle(
+                  color: Colours.color_007AFF,
+                  fontSize: 14.0,
+                )),
+            const TextSpan(
+                text: "、",
+                style: TextStyle(
+                  color: Colours.color_007AFF,
+                  fontSize: 14.0,
+                )),
+            TextSpan(
+                text: '《服务协议》',
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    NavigatorUtils.goWebViewPage(
+                        context, "服务协议", "http://www.shenmo-ai.com/tos/");
+                  },
+                style: const TextStyle(
+                  color: Colours.color_007AFF,
+                  fontSize: 14.0,
+                )),
+            const TextSpan(
+                text: '、',
+                style: TextStyle(
+                  color: Colours.color_007AFF,
+                  fontSize: 14.0,
+                )),
+            TextSpan(
+                text: '《儿童个人信息保护声明》',
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    NavigatorUtils.goWebViewPage(context, "儿童个人信息保护声明",
+                        "http://www.shenmo-ai.com/bubble-ai_kids/");
+                  },
+                style: const TextStyle(
+                  color: Colours.color_007AFF,
+                  fontSize: 14.0,
+                )),
+          ])),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -171,215 +246,234 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: ImageUtils.getAssetImage("login_two_bg_img"),
-                  fit: BoxFit.fill)),
-          child: Stack(
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              LoginBanner(
-                  imageList: const [
-                    'assets/introduction_one_page/yindao1.json',
-                    'assets/introduction_two_page/yd2.json',
-                    'assets/introduction_three_page/yindao3.json',
-                    'assets/introduction_four_page/yindao4.json',
-                  ],
-                  topImageList: const [
-                    'login_banner_one',
-                    'login_banner_two',
-                    'login_banner_three',
-                    'login_banner_four',
-                  ],
-                  height: _screenUtil.screenHeight,
-                  indicatorType: IndicatorType.rectangle,
-                  indicatorRadius: 5,
-                  indicatorWidth: 20,
-                  indicatorUnWidth: 5,
-                  indicatorHeight: 5,
-                  bannerClick: (position) {}),
-              navbar(),
-              // Lottie.asset('assets/introduction_two_page/yd2.json',
-              //     repeat: false),
+        // ignore: deprecated_member_use
+        body: WillPopScope(
+          onWillPop: () async {
+            //这里可以响应物理返回键
+            if (widget.typeLogin == "2") {
+              NavigatorUtils.push(context, HomeRouter.tabberPage,
+                  replace: true);
+            } else {
+              NavigatorUtils.goBack(context);
+            }
+            return false;
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: ImageUtils.getAssetImage("login_two_bg_img"),
+                    fit: BoxFit.fill)),
+            child: Stack(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LoginBanner(
+                    imageList: const [
+                      'assets/introduction_one_page/yindao1.json',
+                      'assets/introduction_two_page/yd2.json',
+                      'assets/introduction_three_page/yindao3.json',
+                      'assets/introduction_four_page/yindao4.json',
+                    ],
+                    topImageList: const [
+                      'login_banner_one',
+                      'login_banner_two',
+                      'login_banner_three',
+                      'login_banner_four',
+                    ],
+                    height: _screenUtil.screenHeight,
+                    indicatorType: IndicatorType.rectangle,
+                    indicatorRadius: 5,
+                    indicatorWidth: 20,
+                    indicatorUnWidth: 5,
+                    indicatorHeight: 5,
+                    bannerClick: (position) {}),
+                navbar(),
+                // Lottie.asset('assets/introduction_two_page/yd2.json',
+                //     repeat: false),
 
-              Container(
-                padding: const EdgeInsets.only(left: 42, right: 42, top: 70),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Expanded(child: Gaps.empty),
-                    GestureDetector(
-                        onTap: () {
-                          EventUMStatistics.umengCommonMapEvent(
-                              "click_login_number");
-                          if (_isSelect) {
-                            NavigatorUtils.push(
-                              context,
-                              replace: true,
-                              "${LoginRouter.keyLoginPhonePage}?typeLogin=${widget.typeLogin}",
-                            );
-                          } else {
-                            Toast.show("请同意服务协议");
-                          }
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.only(top: 10, bottom: 10),
-                          // height: Dimens.h_dp40,
-                          margin: const EdgeInsets.only(bottom: 16),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(Dimens.h_dp40),
-                            color: Colors.black,
-                            // border: Border.all(width: 1, color: Colors.black),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const LoadAssetImage(
-                                "login_phone_icon",
-                                width: 17.0,
-                                height: 20.0,
-                              ),
-                              Gaps.hGap12,
-                              Text(
-                                "手机号登录",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: Dimens.font_sp18),
-                              ),
-                            ],
-                          ),
-                        )),
-                    isWx
-                        ? GestureDetector(
-                            onTap: () {
-                              EventUMStatistics.umengCommonMapEvent(
-                                  "click_login_wechat");
-                              if (_isSelect) {
-                                weChatLogin();
-                              } else {
-                                Toast.show("请同意服务协议");
-                              }
-                            },
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.only(top: 10, bottom: 10),
-                              margin: const EdgeInsets.only(bottom: 16),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(Dimens.h_dp40),
-                                color: Colors.white,
-                                // border: Border.all(width: 1, color: Colors.black),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const LoadAssetImage(
-                                    "login_wx_icon",
-                                    width: 24.0,
-                                    height: 20.0,
-                                  ),
-                                  Gaps.hGap12,
-                                  Text(
-                                    "微信登录",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: Dimens.font_sp18),
-                                  ),
-                                ],
-                              ),
-                            ))
-                        : Container(),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        GestureDetector(
+                Container(
+                  padding: const EdgeInsets.only(left: 42, right: 42, top: 70),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Expanded(child: Gaps.empty),
+                      GestureDetector(
                           onTap: () {
-                            _isSelect = !_isSelect;
-                            setState(() {});
+                            EventUMStatistics.umengCommonMapEvent(
+                                "click_login_number");
+                            if (_isSelect) {
+                              NavigatorUtils.push(
+                                context,
+                                replace: true,
+                                "${LoginRouter.keyLoginPhonePage}?typeLogin=${widget.typeLogin}",
+                              );
+                            } else {
+                              onAgreement();
+
+                              // Toast.show("请同意服务协议");
+                            }
                           },
                           child: Container(
-                            width: 30,
-                            height: 30,
-                            alignment: Alignment.center,
-                            child: LoadAssetImage(
-                              _isSelect ? "select_img2" : "unselect_img2",
-                              width: 15.0,
-                              height: 15.0,
+                            padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            // height: Dimens.h_dp40,
+                            margin: const EdgeInsets.only(bottom: 16),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(Dimens.h_dp40),
+                              color: Colors.black,
+                              // border: Border.all(width: 1, color: Colors.black),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const LoadAssetImage(
+                                  "login_phone_icon",
+                                  width: 17.0,
+                                  height: 20.0,
+                                ),
+                                Gaps.hGap12,
+                                Text(
+                                  "手机号登录",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: Dimens.font_sp18),
+                                ),
+                              ],
+                            ),
+                          )),
+                      isWx
+                          ? GestureDetector(
+                              onTap: () {
+                                EventUMStatistics.umengCommonMapEvent(
+                                    "click_login_wechat");
+                                if (_isSelect) {
+                                  weChatLogin();
+                                } else {
+                                  // Toast.show("请同意服务协议");
+                                  onAgreement();
+                                }
+                              },
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.only(top: 10, bottom: 10),
+                                margin: const EdgeInsets.only(bottom: 16),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(Dimens.h_dp40),
+                                  color: Colors.white,
+                                  // border: Border.all(width: 1, color: Colors.black),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const LoadAssetImage(
+                                      "login_wx_icon",
+                                      width: 24.0,
+                                      height: 20.0,
+                                    ),
+                                    Gaps.hGap12,
+                                    Text(
+                                      "微信登录",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: Dimens.font_sp18),
+                                    ),
+                                  ],
+                                ),
+                              ))
+                          : Container(),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              _isSelect = !_isSelect;
+                              setState(() {});
+                            },
+                            child: Container(
+                              // color: Colours.black,
+                              width: 30,
+                              height: 30,
+                              alignment: Alignment.center,
+                              child: LoadAssetImage(
+                                _isSelect ? "select_img2" : "unselect_img2",
+                                width: 15.0,
+                                height: 15.0,
+                              ),
                             ),
                           ),
-                        ),
-                        // Gaps.hGap10,
-                        Expanded(
-                          child: RichText(
-                              // RichText
-                              text: TextSpan(
-                                  text: '已阅读并同意',
-                                  style: const TextStyle(
-                                    color: Colours.color_333333,
-                                    fontSize: 14.0,
-                                  ),
-                                  children: <TextSpan>[
-                                TextSpan(
-                                    text: '《隐私协议》',
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        NavigatorUtils.goWebViewPage(
-                                            context,
-                                            "隐私协议",
-                                            "http://www.shenmo-ai.com/privacy_policy/");
-                                      },
+                          // Gaps.hGap10,
+                          Expanded(
+                            child: RichText(
+                                // RichText
+                                text: TextSpan(
+                                    text: '已阅读并同意',
                                     style: const TextStyle(
                                       color: Colours.color_333333,
                                       fontSize: 14.0,
-                                    )),
-                                const TextSpan(
-                                    text: "、",
-                                    style: TextStyle(
-                                      color: Colours.color_333333,
-                                      fontSize: 14.0,
-                                    )),
-                                TextSpan(
-                                    text: '《服务协议》',
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        NavigatorUtils.goWebViewPage(
-                                            context,
-                                            "服务协议",
-                                            "http://www.shenmo-ai.com/tos/");
-                                      },
-                                    style: const TextStyle(
-                                      color: Colours.color_333333,
-                                      fontSize: 14.0,
-                                    )),
-                                const TextSpan(
-                                    text: '及',
-                                    style: TextStyle(
-                                      color: Colours.color_333333,
-                                      fontSize: 14.0,
-                                    )),
-                                TextSpan(
-                                    text: '《儿童个人信息保护声明》',
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        NavigatorUtils.goWebViewPage(
-                                            context,
-                                            "儿童个人信息保护声明",
-                                            "http://www.shenmo-ai.com/bubble-ai_kids/");
-                                      },
-                                    style: const TextStyle(
-                                      color: Colours.color_333333,
-                                      fontSize: 14.0,
-                                    )),
-                              ])),
-                        ),
-                      ],
-                    ),
-                    Gaps.vGap50,
-                  ],
-                ),
-              )
-            ],
+                                    ),
+                                    children: <TextSpan>[
+                                  TextSpan(
+                                      text: '《隐私协议》',
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          NavigatorUtils.goWebViewPage(
+                                              context,
+                                              "隐私协议",
+                                              "http://www.shenmo-ai.com/privacy_policy/");
+                                        },
+                                      style: const TextStyle(
+                                        color: Colours.color_333333,
+                                        fontSize: 14.0,
+                                      )),
+                                  const TextSpan(
+                                      text: "、",
+                                      style: TextStyle(
+                                        color: Colours.color_333333,
+                                        fontSize: 14.0,
+                                      )),
+                                  TextSpan(
+                                      text: '《服务协议》',
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          NavigatorUtils.goWebViewPage(
+                                              context,
+                                              "服务协议",
+                                              "http://www.shenmo-ai.com/tos/");
+                                        },
+                                      style: const TextStyle(
+                                        color: Colours.color_333333,
+                                        fontSize: 14.0,
+                                      )),
+                                  const TextSpan(
+                                      text: '及',
+                                      style: TextStyle(
+                                        color: Colours.color_333333,
+                                        fontSize: 14.0,
+                                      )),
+                                  TextSpan(
+                                      text: '《儿童个人信息保护声明》',
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          NavigatorUtils.goWebViewPage(
+                                              context,
+                                              "儿童个人信息保护声明",
+                                              "http://www.shenmo-ai.com/bubble-ai_kids/");
+                                        },
+                                      style: const TextStyle(
+                                        color: Colours.color_333333,
+                                        fontSize: 14.0,
+                                      )),
+                                ])),
+                          ),
+                        ],
+                      ),
+                      Gaps.vGap50,
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -485,5 +579,10 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     NavigatorUtils.push(context,
         "${LoginRouter.newBindPhonePage}?typeLogin=${widget.typeLogin}",
         arguments: data, replace: true);
+  }
+
+  @override
+  void codeError() {
+    // TODO: implement codeError
   }
 }

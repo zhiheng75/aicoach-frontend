@@ -160,15 +160,22 @@ class _SplashPageState extends State<SplashPage> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.dark,
         child: Scaffold(
-            body: Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: ImageUtils.getAssetImage("splash_bg"),
-                  fit: BoxFit.fill)),
-          child: const Center(
-            child: LoadAssetImage(
-              "splash_icon",
-              // width: 150,
+            // ignore: deprecated_member_use
+            body: WillPopScope(
+          onWillPop: () async {
+            //这里可以响应物理返回键
+            return true;
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: ImageUtils.getAssetImage("splash_bg"),
+                    fit: BoxFit.fill)),
+            child: const Center(
+              child: LoadAssetImage(
+                "splash_icon",
+                // width: 150,
+              ),
             ),
           ),
         )));

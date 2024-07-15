@@ -448,56 +448,6 @@ class _MessageItemState extends State<MessageItem> {
       }
       one = one.replaceAll("{[finish]}", "");
       return one;
-      // } else if (one.contains("<image>")) {
-      //   RegExpMatch? match = pattern.firstMatch(one);
-      //   late String coverUrl = "";
-
-      //   if (match != null) {
-      //     String? tag = match.group(1); // 获取标签名
-      //     String? content = match.group(2); // 获取内容
-      //     // Log.e('===============Tag: $tag, Content: $content');
-      //     coverUrl = content!;
-      //   }
-      //   String reStr = "<image>$coverUrl</image>";
-      //   String replacedString = one.replaceAll(reStr, "");
-      //   one = replacedString;
-      //   one = one.replaceAll("{[finish]}", "");
-
-      //   return one;
-      // } else if (one.contains("<word>")) {
-      //   RegExpMatch? match = pattern.firstMatch(one);
-      //   late String coverUrl = "";
-      //   if (match != null) {
-      //     String? tag = match.group(1); // 获取标签名
-      //     String? content = match.group(2); // 获取内容
-      //     // Log.e('===============Tag: $tag, Content: $content');
-      //     coverUrl = content!;
-      //   }
-      //   String reStr = "<word>$coverUrl</word>";
-      //   String replacedString = one.replaceAll(reStr, "");
-      //   one = replacedString;
-      //   one = one.replaceAll("{[finish]}", "");
-      //   return one;
-      //   // Log.e("================" + one);
-      // }
-      // message = message.replaceAll("{[finish]}", "");
-      // // if (message.text.contains("<image>")) {
-      // //   RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
-      // //   RegExpMatch? match = pattern.firstMatch(message.text);
-      // //   late String coverUrl = "";
-      // //   if (match != null) {
-      // //     String? tag = match.group(1); // 获取标签名
-      // //     String? content = match.group(2); // 获取内容
-      // //     // Log.e('===============Tag: $tag, Content: $content');
-      // //     coverUrl = content!;
-      // //   }
-      // //   String one = "<image>$coverUrl</image>";
-      // //   String replacedString = message.text.replaceAll(one, "");
-
-      // //   return replacedString;
-      // // }
-
-      // return message;
     }
 
     Widget createTranslationWidget(NormalMessage message) {
@@ -635,59 +585,8 @@ class _MessageItemState extends State<MessageItem> {
           one = replacedString;
         }
       }
-      // RegExpMatch? match1 = pattern.firstMatch(one);
-      // if (match1 != null) {
-      //   String? tag = match1.group(1); // 获取标签名
-      //   String? content = match1.group(2); // 获取内容
-      //   // Log.e('===============Tag: $tag, Content: $content');
-      //   if (tag == "image") {
-      //     //去出来图片content
-      //     coverUrl = content!;
-      //   }
-      //   if (tag == "word") {
-      //     //取出来文字content
-      //   }
-      //   // String reStr = "<$tag>$content</$tag>";
-      //   // String replacedString = one.replaceAll(reStr, "");
-      //   // one = replacedString;
-      // }
 
-      // } else if (message.text.contains("<image>")) {
-      //   RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
-      //   String one = message.text;
-      //   Log.e("111111111111" + one);
-      //   RegExpMatch? match = pattern.firstMatch(one);
-      //   late String coverUrl = "";
-
-      //   if (match != null) {
-      //     String? tag = match.group(1); // 获取标签名
-      //     String? content = match.group(2); // 获取内容
-      //     // Log.e('===============Tag: $tag, Content: $content');
-      //     coverUrl = content!;
-      //   }
-
-      //   return GestureDetector(
-      //     behavior: HitTestBehavior.opaque,
-      //     onTap: () {
-      //       showModalBottomSheet(
-      //         context: context,
-      //         backgroundColor: Colors.transparent,
-      //         barrierColor: Colors.transparent,
-      //         isScrollControlled: true,
-      //         isDismissible: false,
-      //         builder: (_) => PhotoViewSimpleScreen(
-      //           imageProvider: NetworkImage(coverUrl),
-      //         ),
-      //       );
-      //     },
-      //     child: LoadImage(
-      //       coverUrl,
-      //       // width: 48.0,
-      //     ),
-      //   );
-      // } else {
       return Container();
-      // }
     }
 
     Widget createAudioExample(NormalMessage message) {
@@ -750,56 +649,6 @@ class _MessageItemState extends State<MessageItem> {
       }
       one = one.replaceAll("{[finish]}", "");
       return one;
-      // } else if (one.contains("<image>")) {
-      //   RegExpMatch? match = pattern.firstMatch(one);
-      //   late String coverUrl = "";
-
-      //   if (match != null) {
-      //     String? tag = match.group(1); // 获取标签名
-      //     String? content = match.group(2); // 获取内容
-      //     // Log.e('===============Tag: $tag, Content: $content');
-      //     coverUrl = content!;
-      //   }
-      //   String reStr = "<image>$coverUrl</image>";
-      //   String replacedString = one.replaceAll(reStr, "");
-      //   one = replacedString;
-      //   one = one.replaceAll("{[finish]}", "");
-
-      //   return one;
-      // } else if (one.contains("<word>")) {
-      //   RegExpMatch? match = pattern.firstMatch(one);
-      //   late String coverUrl = "";
-      //   if (match != null) {
-      //     String? tag = match.group(1); // 获取标签名
-      //     String? content = match.group(2); // 获取内容
-      //     // Log.e('===============Tag: $tag, Content: $content');
-      //     coverUrl = content!;
-      //   }
-      //   String reStr = "<word>$coverUrl</word>";
-      //   String replacedString = one.replaceAll(reStr, "");
-      //   one = replacedString;
-      //   one = one.replaceAll("{[finish]}", "");
-      //   return one;
-      //   // Log.e("================" + one);
-      // }
-      // message.text = message.text.replaceAll("{[finish]}", "");
-      // // if (message.text.contains("<image>")) {
-      // //   RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
-      // //   RegExpMatch? match = pattern.firstMatch(message.text);
-      // //   late String coverUrl = "";
-      // //   if (match != null) {
-      // //     String? tag = match.group(1); // 获取标签名
-      // //     String? content = match.group(2); // 获取内容
-      // //     // Log.e('===============Tag: $tag, Content: $content');
-      // //     coverUrl = content!;
-      // //   }
-      // //   String one = "<image>$coverUrl</image>";
-      // //   String replacedString = message.text.replaceAll(one, "");
-
-      // //   return replacedString;
-      // // }
-
-      // return message.text;
     }
 
     return Row(
@@ -825,7 +674,7 @@ class _MessageItemState extends State<MessageItem> {
                       ),
                     ),
                   ))
-              : SizedBox(width: 0, height: 0),
+              : const SizedBox(width: 0, height: 0),
         _homeProvider.ishread == ""
             ? const SizedBox(width: 0, height: 0)
             : SizedBox(width: _message.speaker == 'user' ? 40 : 0, height: 0),
@@ -857,50 +706,6 @@ class _MessageItemState extends State<MessageItem> {
                   ),
                   createImgExample(_message),
                   createAudioExample(_message),
-
-                  // Container(
-                  //     color: Colors.amber,
-                  //     child: Column(
-                  //       children: [
-                  //         Row(
-                  //           children: [
-                  //             LoadAssetImage(
-                  //               'class_vip_icon',
-                  //               width: 32.0,
-                  //               height: 32.0,
-                  //             ),
-                  //             Slider(
-                  //               min: 0,
-                  //               activeColor: Colors.blue,
-                  //               inactiveColor: Colors.white,
-                  //               // secondaryActiveColor: Colors.red,
-                  //               thumbColor: Colors.white,
-                  //               max: 30.0,
-                  //               value: valueau,
-                  //               onChanged: (value) {
-                  //                 valueau = value;
-                  //                 setState(() {});
-                  //               },
-                  //             ),
-                  //             Text(
-                  //               "0:15",
-                  //               style: const TextStyle(
-                  //                 fontSize: 15.0,
-                  //                 color: Colors.white,
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //         Text(
-                  //           "歌名",
-                  //           style: const TextStyle(
-                  //             fontSize: 15.0,
-                  //             color: Colors.white,
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     )),
-                  // Text("data"),
                   const SizedBox(
                     height: 16,
                   ),

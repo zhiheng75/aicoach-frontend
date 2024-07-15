@@ -139,12 +139,12 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
 
           view.loginSuccess();
         } else {
-          LoadingDialog.hidden();
-
-          Toast.show(data.msg);
+          // LoadingDialog.hidden();
+          // view.codeError();
+          Toast.show("验证码错误");
         }
       } else {
-        LoadingDialog.hidden();
+        // LoadingDialog.hidden();
 
         Toast.show("验证码错误");
       }
@@ -231,8 +231,10 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           Log.e("======进来了吗=======");
           view.hadBindWechat();
         } else {
-          //没绑定
-          view.newwechatSuccess(newWxInfoBean.data);
+          if (wechatCode.isNotEmpty) {
+            //没绑定
+            view.newwechatSuccess(newWxInfoBean.data);
+          }
 
           // view.loginSuccess(myUserInfo);
         }

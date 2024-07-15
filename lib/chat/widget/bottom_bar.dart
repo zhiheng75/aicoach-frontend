@@ -6,11 +6,16 @@ import 'package:Bubble/chat/widget/background.dart';
 import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:phone_state/phone_state.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
 
@@ -57,7 +62,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   final ScreenUtil _screenUtil = ScreenUtil();
   late HomeProvider _homeProvider;
   final MediaUtils _mediaUtils = MediaUtils();
-  final RecognizeUtil _recognizeUtil = RecognizeUtil();
+  RecognizeUtil _recognizeUtil = RecognizeUtil();
   List<Uint8List> _bufferList = [];
   // ai回答消息
   NormalMessage? _answer;
@@ -65,6 +70,8 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   ListPlayer? _listPlayer;
   // app状态
   AppLifecycleState? _appLifecycleState;
+  PhoneState status = PhoneState.nothing();
+  bool granted = false;
 
   void getExample() {
     LoginManager.checkLogin(context, () {
@@ -332,14 +339,80 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
     // 监听App状态
     WidgetsBinding.instance.addObserver(this);
 
-    EventBus().on('LOGINOUT', (_) {
-      setState(() {
-        LoginManager.toLoginOut();
-        NavigatorUtils.push(
-          context,
-          "${LoginRouter.newOneKeyPhonePage}?typeLogin=1",
-        );
+    EventBus().on(NotificationUtils.resetANChat, (_) {
+      Future.delayed(const Duration(seconds: 1), () async {
+        await _mediaUtils.stopTwoPlay();
+        widget.controller.setDisabled(false);
+        widget.controller.setShowRecord(false);
       });
+    });
+
+    // 全局监听App状态
+    SystemChannels.lifecycle.setMessageHandler((message) async {
+      // 退到后台
+      // ignore: unrelated_type_equality_checks
+      if (message == 'AppLifecycleState.paused') {
+        // await MediaUtils().stopPlayByAppPaused();
+        await _mediaUtils.stopTwoPlay();
+        widget.controller.setShowRecord(false);
+        widget.controller.setDisabled(false);
+      }
+      if (message == 'AppLifecycleState.resumed') {
+        await _mediaUtils.stopTwoPlay();
+        widget.controller.setShowRecord(false);
+        widget.controller.setDisabled(false);
+      }
+
+      // _appLifecycleState = message;
+
+      return message;
+    });
+    // requestPermission();
+
+    if (Device.isIOS) {
+      setStream();
+    } else {
+      and();
+    }
+  }
+
+  void and() async {
+    bool temp = await requestPermission();
+    setState(() {
+      granted = temp;
+      if (granted) {
+        setStream();
+      }
+    });
+  }
+
+  Future<bool> requestPermission() async {
+    var status = await Permission.phone.request();
+
+    return switch (status) {
+      PermissionStatus.denied ||
+      PermissionStatus.restricted ||
+      PermissionStatus.limited ||
+      PermissionStatus.permanentlyDenied =>
+        false,
+      PermissionStatus.provisional || PermissionStatus.granted => true,
+    };
+  }
+
+  void setStream() {
+    PhoneState.stream.listen((event) async {
+      status = event;
+      // ignore: unrelated_type_equality_checks
+      // if (status == PhoneStateStatus.CALL_INCOMING ||
+      //     // ignore: unrelated_type_equality_checks
+      //     status == PhoneStateStatus.CALL_ENDED ||
+      //     // ignore: unrelated_type_equality_checks
+      //     status == PhoneStateStatus.CALL_STARTED) {
+      await _mediaUtils.stopTwoPlay();
+      widget.controller.setShowRecord(false);
+      widget.controller.setDisabled(false);
+      // }
+      Log.e(status.status.name);
     });
   }
 
@@ -523,6 +596,8 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                       Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
                       return;
                     }
+                    _recognizeUtil = RecognizeUtil();
+                    _recognizeUtil.setLanguage(widget.language ?? 'en');
                     // 开始录音
                     _bufferList = [];
                     _mediaUtils.startRecord(onData: (buffer) {

@@ -279,7 +279,7 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async => true,
       // onWillPop: () async {
       //   final bool canGoBack = await _controller.canGoBack();
       //   if (canGoBack) {

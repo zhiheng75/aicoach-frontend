@@ -18,5 +18,7 @@ abstract class RegisterView implements IMvpView {
   void loginSuccess();
   // void loginError(String msg);
 
+  void codeError();
+
   void newwechatSuccess(NewWxInfoBeanData data);
 }
