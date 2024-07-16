@@ -77,7 +77,7 @@ class _SplashPageState extends State<SplashPage> {
         builder: (_) => WillPopScope(
               onWillPop: () async {
                 //这里可以响应物理返回键
-                return true;
+                return false;
               },
               child: AgreementDialog(() {
                 DioUtils.instance.requestNetwork<ResultData>(
@@ -171,7 +171,7 @@ class _SplashPageState extends State<SplashPage> {
             body: WillPopScope(
           onWillPop: () async {
             //这里可以响应物理返回键
-            return true;
+            return false;
           },
           child: Container(
             decoration: BoxDecoration(
