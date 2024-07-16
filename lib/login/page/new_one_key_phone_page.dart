@@ -468,7 +468,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                           ),
                         ],
                       ),
-                      Gaps.vGap50,
+                      Gaps.vGap15,
                     ],
                   ),
                 )

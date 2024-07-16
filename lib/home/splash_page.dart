@@ -73,15 +73,22 @@ class _SplashPageState extends State<SplashPage> {
     showDialog<void>(
         context: context,
         barrierDismissible: false,
-        builder: (_) => AgreementDialog(() {
-              DioUtils.instance.requestNetwork<ResultData>(
-                  Method.get, HttpApi.baseConfig,
-                  onSuccess: (result) {}, onError: (code, msg) {});
-              Future.delayed(const Duration(milliseconds: 500), () {
-                SpUtil.putBool(Constant.agreement, true);
-                _gotoHome();
-              });
-            }));
+        // ignore: deprecated_member_use
+        builder: (_) => WillPopScope(
+              onWillPop: () async {
+                //这里可以响应物理返回键
+                return true;
+              },
+              child: AgreementDialog(() {
+                DioUtils.instance.requestNetwork<ResultData>(
+                    Method.get, HttpApi.baseConfig,
+                    onSuccess: (result) {}, onError: (code, msg) {});
+                Future.delayed(const Duration(milliseconds: 500), () {
+                  SpUtil.putBool(Constant.agreement, true);
+                  _gotoHome();
+                });
+              }),
+            ));
   }
 
   void _gotoHome() async {

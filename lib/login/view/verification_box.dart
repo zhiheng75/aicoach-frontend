@@ -200,7 +200,6 @@ class _VerificationBox extends State<VerificationBox> {
       controller: _controller,
       focusNode: _focusNode,
       decoration: const InputDecoration(
-        enabled: false,
         border: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent)),
         enabledBorder: UnderlineInputBorder(
@@ -210,7 +209,6 @@ class _VerificationBox extends State<VerificationBox> {
       ),
       cursorWidth: 0,
       autofocus: widget.autoFocus,
-      enabled: false,
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp("[0-9]")),
       ],
