@@ -96,6 +96,8 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
             // view.loginError(data.msg);
             Toast.show(data.msg);
           }
+        } else {
+          Toast.show("验证码错误");
         }
       },
       onError: (code, msg) {

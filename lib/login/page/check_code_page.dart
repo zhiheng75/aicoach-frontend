@@ -132,12 +132,12 @@ class _CheckCodePageState extends State<CheckCodePage>
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () async {
-                  if (widget.typeLogin == "2") {
-                    NavigatorUtils.push(context, HomeRouter.tabberPage,
-                        replace: true);
-                  } else {
-                    NavigatorUtils.goBack(context);
-                  }
+                  // if (widget.typeLogin == "2") {
+                  //   NavigatorUtils.push(context, HomeRouter.tabberPage,
+                  //       replace: true);
+                  // } else {
+                  NavigatorUtils.goBack(context);
+                  // }
                 },
                 child: Container(
                   padding: const EdgeInsets.all(5),
@@ -174,12 +174,12 @@ class _CheckCodePageState extends State<CheckCodePage>
         body: WillPopScope(
           onWillPop: () async {
             //这里可以响应物理返回键
-            if (widget.typeLogin == "2") {
-              NavigatorUtils.push(context, HomeRouter.tabberPage,
-                  replace: true);
-            } else {
-              NavigatorUtils.goBack(context);
-            }
+            // if (widget.typeLogin == "2") {
+            //   NavigatorUtils.push(context, HomeRouter.tabberPage,
+            //       replace: true);
+            // } else {
+            NavigatorUtils.goBack(context);
+            // }
             return false;
           },
           child: Container(
@@ -358,6 +358,8 @@ class _CheckCodePageState extends State<CheckCodePage>
       NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
     } else {
       Navigator.pop(context);
+      Navigator.pop(context);
+      Navigator.pop(context);
     }
 
     // NavigatorUtils.push(
@@ -497,12 +499,12 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () async {
-                  if (widget.typeLogin == "2") {
-                    NavigatorUtils.push(context, HomeRouter.tabberPage,
-                        replace: true);
-                  } else {
-                    NavigatorUtils.goBack(context);
-                  }
+                  // if (widget.typeLogin == "2") {
+                  //   NavigatorUtils.push(context, HomeRouter.tabberPage,
+                  //       replace: true);
+                  // } else {
+                  NavigatorUtils.goBack(context);
+                  // }
                 },
                 child: Container(
                   padding: const EdgeInsets.all(5),
@@ -707,6 +709,8 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
     if (widget.typeLogin == "2") {
       NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
     } else {
+      Navigator.pop(context);
+      Navigator.pop(context);
       Navigator.pop(context);
     }
   }

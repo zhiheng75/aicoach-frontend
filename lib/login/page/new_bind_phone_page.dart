@@ -69,12 +69,12 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () async {
-                  if (widget.typeLogin == "2") {
-                    NavigatorUtils.push(context, HomeRouter.tabberPage,
-                        replace: true);
-                  } else {
-                    NavigatorUtils.goBack(context);
-                  }
+                  // if (widget.typeLogin == "2") {
+                  //   NavigatorUtils.push(context, HomeRouter.tabberPage,
+                  //       replace: true);
+                  // } else {
+                  NavigatorUtils.goBack(context);
+                  // }
                 },
                 child: Container(
                   padding: const EdgeInsets.all(5),
@@ -94,6 +94,21 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
     );
   }
 
+  var lastPopTime = DateTime.now();
+
+  void intervalClick(int needTime) {
+    // 防重复提交
+    if (lastPopTime == null ||
+        DateTime.now().difference(lastPopTime) > Duration(seconds: needTime)) {
+      _bindPhonePresenter.sendSms(_phoneController.text.trim());
+      lastPopTime = DateTime.now();
+      print("允许点击");
+    } else {
+      // lastPopTime = DateTime.now(); //如果不注释这行,则强制用户一定要间隔2s后才能成功点击. 而不是以上一次点击成功的时间开始计算.
+      print("请勿重复点击！");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -106,12 +121,12 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
         body: WillPopScope(
           onWillPop: () async {
             //这里可以响应物理返回键
-            if (widget.typeLogin == "2") {
-              NavigatorUtils.push(context, HomeRouter.tabberPage,
-                  replace: true);
-            } else {
-              NavigatorUtils.goBack(context);
-            }
+            // if (widget.typeLogin == "2") {
+            //   NavigatorUtils.push(context, HomeRouter.tabberPage,
+            //       replace: true);
+            // } else {
+            NavigatorUtils.goBack(context);
+            // }
             return false;
           },
           child: Container(
@@ -159,7 +174,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
 
                       Container(
                         width: double.infinity,
-                        height: Dimens.h_dp40,
+                        height: Dimens.h_dp45,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(Dimens.h_dp40),
                           border: Border.all(width: 1, color: Colors.black),
@@ -198,15 +213,14 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
                             if (_clickable == false) return;
 
                             if (_phoneController.text.length == 11) {
-                              _bindPhonePresenter
-                                  .sendSms(_phoneController.text.trim());
+                              intervalClick(2);
                             } else {
                               Toast.show("手机号无效");
                             }
                           },
                           child: Container(
                             // padding: const EdgeInsets.only(top: 10, bottom: 10),
-                            height: Dimens.h_dp40,
+                            height: Dimens.h_dp45,
                             margin: const EdgeInsets.only(bottom: 16),
                             decoration: BoxDecoration(
                               borderRadius:
@@ -253,7 +267,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
     NavigatorUtils.push(
         context,
         arguments: widget.wechatData,
-        replace: true,
+        // replace: true,
         "${LoginRouter.keyCheckTwoCodePage}?PhoneNumber=${_phoneController.text.trim()}&typeLogin=${widget.typeLogin}");
   }
 

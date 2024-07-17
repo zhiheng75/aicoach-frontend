@@ -88,12 +88,12 @@ class _LoginPhonePageState extends State<LoginPhonePage>
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () async {
-                  if (widget.typeLogin == "2") {
-                    NavigatorUtils.push(context, HomeRouter.tabberPage,
-                        replace: true);
-                  } else {
-                    NavigatorUtils.goBack(context);
-                  }
+                  // if (widget.typeLogin == "2") {
+                  //   NavigatorUtils.push(context, HomeRouter.tabberPage,
+                  //       replace: true);
+                  // } else {
+                  NavigatorUtils.goBack(context);
+                  // }
                 },
                 child: Container(
                   padding: const EdgeInsets.all(5),
@@ -140,12 +140,12 @@ class _LoginPhonePageState extends State<LoginPhonePage>
         body: WillPopScope(
           onWillPop: () async {
             //这里可以响应物理返回键
-            if (widget.typeLogin == "2") {
-              NavigatorUtils.push(context, HomeRouter.tabberPage,
-                  replace: true);
-            } else {
-              NavigatorUtils.goBack(context);
-            }
+            // if (widget.typeLogin == "2") {
+            //   NavigatorUtils.push(context, HomeRouter.tabberPage,
+            //       replace: true);
+            // } else {
+            NavigatorUtils.goBack(context);
+            // }
             return false;
           },
           child: Container(
@@ -193,7 +193,7 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                       Container(
                         // margin: const EdgeInsets.only(top: 20),
                         width: double.infinity,
-                        height: Dimens.h_dp40,
+                        height: Dimens.h_dp45,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(Dimens.h_dp40),
                           border: Border.all(width: 1, color: Colors.black),
@@ -239,7 +239,7 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                           },
                           child: Container(
                             // padding: const EdgeInsets.only(top: 10, bottom: 10),
-                            height: Dimens.h_dp40,
+                            height: Dimens.h_dp45,
                             margin: const EdgeInsets.only(bottom: 16),
                             decoration: BoxDecoration(
                               borderRadius:
@@ -301,7 +301,7 @@ class _LoginPhonePageState extends State<LoginPhonePage>
   void sendSmsSuccess() {
     NavigatorUtils.push(
       context,
-      replace: true,
+      // replace: true,
       "${LoginRouter.keyCheckCodePage}?PhoneNumber=${_phoneController.text.trim()}&typeLogin=${widget.typeLogin}",
     );
   }

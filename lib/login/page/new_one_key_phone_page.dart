@@ -329,7 +329,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                             if (_isSelect) {
                               NavigatorUtils.push(
                                 context,
-                                replace: true,
+                                // replace: true,
                                 "${LoginRouter.keyLoginPhonePage}?typeLogin=${widget.typeLogin}",
                               );
                             } else {
@@ -602,9 +602,11 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   @override
   void newwechatSuccess(NewWxInfoBeanData data) {
     // TODO: implement newwechatSuccess
-    NavigatorUtils.push(context,
-        "${LoginRouter.newBindPhonePage}?typeLogin=${widget.typeLogin}",
-        arguments: data, replace: true);
+    NavigatorUtils.push(
+      context,
+      "${LoginRouter.newBindPhonePage}?typeLogin=${widget.typeLogin}",
+      arguments: data,
+    );
   }
 
   @override
