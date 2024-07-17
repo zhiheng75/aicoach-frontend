@@ -94,7 +94,7 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
                     ])),
                 Gaps.vGap26,
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     GestureDetector(
                       onTap: () {
