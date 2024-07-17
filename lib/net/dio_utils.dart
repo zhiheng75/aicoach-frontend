@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Bubble/util/event_bus.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 import '../constant/constant.dart';
 import '../util/log_utils.dart';
@@ -53,6 +54,14 @@ class DioUtils {
 //      contentType: Headers.formUrlEncodedContentType, // 适用于post form表单提交
     );
     _dio = Dio(options);
+    // ignore: deprecated_member_use
+    // (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    //     (client) {
+    //   client.badCertificateCallback = (cert, host, port) {
+    //     return true;
+    //   };
+    //   return null;
+    // };
 
     /// Fiddler抓包代理配置 https://www.jianshu.com/p/d831b1f7c45b
     // _dio.httpClientAdapter = IOHttpClientAdapter()..onHttpClientCreate = (HttpClient client) {

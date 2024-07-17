@@ -35,16 +35,6 @@ class _WebViewPageState extends State<WebViewPage> {
         NavigationDelegate(
           onPageFinished: (url) {
             finished = true;
-            // _controller.platform.setOnPlatformPermissionRequest((request) {
-            //   Permission.speech.request().then((result) {
-            //     //如果没有权限就再次发起请求
-            //     if (result.isDenied) {
-            //       Permission.speech.request();
-            //     } else if (result.isGranted) {
-            //       request.grant(); //有权限就该干嘛干嘛，不加这句无法语音转文字
-            //     }
-            //   });
-            // });
             setState(() {});
           },
           onProgress: (int progress) {

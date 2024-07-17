@@ -60,7 +60,7 @@ class RecognizeUtil {
         'success': false,
         'message': '发生异常，请重新操作',
       });
-      onSuccess(_recognizeResult);
+      // onSuccess(_recognizeResult);
     }
   }
 

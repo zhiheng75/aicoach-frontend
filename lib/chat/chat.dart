@@ -350,6 +350,9 @@ class _ChatState extends State<ChatPage>
     //   _bottomBarControll.setDisabled(false);
     // });
     EventUMStatistics.umengCommonOnPageStart("chat_page");
+    EventBus().on(NotificationUtils.messageEnd, (idx) {
+      _listScrollController.scrollToEnd();
+    });
   }
 
   @override
@@ -595,6 +598,7 @@ class _ChatState extends State<ChatPage>
     // EventBus().off('LEAVECHATPAGE');
     EventBus().off(NotificationUtils.resetChat);
     EventBus().off(NotificationUtils.resetChatTwo);
+    EventBus().off(NotificationUtils.messageEnd);
 
     EventBus().off(NotificationUtils.taberThree);
 

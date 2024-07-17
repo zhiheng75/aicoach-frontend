@@ -161,6 +161,7 @@ class _HomePageState extends State<HomeNewPage>
     Future.delayed(Duration.zero, () {
       init();
     });
+
     // 设置场景对话流控制器
     _streamSubscription =
         _homeProvider.sceneStreamController.stream.listen((value) async {

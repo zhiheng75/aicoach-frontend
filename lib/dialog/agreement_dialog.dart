@@ -98,8 +98,7 @@ class _AgreementDialogState extends State<AgreementDialog> {
                               fontSize: 14.0,
                             )),
                         const TextSpan(
-                            text:
-                                '。如您未满14周岁，您还需要通知您的监护人共同阅读《儿童隐私政策》。点击“同意”即表示您和您的监护人已阅读并同意前述协议和政策。',
+                            text: '。如您未满14周岁，您还需要通知您的监护人共同阅读',
                             style: TextStyle(
                               color: Colours.color_333333,
                               fontSize: 14.0,

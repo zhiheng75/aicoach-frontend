@@ -59,8 +59,7 @@ Future<void> main() async {
 
       return message;
     });
-    // WidgetsFlutterBinding.ensureInitialized();
-    // Wakelock.enable();
+
     runApp(MyApp());
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,

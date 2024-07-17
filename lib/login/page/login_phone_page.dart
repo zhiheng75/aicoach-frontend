@@ -105,6 +105,21 @@ class _LoginPhonePageState extends State<LoginPhonePage>
     );
   }
 
+  var lastPopTime = DateTime.now();
+
+  void intervalClick(int needTime) {
+    // 防重复提交
+    if (lastPopTime == null ||
+        DateTime.now().difference(lastPopTime) > Duration(seconds: needTime)) {
+      _registerPresenter.sendSms(_phoneController.text.trim(), false);
+      lastPopTime = DateTime.now();
+      print("允许点击");
+    } else {
+      // lastPopTime = DateTime.now(); //如果不注释这行,则强制用户一定要间隔2s后才能成功点击. 而不是以上一次点击成功的时间开始计算.
+      print("请勿重复点击！");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -140,25 +155,25 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         "Hi,欢迎来到口语嘟嘟",
                         style: TextStyle(
-                            fontSize: 28,
+                            fontSize: Dimens.font_sp28,
                             fontWeight: FontWeight.w400,
                             color: Colours.black),
                       ),
-                      const Text(
+                      Text(
                         "登录后更精彩，即将开始流利口语",
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: Dimens.font_sp16,
                             fontWeight: FontWeight.w400,
                             color: Colours.black),
                       ),
                       Gaps.vGap33,
-                      const Text(
+                      Text(
                         "未注册手机验证后即完成注册",
                         style: TextStyle(
-                            fontSize: 14,
+                            fontSize: Dimens.font_sp14,
                             fontWeight: FontWeight.w400,
                             color: Colours.color_333333),
                       ),
@@ -181,12 +196,13 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                             }
                             setState(() {});
                           },
-                          txtStyle: const TextStyle(
-                            fontSize: 20,
+                          txtStyle: TextStyle(
+                            fontSize: Dimens.font_sp20,
                             color: Colours.color_001652,
                           ),
-                          hintStyle: const TextStyle(
-                              fontSize: 20, color: Colours.color_001652),
+                          hintStyle: TextStyle(
+                              fontSize: Dimens.font_sp20,
+                              color: Colours.color_001652),
                           focusNode: _nodeText1,
                           controller: _phoneController,
                           maxLength: 11,
@@ -202,8 +218,7 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                             if (_clickable == false) return;
 
                             if (_phoneController.text.length == 11) {
-                              _registerPresenter.sendSms(
-                                  _phoneController.text.trim(), false);
+                              intervalClick(2);
                             } else {
                               Toast.show("手机号无效");
                             }

@@ -613,8 +613,11 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                       if (shoRecord) {
                         // 识别失败
                         if (result['success'] == false) {
+                          await _mediaUtils.stopTwoPlay();
+                          widget.controller.setDisabled(false);
                           widget.controller.setShowRecord(false);
-                          await _mediaUtils.stopRecord();
+                          // widget.controller.setShowRecord(false);
+                          // await _mediaUtils.stopRecord();
                           Toast.show(
                             result['message'],
                             duration: 1000,
@@ -633,7 +636,9 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                           result['message'],
                           duration: 1000,
                         );
+                        await _mediaUtils.stopTwoPlay();
                         widget.controller.setDisabled(false);
+                        widget.controller.setShowRecord(false);
                         return;
                       }
                       if (result['text'] == "") {

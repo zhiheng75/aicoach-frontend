@@ -166,19 +166,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
     }
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
-  //   super.didChangeDependencies();
-  // }
-
-  // @override
-  // void didPopNext() {
-  //   // TODO: implement didPopNext
-  //   super.didPopNext();
-  //   _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
-  // }
-
   @override
   void dispose() {
     EventUMStatistics.umengCommonOnPageEnd("course_flow_page");
@@ -305,18 +292,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
           arguments: stepDetailData);
     }
   }
-
-  // void selectScene(SceneEntity scene) {
-  //   LoginManager.checkLogin(context, () {
-  //     _homeProvider.sceneStreamController
-  //         .add({'type': 'scene', 'data': scene.toJson()});
-
-  //     _homeProvider.resetChatParams();
-
-  //     _homeProvider.scene = scene;
-  //     return;
-  //   });
-  // }
 
   Widget body() {
     return MyScrollView(

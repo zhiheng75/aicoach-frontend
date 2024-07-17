@@ -11,6 +11,7 @@ import 'package:Bubble/login/view/register_view.dart';
 import 'package:Bubble/login/view/verification_box.dart';
 import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/colors.dart';
+import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/image_utils.dart';
@@ -198,25 +199,25 @@ class _CheckCodePageState extends State<CheckCodePage>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           "Hi,欢迎来到口语嘟嘟",
                           style: TextStyle(
-                              fontSize: 28,
+                              fontSize: Dimens.font_sp28,
                               fontWeight: FontWeight.w400,
                               color: Colours.black),
                         ),
-                        const Text(
+                        Text(
                           "登录后更精彩，即将开始流利口语",
                           style: TextStyle(
-                              fontSize: 16,
+                              fontSize: Dimens.font_sp16,
                               fontWeight: FontWeight.w400,
                               color: Colours.black),
                         ),
                         Gaps.vGap33,
                         Text(
                           "已发送验证码至  ${widget.phoneNumber} ",
-                          style: const TextStyle(
-                            fontSize: 13,
+                          style: TextStyle(
+                            fontSize: Dimens.font_sp13,
                             color: Colours.color_001652,
                             // fontWeight: FontWeight.bold,
                           ),
@@ -240,10 +241,10 @@ class _CheckCodePageState extends State<CheckCodePage>
                                     widget.phoneNumber, true);
                               }
                             },
-                            child: const Text(
+                            child: Text(
                               "重新发送",
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: Dimens.font_sp12,
                                 color: Colours.color_333333,
                               ),
                             ),
@@ -255,8 +256,8 @@ class _CheckCodePageState extends State<CheckCodePage>
                           ),
                           child: Text(
                             "$_seconds秒后重新发送",
-                            style: const TextStyle(
-                              fontSize: 12,
+                            style: TextStyle(
+                              fontSize: Dimens.font_sp12,
                               color: Colours.color_333333,
                             ),
                           ),
@@ -272,17 +273,17 @@ class _CheckCodePageState extends State<CheckCodePage>
     return Padding(
       padding: const EdgeInsets.only(left: 30, right: 30, top: 32),
       child: Container(
-        height: 45,
+        height: 45.w,
         child: VerificationBox(
           count: 6,
           onSubmitted: (code) {
             verifyCode(code);
           },
-          itemWidget: 45,
+          itemWidget: 45.w,
           borderWidth: 1,
           borderColor: Colours.color_001652,
           borderRadius: 16,
-          textStyle: const TextStyle(color: Colors.black, fontSize: 27),
+          textStyle: TextStyle(color: Colors.black, fontSize: Dimens.font_sp27),
           showCursor: true,
           unfocus: false,
         ),
@@ -525,25 +526,25 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         "Hi,欢迎来到口语嘟嘟",
                         style: TextStyle(
-                            fontSize: 28,
+                            fontSize: Dimens.font_sp28,
                             fontWeight: FontWeight.w400,
                             color: Colours.black),
                       ),
-                      const Text(
+                      Text(
                         "登录后更精彩，即将开始流利口语",
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: Dimens.font_sp16,
                             fontWeight: FontWeight.w400,
                             color: Colours.black),
                       ),
                       Gaps.vGap33,
                       Text(
                         "已发送验证码至  ${widget.phoneNumber} ",
-                        style: const TextStyle(
-                          fontSize: 13,
+                        style: TextStyle(
+                          fontSize: Dimens.font_sp13,
                           color: Colours.color_001652,
                           // fontWeight: FontWeight.bold,
                         ),
@@ -567,10 +568,10 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
                                   widget.phoneNumber, true);
                             }
                           },
-                          child: const Text(
+                          child: Text(
                             "重新发送",
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: Dimens.font_sp12,
                               color: Colours.color_333333,
                             ),
                           ),
@@ -582,8 +583,8 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
                         ),
                         child: Text(
                           "$_seconds秒后重新发送",
-                          style: const TextStyle(
-                            fontSize: 12,
+                          style: TextStyle(
+                            fontSize: Dimens.font_sp12,
                             color: Colours.color_333333,
                           ),
                         ),
@@ -598,17 +599,17 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
     return Padding(
       padding: const EdgeInsets.only(left: 30, right: 30, top: 32),
       child: Container(
-        height: 45,
+        height: 45.h,
         child: VerificationBox(
           count: 6,
           onSubmitted: (code) {
             verifyCode(code);
           },
-          itemWidget: 45,
+          itemWidget: 45.w,
           borderWidth: 1,
           borderColor: Colours.color_001652,
           borderRadius: 16,
-          textStyle: const TextStyle(color: Colors.black, fontSize: 27),
+          textStyle: TextStyle(color: Colors.black, fontSize: Dimens.font_sp27),
           showCursor: true,
           unfocus: false,
         ),

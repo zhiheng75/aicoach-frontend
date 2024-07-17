@@ -82,6 +82,8 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
 
           // view.wechatLoginSuccess("登录成功");
           view.loginSuccess();
+        } else if (data.code == 203) {
+          Toast.show("验证码已过期");
         } else {
           // view.loginError(data.msg);
           Toast.show(data.msg);
@@ -138,6 +140,8 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           JPush().setAlias(data.data.id.toString()).then((map) {});
 
           view.loginSuccess();
+        } else if (data.code == 203) {
+          Toast.show("验证码已过期");
         } else {
           // LoadingDialog.hidden();
           // view.codeError();

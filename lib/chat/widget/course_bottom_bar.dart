@@ -697,11 +697,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                     _mediaUtils.startRecord(onData: (buffer) {
                       _bufferList.add(buffer);
                       _recognizeUtil.pushAudioBuffer(1, buffer);
-                      Log.e("111111111111111");
                     }, onComplete: (buffer) {
                       _recognizeUtil.pushAudioBuffer(2, buffer ?? Uint8List(0));
                       _bufferList.add(buffer ?? Uint8List(0));
-                      Log.e("22222222222222");
                     });
 
                     // 设置识别
