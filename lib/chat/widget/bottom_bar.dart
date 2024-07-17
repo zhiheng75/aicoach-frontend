@@ -72,6 +72,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   AppLifecycleState? _appLifecycleState;
   PhoneState status = PhoneState.nothing();
   bool granted = false;
+  late bool _phoneSate = true;
 
   void getExample() {
     LoginManager.checkLogin(context, () {
@@ -408,11 +409,37 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       //     status == PhoneStateStatus.CALL_ENDED ||
       //     // ignore: unrelated_type_equality_checks
       //     status == PhoneStateStatus.CALL_STARTED) {
-      await _mediaUtils.stopTwoPlay();
-      widget.controller.setShowRecord(false);
-      widget.controller.setDisabled(false);
+      //   Log.e("+++++++++++" + status.status.name);
       // }
-      Log.e(status.status.name);
+
+      if (status.status.name == "CALL_INCOMING") {
+        await _mediaUtils.stopTwoPlay();
+        widget.controller.setShowRecord(false);
+        widget.controller.setDisabled(false);
+        _phoneSate = false;
+        setState(() {});
+        Log.e("============+++++" + status.status.name);
+      }
+
+      if (status.status.name == "CALL_STARTED") {
+        await _mediaUtils.stopTwoPlay();
+        widget.controller.setShowRecord(false);
+        widget.controller.setDisabled(false);
+        _phoneSate = false;
+        setState(() {});
+        Log.e("============+++++" + status.status.name);
+      }
+
+      if (status.status.name == "CALL_ENDED") {
+        await _mediaUtils.stopTwoPlay();
+        widget.controller.setShowRecord(false);
+        widget.controller.setDisabled(false);
+        _phoneSate = true;
+        setState(() {});
+        Log.e("============+++++" + status.status.name);
+      }
+      // }
+      Log.e("============" + status.status.name);
     });
   }
 
@@ -463,6 +490,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           if (disabled) {
             return;
           }
+
           onStart(_);
         },
         // onLongPressMoveUpdate: (detail) {
@@ -576,6 +604,9 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
               builder: (_, disabled, __) => button(
                 disabled: disabled,
                 onStart: (detail) async {
+                  if (!_phoneSate) {
+                    return;
+                  }
                   EventUMStatistics.umengCommonMapEvent("click_index_dialogue");
                   if (!isAvailable()) {
                     return;
@@ -596,6 +627,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                       Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
                       return;
                     }
+
                     _recognizeUtil = RecognizeUtil();
                     _recognizeUtil.setLanguage(widget.language ?? 'en');
                     // 开始录音

@@ -1,6 +1,7 @@
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +26,7 @@ class _PushShowViewState extends State<PushShowView> {
             margin: EdgeInsets.all(40),
             padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
             decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
+                borderRadius: BorderRadius.all(Radius.circular(16)),
                 color: Colors.white),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,6 +46,7 @@ class _PushShowViewState extends State<PushShowView> {
                   style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w400,
+                      height: 1.5,
                       color: Colors.black),
                 ),
                 Gaps.vGap26,
@@ -75,6 +77,8 @@ class _PushShowViewState extends State<PushShowView> {
                 Gaps.vGap12,
                 GestureDetector(
                   onTap: () {
+                    EventUMStatistics.umengCommonMapEvent(
+                        "layer_click_message_skip");
                     NavigatorUtils.goBack(context);
                   },
                   child: const Center(

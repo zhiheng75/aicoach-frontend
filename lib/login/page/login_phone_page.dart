@@ -17,6 +17,7 @@ import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/change_notifier_manage.dart';
 import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
@@ -59,6 +60,13 @@ class _LoginPhonePageState extends State<LoginPhonePage>
   @override
   void initState() {
     super.initState();
+    EventUMStatistics.umengCommonOnPageStart("login_phone_page");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    EventUMStatistics.umengCommonOnPageEnd("login_phone_page");
   }
 
   Widget navbar() {
@@ -155,20 +163,24 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Hi,欢迎来到口语嘟嘟",
-                        style: TextStyle(
-                            fontSize: Dimens.font_sp28,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.black),
+                      LoadAssetImage(
+                        "login_top_img",
+                        width: 270.w,
                       ),
-                      Text(
-                        "登录后更精彩，即将开始流利口语",
-                        style: TextStyle(
-                            fontSize: Dimens.font_sp16,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.black),
-                      ),
+                      // Text(
+                      //   "Hi,欢迎来到口语嘟嘟",
+                      //   style: TextStyle(
+                      //       fontSize: Dimens.font_sp28,
+                      //       fontWeight: FontWeight.w400,
+                      //       color: Colours.black),
+                      // ),
+                      // Text(
+                      //   "登录后更精彩，即将开始流利口语",
+                      //   style: TextStyle(
+                      //       fontSize: Dimens.font_sp16,
+                      //       fontWeight: FontWeight.w400,
+                      //       color: Colours.black),
+                      // ),
                       Gaps.vGap33,
                       Text(
                         "未注册手机验证后即完成注册",
@@ -177,8 +189,9 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                             fontWeight: FontWeight.w400,
                             color: Colours.color_333333),
                       ),
+                      Gaps.vGap16,
                       Container(
-                        margin: const EdgeInsets.only(top: 20),
+                        // margin: const EdgeInsets.only(top: 20),
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(Dimens.h_dp40),
@@ -197,11 +210,11 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                             setState(() {});
                           },
                           txtStyle: TextStyle(
-                            fontSize: Dimens.font_sp20,
+                            fontSize: Dimens.font_sp14,
                             color: Colours.color_001652,
                           ),
                           hintStyle: TextStyle(
-                              fontSize: Dimens.font_sp20,
+                              fontSize: Dimens.font_sp14,
                               color: Colours.color_001652),
                           focusNode: _nodeText1,
                           controller: _phoneController,
@@ -212,7 +225,7 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                           countDownColor: Colours.color_001652,
                         ),
                       ),
-                      Gaps.vGap24,
+                      Gaps.vGap16,
                       GestureDetector(
                           onTap: () {
                             if (_clickable == false) return;
@@ -224,8 +237,8 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                             }
                           },
                           child: Container(
-                            padding: const EdgeInsets.only(top: 10, bottom: 10),
-                            // height: Dimens.h_dp40,
+                            // padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            height: Dimens.h_dp40,
                             margin: const EdgeInsets.only(bottom: 16),
                             decoration: BoxDecoration(
                               borderRadius:
@@ -240,7 +253,7 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                                 "获取验证码",
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: Dimens.font_sp18),
+                                    fontSize: Dimens.font_sp16),
                               ),
                             ),
                           )),

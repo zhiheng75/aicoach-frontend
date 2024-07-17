@@ -129,20 +129,24 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Hi,欢迎来到口语嘟嘟",
-                        style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.black),
+                      LoadAssetImage(
+                        "login_top_img",
+                        width: 270.w,
                       ),
-                      const Text(
-                        "登录后更精彩，即将开始流利口语",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.black),
-                      ),
+                      // const Text(
+                      //   "Hi,欢迎来到口语嘟嘟",
+                      //   style: TextStyle(
+                      //       fontSize: 28,
+                      //       fontWeight: FontWeight.w400,
+                      //       color: Colours.black),
+                      // ),
+                      // const Text(
+                      //   "登录后更精彩，即将开始流利口语",
+                      //   style: TextStyle(
+                      //       fontSize: 16,
+                      //       fontWeight: FontWeight.w400,
+                      //       color: Colours.black),
+                      // ),
                       Gaps.vGap33,
                       const Text(
                         "未注册手机验证后即完成注册",
@@ -151,8 +155,9 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
                             fontWeight: FontWeight.w400,
                             color: Colours.color_333333),
                       ),
+                      Gaps.vGap16,
+
                       Container(
-                        margin: const EdgeInsets.only(top: 20),
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(Dimens.h_dp40),
@@ -170,12 +175,13 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
                             }
                             setState(() {});
                           },
-                          txtStyle: const TextStyle(
-                            fontSize: 20,
+                          txtStyle: TextStyle(
+                            fontSize: Dimens.font_sp14,
                             color: Colours.color_001652,
                           ),
-                          hintStyle: const TextStyle(
-                              fontSize: 20, color: Colours.color_001652),
+                          hintStyle: TextStyle(
+                              fontSize: Dimens.font_sp14,
+                              color: Colours.color_001652),
                           focusNode: _nodeText1,
                           controller: _phoneController,
                           maxLength: 11,
@@ -185,7 +191,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
                           countDownColor: Colours.color_001652,
                         ),
                       ),
-                      Gaps.vGap24,
+                      Gaps.vGap16,
                       GestureDetector(
                           onTap: () {
                             if (_clickable == false) return;
@@ -198,8 +204,8 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
                             }
                           },
                           child: Container(
-                            padding: const EdgeInsets.only(top: 10, bottom: 10),
-                            // height: Dimens.h_dp40,
+                            // padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            height: Dimens.h_dp40,
                             margin: const EdgeInsets.only(bottom: 16),
                             decoration: BoxDecoration(
                               borderRadius:

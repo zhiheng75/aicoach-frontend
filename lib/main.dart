@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Bubble/conversation/provider/conversation_provider.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/provider/selecter_teacher_provider.dart';
@@ -21,6 +23,7 @@ import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/handle_error_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/theme_utils.dart';
+import 'package:umeng_apm_sdk/umeng_apm_sdk.dart';
 import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -33,40 +36,54 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver();
 // App状态
 String? _appLifecycleState;
 
+//上报数据至umapm
+Future<void> _reportError(dynamic error, dynamic stackTrace) async {
+  UmengApmSdk.postException(error.toString(), stackTrace.toString());
+}
+
 Future<void> main() async {
-  /// 异常处理
-  handleError(() async {
-    /// 确保初始化完成
-    WidgetsFlutterBinding.ensureInitialized();
+  runZonedGuarded(() async {
+    /// 异常处理
+    handleError(() async {
+      /// 确保初始化完成
+      WidgetsFlutterBinding.ensureInitialized();
 
-    /// sp初始化
-    await SpUtil.getInstance();
+      /// sp初始化
+      await SpUtil.getInstance();
 
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-    // 设置音频配置
-    await AudioConfig.addAudioConfig();
+      // 设置音频配置
+      await AudioConfig.addAudioConfig();
 
-    // 全局监听App状态
-    SystemChannels.lifecycle.setMessageHandler((message) async {
-      // 退到后台
-      if (_appLifecycleState == 'AppLifecycleState.inactive' &&
-          message == 'AppLifecycleState.paused') {
-        await MediaUtils().stopPlayByAppPaused();
-      }
+      // 全局监听App状态
+      SystemChannels.lifecycle.setMessageHandler((message) async {
+        // 退到后台
+        if (_appLifecycleState == 'AppLifecycleState.inactive' &&
+            message == 'AppLifecycleState.paused') {
+          await MediaUtils().stopPlayByAppPaused();
+        }
 
-      _appLifecycleState = message;
+        _appLifecycleState = message;
 
-      return message;
+        return message;
+      });
+
+      WidgetsFlutterBinding.ensureInitialized();
+      FlutterError.onError = (FlutterErrorDetails details) {
+        _reportError(details.exception, details.stack);
+      };
+
+      runApp(MyApp());
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+      // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      //     overlays: [SystemUiOverlay.top]);
+      // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      //   statusBarColor: Colors.red, // 修改状态栏颜色
+      // ));
     });
-
-    runApp(MyApp());
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-    //     overlays: [SystemUiOverlay.top]);
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //   statusBarColor: Colors.red, // 修改状态栏颜色
-    // ));
+  }, (Object error, StackTrace stack) {
+    _reportError(error, stack);
   });
 
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);

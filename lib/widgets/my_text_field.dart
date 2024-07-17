@@ -252,6 +252,7 @@ class _MyTextFieldState extends State<MyTextField> {
       children: <Widget>[
         Expanded(
             child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             textField,
             // const Divider(

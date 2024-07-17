@@ -40,8 +40,8 @@ class LoginBanner extends StatefulWidget {
     required this.topImageList,
     this.height = 800, //默认高度150
     this.margin,
-    this.indicatorSelectColor = Colours.color_949393,
-    this.indicatorUnSelectColor = Colours.color_949393,
+    this.indicatorSelectColor = Colours.color_00000019,
+    this.indicatorUnSelectColor = Colours.color_00000019,
     this.indicatorWidth = 10, //指示器宽
     this.indicatorHeight = 10, //指示器高
     this.indicatorMargin = 5, //指示器边距
@@ -249,7 +249,7 @@ class _CarouselState extends State<LoginBanner> with WidgetsBindingObserver {
   * */
   Widget getBannerIndicators() {
     return Positioned(
-      bottom: 200.h,
+      bottom: 190.h,
       left: 0,
       right: 0,
       child: _buildIndicators(MainAxisAlignment.center),

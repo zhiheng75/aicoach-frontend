@@ -14,9 +14,11 @@ import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/dimens.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
+import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_only_img_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -92,6 +94,7 @@ class _CheckCodePageState extends State<CheckCodePage>
     print(widget.typeLogin);
     _startTimer();
     super.initState();
+    EventUMStatistics.umengCommonOnPageStart("check_code_page");
 
     // _registerPresenter.sendSms(widget.phoneNumber, true);
   }
@@ -102,10 +105,12 @@ class _CheckCodePageState extends State<CheckCodePage>
 
   @override
   void dispose() {
+    super.dispose();
+
     RegisterPresenter.disHttpKeySendSms();
+    EventUMStatistics.umengCommonOnPageEnd("check_code_page");
 
     _cancelTimer();
-    super.dispose();
   }
 
   Widget navbar() {
@@ -150,6 +155,12 @@ class _CheckCodePageState extends State<CheckCodePage>
         ],
       ),
     );
+  }
+
+  String creatPhoneStr(String phonrStr) {
+    phonrStr =
+        "${phonrStr.substring(0, 3)} ${phonrStr.substring(3, 7)} ${phonrStr.substring(7, 11)}";
+    return phonrStr;
   }
 
   @override
@@ -199,34 +210,51 @@ class _CheckCodePageState extends State<CheckCodePage>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Hi,欢迎来到口语嘟嘟",
-                          style: TextStyle(
-                              fontSize: Dimens.font_sp28,
-                              fontWeight: FontWeight.w400,
-                              color: Colours.black),
+                        LoadAssetImage(
+                          "login_top_img",
+                          width: 270.w,
                         ),
-                        Text(
-                          "登录后更精彩，即将开始流利口语",
-                          style: TextStyle(
-                              fontSize: Dimens.font_sp16,
-                              fontWeight: FontWeight.w400,
-                              color: Colours.black),
-                        ),
+                        // Text(
+                        //   "Hi,欢迎来到口语嘟嘟",
+                        //   style: TextStyle(
+                        //       fontSize: Dimens.font_sp28,
+                        //       fontWeight: FontWeight.w400,
+                        //       color: Colours.black),
+                        // ),
+                        // Text(
+                        //   "登录后更精彩，即将开始流利口语",
+                        //   style: TextStyle(
+                        //       fontSize: Dimens.font_sp16,
+                        //       fontWeight: FontWeight.w400,
+                        //       color: Colours.black),
+                        // ),
                         Gaps.vGap33,
-                        Text(
-                          "已发送验证码至  ${widget.phoneNumber} ",
-                          style: TextStyle(
-                            fontSize: Dimens.font_sp13,
-                            color: Colours.color_001652,
-                            // fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              "已发送验证码至",
+                              style: TextStyle(
+                                fontSize: Dimens.font_sp13,
+                                color: Colours.color_001652,
+                                // fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Gaps.hGap10,
+                            Text(
+                              creatPhoneStr(widget.phoneNumber),
+                              style: TextStyle(
+                                fontSize: Dimens.font_sp13,
+                                color: Colours.color_001652,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
                   _verificationBox(),
-                  Gaps.vGap10,
+                  // Gaps.vGap10,
                   canResend
                       ? Padding(
                           padding: const EdgeInsets.only(
@@ -271,7 +299,7 @@ class _CheckCodePageState extends State<CheckCodePage>
 
   Widget _verificationBox() {
     return Padding(
-      padding: const EdgeInsets.only(left: 30, right: 30, top: 32),
+      padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
       child: Container(
         height: 45.w,
         child: VerificationBox(
@@ -283,7 +311,7 @@ class _CheckCodePageState extends State<CheckCodePage>
           borderWidth: 1,
           borderColor: Colours.color_001652,
           borderRadius: 16,
-          textStyle: TextStyle(color: Colors.black, fontSize: Dimens.font_sp27),
+          textStyle: TextStyle(color: Colors.black, fontSize: Dimens.font_sp20),
           showCursor: true,
           unfocus: false,
         ),
@@ -434,6 +462,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
       _registerPresenter.sendSms(widget.phoneNumber, false);
       _startTimer();
     });
+    EventUMStatistics.umengCommonOnPageStart("check_two_code_page");
   }
 
   void _cancelTimer() {
@@ -442,10 +471,11 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
 
   @override
   void dispose() {
+    super.dispose();
+
     _cancelTimer();
     RegisterPresenter.disHttpKeySendSms();
-
-    super.dispose();
+    EventUMStatistics.umengCommonOnPageEnd("check_two_code_page");
   }
 
   Widget navbar() {
@@ -492,6 +522,12 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
     );
   }
 
+  String creatPhoneStr(String phonrStr) {
+    phonrStr =
+        "${phonrStr.substring(0, 3)} ${phonrStr.substring(3, 7)} ${phonrStr.substring(7, 11)}";
+    return phonrStr;
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -526,34 +562,51 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Hi,欢迎来到口语嘟嘟",
-                        style: TextStyle(
-                            fontSize: Dimens.font_sp28,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.black),
+                      LoadAssetImage(
+                        "login_top_img",
+                        width: 270.w,
                       ),
-                      Text(
-                        "登录后更精彩，即将开始流利口语",
-                        style: TextStyle(
-                            fontSize: Dimens.font_sp16,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.black),
-                      ),
+                      // Text(
+                      //   "Hi,欢迎来到口语嘟嘟",
+                      //   style: TextStyle(
+                      //       fontSize: Dimens.font_sp28,
+                      //       fontWeight: FontWeight.w400,
+                      //       color: Colours.black),
+                      // ),
+                      // Text(
+                      //   "登录后更精彩，即将开始流利口语",
+                      //   style: TextStyle(
+                      //       fontSize: Dimens.font_sp16,
+                      //       fontWeight: FontWeight.w400,
+                      //       color: Colours.black),
+                      // ),
                       Gaps.vGap33,
-                      Text(
-                        "已发送验证码至  ${widget.phoneNumber} ",
-                        style: TextStyle(
-                          fontSize: Dimens.font_sp13,
-                          color: Colours.color_001652,
-                          // fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            "已发送验证码至",
+                            style: TextStyle(
+                              fontSize: Dimens.font_sp13,
+                              color: Colours.color_001652,
+                              // fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Gaps.hGap10,
+                          Text(
+                            creatPhoneStr(widget.phoneNumber),
+                            style: TextStyle(
+                              fontSize: Dimens.font_sp13,
+                              color: Colours.color_001652,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
                 _verificationBox(),
-                Gaps.vGap10,
+                // Gaps.vGap10,
                 canResend
                     ? Padding(
                         padding: const EdgeInsets.only(
@@ -597,7 +650,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
 
   Widget _verificationBox() {
     return Padding(
-      padding: const EdgeInsets.only(left: 30, right: 30, top: 32),
+      padding: const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
       child: Container(
         height: 45.h,
         child: VerificationBox(
@@ -609,7 +662,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
           borderWidth: 1,
           borderColor: Colours.color_001652,
           borderRadius: 16,
-          textStyle: TextStyle(color: Colors.black, fontSize: Dimens.font_sp27),
+          textStyle: TextStyle(color: Colors.black, fontSize: Dimens.font_sp20),
           showCursor: true,
           unfocus: false,
         ),

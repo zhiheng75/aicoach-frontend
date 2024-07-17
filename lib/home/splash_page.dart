@@ -85,6 +85,9 @@ class _SplashPageState extends State<SplashPage> {
                     onSuccess: (result) {}, onError: (code, msg) {});
                 Future.delayed(const Duration(milliseconds: 500), () {
                   SpUtil.putBool(Constant.agreement, true);
+                  initUM();
+                  EventUMStatistics.umengCommonMapEvent("click_agreement_yes");
+
                   _gotoHome();
                 });
               }),

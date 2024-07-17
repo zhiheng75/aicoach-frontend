@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../res/colors.dart';
 import '../util/image_utils.dart';
@@ -29,14 +30,14 @@ class _AgreementDialogState extends State<AgreementDialog> {
             const Expanded(child: Gaps.empty),
             Container(
               // color: Colors.white,
-              margin: const EdgeInsets.all(10),
+              margin: EdgeInsets.only(left: 16.w, right: 16.w),
               padding: const EdgeInsets.only(
-                  top: 30, bottom: 30, left: 20, right: 20),
+                  top: 30, bottom: 30, left: 30, right: 30),
               // width: 330,
               // height: 330,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(16),
               ),
               // decoration: BoxDecoration(
               //   image: DecorationImage(
@@ -52,7 +53,7 @@ class _AgreementDialogState extends State<AgreementDialog> {
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
                   Gaps.vGap16,
@@ -63,6 +64,7 @@ class _AgreementDialogState extends State<AgreementDialog> {
                           style: const TextStyle(
                             color: Colours.color_333333,
                             fontSize: 14.0,
+                            height: 1.5,
                           ),
                           children: <TextSpan>[
                         TextSpan(
@@ -77,12 +79,14 @@ class _AgreementDialogState extends State<AgreementDialog> {
                             style: const TextStyle(
                               color: Colours.color_0047FF,
                               fontSize: 14.0,
+                              height: 1.5,
                             )),
                         const TextSpan(
                             text: '和',
                             style: TextStyle(
                               color: Colours.color_333333,
                               fontSize: 14.0,
+                              height: 1.5,
                             )),
                         TextSpan(
                             text: '《用户隐私保护指引》',
@@ -96,12 +100,14 @@ class _AgreementDialogState extends State<AgreementDialog> {
                             style: const TextStyle(
                               color: Colours.color_0047FF,
                               fontSize: 14.0,
+                              height: 1.5,
                             )),
                         const TextSpan(
                             text: '。如您未满14周岁，您还需要通知您的监护人共同阅读',
                             style: TextStyle(
                               color: Colours.color_333333,
                               fontSize: 14.0,
+                              height: 1.5,
                             )),
                         TextSpan(
                             text: '《儿童隐私政策》',
@@ -113,12 +119,14 @@ class _AgreementDialogState extends State<AgreementDialog> {
                             style: const TextStyle(
                               color: Colours.color_0047FF,
                               fontSize: 14.0,
+                              height: 1.5,
                             )),
                         const TextSpan(
                             text: '。点击“同意”即表示您和您的监护人已阅读并同意前述协议和政策。',
                             style: TextStyle(
                               color: Colours.color_333333,
                               fontSize: 14.0,
+                              height: 1.5,
                             )),
                       ])),
                   Gaps.vGap24,

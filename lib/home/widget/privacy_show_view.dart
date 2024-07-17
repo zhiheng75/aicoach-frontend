@@ -1,6 +1,7 @@
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -23,10 +24,10 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
           child: Container(
             // height: 220,
             // width: 290,
-            margin: const EdgeInsets.all(20),
-            padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
+            margin: const EdgeInsets.all(30),
+            padding: const EdgeInsets.only(left: 25, right: 25, bottom: 20),
             decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
+                borderRadius: BorderRadius.all(Radius.circular(16)),
                 color: Colors.white),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,6 +49,7 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
                         style: const TextStyle(
                           color: Colours.color_333333,
                           fontSize: 14.0,
+                          height: 1.5,
                         ),
                         children: <TextSpan>[
                       TextSpan(
@@ -60,6 +62,7 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
                           style: const TextStyle(
                             color: Colours.color_007AFF,
                             fontSize: 14.0,
+                            height: 1.5,
                           )),
                       TextSpan(
                           text: '《隐私协议》',
@@ -71,6 +74,7 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
                           style: const TextStyle(
                             color: Colours.color_007AFF,
                             fontSize: 14.0,
+                            height: 1.5,
                           )),
                       TextSpan(
                           text: '《儿童个人信息保护声明》',
@@ -84,22 +88,26 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
                           style: const TextStyle(
                             color: Colours.color_007AFF,
                             fontSize: 14.0,
+                            height: 1.5,
                           )),
                     ])),
                 Gaps.vGap26,
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
                       onTap: () {
+                        EventUMStatistics.umengCommonMapEvent(
+                            "layer_click_agreement_no");
+
                         NavigatorUtils.goBack(context);
                       },
                       child: Container(
-                        width: 95,
-                        height: 45,
+                        width: 100,
+                        height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_F2F3F5,
-                          borderRadius: BorderRadius.circular(9),
+                          borderRadius: BorderRadius.circular(16),
                         ),
                         child: const Center(
                           child: Text(
@@ -116,11 +124,11 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
                         widget._cancelPress();
                       },
                       child: Container(
-                        width: 140,
-                        height: 45,
+                        width: 160,
+                        height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_8003FD,
-                          borderRadius: BorderRadius.circular(9),
+                          borderRadius: BorderRadius.circular(16),
                         ),
                         child: const Center(
                           child: Text(

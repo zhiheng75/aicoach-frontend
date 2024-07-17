@@ -78,9 +78,13 @@ PODS:
     - tobias/normal (= 0.0.1)
   - tobias/normal (0.0.1):
     - Flutter
+  - UMAPM (1.9.3)
   - UMCommon (7.4.4):
     - UMDevice
   - UMDevice (3.3.0)
+  - umeng_apm_sdk (0.0.1):
+    - Flutter
+    - UMAPM
   - umeng_common_sdk (0.0.1):
     - Flutter
     - UMCommon
@@ -126,6 +130,7 @@ DEPENDENCIES:
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - tobias (from `.symlinks/plugins/tobias/ios`)
+  - umeng_apm_sdk (from `.symlinks/plugins/umeng_apm_sdk/ios`)
   - umeng_common_sdk (from `.symlinks/plugins/umeng_common_sdk/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
@@ -141,6 +146,7 @@ SPEC REPOS:
     - JPush
     - MTBBarcodeScanner
     - ReachabilitySwift
+    - UMAPM
     - UMCommon
     - UMDevice
     - WechatOpenSDK-XCFramework
@@ -200,6 +206,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
   tobias:
     :path: ".symlinks/plugins/tobias/ios"
+  umeng_apm_sdk:
+    :path: ".symlinks/plugins/umeng_apm_sdk/ios"
   umeng_common_sdk:
     :path: ".symlinks/plugins/umeng_common_sdk/ios"
   url_launcher_ios:
@@ -247,8 +255,10 @@ SPEC CHECKSUMS:
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   tobias: 22f69183b14af82a2ac8ff698af084c352744e5f
+  UMAPM: a52ef6d5be72dd11591b917d96df97627970dae6
   UMCommon: f31de941d59c172708978ead53396f5b1c29820e
   UMDevice: f67106f8f1a8bc465ba20d376d896e178be66ba7
+  umeng_apm_sdk: f726cb78a2bd2afa0e17ec6b65fe3c9b96921f1d
   umeng_common_sdk: a8abd7f86dfd013dbbeeae587ee143760c6582f2
   url_launcher_ios: bbd758c6e7f9fd7b5b1d4cde34d2b95fcce5e812
   video_player_avfoundation: e9e6f9cae7d7a6d9b43519b0aab382bca60fcfd1

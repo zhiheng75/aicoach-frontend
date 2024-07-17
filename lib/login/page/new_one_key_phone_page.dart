@@ -95,6 +95,13 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   void initState() {
     super.initState();
     isWX();
+    EventUMStatistics.umengCommonOnPageStart("new_one_key_phone_page");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    EventUMStatistics.umengCommonOnPageEnd("new_one_key_phone_page");
   }
 
   Future<void> isWX() async {
@@ -174,6 +181,8 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
         builder: (BuildContext context) {
           return PrivacyShowView(
             () {
+              EventUMStatistics.umengCommonMapEvent(
+                  "layer_click_agreement_yes");
               setState(() {
                 _isSelect = true;
               });
@@ -332,7 +341,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                           child: Container(
                             padding: const EdgeInsets.only(top: 10, bottom: 10),
                             // height: Dimens.h_dp40,
-                            margin: const EdgeInsets.only(bottom: 16),
+                            margin: EdgeInsets.only(bottom: 16.h),
                             decoration: BoxDecoration(
                               borderRadius:
                                   BorderRadius.circular(Dimens.h_dp40),
@@ -352,7 +361,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                                   "手机号登录",
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: Dimens.font_sp18),
+                                      fontSize: Dimens.font_sp16),
                                 ),
                               ],
                             ),
@@ -372,7 +381,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                               child: Container(
                                 padding:
                                     const EdgeInsets.only(top: 10, bottom: 10),
-                                margin: const EdgeInsets.only(bottom: 16),
+                                margin: EdgeInsets.only(bottom: 16.h),
                                 decoration: BoxDecoration(
                                   borderRadius:
                                       BorderRadius.circular(Dimens.h_dp40),
@@ -392,25 +401,25 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                                       "微信登录",
                                       style: TextStyle(
                                           color: Colors.black,
-                                          fontSize: Dimens.font_sp18),
+                                          fontSize: Dimens.font_sp16),
                                     ),
                                   ],
                                 ),
                               ))
                           : Container(),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              _isSelect = !_isSelect;
-                              setState(() {});
-                            },
-                            child: Container(
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          _isSelect = !_isSelect;
+                          setState(() {});
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
                               // color: Colours.black,
-                              width: 30.w,
-                              height: 30.w,
+                              // width: 30.w,
+                              height: 20.w,
                               alignment: Alignment.center,
                               child: LoadAssetImage(
                                 _isSelect ? "select_img2" : "unselect_img2",
@@ -418,72 +427,72 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                                 height: Dimens.font_sp15,
                               ),
                             ),
-                          ),
-                          // Gaps.hGap10,
-                          Expanded(
-                            child: RichText(
-                                // RichText
-                                text: TextSpan(
-                                    text: '已阅读并同意',
-                                    style: TextStyle(
-                                      color: Colours.color_333333,
-                                      fontSize: Dimens.font_sp14,
-                                    ),
-                                    children: <TextSpan>[
-                                  TextSpan(
-                                      text: '《隐私协议》',
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          NavigatorUtils.goWebViewPage(
-                                              context,
-                                              "隐私协议",
-                                              "http://www.shenmo-ai.com/privacy_policy/");
-                                        },
+                            Gaps.hGap8,
+                            Expanded(
+                              child: RichText(
+                                  // RichText
+                                  text: TextSpan(
+                                      text: '已阅读并同意',
                                       style: TextStyle(
                                         color: Colours.color_333333,
-                                        fontSize: Dimens.font_sp14,
-                                      )),
-                                  TextSpan(
-                                      text: "、",
-                                      style: TextStyle(
-                                        color: Colours.color_333333,
-                                        fontSize: Dimens.font_sp14,
-                                      )),
-                                  TextSpan(
-                                      text: '《服务协议》',
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          NavigatorUtils.goWebViewPage(
-                                              context,
-                                              "服务协议",
-                                              "http://www.shenmo-ai.com/tos/");
-                                        },
-                                      style: TextStyle(
-                                        color: Colours.color_333333,
-                                        fontSize: Dimens.font_sp14,
-                                      )),
-                                  TextSpan(
-                                      text: '及',
-                                      style: TextStyle(
-                                        color: Colours.color_333333,
-                                        fontSize: Dimens.font_sp14,
-                                      )),
-                                  TextSpan(
-                                      text: '《儿童个人信息保护声明》',
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          NavigatorUtils.goWebViewPage(
-                                              context,
-                                              "儿童个人信息保护声明",
-                                              "http://www.shenmo-ai.com/bubble-ai_kids/");
-                                        },
-                                      style: TextStyle(
-                                        color: Colours.color_333333,
-                                        fontSize: Dimens.font_sp14,
-                                      )),
-                                ])),
-                          ),
-                        ],
+                                        fontSize: Dimens.font_sp12,
+                                      ),
+                                      children: <TextSpan>[
+                                    TextSpan(
+                                        text: '《隐私协议》',
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            NavigatorUtils.goWebViewPage(
+                                                context,
+                                                "隐私协议",
+                                                "http://www.shenmo-ai.com/privacy_policy/");
+                                          },
+                                        style: TextStyle(
+                                          color: Colours.color_333333,
+                                          fontSize: Dimens.font_sp12,
+                                        )),
+                                    TextSpan(
+                                        text: "、",
+                                        style: TextStyle(
+                                          color: Colours.color_333333,
+                                          fontSize: Dimens.font_sp12,
+                                        )),
+                                    TextSpan(
+                                        text: '《服务协议》',
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            NavigatorUtils.goWebViewPage(
+                                                context,
+                                                "服务协议",
+                                                "http://www.shenmo-ai.com/tos/");
+                                          },
+                                        style: TextStyle(
+                                          color: Colours.color_333333,
+                                          fontSize: Dimens.font_sp12,
+                                        )),
+                                    TextSpan(
+                                        text: '及',
+                                        style: TextStyle(
+                                          color: Colours.color_333333,
+                                          fontSize: Dimens.font_sp12,
+                                        )),
+                                    TextSpan(
+                                        text: '《儿童个人信息保护声明》',
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            NavigatorUtils.goWebViewPage(
+                                                context,
+                                                "儿童个人信息保护声明",
+                                                "http://www.shenmo-ai.com/bubble-ai_kids/");
+                                          },
+                                        style: TextStyle(
+                                          color: Colours.color_333333,
+                                          fontSize: Dimens.font_sp12,
+                                        )),
+                                  ])),
+                            ),
+                          ],
+                        ),
                       ),
                       Gaps.vGap15,
                     ],

@@ -172,6 +172,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
         builder: (BuildContext context) {
           return PushShowView(
             () {
+              EventUMStatistics.umengCommonMapEvent("layer_click_message_on");
               //确定
               jpush.openSettingsForNotification();
               // jpush.resumePush();
@@ -285,7 +286,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     // TODO: implement initState
     super.initState();
     initDio();
-    initUM();
+    // initUM();
     Future.delayed(const Duration(seconds: 1), () {
       subscription = Connectivity()
           .onConnectivityChanged

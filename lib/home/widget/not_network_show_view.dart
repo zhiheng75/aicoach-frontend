@@ -22,10 +22,10 @@ class _NotNetworkShowViewState extends State<NotNetworkShowView> {
           child: Container(
             // height: 220,
             // width: 290,
-            margin: const EdgeInsets.all(20),
+            margin: const EdgeInsets.all(30),
             padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
             decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
+                borderRadius: BorderRadius.all(Radius.circular(16)),
                 color: Colors.white),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,11 +56,11 @@ class _NotNetworkShowViewState extends State<NotNetworkShowView> {
                         NavigatorUtils.goBack(context);
                       },
                       child: Container(
-                        width: 100,
-                        height: 45,
+                        width: 120,
+                        height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_F2F3F5,
-                          borderRadius: BorderRadius.circular(9),
+                          borderRadius: BorderRadius.circular(16),
                         ),
                         child: const Center(
                           child: Text(
@@ -77,11 +77,11 @@ class _NotNetworkShowViewState extends State<NotNetworkShowView> {
                         widget._cancelPress();
                       },
                       child: Container(
-                        width: 100,
-                        height: 45,
+                        width: 120,
+                        height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_8003FD,
-                          borderRadius: BorderRadius.circular(9),
+                          borderRadius: BorderRadius.circular(16),
                         ),
                         child: const Center(
                           child: Text(

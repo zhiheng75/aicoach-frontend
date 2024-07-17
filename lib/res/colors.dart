@@ -260,4 +260,7 @@ class Colours {
   static const Color color_949393 = Color.fromRGBO(148, 147, 147, 1);
 
   static const Color color_F2F3F5 = Color.fromRGBO(242, 243, 245, 1);
+  
+  static const Color color_00000019 = Color.fromRGBO(0, 0, 0, 0.19);
+
 }

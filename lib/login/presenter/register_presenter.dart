@@ -29,18 +29,24 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
     params['phone'] = phoneNum;
     cancelToken = CancelToken();
 
-    return requestNetwork<EmptyResponseData>(Method.post,
-        url: HttpApi.smsLogin,
-        queryParameters: params,
-        cancelToken: cancelToken,
-        isShow: isShowLoading, onSuccess: (data) {
-      if (data != null && data.code == 200) {
-        Toast.show("短信验证码已发送");
-        view.sendSmsSuccess();
-      } else {
-        Toast.show("短信验证码发送失败");
-      }
-    });
+    return requestNetwork<EmptyResponseData>(
+      Method.post,
+      url: HttpApi.smsLogin,
+      queryParameters: params,
+      cancelToken: cancelToken,
+      isShow: isShowLoading,
+      onSuccess: (data) {
+        if (data != null && data.code == 200) {
+          Toast.show("短信验证码已发送");
+          view.sendSmsSuccess();
+        } else {
+          Toast.show("短信验证码发送失败");
+        }
+      },
+      onError: (code, msg) {
+        // Toast.show("当前无网络，请检查网络连接");
+      },
+    );
   }
 
   static void disHttpKeySendSms() {
@@ -64,32 +70,38 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
     params['province'] = data.province;
     params['unionid'] = data.unionid;
 
-    return requestNetwork<LoginInfoData>(Method.post,
-        url: HttpApi.wechatLogin,
-        params: params,
-        options: op,
-        isShow: false, onSuccess: (data) {
-      EventBus().emit('ERROR');
-      if (data != null) {
-        if (data.code == 200) {
-          SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
-          SpUtil.putString(Constant.accessToken, data.data.token);
-          SpUtil.putString(Constant.phone, phoneNum);
-          DYUtil().evaluate("1");
-          EventUMStatistics.umengCommonMapEvent(
-            "click_index_login",
-          );
+    return requestNetwork<LoginInfoData>(
+      Method.post,
+      url: HttpApi.wechatLogin,
+      params: params,
+      options: op,
+      isShow: false,
+      onSuccess: (data) {
+        EventBus().emit('ERROR');
+        if (data != null) {
+          if (data.code == 200) {
+            SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
+            SpUtil.putString(Constant.accessToken, data.data.token);
+            SpUtil.putString(Constant.phone, phoneNum);
+            DYUtil().evaluate("1");
+            EventUMStatistics.umengCommonMapEvent(
+              "click_index_login",
+            );
 
-          // view.wechatLoginSuccess("登录成功");
-          view.loginSuccess();
-        } else if (data.code == 203) {
-          Toast.show("验证码已过期");
-        } else {
-          // view.loginError(data.msg);
-          Toast.show(data.msg);
+            // view.wechatLoginSuccess("登录成功");
+            view.loginSuccess();
+          } else if (data.code == 203) {
+            Toast.show("验证码已过期");
+          } else {
+            // view.loginError(data.msg);
+            Toast.show(data.msg);
+          }
         }
-      }
-    });
+      },
+      onError: (code, msg) {
+        // Toast.show("当前无网络，请检查网络连接");
+      },
+    );
   }
 
   Future register(String phoneNum, String code, bool isShowLoading) {
@@ -97,63 +109,69 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
     params['phone'] = phoneNum;
     params['code'] = code;
 
-    return requestNetwork<LoginInfoData>(Method.post,
-        url: HttpApi.phoneLogin,
-        queryParameters: params,
-        isShow: isShowLoading, onSuccess: (data) {
-      if (data != null) {
-        if (data.code == 200) {
-          Toast.show("验证成功");
-          // MyUserInfoData myUserInfo = MyUserInfoData();
-          // myUserInfo.id = data.data.id;
-          // myUserInfo.email = data.data.email??"";
-          // myUserInfo.openid = data.data.openid;
-          // myUserInfo.nickname = data.data.nickname??"";
-          // myUserInfo.sex = data.data.sex;
-          // myUserInfo.province = data.data.province??"";
-          // myUserInfo.country = data.data.country??"";
-          // myUserInfo.headimgurl = data.data.headimgurl??"";
-          // myUserInfo.unionid = data.data.unionid;
-          // myUserInfo.school = data.data.school??"";
-          // myUserInfo.token = data.data.token;
-          // myUserInfo.createdAt = data.data.createdAt??"";
-          // myUserInfo.name = data.data.name??"";
-          // myUserInfo.phone = data.data.phone??"";
-          // myUserInfo.city = data.data.city??"";
-          // myUserInfo.description = data.data.description??"";
-          // myUserInfo.updatedAt = data.data.updatedAt??"";
+    return requestNetwork<LoginInfoData>(
+      Method.post,
+      url: HttpApi.phoneLogin,
+      queryParameters: params,
+      isShow: isShowLoading,
+      onSuccess: (data) {
+        if (data != null) {
+          if (data.code == 200) {
+            Toast.show("验证成功");
+            // MyUserInfoData myUserInfo = MyUserInfoData();
+            // myUserInfo.id = data.data.id;
+            // myUserInfo.email = data.data.email??"";
+            // myUserInfo.openid = data.data.openid;
+            // myUserInfo.nickname = data.data.nickname??"";
+            // myUserInfo.sex = data.data.sex;
+            // myUserInfo.province = data.data.province??"";
+            // myUserInfo.country = data.data.country??"";
+            // myUserInfo.headimgurl = data.data.headimgurl??"";
+            // myUserInfo.unionid = data.data.unionid;
+            // myUserInfo.school = data.data.school??"";
+            // myUserInfo.token = data.data.token;
+            // myUserInfo.createdAt = data.data.createdAt??"";
+            // myUserInfo.name = data.data.name??"";
+            // myUserInfo.phone = data.data.phone??"";
+            // myUserInfo.city = data.data.city??"";
+            // myUserInfo.description = data.data.description??"";
+            // myUserInfo.updatedAt = data.data.updatedAt??"";
 
-          SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
-          SpUtil.putString(Constant.accessToken, data.data.token);
-          SpUtil.putString(Constant.phone, phoneNum);
+            SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
+            SpUtil.putString(Constant.accessToken, data.data.token);
+            SpUtil.putString(Constant.phone, phoneNum);
 
-          DYUtil().evaluate("1");
-          EventUMStatistics.umengCommonMapEvent(
-            "click_index_login",
-          );
-          JPush().setup(
-            appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
-            channel: "kouyududu",
-            production: false,
-            debug: true,
-          );
-          JPush().setAlias(data.data.id.toString()).then((map) {});
+            DYUtil().evaluate("1");
+            EventUMStatistics.umengCommonMapEvent(
+              "click_index_login",
+            );
+            JPush().setup(
+              appKey: "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
+              channel: "kouyududu",
+              production: false,
+              debug: true,
+            );
+            JPush().setAlias(data.data.id.toString()).then((map) {});
 
-          view.loginSuccess();
-        } else if (data.code == 203) {
-          Toast.show("验证码已过期");
+            view.loginSuccess();
+          } else if (data.code == 203) {
+            Toast.show("验证码已过期");
+          } else {
+            // LoadingDialog.hidden();
+            // view.codeError();
+            Toast.show("验证码错误");
+          }
         } else {
           // LoadingDialog.hidden();
-          // view.codeError();
+
           Toast.show("验证码错误");
         }
-      } else {
-        // LoadingDialog.hidden();
-
-        Toast.show("验证码错误");
-      }
-      EventBus().emit('ERROR');
-    });
+        EventBus().emit('ERROR');
+      },
+      onError: (code, msg) {
+        // Toast.show("当前无网络，请检查网络连接");
+      },
+    );
   }
 
   Future sendKeyLoginToken(token) {
