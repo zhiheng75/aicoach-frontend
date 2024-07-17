@@ -14,6 +14,10 @@ class PushShowView extends StatefulWidget {
 }
 
 class _PushShowViewState extends State<PushShowView> {
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +27,8 @@ class _PushShowViewState extends State<PushShowView> {
           child: Container(
             // height: 220,
             // width: 290,
-            margin: EdgeInsets.all(40),
+            margin:
+                isIPad ? const EdgeInsets.all(100) : const EdgeInsets.all(40),
             padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16)),

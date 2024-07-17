@@ -2,6 +2,7 @@ import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotNetworkShowView extends StatefulWidget {
   final VoidCallback _cancelPress;
@@ -13,6 +14,10 @@ class NotNetworkShowView extends StatefulWidget {
 }
 
 class _NotNetworkShowViewState extends State<NotNetworkShowView> {
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +27,8 @@ class _NotNetworkShowViewState extends State<NotNetworkShowView> {
           child: Container(
             // height: 220,
             // width: 290,
-            margin: const EdgeInsets.all(30),
+            margin:
+                isIPad ? const EdgeInsets.all(100) : const EdgeInsets.all(30),
             padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -56,7 +62,7 @@ class _NotNetworkShowViewState extends State<NotNetworkShowView> {
                         NavigatorUtils.goBack(context);
                       },
                       child: Container(
-                        width: 120,
+                        width: isIPad ? 180.w : 120.w,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_F2F3F5,
@@ -77,7 +83,7 @@ class _NotNetworkShowViewState extends State<NotNetworkShowView> {
                         widget._cancelPress();
                       },
                       child: Container(
-                        width: 120,
+                        width: isIPad ? 180.w : 120.w,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_8003FD,

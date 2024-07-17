@@ -182,7 +182,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   }
 
   bool get isIPad {
-    // return Platform.isIOS && MediaQuery.of(context).size.width > 500;
     return MediaQuery.of(context).size.width > 500;
   }
 

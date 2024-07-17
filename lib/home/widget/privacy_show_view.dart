@@ -16,6 +16,10 @@ class PrivacyShowView extends StatefulWidget {
 }
 
 class _PrivacyShowViewState extends State<PrivacyShowView> {
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +29,8 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
           child: Container(
             // height: 220,
             // width: 290,
-            margin: const EdgeInsets.all(30),
+            margin:
+                isIPad ? const EdgeInsets.all(100) : const EdgeInsets.all(30),
             padding: const EdgeInsets.only(left: 25, right: 25, bottom: 20),
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -104,7 +109,7 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
                         NavigatorUtils.goBack(context);
                       },
                       child: Container(
-                        width: 100.w,
+                        width: isIPad ? 150.w : 100.w,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_F2F3F5,
@@ -125,7 +130,7 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
                         widget._cancelPress();
                       },
                       child: Container(
-                        width: 150.w,
+                        width: isIPad ? 200.w : 150.w,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_8003FD,
