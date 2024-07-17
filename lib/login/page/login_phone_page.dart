@@ -193,6 +193,7 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                       Container(
                         // margin: const EdgeInsets.only(top: 20),
                         width: double.infinity,
+                        height: Dimens.h_dp40,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(Dimens.h_dp40),
                           border: Border.all(width: 1, color: Colors.black),

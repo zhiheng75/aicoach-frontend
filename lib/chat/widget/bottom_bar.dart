@@ -264,14 +264,15 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
 
   void onWebsocketEnd(String? reason, String endType) {
     _homeProvider.endUsageTimeCutdown();
-    widget.controller.setDisabled(true);
+    // widget.controller.setDisabled(true);
     // 异常结束
     if (reason == 'Error') {
       insertTipMessage('Please switch to new roles, topics, or scene');
-    }
-    // 正常结束
-    if (reason == 'Session End' && endType == 'normal') {
+    } else if (reason == 'Session End' && endType == 'normal') {
+      // 正常结束
       insertTipMessage('Conversation finished！');
+    } else {
+      Toast.show("网络连接失败");
     }
   }
 

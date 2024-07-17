@@ -62,7 +62,6 @@ class BasePagePresenter<V extends IMvpView> extends BasePresenter<V> {
       },
       onError: (code, msg) {
         // Toast.show("当前无网络，请检查网络连接");
-        Toast.show("当前无网络，请检查网络连接");
 
         _onError(code, msg, onError);
       },

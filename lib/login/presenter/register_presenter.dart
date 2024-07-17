@@ -44,7 +44,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         }
       },
       onError: (code, msg) {
-        // Toast.show("当前无网络，请检查网络连接");
+        Toast.show("当前无网络，请检查网络连接");
       },
     );
   }
@@ -99,7 +99,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         }
       },
       onError: (code, msg) {
-        // Toast.show("当前无网络，请检查网络连接");
+        Toast.show("当前无网络，请检查网络连接");
       },
     );
   }
@@ -169,7 +169,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         EventBus().emit('ERROR');
       },
       onError: (code, msg) {
-        // Toast.show("当前无网络，请检查网络连接");
+        Toast.show("当前无网络，请检查网络连接");
       },
     );
   }
@@ -264,6 +264,8 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         view.wechatFail();
       }
     }, onError: (code, msg) {
+      Toast.show("当前无网络，请检查网络连接");
+
       view.wechatFail();
     });
   }

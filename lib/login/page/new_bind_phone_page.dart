@@ -159,6 +159,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
 
                       Container(
                         width: double.infinity,
+                        height: Dimens.h_dp40,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(Dimens.h_dp40),
                           border: Border.all(width: 1, color: Colors.black),

@@ -4,6 +4,7 @@ import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PrivacyShowView extends StatefulWidget {
   final VoidCallback _cancelPress;
@@ -103,7 +104,7 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
                         NavigatorUtils.goBack(context);
                       },
                       child: Container(
-                        width: 100,
+                        width: 100.w,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_F2F3F5,
@@ -124,7 +125,7 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
                         widget._cancelPress();
                       },
                       child: Container(
-                        width: 160,
+                        width: 150.w,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_8003FD,
