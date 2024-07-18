@@ -48,6 +48,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
   @override
   void initState() {
     super.initState();
+    // _nodeText1 = FocusNode();
   }
 
   Widget navbar() {
@@ -183,6 +184,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
                           key: const Key('phone'),
                           textAlign: TextAlign.center,
                           isDelete: false,
+                          autoFocus: true,
                           textMessage: (message) {
                             if (message.length == 11) {
                               _clickable = true;

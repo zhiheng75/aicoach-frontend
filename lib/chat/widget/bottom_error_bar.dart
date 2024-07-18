@@ -11,6 +11,7 @@ import 'package:Bubble/exam/entity/mock_message_entity.dart';
 import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/scene/utils/class_evaluate_util.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
@@ -18,6 +19,8 @@ import 'package:Bubble/util/websocket_utils.dart';
 import 'package:Bubble/widgets/load.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:phone_state/phone_state.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
 
@@ -79,10 +82,13 @@ class _BottomErrorBarState extends State<BottomErrorBar>
   final ScreenUtil _screenUtil = ScreenUtil();
   late HomeProvider _homeProvider;
   final MediaUtils _mediaUtils = MediaUtils();
-  final RecognizeUtil _recognizeUtil = RecognizeUtil();
+  late RecognizeUtil _recognizeUtil = RecognizeUtil();
   List<Uint8List> _bufferList = [];
 
   late String totalScoreStr = "";
+  late bool _phoneSate = true;
+  PhoneState status = PhoneState.nothing();
+  bool granted = false;
 
   bool isAvailable() {
     if (!LoginManager.isLogin()) {
@@ -226,6 +232,53 @@ class _BottomErrorBarState extends State<BottomErrorBar>
         );
       });
     });
+
+    if (Device.isIOS) {
+      setStream();
+    } else {
+      and();
+    }
+  }
+
+  void and() async {
+    bool temp = await requestPermission();
+    setState(() {
+      granted = temp;
+      if (granted) {
+        setStream();
+      }
+    });
+  }
+
+  Future<bool> requestPermission() async {
+    var status = await Permission.phone.request();
+
+    return switch (status) {
+      PermissionStatus.denied ||
+      PermissionStatus.restricted ||
+      PermissionStatus.limited ||
+      PermissionStatus.permanentlyDenied =>
+        false,
+      PermissionStatus.provisional || PermissionStatus.granted => true,
+    };
+  }
+
+  void setStream() {
+    PhoneState.stream.listen((event) async {
+      status = event;
+      if (status.status.name == "CALL_INCOMING") {
+        _phoneSate = false;
+        setState(() {});
+      }
+      if (status.status.name == "CALL_STARTED") {
+        _phoneSate = false;
+        setState(() {});
+      }
+      if (status.status.name == "CALL_ENDED") {
+        _phoneSate = true;
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -353,6 +406,9 @@ class _BottomErrorBarState extends State<BottomErrorBar>
             // if (!isAvailable()) {
             //   return;
             // }
+            if (!_phoneSate) {
+              return;
+            }
             EventUMStatistics.umengCommonMapEvent(
                 "click_index_error_correcting_dialog");
             try {
@@ -369,6 +425,8 @@ class _BottomErrorBarState extends State<BottomErrorBar>
                 Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
                 return;
               }
+              _recognizeUtil = RecognizeUtil();
+              _recognizeUtil.setLanguage(widget.language ?? 'en');
               // 开始录音
               _bufferList = [];
               _mediaUtils.startRecord(onData: (buffer) {

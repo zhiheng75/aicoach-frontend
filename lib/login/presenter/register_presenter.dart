@@ -23,17 +23,17 @@ import '../entity/my_user_info_entity.dart';
 import '../view/register_view.dart';
 
 class RegisterPresenter extends BasePagePresenter<RegisterView> {
-  static late CancelToken cancelToken;
+  // static late CancelToken cancelToken;
   Future sendSms(String phoneNum, bool isShowLoading) {
     final Map<String, dynamic> params = <String, dynamic>{};
     params['phone'] = phoneNum;
-    cancelToken = CancelToken();
+    // cancelToken = CancelToken();
 
     return requestNetwork<EmptyResponseData>(
       Method.post,
       url: HttpApi.smsLogin,
       queryParameters: params,
-      cancelToken: cancelToken,
+      // cancelToken: cancelToken,
       isShow: isShowLoading,
       onSuccess: (data) {
         if (data != null && data.code == 200) {
@@ -49,11 +49,11 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
     );
   }
 
-  static void disHttpKeySendSms() {
-    if (!cancelToken.isCancelled) {
-      cancelToken.cancel();
-    }
-  }
+  // static void disHttpKeySendSms() {
+  //   if (!cancelToken.isCancelled) {
+  //     cancelToken.cancel();
+  //   }
+  // }
 
   Future toBind(String phoneNum, String smsCode, NewWxInfoBeanData data) {
     Options op = Options();
@@ -77,7 +77,6 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
       options: op,
       isShow: false,
       onSuccess: (data) {
-        EventBus().emit('ERROR');
         if (data != null) {
           if (data.code == 200) {
             SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
@@ -90,18 +89,27 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
 
             // view.wechatLoginSuccess("登录成功");
             view.loginSuccess();
+          } else if (data.code == 201) {
+            Toast.show("手机号错误");
+            EventBus().emit('ERROR');
           } else if (data.code == 203) {
+            Toast.show("该手机号已绑定其他用户");
+            EventBus().emit('ERROR');
+          } else if (data.code == 205) {
             Toast.show("验证码已过期");
+            EventBus().emit('ERROR');
           } else {
             // view.loginError(data.msg);
-            Toast.show(data.msg);
+            Toast.show("验证码错误");
+            EventBus().emit('ERROR');
           }
         } else {
           Toast.show("验证码错误");
+          EventBus().emit('ERROR');
         }
       },
       onError: (code, msg) {
-        Toast.show("当前无网络，请检查网络连接");
+        // Toast.show("当前无网络，请检查网络连接");
       },
     );
   }
@@ -156,22 +164,28 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
             JPush().setAlias(data.data.id.toString()).then((map) {});
 
             view.loginSuccess();
+          } else if (data.code == 201) {
+            Toast.show("手机号错误");
+            EventBus().emit('ERROR');
           } else if (data.code == 203) {
+            Toast.show("该手机号已绑定其他用户");
+            EventBus().emit('ERROR');
+          } else if (data.code == 205) {
             Toast.show("验证码已过期");
+            EventBus().emit('ERROR');
           } else {
-            // LoadingDialog.hidden();
-            // view.codeError();
+            // view.loginError(data.msg);
             Toast.show("验证码错误");
+            EventBus().emit('ERROR');
           }
         } else {
-          // LoadingDialog.hidden();
-
           Toast.show("验证码错误");
+          EventBus().emit('ERROR');
         }
-        EventBus().emit('ERROR');
+        // EventBus().emit('ERROR');
       },
       onError: (code, msg) {
-        Toast.show("当前无网络，请检查网络连接");
+        // Toast.show("当前无网络，请检查网络连接");
       },
     );
   }
@@ -259,14 +273,13 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
             //没绑定
             view.newwechatSuccess(newWxInfoBean.data);
           }
-
           // view.loginSuccess(myUserInfo);
         }
       } else {
         view.wechatFail();
       }
     }, onError: (code, msg) {
-      Toast.show("当前无网络，请检查网络连接");
+      // Toast.show("当前无网络，请检查网络连接");
 
       view.wechatFail();
     });

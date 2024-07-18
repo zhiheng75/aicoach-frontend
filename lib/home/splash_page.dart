@@ -99,6 +99,7 @@ class _SplashPageState extends State<SplashPage> {
     await DeviceIdentity.register();
     initDio();
     initUM();
+    EventUMStatistics.umengCommonOnPageStart("splash_page");
 
     await Device.initDeviceInfo();
 
@@ -109,6 +110,7 @@ class _SplashPageState extends State<SplashPage> {
     LoginManager.checkOneLogin(context, () {
       NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
     });
+    EventUMStatistics.umengCommonOnPageEnd("splash_page");
 
     // ignore: use_build_context_synchronously
   }

@@ -60,6 +60,9 @@ class RecognizeUtil {
         'success': false,
         'message': '发生异常，请重新操作',
       });
+      EventBus().emit(
+        NotificationUtils.resetANChat,
+      );
       // onSuccess(_recognizeResult);
     }
   }
@@ -92,6 +95,9 @@ class RecognizeUtil {
               'success': false,
               'message': '抱歉，没听到您的声音，请您重复一遍，谢谢！',
             };
+            EventBus().emit(
+              NotificationUtils.resetANChat,
+            );
             onSuccess(_recognizeResult);
             await _disconnectXfRecognization(
                 WebSocketStatus.normalClosure, result['message']);
@@ -105,6 +111,9 @@ class RecognizeUtil {
                 'success': false,
                 'message': '抱歉，没听到您的声音，请您重复一遍，谢谢！',
               };
+              EventBus().emit(
+                NotificationUtils.resetANChat,
+              );
               onSuccess(_recognizeResult);
               await _disconnectXfRecognization(
                   WebSocketStatus.normalClosure, 'Fail');
@@ -126,6 +135,9 @@ class RecognizeUtil {
             'success': false,
             'message': '抱歉，没听到您的声音，请您重复一遍，谢谢！',
           };
+          EventBus().emit(
+            NotificationUtils.resetANChat,
+          );
           onSuccess(_recognizeResult);
           await _disconnectXfRecognization(
               WebSocketStatus.abnormalClosure, error.toString());
@@ -137,6 +149,9 @@ class RecognizeUtil {
         'success': false,
         'message': '发生异常，请重新操作',
       };
+      EventBus().emit(
+        NotificationUtils.resetANChat,
+      );
       onSuccess(_recognizeResult);
       rethrow;
     }

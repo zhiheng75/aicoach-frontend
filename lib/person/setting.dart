@@ -343,32 +343,32 @@ class _SettingPageState extends State<SettingPage>
                       const SizedBox(
                         height: 24.0,
                       ),
-                      session(
-                        'setting_phone',
-                        '手机号',
-                        onPress: () {
-                          NavigatorUtils.pushResult(
-                            context,
-                            LoginRouter.changeBindPhonePage,
-                            (_) => init(),
-                            arguments: LoginInfoDataData.fromJson(_userInfo),
-                          );
-                        },
-                        child: Text(
-                          _isBindedPhone ? '去换绑' : '去绑定',
-                          // '去换绑',
-                          style: const TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFF666666),
-                            height: 18.0 / 15.0,
-                            letterSpacing: 0.05,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 16.0,
-                      ),
+                      // session(
+                      //   'setting_phone',
+                      //   '手机号',
+                      //   onPress: () {
+                      //     NavigatorUtils.pushResult(
+                      //       context,
+                      //       LoginRouter.changeBindPhonePage,
+                      //       (_) => init(),
+                      //       arguments: LoginInfoDataData.fromJson(_userInfo),
+                      //     );
+                      //   },
+                      //   child: Text(
+                      //     _isBindedPhone ? '去换绑' : '去绑定',
+                      //     // '去换绑',
+                      //     style: const TextStyle(
+                      //       fontSize: 15.0,
+                      //       fontWeight: FontWeight.w400,
+                      //       color: Color(0xFF666666),
+                      //       height: 18.0 / 15.0,
+                      //       letterSpacing: 0.05,
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(
+                      //   height: 16.0,
+                      // ),
                       session(
                         'setting_wx',
                         '微信',

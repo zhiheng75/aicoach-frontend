@@ -28,7 +28,9 @@ class _NotNetworkShowViewState extends State<NotNetworkShowView> {
             // height: 220,
             // width: 290,
             margin:
-                isIPad ? const EdgeInsets.all(100) : const EdgeInsets.all(30),
+                // isIPad ? const EdgeInsets.all(100) : const EdgeInsets.all(30),
+                EdgeInsets.all(30.w),
+
             padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -62,7 +64,7 @@ class _NotNetworkShowViewState extends State<NotNetworkShowView> {
                         NavigatorUtils.goBack(context);
                       },
                       child: Container(
-                        width: isIPad ? 180.w : 120.w,
+                        width: 120.w,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_F2F3F5,
@@ -83,7 +85,7 @@ class _NotNetworkShowViewState extends State<NotNetworkShowView> {
                         widget._cancelPress();
                       },
                       child: Container(
-                        width: isIPad ? 180.w : 120.w,
+                        width: 120.w,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_8003FD,

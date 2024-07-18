@@ -183,6 +183,7 @@ class _SceneState extends State<CollectInformationPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async => true,
       child: Consumer<HomeProvider>(

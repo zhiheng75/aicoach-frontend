@@ -206,12 +206,12 @@ class Resource {
         gameUrl: json["game_url"] ?? "",
         title: json["title"] ?? "",
         introVideoCover: json["intro_video_cover"] ?? "",
-        greetingAudio: json["greeting_audio"] ?? "999999",
-        greetingText: json["greeting_text"] ?? "999999",
-        introFileType: json["intro_file_type"] ?? "999999",
-        introFile: json["intro_file"] ?? "999999",
-        introAudio: json["intro_audio"] ?? "999999",
-        introText: json["intro_text"] ?? "999999",
+        greetingAudio: json["greeting_audio"] ?? "",
+        greetingText: json["greeting_text"] ?? "",
+        introFileType: json["intro_file_type"] ?? "",
+        introFile: json["intro_file"] ?? "",
+        introAudio: json["intro_audio"] ?? "",
+        introText: json["intro_text"] ?? "",
         characterAvatar: json["character_avatar"] ?? "",
       );
 

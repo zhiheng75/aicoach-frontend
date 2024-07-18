@@ -93,6 +93,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   PhoneState status = PhoneState.nothing();
   bool granted = false;
 
+  bool isUserOpen = false;
+  late bool _phoneSate = true;
+
   void getExample() {
     LoginManager.checkLogin(context, () {
       if (widget.controller.disabled.value) {
@@ -409,32 +412,31 @@ class _CourseBottomBarState extends State<CourseBottomBar>
 
     EventBus().on(NotificationUtils.resetANChat, (_) {
       Future.delayed(const Duration(seconds: 1), () async {
-        await _mediaUtils.stopTwoPlay();
-        widget.controller.setDisabled(false);
-        widget.controller.setShowRecord(false);
+        creatResetStatus();
       });
     });
 
     // 全局监听App状态
     SystemChannels.lifecycle.setMessageHandler((message) async {
       // 退到后台
-      // ignore: unrelated_type_equality_checks
-      if (message == 'AppLifecycleState.paused') {
-        // await MediaUtils().stopPlayByAppPaused();
-        await _mediaUtils.stopTwoPlay();
-        widget.controller.setShowRecord(false);
-        widget.controller.setDisabled(false);
+      if (isUserOpen) {
+        // ignore: unrelated_type_equality_checks
+        if (message == 'AppLifecycleState.paused') {
+          // await MediaUtils().stopPlayByAppPaused();
+          creatResetStatus();
+        }
+        if (message == 'AppLifecycleState.resumed') {
+          creatResetStatus();
+        }
+        if (message == 'AppLifecycleState.inactive') {
+          creatResetStatus();
+        }
       }
-      if (message == 'AppLifecycleState.resumed') {
-        await _mediaUtils.stopTwoPlay();
-        widget.controller.setShowRecord(false);
-        widget.controller.setDisabled(false);
-      }
-
       // _appLifecycleState = message;
 
       return message;
     });
+
     // requestPermission();
 
     if (Device.isIOS) {
@@ -455,22 +457,31 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   }
 
   void setStream() {
-    PhoneState.stream.listen((event) async {
+    PhoneState.stream.listen((event) {
       status = event;
-      // ignore: unrelated_type_equality_checks
-      // if (status == PhoneStateStatus.CALL_INCOMING ||
-      //     // ignore: unrelated_type_equality_checks
-      //     status == PhoneStateStatus.CALL_ENDED ||
-      //     // ignore: unrelated_type_equality_checks
-      //     status == PhoneStateStatus.CALL_STARTED) {
-      await _mediaUtils.stopTwoPlay();
-      widget.controller.setShowRecord(false);
-      widget.controller.setDisabled(false);
-      // }
-      Log.e(status.status.name);
+      if (status.status.name == "CALL_INCOMING") {
+        creatResetStatus();
+        _phoneSate = false;
+        setState(() {});
+      }
+      if (status.status.name == "CALL_STARTED") {
+        creatResetStatus();
+        _phoneSate = false;
+        setState(() {});
+      }
+      if (status.status.name == "CALL_ENDED") {
+        creatResetStatus();
+        _phoneSate = true;
+        setState(() {});
+      }
     });
   }
 
+  void creatResetStatus() async {
+    await _mediaUtils.stopTwoPlay();
+    widget.controller.setShowRecord(false);
+    widget.controller.setDisabled(false);
+  }
   // @override
   // void didChangeAppLifecycleState(AppLifecycleState state) {
   //   super.didChangeAppLifecycleState(state);
@@ -669,6 +680,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                   EventUMStatistics.umengCommonMapEvent(
                       "click_index_class_dialog");
 
+                  if (!_phoneSate) {
+                    return;
+                  }
                   if (!isAvailable()) {
                     return;
                   }
@@ -690,6 +704,10 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                       widget.controller.setShowRecord(false);
                       return;
                     }
+                    setState(() {
+                      isUserOpen = true;
+                    });
+
                     _recognizeUtil = RecognizeUtil();
                     _recognizeUtil.setLanguage(widget.language ?? 'en');
                     // 开始录音

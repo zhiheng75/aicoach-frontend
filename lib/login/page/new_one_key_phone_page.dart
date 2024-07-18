@@ -1,9 +1,11 @@
 // ignore_for_file: avoid_print
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/dialog/agreement_dialog.dart';
+import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/widget/privacy_show_view.dart';
 import 'package:Bubble/login/entity/login_info_entity.dart';
@@ -12,6 +14,9 @@ import 'package:Bubble/login/login_router.dart';
 import 'package:Bubble/login/page/login_banner.dart';
 import 'package:Bubble/login/view/register_view.dart';
 import 'package:Bubble/method/fluter_native.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/person/entity/basec_onfig_bean.dart';
 import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/dimens.dart';
@@ -39,6 +44,7 @@ import 'package:Bubble/login/presenter/register_presenter.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import '../../home/home_router.dart';
 import '../../mvp/base_page.dart';
@@ -72,7 +78,12 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
 
   bool isWx = false;
   final ScreenUtil _screenUtil = ScreenUtil();
+  late String bubbleAndriodVersionStr = "";
+  late String bubbleAndriodVersionApprovalStr = "";
 
+  List<String>? imageList;
+  List<String>? topImageList;
+  bool isLoading = true;
   void _verify() {
     final String name = _phoneController.text;
     final String vCode = _vCodeController.text;
@@ -96,6 +107,106 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     super.initState();
     isWX();
     EventUMStatistics.umengCommonOnPageStart("new_one_key_phone_page");
+    getBaseConfig();
+  }
+
+  void getBaseConfig() async {
+    final info = await PackageInfo.fromPlatform();
+
+    DioUtils.instance.requestNetwork<ResultData>(
+      Method.post,
+      HttpApi.baseConfig,
+      onSuccess: (result) {
+        Map<String, dynamic> ebasecOnfigBeanMap =
+            json.decode(result.toString());
+        BasecOnfigBean basecOnfigBean =
+            BasecOnfigBean.fromJson(ebasecOnfigBeanMap);
+        if (basecOnfigBean != null || basecOnfigBean.data.length != 0) {
+          for (int i = 0; i < basecOnfigBean.data.length; i++) {
+            BasecDatum datum = basecOnfigBean.data[i];
+            if (Device.isAndroid) {
+              if (datum.key == "duduAndriodVersion") {
+                bubbleAndriodVersionStr = datum.value;
+              }
+              if (datum.key == "duduAndriodVersionApproval") {
+                bubbleAndriodVersionApprovalStr = datum.value;
+              }
+            } else {
+              if (datum.key == "bubbleIosVersion") {
+                bubbleAndriodVersionStr = datum.value;
+              }
+              if (datum.key == "bubbleIosVersionApproval") {
+                bubbleAndriodVersionApprovalStr = datum.value;
+              }
+            }
+          }
+
+          if (bubbleAndriodVersionStr == info.buildNumber &&
+              bubbleAndriodVersionApprovalStr == "1") {
+            //审核中
+            imageList = const [
+              'assets/introduction_two_page/yd2.json',
+              'assets/introduction_three_page/yindao3.json',
+              'assets/introduction_four_page/yindao4.json',
+            ];
+            topImageList = const [
+              'login_banner_two',
+              'login_banner_three',
+              'login_banner_four',
+            ];
+          } else {
+            //审核通过
+            imageList = const [
+              'assets/introduction_one_page/yindao1.json',
+              'assets/introduction_two_page/yd2.json',
+              'assets/introduction_three_page/yindao3.json',
+              'assets/introduction_four_page/yindao4.json',
+            ];
+            topImageList = const [
+              'login_banner_one',
+              'login_banner_two',
+              'login_banner_three',
+              'login_banner_four',
+            ];
+          }
+        } else {
+          //审核通过
+          imageList = const [
+            'assets/introduction_one_page/yindao1.json',
+            'assets/introduction_two_page/yd2.json',
+            'assets/introduction_three_page/yindao3.json',
+            'assets/introduction_four_page/yindao4.json',
+          ];
+          topImageList = const [
+            'login_banner_one',
+            'login_banner_two',
+            'login_banner_three',
+            'login_banner_four',
+          ];
+        }
+        setState(() {
+          isLoading = false;
+        });
+      },
+      onError: (code, msg) {
+        //审核通过
+        imageList = const [
+          'assets/introduction_one_page/yindao1.json',
+          'assets/introduction_two_page/yd2.json',
+          'assets/introduction_three_page/yindao3.json',
+          'assets/introduction_four_page/yindao4.json',
+        ];
+        topImageList = const [
+          'login_banner_one',
+          'login_banner_two',
+          'login_banner_three',
+          'login_banner_four',
+        ];
+        setState(() {
+          isLoading = false;
+        });
+      },
+    );
   }
 
   @override
@@ -191,79 +302,6 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
         });
   }
 
-  // void onAgreement() {
-
-  // ConfirmUtils.show(
-  //   context: context,
-  //   title: '同意隐私条款',
-  //   // buttonDirection: 'vertical',
-  //   confirmButtonText: '我同意',
-  //   cancelButtonText: '不同意',
-  //   onConfirm: () {
-  //     // //刷新
-  // setState(() {
-  //   _isSelect = true;
-  // });
-  //   },
-  //   onCancel: () {},
-  //   child: RichText(
-  //       // RichText
-  //       text: TextSpan(
-  //           text: '已阅读并同意',
-  //           style: const TextStyle(
-  //             color: Colours.color_333333,
-  //             fontSize: 14.0,
-  //           ),
-  //           children: <TextSpan>[
-  //         TextSpan(
-  //             text: '《隐私协议》',
-  //             recognizer: TapGestureRecognizer()
-  //               ..onTap = () {
-  //                 NavigatorUtils.goWebViewPage(context, "隐私协议",
-  //                     "http://www.shenmo-ai.com/privacy_policy/");
-  //               },
-  //             style: const TextStyle(
-  //               color: Colours.color_007AFF,
-  //               fontSize: 14.0,
-  //             )),
-  //         const TextSpan(
-  //             text: "、",
-  //             style: TextStyle(
-  //               color: Colours.color_007AFF,
-  //               fontSize: 14.0,
-  //             )),
-  //         TextSpan(
-  //             text: '《服务协议》',
-  //             recognizer: TapGestureRecognizer()
-  //               ..onTap = () {
-  //                 NavigatorUtils.goWebViewPage(
-  //                     context, "服务协议", "http://www.shenmo-ai.com/tos/");
-  //               },
-  //             style: const TextStyle(
-  //               color: Colours.color_007AFF,
-  //               fontSize: 14.0,
-  //             )),
-  //         const TextSpan(
-  //             text: '、',
-  //             style: TextStyle(
-  //               color: Colours.color_007AFF,
-  //               fontSize: 14.0,
-  //             )),
-  //         TextSpan(
-  //             text: '《儿童个人信息保护声明》',
-  //             recognizer: TapGestureRecognizer()
-  //               ..onTap = () {
-  //                 NavigatorUtils.goWebViewPage(context, "儿童个人信息保护声明",
-  //                     "http://www.shenmo-ai.com/bubble-ai_kids/");
-  //               },
-  //             style: const TextStyle(
-  //               color: Colours.color_007AFF,
-  //               fontSize: 14.0,
-  //             )),
-  //       ])),
-  // );
-  // }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -292,26 +330,18 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
             child: Stack(
               // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                LoginBanner(
-                    imageList: const [
-                      'assets/introduction_one_page/yindao1.json',
-                      'assets/introduction_two_page/yd2.json',
-                      'assets/introduction_three_page/yindao3.json',
-                      'assets/introduction_four_page/yindao4.json',
-                    ],
-                    topImageList: const [
-                      'login_banner_one',
-                      'login_banner_two',
-                      'login_banner_three',
-                      'login_banner_four',
-                    ],
-                    height: _screenUtil.screenHeight,
-                    indicatorType: IndicatorType.rectangle,
-                    indicatorRadius: 5,
-                    indicatorWidth: 20,
-                    indicatorUnWidth: 5,
-                    indicatorHeight: 5,
-                    bannerClick: (position) {}),
+                isLoading
+                    ? Container()
+                    : LoginBanner(
+                        imageList: imageList,
+                        topImageList: topImageList,
+                        height: _screenUtil.screenHeight,
+                        indicatorType: IndicatorType.rectangle,
+                        indicatorRadius: 5,
+                        indicatorWidth: 20,
+                        indicatorUnWidth: 5,
+                        indicatorHeight: 5,
+                        bannerClick: (position) {}),
                 navbar(),
                 // Lottie.asset('assets/introduction_two_page/yd2.json',
                 //     repeat: false),

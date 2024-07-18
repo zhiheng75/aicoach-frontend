@@ -61,6 +61,7 @@ class _LoginPhonePageState extends State<LoginPhonePage>
   void initState() {
     super.initState();
     EventUMStatistics.umengCommonOnPageStart("login_phone_page");
+    // _nodeText1.unfocus();
   }
 
   @override
@@ -202,6 +203,7 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                           key: const Key('phone'),
                           textAlign: TextAlign.center,
                           isDelete: false,
+                          autoFocus: true,
                           textMessage: (message) {
                             if (message.length == 11) {
                               _clickable = true;

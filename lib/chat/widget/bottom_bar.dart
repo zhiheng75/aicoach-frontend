@@ -343,29 +343,24 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
 
     EventBus().on(NotificationUtils.resetANChat, (_) {
-      Future.delayed(const Duration(seconds: 1), () async {
-        await _mediaUtils.stopTwoPlay();
-        widget.controller.setDisabled(false);
-        widget.controller.setShowRecord(false);
+      Future.delayed(const Duration(seconds: 1), () {
+        creatResetStatus();
       });
     });
-
     // 全局监听App状态
     SystemChannels.lifecycle.setMessageHandler((message) async {
       // 退到后台
       // ignore: unrelated_type_equality_checks
       if (message == 'AppLifecycleState.paused') {
         // await MediaUtils().stopPlayByAppPaused();
-        await _mediaUtils.stopTwoPlay();
-        widget.controller.setShowRecord(false);
-        widget.controller.setDisabled(false);
+        creatResetStatus();
       }
       if (message == 'AppLifecycleState.resumed') {
-        await _mediaUtils.stopTwoPlay();
-        widget.controller.setShowRecord(false);
-        widget.controller.setDisabled(false);
+        creatResetStatus();
       }
-
+      if (message == 'AppLifecycleState.inactive') {
+        creatResetStatus();
+      }
       // _appLifecycleState = message;
 
       return message;
@@ -405,44 +400,28 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   void setStream() {
     PhoneState.stream.listen((event) async {
       status = event;
-      // ignore: unrelated_type_equality_checks
-      // if (status == PhoneStateStatus.CALL_INCOMING ||
-      //     // ignore: unrelated_type_equality_checks
-      //     status == PhoneStateStatus.CALL_ENDED ||
-      //     // ignore: unrelated_type_equality_checks
-      //     status == PhoneStateStatus.CALL_STARTED) {
-      //   Log.e("+++++++++++" + status.status.name);
-      // }
-
       if (status.status.name == "CALL_INCOMING") {
-        await _mediaUtils.stopTwoPlay();
-        widget.controller.setShowRecord(false);
-        widget.controller.setDisabled(false);
+        creatResetStatus();
         _phoneSate = false;
         setState(() {});
-        Log.e("============+++++" + status.status.name);
       }
-
       if (status.status.name == "CALL_STARTED") {
-        await _mediaUtils.stopTwoPlay();
-        widget.controller.setShowRecord(false);
-        widget.controller.setDisabled(false);
+        creatResetStatus();
         _phoneSate = false;
         setState(() {});
-        Log.e("============+++++" + status.status.name);
       }
-
       if (status.status.name == "CALL_ENDED") {
-        await _mediaUtils.stopTwoPlay();
-        widget.controller.setShowRecord(false);
-        widget.controller.setDisabled(false);
+        creatResetStatus();
         _phoneSate = true;
         setState(() {});
-        Log.e("============+++++" + status.status.name);
       }
-      // }
-      Log.e("============" + status.status.name);
     });
+  }
+
+  void creatResetStatus() async {
+    await _mediaUtils.stopTwoPlay();
+    widget.controller.setShowRecord(false);
+    widget.controller.setDisabled(false);
   }
 
   @override

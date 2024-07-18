@@ -107,7 +107,7 @@ class _CheckCodePageState extends State<CheckCodePage>
   void dispose() {
     super.dispose();
 
-    RegisterPresenter.disHttpKeySendSms();
+    // RegisterPresenter.disHttpKeySendSms();
     EventUMStatistics.umengCommonOnPageEnd("check_code_page");
 
     _cancelTimer();
@@ -264,7 +264,7 @@ class _CheckCodePageState extends State<CheckCodePage>
                             onTap: () {
                               if (canResend) {
                                 resendCode();
-                                RegisterPresenter.disHttpKeySendSms();
+                                // RegisterPresenter.disHttpKeySendSms();
                                 _registerPresenter.sendSms(
                                     widget.phoneNumber, true);
                               }
@@ -351,8 +351,6 @@ class _CheckCodePageState extends State<CheckCodePage>
 
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    EventBus().emit(NotificationUtils.loginIn);
-    EventBus().emit(NotificationUtils.resetInFo);
 
     if (widget.typeLogin == "2") {
       NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
@@ -360,6 +358,8 @@ class _CheckCodePageState extends State<CheckCodePage>
       Navigator.pop(context);
       Navigator.pop(context);
       Navigator.pop(context);
+      EventBus().emit(NotificationUtils.loginIn);
+      EventBus().emit(NotificationUtils.resetInFo);
     }
 
     // NavigatorUtils.push(
@@ -461,7 +461,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
     // Log.e(widget.isKeyLogin as String);
     super.initState();
     Future.delayed(const Duration(milliseconds: 200), () {
-      _registerPresenter.sendSms(widget.phoneNumber, false);
+      // _registerPresenter.sendSms(widget.phoneNumber, false);
       _startTimer();
     });
     EventUMStatistics.umengCommonOnPageStart("check_two_code_page");
@@ -476,7 +476,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
     super.dispose();
 
     _cancelTimer();
-    RegisterPresenter.disHttpKeySendSms();
+    // RegisterPresenter.disHttpKeySendSms();
     EventUMStatistics.umengCommonOnPageEnd("check_two_code_page");
   }
 
@@ -618,7 +618,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
                           onTap: () {
                             if (canResend) {
                               resendCode();
-                              RegisterPresenter.disHttpKeySendSms();
+                              // RegisterPresenter.disHttpKeySendSms();
                               _registerPresenter.sendSms(
                                   widget.phoneNumber, true);
                             }
@@ -704,14 +704,15 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
     // TODO: implement loginSuccess
     // 刷新体验时间
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
-    EventBus().emit(NotificationUtils.loginIn);
-    EventBus().emit(NotificationUtils.resetInFo);
+
     if (widget.typeLogin == "2") {
       NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
     } else {
       Navigator.pop(context);
       Navigator.pop(context);
       Navigator.pop(context);
+      EventBus().emit(NotificationUtils.loginIn);
+      EventBus().emit(NotificationUtils.resetInFo);
     }
   }
 

@@ -1,4 +1,3 @@
-
 import 'package:oktoast/oktoast.dart';
 
 /// Toast工具类
@@ -7,11 +6,10 @@ class Toast {
     if (msg == null) {
       return;
     }
-    showToast(
-      msg,
-      duration: Duration(milliseconds: duration),
-      dismissOtherToast: true
-    );
+    showToast(msg,
+        position: ToastPosition.top,
+        duration: Duration(milliseconds: duration),
+        dismissOtherToast: true);
   }
 
   static void cancelToast() {

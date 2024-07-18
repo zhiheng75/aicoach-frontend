@@ -29,8 +29,7 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
           child: Container(
             // height: 220,
             // width: 290,
-            margin:
-                isIPad ? const EdgeInsets.all(100) : const EdgeInsets.all(30),
+            margin: EdgeInsets.all(30.w),
             padding: const EdgeInsets.only(left: 25, right: 25, bottom: 20),
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -109,7 +108,7 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
                         NavigatorUtils.goBack(context);
                       },
                       child: Container(
-                        width: isIPad ? 150.w : 100.w,
+                        width: 100.w,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_F2F3F5,
@@ -130,7 +129,7 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
                         widget._cancelPress();
                       },
                       child: Container(
-                        width: isIPad ? 200.w : 150.w,
+                        width: 150.w,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_8003FD,

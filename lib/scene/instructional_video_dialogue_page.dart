@@ -330,6 +330,9 @@ class _InstructionalVideoDialoguePageState
     } else if (reason == 'keepalive ping timeout') {
       //超时断开走这里
       onReold("离开太久了!");
+    } else if (reason == '') {
+      //超时断开走这里
+      onReold("您的网络不太顺畅，请检查网络情况。");
     } else {
       onReold("离开太久了!");
     }
@@ -454,6 +457,18 @@ class _InstructionalVideoDialoguePageState
       isLoding = false;
       setState(() {});
     });
+
+    // 全局监听App状态
+    SystemChannels.lifecycle.setMessageHandler((message) async {
+      // 退到后台
+      if (introFileType == "video") {
+        if (await _controller!.isPlaying()) {
+          _controller!.pause();
+        }
+      }
+
+      return message;
+    });
   }
 
   @override
@@ -530,10 +545,10 @@ class _InstructionalVideoDialoguePageState
                   GestureDetector(
                     onTap: () {
                       _timer.cancel();
-
                       //重新开始
                       newDataIdx = newDataIdx - 1;
                       setState(() {
+                        isOnePlay = "1";
                         isShowDialog = false;
                       });
                       sessionId = const Uuid().v4().replaceAll('-', '');
@@ -679,7 +694,6 @@ class _InstructionalVideoDialoguePageState
           init();
         } else {
           contentTop = _screenUtil.statusBarHeight + 240;
-
           isVideo = "0";
           introFileStr = _homeProvider.character.motionImageD;
           imgFlowRequestNetwork();
