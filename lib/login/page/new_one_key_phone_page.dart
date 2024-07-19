@@ -285,7 +285,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     );
   }
 
-  onAgreement() {
+  onAgreement(String type) {
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -297,6 +297,15 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
               setState(() {
                 _isSelect = true;
               });
+              if (type == "1") {
+                NavigatorUtils.push(
+                  context,
+                  // replace: true,
+                  "${LoginRouter.keyLoginPhonePage}?typeLogin=${widget.typeLogin}",
+                );
+              } else {
+                weChatLogin();
+              }
             },
           );
         });
@@ -363,7 +372,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                                 "${LoginRouter.keyLoginPhonePage}?typeLogin=${widget.typeLogin}",
                               );
                             } else {
-                              onAgreement();
+                              onAgreement("1");
 
                               // Toast.show("请同意服务协议");
                             }
@@ -405,7 +414,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
                                   weChatLogin();
                                 } else {
                                   // Toast.show("请同意服务协议");
-                                  onAgreement();
+                                  onAgreement("2");
                                 }
                               },
                               child: Container(

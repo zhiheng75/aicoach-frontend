@@ -267,13 +267,14 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
     // widget.controller.setDisabled(true);
     // 异常结束
     if (reason == 'Error') {
-      Toast.show("网络连接失败");
+      Toast.show("对话已结束");
       // insertTipMessage('Please switch to new roles, topics, or scene');
     } else if (reason == 'Session End' && endType == 'normal') {
       // 正常结束
       insertTipMessage('Conversation finished！');
     } else {
-      Toast.show("网络连接失败");
+      // insertTipMessage('Please switch to new roles, topics, or scene');
+      Toast.show("对话已结束");
     }
   }
 

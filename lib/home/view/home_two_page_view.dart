@@ -11,4 +11,6 @@ abstract class HomeTwoPageView implements IMvpView {
   void sendBindTeacherStatusSuccess(int data);
 
   void sendFail(String msg);
+
+  void sendError();
 }
