@@ -37,7 +37,7 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
       isShow: isShowLoading,
       onSuccess: (data) {
         if (data != null && data.code == 200) {
-          Toast.show("短信验证码已发送");
+          Toast.showBottom("短信验证码已发送");
           view.sendSmsSuccess();
         } else {
           Toast.show("短信验证码发送失败");
@@ -90,21 +90,22 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
             // view.wechatLoginSuccess("登录成功");
             view.loginSuccess();
           } else if (data.code == 201) {
-            Toast.show("手机号错误");
+            Toast.showBottom("手机号错误");
+
             EventBus().emit('ERROR');
           } else if (data.code == 203) {
-            Toast.show("该手机号已绑定其他用户");
+            Toast.showBottom("该手机号已绑定其他用户");
             EventBus().emit('ERROR');
           } else if (data.code == 205) {
-            Toast.show("验证码已过期");
+            Toast.showBottom("验证码已过期");
             EventBus().emit('ERROR');
           } else {
             // view.loginError(data.msg);
-            Toast.show("验证码错误");
+            Toast.showBottom("验证码错误");
             EventBus().emit('ERROR');
           }
         } else {
-          Toast.show("验证码错误");
+          Toast.showBottom("验证码错误");
           EventBus().emit('ERROR');
         }
       },
@@ -165,21 +166,21 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
 
             view.loginSuccess();
           } else if (data.code == 201) {
-            Toast.show("手机号错误");
+            Toast.showBottom("手机号错误");
             EventBus().emit('ERROR');
           } else if (data.code == 203) {
-            Toast.show("该手机号已绑定其他用户");
+            Toast.showBottom("该手机号已绑定其他用户");
             EventBus().emit('ERROR');
           } else if (data.code == 205) {
-            Toast.show("验证码已过期");
+            Toast.showBottom("验证码已过期");
             EventBus().emit('ERROR');
           } else {
             // view.loginError(data.msg);
-            Toast.show("验证码错误");
+            Toast.showBottom("验证码错误");
             EventBus().emit('ERROR');
           }
         } else {
-          Toast.show("验证码错误");
+          Toast.showBottom("验证码错误");
           EventBus().emit('ERROR');
         }
         // EventBus().emit('ERROR');

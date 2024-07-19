@@ -114,7 +114,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
     final info = await PackageInfo.fromPlatform();
 
     DioUtils.instance.requestNetwork<ResultData>(
-      Method.post,
+      Method.get,
       HttpApi.baseConfig,
       onSuccess: (result) {
         Map<String, dynamic> ebasecOnfigBeanMap =

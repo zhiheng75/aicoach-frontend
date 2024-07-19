@@ -379,8 +379,15 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       barrierColor: Colors.transparent,
       barrierDismissible: false,
       useSafeArea: false,
-      builder: (_) => SystemMaintenanceView(
-        msg: msg,
+      // ignore: deprecated_member_use
+      builder: (_) => WillPopScope(
+        onWillPop: () async {
+          //这里可以响应物理返回键
+          return false;
+        },
+        child: SystemMaintenanceView(
+          msg: msg,
+        ),
       ),
     );
   }

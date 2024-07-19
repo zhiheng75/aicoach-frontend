@@ -64,7 +64,7 @@ class _NotNetworkShowViewState extends State<NotNetworkShowView> {
                         NavigatorUtils.goBack(context);
                       },
                       child: Container(
-                        width: 120.w,
+                        width: 100.w,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_F2F3F5,
@@ -85,7 +85,7 @@ class _NotNetworkShowViewState extends State<NotNetworkShowView> {
                         widget._cancelPress();
                       },
                       child: Container(
-                        width: 120.w,
+                        width: 100.w,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_8003FD,

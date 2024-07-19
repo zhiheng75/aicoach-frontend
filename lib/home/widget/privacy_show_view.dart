@@ -108,7 +108,7 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
                         NavigatorUtils.goBack(context);
                       },
                       child: Container(
-                        width: 100.w,
+                        width: 90.w,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_F2F3F5,
@@ -129,7 +129,7 @@ class _PrivacyShowViewState extends State<PrivacyShowView> {
                         widget._cancelPress();
                       },
                       child: Container(
-                        width: 150.w,
+                        width: 140.w,
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colours.color_8003FD,

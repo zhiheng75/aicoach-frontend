@@ -27,7 +27,7 @@ class BindPhonePresenter extends BasePagePresenter<BindPhoneView> {
         isShow: false, onSuccess: (data) {
       if (data != null) {
         if (data.code == 200) {
-          Toast.show("短信验证码已发送");
+          Toast.showBottom("短信验证码已发送");
 
           view.sendSuccess("发送成功");
         } else {

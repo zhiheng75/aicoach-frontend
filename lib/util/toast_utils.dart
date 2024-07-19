@@ -7,7 +7,17 @@ class Toast {
       return;
     }
     showToast(msg,
-        position: ToastPosition.top,
+        position: ToastPosition.center,
+        duration: Duration(milliseconds: duration),
+        dismissOtherToast: true);
+  }
+
+  static void showBottom(String? msg, {int duration = 2000}) {
+    if (msg == null) {
+      return;
+    }
+    showToast(msg,
+        position: ToastPosition.bottom,
         duration: Duration(milliseconds: duration),
         dismissOtherToast: true);
   }
