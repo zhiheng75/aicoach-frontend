@@ -402,7 +402,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     String platformStr = "android";
 
     if (Device.isAndroid) {
-      platformStr = Channel.channelhuawei;
+      platformStr = Channel.channeloppo;
     } else {
       platformStr = Channel.channelios;
     }
@@ -531,7 +531,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       AndroidDeviceInfo androidDeviceInfo =
           await DeviceInfoPlugin().androidInfo;
 
-      platformStr = Channel.channelhuawei;
+      platformStr = Channel.channeloppo;
       final Map<String, String> params = <String, String>{};
       params["manufacturer"] = androidDeviceInfo.manufacturer;
       params["id"] = androidDeviceInfo.id;
