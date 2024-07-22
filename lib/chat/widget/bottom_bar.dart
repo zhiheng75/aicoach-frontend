@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_final_fields, must_be_immutable
 
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:Bubble/chat/widget/background.dart';
@@ -11,6 +12,7 @@ import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,6 +75,8 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   PhoneState status = PhoneState.nothing();
   bool granted = false;
   late bool _phoneSate = true;
+  late StreamSubscription<ConnectivityResult> subscription;
+  late ConnectivityResult resultType;
 
   void getExample() {
     LoginManager.checkLogin(context, () {
@@ -366,6 +370,13 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
 
       return message;
     });
+
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) async {
+      creatResetStatus();
+    });
+
     // requestPermission();
 
     if (Device.isIOS) {
@@ -437,6 +448,8 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    subscription.cancel();
+
     super.dispose();
   }
 

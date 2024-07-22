@@ -29,6 +29,7 @@ import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -149,6 +150,9 @@ class _InstructionalVideoDialoguePageState
   late bool isShowbottom = false;
   bool isLoding = true;
   late String sessionId;
+  late StreamSubscription<ConnectivityResult> subscription;
+  bool isUserOpen = false;
+
   Widget lodingView() {
     return const Center(
       child: CircularProgressIndicator(),
@@ -403,6 +407,12 @@ class _InstructionalVideoDialoguePageState
     widget.onEnd();
   }
 
+  void creatResetStatus() async {
+    await _mediaUtils.stopTwoPlay();
+    _bottomBarControll.setShowRecord(false);
+    _bottomBarControll.setDisabled(false);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -411,6 +421,15 @@ class _InstructionalVideoDialoguePageState
     newDataIdx = widget.idx;
     resourceIdx = 0;
     WidgetsBinding.instance.addObserver(this);
+
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) async {
+      if (isUserOpen) {
+        connectWebsocket();
+        creatResetStatus();
+      }
+    });
 
     EventBus().on(NotificationUtils.nextClass, (idx) {
       newDataIdx = newDataIdx + 1;
@@ -851,6 +870,7 @@ class _InstructionalVideoDialoguePageState
     Wakelock.disable();
     _mediaUtils.stopPlay();
     endSocket();
+    subscription.cancel();
 
     EventBus().off(NotificationUtils.nextClass);
     EventBus().off(NotificationUtils.messageEnd);
@@ -1306,6 +1326,11 @@ class _InstructionalVideoDialoguePageState
                   recordController: _recordController,
                   onFinshEnd: (data) {
                     // if (data == true) {}
+                  },
+                  onStartBool: (isfinsh) {
+                    setState(() {
+                      isUserOpen = isfinsh;
+                    });
                   },
                   onScrollEnd: () {
                     _listScrollController.scrollToEnd();

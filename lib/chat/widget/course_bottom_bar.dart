@@ -46,6 +46,7 @@ class CourseBottomBar extends StatefulWidget {
     this.isNormalChat = false,
     this.onScrollEnd,
     this.onFinshEnd,
+    this.onStartBool,
     this.onError,
     required this.lessonId,
     required this.stepId,
@@ -64,6 +65,8 @@ class CourseBottomBar extends StatefulWidget {
   final Function()? onError;
 
   final Function(bool isfinsh)? onFinshEnd;
+  final Function(bool isfinsh)? onStartBool;
+
   final String lessonId;
   final String stepId;
   final String sceneId;
@@ -707,7 +710,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                     setState(() {
                       isUserOpen = true;
                     });
-
+                    if (widget.onStartBool != null) {
+                      widget.onStartBool!(true);
+                    }
                     _recognizeUtil = RecognizeUtil();
                     _recognizeUtil.setLanguage(widget.language ?? 'en');
                     // 开始录音
