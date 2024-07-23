@@ -353,9 +353,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       //   douyin = imei;
       // }
       // // 正式
-      String url = "https://statics.shenmo-ai.com/system_maintenance_prod.json";
+      // String url = "https://statics.shenmo-ai.com/system_maintenance_prod.json";
       // // 测试
-      // String url = "https://statics.shenmo-ai.com/system_maintenance_dev.json";
+      String url = "https://statics.shenmo-ai.com/system_maintenance_dev.json";
       var response = await dio.get(url);
       //转化为Json
       String jsonString = jsonEncode(response.data);

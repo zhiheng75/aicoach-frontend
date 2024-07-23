@@ -46,8 +46,10 @@ class _MainTabberState extends State<MainTabber> {
 
     const HomeTwoPage(),
     const CourseHomePage(),
-    // const ChatHomePage(),
-    const HomeNewPage(),
+    // const CourseHomePage(),
+
+    const ChatHomePage(),
+    // const HomeNewPage(),
     const PersonPage(),
   ];
   //
