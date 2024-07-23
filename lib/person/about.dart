@@ -53,7 +53,7 @@ class _AboutPageState extends State<AboutPage> {
     String platformStr = "android";
 
     if (Device.isAndroid) {
-      platformStr = Channel.channeloppo;
+      platformStr = Channel.channelvivo;
     } else {
       platformStr = Channel.channelios;
     }

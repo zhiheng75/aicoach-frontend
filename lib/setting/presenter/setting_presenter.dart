@@ -129,7 +129,7 @@ class SettingPresenter extends BasePagePresenter<SettingView> {
     //android
     //ios
     final Map<String, dynamic> params = <String, dynamic>{};
-    params['platform'] = Channel.channeloppo;
+    params['platform'] = Channel.channelvivo;
     return requestNetwork<UpdataInfoData>(Method.get,
         url: HttpApi.updateApp,
         queryParameters: params,
