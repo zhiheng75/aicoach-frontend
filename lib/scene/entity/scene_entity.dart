@@ -1,10 +1,12 @@
 class SceneEntity {
-
   int id = 0;
   String name = '';
   String enName = '';
   String desc = '';
   String cover = '';
+  String coverImage = '';
+
+  int count = 0;
 
   SceneEntity();
 
@@ -26,6 +28,12 @@ class SceneEntity {
     if (json['detail_image'] != null) {
       entity.cover = json['detail_image'];
     }
+    if (json['cover_image'] != null) {
+      entity.coverImage = json['cover_image'];
+    }
+    if (json['i_count'] != null) {
+      entity.count = json['i_count'];
+    }
     return entity;
   }
 
@@ -36,7 +44,8 @@ class SceneEntity {
       'en_title': enName,
       'desc': desc,
       'detail_image': cover,
+      'cover_image': coverImage,
+      'i_count': count,
     };
   }
-
 }

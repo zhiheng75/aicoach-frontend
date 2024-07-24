@@ -64,57 +64,19 @@ class _ChatHomePageState extends State<ChatHomePage>
     super.initState();
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
 
-    // Future.delayed(const Duration(milliseconds: 500), () {
-    //   getCharacterList();
-    // });
+    EventBus().on(NotificationUtils.loginIn, (_) {
+      _chatPagePresenter.getCharacterList();
+    });
+    EventBus().on(NotificationUtils.loginOut, (_) {
+      _chatPagePresenter.getCharacterList();
+    });
 
-    EventBus().on(NotificationUtils.loginIn, (_) {});
-    EventBus().on(NotificationUtils.loginOut, (_) {});
+    EventBus().on(NotificationUtils.resetChat, (idx) {
+      if (idx == "2") {
+        _chatPagePresenter.getCharacterList();
+      }
+    });
   }
-
-  // void getCategoryTopicList(String characterId) async {
-  //   DioUtils.instance.requestNetwork<ResultData>(
-  //       Method.get, HttpApi.topicOrScene,
-  //       queryParameters: {'character_id': characterId, 'type': 1},
-  //       onSuccess: (result) {
-  //     if (result == null || result.data == null) {
-  //       setState(() {});
-  //       return;
-  //     }
-  //     List<dynamic> data = result.data as List<dynamic>;
-  //     List<TopicEntity> list =
-  //         data.map((item) => TopicEntity.fromJson(item)).toList();
-  //     _topicList = list;
-  //     setState(() {});
-  //   }, onError: (code, msg) {
-  //     setState(() {});
-  //   });
-  // }
-
-  // void getCategoryList(String characterId) async {
-  //   DioUtils.instance.requestNetwork<ResultData>(
-  //       Method.get, HttpApi.topicOrScene,
-  //       queryParameters: {
-  //         'character_id': characterId,
-  //         'type': 2,
-  //       }, onSuccess: (result) {
-  //     if (result == null || result.data == null) {
-  //       setState(() {});
-  //       return;
-  //     }
-  //     List<dynamic> data = result.data as List<dynamic>;
-  //     List<CategoryEntity> list =
-  //         data.map((item) => CategoryEntity.fromJson(item)).toList();
-  //     _categoryList = list;
-  //     setState(() {});
-
-  //     if (_categoryList.isNotEmpty) {
-  //       changeCategory(0);
-  //     }
-  //   }, onError: (code, msg) {
-  //     setState(() {});
-  //   });
-  // }
 
   void changeCategory(int index) {
     currentIndex = index;
@@ -131,21 +93,6 @@ class _ChatHomePageState extends State<ChatHomePage>
     //   _scrollController.jumpTo(0);
     // });
   }
-
-  // void getCharacterList() {
-  //   _chatPagePresenter.requestNetwork<ResultData>(Method.get,
-  //       url: HttpApi.characterList,
-  //       isShow: false,
-  //       isClose: false, onSuccess: (result) {
-  //     Map<String, dynamic> characterListMap = json.decode(result.toString());
-  //     CharacterListBean goodsListBean =
-  //         CharacterListBean.fromJson(characterListMap);
-  //     Log.e(goodsListBean.msg);
-  //     if (goodsListBean.code == 200) {
-
-  //     } else {}
-  //   }, onError: (code, msg) {});
-  // }
 
   Widget tabbar() {
     return Column(
@@ -462,7 +409,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                                   crossAxisSpacing: 10,
                                   //设置主轴间距
                                   mainAxisSpacing: 10,
-                                  childAspectRatio: 168 / 100
+                                  childAspectRatio: 172 / 80
                                   // mainAxisExtent: 120,
                                   ),
                           itemBuilder: (BuildContext ctx, int index) {
@@ -483,33 +430,6 @@ class _ChatHomePageState extends State<ChatHomePage>
                 ),
               ],
             ),
-
-            // child: ListView.builder(
-            //   itemCount: characterList.length,
-            //   itemBuilder: (BuildContext context, int index) {
-            //     return GestureDetector(
-            //       child: ChatHomeItem(datum: characterList[index]),
-            //       onTap: () {
-            //         // if (index == 0) {
-            // NavigatorUtils.push(
-            //   context,
-            //   "${HomeRouter.homePage}?index=$index",
-            // );
-            //         // } else {
-            //         //   showModalBottomSheet(
-            //         //     context: context,
-            //         //     backgroundColor: Colors.transparent,
-            //         //     barrierColor: Colors.transparent,
-            //         //     isScrollControlled: true,
-            //         //     isDismissible: false,
-            //         //     enableDrag: false,
-            //         //     builder: (_) => const SelectScene(),
-            //         //   );
-            //         // }
-            //       },
-            //     );
-            //   },
-            // ),
           ))),
     );
   }

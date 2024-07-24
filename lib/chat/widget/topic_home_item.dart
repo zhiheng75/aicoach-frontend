@@ -28,7 +28,7 @@ class _TopicHomeItemState extends State<TopicHomeItem> {
           ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
             child: LoadImage(
-              widget.data.cover,
+              widget.data.coverImage,
               // fit: BoxFit.fitHeight,
               width: 108.w,
               height: 140.h,
