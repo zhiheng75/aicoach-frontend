@@ -21,12 +21,8 @@ import '../../widgets/my_scroll_view.dart';
 import '../entity/wx_info_entity.dart';
 import '../login_router.dart';
 
-
-
 class LoginPage extends StatefulWidget {
-
   const LoginPage({super.key});
-
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -38,7 +34,6 @@ class _LoginPageState extends State<LoginPage>
         BasePageMixin<LoginPage, LoginPresenter>,
         AutomaticKeepAliveClientMixin<LoginPage>
     implements LoginView {
-
   late LoginPresenter _loginPresenter;
   //定义一个controller
   final TextEditingController _nameController = TextEditingController();
@@ -64,7 +59,8 @@ class _LoginPageState extends State<LoginPage>
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       /// 显示状态栏和导航栏
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+          overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
     });
     _nameController.text = SpUtil.getString(Constant.phone).nullSafe;
   }
@@ -87,12 +83,12 @@ class _LoginPageState extends State<LoginPage>
       });
     }
   }
-  
+
   void _login() {
     // SpUtil.putString(Constant.phone, _nameController.text);
     _loginPresenter.login(_nameController.text, true);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -105,7 +101,8 @@ class _LoginPageState extends State<LoginPage>
         },
       ),
       body: MyScrollView(
-        keyboardConfig: Utils.getKeyboardActionsConfig(context, <FocusNode>[_nodeText1, _nodeText2]),
+        keyboardConfig: Utils.getKeyboardActionsConfig(
+            context, <FocusNode>[_nodeText1, _nodeText2]),
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 20.0),
         children: _buildBody,
       ),
@@ -113,98 +110,92 @@ class _LoginPageState extends State<LoginPage>
   }
 
   List<Widget> get _buildBody => <Widget>[
-    Text(
-      "密码登录",
-      style: TextStyles.textBold26,
-    ),
-    Gaps.vGap16,
-    MyTextField(
-      key: const Key('phone'),
-      focusNode: _nodeText1,
-      controller: _nameController,
-      maxLength: 11,
-      keyboardType: TextInputType.phone,
-      hintText: "输入手机号",
-    ),
-    Gaps.vGap8,
-    MyTextField(
-      key: const Key('password'),
-      keyName: 'password',
-      focusNode: _nodeText2,
-      isInputPwd: true,
-      controller: _passwordController,
-      keyboardType: TextInputType.visiblePassword,
-      hintText: "输入密码",
-    ),
-    Gaps.vGap24,
-    MyButton(
-      key: const Key('login'),
-      onPressed: _clickable ? _login : null,
-      text: "登录",
-    ),
-    Container(
-      height: 40.0,
-      alignment: Alignment.centerRight,
-      child: GestureDetector(
-        child: Text(
-          "忘记密码",
-          key: const Key('forgotPassword'),
-          style: Theme.of(context).textTheme.titleSmall,
+        Text(
+          "密码登录",
+          style: TextStyles.textBold26,
         ),
-        onTap: () =>{
+        Gaps.vGap16,
+        MyTextField(
+          key: const Key('phone'),
+          focusNode: _nodeText1,
+          controller: _nameController,
+          maxLength: 11,
+          keyboardType: TextInputType.phone,
+          hintText: "输入手机号",
+        ),
+        Gaps.vGap8,
+        MyTextField(
+          key: const Key('password'),
+          keyName: 'password',
+          focusNode: _nodeText2,
+          isInputPwd: true,
+          controller: _passwordController,
+          keyboardType: TextInputType.visiblePassword,
+          hintText: "输入密码",
+        ),
+        Gaps.vGap24,
+        MyButton(
+          key: const Key('login'),
+          onPressed: _clickable ? _login : null,
+          text: "登录",
+        ),
+        Container(
+          height: 40.0,
+          alignment: Alignment.centerRight,
+          child: GestureDetector(
+              child: Text(
+                "忘记密码",
+                key: const Key('forgotPassword'),
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              onTap: () => {}),
+        ),
+        Gaps.vGap16,
+        Container(
+          alignment: Alignment.center,
+          child: GestureDetector(
+              child: Text(
+                "注册",
+                key: const Key('noAccountRegister'),
+                style: TextStyle(color: Theme.of(context).primaryColor),
+              ),
+              onTap: () =>
+                  {NavigatorUtils.push(context, LoginRouter.registerPage)}),
+        ),
+        Gaps.vGap24,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: () {
+                // Toast.show("微信登录");
+                FlutterToNative.jumpToWechatLogin().then((value) => {
+                      _wechatCode = value,
+                      // Log.e("===========>$_wechatCode"),
 
-  }
-      ),
-    ),
-    Gaps.vGap16,
-    Container(
-      alignment: Alignment.center,
-      child: GestureDetector(
-        child: Text(
-          "注册",
-          key: const Key('noAccountRegister'),
-          style: TextStyle(
-            color: Theme.of(context).primaryColor
-          ),
-        ),
-        onTap: () => {
-        NavigatorUtils.push(context, LoginRouter.registerPage)
-  }),
-      ),
-    Gaps.vGap24,
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        GestureDetector(
-          onTap: (){
-            // Toast.show("微信登录");
-            FlutterToNative.jumpToWechatLogin().then((value) => {
-              _wechatCode = value,
-              // Log.e("===========>$_wechatCode"),
-
-              _loginPresenter.getWxInfo(value)
-            });
-          },
-          child: const Text("微信登录"),
-        ),
-        Gaps.hGap32,
-        GestureDetector(
-          onTap: (){
-            Toast.show("QQ登录");
-          },
-          child: const Text("QQ登录"),
-        ),
-        GestureDetector(
-          onTap: (){
-            // FlutterToNative.jumpToKeyLogin().then((value)=>{
-            //
-            // });
-          },
-          child: const Text("一键登录"),
+                      _loginPresenter.getWxInfo(value)
+                    });
+              },
+              child: const Text("微信登录"),
+            ),
+            Gaps.hGap32,
+            GestureDetector(
+              onTap: () {
+                Toast.show("QQ登录");
+              },
+              child: const Text("QQ登录"),
+            ),
+            GestureDetector(
+              onTap: () {
+                // FlutterToNative.jumpToKeyLogin().then((value)=>{
+                //
+                // });
+              },
+              child: const Text("一键登录"),
+            )
+          ],
         )
-      ],
-    )
-  ];
+      ];
 
   @override
   LoginPresenter createPresenter() {
@@ -222,7 +213,8 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   void wechatSuccess(WxInfoDataData entity) {
-    NavigatorUtils.push(context, LoginRouter.changeBindPhonePage,arguments:entity);
+    NavigatorUtils.push(context, LoginRouter.changeBindPhonePage,
+        arguments: entity);
   }
 
   @override
@@ -232,6 +224,6 @@ class _LoginPageState extends State<LoginPage>
     // SpUtil.getObj(Constant.userInfoKey, (v) => {
     //   print(v),
     // });
-    NavigatorUtils.push(context, HomeRouter.homePage,clearStack: true);
+    // NavigatorUtils.push(context, HomeRouter.homePage,clearStack: true);
   }
 }

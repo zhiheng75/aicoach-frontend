@@ -25,11 +25,14 @@ class _TopicHomeItemState extends State<TopicHomeItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          LoadImage(
-            widget.data.cover,
-            // fit: BoxFit.fitHeight,
-            width: 108.w,
-            height: 140.h,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child: LoadImage(
+              widget.data.cover,
+              // fit: BoxFit.fitHeight,
+              width: 108.w,
+              height: 140.h,
+            ),
           ),
           Gaps.vGap4,
           Text(widget.data.title,
@@ -48,7 +51,7 @@ class _TopicHomeItemState extends State<TopicHomeItem> {
               ),
               Gaps.hGap2,
               Text(
-                "1000次对话",
+                "${widget.data.count}次对话",
                 style: TextStyle(
                   fontSize: 10.0.sp,
                   fontWeight: FontWeight.w400,

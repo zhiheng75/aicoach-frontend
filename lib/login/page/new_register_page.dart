@@ -509,7 +509,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
     // SpUtil.getObj(Constant.userInfoKey, (v) => {
     //   print(v),
     // });
-    NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
+    // NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
   }
 
   @override
@@ -539,7 +539,7 @@ class _NewRegisterPageState extends State<NewRegisterPage>
       // Constant.jverify.dismissLoginAuthView();
       hideLoading();
     }
-    NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
+    // NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
 
     // NavigatorUtils.push(context, PersonalRouter.person, replace: true);
   }

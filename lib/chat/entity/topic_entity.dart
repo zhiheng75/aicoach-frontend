@@ -1,9 +1,9 @@
 class TopicEntity {
-
   int id = 0;
   String title = '';
   String cover = '';
   String desc = '';
+  int count = 0;
 
   TopicEntity();
 
@@ -22,6 +22,9 @@ class TopicEntity {
     if (json['desc'] != null) {
       entity.desc = json['desc'];
     }
+    if (json['i_count'] != null) {
+      entity.count = json['i_count'];
+    }
     return entity;
   }
 
@@ -31,7 +34,7 @@ class TopicEntity {
       'title': title,
       'detail_image': cover,
       'desc': desc,
+      'i_count': count,
     };
   }
-
 }

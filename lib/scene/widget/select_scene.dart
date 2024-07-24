@@ -165,20 +165,18 @@ class _SelectSceneState extends State<SelectScene> {
 
         return;
       }
-      _homeProvider.sceneStreamController.add(
-          {'type': 'scene', 'data': scene.toJson(), "page": widget.homePage});
+      // _homeProvider.sceneStreamController.add(
+      //     {'type': 'scene', 'data': scene.toJson(), "page": widget.homePage});
 
       _homeProvider.resetChatParams();
 
       // SceneEntity scene1 = SceneEntity.fromJson(value['data']);
       _homeProvider.scene = scene;
       // ScenePage(onEnd: () {  },);
-      // NavigatorUtils.push(
-      //   context,
-      //   HomeRouter.scenePage,
-      // );
-      // scenePage
-      //homePage
+      NavigatorUtils.push(
+        context,
+        HomeRouter.scenePage,
+      );
     });
   }
 

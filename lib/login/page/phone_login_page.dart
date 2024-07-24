@@ -318,7 +318,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage>
     // SpUtil.getObj(Constant.userInfoKey, (v) => {
     //   print(v),
     // });
-    NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
+    // NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
   }
 
   @override

@@ -184,7 +184,9 @@ class _TopicState extends State<TopicPage>
         buttonDirection: 'vertical',
         confirmButtonText: '结束对话',
         cancelButtonText: '留在对话中',
-        onConfirm: () {
+        onConfirm: () async {
+          await _mediaUtils.stopPlay();
+          // ignore: use_build_context_synchronously
           Navigator.of(context).pop();
           widget.onEnd();
         },
@@ -324,28 +326,30 @@ class _TopicState extends State<TopicPage>
           child: inner,
         );
 
-        return Stack(
-          children: [
-            background,
-            Positioned(
-              top: _screenUtil.statusBarHeight + 9.0,
-              child: navbar,
-            ),
-            Positioned(
-              top: contentTop,
-              left: 0,
-              child: content,
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              child: ValueListenableBuilder(
-                valueListenable: _bottomBarControll.showRecord,
-                builder: (_, show, __) =>
-                    Record(show: show, controller: _recordController),
+        return Scaffold(
+          body: Stack(
+            children: [
+              background,
+              Positioned(
+                top: _screenUtil.statusBarHeight + 9.0,
+                child: navbar,
               ),
-            ),
-          ],
+              Positioned(
+                top: contentTop,
+                left: 0,
+                child: content,
+              ),
+              Positioned(
+                top: 0,
+                left: 0,
+                child: ValueListenableBuilder(
+                  valueListenable: _bottomBarControll.showRecord,
+                  builder: (_, show, __) =>
+                      Record(show: show, controller: _recordController),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

@@ -208,11 +208,15 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           itemBuilder: (c, i) {
             return GestureDetector(
               onTap: () {
+                NavigatorUtils.push(
+                  context,
+                  "${HomeRouter.homePage}?characterId=${characterList[i].characterId}",
+                );
                 SpUtil.putString(
                     Constant.avatarId, characterList[i].characterId);
 
-                EventBus().emit(
-                    NotificationUtils.taberThree, characterList[i].characterId);
+                // EventBus().emit(
+                //     NotificationUtils.taberThree, characterList[i].characterId);
 
                 String str = characterList[i].characterId;
                 if (str == "eggy") {

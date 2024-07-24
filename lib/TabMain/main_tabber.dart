@@ -71,12 +71,12 @@ class _MainTabberState extends State<MainTabber> {
       });
     });
 
-    EventBus().on(NotificationUtils.taberThree, (_) {
-      setState(() {
-        currentIndex = 2;
-        _controller!.index = 2;
-      });
-    });
+    // EventBus().on(NotificationUtils.taberThree, (_) {
+    //   setState(() {
+    //     currentIndex = 2;
+    //     _controller!.index = 2;
+    //   });
+    // });
 
     EventBus().on(NotificationUtils.taberTwo, (_) {
       setState(() {
@@ -89,7 +89,7 @@ class _MainTabberState extends State<MainTabber> {
   @override
   void dispose() {
     EventBus().off(NotificationUtils.loginOut);
-    EventBus().off(NotificationUtils.taberThree);
+    // EventBus().off(NotificationUtils.taberThree);
     EventBus().off(NotificationUtils.taberTwo);
 
     super.dispose();

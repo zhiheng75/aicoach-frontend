@@ -263,8 +263,6 @@ class _CheckCodePageState extends State<CheckCodePage>
                           child: GestureDetector(
                             onTap: () {
                               if (canResend) {
-                                resendCode();
-                                // RegisterPresenter.disHttpKeySendSms();
                                 _registerPresenter.sendSms(
                                     widget.phoneNumber, true);
                               }
@@ -372,6 +370,7 @@ class _CheckCodePageState extends State<CheckCodePage>
   @override
   void sendSmsSuccess() {
     // TODO: implement sendSmsSuccess
+    resendCode();
   }
 
   @override
@@ -617,8 +616,6 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
                         child: GestureDetector(
                           onTap: () {
                             if (canResend) {
-                              resendCode();
-                              // RegisterPresenter.disHttpKeySendSms();
                               _registerPresenter.sendSms(
                                   widget.phoneNumber, true);
                             }
@@ -719,6 +716,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   @override
   void sendSmsSuccess() {
     // TODO: implement sendSmsSuccess
+    resendCode();
   }
 
   @override

@@ -1,3 +1,5 @@
+import 'package:Bubble/chat/entity/character_list_bean.dart';
+import 'package:Bubble/scene/entity/category_entity.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
@@ -31,8 +33,8 @@ import 'widget/message_list.dart';
 import 'widget/record.dart';
 
 class ChatPage extends StatefulWidget {
-  final int index;
-  const ChatPage({Key? key, required this.index}) : super(key: key);
+  final String characterId;
+  const ChatPage({Key? key, required this.characterId}) : super(key: key);
 
   // const ChatPage({Key? key}) : super(key: key);
 
@@ -153,17 +155,11 @@ class _ChatState extends State<ChatPage>
       if (mounted) {
         setState(() {});
       }
-      Future.delayed(const Duration(milliseconds: 300), () {
-        if (cherid == "") {
-          confirmChangeCharacter(widget.index);
-        } else {
-          for (int i = 0; i < _characterList.length; i++) {
-            if (cherid == _characterList[i].characterId) {
-              confirmChangeCharacter(i);
-            }
-          }
+      for (int i = 0; i < _characterList.length; i++) {
+        if (widget.characterId == _characterList[i].characterId) {
+          confirmChangeCharacter(i);
         }
-      });
+      }
     }, onError: (code, msg) {
       Log.d('获取角色列表失败:[error]$msg', tag: '[Function]getCharacterList');
       _pageState = 'fail';
@@ -312,43 +308,47 @@ class _ChatState extends State<ChatPage>
   @override
   void initState() {
     super.initState();
-    // init();
 
-    EventBus().on(NotificationUtils.resetChat, (idx) {
-      if (idx != "2") {
-        _chatWebsocket.endChat(true);
-      }
-      setState(() {
-        isNew = idx;
-      });
-      if (idx == "2") {
-        init();
-      }
-    });
-    EventBus().on(NotificationUtils.loginIn, (_) {
-      if (isNew == "2") {
-        init();
-      }
-    });
-    EventBus().on(NotificationUtils.loginOut, (_) {
-      if (isNew == "2") {
-        init();
-      }
-    });
+    // EventBus().on(NotificationUtils.resetChat, (idx) {
+    //   if (idx != "2") {
+    //     _chatWebsocket.endChat(true);
+    //   }
+    //   setState(() {
+    //     isNew = idx;
+    //   });
+    //   if (idx == "2") {
+    //     init();
+    //   }
+    // });
+    // EventBus().on(NotificationUtils.loginIn, (_) {
+    //   if (isNew == "2") {
+    //     init();
+    //   }
+    // });
+    // EventBus().on(NotificationUtils.loginOut, (_) {
+    //   if (isNew == "2") {
+    //     init();
+    //   }
+    // });
 
     EventBus().on(NotificationUtils.taberThree, (idx) {
-      cherid = idx;
-      init();
+      setState(() {
+        cherid = idx;
+      });
+      // init();
     });
 
-    EventBus().on(NotificationUtils.resetChatTwo, (_) {
-      init();
-    });
+    // EventBus().on(NotificationUtils.resetChatTwo, (_) {
+    //   init();
+    // });
 
     // EventBus().on('LEAVECHATPAGE', (_) async {
     //   await _mediaUtils.stopPlay();
     //   _bottomBarControll.setDisabled(false);
     // });
+
+    init();
+
     EventUMStatistics.umengCommonOnPageStart("chat_page");
     EventBus().on(NotificationUtils.messageEnd, (idx) {
       _listScrollController.scrollToEnd();
@@ -491,10 +491,10 @@ class _ChatState extends State<ChatPage>
               );
             },
           ),
-          // Positioned(
-          //   top: 50,
-          //   child: navbar,
-          // ),
+          Positioned(
+            top: 50,
+            child: navbar,
+          ),
           Positioned(
             top: 103.0,
             left: 16.0,
@@ -617,4 +617,19 @@ class _ChatState extends State<ChatPage>
 
   @override
   bool get wantKeepAlive => false;
+
+  @override
+  void sendCategoryEntitySuccess(List<CategoryEntity> list) {
+    // TODO: implement sendCategoryEntitySuccess
+  }
+
+  @override
+  void sendSuccess(CharacterListBean data) {
+    // TODO: implement sendSuccess
+  }
+
+  @override
+  void sendTopicEntitySuccess(List<TopicEntity> list) {
+    // TODO: implement sendTopicEntitySuccess
+  }
 }

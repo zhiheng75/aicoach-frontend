@@ -22,8 +22,10 @@ import 'package:Bubble/scene/entity/category_entity.dart';
 import 'package:Bubble/scene/entity/scene_entity.dart';
 import 'package:Bubble/scene/widget/select_scene.dart';
 import 'package:Bubble/util/device_utils.dart';
+import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,54 +64,57 @@ class _ChatHomePageState extends State<ChatHomePage>
     super.initState();
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
 
-    Future.delayed(const Duration(milliseconds: 500), () {
-      getCharacterList();
-    });
+    // Future.delayed(const Duration(milliseconds: 500), () {
+    //   getCharacterList();
+    // });
+
+    EventBus().on(NotificationUtils.loginIn, (_) {});
+    EventBus().on(NotificationUtils.loginOut, (_) {});
   }
 
-  void getCategoryTopicList(String characterId) async {
-    DioUtils.instance.requestNetwork<ResultData>(
-        Method.get, HttpApi.topicOrScene,
-        queryParameters: {'character_id': characterId, 'type': 1},
-        onSuccess: (result) {
-      if (result == null || result.data == null) {
-        setState(() {});
-        return;
-      }
-      List<dynamic> data = result.data as List<dynamic>;
-      List<TopicEntity> list =
-          data.map((item) => TopicEntity.fromJson(item)).toList();
-      _topicList = list;
-      setState(() {});
-    }, onError: (code, msg) {
-      setState(() {});
-    });
-  }
+  // void getCategoryTopicList(String characterId) async {
+  //   DioUtils.instance.requestNetwork<ResultData>(
+  //       Method.get, HttpApi.topicOrScene,
+  //       queryParameters: {'character_id': characterId, 'type': 1},
+  //       onSuccess: (result) {
+  //     if (result == null || result.data == null) {
+  //       setState(() {});
+  //       return;
+  //     }
+  //     List<dynamic> data = result.data as List<dynamic>;
+  //     List<TopicEntity> list =
+  //         data.map((item) => TopicEntity.fromJson(item)).toList();
+  //     _topicList = list;
+  //     setState(() {});
+  //   }, onError: (code, msg) {
+  //     setState(() {});
+  //   });
+  // }
 
-  void getCategoryList(String characterId) async {
-    DioUtils.instance.requestNetwork<ResultData>(
-        Method.get, HttpApi.topicOrScene,
-        queryParameters: {
-          'character_id': characterId,
-          'type': 2,
-        }, onSuccess: (result) {
-      if (result == null || result.data == null) {
-        setState(() {});
-        return;
-      }
-      List<dynamic> data = result.data as List<dynamic>;
-      List<CategoryEntity> list =
-          data.map((item) => CategoryEntity.fromJson(item)).toList();
-      _categoryList = list;
-      setState(() {});
+  // void getCategoryList(String characterId) async {
+  //   DioUtils.instance.requestNetwork<ResultData>(
+  //       Method.get, HttpApi.topicOrScene,
+  //       queryParameters: {
+  //         'character_id': characterId,
+  //         'type': 2,
+  //       }, onSuccess: (result) {
+  //     if (result == null || result.data == null) {
+  //       setState(() {});
+  //       return;
+  //     }
+  //     List<dynamic> data = result.data as List<dynamic>;
+  //     List<CategoryEntity> list =
+  //         data.map((item) => CategoryEntity.fromJson(item)).toList();
+  //     _categoryList = list;
+  //     setState(() {});
 
-      if (_categoryList.isNotEmpty) {
-        changeCategory(0);
-      }
-    }, onError: (code, msg) {
-      setState(() {});
-    });
-  }
+  //     if (_categoryList.isNotEmpty) {
+  //       changeCategory(0);
+  //     }
+  //   }, onError: (code, msg) {
+  //     setState(() {});
+  //   });
+  // }
 
   void changeCategory(int index) {
     currentIndex = index;
@@ -127,26 +132,20 @@ class _ChatHomePageState extends State<ChatHomePage>
     // });
   }
 
-  void getCharacterList() {
-    _chatPagePresenter.requestNetwork<ResultData>(Method.get,
-        url: HttpApi.characterList,
-        isShow: false,
-        isClose: false, onSuccess: (result) {
-      Map<String, dynamic> characterListMap = json.decode(result.toString());
-      CharacterListBean goodsListBean =
-          CharacterListBean.fromJson(characterListMap);
-      Log.e(goodsListBean.msg);
-      if (goodsListBean.code == 200) {
-        characterList.addAll(goodsListBean.data);
-        String characterId = characterList[0].characterId;
-        _homeProvider.character.characterId = characterId;
-        _homeProvider.character.imageUrl = characterList[0].imageUrl;
-        getCategoryList(characterId);
-        getCategoryTopicList(characterId);
-        setState(() {});
-      } else {}
-    }, onError: (code, msg) {});
-  }
+  // void getCharacterList() {
+  //   _chatPagePresenter.requestNetwork<ResultData>(Method.get,
+  //       url: HttpApi.characterList,
+  //       isShow: false,
+  //       isClose: false, onSuccess: (result) {
+  //     Map<String, dynamic> characterListMap = json.decode(result.toString());
+  //     CharacterListBean goodsListBean =
+  //         CharacterListBean.fromJson(characterListMap);
+  //     Log.e(goodsListBean.msg);
+  //     if (goodsListBean.code == 200) {
+
+  //     } else {}
+  //   }, onError: (code, msg) {});
+  // }
 
   Widget tabbar() {
     return Column(
@@ -237,7 +236,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                       peopleIndex = value;
                       String characterId =
                           characterList[peopleIndex].characterId;
-                      getCategoryTopicList(characterId);
+                      _chatPagePresenter.getCategoryTopicList(characterId);
                     },
                     // duration: 10,
                     // pagination: SwiperPagination(
@@ -310,9 +309,17 @@ class _ChatHomePageState extends State<ChatHomePage>
                         "maohao_right",
                         width: 21.w,
                       ),
-                      LoadAssetImage(
-                        "chat_btn",
-                        width: 100.w,
+                      GestureDetector(
+                        onTap: () {
+                          NavigatorUtils.push(
+                            context,
+                            "${HomeRouter.homePage}?characterId=${characterList[peopleIndex].characterId}",
+                          );
+                        },
+                        child: LoadAssetImage(
+                          "chat_btn",
+                          width: 100.w,
+                        ),
                       )
                     ],
                   )),
@@ -408,8 +415,24 @@ class _ChatHomePageState extends State<ChatHomePage>
                                   scrollDirection: Axis.horizontal,
                                   itemCount: _topicList.length,
                                   itemBuilder: (context, index) {
-                                    return TopicHomeItem(
-                                        data: _topicList[index]);
+                                    return GestureDetector(
+                                      onTap: () {
+                                        TopicEntity topic = _topicList[index];
+                                        _homeProvider.resetChatParams();
+                                        _homeProvider.topic = topic;
+                                        _homeProvider.character.characterId =
+                                            characterList[peopleIndex]
+                                                .characterId;
+                                        _homeProvider.character.imageUrl =
+                                            characterList[peopleIndex].imageUrl;
+                                        NavigatorUtils.push(
+                                          context,
+                                          HomeRouter.topicPage,
+                                        );
+                                      },
+                                      child: TopicHomeItem(
+                                          data: _topicList[index]),
+                                    );
                                   },
                                 ),
                               ),
@@ -445,27 +468,13 @@ class _ChatHomePageState extends State<ChatHomePage>
                           itemBuilder: (BuildContext ctx, int index) {
                             return GestureDetector(
                                 onTap: () {
-                                  // showDialog(
-                                  //   context: context,
-                                  //   barrierColor: Colors.transparent,
-                                  //   barrierDismissible: false,
-                                  //   useSafeArea: false,
-                                  //   builder: (_) => SelectScene(
-                                  //       cagegoryId: sceneList[index].cagegoryId,
-                                  //       homePage: "1"),
-                                  // );
-
-                                  // showModalBottomSheet(
-                                  //   context: context,
-                                  //   backgroundColor: Colors.transparent,
-                                  //   barrierColor: Colors.transparent,
-                                  //   isScrollControlled: true,
-                                  //   isDismissible: false,
-                                  //   enableDrag: false,
-                                  //   builder: (_) => SelectScene(
-                                  //       cagegoryId: sceneList[index].cagegoryId,
-                                  //       homePage: "1"),
-                                  // );
+                                  SceneEntity scene = sceneList[index];
+                                  _homeProvider.resetChatParams();
+                                  _homeProvider.scene = scene;
+                                  NavigatorUtils.push(
+                                    context,
+                                    HomeRouter.scenePage,
+                                  );
                                 },
                                 child: ChatHomeTwoItem(data: sceneList[index]));
                           })
@@ -482,10 +491,10 @@ class _ChatHomePageState extends State<ChatHomePage>
             //       child: ChatHomeItem(datum: characterList[index]),
             //       onTap: () {
             //         // if (index == 0) {
-            //         NavigatorUtils.push(
-            //           context,
-            //           "${HomeRouter.homePage}?index=$index",
-            //         );
+            // NavigatorUtils.push(
+            //   context,
+            //   "${HomeRouter.homePage}?index=$index",
+            // );
             //         // } else {
             //         //   showModalBottomSheet(
             //         //     context: context,
@@ -513,6 +522,36 @@ class _ChatHomePageState extends State<ChatHomePage>
 
   @override
   bool get wantKeepAlive => false;
+
+  @override
+  void sendSuccess(CharacterListBean data) {
+    // TODO: implement sendSuccess
+    characterList.addAll(data.data);
+    String characterId = characterList[0].characterId;
+    _homeProvider.character.characterId = characterId;
+    _homeProvider.character.imageUrl = characterList[0].imageUrl;
+    // getCategoryList(characterId);
+    // getCategoryTopicList(characterId);
+    setState(() {});
+  }
+
+  @override
+  void sendCategoryEntitySuccess(List<CategoryEntity> list) {
+    // TODO: implement sendCategoryEntitySuccess
+    _categoryList = list;
+    setState(() {});
+
+    if (_categoryList.isNotEmpty) {
+      changeCategory(0);
+    }
+  }
+
+  @override
+  void sendTopicEntitySuccess(List<TopicEntity> list) {
+    // TODO: implement sendTopicEntitySuccess
+    _topicList = list;
+    setState(() {});
+  }
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {

@@ -185,7 +185,9 @@ class _SceneState extends State<ScenePage>
         buttonDirection: 'vertical',
         confirmButtonText: '结束对话',
         cancelButtonText: '留在对话中',
-        onConfirm: () {
+        onConfirm: () async {
+          await _mediaUtils.stopPlay();
+          // ignore: use_build_context_synchronously
           Navigator.of(context).pop();
           widget.onEnd();
         },
