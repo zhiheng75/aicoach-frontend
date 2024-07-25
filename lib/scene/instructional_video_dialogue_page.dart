@@ -68,11 +68,11 @@ class InstructionalVideoDialoguePage extends StatefulWidget {
 
   const InstructionalVideoDialoguePage({
     super.key,
-    required this.onEnd,
+    // required this.onEnd,
     required this.stepDetailData,
     required this.idx,
   });
-  final Function() onEnd;
+  // final Function() onEnd;
 
   @override
   State<InstructionalVideoDialoguePage> createState() =>
@@ -152,6 +152,8 @@ class _InstructionalVideoDialoguePageState
   late String sessionId;
   late StreamSubscription<ConnectivityResult> subscription;
   bool isUserOpen = false;
+
+  late bool isback = false;
 
   Widget lodingView() {
     return const Center(
@@ -248,6 +250,7 @@ class _InstructionalVideoDialoguePageState
   }
 
   void endSocket() async {
+    await _mediaUtils.stopPlay();
     await _chatWebsocket.endChat(true);
   }
 
@@ -319,8 +322,10 @@ class _InstructionalVideoDialoguePageState
   }
 
   void onWebsocketEnd(String? reason, String endType) {
+    if (isback) {
+      return;
+    }
     _homeProvider.endUsageTimeCutdown();
-
     // 正常结束
     if (reason == 'Session End' && endType != 'force') {
       // insertTipMessage('Class finished！');
@@ -359,9 +364,9 @@ class _InstructionalVideoDialoguePageState
         forstartFlow(newDataIdx, resourceIdx);
       },
       onCancel: () {
-        endSocket();
-        Navigator.of(context).pop();
-        widget.onEnd();
+        // endSocket();
+        NavigatorUtils.goBack(context);
+        // widget.onEnd();
       },
       child: Text(
         message,
@@ -384,9 +389,10 @@ class _InstructionalVideoDialoguePageState
         confirmButtonText: '结束对话',
         cancelButtonText: '留在对话中',
         onConfirm: () {
-          endSocket();
-          Navigator.of(context).pop();
-          widget.onEnd();
+          // endSocket();
+          NavigatorUtils.goBack(context);
+
+          // widget.onEnd();
         },
         onCancel: () {
           //留在对话还是退出
@@ -403,8 +409,8 @@ class _InstructionalVideoDialoguePageState
       );
       return;
     }
-    Navigator.of(context).pop();
-    widget.onEnd();
+    NavigatorUtils.goBack(context);
+    // widget.onEnd();
   }
 
   void creatResetStatus() async {
@@ -668,7 +674,7 @@ class _InstructionalVideoDialoguePageState
         // showImageDialog();
       } else {
         //退出界面
-        Navigator.of(context).pop();
+        NavigatorUtils.goBack(context);
       }
     }
   }
@@ -867,8 +873,10 @@ class _InstructionalVideoDialoguePageState
   bool isPlaybackLoopEnabled = false;
   @override
   void dispose() {
+    setState(() {
+      isback = true;
+    });
     Wakelock.disable();
-    _mediaUtils.stopPlay();
     endSocket();
     subscription.cancel();
 

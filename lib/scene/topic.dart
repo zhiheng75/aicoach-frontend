@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -185,9 +186,7 @@ class _TopicState extends State<TopicPage>
         confirmButtonText: '结束对话',
         cancelButtonText: '留在对话中',
         onConfirm: () async {
-          await _mediaUtils.stopPlay();
-          // ignore: use_build_context_synchronously
-          Navigator.of(context).pop();
+          NavigatorUtils.goBack(context);
           widget.onEnd();
         },
         onCancel: () {},
@@ -205,6 +204,18 @@ class _TopicState extends State<TopicPage>
     }
     Navigator.of(context).pop();
     widget.onEnd();
+  }
+
+  void endSocket() async {
+    await _mediaUtils.stopPlay();
+    await _chatWebsocket.endChat(true);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    endSocket();
   }
 
   @override

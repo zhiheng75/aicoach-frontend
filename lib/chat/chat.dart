@@ -1,4 +1,5 @@
 import 'package:Bubble/chat/entity/character_list_bean.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/scene/entity/category_entity.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/notification_utils.dart';
@@ -355,6 +356,12 @@ class _ChatState extends State<ChatPage>
     });
   }
 
+  endSocket() async {
+    await _mediaUtils.stopPlay();
+    await _chatWebsocket.endChat(true);
+    _homeProvider.resetChatParams();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -396,11 +403,8 @@ class _ChatState extends State<ChatPage>
         confirmButtonText: '结束对话',
         cancelButtonText: '留在对话中',
         onConfirm: () async {
-          await _mediaUtils.stopPlay();
-          await _chatWebsocket.endChat(true);
-          _homeProvider.resetChatParams();
-          // ignore: use_build_context_synchronously
-          Navigator.of(context).pop();
+          NavigatorUtils.goBack(context);
+
           // widget.onEnd();
         },
         onCancel: () {},
@@ -447,28 +451,28 @@ class _ChatState extends State<ChatPage>
           position: details.globalPosition,
         );
       },
-      onHorizontalDragUpdate: (details) {
-        if (_isCharacterChanging) {
-          return;
-        }
-        _backgroundController.slideMove(details.globalPosition);
-      },
-      onHorizontalDragEnd: (_) {
-        if (_isCharacterChanging) {
-          return;
-        }
-        _backgroundController.slideEnd((direction) {
-          bool isSlideLeft = direction == 'left';
-          int index = isSlideLeft ? _characterIndex + 1 : _characterIndex - 1;
-          if (index < 0) {
-            index = _characterList.length + index;
-          }
-          if (index == _characterList.length) {
-            index = 0;
-          }
-          changeCharacter(index);
-        });
-      },
+      // onHorizontalDragUpdate: (details) {
+      //   if (_isCharacterChanging) {
+      //     return;
+      //   }
+      //   _backgroundController.slideMove(details.globalPosition);
+      // },
+      // onHorizontalDragEnd: (_) {
+      //   if (_isCharacterChanging) {
+      //     return;
+      //   }
+      //   _backgroundController.slideEnd((direction) {
+      //     bool isSlideLeft = direction == 'left';
+      //     int index = isSlideLeft ? _characterIndex + 1 : _characterIndex - 1;
+      //     if (index < 0) {
+      //       index = _characterList.length + index;
+      //     }
+      //     if (index == _characterList.length) {
+      //       index = 0;
+      //     }
+      //     changeCharacter(index);
+      //   });
+      // },
       child: Stack(
         children: <Widget>[
           Background(controller: _backgroundController),
@@ -596,6 +600,7 @@ class _ChatState extends State<ChatPage>
   @override
   void dispose() {
     // EventBus().off('LEAVECHATPAGE');
+    endSocket();
     EventBus().off(NotificationUtils.resetChat);
     EventBus().off(NotificationUtils.resetChatTwo);
     EventBus().off(NotificationUtils.messageEnd);

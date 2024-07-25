@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/confirm_utils.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/widgets/load_image.dart';
@@ -186,9 +187,8 @@ class _SceneState extends State<ScenePage>
         confirmButtonText: '结束对话',
         cancelButtonText: '留在对话中',
         onConfirm: () async {
-          await _mediaUtils.stopPlay();
-          // ignore: use_build_context_synchronously
-          Navigator.of(context).pop();
+          NavigatorUtils.goBack(context);
+
           widget.onEnd();
         },
         onCancel: () {},
@@ -219,10 +219,16 @@ class _SceneState extends State<ScenePage>
     EventUMStatistics.umengCommonOnPageStart("scene_page");
   }
 
+  void endSocket() async {
+    await _mediaUtils.stopPlay();
+    await _chatWebsocket.endChat(true);
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    endSocket();
     EventUMStatistics.umengCommonOnPageEnd("scene_page");
   }
 

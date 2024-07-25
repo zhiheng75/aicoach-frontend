@@ -93,7 +93,7 @@ class HomeRouter implements IRouterProvider {
       return InstructionalVideoDialoguePage(
         stepDetailData: data,
         idx: idx,
-        onEnd: () {},
+        // onEnd: () {},
       );
     }));
 
