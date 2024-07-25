@@ -873,9 +873,7 @@ class _InstructionalVideoDialoguePageState
   bool isPlaybackLoopEnabled = false;
   @override
   void dispose() {
-    setState(() {
-      isback = true;
-    });
+    isback = true;
     Wakelock.disable();
     endSocket();
     subscription.cancel();
