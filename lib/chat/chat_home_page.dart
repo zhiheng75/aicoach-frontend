@@ -72,7 +72,7 @@ class _ChatHomePageState extends State<ChatHomePage>
     });
 
     EventBus().on(NotificationUtils.resetChat, (idx) {
-      if (idx == "2") {
+      if (idx == "1") {
         _chatPagePresenter.getCharacterList();
       }
     });

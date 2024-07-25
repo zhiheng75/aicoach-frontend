@@ -144,7 +144,7 @@ class _CourseHomePageState extends State<CourseHomePage>
     });
 
     EventBus().on(NotificationUtils.resetChat, (idx) {
-      if (idx == "1") {
+      if (idx == "2") {
         _courseHomePagePresenter.getLessonList();
       }
     });

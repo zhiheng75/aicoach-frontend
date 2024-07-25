@@ -392,6 +392,10 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   }
 
   Future<bool> requestPermission() async {
+    bool phoneSate = await Permission.phone.isDenied;
+    if (phoneSate) {
+      Toast.show("获取通话状态使用说明:用于对话过程中按住说话状态", duration: 5000);
+    }
     var status = await Permission.phone.request();
 
     return switch (status) {
