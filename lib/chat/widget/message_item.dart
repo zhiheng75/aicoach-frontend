@@ -558,6 +558,27 @@ class _MessageItemState extends State<MessageItem> {
           // Log.e('===============Tag: $tag, Content: $content');
           if (tag == "image") {
             //去出来图片content
+            // coverUrl = content!;
+            // return GestureDetector(
+            //   behavior: HitTestBehavior.opaque,
+            //   onTap: () {
+            //     showDialog(
+            //       context: context,
+            //       barrierColor: Colors.transparent,
+            //       barrierDismissible: false,
+            //       useSafeArea: false,
+            //       builder: (_) => PhotoViewSimpleScreen(
+            //         imageProvider: NetworkImage(coverUrl),
+            //       ),
+            //     );
+            //   },
+            //   child: LoadImage(
+            //     coverUrl,
+            //   ),
+            // );
+          }
+          if (tag == "word") {
+            //取出来文字content
             coverUrl = content!;
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
@@ -568,17 +589,15 @@ class _MessageItemState extends State<MessageItem> {
                   barrierDismissible: false,
                   useSafeArea: false,
                   builder: (_) => PhotoViewSimpleScreen(
-                    imageProvider: NetworkImage(coverUrl),
+                    imageProvider: NetworkImage(
+                        "https://statics.shenmo-ai.com/courses/word_img/$coverUrl.jpg"),
                   ),
                 );
               },
               child: LoadImage(
-                coverUrl,
+                "https://statics.shenmo-ai.com/courses/word_img/$coverUrl.jpg",
               ),
             );
-          }
-          if (tag == "word") {
-            //取出来文字content
           }
           String reStr = "<$tag>$content</$tag>";
           String replacedString = one.replaceAll(reStr, "");

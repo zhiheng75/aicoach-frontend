@@ -45,7 +45,7 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
   bool finished = false;
   final MediaUtils _mediaUtils = MediaUtils();
   List<Uint8List> _bufferList = [];
-  final RecognizeUtil _recognizeUtil = RecognizeUtil();
+  RecognizeUtil _recognizeUtil = RecognizeUtil();
   // bool isInSendButton = true;
   late bool isTalk = false;
 
@@ -65,11 +65,8 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
           onPageFinished: (url) {
             finished = true;
             double top = MediaQuery.of(context).padding.top;
-            _controller
-                .runJavaScriptReturningResult('callJStop($top)')
-                .then((result) {
-              print('----js回调----$result');
-            });
+            // _controller.runJavaScriptReturningResult('callJStop($top)');
+            _controller.runJavaScript('callJStop($top)');
             setState(() {});
           },
           onProgress: (int progress) {
@@ -172,6 +169,8 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
         return;
       }
+      _recognizeUtil = RecognizeUtil();
+      _recognizeUtil.setLanguage('en');
       // 开始录音
       _bufferList = [];
       _mediaUtils.startRecord(onData: (buffer) {
@@ -189,10 +188,6 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
           if (result['success'] == false) {
             isTalk = false;
             await _mediaUtils.stopRecord();
-            // Toast.show(
-            //   result['message'],
-            //   duration: 1000,
-            // );
           }
           return;
         }
@@ -235,9 +230,8 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
     }
     String str = json.encode(params);
 
-    _controller.runJavaScriptReturningResult('callJS($str)').then((result) {
-      print('----js回调----$result');
-    });
+    // _controller.runJavaScriptReturningResult('callJS($str)');
+    _controller.runJavaScript('callJS($str)');
   }
 
   void oneStartRecord() async {

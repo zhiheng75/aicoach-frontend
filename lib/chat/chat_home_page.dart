@@ -175,7 +175,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                 height: 100.h,
                 child: Swiper(
                     index: peopleIndex,
-                    autoplay: true,
+                    autoplay: false,
                     autoplayDelay: 8000,
                     // duration: 2000,
                     onIndexChanged: (value) {
