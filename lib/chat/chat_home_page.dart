@@ -211,7 +211,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                           // viewportFraction: 0.85,
                           // scale: 0.92,
                           viewportFraction: 0.33,
-                          scale: 0.05,
+                          scale: 0.4,
                           itemBuilder: (c, i) {
                             return GestureDetector(
                               onTap: () {
@@ -231,8 +231,9 @@ class _ChatHomePageState extends State<ChatHomePage>
                                     gradient: LinearGradient(
                                       colors: peopleIndex == i
                                           ? [
-                                              Colours.color_9F7EFF,
-                                              Colours.color_BDA6FF,
+                                              Colours.color_F25FFF,
+                                              Colours.color_7F5FFF,
+                                              Colours.color_94FFF91,
                                             ]
                                           : [
                                               Colours.color_0000,

@@ -152,6 +152,7 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
     setState(() {
       isTalk = true;
     });
+    await _recognizeUtil.cancelRecognize();
     await _mediaUtils.stopRecord();
   }
 
