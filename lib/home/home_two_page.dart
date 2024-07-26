@@ -46,7 +46,7 @@ import 'package:Bubble/util/other_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/group_avatar_widget.dart';
 import 'package:Bubble/widgets/load_image.dart';
-import 'package:advertising_info/advertising_info.dart';
+// import 'package:advertising_info/advertising_info.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -328,7 +328,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     if (Device.isAndroid) {
       DYUtil().evaluate("0");
     } else {
-      getidfa();
+      // getidfa();
     }
     Future.delayed(const Duration(seconds: 2), () {
       EventUMStatistics.umengCommonOnPageStart("home_two_page");
@@ -454,15 +454,15 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     );
   }
 
-  void getidfa() async {
-    AdvertisingInfo advertisingInfo = await AdvertisingInfo.read();
-    bool? isLAT = advertisingInfo.isLimitAdTrackingEnabled;
-    if (!isLAT!) {
-      DYUtil().evaluate("0");
-    }
-    // Log.e();advertisingInfo.authorizationStatus;
-    // if(advertisingInfo.authorizationStatus == notDetermined)
-  }
+  // void getidfa() async {
+  //   AdvertisingInfo advertisingInfo = await AdvertisingInfo.read();
+  //   bool? isLAT = advertisingInfo.isLimitAdTrackingEnabled;
+  //   if (!isLAT!) {
+  //     DYUtil().evaluate("0");
+  //   }
+  //   // Log.e();advertisingInfo.authorizationStatus;
+  //   // if(advertisingInfo.authorizationStatus == notDetermined)
+  // }
 
   void userInfo() {
     Map<String, dynamic> user = LoginManager.getUserInfo();

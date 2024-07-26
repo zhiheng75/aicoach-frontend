@@ -9,14 +9,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "64.0.0"
-  advertising_info:
-    dependency: "direct main"
-    description:
-      name: advertising_info
-      sha256: f3ba01adbb3c6f976f71d99b0c386ba88f7b86190181563acc34361706abd88a
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.2.1"
   analyzer:
     dependency: transitive
     description:
@@ -25,14 +17,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "6.2.0"
-  app_tracking_transparency:
-    dependency: "direct main"
-    description:
-      name: app_tracking_transparency
-      sha256: ce9311f0e393dbd6b1cb4aeaf609e2db8ba20b1327ca67d07c11ef4876f843a8
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.4"
   archive:
     dependency: "direct main"
     description:

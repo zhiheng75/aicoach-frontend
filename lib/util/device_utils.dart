@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
-import 'package:device_identity/device_identity.dart';
+// import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+// import 'package:device_identity/device_identity.dart';
 import 'package:sp_util/sp_util.dart';
 
 import '../constant/constant.dart';
@@ -29,13 +29,13 @@ class Device {
       // 安卓，IMEI（Android 10之前） > OAID（Android 10之后） > AndroidId
 
       // iOS，IDFA（需要同意追踪权限） > IDFV
-      if (Platform.isIOS) {
-        // 是否允许追踪权限
-        if (await AppTrackingTransparency.trackingAuthorizationStatus ==
-            TrackingStatus.authorized) {
-          deviceId = await AppTrackingTransparency.getAdvertisingIdentifier();
-        } else {}
-      }
+      // if (Platform.isIOS) {
+      //   // 是否允许追踪权限
+      //   if (await AppTrackingTransparency.trackingAuthorizationStatus ==
+      //       TrackingStatus.authorized) {
+      //     deviceId = await AppTrackingTransparency.getAdvertisingIdentifier();
+      //   } else {}
+      // }
       // 缓存设备ID
       if (deviceId != null && deviceId != '') {
         SpUtil.putString(Constant.deviceId, deviceId);
