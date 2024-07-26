@@ -681,6 +681,29 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     super.dispose();
   }
 
+  void onReold() {
+    ConfirmUtils.show(
+      context: context,
+      title: '提示',
+      // buttonDirection: 'vertical',
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      onConfirm: () {
+        exit(0);
+      },
+      onCancel: () {},
+      child: const Text(
+        "退出应用",
+        style: TextStyle(
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+          color: Color(0xFF333333),
+          height: 18.0 / 15.0,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -741,6 +764,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           body: WillPopScope(
         onWillPop: () async {
           //这里可以响应物理返回键
+          onReold();
           return false;
         },
         child: SafeArea(
