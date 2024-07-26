@@ -210,7 +210,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                           // fade: 0.6,
                           // viewportFraction: 0.85,
                           // scale: 0.92,
-                          viewportFraction: 0.3,
+                          viewportFraction: 0.33,
                           scale: 0.05,
                           itemBuilder: (c, i) {
                             return GestureDetector(
@@ -220,9 +220,28 @@ class _ChatHomePageState extends State<ChatHomePage>
                                 // });
                                 Log.e("msg");
                               },
-                              child: LoadImage(
-                                characterList[i].avatarImage,
-                                fit: BoxFit.fitWidth,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    gradient: LinearGradient(
+                                      colors: peopleIndex == i
+                                          ? [
+                                              Colours.color_9F7EFF,
+                                              Colours.color_BDA6FF,
+                                            ]
+                                          : [
+                                              Colours.color_0000,
+                                              Colours.color_0000,
+                                            ],
+                                    )),
+                                padding: const EdgeInsets.all(4),
+                                // width: 200,
+                                // height: 200,
+                                // color: Colors.amber,
+                                child: LoadImage(
+                                  characterList[i].avatarImage,
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             );
                           },
