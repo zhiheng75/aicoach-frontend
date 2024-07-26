@@ -297,15 +297,15 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
               setState(() {
                 _isSelect = true;
               });
-              if (type == "1") {
-                NavigatorUtils.push(
-                  context,
-                  // replace: true,
-                  "${LoginRouter.keyLoginPhonePage}?typeLogin=${widget.typeLogin}",
-                );
-              } else {
-                weChatLogin();
-              }
+              // if (type == "1") {
+              //   NavigatorUtils.push(
+              //     context,
+              //     // replace: true,
+              //     "${LoginRouter.keyLoginPhonePage}?typeLogin=${widget.typeLogin}",
+              //   );
+              // } else {
+              //   weChatLogin();
+              // }
             },
           );
         });
