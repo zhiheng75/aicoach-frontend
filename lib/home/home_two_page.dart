@@ -119,7 +119,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   final JPush jpush = JPush();
   late StreamSubscription<ConnectivityResult> subscription;
-
+  bool isShowNetWork = true;
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Unknown',
     packageName: 'Unknown',
@@ -290,13 +290,23 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     super.initState();
     initDio();
     // initUM();
+    EventBus().on(NotificationUtils.resetChat, (idx) {
+      if (idx == "0") {
+        isShowNetWork = true;
+      } else {
+        isShowNetWork = false;
+      }
+      setState(() {});
+    });
     Future.delayed(const Duration(seconds: 1), () {
       subscription = Connectivity()
           .onConnectivityChanged
           .listen((ConnectivityResult result) {
         // Got a new connectivity status!
         if (result == ConnectivityResult.none) {
-          onNoNetwork();
+          if (isShowNetWork) {
+            onNoNetwork();
+          }
         }
       });
     });

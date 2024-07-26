@@ -941,10 +941,10 @@ class _InstructionalVideoDialoguePageState
   }
 
   void _onPlaybackEnded() {
-    if (isOnePlay == "1") {
-      isOnePlay = "2";
-      startNormaltwoChatRequestNetwork();
-    }
+    // if (isOnePlay == "1") {
+    //   isOnePlay = "2";
+    startNormaltwoChatRequestNetwork();
+    // }
     if (isPlaybackLoopEnabled) {
       _controller?.play();
     }

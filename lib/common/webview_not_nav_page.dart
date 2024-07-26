@@ -4,11 +4,13 @@ import 'package:Bubble/chat/utils/recognize_util.dart';
 import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/course/entity/step_detail_bean.dart';
 import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/exam/entity/mock_message_entity.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/scene/utils/class_evaluate_util.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
@@ -50,7 +52,7 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
   late bool isTalk = false;
 
   final ScreenUtil _screenUtil = ScreenUtil();
-
+  late String textStr = "";
   @override
   void initState() {
     super.initState();
@@ -131,7 +133,8 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         }
       })
       ..addJavaScriptChannel('startRecord', onMessageReceived: (message) {
-        startRecord();
+        textStr = "";
+        startRecord(message.message);
       })
       ..addJavaScriptChannel('finshRecord', onMessageReceived: (message) {
         finshRecord();
@@ -154,7 +157,7 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
     await _mediaUtils.stopRecord();
   }
 
-  void startRecord() async {
+  void startRecord(String params) async {
     try {
       bool hasAgree =
           SpUtil.getBool(Constant.mediaUtils, defValue: false) ?? false;
@@ -200,10 +203,13 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
           return;
         }
         Log.e("录音后识别的文字${result['text']}");
-        String textStr = result['text'];
+        textStr = result['text'];
         //检测出来的音频
-        // await _controller.
-        _postUploadText(textStr);
+        if (params.isNotEmpty) {
+          sendTwoMessage(result['text'], params);
+        } else {
+          _postUploadText(textStr);
+        }
       });
       isTalk = true;
     } catch (e) {
@@ -212,6 +218,33 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         duration: 1000,
       );
     }
+  }
+
+  void sendTwoMessage(String msg, String word) {
+    insertTwoUserMessage(word, (message) {
+      ClassEvaluateUtil().evaluate(message, (Map<String, dynamic> map) {
+        try {
+          double value = double.parse(map["total_score"]);
+          if (value > 60) {
+            _postUploadText(word);
+          } else {
+            _postUploadText(msg);
+          }
+        } catch (e) {
+          _postUploadText(msg);
+        }
+        // evaluation['total_score']
+        Log.e("============");
+      });
+    });
+  }
+
+  void insertTwoUserMessage(
+      String text, Function(ClassMessageEntity) onSuccess) {
+    ClassMessageEntity message = ClassMessageEntity();
+    message.text = text;
+    message.audio = [..._bufferList];
+    onSuccess(message);
   }
 
   void _postUploadText(String textStr) {
