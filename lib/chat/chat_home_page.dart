@@ -221,6 +221,11 @@ class _ChatHomePageState extends State<ChatHomePage>
                                 Log.e("msg");
                               },
                               child: Container(
+                                // decoration: BoxDecoration(
+                                //     image: DecorationImage(
+                                //         image: ImageUtils.getAssetImage(
+                                //             "head_bg_img"),
+                                //         fit: BoxFit.cover)),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(100),
                                     gradient: LinearGradient(
@@ -234,7 +239,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                                               Colours.color_0000,
                                             ],
                                     )),
-                                padding: const EdgeInsets.all(4),
+                                padding: const EdgeInsets.all(5),
                                 // width: 200,
                                 // height: 200,
                                 // color: Colors.amber,

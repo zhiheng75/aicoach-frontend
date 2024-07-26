@@ -53,6 +53,8 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
 
   final ScreenUtil _screenUtil = ScreenUtil();
   late String textStr = "";
+
+  late String numberStr = "";
   @override
   void initState() {
     super.initState();
@@ -137,6 +139,7 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         startRecord(message.message);
       })
       ..addJavaScriptChannel('finshRecord', onMessageReceived: (message) {
+        numberStr = message.message;
         finshRecord();
       })
       ..addJavaScriptChannel('cancelRecord', onMessageReceived: (message) {
@@ -259,6 +262,7 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
       params = {
         "text": textStr,
         "istextStr": istextStr,
+        "numberStr": numberStr,
       };
     }
     String str = json.encode(params);
