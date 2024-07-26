@@ -7,7 +7,7 @@ import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/device_utils.dart';
-import 'package:advertising_info/advertising_info.dart';
+// import 'package:advertising_info/advertising_info.dart';
 // import 'package:advertising_info/advertising_info.dart';
 import 'package:crypto/crypto.dart';
 import 'package:device_identity/device_identity.dart';
@@ -63,7 +63,7 @@ class DYUtil {
       // macAddress =
       //     _wifiObject != null ? _wifiObject!.macAddress.toString() : '...';
     } else {
-      AdvertisingInfo advertisingInfo = await AdvertisingInfo.read();
+      // AdvertisingInfo advertisingInfo = await AdvertisingInfo.read();
 
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       // IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
@@ -72,8 +72,8 @@ class DYUtil {
 
       os = "1";
       // String? advertising_id = advertisingInfo.id;
-      idfa = advertisingInfo.id ?? "";
-      // idfa = "";
+      // idfa = advertisingInfo.id ?? "";
+      idfa = "";
     }
 
     final Map<String, String> params = <String, String>{};
