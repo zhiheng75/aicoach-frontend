@@ -3,6 +3,7 @@ class NotificationUtils {
   static String loginOut = "LoginOut"; //退出
   static String taberThree = "taberThree";
   static String taberTwo = "taberTwo";
+  // static String taberThree = "taberThree";
 
   static String resetChat = "ResetChat"; //重置自由聊天
   static String resetChatTwo = "resetChatTwo"; //重置自由聊天
@@ -24,4 +25,6 @@ class NotificationUtils {
   static String messageEnd = "messageEnd";
 
   static String resetANChat = "resetANChat";
+
+  static String PhoneMessage = "PhoneMessage";
 }

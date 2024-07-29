@@ -332,12 +332,12 @@ class _ChatState extends State<ChatPage>
     //   }
     // });
 
-    EventBus().on(NotificationUtils.taberThree, (idx) {
-      setState(() {
-        cherid = idx;
-      });
-      // init();
-    });
+    // EventBus().on(NotificationUtils.taberThree, (idx) {
+    //   setState(() {
+    //     cherid = idx;
+    //   });
+    //   // init();
+    // });
 
     // EventBus().on(NotificationUtils.resetChatTwo, (_) {
     //   init();
@@ -605,7 +605,7 @@ class _ChatState extends State<ChatPage>
     EventBus().off(NotificationUtils.resetChatTwo);
     EventBus().off(NotificationUtils.messageEnd);
 
-    EventBus().off(NotificationUtils.taberThree);
+    // EventBus().off(NotificationUtils.taberThree);
 
     EventBus().off(NotificationUtils.loginIn);
     EventBus().off(NotificationUtils.loginOut);

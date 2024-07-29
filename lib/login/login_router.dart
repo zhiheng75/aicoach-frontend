@@ -81,11 +81,12 @@ class LoginRouter implements IRouterProvider {
     router.define(keyCheckCodePage, handler: Handler(handlerFunc: (_, params) {
       String phoneNumberStr = params['PhoneNumber']!.first;
       String typeLogin = params['typeLogin']!.first;
+      String isMessage = params['isMessage']!.first;
 
       return CheckCodePage(
-        phoneNumber: phoneNumberStr,
-        typeLogin: typeLogin,
-      );
+          phoneNumber: phoneNumberStr,
+          typeLogin: typeLogin,
+          isMessage: isMessage);
     }));
 
     router.define(keyCheckTwoCodePage,

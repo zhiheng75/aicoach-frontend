@@ -59,20 +59,31 @@ class _ChatHomePageState extends State<ChatHomePage>
   final ScreenUtil _screenUtil = ScreenUtil();
   int peopleIndex = 0;
   bool isLoding = true;
+  late SwiperController _controller;
+
   @override
   void initState() {
     super.initState();
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    _controller = SwiperController();
 
     EventBus().on(NotificationUtils.loginIn, (_) {
+      peopleIndex = 0;
+      _controller.move(peopleIndex);
+
       _chatPagePresenter.getCharacterList();
     });
     EventBus().on(NotificationUtils.loginOut, (_) {
+      peopleIndex = 0;
+      _controller.move(peopleIndex);
+
       _chatPagePresenter.getCharacterList();
     });
 
     EventBus().on(NotificationUtils.resetChat, (idx) {
       if (idx == "1") {
+        peopleIndex = 0;
+        _controller.move(peopleIndex);
         _chatPagePresenter.getCharacterList();
       }
     });
@@ -182,13 +193,16 @@ class _ChatHomePageState extends State<ChatHomePage>
                     Container(
                       height: 100.h,
                       child: Swiper(
+                          controller: _controller,
                           index: peopleIndex,
                           autoplay: false,
                           autoplayDelay: 8000,
                           // duration: 2000,
                           onIndexChanged: (value) {
                             Log.e("msg==== $value");
-                            peopleIndex = value;
+                            setState(() {
+                              peopleIndex = value;
+                            });
                             String characterId =
                                 characterList[peopleIndex].characterId;
                             _chatPagePresenter
@@ -215,10 +229,26 @@ class _ChatHomePageState extends State<ChatHomePage>
                           itemBuilder: (c, i) {
                             return GestureDetector(
                               onTap: () {
-                                // setState(() {
-                                //   peopleIndex = i;
-                                // });
-                                Log.e("msg");
+                                if (i > peopleIndex) {
+                                  if (peopleIndex == 0) {
+                                    if (i == peopleIndex + 1) {
+                                      _controller.next();
+                                    } else {
+                                      _controller.previous();
+                                    }
+                                  } else {
+                                    _controller.next();
+                                  }
+                                } else {
+                                  if (i < peopleIndex - 1) {
+                                    _controller.next();
+                                  } else {
+                                    _controller.previous();
+                                  }
+                                }
+                                setState(() {
+                                  peopleIndex = i;
+                                });
                               },
                               child: Container(
                                 // decoration: BoxDecoration(

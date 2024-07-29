@@ -302,6 +302,7 @@ class _InstructionalVideoDialoguePageState
         return;
       }
       _answer!.text += answer;
+      Log.e("AI说的话" + _answer!.text);
 
       _homeProvider.notify();
       _listScrollController.scrollToEnd();

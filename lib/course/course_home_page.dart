@@ -157,7 +157,7 @@ class _CourseHomePageState extends State<CourseHomePage>
       // 这里是你想要延迟执行的代码
     });
 
-    EventBus().on(NotificationUtils.taberTwo, (idx) {
+    EventBus().on(NotificationUtils.taberThree, (idx) {
       levelidStr = idx;
       _courseHomePagePresenter.getLessonList();
     });

@@ -890,7 +890,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                     itemBuilder: (ctx, index) {
                       return GestureDetector(
                         onTap: () {
-                          EventBus().emit(NotificationUtils.taberTwo,
+                          EventBus().emit(NotificationUtils.taberThree,
                               lessonList[index].param);
                           if (index == 0) {
                             EventUMStatistics.umengCommonMapEvent(
