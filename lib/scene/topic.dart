@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +42,7 @@ class _TopicState extends State<TopicPage>
         AutomaticKeepAliveClientMixin<TopicPage>,
         WidgetsBindingObserver
     implements TopicView {
-  final ChatWebsocket _chatWebsocket = ChatWebsocket();
+  late ChatWebsocket _chatWebsocket = ChatWebsocket();
   final MediaUtils _mediaUtils = MediaUtils();
   late HomeProvider _homeProvider;
   late TopicPagePresenter _topicPagePresenter;
@@ -61,10 +63,12 @@ class _TopicState extends State<TopicPage>
   AppLifecycleState? _appLifecycleState;
   // 是否对话结束
   bool _isConversationEnd = false;
+  late StreamSubscription<ConnectivityResult> subscription;
 
   void init() {
     _pageState = 'loading';
     setState(() {});
+    _chatWebsocket = ChatWebsocket();
     connectWebsocket();
   }
 
@@ -215,6 +219,8 @@ class _TopicState extends State<TopicPage>
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    subscription.cancel();
+
     endSocket();
   }
 
@@ -225,6 +231,23 @@ class _TopicState extends State<TopicPage>
     init();
     // 监听App状态
     WidgetsBinding.instance.addObserver(this);
+
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) async {
+      //  await ChatWebsocket().endChat(true);
+      // _homeProvider.resetChatParams();
+      // _chatWebsocket.endChat();
+      if (_homeProvider.messageList.length == 2) {
+        _homeProvider.cleanMessage();
+        _chatWebsocket.endChat();
+        init();
+      }
+      // _chatWebsocket.endChat();
+      // await _mediaUtils.stopPlay();
+      // widget.controller.setShowRecord(false);
+      // widget.controller.setDisabled(false);
+    });
   }
 
   @override

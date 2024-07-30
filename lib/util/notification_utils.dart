@@ -27,4 +27,6 @@ class NotificationUtils {
   static String resetANChat = "resetANChat";
 
   static String PhoneMessage = "PhoneMessage";
+
+  static String newResetChat = "newResetChat"; //重置自由聊天
 }

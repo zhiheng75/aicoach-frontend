@@ -191,18 +191,18 @@ class _HomePageState extends State<HomeNewPage>
           useSafeArea: false,
           builder: (_) => type == 'topic'
               ? TopicPage(onEnd: () {
-                  changeTab('chat');
-                  Future.delayed(const Duration(seconds: 1), () {
-                    EventBus().emit(NotificationUtils.resetChatTwo);
-                  });
+                  // changeTab('chat');
+                  // Future.delayed(const Duration(seconds: 1), () {
+                  EventBus().emit(NotificationUtils.newResetChat);
+                  // });
                 })
               : ScenePage(onEnd: () {
-                  if (value['page'] == "0") {
-                    changeTab('chat');
-                    Future.delayed(const Duration(seconds: 1), () {
-                      EventBus().emit(NotificationUtils.resetChatTwo);
-                    });
-                  }
+                  // if (value['page'] == "0") {
+                  //   changeTab('chat');
+                  //   Future.delayed(const Duration(seconds: 1), () {
+                  //     EventBus().emit(NotificationUtils.resetChatTwo);
+                  //   });
+                  // }
                 }),
         );
         // 重置tab

@@ -326,11 +326,9 @@ class _ChatState extends State<ChatPage>
     //     init();
     //   }
     // });
-    // EventBus().on(NotificationUtils.loginOut, (_) {
-    //   if (isNew == "2") {
-    //     init();
-    //   }
-    // });
+    EventBus().on(NotificationUtils.newResetChat, (_) {
+      init();
+    });
 
     // EventBus().on(NotificationUtils.taberThree, (idx) {
     //   setState(() {

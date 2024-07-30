@@ -75,7 +75,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   PhoneState status = PhoneState.nothing();
   bool granted = false;
   late bool _phoneSate = true;
-  late StreamSubscription<ConnectivityResult> subscription;
+  // late StreamSubscription<ConnectivityResult> subscription;
   late ConnectivityResult resultType;
 
   void getExample() {
@@ -278,7 +278,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       insertTipMessage('Conversation finished！');
     } else {
       // insertTipMessage('Please switch to new roles, topics, or scene');
-      Toast.show("对话已结束");
+      // Toast.show("对话已结束");
     }
   }
 
@@ -371,11 +371,14 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       return message;
     });
 
-    subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) async {
-      creatResetStatus();
-    });
+    // subscription = Connectivity()
+    //     .onConnectivityChanged
+    //     .listen((ConnectivityResult result) async {
+    //   // _chatWebsocket.endChat();
+    //   // await _mediaUtils.stopPlay();
+    //   // widget.controller.setShowRecord(false);
+    //   // widget.controller.setDisabled(false);
+    // });
 
     // requestPermission();
 
@@ -452,7 +455,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    subscription.cancel();
+    // subscription.cancel();
 
     super.dispose();
   }

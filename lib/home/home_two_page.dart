@@ -1013,6 +1013,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   @override
   void sendError() {
     // TODO: implement sendError
-    onNoNetwork();
+    // onNoNetwork();
   }
 }

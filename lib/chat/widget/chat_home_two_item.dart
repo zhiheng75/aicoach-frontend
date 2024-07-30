@@ -41,7 +41,7 @@ class _ChatHomeTwoItemState extends State<ChatHomeTwoItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: 40.h,
+                // height: 40.h,
                 width: 90.w,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,6 +61,7 @@ class _ChatHomeTwoItemState extends State<ChatHomeTwoItem> {
                   ],
                 ),
               ),
+              Gaps.vGap2,
               Row(
                 children: [
                   const LoadAssetImage(
@@ -87,7 +88,7 @@ class _ChatHomeTwoItemState extends State<ChatHomeTwoItem> {
             bottom: 0,
             child: LoadImage(
               widget.data.coverImage,
-              fit: BoxFit.fitWidth,
+              // fit: BoxFit.fitWidth,
             ),
           ),
         ],

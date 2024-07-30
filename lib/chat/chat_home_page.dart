@@ -124,7 +124,7 @@ class _ChatHomePageState extends State<ChatHomePage>
           ),
         ),
         SizedBox(
-          height: 40,
+          height: 40.h,
           child: ListView.builder(
             itemBuilder: (ctx, index) {
               return _categoryList[index].name.isNotEmpty
@@ -134,7 +134,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                       },
                       child: Container(
                           margin: const EdgeInsets.only(top: 5, right: 24),
-                          height: 40,
+                          height: 40.h,
                           child: Column(
                             children: [
                               Text(
@@ -162,8 +162,8 @@ class _ChatHomePageState extends State<ChatHomePage>
                                               Colours.color_0000,
                                             ],
                                     )),
-                                width: 30,
-                                height: 4,
+                                width: 30.w,
+                                height: 4.h,
                               ),
                             ],
                           )),
@@ -224,7 +224,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                           // fade: 0.6,
                           // viewportFraction: 0.85,
                           // scale: 0.92,
-                          viewportFraction: 0.33,
+                          viewportFraction: 0.33.w,
                           scale: 0.4,
                           itemBuilder: (c, i) {
                             return GestureDetector(
@@ -423,7 +423,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                                       margin: const EdgeInsets.only(
                                         top: 10,
                                       ),
-                                      height: 180.0.h,
+                                      height: 185.0.h,
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
                                         itemCount: _topicList.length,
@@ -457,14 +457,17 @@ class _ChatHomePageState extends State<ChatHomePage>
                                     child: Container(),
                                   ),
                             _categoryList.isNotEmpty
-                                ? SliverPersistentHeader(
-                                    pinned: false,
-                                    floating: false,
-                                    delegate: _SliverAppBarDelegate(
-                                      minHeight: 80, //收起的高度
-                                      maxHeight: 80,
-                                      child: Container(child: tabbar()),
-                                    ))
+                                // ? SliverPersistentHeader(
+                                //     pinned: false,
+                                //     floating: false,
+                                //     delegate: _SliverAppBarDelegate(
+                                //       minHeight: 80, //收起的高度
+                                //       maxHeight: 80,
+                                //       child: Container(child: tabbar()),
+                                //     ))
+                                ? SliverToBoxAdapter(
+                                    child: Container(child: tabbar()),
+                                  )
                                 : SliverToBoxAdapter(
                                     child: Container(),
                                   ),
