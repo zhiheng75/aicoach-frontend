@@ -112,71 +112,74 @@ class _ChatHomePageState extends State<ChatHomePage>
   }
 
   Widget tabbar() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "主题场景练习",
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+    return Container(
+      padding: EdgeInsets.only(left: 12.w, right: 12.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "主题场景练习",
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
-        ),
-        SizedBox(
-          height: 40.h,
-          child: ListView.builder(
-            itemBuilder: (ctx, index) {
-              return _categoryList[index].name.isNotEmpty
-                  ? GestureDetector(
-                      onTap: () {
-                        changeCategory(index);
-                      },
-                      child: Container(
-                          margin: const EdgeInsets.only(top: 5, right: 24),
-                          height: 40.h,
-                          child: Column(
-                            children: [
-                              Text(
-                                _categoryList[index].name,
-                                style: TextStyle(
-                                  fontSize: 15.sp,
-                                  fontWeight: currentIndex == index
-                                      ? FontWeight.bold
-                                      : FontWeight.w400,
-                                  color: Colors.black,
+          SizedBox(
+            height: 40.h,
+            child: ListView.builder(
+              itemBuilder: (ctx, index) {
+                return _categoryList[index].name.isNotEmpty
+                    ? GestureDetector(
+                        onTap: () {
+                          changeCategory(index);
+                        },
+                        child: Container(
+                            margin: const EdgeInsets.only(top: 5, right: 24),
+                            height: 40.h,
+                            child: Column(
+                              children: [
+                                Text(
+                                  _categoryList[index].name,
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: currentIndex == index
+                                        ? FontWeight.bold
+                                        : FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
                                 ),
-                              ),
-                              Gaps.vGap4,
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    gradient: LinearGradient(
-                                      colors: currentIndex == index
-                                          ? [
-                                              Colours.color_9F7EFF,
-                                              Colours.color_BDA6FF,
-                                            ]
-                                          : [
-                                              Colours.color_0000,
-                                              Colours.color_0000,
-                                            ],
-                                    )),
-                                width: 30.w,
-                                height: 4.h,
-                              ),
-                            ],
-                          )),
-                    )
-                  : Container();
-            },
-            itemCount: _categoryList.length,
-            // padding: const EdgeInsets.symmetric(horizontal: 10),
-            physics: const AlwaysScrollableScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-          ),
-        )
-      ],
+                                Gaps.vGap4,
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      gradient: LinearGradient(
+                                        colors: currentIndex == index
+                                            ? [
+                                                Colours.color_9F7EFF,
+                                                Colours.color_BDA6FF,
+                                              ]
+                                            : [
+                                                Colours.color_0000,
+                                                Colours.color_0000,
+                                              ],
+                                      )),
+                                  width: 30.w,
+                                  height: 4.h,
+                                ),
+                              ],
+                            )),
+                      )
+                    : Container();
+              },
+              itemCount: _categoryList.length,
+              // padding: const EdgeInsets.symmetric(horizontal: 10),
+              physics: const AlwaysScrollableScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -193,6 +196,9 @@ class _ChatHomePageState extends State<ChatHomePage>
                     Container(
                       height: 100.h,
                       child: Swiper(
+                          outer: true,
+                          // containerHeight: 20.w,
+                          containerWidth: 140.h,
                           controller: _controller,
                           index: peopleIndex,
                           autoplay: false,
@@ -208,23 +214,8 @@ class _ChatHomePageState extends State<ChatHomePage>
                             _chatPagePresenter
                                 .getCategoryTopicList(characterId);
                           },
-                          // duration: 10,
-                          // pagination: SwiperPagination(
-                          //     margin: const EdgeInsets.all(
-                          //       0,
-                          //     ),
-                          //     builder: DotSwiperPaginationBuilder(
-                          //         color: Colours.color_D9D9D9,
-                          //         activeColor: Colours.color_7C7C7C,
-                          //         // space: 1,
-                          //         size: 3.h,
-                          //         activeSize: 3.h)),
-                          outer: true,
-                          // autoplay: true,
-                          // fade: 0.6,
-                          // viewportFraction: 0.85,
-                          // scale: 0.92,
-                          viewportFraction: 0.33.w,
+                          // fade: 1,
+                          viewportFraction: 0.33,
                           scale: 0.4,
                           itemBuilder: (c, i) {
                             return GestureDetector(
@@ -251,13 +242,14 @@ class _ChatHomePageState extends State<ChatHomePage>
                                 });
                               },
                               child: Container(
+                                // color: Colors.amber,
                                 // decoration: BoxDecoration(
                                 //     image: DecorationImage(
                                 //         image: ImageUtils.getAssetImage(
                                 //             "head_bg_img"),
                                 //         fit: BoxFit.cover)),
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(100),
+                                    borderRadius: BorderRadius.circular(100.h),
                                     gradient: LinearGradient(
                                       colors: peopleIndex == i
                                           ? [
@@ -271,12 +263,16 @@ class _ChatHomePageState extends State<ChatHomePage>
                                             ],
                                     )),
                                 padding: const EdgeInsets.all(5),
-                                // width: 200,
-                                // height: 200,
-                                // color: Colors.amber,
-                                child: LoadImage(
-                                  characterList[i].avatarImage,
-                                  fit: BoxFit.fill,
+                                // height: 100.w,
+                                // width: 100.w,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100.w),
+                                  child: LoadImage(
+                                    characterList[i].avatarImage,
+                                    fit: BoxFit.cover,
+                                    // height: 100.w,
+                                    // width: 100.w,
+                                  ),
                                 ),
                               ),
                             );
@@ -286,18 +282,23 @@ class _ChatHomePageState extends State<ChatHomePage>
                     ),
                     Container(
                         padding: EdgeInsets.all(12),
-                        margin: EdgeInsets.all(10),
-                        // height: 120.h,
-                        // width: _screenUtil.screenWidth,
+                        // margin: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: const LinearGradient(
-                              colors: [
-                                // Colours.color_94FFF9,
-                                Colours.color_7F5FFF,
-                                Colours.color_A55FFF,
-                              ],
-                            )),
+                            image: DecorationImage(
+                                image: ImageUtils.getAssetImage(
+                                    "chat_home_top_bg"),
+                                fit: BoxFit.fill)),
+                        height: 104.h,
+                        width: _screenUtil.screenWidth,
+                        // decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.circular(10),
+                        //     gradient: const LinearGradient(
+                        //       colors: [
+                        //         // Colours.color_94FFF9,
+                        //         Colours.color_7F5FFF,
+                        //         Colours.color_A55FFF,
+                        //       ],
+                        //     )),
                         child: Row(
                           // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -305,17 +306,21 @@ class _ChatHomePageState extends State<ChatHomePage>
                               "maohao_lift",
                               width: 21.w,
                             ),
+                            Gaps.hGap5,
                             Expanded(
                               child: Text(
                                 characterList[peopleIndex].slogan,
                                 maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize: 11.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                                    letterSpacing: 2.0,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                    height: 1.6),
                               ),
                             ),
+                            // Gaps.hGap3,
                             LoadAssetImage(
                               "maohao_right",
                               width: 21.w,
@@ -343,7 +348,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: ImageUtils.getAssetImage("name_back"),
-                                fit: BoxFit.fill)),
+                                fit: BoxFit.fitWidth)),
                         child: Center(
                             child: Text(
                           characterList[peopleIndex].name,
@@ -379,7 +384,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                         height: _screenUtil.screenHeight,
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 12.w, right: 12.w),
+                        // margin: EdgeInsets.only(left: 12.w, right: 12.w),
                         width: _screenUtil.screenWidth,
                         height: _screenUtil.screenHeight,
                         child: CustomScrollView(
@@ -395,12 +400,15 @@ class _ChatHomePageState extends State<ChatHomePage>
                               ),
                             ),
                             SliverToBoxAdapter(
-                              child: Text(
-                                "伙伴对练",
-                                style: TextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 12.w),
+                                child: Text(
+                                  "伙伴对练",
+                                  style: TextStyle(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ),
@@ -408,22 +416,29 @@ class _ChatHomePageState extends State<ChatHomePage>
                               child: barWidget(context),
                             ),
                             SliverToBoxAdapter(
-                              child: Text(
-                                "角色故事练习",
-                                style: TextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                              child: Container(
+                                padding: EdgeInsets.only(top: 12.h, left: 12.w),
+                                child: Text(
+                                  "角色故事练习",
+                                  style: TextStyle(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ),
                             _topicList.isNotEmpty
                                 ? SliverToBoxAdapter(
                                     child: Container(
+                                      // padding: EdgeInsets.only(
+                                      //   left: 12.w,
+                                      // ),
+                                      // color: Colors.amber,
                                       margin: const EdgeInsets.only(
                                         top: 10,
                                       ),
-                                      height: 185.0.h,
+                                      height: 200.0.h,
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
                                         itemCount: _topicList.length,
@@ -447,6 +462,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                                               );
                                             },
                                             child: TopicHomeItem(
+                                                idx: index,
                                                 data: _topicList[index]),
                                           );
                                         },
@@ -471,33 +487,36 @@ class _ChatHomePageState extends State<ChatHomePage>
                                 : SliverToBoxAdapter(
                                     child: Container(),
                                   ),
-                            SliverGrid.builder(
-                                itemCount: sceneList.length,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                        //设置列数
-                                        crossAxisCount: 2,
-                                        //设置横向间距
-                                        crossAxisSpacing: 10,
-                                        //设置主轴间距
-                                        mainAxisSpacing: 10,
-                                        childAspectRatio: 172 / 80
-                                        // mainAxisExtent: 120,
-                                        ),
-                                itemBuilder: (BuildContext ctx, int index) {
-                                  return GestureDetector(
-                                      onTap: () {
-                                        SceneEntity scene = sceneList[index];
-                                        _homeProvider.resetChatParams();
-                                        _homeProvider.scene = scene;
-                                        NavigatorUtils.push(
-                                          context,
-                                          HomeRouter.scenePage,
-                                        );
-                                      },
-                                      child: ChatHomeTwoItem(
-                                          data: sceneList[index]));
-                                })
+                            SliverPadding(
+                              padding: EdgeInsets.only(left: 12.w, right: 12.w),
+                              sliver: SliverGrid.builder(
+                                  itemCount: sceneList.length,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          //设置列数
+                                          crossAxisCount: 2,
+                                          //设置横向间距
+                                          crossAxisSpacing: 10,
+                                          //设置主轴间距
+                                          mainAxisSpacing: 10,
+                                          childAspectRatio: 172 / 80
+                                          // mainAxisExtent: 120,
+                                          ),
+                                  itemBuilder: (BuildContext ctx, int index) {
+                                    return GestureDetector(
+                                        onTap: () {
+                                          SceneEntity scene = sceneList[index];
+                                          _homeProvider.resetChatParams();
+                                          _homeProvider.scene = scene;
+                                          NavigatorUtils.push(
+                                            context,
+                                            HomeRouter.scenePage,
+                                          );
+                                        },
+                                        child: ChatHomeTwoItem(
+                                            data: sceneList[index]));
+                                  }),
+                            )
                           ],
                         ),
                       ),

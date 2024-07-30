@@ -425,6 +425,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
 
     // 全局监听App状态
     SystemChannels.lifecycle.setMessageHandler((message) async {
+      EventBus().emit(
+        NotificationUtils.courseType,
+      );
       // 退到后台
       if (isUserOpen) {
         // ignore: unrelated_type_equality_checks

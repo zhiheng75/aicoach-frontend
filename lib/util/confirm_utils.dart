@@ -8,6 +8,7 @@ class ConfirmUtils {
   static void show({
     required BuildContext context,
     required String title,
+    int invokeInt = 1,
     String? buttonDirection,
     String? confirmButtonText,
     String? cancelButtonText,
@@ -15,6 +16,9 @@ class ConfirmUtils {
     required Function() onCancel,
     Widget? child,
   }) {
+    if (invokeInt > 1) {
+      return;
+    }
     showDialog(
       context: context,
       barrierColor: Colors.transparent,

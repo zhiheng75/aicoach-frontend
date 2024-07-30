@@ -21,7 +21,7 @@ class _ChatHomeTwoItemState extends State<ChatHomeTwoItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8),
+      // padding: EdgeInsets.all(8),
       // decoration: BoxDecoration(
       //     borderRadius: BorderRadius.circular(10),
       //     gradient: const LinearGradient(
@@ -37,58 +37,87 @@ class _ChatHomeTwoItemState extends State<ChatHomeTwoItem> {
               fit: BoxFit.fitWidth)),
       child: Stack(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                // height: 40.h,
-                width: 90.w,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        widget.data.name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 15.0.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Gaps.vGap2,
-              Row(
-                children: [
-                  const LoadAssetImage(
-                    'people',
-                    width: 8.0,
-                    height: 8.0,
-                  ),
-                  Gaps.hGap2,
-                  Text(
-                    "${widget.data.count}次对话",
-                    style: TextStyle(
-                      fontSize: 10.0.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colours.color_333333,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
           Positioned(
             right: 0,
             top: 0,
             bottom: 0,
-            child: LoadImage(
-              widget.data.coverImage,
-              // fit: BoxFit.fitWidth,
+            child: Container(
+              // color: Colors.amber,
+              child: LoadImage(
+                widget.data.coverImage,
+                // fit: BoxFit.fitWidth,
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 12, top: 11),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  // height: 40.h,
+                  width: 90.w,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.data.name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 15.0.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Gaps.vGap2,
+                // Row(
+                //   children: [
+                //     const LoadAssetImage(
+                //       'people',
+                //       width: 8.0,
+                //       height: 8.0,
+                //     ),
+                //     Gaps.hGap2,
+                //     Text(
+                //       "${widget.data.count}次对话",
+                //       style: TextStyle(
+                //         fontSize: 10.0.sp,
+                //         fontWeight: FontWeight.w400,
+                //         color: Colours.color_333333,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+              ],
+            ),
+          ),
+          Positioned(
+            left: 12,
+            // top: 0,
+            bottom: 5,
+            child: Row(
+              children: [
+                LoadAssetImage(
+                  'people',
+                  width: 8.0.w,
+                  height: 9.0.h,
+                ),
+                Gaps.hGap3,
+                Text(
+                  "${widget.data.count}次对话",
+                  style: TextStyle(
+                    fontSize: 11.0.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colours.color_333333,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

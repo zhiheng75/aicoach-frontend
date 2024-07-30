@@ -503,6 +503,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     pageState = 'loading';
     setState(() {});
     _homeTwoPagePresenter.getBannerList();
+    _homeTwoPagePresenter.getCharacterList();
   }
 
   void getBaseConfig() async {

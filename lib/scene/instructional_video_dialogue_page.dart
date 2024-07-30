@@ -154,7 +154,7 @@ class _InstructionalVideoDialoguePageState
   bool isUserOpen = false;
 
   late bool isback = false;
-
+  late int _invokeInt = 0;
   Widget lodingView() {
     return const Center(
       child: CircularProgressIndicator(),
@@ -326,6 +326,9 @@ class _InstructionalVideoDialoguePageState
     if (isback) {
       return;
     }
+    setState(() {
+      _invokeInt = _invokeInt + 1;
+    });
     _homeProvider.endUsageTimeCutdown();
     // 正常结束
     if (reason == 'Session End' && endType != 'force') {
@@ -357,14 +360,21 @@ class _InstructionalVideoDialoguePageState
     ConfirmUtils.show(
       context: context,
       title: '提示',
+      invokeInt: _invokeInt,
       // buttonDirection: 'vertical',
       confirmButtonText: '重新加载',
       cancelButtonText: '取消',
       onConfirm: () {
+        setState(() {
+          _invokeInt = 0;
+        });
         //刷新
         forstartFlow(newDataIdx, resourceIdx);
       },
       onCancel: () {
+        setState(() {
+          _invokeInt = 0;
+        });
         // endSocket();
         NavigatorUtils.goBack(context);
         // widget.onEnd();
@@ -435,6 +445,15 @@ class _InstructionalVideoDialoguePageState
       if (isUserOpen) {
         connectWebsocket();
         creatResetStatus();
+      }
+    });
+
+    EventBus().on(NotificationUtils.courseType, (_) {
+      if (ischatEndStr == "1") {
+        //在这里是播放完成
+        endSocket();
+        ischatEndStr = "0";
+        onNextSocketEnd();
       }
     });
 

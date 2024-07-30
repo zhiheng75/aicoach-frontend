@@ -29,4 +29,6 @@ class NotificationUtils {
   static String PhoneMessage = "PhoneMessage";
 
   static String newResetChat = "newResetChat"; //重置自由聊天
+
+  static String courseType = "courseType";
 }

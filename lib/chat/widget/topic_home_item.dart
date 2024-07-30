@@ -8,7 +8,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TopicHomeItem extends StatefulWidget {
   final TopicEntity data;
-  const TopicHomeItem({super.key, required this.data});
+  final int idx;
+
+  const TopicHomeItem({super.key, required this.data, required this.idx});
 
   @override
   State<TopicHomeItem> createState() => _TopicHomeItemState();
@@ -19,8 +21,8 @@ class _TopicHomeItemState extends State<TopicHomeItem> {
   Widget build(BuildContext context) {
     return Container(
       // color: Colors.amber,
-      margin: const EdgeInsets.only(
-        right: 10,
+      margin: EdgeInsets.only(
+        left: widget.idx == 0 ? 20 : 10,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,23 +39,23 @@ class _TopicHomeItemState extends State<TopicHomeItem> {
           Gaps.vGap4,
           Text(widget.data.title,
               style: TextStyle(
-                fontSize: 11.sp,
-                fontWeight: FontWeight.w400,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
                 color: Colors.black,
               )),
           Gaps.vGap4,
           Row(
             children: [
-              const LoadAssetImage(
+              LoadAssetImage(
                 'people',
-                width: 8.0,
-                height: 8.0,
+                width: 8.0.w,
+                height: 9.0.h,
               ),
-              Gaps.hGap2,
+              Gaps.hGap3,
               Text(
                 "${widget.data.count}次对话",
                 style: TextStyle(
-                  fontSize: 10.0.sp,
+                  fontSize: 11.0.sp,
                   fontWeight: FontWeight.w400,
                   color: Colours.color_333333,
                 ),
