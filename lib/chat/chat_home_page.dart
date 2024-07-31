@@ -215,7 +215,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                                 .getCategoryTopicList(characterId);
                           },
                           // fade: 1,
-                          viewportFraction: 0.33,
+                          viewportFraction: 100.h / _screenUtil.screenWidth,
                           scale: 0.4,
                           itemBuilder: (c, i) {
                             return GestureDetector(
@@ -249,7 +249,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                                 //             "head_bg_img"),
                                 //         fit: BoxFit.cover)),
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(100.h),
+                                    borderRadius: BorderRadius.circular(120.h),
                                     gradient: LinearGradient(
                                       colors: peopleIndex == i
                                           ? [
@@ -262,17 +262,14 @@ class _ChatHomePageState extends State<ChatHomePage>
                                               Colours.color_0000,
                                             ],
                                     )),
-                                padding: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(4),
                                 // height: 100.w,
                                 // width: 100.w,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100.w),
-                                  child: LoadImage(
-                                    characterList[i].avatarImage,
-                                    fit: BoxFit.cover,
-                                    // height: 100.w,
-                                    // width: 100.w,
-                                  ),
+                                child: LoadImage(
+                                  characterList[i].avatarImage,
+                                  fit: BoxFit.cover,
+                                  // height: 100.w,
+                                  // width: 100.w,
                                 ),
                               ),
                             );
@@ -281,8 +278,8 @@ class _ChatHomePageState extends State<ChatHomePage>
                           itemCount: characterList.length),
                     ),
                     Container(
-                        padding: EdgeInsets.all(12),
-                        // margin: EdgeInsets.all(10),
+                        padding: EdgeInsets.only(left: 26, right: 20),
+                        margin: EdgeInsets.only(left: 4, right: 4),
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: ImageUtils.getAssetImage(

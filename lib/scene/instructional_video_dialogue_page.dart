@@ -155,6 +155,9 @@ class _InstructionalVideoDialoguePageState
 
   late bool isback = false;
   late int _invokeInt = 0;
+
+  late bool isNetWork = true;
+
   Widget lodingView() {
     return const Center(
       child: CircularProgressIndicator(),
@@ -326,6 +329,7 @@ class _InstructionalVideoDialoguePageState
     if (isback) {
       return;
     }
+    isback = true;
     setState(() {
       _invokeInt = _invokeInt + 1;
     });
@@ -335,19 +339,18 @@ class _InstructionalVideoDialoguePageState
       // insertTipMessage('Class finished！');
       _bottomBarControll.setDisabled(true);
       _isConversationEnd = true;
-    } else if (reason == 'Error') {
-      // 异常结束
-      // insertTipMessage('Please switch to new class');
-      // init();
-      onReold("您的网络不太顺畅，请检查网络情况。");
-    } else if (reason == 'keepalive ping timeout') {
+    }
+    // else if (reason == 'Error') {
+    //   // 异常结束
+    //   // insertTipMessage('Please switch to new class');
+    //   // init();
+    //   onReold("您的网络不太顺畅，请检查网络情况。");
+    // }
+    else if (reason == 'keepalive ping timeout') {
       //超时断开走这里
       onReold("离开太久了!");
-    } else if (reason == '') {
-      //超时断开走这里
-      onReold("您的网络不太顺畅，请检查网络情况。");
     } else {
-      onReold("离开太久了!");
+      onReold("您的网络不太顺畅，请检查网络情况。");
     }
   }
 
@@ -359,15 +362,20 @@ class _InstructionalVideoDialoguePageState
   void onReold(String message) {
     ConfirmUtils.show(
       context: context,
+      isNetWork: isNetWork,
       title: '提示',
       invokeInt: _invokeInt,
       // buttonDirection: 'vertical',
       confirmButtonText: '重新加载',
       cancelButtonText: '取消',
       onConfirm: () {
-        setState(() {
-          _invokeInt = 0;
+        Future.delayed(const Duration(milliseconds: 300), () {
+          setState(() {
+            isback = false;
+            _invokeInt = 0;
+          });
         });
+
         //刷新
         forstartFlow(newDataIdx, resourceIdx);
       },
@@ -392,35 +400,35 @@ class _InstructionalVideoDialoguePageState
   }
 
   void onConversationEnd() {
-    if (!_isConversationEnd) {
-      ConfirmUtils.show(
-        context: context,
-        title: '结束上课',
-        buttonDirection: 'vertical',
-        confirmButtonText: '结束对话',
-        cancelButtonText: '留在对话中',
-        onConfirm: () {
-          // endSocket();
-          NavigatorUtils.goBack(context);
+    // if (!_isConversationEnd) {
+    ConfirmUtils.show(
+      context: context,
+      title: '结束上课',
+      buttonDirection: 'vertical',
+      confirmButtonText: '结束对话',
+      cancelButtonText: '留在对话中',
+      onConfirm: () {
+        // endSocket();
+        NavigatorUtils.goBack(context);
 
-          // widget.onEnd();
-        },
-        onCancel: () {
-          //留在对话还是退出
-        },
-        child: const Text(
-          '对话进行中，确定要结束吗？',
-          style: TextStyle(
-            fontSize: 15.0,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF333333),
-            height: 18.0 / 15.0,
-          ),
+        // widget.onEnd();
+      },
+      onCancel: () {
+        //留在对话还是退出
+      },
+      child: const Text(
+        '对话进行中，确定要结束吗？',
+        style: TextStyle(
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+          color: Color(0xFF333333),
+          height: 18.0 / 15.0,
         ),
-      );
-      return;
-    }
-    NavigatorUtils.goBack(context);
+      ),
+    );
+    //   return;
+    // }
+    // NavigatorUtils.goBack(context);
     // widget.onEnd();
   }
 
@@ -442,10 +450,17 @@ class _InstructionalVideoDialoguePageState
     subscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) async {
-      if (isUserOpen) {
-        connectWebsocket();
-        creatResetStatus();
+      // if (isUserOpen || _homeProvider.messageList.isNotEmpty) {
+      //   endSocket();
+      //   connectWebsocket();
+      //   creatResetStatus();
+      // }
+      if (result == ConnectivityResult.none) {
+        isNetWork = false;
+      } else {
+        isNetWork = true;
       }
+      setState(() {});
     });
 
     EventBus().on(NotificationUtils.courseType, (_) {
@@ -799,6 +814,7 @@ class _InstructionalVideoDialoguePageState
   }
 
   void startNormaltwoChatRequestNetwork() {
+    init();
     DioUtils.instance.requestNetwork<ResultData>(
         Method.post, HttpApi.generateAudio,
         params: {
@@ -809,11 +825,11 @@ class _InstructionalVideoDialoguePageState
         Map<String, dynamic> data = result?.data as Map<String, dynamic>;
         startNormaltwoChat(data['text'], data['speech_url']);
       } else {
-        startNormalChat(data[newDataIdx].resource[resourceIdx].greetingText!,
+        startNormaltwoChat(data[newDataIdx].resource[resourceIdx].greetingText!,
             data[newDataIdx].resource[resourceIdx].greetingAudio!);
       }
     }, onError: (code, msg) {
-      startNormalChat(data[newDataIdx].resource[resourceIdx].greetingText!,
+      startNormaltwoChat(data[newDataIdx].resource[resourceIdx].greetingText!,
           data[newDataIdx].resource[resourceIdx].greetingAudio!);
     });
   }
@@ -842,7 +858,6 @@ class _InstructionalVideoDialoguePageState
         },
       );
     });
-    init();
   }
 
   //图片及其他顺序
@@ -891,11 +906,21 @@ class _InstructionalVideoDialoguePageState
 
   bool isAutoplayEnabled = false;
   bool isPlaybackLoopEnabled = false;
+
+  @override
+  void didPop() {
+    // TODO: implement didPop
+    super.didPop();
+    setState(() {
+      isback = true;
+    });
+
+    endSocket();
+  }
+
   @override
   void dispose() {
-    isback = true;
     Wakelock.disable();
-    endSocket();
     subscription.cancel();
 
     EventBus().off(NotificationUtils.nextClass);

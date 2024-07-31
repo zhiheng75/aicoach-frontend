@@ -32,7 +32,7 @@ class LoadImage extends StatelessWidget {
     // final Widget holder =
     //     LoadAssetImage(holderImg, height: height, width: width, fit: fit);
     final Widget holder = Container(
-      color: Colors.grey[50],
+      // color: Colors.grey[50],
       height: height,
       width: width,
     );

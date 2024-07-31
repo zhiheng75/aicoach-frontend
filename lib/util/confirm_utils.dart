@@ -8,6 +8,7 @@ class ConfirmUtils {
   static void show({
     required BuildContext context,
     required String title,
+    bool isNetWork = true,
     int invokeInt = 1,
     String? buttonDirection,
     String? confirmButtonText,
@@ -32,6 +33,7 @@ class ConfirmUtils {
         },
         child: ConfirmTwo(
           title: title,
+          isNetWork: isNetWork,
           buttonDirection: buttonDirection,
           confirmButtonText: confirmButtonText,
           cancelButtonText: cancelButtonText,
@@ -182,6 +184,7 @@ class ConfirmTwo extends StatelessWidget {
   const ConfirmTwo({
     Key? key,
     required this.title,
+    required this.isNetWork,
     this.buttonDirection = 'horizontal',
     this.confirmButtonText,
     this.cancelButtonText,
@@ -191,6 +194,8 @@ class ConfirmTwo extends StatelessWidget {
   }) : super(key: key);
 
   final String title;
+  final bool isNetWork;
+
   final String? buttonDirection;
   final String? confirmButtonText;
   final String? cancelButtonText;
@@ -212,8 +217,8 @@ class ConfirmTwo extends StatelessWidget {
         child: Container(
           margin:
               // isIPad ? const EdgeInsets.all(100) : const EdgeInsets.all(30),
-              EdgeInsets.all(30.w),
-          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
+              EdgeInsets.all(40.w),
+          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 20),
           decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(16)),
               color: Colors.white),
@@ -226,7 +231,7 @@ class ConfirmTwo extends StatelessWidget {
                 title,
                 style: const TextStyle(
                   fontSize: 17.0,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.bold,
                   color: Colors.black,
                   height: 22.0 / 17.0,
                 ),
@@ -234,13 +239,13 @@ class ConfirmTwo extends StatelessWidget {
               if (child != null)
                 Padding(
                   padding: const EdgeInsets.only(
-                    top: 10.0,
+                    top: 16.0,
                     left: 16.0,
                     right: 16.0,
                   ),
                   child: child!,
                 ),
-              Gaps.vGap26,
+              Gaps.vGap16,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -250,7 +255,7 @@ class ConfirmTwo extends StatelessWidget {
                       onCancel();
                     },
                     child: Container(
-                      width: 100.w,
+                      width: 105.w,
                       height: 50,
                       decoration: BoxDecoration(
                         color: Colours.color_F2F3F5,
@@ -268,11 +273,13 @@ class ConfirmTwo extends StatelessWidget {
                   // Gaps.hGap10,
                   GestureDetector(
                     onTap: () async {
-                      NavigatorUtils.goBack(context);
-                      onConfirm();
+                      if (isNetWork) {
+                        NavigatorUtils.goBack(context);
+                        onConfirm();
+                      }
                     },
                     child: Container(
-                      width: 100.w,
+                      width: 105.w,
                       height: 50,
                       decoration: BoxDecoration(
                         color: Colours.color_8003FD,

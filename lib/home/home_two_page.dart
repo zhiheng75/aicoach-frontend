@@ -501,9 +501,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   void init() {
     pageState = 'loading';
-    setState(() {});
     _homeTwoPagePresenter.getBannerList();
     _homeTwoPagePresenter.getCharacterList();
+    setState(() {});
   }
 
   void getBaseConfig() async {
@@ -963,8 +963,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
     pageState = 'success';
 
-    setState(() {});
-
     String characterId = characterList[0].characterId;
     // _homeProvider.character.characterId = characterId;
     _homeProvider.character.characterId = characterId;
@@ -973,6 +971,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     if (phone != "17001234567") {
       _homeTwoPagePresenter.getBindTeacherStatus();
     }
+    setState(() {});
   }
 
   @override
