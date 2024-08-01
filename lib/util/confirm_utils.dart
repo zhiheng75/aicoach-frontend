@@ -1,6 +1,7 @@
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -276,6 +277,8 @@ class ConfirmTwo extends StatelessWidget {
                       if (isNetWork) {
                         NavigatorUtils.goBack(context);
                         onConfirm();
+                      } else {
+                        Toast.show("请检查网络");
                       }
                     },
                     child: Container(
