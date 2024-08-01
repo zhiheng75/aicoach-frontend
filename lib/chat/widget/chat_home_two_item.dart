@@ -50,7 +50,7 @@ class _ChatHomeTwoItemState extends State<ChatHomeTwoItem> {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 12, top: 11),
+            padding: EdgeInsets.only(left: 12.w, top: 11.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -98,9 +98,9 @@ class _ChatHomeTwoItemState extends State<ChatHomeTwoItem> {
             ),
           ),
           Positioned(
-            left: 12,
+            left: 12.w,
             // top: 0,
-            bottom: 5,
+            bottom: 5.w,
             child: Row(
               children: [
                 LoadAssetImage(

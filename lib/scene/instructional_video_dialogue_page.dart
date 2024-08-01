@@ -27,6 +27,7 @@ import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -157,6 +158,12 @@ class _InstructionalVideoDialoguePageState
   late int _invokeInt = 0;
 
   late bool isNetWork = true;
+  late bool isTimeBack = false;
+  late int timerInt = 0;
+  late DateTime timestamp;
+
+  late Timer _backTimer;
+  late int _backTimerInt = 120;
 
   Widget lodingView() {
     return const Center(
@@ -339,18 +346,54 @@ class _InstructionalVideoDialoguePageState
       // insertTipMessage('Class finished！');
       _bottomBarControll.setDisabled(true);
       _isConversationEnd = true;
-    }
-    // else if (reason == 'Error') {
-    //   // 异常结束
-    //   // insertTipMessage('Please switch to new class');
-    //   // init();
-    //   onReold("您的网络不太顺畅，请检查网络情况。");
-    // }
-    else if (reason == 'keepalive ping timeout') {
+    } else if (reason == 'Error') {
+      // 异常结束
+      // insertTipMessage('Please switch to new class');
+      // init();
+      onReold("您的网络不太顺畅，请检查网络情况。");
+    } else if (reason == 'keepalive ping timeout') {
       //超时断开走这里
       onReold("离开太久了!");
     } else {
-      onReold("您的网络不太顺畅，请检查网络情况。");
+      // DateTime now = DateTime.now();
+      // Duration difference = now.difference(timestamp);
+      // int seconds = difference.inSeconds;
+      // if (seconds > 120) {
+      //   isTimeBack = true;
+      //   if (isNetWork) {
+      //     onReold("离开太久了!");
+      //   } else {
+      //     onReold("您的网络不太顺畅，请检查网络情况。");
+      //   }
+      // } else {
+      //   onReold("您的网络不太顺畅，请检查网络情况。");
+      // }
+
+      //如果切出时间太久了
+      if (isTimeBack) {
+        isTimeBack = false;
+        setState(() {});
+//去后台时间太长
+        if (isNetWork) {
+          onReold("离开太久了!");
+        } else {
+          onReold("您的网络不太顺畅，请检查网络情况。");
+        }
+      } else {
+        onReold("您的网络不太顺畅，请检查网络情况。");
+      }
+
+//       //如果切出时间太久了
+//       if (isTimeBack) {
+// //去后台时间太长
+//         if (isNetWork) {
+//           onReold("离开太久了!");
+//         } else {
+//           onReold("您的网络不太顺畅，请检查网络情况。");
+//         }
+//       } else {
+//         onReold("您的网络不太顺畅，请检查网络情况。");
+//       }
     }
   }
 
@@ -360,19 +403,23 @@ class _InstructionalVideoDialoguePageState
   }
 
   void onReold(String message) {
-    ConfirmUtils.show(
+    ConfirmUtils.showNet(
       context: context,
-      isNetWork: isNetWork,
       title: '提示',
-      invokeInt: _invokeInt,
       // buttonDirection: 'vertical',
       confirmButtonText: '重新加载',
       cancelButtonText: '取消',
       onConfirm: () {
+        if (!isNetWork) {
+          Toast.showBottom("请检查网络");
+          return;
+        }
+        NavigatorUtils.goBack(context);
         Future.delayed(const Duration(milliseconds: 300), () {
           setState(() {
             isback = false;
             _invokeInt = 0;
+            isTimeBack = false;
           });
         });
 
@@ -457,6 +504,7 @@ class _InstructionalVideoDialoguePageState
       // }
       if (result == ConnectivityResult.none) {
         isNetWork = false;
+        // onReold("您的网络不太顺畅，请检查网络情况。");
       } else {
         isNetWork = true;
       }
@@ -527,39 +575,102 @@ class _InstructionalVideoDialoguePageState
         }
       }
 
+      if (message == 'AppLifecycleState.paused') {
+        //推到后台
+        Log.e("AppLifecycleState.paused");
+        timestamp = DateTime.now();
+        isTimeBack = true;
+        setState(() {});
+        // isback = true;
+        // _startBackTimer();
+      }
+      if (message == 'AppLifecycleState.resumed') {
+        //回到前台
+        // _cancelTimer();
+        isTimeBack = false;
+        setState(() {});
+        Log.e("AppLifecycleState.resumed");
+        // int resumedTime = getCurrentTime();
+        // DateTime now = DateTime.now();
+        // Duration difference = now.difference(timestamp);
+        // int seconds = difference.inSeconds;
+        // if (seconds > 120) {
+        //   isTimeBack = true;
+        //   if (isNetWork) {
+        //     onReold("离开太久了!");
+        //   } else {
+        //     onReold("您的网络不太顺畅，请检查网络情况。");
+        //   }
+        // } else {
+        //   isTimeBack = false;
+        //   isback = false;
+        // }
+        // setState(() {});
+      }
+
       return message;
     });
   }
 
-  @override
-  void didChangeDependencies() {
-    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
-    super.didChangeDependencies();
-  }
-
-  @override
-  void didPush() {
-    // TODO: implement didPush
-    super.didPush();
-    //从其他页面过来
-    isShowStr = "1";
-  }
-
-  @override
-  void didPushNext() {
-    // TODO: implement didPushNext
-    super.didPushNext();
-    isShowStr = "2";
-  }
-
-  @override
-  void didPopNext() {
-    // TODO: implement didPopNext
-    super.didPopNext();
-    setState(() {
-      isShowStr = "1";
+  ///启动倒计时器
+  void _startBackTimer() {
+    _backTimerInt = 120;
+    _backTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_backTimerInt == 0) {
+        _cancelTimer();
+        if (isNetWork) {
+          onReold("离开太久了!");
+        } else {
+          onReold("您的网络不太顺畅，请检查网络情况。");
+        }
+        isback = true;
+        setState(() {});
+        return;
+      }
+      _backTimerInt = _backTimerInt - 1;
+      Log.e("==========" + _backTimerInt.toString());
     });
   }
+
+  void _cancelTimer() {
+    _backTimer?.cancel();
+  }
+
+  // int getCurrentTime() {
+  //   // 获取当前时间
+  //   DateTime now = DateTime.now();
+  //   return now.minute;
+  // }
+
+  // @override
+  // void didChangeDependencies() {
+  //   routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  //   super.didChangeDependencies();
+  // }
+
+  // @override
+  // void didPush() {
+  //   // TODO: implement didPush
+  //   super.didPush();
+  //   //从其他页面过来
+  //   isShowStr = "1";
+  // }
+
+  // @override
+  // void didPushNext() {
+  //   // TODO: implement didPushNext
+  //   super.didPushNext();
+  //   isShowStr = "2";
+  // }
+
+  // @override
+  // void didPopNext() {
+  //   // TODO: implement didPopNext
+  //   super.didPopNext();
+  //   setState(() {
+  //     isShowStr = "1";
+  //   });
+  // }
 
   // showImageDialog() {
   //   showDialog(
@@ -607,12 +718,12 @@ class _InstructionalVideoDialoguePageState
                       _timer.cancel();
                       //重新开始
                       newDataIdx = newDataIdx - 1;
-                      setState(() {
-                        isOnePlay = "1";
-                        isShowDialog = false;
-                      });
-                      sessionId = const Uuid().v4().replaceAll('-', '');
 
+                      sessionId = const Uuid().v4().replaceAll('-', '');
+                      isOnePlay = "1";
+                      isShowDialog = false;
+                      isTimeBack = false;
+                      setState(() {});
                       forstartFlow(newDataIdx, resourceIdx);
                     },
                     child: Container(
@@ -648,11 +759,10 @@ class _InstructionalVideoDialoguePageState
                       _timer.cancel();
 
                       //下一关
-                      setState(() {
-                        isShowDialog = false;
-                      });
+                      isShowDialog = false;
+                      isTimeBack = false;
                       sessionId = const Uuid().v4().replaceAll('-', '');
-
+                      setState(() {});
                       forstartFlow(newDataIdx, resourceIdx);
                     },
                     child: Container(

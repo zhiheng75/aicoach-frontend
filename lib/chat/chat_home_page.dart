@@ -113,7 +113,10 @@ class _ChatHomePageState extends State<ChatHomePage>
 
   Widget tabbar() {
     return Container(
-      padding: EdgeInsets.only(left: 12.w, right: 12.w),
+      padding: EdgeInsets.only(
+        left: 12.w,
+        right: 12.w,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -126,7 +129,7 @@ class _ChatHomePageState extends State<ChatHomePage>
             ),
           ),
           SizedBox(
-            height: 40.h,
+            height: 48.h,
             child: ListView.builder(
               itemBuilder: (ctx, index) {
                 return _categoryList[index].name.isNotEmpty
@@ -135,7 +138,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                           changeCategory(index);
                         },
                         child: Container(
-                            margin: const EdgeInsets.only(top: 5, right: 24),
+                            margin: EdgeInsets.only(top: 5.h, right: 20.h),
                             height: 40.h,
                             child: Column(
                               children: [
@@ -188,7 +191,7 @@ class _ChatHomePageState extends State<ChatHomePage>
         ? Container()
         : Container(
             // color: Colors.blue,
-            height: 205.h,
+            height: 210.h,
             child: Stack(
               children: [
                 Column(
@@ -278,24 +281,25 @@ class _ChatHomePageState extends State<ChatHomePage>
                           itemCount: characterList.length),
                     ),
                     Container(
-                        padding: EdgeInsets.only(left: 26, right: 20),
-                        margin: EdgeInsets.only(left: 4, right: 4),
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: ImageUtils.getAssetImage(
-                                    "chat_home_top_bg"),
-                                fit: BoxFit.fill)),
+                        padding: EdgeInsets.only(left: 20.w, right: 14.w),
+                        margin:
+                            EdgeInsets.only(left: 12.w, right: 12.w, top: 5.h),
+                        // decoration: BoxDecoration(
+                        //     image: DecorationImage(
+                        //         image: ImageUtils.getAssetImage(
+                        //             "chat_home_top_bg"),
+                        //         fit: BoxFit.fill)),
                         height: 104.h,
                         width: _screenUtil.screenWidth,
-                        // decoration: BoxDecoration(
-                        //     borderRadius: BorderRadius.circular(10),
-                        //     gradient: const LinearGradient(
-                        //       colors: [
-                        //         // Colours.color_94FFF9,
-                        //         Colours.color_7F5FFF,
-                        //         Colours.color_A55FFF,
-                        //       ],
-                        //     )),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            gradient: const LinearGradient(
+                              colors: [
+                                // Colours.color_94FFF9,
+                                Colours.color_7F5FFF,
+                                Colours.color_A55FFF,
+                              ],
+                            )),
                         child: Row(
                           // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -338,23 +342,28 @@ class _ChatHomePageState extends State<ChatHomePage>
                         )),
                   ],
                 ),
-                Center(
-                    child: Container(
-                        width: 140.w,
-                        height: 36.h,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: ImageUtils.getAssetImage("name_back"),
-                                fit: BoxFit.fitWidth)),
-                        child: Center(
-                            child: Text(
-                          characterList[peopleIndex].name,
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        )))),
+                Positioned(
+                  top: 80.h,
+                  right: 0,
+                  left: 0,
+                  child: Center(
+                      child: Container(
+                          width: 130.w,
+                          height: 36.h,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: ImageUtils.getAssetImage("name_back"),
+                                  fit: BoxFit.fitWidth)),
+                          child: Center(
+                              child: Text(
+                            characterList[peopleIndex].name,
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          )))),
+                ),
               ],
             ),
           );
@@ -435,7 +444,7 @@ class _ChatHomePageState extends State<ChatHomePage>
                                       margin: const EdgeInsets.only(
                                         top: 10,
                                       ),
-                                      height: 200.0.h,
+                                      height: 140.w + 70.h,
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
                                         itemCount: _topicList.length,

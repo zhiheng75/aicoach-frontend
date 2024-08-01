@@ -465,10 +465,10 @@ class _SettingPageState extends State<SettingPage>
                       GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
-                          myAlert.showAlert(context,
-                              title: "提示",
-                              content: "确定退出吗?", clickCallback: (index, text) {
-                            if (index == 1) {
+                          ConfirmUtils.show(
+                            context: context,
+                            title: '提示',
+                            onConfirm: () {
                               LoginManager.toLoginOut();
                               NavigatorUtils.goBack(context);
                               //
@@ -481,9 +481,57 @@ class _SettingPageState extends State<SettingPage>
                                 debug: true,
                               );
                               JPush().deleteAlias();
-                              // EventBus().emit(NotificationUtils.loginIn);
-                            }
-                          });
+                            },
+                            onCancel: () {},
+                            child: const Text(
+                              '确定退出吗?',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF333333),
+                                height: 18.0 / 15.0,
+                              ),
+                            ),
+                          );
+                          // ConfirmUtils.show(
+                          //   context: context,
+                          //   title: '确定退出吗?',
+                          //   onConfirm: () {
+                          // LoginManager.toLoginOut();
+                          // NavigatorUtils.goBack(context);
+                          // //
+                          // EventBus().emit(NotificationUtils.loginOut);
+                          // JPush().setup(
+                          //   appKey:
+                          //       "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
+                          //   channel: "kouyududu",
+                          //   production: false,
+                          //   debug: true,
+                          // );
+                          // JPush().deleteAlias();
+                          //   },
+                          //   onCancel: () {},
+                          // );
+
+                          // myAlert.showAlert(context,
+                          //     title: "提示",
+                          //     content: "确定退出吗?", clickCallback: (index, text) {
+                          //   if (index == 1) {
+                          //     LoginManager.toLoginOut();
+                          //     NavigatorUtils.goBack(context);
+                          //     //
+                          //     EventBus().emit(NotificationUtils.loginOut);
+                          //     JPush().setup(
+                          //       appKey:
+                          //           "0ce313d976a06a8f651f2252", //你自己应用的 AppKey
+                          //       channel: "kouyududu",
+                          //       production: false,
+                          //       debug: true,
+                          //     );
+                          //     JPush().deleteAlias();
+                          //     // EventBus().emit(NotificationUtils.loginIn);
+                          //   }
+                          // });
 
                           // NavigatorUtils.push(context, HomeRouter.homePage);
                           //退出登录

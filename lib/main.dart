@@ -63,6 +63,9 @@ Future<void> main() async {
             message == 'AppLifecycleState.paused') {
           // await MediaUtils().stopPlayByAppPaused();
         }
+        // DateTime now = DateTime.now();
+        // Log.e(now.minute.toString());
+        // Log.e(now.hour);
 
         _appLifecycleState = message;
 

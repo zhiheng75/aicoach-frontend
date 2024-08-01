@@ -33,7 +33,7 @@ class _TopicHomeItemState extends State<TopicHomeItem> {
               widget.data.coverImage,
               // fit: BoxFit.fitHeight,
               width: 108.w,
-              height: 140.h,
+              height: 140.w,
             ),
           ),
           Gaps.vGap4,
