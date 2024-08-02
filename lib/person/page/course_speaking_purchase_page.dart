@@ -15,6 +15,7 @@ import 'package:Bubble/person/presneter/course_speaking_purchase_presnter.dart';
 import 'package:Bubble/person/presneter/user_membership_upgrade_page_presenter.dart';
 import 'package:Bubble/person/view/course_speaking_purchase_view.dart';
 import 'package:Bubble/person/view/user_membership_upgrade_page_view.dart';
+import 'package:Bubble/person/widget/course_detail_Item.dart';
 import 'package:Bubble/person/widget/new_course_speaking_item.dart';
 import 'package:Bubble/person/widget/user_membership_upgrade_item.dart';
 import 'package:Bubble/res/colors.dart';
@@ -79,6 +80,162 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
   Fluwx fluwx = Fluwx();
   late String? accessToken;
   final ScrollController _scrollController = ScrollController();
+
+  List<Color> colorBackData = [
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+  ];
+
+  List<List<Color>> colorIconBackData = [
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+  ];
 
   @override
   void initState() {
@@ -518,6 +675,79 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
     return list;
   }
 
+  // Widget _buildCourseWidget() {
+  //   return Column(
+  //       // children: _buildCourseWidgetItems(),
+  //       );
+  // }
+
+  Widget _headTitle(String title) {
+    return Container(
+      height: 45,
+      width: _screenUtil.screenWidth,
+      color: const Color(0xFFFFFFFF),
+      child: Center(
+        child: Column(
+          children: [
+            Container(
+              height: 15,
+            ),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 17.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStickyHeader(List<LessonListClass> list, String tit,
+      Color backColor, List<Color> iconBackColor) {
+    return Column(
+      children: [
+        _headTitle(tit),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: _buildItems(list, backColor, iconBackColor),
+        )
+      ],
+    );
+  }
+
+  List<Widget> _buildItems(List<LessonListClass> xxlist, Color backColor,
+      List<Color> iconBackColor) {
+    List<Widget> list = [];
+    for (int i = 0; i < xxlist.length; i++) {
+      list.add(CourseDetaiItem(
+        unitData: xxlist[i],
+        backColor: backColor,
+        iconBackColor: iconBackColor,
+      ));
+    }
+    return list;
+  }
+
+  // List<Widget> _buildCourseWidgetItems() {
+  //   List<Widget> list = [];
+  //   for (int i = 0;
+  //       i < listData.data.lessonList.list[classIdx].lessons.length;
+  //       i++) {
+  //     list.add(Container(
+  //       margin: const EdgeInsets.only(top: 20, left: 9, right: 9),
+  //       child: LoadImage(
+  //         width: _screenUtil.screenWidth,
+  //         listData.data.lessonList.list[classIdx].detail.detailImg[i],
+  //       ),
+  //     ));
+  //   }
+  //   return list;
+  // }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -612,27 +842,25 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                               : Container(),
                         ),
                         detailWidget(),
-
-                        // listData.data[idx].type != 1
-                        //     ? SliverToBoxAdapter(
-                        //         child:
-                        //             listData.data[idx].detail.questions.isEmpty
-                        //                 ? Container()
-                        //                 : Container(
-                        //                     margin: const EdgeInsets.only(
-                        //                         top: 40, bottom: 14),
-                        //                     // height: 80,
-                        //                     child: const LoadAssetImage(
-                        //                       'wenti_bg',
-                        //                     ),
-                        //                   ),
-                        //       )
-                        //     : SliverToBoxAdapter(child: Container()),
-                        // listData.data[idx].type != 1
-                        //     ? problemWidget()
-                        //     : SliverToBoxAdapter(
-                        //         child: Container(),
-                        //       ),
+                        typeIdx == 0
+                            ? SliverToBoxAdapter(
+                                child: Container(),
+                              )
+                            : SliverList.builder(
+                                itemBuilder: (ctx, index) {
+                                  LessonList lessonList =
+                                      listData.data.lessonList;
+                                  List<LessonListList> list = lessonList.list;
+                                  List<Lesson> lessons = list[classIdx].lessons;
+                                  return _buildStickyHeader(
+                                      lessons[index].list,
+                                      lessons[index].unitName,
+                                      colorBackData[index],
+                                      colorIconBackData[index]);
+                                },
+                                itemCount: listData.data.lessonList
+                                    .list[classIdx].lessons.length,
+                              ),
                         SliverToBoxAdapter(
                           child: Container(
                             height: 80,

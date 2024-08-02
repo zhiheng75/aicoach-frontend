@@ -70,9 +70,93 @@ class _CourseHomePageState extends State<CourseHomePage>
     Colours.color_F9F8FF,
     Colours.color_EFF9FF,
     Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
   ];
 
   List<List<Color>> colorIconBackData = [
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
     [
       Colours.color_9F7EFF,
       Colours.color_BDA6FF,
