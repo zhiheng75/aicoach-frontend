@@ -60,7 +60,6 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
   late Offset offsetTab;
   GlobalKey keyTab = GlobalKey(debugLabel: "university");
   bool isUpdateAppBar = false;
-  bool _checked = false;
   final ScreenUtil _screenUtil = ScreenUtil();
   late UserMembershipUpgradepagePresenter _userMembershipUpgradepagePresenter;
 
@@ -210,75 +209,75 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
     );
   }
 
-  Widget teacherWidget() {
-    return Stack(
-      children: [
-        Container(
-            margin:
-                const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                gradient: const LinearGradient(
-                  colors: [
-                    Colours.color_FAF7FF,
-                    Colours.color_F3EEFE,
-                  ],
-                )),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "每周六 晚19:00-21:00 报名后分配",
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colours.color_2C0047,
-                          ),
-                        ),
-                        Gaps.vGap5,
-                        Container(
-                            margin: const EdgeInsets.only(top: 5, bottom: 5),
-                            padding: const EdgeInsets.only(
-                                top: 10, bottom: 10, left: 15, right: 15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30.0),
-                              color: Colours.color_6D388F,
-                            ),
-                            child: const Text(
-                              "辅导老师",
-                              style: TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white,
-                              ),
-                            )),
-                      ],
-                    )),
-                    const SizedBox(
-                      height: 100,
-                      width: 150,
-                    ),
-                  ],
-                ),
-              ],
-            )),
-        const Positioned(
-            right: 5,
-            bottom: 10,
-            child: LoadAssetImage(
-              "suofeiya_head",
-              width: 170.0,
-              height: 150.0,
-            ))
-      ],
-    );
-  }
+  // Widget teacherWidget() {
+  //   return Stack(
+  //     children: [
+  //       Container(
+  //           margin:
+  //               const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 10),
+  //           padding: const EdgeInsets.all(15),
+  //           decoration: BoxDecoration(
+  //               borderRadius: BorderRadius.circular(15),
+  //               gradient: const LinearGradient(
+  //                 colors: [
+  //                   Colours.color_FAF7FF,
+  //                   Colours.color_F3EEFE,
+  //                 ],
+  //               )),
+  //           child: Column(
+  //             children: [
+  //               Row(
+  //                 children: [
+  //                   Expanded(
+  //                       child: Column(
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     children: [
+  //                       const Text(
+  //                         "每周六 晚19:00-21:00 报名后分配",
+  //                         style: TextStyle(
+  //                           fontSize: 16.0,
+  //                           fontWeight: FontWeight.w400,
+  //                           color: Colours.color_2C0047,
+  //                         ),
+  //                       ),
+  //                       Gaps.vGap5,
+  //                       Container(
+  //                           margin: const EdgeInsets.only(top: 5, bottom: 5),
+  //                           padding: const EdgeInsets.only(
+  //                               top: 10, bottom: 10, left: 15, right: 15),
+  //                           decoration: BoxDecoration(
+  //                             borderRadius: BorderRadius.circular(30.0),
+  //                             color: Colours.color_6D388F,
+  //                           ),
+  //                           child: const Text(
+  //                             "辅导老师",
+  //                             style: TextStyle(
+  //                               fontSize: 15.0,
+  //                               fontWeight: FontWeight.w400,
+  //                               color: Colors.white,
+  //                             ),
+  //                           )),
+  //                     ],
+  //                   )),
+  //                   const SizedBox(
+  //                     height: 100,
+  //                     width: 150,
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           )),
+  //       const Positioned(
+  //           right: 5,
+  //           bottom: 10,
+  //           child: LoadAssetImage(
+  //             "suofeiya_head",
+  //             width: 170.0,
+  //             height: 150.0,
+  //           ))
+  //     ],
+  //   );
+  // }
 
   Widget classPayWidget() {
     return Container(
