@@ -147,7 +147,7 @@ class ExpirationReminder extends StatelessWidget {
             // "${HomeRouter.coursePurchasePage}?levelId=$levelId",
 
             NavigatorUtils.push(context,
-                "${PersonalRouter.userMembershipUpgradePage}?levelId=0&goodsLabel=0",
+                "${PersonalRouter.courseSpeakingPurchasePage}?levelId=0&goodsLabel=0",
                 replace: true);
           },
           child: Container(

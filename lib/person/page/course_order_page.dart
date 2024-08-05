@@ -121,7 +121,7 @@ class _CourseOrderPageState extends State<CourseOrderPage>
                       NavigatorUtils.push(context, PersonalRouter.purchase);
                     } else {
                       NavigatorUtils.push(context,
-                          "${PersonalRouter.userMembershipUpgradePage}?levelId=0&goodsLabel=0");
+                          "${PersonalRouter.courseSpeakingPurchasePage}?levelId=0&goodsLabel=0");
                     }
                   },
                   child: Container(

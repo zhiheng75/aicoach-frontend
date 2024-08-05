@@ -31,7 +31,7 @@ class _NewCourseSpeakingItemState extends State<NewCourseSpeakingItem> {
               borderRadius: BorderRadius.circular(12.0),
               color: Colors.white,
             ),
-      margin: const EdgeInsets.only(right: 10, left: 10),
+      margin: EdgeInsets.only(right: 10.w, left: 10.w),
       padding: const EdgeInsets.all(15),
       width: 150.w,
       height: 150.w,
@@ -41,8 +41,9 @@ class _NewCourseSpeakingItemState extends State<NewCourseSpeakingItem> {
           Text(
             widget.data.name,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 18.0,
+            maxLines: 2,
+            style: TextStyle(
+              fontSize: 18.0.sp,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
@@ -50,18 +51,18 @@ class _NewCourseSpeakingItemState extends State<NewCourseSpeakingItem> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 "￥",
                 style: TextStyle(
-                  fontSize: 16.0,
+                  fontSize: 16.0.sp,
                   fontWeight: FontWeight.w400,
                   color: Colours.color_542DEC,
                 ),
               ),
               Text(
                 widget.data.price,
-                style: const TextStyle(
-                  fontSize: 36.0,
+                style: TextStyle(
+                  fontSize: 36.0.sp,
                   fontWeight: FontWeight.bold,
                   color: Colours.color_542DEC,
                 ),
@@ -102,18 +103,19 @@ class _NewCourseSpeakingTwoItemState extends State<NewCourseSpeakingTwoItem> {
               borderRadius: BorderRadius.circular(12.0),
               color: Colors.white,
             ),
-      margin: const EdgeInsets.only(right: 10, left: 10),
+      margin: EdgeInsets.only(right: 10.w, left: 10.w),
       // padding: const EdgeInsets.all(10),
-      width: 160,
-      height: 160,
+      width: 150.w,
+      height: 150.w,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             widget.data.name,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 18.0,
+            maxLines: 2,
+            style: TextStyle(
+              fontSize: 18.0.sp,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
@@ -121,18 +123,18 @@ class _NewCourseSpeakingTwoItemState extends State<NewCourseSpeakingTwoItem> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 "￥",
                 style: TextStyle(
-                  fontSize: 16.0,
+                  fontSize: 16.0.sp,
                   fontWeight: FontWeight.w400,
                   color: Colours.color_542DEC,
                 ),
               ),
               Text(
                 widget.data.price,
-                style: const TextStyle(
-                  fontSize: 36.0,
+                style: TextStyle(
+                  fontSize: 36.0.sp,
                   fontWeight: FontWeight.bold,
                   color: Colours.color_542DEC,
                 ),

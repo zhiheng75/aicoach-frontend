@@ -394,7 +394,7 @@ class _CourseHomePageState extends State<CourseHomePage>
           //去购买页
           NavigatorUtils.push(
             context,
-            "${PersonalRouter.userMembershipUpgradePage}?levelId=$levelId&goodsLabel=$goodsLabel",
+            "${PersonalRouter.courseSpeakingPurchasePage}?levelId=$levelId&goodsLabel=1",
             // "${HomeRouter.coursePurchasePage}?levelId=$levelId",
           );
         },

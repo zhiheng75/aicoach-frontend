@@ -4,6 +4,7 @@ import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CourseDetaiItem extends StatefulWidget {
   final LessonListClass unitData;
@@ -41,7 +42,7 @@ class _CourseDetaiItemState extends State<CourseDetaiItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        // height: 115,
+        // height: 104.h,
         margin: const EdgeInsets.only(top: 10, left: 16, right: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
@@ -115,7 +116,7 @@ class _CourseDetaiItemState extends State<CourseDetaiItem> {
                     widget.unitData.lessonDescription != ""
                         ? widget.unitData.lessonDescription
                         : nengli,
-                    maxLines: 3,
+                    maxLines: 2,
                     style: const TextStyle(
                       fontSize: 13.0,
                       fontWeight: FontWeight.w400,

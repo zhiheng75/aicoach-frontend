@@ -27,7 +27,7 @@ class PersonalRouter implements IRouterProvider {
 
   static String errorCorrectionPage = '/ErrorCorrectionPage';
   static String errorCorrectionDetailPage = '/ErrorCorrectionDetailPage';
-  static String userMembershipUpgradePage = '/UserMembershipUpgradePage';
+  // static String userMembershipUpgradePage = '/UserMembershipUpgradePage';
 
   static String courseSpeakingPurchasePage = '/CourseSpeakingPurchasePage';
 
@@ -60,20 +60,31 @@ class PersonalRouter implements IRouterProvider {
       );
     }));
 
-    router.define(courseSpeakingPurchasePage,
-        handler: Handler(
-            handlerFunc: (_, __) => const CourseSpeakingPurchasePage()));
+    // router.define(courseSpeakingPurchasePage,
+    //     handler: Handler(
+    //         handlerFunc: (_, __) => const CourseSpeakingPurchasePage()));
 
-    router.define(userMembershipUpgradePage,
+    router.define(courseSpeakingPurchasePage,
         handler: Handler(handlerFunc: (context, params) {
       String levelId = params['levelId']!.first;
       String goodsLabel = params['goodsLabel']!.first;
 
-      return UserMembershipUpgradePage(
+      return CourseSpeakingPurchasePage(
         levelId: levelId,
         goodsLabel: goodsLabel,
       );
     }));
+
+    // router.define(userMembershipUpgradePage,
+    //     handler: Handler(handlerFunc: (context, params) {
+    //   String levelId = params['levelId']!.first;
+    //   String goodsLabel = params['goodsLabel']!.first;
+
+    //   return UserMembershipUpgradePage(
+    //     levelId: levelId,
+    //     goodsLabel: goodsLabel,
+    //   );
+    // }));
 
     router.define(person,
         handler: Handler(handlerFunc: (_, __) => const PersonPage()));

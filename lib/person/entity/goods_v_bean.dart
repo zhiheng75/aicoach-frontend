@@ -538,7 +538,7 @@ class PackageListList {
         channelPrice: json["channel_price"],
         type: json["type"],
         limit: json["limit"],
-        levelId: json["level_id"],
+        levelId: json["level_id"] ?? 0,
         activityLeftTime: json["activity_left_time"],
         purchaseTime: json["purchase_time"],
         detail: FluffyDetail.fromJson(json["detail"]),
