@@ -594,14 +594,14 @@ class _PersonPageState extends State<PersonPage>
                     if (phone == "17001234567") {
                       NavigatorUtils.push(context, PersonalRouter.purchase);
                     } else {
-                      // NavigatorUtils.push(
-                      //   context,
-                      //   "${PersonalRouter.userMembershipUpgradePage}?levelId=0&goodsLabel=0",
-                      // );
                       NavigatorUtils.push(
                         context,
-                        PersonalRouter.courseSpeakingPurchasePage,
+                        "${PersonalRouter.courseSpeakingPurchasePage}?levelId=0&goodsLabel=0",
                       );
+                      // NavigatorUtils.push(
+                      //   context,
+                      //   PersonalRouter.courseSpeakingPurchasePage,
+                      // );
                     }
                     EventUMStatistics.umengCommonMapEvent(
                         "click_index_go_to_personal_buy");

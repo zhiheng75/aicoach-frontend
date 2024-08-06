@@ -1,5 +1,6 @@
 import 'package:Bubble/person/entity/goods_v_bean.dart';
 import 'package:Bubble/res/colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -25,16 +26,16 @@ class _NewCourseSpeakingItemState extends State<NewCourseSpeakingItem> {
                 style: BorderStyle.solid,
                 color: Colours.color_8256FF,
               ),
-              color: Colours.color_EFE9FF,
+              color: Colors.white,
             )
           : BoxDecoration(
               borderRadius: BorderRadius.circular(12.0),
-              color: Colors.white,
+              color: Colours.color_E9E1FF,
             ),
-      margin: EdgeInsets.only(right: 10.w, left: 10.w),
+      margin: EdgeInsets.only(left: 10.w),
       padding: const EdgeInsets.all(15),
-      width: 150.w,
-      height: 150.w,
+      width: 160.w,
+      height: 160.w,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -67,6 +68,40 @@ class _NewCourseSpeakingItemState extends State<NewCourseSpeakingItem> {
                   color: Colours.color_542DEC,
                 ),
               ),
+            ],
+          ),
+          Stack(
+            children: [
+              Center(
+                child: Text(
+                  "￥${widget.data.originalPrice}",
+                  textAlign: TextAlign.center,
+                  strutStyle: StrutStyle(
+                    fontSize: 16.0.sp,
+                    leading: 0,
+                    height: 1.1,
+                    // 1.1更居中
+                    forceStrutHeight: true, // 关键属性 强制改为文字高度
+                  ),
+                  style: TextStyle(
+                    fontSize: 16.0.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colours.color_542DEC,
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 8,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Container(
+                    height: 2,
+                    width: 50,
+                    color: Colours.color_542DEC,
+                  ),
+                ),
+              )
             ],
           ),
         ],
@@ -97,16 +132,16 @@ class _NewCourseSpeakingTwoItemState extends State<NewCourseSpeakingTwoItem> {
                 style: BorderStyle.solid,
                 color: Colours.color_8256FF,
               ),
-              color: Colours.color_EFE9FF,
+              color: Colours.color_E9E1FF,
             )
           : BoxDecoration(
               borderRadius: BorderRadius.circular(12.0),
               color: Colors.white,
             ),
-      margin: EdgeInsets.only(right: 10.w, left: 10.w),
+      margin: EdgeInsets.only(left: 10.w),
       // padding: const EdgeInsets.all(10),
-      width: 150.w,
-      height: 150.w,
+      width: 160.w,
+      height: 160.w,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -140,6 +175,16 @@ class _NewCourseSpeakingTwoItemState extends State<NewCourseSpeakingTwoItem> {
                 ),
               ),
             ],
+          ),
+          Text(
+            "￥${widget.data.originalPrice}",
+            style: TextStyle(
+                fontSize: 16.0.sp,
+                fontWeight: FontWeight.w400,
+                color: Colours.color_542DEC,
+                decoration: TextDecoration.lineThrough,
+                decorationStyle: TextDecorationStyle.solid,
+                decorationColor: Colours.color_542DEC),
           ),
         ],
       ),

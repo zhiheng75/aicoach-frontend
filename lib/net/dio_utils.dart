@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:Bubble/util/event_bus.dart';
 import 'package:dio/dio.dart';
@@ -64,13 +65,15 @@ class DioUtils {
     // };
 
     /// Fiddler抓包代理配置 https://www.jianshu.com/p/d831b1f7c45b
-    // _dio.httpClientAdapter = IOHttpClientAdapter()..onHttpClientCreate = (HttpClient client) {
-    //   client.findProxy = (uri) {
-    //     //proxy all request to localhost:8888
-    //     return 'PROXY 10.41.0.132:8888';
+    // _dio.httpClientAdapter = IOHttpClientAdapter()
+    //   ..onHttpClientCreate = (client) {
+    //     client.findProxy = (uri) {
+    //       //proxy all request to localhost:8888
+    //       // return 'PROXY 10.41.0.132:8888';
+    //       return 'PROXY $uri:8888';
+    //     };
+    //     return client;
     //   };
-    //   return client;
-    // };
 
     /// 添加拦截器
     void addInterceptor(Interceptor interceptor) {
@@ -87,6 +90,17 @@ class DioUtils {
   static late Dio _dio;
 
   Dio get dio => _dio;
+
+  void setProxy(String url) {
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.findProxy = (uri) {
+        return "PROXY $url:8888";
+      };
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+    };
+  }
 
   // 数据返回格式统一，统一处理异常
   Future<BaseEntity<T>> _request<T>(

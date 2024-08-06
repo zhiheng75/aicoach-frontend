@@ -24,6 +24,7 @@ import 'package:Bubble/main.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/net/proxy_config.dart';
 import 'package:Bubble/person/entity/version_bean.dart';
 import 'package:Bubble/person/widget/illustration.dart';
 import 'package:Bubble/res/colors.dart';
@@ -369,7 +370,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       // // 正式
       // String url = "https://statics.shenmo-ai.com/system_maintenance_prod.json";
       // // 测试
-      String url = "https://statics.shenmo-ai.com/system_maintenance_dev.json";
+      String url = ProxyConfig.isOfficialAddress
+          ? "https://statics.shenmo-ai.com/system_maintenance_prod.json"
+          : "https://statics.shenmo-ai.com/system_maintenance_dev.json";
       var response = await dio.get(url);
       //转化为Json
       String jsonString = jsonEncode(response.data);

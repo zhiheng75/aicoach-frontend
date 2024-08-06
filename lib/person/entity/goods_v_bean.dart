@@ -87,8 +87,8 @@ class LessonListList {
   String tips;
   dynamic productId;
   int term;
-  int originalPrice;
-  int channelPrice;
+  String originalPrice;
+  String channelPrice;
   int type;
   int limit;
   int levelId;
@@ -134,11 +134,11 @@ class LessonListList {
         tips: json["tips"],
         productId: json["product_id"],
         term: json["term"],
-        originalPrice: json["original_price"],
-        channelPrice: json["channel_price"],
+        originalPrice: json["original_price"].toString(),
+        channelPrice: json["channel_price"].toString(),
         type: json["type"],
         limit: json["limit"],
-        levelId: json["level_id"],
+        levelId: json["level_id"] ?? 0,
         activityLeftTime: json["activity_left_time"],
         purchaseTime: json["purchase_time"],
         lessons:
@@ -488,8 +488,8 @@ class PackageListList {
   String tips;
   String? productId;
   int term;
-  int originalPrice;
-  int channelPrice;
+  String originalPrice;
+  String channelPrice;
   int type;
   int limit;
   int levelId;
@@ -534,8 +534,8 @@ class PackageListList {
         tips: json["tips"],
         productId: json["product_id"],
         term: json["term"],
-        originalPrice: json["original_price"],
-        channelPrice: json["channel_price"],
+        originalPrice: json["original_price"].toString(),
+        channelPrice: json["channel_price"].toString(),
         type: json["type"],
         limit: json["limit"],
         levelId: json["level_id"] ?? 0,

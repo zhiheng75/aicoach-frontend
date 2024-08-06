@@ -81,11 +81,11 @@ class _ChatHomePageState extends State<ChatHomePage>
     });
 
     EventBus().on(NotificationUtils.resetChat, (idx) {
-      if (idx == "1") {
-        peopleIndex = 0;
-        _controller.move(peopleIndex);
-        _chatPagePresenter.getCharacterList();
-      }
+      // if (idx == "1") {
+      //   peopleIndex = 0;
+      //   _controller.move(peopleIndex);
+      //   _chatPagePresenter.getCharacterList();
+      // }
     });
   }
 

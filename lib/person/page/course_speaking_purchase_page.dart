@@ -102,6 +102,10 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
   Fluwx fluwx = Fluwx();
   late String? accessToken;
   final ScrollController _scrollController = ScrollController();
+
+  // final ScrollController _packageListScrollController = ScrollController();
+  // final ScrollController _lessonListScrollController = ScrollController();
+
   final ScrollController _bgscrollController = ScrollController();
 
   List<Color> colorBackData = [
@@ -349,59 +353,6 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
     }
   }
 
-  Widget userInfoWidget() {
-    return Container(
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              image:
-                  ImageUtils.getAssetImage("course_speaking_purchase_top_bg"),
-              fit: BoxFit.fitWidth)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: _screenUtil.statusBarHeight + 30.h,
-          ),
-          Row(
-            children: [
-              Gaps.hGap16,
-              ClipRRect(
-                borderRadius: BorderRadius.circular(25.0),
-                child: LoadImage(
-                  headimgurl,
-                  width: 50.0,
-                  height: 50.0,
-                ),
-              ),
-              Gaps.hGap6,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    userName,
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    _isVip ? dataStr : "非会员",
-                    style: const TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Gaps.vGap11,
-        ],
-      ),
-    );
-  }
-
   Widget classPayWidget() {
     return Container(
       decoration: BoxDecoration(
@@ -409,310 +360,338 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
               image:
                   ImageUtils.getAssetImage("course_speaking_purchase_top_bg"),
               fit: BoxFit.fill)),
-      child: Column(
+      child: Stack(
         children: [
-          Container(
-            height: _screenUtil.statusBarHeight + 30.h,
+          Positioned(
+            bottom: 0,
+            right: 0,
+            left: 0,
+            child: Container(
+              height: 200.h,
+              color: typeIdx == 0 ? null : Colours.color_D0BBFF,
+            ),
           ),
-          Row(
+          Column(
             children: [
-              Gaps.hGap16,
-              ClipRRect(
-                borderRadius: BorderRadius.circular(25.0),
-                child: LoadImage(
-                  headimgurl,
-                  width: 50.0,
-                  height: 50.0,
-                ),
+              Container(
+                height: _screenUtil.statusBarHeight + 30.h,
               ),
-              Gaps.hGap6,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  Text(
-                    userName,
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                  Gaps.hGap16,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(25.0),
+                    child: LoadImage(
+                      headimgurl,
+                      width: 50.0.w,
+                      height: 50.0.w,
                     ),
                   ),
-                  const Text(
-                    "时间",
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.black,
-                    ),
+                  Gaps.hGap6,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        userName,
+                        style: TextStyle(
+                          fontSize: 16.0.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        _isVip ? dataStr : "非会员",
+                        style: TextStyle(
+                          fontSize: 14.0.sp,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
-          Gaps.vGap11,
-          Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: ImageUtils.getAssetImage(
-                        typeIdx == 0 ? "spoken_pay_bg" : "course_pay_bg"),
-                    fit: BoxFit.fitWidth)),
-            // height: _screenUtil.scaleWidth / 390 * 398,
-            // decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(15),
-            //     gradient: const LinearGradient(
-            //       colors: [
-            //         Colours.color_FAF7FF,
-            //         Colours.color_F3EEFE,
-            //       ],
-            //     )),
-            margin: EdgeInsets.only(top: 8.w),
-            // padding: const EdgeInsets.only(left: 4, right: 2, top: 6),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: () {
-                          setState(() {
-                            typeIdx = 0;
-                          });
-                          // EventUMStatistics.umengCommonMapEvent(
-                          //     "click_index_go_to_personal_buy");
-                        },
-                        child: Container(
-                          height: 40.h,
-                          color: Colours.color_0000,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            typeIdx = 1;
-                          });
-                          // EventUMStatistics.umengCommonMapEvent(
-                          //     "click_index_go_to_personal_buy");
-                        },
-                        child: Container(
-                          height: 40.h,
-                          color: Colours.color_0000,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Gaps.vGap10,
-                SizedBox(
-                  // margin: const EdgeInsets.only(top: 10),
-                  height: 150.w,
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: typeIdx == 0
-                        ? listData.data.packageList.list.length
-                        : listData.data.lessonList.list.length,
-                    itemBuilder: (context, index) {
-                      return typeIdx == 0
-                          ? GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-                                setState(() {
-                                  spokenIdx = index;
-                                });
-                                EventUMStatistics.umengCommonMapEvent(
-                                    "click_index_go_to_personal_buy");
-                              },
-                              child: NewCourseSpeakingItem(
-                                isSele: spokenIdx == index ? true : false,
-                                data: listData.data.packageList.list[index],
-                              ),
-                            )
-                          : GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-                                setState(() {
-                                  classIdx = index;
-                                });
-                                EventUMStatistics.umengCommonMapEvent(
-                                    "click_index_go_to_personal_buy");
-                              },
-                              child: NewCourseSpeakingTwoItem(
-                                isSele: classIdx == index ? true : false,
-                                data: listData.data.lessonList.list[index],
-                              ),
-                            );
-                    },
-                  ),
-                ),
-                Gaps.vGap10,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        setState(() {
-                          payIdx = 0;
-                          _pay = 'wxpay';
-                        });
-                        // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
-                      },
-                      child: Container(
-                        width: 122,
-                        decoration: payIdx == 0
-                            ? BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                border: Border.all(
-                                  width: 2.0,
-                                  style: BorderStyle.solid,
-                                  color: Colours.color_8256FF,
-                                ),
-                                color: Colors.white,
-                              )
-                            : BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Colors.white,
-                              ),
-                        // margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const LoadAssetImage(
-                              'wxpay_icon',
-                              width: 24.0,
-                              height: 24.0,
-                            ),
-                            Gaps.hGap4,
-                            const Text(
-                              "微信支付",
-                              style: TextStyle(
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Gaps.hGap16,
-                    GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        setState(() {
-                          payIdx = 1;
-                          _pay = 'alipay';
-                        });
-                        // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
-                      },
-                      child: Container(
-                        width: 122,
-                        decoration: payIdx == 1
-                            ? BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                border: Border.all(
-                                  width: 2.0,
-                                  style: BorderStyle.solid,
-                                  color: Colours.color_8256FF,
-                                ),
-                                color: Colors.white,
-                              )
-                            : BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Colors.white,
-                              ),
-                        // margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const LoadAssetImage(
-                              'alipay_img',
-                              width: 24.0,
-                              height: 24.0,
-                            ),
-                            Gaps.hGap4,
-                            const Text(
-                              "支付宝",
-                              style: TextStyle(
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Gaps.vGap10,
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    pay();
-                  },
-                  child: Center(
-                      key: keyTabOne,
-                      child: const LoadAssetImage(
-                        'pay_btn_bg',
-                        width: 331.0,
-                        // height: 24.0,
-                      )),
-                ),
-                Gaps.vGap4,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Gaps.hGap10,
-                    Text(
-                      "购买后即为同意",
-                      style: TextStyle(
-                          fontSize: Dimens.font_sp12, color: Colours.black),
-                    ),
+              // Gaps.vGap11,
+              Container(
+                decoration: BoxDecoration(
+                    // color: Colors.amber,
+                    image: DecorationImage(
+                        image: ImageUtils.getAssetImage(
+                            typeIdx == 0 ? "spoken_pay_bg" : "course_pay_bg"),
+                        fit: BoxFit.fitWidth)),
 
-                    GestureDetector(
-                      onTap: () {
-                        NavigatorUtils.goWebViewPage(
-                            context, "服务协议", "http://www.shenmo-ai.com/tos/");
-                      },
-                      child: Text(
-                        "《用户协议》",
-                        style: TextStyle(
-                          color: Colours.color_0047FF,
-                          fontSize: Dimens.font_sp12,
-                          // decoration: TextDecoration.underline
+                margin: EdgeInsets.only(top: 8.w),
+                // padding: const EdgeInsets.only(left: 4, right: 2, top: 6),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              Future.delayed(const Duration(milliseconds: 100),
+                                  () {
+                                // 这里是你想要延迟执行的代码
+                                if (spokenIdx ==
+                                    listData.data.packageList.list.length - 1) {
+                                  _scrollToIndex(spokenIdx - 1);
+                                } else {
+                                  _scrollToIndex(spokenIdx);
+                                }
+                              });
+                              setState(() {
+                                typeIdx = 0;
+                              });
+
+                              // EventUMStatistics.umengCommonMapEvent(
+                              //     "click_index_go_to_personal_buy");
+                            },
+                            child: Container(
+                              height: 40.h,
+                              color: Colours.color_0000,
+                            ),
+                          ),
                         ),
-                      ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              Future.delayed(const Duration(milliseconds: 100),
+                                  () {
+                                // 这里是你想要延迟执行的代码
+                                if (classIdx ==
+                                    listData.data.lessonList.list.length - 1) {
+                                  _scrollToIndex(classIdx - 1);
+                                } else {
+                                  _scrollToIndex(classIdx);
+                                }
+                              });
+                              setState(() {
+                                typeIdx = 1;
+                              });
+                              // EventUMStatistics.umengCommonMapEvent(
+                              //     "click_index_go_to_personal_buy");
+                            },
+                            child: Container(
+                              height: 40.h,
+                              color: Colours.color_0000,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      "和",
-                      style: TextStyle(
-                          fontSize: Dimens.font_sp12,
-                          color: Colours.color_546092),
+                    Gaps.vGap30,
+                    SizedBox(
+                        // margin: const EdgeInsets.only(top: 10),
+                        height: 160.w,
+                        child: ListView.builder(
+                          controller: _scrollController,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: typeIdx == 0
+                              ? listData.data.packageList.list.length
+                              : listData.data.lessonList.list.length,
+                          itemBuilder: (context, index) {
+                            return typeIdx == 0
+                                ? GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTap: () {
+                                      setState(() {
+                                        spokenIdx = index;
+                                      });
+                                      EventUMStatistics.umengCommonMapEvent(
+                                          "click_index_go_to_personal_buy");
+                                    },
+                                    child: NewCourseSpeakingItem(
+                                      isSele: spokenIdx == index ? true : false,
+                                      data:
+                                          listData.data.packageList.list[index],
+                                    ),
+                                  )
+                                : GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
+                                    onTap: () {
+                                      setState(() {
+                                        classIdx = index;
+                                      });
+                                      EventUMStatistics.umengCommonMapEvent(
+                                          "click_index_go_to_personal_buy");
+                                    },
+                                    child: NewCourseSpeakingTwoItem(
+                                      isSele: classIdx == index ? true : false,
+                                      data:
+                                          listData.data.lessonList.list[index],
+                                    ),
+                                  );
+                          },
+                        )),
+                    Gaps.vGap10,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            setState(() {
+                              payIdx = 0;
+                              _pay = 'wxpay';
+                            });
+                            // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
+                          },
+                          child: Container(
+                            width: 122.w,
+                            decoration: payIdx == 0
+                                ? BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                      width: 2.0,
+                                      style: BorderStyle.solid,
+                                      color: Colours.color_8256FF,
+                                    ),
+                                    color: Colors.white,
+                                  )
+                                : BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Colors.white,
+                                  ),
+                            // margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                LoadAssetImage(
+                                  'wxpay_icon',
+                                  width: 24.0.w,
+                                  height: 24.0.w,
+                                ),
+                                Gaps.hGap4,
+                                Text(
+                                  "微信支付",
+                                  style: TextStyle(
+                                    fontSize: 12.0.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Gaps.hGap16,
+                        GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            setState(() {
+                              payIdx = 1;
+                              _pay = 'alipay';
+                            });
+                            // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
+                          },
+                          child: Container(
+                            width: 122.w,
+                            decoration: payIdx == 1
+                                ? BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                      width: 2.0,
+                                      style: BorderStyle.solid,
+                                      color: Colours.color_8256FF,
+                                    ),
+                                    color: Colors.white,
+                                  )
+                                : BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Colors.white,
+                                  ),
+                            // margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                LoadAssetImage(
+                                  'alipay_img',
+                                  width: 24.0.w,
+                                  height: 24.0.w,
+                                ),
+                                Gaps.hGap4,
+                                Text(
+                                  "支付宝",
+                                  style: TextStyle(
+                                    fontSize: 12.0.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    Gaps.vGap10,
                     GestureDetector(
+                      behavior: HitTestBehavior.opaque,
                       onTap: () {
-                        NavigatorUtils.goWebViewPage(context, "隐私政策",
-                            "http://www.shenmo-ai.com/privacy_policy/");
+                        pay();
                       },
-                      child: Text("《隐私协议》",
-                          style: TextStyle(
-                            fontSize: Dimens.font_sp12,
-                            color: Colours.color_0047FF,
-                            // decoration: TextDecoration.underline
+                      child: Center(
+                          key: keyTabOne,
+                          child: LoadAssetImage(
+                            'pay_btn_bg',
+                            width: 331.0.w,
+                            // height: 24.0,
                           )),
                     ),
+                    Gaps.vGap4,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Gaps.hGap10,
+                        Text(
+                          "购买后即为同意",
+                          style: TextStyle(
+                              fontSize: Dimens.font_sp12, color: Colours.black),
+                        ),
+
+                        GestureDetector(
+                          onTap: () {
+                            NavigatorUtils.goWebViewPage(context, "服务协议",
+                                "http://www.shenmo-ai.com/tos/");
+                          },
+                          child: Text(
+                            "《用户协议》",
+                            style: TextStyle(
+                              color: Colours.color_0047FF,
+                              fontSize: Dimens.font_sp12,
+                              // decoration: TextDecoration.underline
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "和",
+                          style: TextStyle(
+                              fontSize: Dimens.font_sp12,
+                              color: Colours.color_546092),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            NavigatorUtils.goWebViewPage(context, "隐私政策",
+                                "http://www.shenmo-ai.com/privacy_policy/");
+                          },
+                          child: Text("《隐私协议》",
+                              style: TextStyle(
+                                fontSize: Dimens.font_sp12,
+                                color: Colours.color_0047FF,
+                                // decoration: TextDecoration.underline
+                              )),
+                        ),
+                      ],
+                    ),
+                    Gaps.vGap15,
                   ],
                 ),
-                Gaps.vGap15,
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
@@ -729,7 +708,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
     return SliverToBoxAdapter(
       child: typeIdx == 0
           ? Padding(
-              padding: const EdgeInsets.only(left: 10, top: 20),
+              padding: EdgeInsets.only(left: 10.w, top: 20.h),
               child: Text(
                 headStr,
                 style: const TextStyle(
@@ -758,7 +737,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
         i < listData.data.packageList.list[spokenIdx].detail.detailImg.length;
         i++) {
       list.add(Container(
-        margin: const EdgeInsets.only(top: 20, left: 9, right: 9),
+        margin: EdgeInsets.only(top: 20.h, left: 9.w, right: 9.w),
         child: LoadImage(
           width: _screenUtil.screenWidth,
           listData.data.packageList.list[spokenIdx].detail.detailImg[i],
@@ -774,7 +753,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
         i < listData.data.lessonList.list[classIdx].detail.detailImg.length;
         i++) {
       list.add(Container(
-        margin: const EdgeInsets.only(top: 20, left: 9, right: 9),
+        margin: EdgeInsets.only(top: 20.h, left: 9.w, right: 9.w),
         child: LoadImage(
           width: _screenUtil.screenWidth,
           listData.data.lessonList.list[classIdx].detail.detailImg[i],
@@ -786,18 +765,18 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
 
   Widget _headTitle(String title) {
     return SizedBox(
-      height: 45,
+      height: 45.h,
       width: _screenUtil.screenWidth,
       child: Center(
         child: Column(
           children: [
             Container(
-              height: 15,
+              height: 15.h,
             ),
             Text(
               title,
-              style: const TextStyle(
-                fontSize: 17.0,
+              style: TextStyle(
+                fontSize: 17.0.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -824,10 +803,20 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                       bottomRight: Radius.circular(10)),
                   color: Colors.white,
                 )
-              : const BoxDecoration(
-                  color: Colors.white,
-                ),
-      margin: EdgeInsets.only(bottom: typeStr == "2" ? 10 : 0),
+              : typeStr == "4"
+                  ? BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    )
+                  : const BoxDecoration(
+                      color: Colors.white,
+                    ),
+      margin: EdgeInsets.only(
+          bottom: typeStr == "2"
+              ? 10.h
+              : typeStr == "4"
+                  ? 10.h
+                  : 0),
       child: Column(
         children: [
           _headTitle(tit),
@@ -865,12 +854,12 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
     /// appbar 高度
     double _kLeadingWidth = 55;
 
-    _bgscrollController!.animateTo(
+    _bgscrollController.animateTo(
         offset.dy +
-            _bgscrollController!.offset -
+            _bgscrollController.offset -
             _kLeadingWidth -
             _statusBarHeight,
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.fastOutSlowIn);
   }
 
@@ -887,7 +876,8 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
     // double _kLeadingWidth = 48;
 
     _bgscrollController!.animateTo(0,
-        duration: Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.fastOutSlowIn);
   }
 
   @override
@@ -922,11 +912,12 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                         }
 
                         if (typeIdx == 1) {
-                          boxTabTwo ??= keyTabTwo.currentContext!
-                              .findRenderObject() as RenderBox?;
-                          offsetTabTwo = boxTabTwo!.localToGlobal(Offset.zero);
-                          // Log.e("============" + offsetTabTwo.dy.toString());
-                          if (offsetTabTwo.dy < 130) {
+                          final RenderBox renderBox = keyTabTwo.currentContext!
+                              .findRenderObject()! as RenderBox;
+                          final Offset offset =
+                              renderBox.localToGlobal(Offset.zero);
+
+                          if (offset.dy < 130) {
                             detailIdx = 1;
                           } else {
                             detailIdx = 0;
@@ -969,9 +960,9 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                             SliverToBoxAdapter(
                               child: typeIdx == 0
                                   ? Container(
-                                      margin: const EdgeInsets.only(
-                                          top: 10, left: 9),
-                                      height: 166.0,
+                                      margin:
+                                          EdgeInsets.only(top: 10.h, left: 9.w),
+                                      height: 166.0.h,
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
                                         itemCount: listData
@@ -986,7 +977,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                             margin:
                                                 EdgeInsets.only(right: 10.w),
                                             child: SizedBox(
-                                              width: 238.0,
+                                              width: 238.0.w,
                                               child: LoadImage(
                                                 listData
                                                     .data
@@ -1011,8 +1002,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                       height: 40.h,
                                       child: const LoadAssetImage(
                                         'kechenggdagang_bg',
-                                      ),
-                                    ),
+                                      )),
                             ),
                             typeIdx == 0
                                 ? SliverToBoxAdapter(
@@ -1031,17 +1021,25 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                         padding: EdgeInsets.only(
                                             left: 10.w, right: 10.w),
                                         child: _buildStickyHeader(
-                                            index == 0
-                                                ? "0"
-                                                : index ==
-                                                        listData
-                                                            .data
-                                                            .lessonList
-                                                            .list[classIdx]
-                                                            .lessons
-                                                            .length
-                                                    ? "2"
-                                                    : "1",
+                                            listData
+                                                        .data
+                                                        .lessonList
+                                                        .list[classIdx]
+                                                        .lessons
+                                                        .length ==
+                                                    1
+                                                ? "4"
+                                                : index == 0
+                                                    ? "0"
+                                                    : index ==
+                                                            listData
+                                                                .data
+                                                                .lessonList
+                                                                .list[classIdx]
+                                                                .lessons
+                                                                .length
+                                                        ? "2"
+                                                        : "1",
                                             lessons[index].list,
                                             lessons[index].unitName,
                                             colorBackData[index],
@@ -1053,7 +1051,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                   ),
                             SliverToBoxAdapter(
                               child: Container(
-                                height: 80,
+                                height: 80.h,
                               ),
                             )
                           ]),
@@ -1169,10 +1167,10 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                             onTap: () {
                                               NavigatorUtils.goBack(context);
                                             },
-                                            child: const LoadAssetImage(
+                                            child: LoadAssetImage(
                                               "ic_back_icon",
-                                              width: 20.0,
-                                              height: 20.0,
+                                              width: 20.0.w,
+                                              height: 20.0.w,
                                             )),
                                       ],
                                     ),
@@ -1237,10 +1235,10 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                 onTap: () {
                                   NavigatorUtils.goBack(context);
                                 },
-                                child: const LoadAssetImage(
+                                child: LoadAssetImage(
                                   "ic_back_icon",
-                                  width: 20.0,
-                                  height: 20.0,
+                                  width: 20.0.w,
+                                  height: 20.0.w,
                                 )),
                           ),
                   ]),
@@ -1308,7 +1306,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
     // 滚动到指定位置
     // _scrollController.
     _scrollController.animateTo(
-      index * 180,
+      index * 160.w,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
@@ -1319,6 +1317,22 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
     //   curve: Curves.easeOut,
     // );
   }
+
+  // void _scrollToTwoIndex(int index) {
+  //   // 滚动到指定位置
+  //   // _scrollController.
+  //   _lessonListScrollController.animateTo(
+  //     index * 160.w,
+  //     duration: const Duration(milliseconds: 300),
+  //     curve: Curves.easeOut,
+  //   );
+  //   // _scrollController.animateTo(
+  //   //   _scrollController.position.maxScrollExtent *
+  //   //       (index / listData.data.length),
+  //   //   duration: const Duration(milliseconds: 300),
+  //   //   curve: Curves.easeOut,
+  //   // );
+  // }
 
   @override
   void sendFail(String msg) {

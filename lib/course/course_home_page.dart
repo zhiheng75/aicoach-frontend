@@ -379,6 +379,21 @@ class _CourseHomePageState extends State<CourseHomePage>
     );
   }
 
+  var lastPopTime = DateTime.now();
+
+  void intervalClick(int needTime, String lessonId, String levelId) {
+    // 防重复提交
+    if (lastPopTime == null ||
+        DateTime.now().difference(lastPopTime) > Duration(seconds: needTime)) {
+      _courseHomePagePresenter.getLessonTime(lessonId, levelId);
+      lastPopTime = DateTime.now();
+      print("允许点击");
+    } else {
+      // lastPopTime = DateTime.now(); //如果不注释这行,则强制用户一定要间隔2s后才能成功点击. 而不是以上一次点击成功的时间开始计算.
+      print("请勿重复点击！");
+    }
+  }
+
   void showView(int levelId, int goodsLabel) {
     EventUMStatistics.umengCommonMapEvent("click_index_go_buy");
 
@@ -440,8 +455,10 @@ class _CourseHomePageState extends State<CourseHomePage>
                     // CourseRouter.courseFlowPage,
                     "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
               } else {
-                _courseHomePagePresenter.getLessonTime(
-                    xxlist[i].lessonId.toString(),
+                // _courseHomePagePresenter.getLessonTime(
+                //     xxlist[i].lessonId.toString(),
+                //     xxlist[i].levelId.toString());
+                intervalClick(3, xxlist[i].lessonId.toString(),
                     xxlist[i].levelId.toString());
                 // showImageDialog(xxlist[i].unlockDate);
                 // Toast.show(

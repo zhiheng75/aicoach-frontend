@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:Bubble/conversation/provider/conversation_provider.dart';
 import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/home/provider/selecter_teacher_provider.dart';
+import 'package:Bubble/net/proxy_config.dart';
 import 'package:Bubble/setting/provider/device_provider.dart';
 import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
@@ -121,11 +122,17 @@ class MyApp extends StatelessWidget {
     interceptors.add(AdapterInterceptor());
     configDio(
       // 测试
-      baseUrl: 'https://api.bubble.shenmo-ai.net/',
+      baseUrl: ProxyConfig.isOfficialAddress
+          ? 'https://api.bubble.shenmo-ai.com/'
+          : 'https://api.bubble.shenmo-ai.net/',
       // 正式
       // baseUrl: 'https://api.bubble.shenmo-ai.com/',
       interceptors: interceptors,
     );
+
+    // if (ProxyConfig.isProxy) {
+    // DioUtils.instance.setProxy(ProxyConfig.proxyUri);
+    // }
   }
 
   @override
