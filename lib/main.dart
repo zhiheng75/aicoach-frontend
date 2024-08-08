@@ -8,6 +8,7 @@ import 'package:Bubble/setting/provider/device_provider.dart';
 import 'package:Bubble/util/channel.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/media_utils.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:device_identity/device_identity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,7 @@ Future<void> main() async {
 
       // 设置音频配置
       await AudioConfig.addAudioConfig();
+      initPlugin();
 
       // 全局监听App状态
       SystemChannels.lifecycle.setMessageHandler((message) async {
@@ -91,6 +93,24 @@ Future<void> main() async {
   });
 
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
+}
+
+// Platform messages are asynchronous, so we initialize in an async method.
+Future<void> initPlugin() async {
+  final TrackingStatus status =
+      await AppTrackingTransparency.trackingAuthorizationStatus;
+  // If the system can show an authorization request dialog
+  if (status == TrackingStatus.notDetermined) {
+    // Show a custom explainer dialog before the system dialog
+    // Wait for dialog popping animation
+    await Future.delayed(const Duration(milliseconds: 200));
+    // Request system's tracking authorization dialog
+    final TrackingStatus status =
+        await AppTrackingTransparency.requestTrackingAuthorization();
+  }
+
+  final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
+  print("UUID: $uuid");
 }
 
 class MyApp extends StatelessWidget {

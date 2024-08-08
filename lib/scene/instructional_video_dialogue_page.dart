@@ -502,11 +502,36 @@ class _InstructionalVideoDialoguePageState
       //   connectWebsocket();
       //   creatResetStatus();
       // }
+// setState(() {
+      _invokeInt = _invokeInt + 1;
+      // });
       if (result == ConnectivityResult.none) {
         isNetWork = false;
-        // onReold("您的网络不太顺畅，请检查网络情况。");
+
+        isback = true;
+        setState(() {});
+
+        if (_invokeInt == 1) {
+          endSocket();
+          onReold("您的网络不太顺畅，请检查网络情况。");
+        }
       } else {
         isNetWork = true;
+        isback = true;
+        setState(() {});
+        if (_invokeInt == 1) {
+          endSocket();
+          _invokeInt = 0;
+          Future.delayed(const Duration(milliseconds: 500), () {
+            connectWebsocket();
+          });
+          setState(() {});
+          Future.delayed(const Duration(seconds: 3), () {
+            setState(() {
+              isback = false;
+            });
+          });
+        }
       }
       setState(() {});
     });

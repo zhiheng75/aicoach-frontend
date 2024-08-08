@@ -39,14 +39,19 @@ class _NewCourseSpeakingItemState extends State<NewCourseSpeakingItem> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            widget.data.name,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            style: TextStyle(
-              fontSize: 18.0.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+          SizedBox(
+            height: 45.h,
+            child: Center(
+              child: Text(
+                widget.data.name,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                style: TextStyle(
+                  fontSize: 18.0.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
             ),
           ),
           Row(
@@ -70,43 +75,53 @@ class _NewCourseSpeakingItemState extends State<NewCourseSpeakingItem> {
               ),
             ],
           ),
-          Stack(
-            children: [
-              Center(
-                child: Text(
-                  "￥${widget.data.originalPrice}",
-                  textAlign: TextAlign.center,
-                  strutStyle: StrutStyle(
-                    fontSize: 16.0.sp,
-                    leading: 0,
-                    height: 1.1,
-                    // 1.1更居中
-                    forceStrutHeight: true, // 关键属性 强制改为文字高度
-                  ),
-                  style: TextStyle(
-                    fontSize: 16.0.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Colours.color_542DEC,
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 8,
-                left: 0,
-                right: 0,
-                child: Center(
-                  child: Container(
-                    height: 2,
-                    width: 50,
-                    color: Colours.color_542DEC,
-                  ),
-                ),
-              )
-            ],
-          ),
+          widget.data.originalPrice != "0"
+              ? Stack(
+                  children: [
+                    Center(
+                      child: Text(
+                        "￥${widget.data.originalPrice}",
+                        textAlign: TextAlign.center,
+                        strutStyle: StrutStyle(
+                          fontSize: 16.0.sp,
+                          leading: 0,
+                          height: 1.1,
+                          // 1.1更居中
+                          forceStrutHeight: true, // 关键属性 强制改为文字高度
+                        ),
+                        style: TextStyle(
+                          fontSize: 16.0.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colours.color_542DEC,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 8,
+                      left: 0,
+                      right: 0,
+                      child: Center(
+                        child: Container(
+                          height: 2,
+                          width: creatLine("￥${widget.data.originalPrice}"),
+                          color: Colours.color_542DEC,
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              : Container(),
         ],
       ),
     );
+  }
+
+  double creatLine(String price) {
+    double wei = 0;
+    for (int i = 0; i < price.length; i++) {
+      wei = wei + 10.w;
+    }
+    return wei;
   }
 }
 
@@ -132,11 +147,11 @@ class _NewCourseSpeakingTwoItemState extends State<NewCourseSpeakingTwoItem> {
                 style: BorderStyle.solid,
                 color: Colours.color_8256FF,
               ),
-              color: Colours.color_E9E1FF,
+              color: Colors.white,
             )
           : BoxDecoration(
               borderRadius: BorderRadius.circular(12.0),
-              color: Colors.white,
+              color: Colours.color_E9E1FF,
             ),
       margin: EdgeInsets.only(left: 10.w),
       // padding: const EdgeInsets.all(10),
@@ -145,14 +160,19 @@ class _NewCourseSpeakingTwoItemState extends State<NewCourseSpeakingTwoItem> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            widget.data.name,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            style: TextStyle(
-              fontSize: 18.0.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+          SizedBox(
+            height: 45.h,
+            child: Center(
+              child: Text(
+                widget.data.name,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                style: TextStyle(
+                  fontSize: 18.0.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
             ),
           ),
           Row(
@@ -176,18 +196,52 @@ class _NewCourseSpeakingTwoItemState extends State<NewCourseSpeakingTwoItem> {
               ),
             ],
           ),
-          Text(
-            "￥${widget.data.originalPrice}",
-            style: TextStyle(
-                fontSize: 16.0.sp,
-                fontWeight: FontWeight.w400,
-                color: Colours.color_542DEC,
-                decoration: TextDecoration.lineThrough,
-                decorationStyle: TextDecorationStyle.solid,
-                decorationColor: Colours.color_542DEC),
-          ),
+          widget.data.originalPrice != "0"
+              ? Stack(
+                  children: [
+                    Center(
+                      child: Text(
+                        "￥${widget.data.originalPrice}",
+                        textAlign: TextAlign.center,
+                        strutStyle: StrutStyle(
+                          fontSize: 16.0.sp,
+                          leading: 0,
+                          height: 1.1,
+                          // 1.1更居中
+                          forceStrutHeight: true, // 关键属性 强制改为文字高度
+                        ),
+                        style: TextStyle(
+                          fontSize: 16.0.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colours.color_542DEC,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 8,
+                      left: 0,
+                      right: 0,
+                      child: Center(
+                        child: Container(
+                          height: 2,
+                          width: creatLine("￥${widget.data.originalPrice}"),
+                          color: Colours.color_542DEC,
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              : Container(),
         ],
       ),
     );
+  }
+
+  double creatLine(String price) {
+    double wei = 0;
+    for (int i = 0; i < price.length; i++) {
+      wei = wei + 10.w;
+    }
+    return wei;
   }
 }

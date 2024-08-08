@@ -50,6 +50,7 @@ class ChatWebsocket {
       onConnected();
     }
     _status = 'opened';
+    _endHeartBeat();
     _startHeartbeat();
     _websocket!.stream.listen(
       (data) {

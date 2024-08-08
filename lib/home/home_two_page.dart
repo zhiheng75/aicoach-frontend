@@ -48,6 +48,7 @@ import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/group_avatar_widget.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:advertising_info/advertising_info.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -158,7 +159,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
                       path: url,
-                      miniProgramType: WXMiniProgramType.release));
+                      miniProgramType: ProxyConfig.isOfficialAddress
+                          ? WXMiniProgramType.release
+                          : WXMiniProgramType.test));
               EventUMStatistics.umengCommonMapEvent(
                   "click_index_go_to_add_a_tutor");
             },
@@ -289,6 +292,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    SpUtil.putString(Constant.netWorkTos, "0");
+
     initDio();
     // initUM();
     EventBus().on(NotificationUtils.resetChat, (idx) {
@@ -306,7 +312,10 @@ class _HomeTwoPageState extends State<HomeTwoPage>
         // Got a new connectivity status!
         if (result == ConnectivityResult.none) {
           if (isShowNetWork) {
-            onNoNetwork();
+            String netWorkTos = SpUtil.getString(Constant.netWorkTos) ?? "1";
+            if (netWorkTos == "0") {
+              onNoNetwork();
+            }
           }
         }
       });
@@ -471,14 +480,22 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     );
   }
 
-  void getidfa() async {
-    AdvertisingInfo advertisingInfo = await AdvertisingInfo.read();
-    bool? isLAT = advertisingInfo.isLimitAdTrackingEnabled;
-    if (!isLAT!) {
-      DYUtil().evaluate("0");
+  Future<void> getidfa() async {
+    final TrackingStatus status =
+        await AppTrackingTransparency.trackingAuthorizationStatus;
+    // If the system can show an authorization request dialog
+    if (status == TrackingStatus.notDetermined) {
+      // Show a custom explainer dialog before the system dialog
+      // Wait for dialog popping animation
+      await Future.delayed(const Duration(milliseconds: 200));
+      // Request system's tracking authorization dialog
+      final TrackingStatus status =
+          await AppTrackingTransparency.requestTrackingAuthorization();
     }
-    // Log.e();advertisingInfo.authorizationStatus;
-    // if(advertisingInfo.authorizationStatus == notDetermined)
+
+    final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
+    print("UUID: $uuid");
+    DYUtil().evaluate("0");
   }
 
   void userInfo() {
@@ -674,12 +691,16 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   void didPushNext() {
     // TODO: implement didPushNext
     super.didPushNext();
+    isShowNetWork = false;
+    setState(() {});
   }
 
   @override
   void didPopNext() {
     // TODO: implement didPopNext
     super.didPopNext();
+    isShowNetWork = true;
+    setState(() {});
   }
 
   @override

@@ -11,6 +11,7 @@ import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/net/proxy_config.dart';
 import 'package:Bubble/person/entity/goods_bean.dart';
 import 'package:Bubble/person/entity/goods_v_bean.dart';
 import 'package:Bubble/person/entity/member_state_bean.dart';
@@ -353,6 +354,10 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
     }
   }
 
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500;
+  }
+
   Widget classPayWidget() {
     return Container(
       decoration: BoxDecoration(
@@ -368,19 +373,21 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
             left: 0,
             child: Container(
               height: 200.h,
-              color: typeIdx == 0 ? null : Colours.color_D0BBFF,
+              // color: typeIdx == 0 ? null : Colours.color_D0BBFF,
             ),
           ),
           Column(
             children: [
               Container(
-                height: _screenUtil.statusBarHeight + 30.h,
+                height: isIPad
+                    ? _screenUtil.statusBarHeight + 50.h
+                    : _screenUtil.statusBarHeight + 30.h,
               ),
               Row(
                 children: [
                   Gaps.hGap16,
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(25.0),
+                    borderRadius: BorderRadius.circular(40.0.r),
                     child: LoadImage(
                       headimgurl,
                       width: 50.0.w,
@@ -400,7 +407,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                         ),
                       ),
                       Text(
-                        _isVip ? dataStr : "非会员",
+                        _isVip ? dataStr : "暂未开通畅聊卡",
                         style: TextStyle(
                           fontSize: 14.0.sp,
                           color: Colors.black,
@@ -412,12 +419,14 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
               ),
               // Gaps.vGap11,
               Container(
+                // height: 390.h,
+                // width: 390.h,
                 decoration: BoxDecoration(
                     // color: Colors.amber,
                     image: DecorationImage(
                         image: ImageUtils.getAssetImage(
                             typeIdx == 0 ? "spoken_pay_bg" : "course_pay_bg"),
-                        fit: BoxFit.fitWidth)),
+                        fit: BoxFit.fill)),
 
                 margin: EdgeInsets.only(top: 8.w),
                 // padding: const EdgeInsets.only(left: 4, right: 2, top: 6),
@@ -430,6 +439,9 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                           child: GestureDetector(
                             behavior: HitTestBehavior.opaque,
                             onTap: () {
+                              setState(() {
+                                typeIdx = 0;
+                              });
                               Future.delayed(const Duration(milliseconds: 100),
                                   () {
                                 // 这里是你想要延迟执行的代码
@@ -440,22 +452,26 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                   _scrollToIndex(spokenIdx);
                                 }
                               });
-                              setState(() {
-                                typeIdx = 0;
-                              });
 
                               // EventUMStatistics.umengCommonMapEvent(
                               //     "click_index_go_to_personal_buy");
                             },
                             child: Container(
                               height: 40.h,
-                              color: Colours.color_0000,
+                              padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                              // color: Colours.color_0000,
+                              child: LoadAssetImage(
+                                typeIdx == 0 ? 'spoken_s_bg' : "spoken_n_bg",
+                              ),
                             ),
                           ),
                         ),
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
+                              setState(() {
+                                typeIdx = 1;
+                              });
                               Future.delayed(const Duration(milliseconds: 100),
                                   () {
                                 // 这里是你想要延迟执行的代码
@@ -466,21 +482,26 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                   _scrollToIndex(classIdx);
                                 }
                               });
-                              setState(() {
-                                typeIdx = 1;
-                              });
+
                               // EventUMStatistics.umengCommonMapEvent(
                               //     "click_index_go_to_personal_buy");
                             },
                             child: Container(
                               height: 40.h,
-                              color: Colours.color_0000,
+                              padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                              child: Container(
+                                // height: 40.h,
+                                color: Colours.color_0000,
+                                child: LoadAssetImage(
+                                  typeIdx == 0 ? 'cours_n_bg' : "cours_s_bg",
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    Gaps.vGap30,
+                    Gaps.vGap15,
                     SizedBox(
                         // margin: const EdgeInsets.only(top: 10),
                         height: 160.w,
@@ -753,7 +774,8 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
         i < listData.data.lessonList.list[classIdx].detail.detailImg.length;
         i++) {
       list.add(Container(
-        margin: EdgeInsets.only(top: 20.h, left: 9.w, right: 9.w),
+        // color: Colors.amber,
+        margin: EdgeInsets.only(top: i == 0 ? 0 : 10.h, left: 9.w, right: 9.w),
         child: LoadImage(
           width: _screenUtil.screenWidth,
           listData.data.lessonList.list[classIdx].detail.detailImg[i],
@@ -812,6 +834,12 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                       color: Colors.white,
                     ),
       margin: EdgeInsets.only(
+          bottom: typeStr == "2"
+              ? 10.h
+              : typeStr == "4"
+                  ? 10.h
+                  : 0),
+      padding: EdgeInsets.only(
           bottom: typeStr == "2"
               ? 10.h
               : typeStr == "4"
@@ -892,7 +920,9 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
               ? lodingView()
               : Container(
                   width: double.infinity,
-                  color: Colours.color_D0BBFF,
+                  color: typeIdx == 0
+                      ? Colours.color_F6F2FF
+                      : Colours.color_D0BBFF,
                   // decoration: BoxDecoration(
                   //     image: DecorationImage(
                   //         image: ImageUtils.getAssetImage("pay_img_bg"),
@@ -978,13 +1008,17 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                                 EdgeInsets.only(right: 10.w),
                                             child: SizedBox(
                                               width: 238.0.w,
-                                              child: LoadImage(
-                                                listData
-                                                    .data
-                                                    .packageList
-                                                    .list[spokenIdx]
-                                                    .detail
-                                                    .userFeedbackImg[index],
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(16.r),
+                                                child: LoadImage(
+                                                  listData
+                                                      .data
+                                                      .packageList
+                                                      .list[spokenIdx]
+                                                      .detail
+                                                      .userFeedbackImg[index],
+                                                ),
                                               ),
                                             ),
                                           );
@@ -999,7 +1033,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                   ? Container()
                                   : SizedBox(
                                       key: keyTabTwo,
-                                      height: 40.h,
+                                      height: 60.h,
                                       child: const LoadAssetImage(
                                         'kechenggdagang_bg',
                                       )),
@@ -1033,11 +1067,13 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                                     ? "0"
                                                     : index ==
                                                             listData
-                                                                .data
-                                                                .lessonList
-                                                                .list[classIdx]
-                                                                .lessons
-                                                                .length
+                                                                    .data
+                                                                    .lessonList
+                                                                    .list[
+                                                                        classIdx]
+                                                                    .lessons
+                                                                    .length -
+                                                                1
                                                         ? "2"
                                                         : "1",
                                             lessons[index].list,
@@ -1051,7 +1087,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                   ),
                             SliverToBoxAdapter(
                               child: Container(
-                                height: 80.h,
+                                height: isUpdateAppBar ? 120.h : 80.h,
                               ),
                             )
                           ]),
@@ -1105,7 +1141,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                           fontSize: 14.0.sp,
                                           fontWeight: FontWeight.w400,
                                           color: Colors.white,
-                                          height: 3.5,
+                                          // height: 3.5,
                                         ),
                                       ),
                                       Gaps.hGap2,
@@ -1128,7 +1164,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                           fontSize: 14.0.sp,
                                           fontWeight: FontWeight.w400,
                                           color: Colors.white,
-                                          height: 3.5,
+                                          // height: 3.5,
                                         ),
                                       ),
                                     ],
@@ -1140,94 +1176,116 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                         : Positioned(
                             top: 0, left: 0, right: 0, child: Container()),
                     isUpdateAppBar
-                        ? Positioned(
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            child: Container(
-                                height: typeIdx == 1 ? 100.h : 80.h,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: ImageUtils.getAssetImage(
-                                            "xiding_bg"),
-                                        fit: BoxFit.cover)),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).padding.top,
-                                    ),
-                                    // Gaps.vGap30,
-                                    Row(
+                        ? typeIdx == 1
+                            ? Positioned(
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                child: Container(
+                                    height: typeIdx == 1 ? 100.h : 80.h,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: ImageUtils.getAssetImage(
+                                                "xiding_bg"),
+                                            fit: BoxFit.cover)),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Gaps.hGap10,
-                                        GestureDetector(
-                                            behavior: HitTestBehavior.opaque,
-                                            onTap: () {
-                                              NavigatorUtils.goBack(context);
-                                            },
-                                            child: LoadAssetImage(
-                                              "ic_back_icon",
-                                              width: 20.0.w,
-                                              height: 20.0.w,
-                                            )),
-                                      ],
-                                    ),
-                                    typeIdx == 1
-                                        ? Column(
-                                            children: [
-                                              Gaps.vGap10,
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                              .padding
+                                              .top,
+                                        ),
+                                        // Gaps.vGap30,
+                                        Row(
+                                          children: [
+                                            Gaps.hGap10,
+                                            GestureDetector(
+                                                behavior:
+                                                    HitTestBehavior.opaque,
+                                                onTap: () {
+                                                  NavigatorUtils.goBack(
+                                                      context);
+                                                },
+                                                child: LoadAssetImage(
+                                                  "ic_back_icon",
+                                                  width: 20.0.w,
+                                                  height: 20.0.w,
+                                                )),
+                                          ],
+                                        ),
+                                        typeIdx == 1
+                                            ? Column(
                                                 children: [
-                                                  GestureDetector(
-                                                    behavior:
-                                                        HitTestBehavior.opaque,
-                                                    onTap: () {
-                                                      _toTopInfo();
-                                                    },
-                                                    child: Text(
-                                                      "课程内容",
-                                                      style: TextStyle(
-                                                        fontSize: 15.0.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: detailIdx == 0
-                                                            ? Colors.black
-                                                            : Colours
-                                                                .color_757575,
+                                                  Gaps.vGap10,
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      GestureDetector(
+                                                        behavior:
+                                                            HitTestBehavior
+                                                                .opaque,
+                                                        onTap: () {
+                                                          _toTopInfo();
+                                                        },
+                                                        child: Text(
+                                                          "课程内容",
+                                                          style: TextStyle(
+                                                            fontSize: 15.0.sp,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: detailIdx ==
+                                                                    0
+                                                                ? Colors.black
+                                                                : Colours
+                                                                    .color_757575,
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                  GestureDetector(
-                                                    behavior:
-                                                        HitTestBehavior.opaque,
-                                                    onTap: () {
-                                                      _toDaGangInfo();
-                                                    },
-                                                    child: Text(
-                                                      "课程大纲",
-                                                      style: TextStyle(
-                                                        fontSize: 15.0.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: detailIdx == 1
-                                                            ? Colors.black
-                                                            : Colours
-                                                                .color_757575,
+                                                      GestureDetector(
+                                                        behavior:
+                                                            HitTestBehavior
+                                                                .opaque,
+                                                        onTap: () {
+                                                          _toDaGangInfo();
+                                                        },
+                                                        child: Text(
+                                                          "课程大纲",
+                                                          style: TextStyle(
+                                                            fontSize: 15.0.sp,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: detailIdx ==
+                                                                    1
+                                                                ? Colors.black
+                                                                : Colours
+                                                                    .color_757575,
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
                                                 ],
-                                              ),
-                                            ],
-                                          )
-                                        : Container(),
-                                  ],
-                                )))
+                                              )
+                                            : Container(),
+                                      ],
+                                    )))
+                            : Positioned(
+                                top: 60,
+                                left: 12,
+                                child: GestureDetector(
+                                    onTap: () {
+                                      NavigatorUtils.goBack(context);
+                                    },
+                                    child: LoadAssetImage(
+                                      "ic_back_icon",
+                                      width: 20.0.w,
+                                      height: 20.0.w,
+                                    )),
+                              )
                         : Positioned(
                             top: 60,
                             left: 12,
@@ -1275,7 +1333,9 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
                       path: url,
-                      miniProgramType: WXMiniProgramType.release));
+                      miniProgramType: ProxyConfig.isOfficialAddress
+                          ? WXMiniProgramType.release
+                          : WXMiniProgramType.test));
               EventUMStatistics.umengCommonMapEvent(
                   "click_index_go_to_add_a_tutor");
             },

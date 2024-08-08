@@ -8,6 +8,7 @@ import 'package:Bubble/home/widget/problem_two_item.dart';
 import 'package:Bubble/home/widget/teacher_show_view.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
+import 'package:Bubble/net/proxy_config.dart';
 import 'package:Bubble/person/entity/goods_bean.dart';
 import 'package:Bubble/person/entity/member_state_bean.dart';
 import 'package:Bubble/person/presneter/user_membership_upgrade_page_presenter.dart';
@@ -856,7 +857,9 @@ class _UserMembershipUpgradePageState extends State<UserMembershipUpgradePage>
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
                       path: url,
-                      miniProgramType: WXMiniProgramType.release));
+                      miniProgramType: ProxyConfig.isOfficialAddress
+                          ? WXMiniProgramType.release
+                          : WXMiniProgramType.test));
               EventUMStatistics.umengCommonMapEvent(
                   "click_index_go_to_add_a_tutor");
             },

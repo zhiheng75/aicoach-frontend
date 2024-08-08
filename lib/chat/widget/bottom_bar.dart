@@ -75,7 +75,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   PhoneState status = PhoneState.nothing();
   bool granted = false;
   late bool _phoneSate = true;
-  // late StreamSubscription<ConnectivityResult> subscription;
+  late StreamSubscription<ConnectivityResult> subscription;
   late ConnectivityResult resultType;
 
   void getExample() {
@@ -171,6 +171,58 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       }
     }
     return isAvailable;
+  }
+
+  Future<void> connecTwotWebsocket() async {
+    String characterId = _homeProvider.character.characterId;
+    String? sceneId;
+    String sessionType = _homeProvider.sessionType;
+    if (sessionType == 'topic') {
+      sceneId = _homeProvider.topic!.id.toString();
+    }
+    if (sessionType == 'scene') {
+      sceneId = _homeProvider.scene!.id.toString();
+    }
+    if (sessionType == 'course') {
+      sceneId = _homeProvider.course!.id.toString();
+    }
+    try {
+      _homeProvider.sessionId = await _chatWebsocket.startChat(
+        characterId: characterId,
+        sceneId: sceneId,
+        onConnected: () {
+          // 刷新使用时间
+          _homeProvider.getUsageTime(() {
+            // 倒计时
+            _homeProvider.startUsageTimeCutdown(() async {
+              showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                barrierColor: Colors.transparent,
+                isScrollControlled: true,
+                isDismissible: false,
+                builder: (_) => ExpirationReminder(),
+              );
+            });
+          });
+          // // 倒计时
+          // _homeProvider.startUsageTimeCutdown(() async {
+          //   showModalBottomSheet(
+          //     context: context,
+          //     backgroundColor: Colors.transparent,
+          //     barrierColor: Colors.transparent,
+          //     isScrollControlled: true,
+          //     isDismissible: false,
+          //     builder: (_) => ExpirationReminder(),
+          //   );
+          // });
+        },
+        onAnswer: onWebsocketAnswer,
+        onEnd: onWebsocketEnd,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> connectWebsocket() async {
@@ -371,14 +423,15 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
       return message;
     });
 
-    // subscription = Connectivity()
-    //     .onConnectivityChanged
-    //     .listen((ConnectivityResult result) async {
-    //   // _chatWebsocket.endChat();
-    //   // await _mediaUtils.stopPlay();
-    //   // widget.controller.setShowRecord(false);
-    //   // widget.controller.setDisabled(false);
-    // });
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) async {
+      _chatWebsocket.endChat();
+      await _mediaUtils.stopPlay();
+      widget.controller.setShowRecord(false);
+      widget.controller.setDisabled(false);
+      await connecTwotWebsocket();
+    });
 
     // requestPermission();
 
@@ -455,7 +508,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    // subscription.cancel();
+    subscription.cancel();
 
     super.dispose();
   }

@@ -402,10 +402,9 @@ class _CourseHomePageState extends State<CourseHomePage>
         context: context,
         title: '提示',
         buttonDirection: 'vertical',
-        confirmButtonText: '暂不购买',
-        cancelButtonText: '立即购买',
-        onConfirm: () {},
-        onCancel: () {
+        confirmButtonText: '立即购买',
+        cancelButtonText: '暂不购买',
+        onConfirm: () {
           //去购买页
           NavigatorUtils.push(
             context,
@@ -413,6 +412,7 @@ class _CourseHomePageState extends State<CourseHomePage>
             // "${HomeRouter.coursePurchasePage}?levelId=$levelId",
           );
         },
+        onCancel: () {},
         child: const Text(
           '购买课程即可开始学习',
           style: TextStyle(
@@ -458,7 +458,7 @@ class _CourseHomePageState extends State<CourseHomePage>
                 // _courseHomePagePresenter.getLessonTime(
                 //     xxlist[i].lessonId.toString(),
                 //     xxlist[i].levelId.toString());
-                intervalClick(3, xxlist[i].lessonId.toString(),
+                intervalClick(2, xxlist[i].lessonId.toString(),
                     xxlist[i].levelId.toString());
                 // showImageDialog(xxlist[i].unlockDate);
                 // Toast.show(

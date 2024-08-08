@@ -1,3 +1,4 @@
+import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/core/app_constants.dart';
 import 'package:Bubble/home/home_new.dart';
 import 'package:Bubble/res/colors.dart';
@@ -16,6 +17,7 @@ import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sp_util/sp_util.dart';
 
 class MainTabber extends StatefulWidget {
   const MainTabber({super.key});
@@ -92,6 +94,7 @@ class _MainTabberState extends State<MainTabber> {
 
   void tabSelect(int index) {
     MediaUtils().stopPlay();
+    SpUtil.putString(Constant.netWorkTos, index.toString());
 
     if (index == 3) {
       if (LoginManager.isLogin()) {
