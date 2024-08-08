@@ -79,7 +79,7 @@ Future<void> main() async {
       FlutterError.onError = (FlutterErrorDetails details) {
         _reportError(details.exception, details.stack);
       };
-
+      initUM();
       runApp(MyApp());
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
       // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
@@ -93,6 +93,10 @@ Future<void> main() async {
   });
 
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
+}
+
+void initUM() {
+  EventUMStatistics.umengCommonInit();
 }
 
 // Platform messages are asynchronous, so we initialize in an async method.
