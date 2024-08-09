@@ -103,11 +103,12 @@ class ChatWebsocket {
   }
 
   Future<void> endChat([bool force = false]) async {
-    if (_websocket == null) {
-      return;
-    }
+    // if (_websocket == null) {
+    //   return;
+    // }
     _endHeartBeat();
     _endType = force ? 'force' : 'normal';
+    Log.e("我发的断开请求");
     await _websocket!.sink.close(WebSocketStatus.normalClosure, 'Session End');
   }
 

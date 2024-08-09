@@ -224,7 +224,7 @@ class _InstructionalVideoDialoguePageState
 
   void connectWebsocket() async {
     try {
-      // _chatWebsocket.endChat(true);
+      _chatWebsocket.endChat(true);
       String characterId = _homeProvider.character.characterId;
       String sceneId = resourceSceneId; //_homeProvider.scene!.id.toString();
       // String sceneId = _homeProvider.course!.id.toString();
@@ -260,7 +260,6 @@ class _InstructionalVideoDialoguePageState
   }
 
   void endSocket() async {
-    await _mediaUtils.stopPlay();
     await _chatWebsocket.endChat(true);
   }
 
@@ -504,6 +503,8 @@ class _InstructionalVideoDialoguePageState
       // }
 // setState(() {
       _invokeInt = _invokeInt + 1;
+      setState(() {});
+      // Log.e("++++++++++++" + result.toString());
       // });
       if (result == ConnectivityResult.none) {
         isNetWork = false;
@@ -520,10 +521,16 @@ class _InstructionalVideoDialoguePageState
         isback = true;
         setState(() {});
         if (_invokeInt == 1) {
-          endSocket();
-          _invokeInt = 0;
+          // endSocket();
+          // _invokeInt = 0;
+          // Future.delayed(const Duration(milliseconds: 500), () {
+          Toast.show("您的网络状况不稳定！");
+          // });
           Future.delayed(const Duration(milliseconds: 500), () {
             connectWebsocket();
+            setState(() {
+              _invokeInt = 0;
+            });
           });
           setState(() {});
           Future.delayed(const Duration(seconds: 3), () {
@@ -851,6 +858,7 @@ class _InstructionalVideoDialoguePageState
 
   void forstartFlow(int dataIdx, int resourceIdx) {
     if (data[dataIdx].resource[resourceIdx].resourceType == 2) {
+      endSocket();
       //跳游戏
       Future.delayed(const Duration(seconds: 1), () {
         NavigatorUtils.push(context,
@@ -858,6 +866,7 @@ class _InstructionalVideoDialoguePageState
             arguments: widget.stepDetailData);
       });
     } else {
+      endSocket();
       setState(() {
         resourceSceneId =
             data[dataIdx].resource[resourceIdx].sceneId.toString();
@@ -1053,11 +1062,16 @@ class _InstructionalVideoDialoguePageState
     endSocket();
   }
 
+  void end() async {
+    await _mediaUtils.stopPlay();
+  }
+
   @override
   void dispose() {
     Wakelock.disable();
     subscription.cancel();
-
+    endSocket();
+    end();
     EventBus().off(NotificationUtils.nextClass);
     EventBus().off(NotificationUtils.messageEnd);
 
