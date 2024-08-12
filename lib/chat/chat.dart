@@ -571,28 +571,28 @@ class _ChatState extends State<ChatPage>
             ),
           ),
           // 左右滑动提示
-          if (_showSlideTip)
-            Positioned(
-              top: 0,
-              left: 0,
-              child: Container(
-                width: _screenUtil.screenWidth,
-                height: _screenUtil.screenHeight,
-                color: Colors.black.withOpacity(0.6),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: _screenUtil.statusBarHeight + 113.0,
-                    ),
-                    const LoadAssetImage(
-                      'slide_tip',
-                      width: 229.0,
-                      height: 406.0,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          // if (_showSlideTip)
+          //   Positioned(
+          //     top: 0,
+          //     left: 0,
+          //     child: Container(
+          //       width: _screenUtil.screenWidth,
+          //       height: _screenUtil.screenHeight,
+          //       color: Colors.black.withOpacity(0.6),
+          //       child: Column(
+          //         children: <Widget>[
+          //           SizedBox(
+          //             height: _screenUtil.statusBarHeight + 113.0,
+          //           ),
+          //           const LoadAssetImage(
+          //             'slide_tip',
+          //             width: 229.0,
+          //             height: 406.0,
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
         ],
       ),
     );
