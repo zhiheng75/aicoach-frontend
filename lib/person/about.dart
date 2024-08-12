@@ -285,6 +285,26 @@ class _AboutPageState extends State<AboutPage> {
           ),
         ),
         Text(
+          '模型名称：文心一言 Beijing-WenXinYiYan-20230821',
+          style: TextStyle(
+            fontSize: 11.0,
+            fontWeight: FontWeight.w400,
+            color: Colours.color_999999,
+            height: 13.0 / 11.0,
+            letterSpacing: 0.05,
+          ),
+        ),
+        Text(
+          '禁止利用生成式人工智能服务从事违法活动',
+          style: TextStyle(
+            fontSize: 11.0,
+            fontWeight: FontWeight.w400,
+            color: Colours.color_999999,
+            height: 13.0 / 11.0,
+            letterSpacing: 0.05,
+          ),
+        ),
+        Text(
           '深模科技 版权所有',
           style: TextStyle(
             fontSize: 11.0,
