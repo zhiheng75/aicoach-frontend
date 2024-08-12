@@ -1,52 +1,51 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
+import 'package:Bubble/method/fluter_native.dart';
 import 'package:Bubble/mvp/base_page_presenter.dart';
-import 'package:Bubble/person/presneter/purchase_view.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/person/entity/ali_pay_entity.dart';
+import 'package:Bubble/person/entity/good_list_entity.dart';
+import 'package:Bubble/person/entity/goods_v_bean.dart';
+import 'package:Bubble/person/entity/my_good_list_entity.dart';
+import 'package:Bubble/person/entity/wx_pay_entity.dart';
+import 'package:Bubble/person/view/course_speaking_purchase_view.dart';
 import 'package:Bubble/util/apple_pay_utils.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
-import 'package:sp_util/sp_util.dart';
+import 'package:Bubble/util/toast_utils.dart';
+import 'package:fluwx/fluwx.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:tobias/tobias.dart';
 
-import '../../constant/constant.dart';
-import '../../home/entity/base_config_entity.dart';
-import '../../method/fluter_native.dart';
-import '../../net/dio_utils.dart';
-import '../../net/http_api.dart';
-import '../../util/toast_utils.dart';
-import '../entity/ali_pay_entity.dart';
-import '../entity/good_list_entity.dart';
-import '../entity/my_good_list_entity.dart';
-import '../entity/wx_pay_entity.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:fluwx/fluwx.dart';
-
-class PurchasePresenter extends BasePagePresenter<PurchaseView> {
+class CourseSpeakingPurchasePresenter
+    extends BasePagePresenter<CourseSpeakingPurchaseView> {
   List<MyGoodListEntity> goodList = [];
   Map<int, ProductDetails> productMapForGood = {};
 
   @override
-  void initState() {
-    super.initState();
-    SpUtil.getObjList(
-        Constant.baseConfig,
-        (v) => {
-              if (v.isNotEmpty)
-                {
-                  view.getBaseConfig(
-                      BaseConfigDataData.fromJson(v as Map<String, dynamic>)),
-                }
-            });
-  }
-
-  @override
   void afterInit() {
     super.afterInit();
-    getGoodsList(true);
+    getStudyInfo();
+  }
+
+  Future getStudyInfo() async {
+    return requestNetwork<ResultData>(Method.get,
+        url: HttpApi.goodsV,
+        isShow: false,
+        queryParameters: {
+          'type': 4,
+        }, onSuccess: (data) {
+      Map<String, dynamic> goodsBeanMap = json.decode(data.toString());
+      GoodsVBean goodsBean = GoodsVBean.fromJson(goodsBeanMap);
+      if (goodsBean.code == 200) {
+        view.sendSuccess(goodsBean);
+      } else {
+        view.sendFail(goodsBean.msg);
+      }
+    });
   }
 
   Future wxChatPay(goodId, goodPrice, bool showLoading) {
@@ -74,7 +73,7 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView> {
         Fluwx fluwx = Fluwx();
         bool isRegistered = await fluwx.registerApi(
           appId: payData.appid,
-          doOnAndroid: false,
+          doOnAndroid: true,
           doOnIOS: true,
           universalLink: 'https://demo.shenmo-ai.net/ios/',
         );
@@ -110,8 +109,8 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView> {
             sign: payData.sign,
           ),
         );
+        // }
       }
-      // }
     });
   }
 
@@ -235,35 +234,7 @@ class PurchasePresenter extends BasePagePresenter<PurchaseView> {
         Toast.show(e.toString());
       }
     }, onError: (code, msg) {
-      // Toast.show(msg);
-    });
-  }
-
-  Future getGoodsList(bool showLoading) {
-    return requestNetwork<GoodListData>(Method.get,
-        url: HttpApi.goodList, isShow: showLoading, onSuccess: (data) async {
-      if (data != null && data.data.isNotEmpty) {
-        if (Platform.isIOS) {
-          await getIosProduct(data.data);
-        }
-        goodList.clear();
-        for (int i = 0; i < data.data.length; i++) {
-          MyGoodListEntity entity = MyGoodListEntity();
-          entity.name = data.data[i].name;
-          entity.desc = data.data[i].desc;
-          entity.status = data.data[i].status;
-          entity.sort = data.data[i].sort;
-          entity.updatedAt = data.data[i].updatedAt;
-          entity.price = data.data[i].price;
-          entity.id = data.data[i].id;
-          entity.unit = data.data[i].unit;
-          entity.createdAt = data.data[i].createdAt;
-          entity.isSelect = i == 0;
-          entity.recommend = i == 0;
-          goodList.add(entity);
-        }
-        view.goodListData(goodList);
-      }
+      Toast.show(msg);
     });
   }
 

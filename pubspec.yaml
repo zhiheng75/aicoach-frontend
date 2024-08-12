@@ -8,7 +8,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 #version: 2.0.0+1
 
 # ios version
-version: 2.3.0+310
+version: 2.3.1+320
 
 
 environment:
@@ -103,7 +103,7 @@ dependencies:
   #start
   flutter_rating_bar: ^4.0.1
   #app_tracking_transparency https://github.com/deniza/app_tracking_transparency
-  # app_tracking_transparency: ^2.0.4
+  app_tracking_transparency: ^2.0.4
   #device_identity
   device_identity: ^1.0.0
   #loading_animation_widget https://github.com/watery-desert/loading_animation_widget
@@ -147,6 +147,7 @@ dependencies:
   wakelock: ^0.6.2
   audioplayers: ^5.2.1
   photo_manager: ^3.2.0
+  # connectivity_plus: ^6.0.4
   connectivity_plus: ^5.0.2
   # flutter_phone_directed: ^0.1.0
   # screen_manager: ^1.1.0

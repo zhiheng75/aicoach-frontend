@@ -11,6 +11,7 @@ import 'package:Bubble/course/presenter/course_report_page_presenter.dart';
 import 'package:Bubble/course/view/course_report_page_view.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page.dart';
+import 'package:Bubble/net/proxy_config.dart';
 import 'package:Bubble/person/item/error_correction_detail_item.dart';
 import 'package:Bubble/person/item/error_correction_item.dart';
 import 'package:Bubble/report/widget/radar.dart';
@@ -225,7 +226,9 @@ class _CourseReportPageState extends State<CourseReportPage>
     var model = WeChatShareMiniProgramModel(
         webPageUrl: encoded, //分享内容的网页链接
         path: webPageUrl,
-        miniProgramType: WXMiniProgramType.release,
+        miniProgramType: ProxyConfig.isOfficialAddress
+            ? WXMiniProgramType.release
+            : WXMiniProgramType.test,
         userName: "gh_dcd9c62ba779", //原始id 小程序的 看好 原始id 不是appid
         title: title, //分享的小程序标题
         // description: description, //分享的小程序描述

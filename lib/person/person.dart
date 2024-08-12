@@ -596,8 +596,12 @@ class _PersonPageState extends State<PersonPage>
                     } else {
                       NavigatorUtils.push(
                         context,
-                        "${PersonalRouter.userMembershipUpgradePage}?levelId=0&goodsLabel=0",
+                        "${PersonalRouter.courseSpeakingPurchasePage}?levelId=0&goodsLabel=0",
                       );
+                      // NavigatorUtils.push(
+                      //   context,
+                      //   PersonalRouter.courseSpeakingPurchasePage,
+                      // );
                     }
                     EventUMStatistics.umengCommonMapEvent(
                         "click_index_go_to_personal_buy");

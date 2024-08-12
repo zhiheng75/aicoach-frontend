@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:Bubble/home/entity/lesson_detail_bean.dart';
 import 'package:Bubble/home/widget/teacher_show_view.dart';
 import 'package:Bubble/mvp/base_page.dart';
+import 'package:Bubble/net/proxy_config.dart';
 import 'package:Bubble/person/presneter/purchase_page_presenter.dart';
 import 'package:Bubble/person/view/purchase_view.dart';
 import 'package:Bubble/res/colors.dart';
@@ -363,7 +364,9 @@ class _CoursePaysPageState extends State<CoursePaysPage>
                   target: MiniProgram(
                       username: "gh_dcd9c62ba779",
                       path: url,
-                      miniProgramType: WXMiniProgramType.release));
+                      miniProgramType: ProxyConfig.isOfficialAddress
+                          ? WXMiniProgramType.release
+                          : WXMiniProgramType.test));
               EventUMStatistics.umengCommonMapEvent(
                   "click_index_go_to_add_a_tutor");
 

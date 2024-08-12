@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:Bubble/net/proxy_config.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -49,6 +50,7 @@ class ChatWebsocket {
       onConnected();
     }
     _status = 'opened';
+    _endHeartBeat();
     _startHeartbeat();
     _websocket!.stream.listen(
       (data) {
@@ -101,11 +103,12 @@ class ChatWebsocket {
   }
 
   Future<void> endChat([bool force = false]) async {
-    if (_websocket == null) {
-      return;
-    }
+    // if (_websocket == null) {
+    //   return;
+    // }
     _endHeartBeat();
     _endType = force ? 'force' : 'normal';
+    Log.e("我发的断开请求");
     await _websocket!.sink.close(WebSocketStatus.normalClosure, 'Session End');
   }
 
@@ -119,8 +122,9 @@ class ChatWebsocket {
     String deviceId = await Device.getDeviceId();
     String token = LoginManager.getUserToken();
     // 测试
-    String uri =
-        'wss://api.bubble.shenmo-ai.net/ws/$sessionId?platform=app&device_id=$deviceId&character_id=$characterId&language=en-US&token=$token&use_search=false&use_quivr=false&use_multion=false';
+    String uri = ProxyConfig.isOfficialAddress
+        ? 'wss://api.bubble.shenmo-ai.com/ws/$sessionId?platform=app&device_id=$deviceId&character_id=$characterId&language=en-US&token=$token&use_search=false&use_quivr=false&use_multion=false'
+        : 'wss://api.bubble.shenmo-ai.net/ws/$sessionId?platform=app&device_id=$deviceId&character_id=$characterId&language=en-US&token=$token&use_search=false&use_quivr=false&use_multion=false';
     // 正式
     // String uri =
     //     'wss://api.bubble.shenmo-ai.com/ws/$sessionId?platform=app&device_id=$deviceId&character_id=$characterId&language=en-US&token=$token&use_search=false&use_quivr=false&use_multion=false';

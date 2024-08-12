@@ -224,7 +224,7 @@ class _InstructionalVideoDialoguePageState
 
   void connectWebsocket() async {
     try {
-      // _chatWebsocket.endChat(true);
+      _chatWebsocket.endChat(true);
       String characterId = _homeProvider.character.characterId;
       String sceneId = resourceSceneId; //_homeProvider.scene!.id.toString();
       // String sceneId = _homeProvider.course!.id.toString();
@@ -260,7 +260,6 @@ class _InstructionalVideoDialoguePageState
   }
 
   void endSocket() async {
-    await _mediaUtils.stopPlay();
     await _chatWebsocket.endChat(true);
   }
 
@@ -502,11 +501,44 @@ class _InstructionalVideoDialoguePageState
       //   connectWebsocket();
       //   creatResetStatus();
       // }
+// setState(() {
+      _invokeInt = _invokeInt + 1;
+      setState(() {});
+      // Log.e("++++++++++++" + result.toString());
+      // });
       if (result == ConnectivityResult.none) {
         isNetWork = false;
-        // onReold("您的网络不太顺畅，请检查网络情况。");
+
+        isback = true;
+        setState(() {});
+
+        if (_invokeInt == 1) {
+          endSocket();
+          onReold("您的网络不太顺畅，请检查网络情况。");
+        }
       } else {
         isNetWork = true;
+        isback = true;
+        setState(() {});
+        if (_invokeInt == 1) {
+          // endSocket();
+          // _invokeInt = 0;
+          // Future.delayed(const Duration(milliseconds: 500), () {
+          Toast.show("您的网络状况不稳定！");
+          // });
+          Future.delayed(const Duration(milliseconds: 500), () {
+            connectWebsocket();
+            setState(() {
+              _invokeInt = 0;
+            });
+          });
+          setState(() {});
+          Future.delayed(const Duration(seconds: 3), () {
+            setState(() {
+              isback = false;
+            });
+          });
+        }
       }
       setState(() {});
     });
@@ -826,6 +858,7 @@ class _InstructionalVideoDialoguePageState
 
   void forstartFlow(int dataIdx, int resourceIdx) {
     if (data[dataIdx].resource[resourceIdx].resourceType == 2) {
+      endSocket();
       //跳游戏
       Future.delayed(const Duration(seconds: 1), () {
         NavigatorUtils.push(context,
@@ -833,6 +866,7 @@ class _InstructionalVideoDialoguePageState
             arguments: widget.stepDetailData);
       });
     } else {
+      endSocket();
       setState(() {
         resourceSceneId =
             data[dataIdx].resource[resourceIdx].sceneId.toString();
@@ -1028,11 +1062,16 @@ class _InstructionalVideoDialoguePageState
     endSocket();
   }
 
+  void end() async {
+    await _mediaUtils.stopPlay();
+  }
+
   @override
   void dispose() {
     Wakelock.disable();
     subscription.cancel();
-
+    endSocket();
+    end();
     EventBus().off(NotificationUtils.nextClass);
     EventBus().off(NotificationUtils.messageEnd);
 
@@ -1374,7 +1413,7 @@ class _InstructionalVideoDialoguePageState
 //到课程购买页
                     NavigatorUtils.push(
                       context,
-                      "${PersonalRouter.userMembershipUpgradePage}?levelId=$levelId&goodsLabel=$goodsLabel",
+                      "${PersonalRouter.courseSpeakingPurchasePage}?levelId=$levelId&goodsLabel=1",
                       // "${HomeRouter.coursePurchasePage}?levelId=$levelId",
                     );
                   },

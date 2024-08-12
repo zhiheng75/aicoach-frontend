@@ -58,4 +58,6 @@ class Constant {
   static const String sceneList = 'sceneList';
 
   static const String dateTimer = 'dateTimer';
+
+  static const String netWorkTos = 'netWorkTos';
 }

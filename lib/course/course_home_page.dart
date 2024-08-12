@@ -70,9 +70,93 @@ class _CourseHomePageState extends State<CourseHomePage>
     Colours.color_F9F8FF,
     Colours.color_EFF9FF,
     Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
+    Colours.color_F9F8FF,
+    Colours.color_EFF9FF,
+    Colours.color_E3FBFA,
   ];
 
   List<List<Color>> colorIconBackData = [
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
+    [
+      Colours.color_9F7EFF,
+      Colours.color_BDA6FF,
+    ],
+    [
+      Colours.color_7AAFFF,
+      Colours.color_9AC3FF,
+    ],
+    [
+      Colours.color_00CFD1,
+      Colours.color_6EF0F1,
+    ],
     [
       Colours.color_9F7EFF,
       Colours.color_BDA6FF,
@@ -295,6 +379,21 @@ class _CourseHomePageState extends State<CourseHomePage>
     );
   }
 
+  var lastPopTime = DateTime.now();
+
+  void intervalClick(int needTime, String lessonId, String levelId) {
+    // 防重复提交
+    if (lastPopTime == null ||
+        DateTime.now().difference(lastPopTime) > Duration(seconds: needTime)) {
+      _courseHomePagePresenter.getLessonTime(lessonId, levelId);
+      lastPopTime = DateTime.now();
+      print("允许点击");
+    } else {
+      // lastPopTime = DateTime.now(); //如果不注释这行,则强制用户一定要间隔2s后才能成功点击. 而不是以上一次点击成功的时间开始计算.
+      print("请勿重复点击！");
+    }
+  }
+
   void showView(int levelId, int goodsLabel) {
     EventUMStatistics.umengCommonMapEvent("click_index_go_buy");
 
@@ -303,17 +402,17 @@ class _CourseHomePageState extends State<CourseHomePage>
         context: context,
         title: '提示',
         buttonDirection: 'vertical',
-        confirmButtonText: '暂不购买',
-        cancelButtonText: '立即购买',
-        onConfirm: () {},
-        onCancel: () {
+        confirmButtonText: '立即购买',
+        cancelButtonText: '暂不购买',
+        onConfirm: () {
           //去购买页
           NavigatorUtils.push(
             context,
-            "${PersonalRouter.userMembershipUpgradePage}?levelId=$levelId&goodsLabel=$goodsLabel",
+            "${PersonalRouter.courseSpeakingPurchasePage}?levelId=$levelId&goodsLabel=1",
             // "${HomeRouter.coursePurchasePage}?levelId=$levelId",
           );
         },
+        onCancel: () {},
         child: const Text(
           '购买课程即可开始学习',
           style: TextStyle(
@@ -356,8 +455,10 @@ class _CourseHomePageState extends State<CourseHomePage>
                     // CourseRouter.courseFlowPage,
                     "${CourseRouter.courseFlowPage}?lessonId=${xxlist[i].lessonId}");
               } else {
-                _courseHomePagePresenter.getLessonTime(
-                    xxlist[i].lessonId.toString(),
+                // _courseHomePagePresenter.getLessonTime(
+                //     xxlist[i].lessonId.toString(),
+                //     xxlist[i].levelId.toString());
+                intervalClick(2, xxlist[i].lessonId.toString(),
                     xxlist[i].levelId.toString());
                 // showImageDialog(xxlist[i].unlockDate);
                 // Toast.show(
