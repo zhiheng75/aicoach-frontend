@@ -4,9 +4,12 @@ import 'dart:convert';
 
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/exam/entity/goods_list_bean.dart';
+import 'package:Bubble/home/entity/base_config_entity.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
+import 'package:Bubble/person/entity/my_good_list_entity.dart';
+import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/person/presneter/purchase_page_presenter.dart';
 import 'package:Bubble/person/view/purchase_view.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
@@ -750,5 +753,20 @@ class _ExamPurchasePageState extends State<ExamPurchasePage>
     if (widget.onPurchased != null) {
       widget.onPurchased!();
     }
+  }
+
+  @override
+  void getBaseConfig(BaseConfigDataData data) {
+    // TODO: implement getBaseConfig
+  }
+
+  @override
+  void getWXPayMsg(WxPayDataData bean) {
+    // TODO: implement getWXPayMsg
+  }
+
+  @override
+  void goodListData(List<MyGoodListEntity> bean) {
+    // TODO: implement goodListData
   }
 }

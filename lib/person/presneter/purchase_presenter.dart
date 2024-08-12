@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/mvp/base_page_presenter.dart';
-import 'package:Bubble/person/presneter/purchase_view.dart';
+import 'package:Bubble/person/view/purchase_view.dart';
 import 'package:Bubble/util/apple_pay_utils.dart';
 import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/log_utils.dart';

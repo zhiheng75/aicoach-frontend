@@ -5,6 +5,8 @@ import 'package:Bubble/person/page/error_correction_detail_page.dart';
 import 'package:Bubble/person/page/error_correction_page.dart';
 import 'package:Bubble/person/page/join_community_page.dart';
 import 'package:Bubble/person/page/user_membership_upgrade_page.dart';
+import 'package:Bubble/person/page/xueersi_purchase_page.dart';
+import 'package:Bubble/person/page/xueersi_purchase_success_page.dart';
 import 'package:fluro/fluro.dart';
 
 import '../routers/i_router.dart';
@@ -34,8 +36,16 @@ class PersonalRouter implements IRouterProvider {
 
   static String courseSpeakingPurchasePage = '/CourseSpeakingPurchasePage';
 
+  static String xueersiPurchasePage = '/XueersiPurchasePage';
+  static String xueersiPurchaseSuccessPage = '/XueersiPurchaseSuccessPage';
+
   @override
   void initRouter(FluroRouter router) {
+    router.define(xueersiPurchaseSuccessPage,
+        handler: Handler(
+            handlerFunc: (_, __) => const XueersiPurchaseSuccessPage()));
+    router.define(xueersiPurchasePage,
+        handler: Handler(handlerFunc: (_, __) => const XueersiPurchasePage()));
     router.define(person,
         handler: Handler(handlerFunc: (_, __) => const PersonPage()));
     router.define(setting,
