@@ -1436,7 +1436,14 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
       }
       Future.delayed(const Duration(milliseconds: 100), () {
         // 这里是你想要延迟执行的代码
-        _scrollToIndex(spokenIdx);
+
+        if (spokenIdx == listData.data.packageList.list.length - 1) {
+          _scrollToIndex(spokenIdx - 1);
+        } else {
+          _scrollToIndex(spokenIdx);
+        }
+
+        // _scrollToIndex(spokenIdx);
       });
     } else {
       for (int i = 0; i < listData.data.lessonList.list.length; i++) {
@@ -1447,7 +1454,12 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
       }
       Future.delayed(const Duration(milliseconds: 100), () {
         // 这里是你想要延迟执行的代码
-        _scrollToIndex(classIdx);
+        if (classIdx == listData.data.lessonList.list.length - 1) {
+          _scrollToIndex(classIdx - 1);
+        } else {
+          _scrollToIndex(classIdx);
+        }
+        // _scrollToIndex(classIdx);
       });
     }
 

@@ -59,12 +59,8 @@ class _CancelAccountPageState extends State<CancelAccountPage> {
           const SizedBox(
             height: 16.0,
           ),
-          SizedBox(
-            width: 200,
-            child: BtnWidget("btn_bg_img", "申请注销",
-                txtStyle: TextStyle(
-                    color: Colours.color_001652,
-                    fontSize: Dimens.font_sp18), () {
+          GestureDetector(
+            onTap: () {
               ConfirmUtils.show(
                 context: context,
                 title: '提示',
@@ -92,7 +88,18 @@ class _CancelAccountPageState extends State<CancelAccountPage> {
                   ),
                 ),
               );
-            }),
+            },
+            child: Container(
+              padding: EdgeInsets.only(
+                  left: 20.w, right: 20.w, top: 8.h, bottom: 8.h),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8), color: Colors.blue),
+              child: Text(
+                "申请注销",
+                style:
+                    TextStyle(color: Colors.white, fontSize: Dimens.font_sp18),
+              ),
+            ),
           )
         ],
       ),

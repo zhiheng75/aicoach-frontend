@@ -335,8 +335,8 @@ class _InstructionalVideoDialoguePageState
     if (isback) {
       return;
     }
-    isback = true;
     setState(() {
+      isback = true;
       _invokeInt = _invokeInt + 1;
     });
     _homeProvider.endUsageTimeCutdown();
@@ -484,6 +484,21 @@ class _InstructionalVideoDialoguePageState
     _bottomBarControll.setDisabled(false);
   }
 
+  var lastPopTime = DateTime.now();
+
+  void intervalClick(int needTime) {
+    // 防重复提交
+    if (lastPopTime == null ||
+        DateTime.now().difference(lastPopTime) > Duration(seconds: needTime)) {
+      Toast.show("您的网络状况不稳定！");
+      lastPopTime = DateTime.now();
+      print("允许点击");
+    } else {
+      // lastPopTime = DateTime.now(); //如果不注释这行,则强制用户一定要间隔2s后才能成功点击. 而不是以上一次点击成功的时间开始计算.
+      print("请勿重复点击！");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -496,16 +511,9 @@ class _InstructionalVideoDialoguePageState
     subscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) async {
-      // if (isUserOpen || _homeProvider.messageList.isNotEmpty) {
-      //   endSocket();
-      //   connectWebsocket();
-      //   creatResetStatus();
-      // }
-// setState(() {
       _invokeInt = _invokeInt + 1;
       setState(() {});
-      // Log.e("++++++++++++" + result.toString());
-      // });
+      Log.e("===============" + result.toString() + "++++++++++++");
       if (result == ConnectivityResult.none) {
         isNetWork = false;
 
@@ -516,23 +524,19 @@ class _InstructionalVideoDialoguePageState
           endSocket();
           onReold("您的网络不太顺畅，请检查网络情况。");
         }
-      } else {
+      } else if (result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.wifi) {
         isNetWork = true;
         isback = true;
         setState(() {});
         if (_invokeInt == 1) {
-          // endSocket();
-          // _invokeInt = 0;
-          // Future.delayed(const Duration(milliseconds: 500), () {
-          Toast.show("您的网络状况不稳定！");
-          // });
-          Future.delayed(const Duration(milliseconds: 500), () {
+          intervalClick(180);
+          Future.delayed(const Duration(seconds: 3), () {
             connectWebsocket();
             setState(() {
               _invokeInt = 0;
             });
           });
-          setState(() {});
           Future.delayed(const Duration(seconds: 3), () {
             setState(() {
               isback = false;
@@ -600,6 +604,8 @@ class _InstructionalVideoDialoguePageState
 
     // 全局监听App状态
     SystemChannels.lifecycle.setMessageHandler((message) async {
+      Log.e("++++++++++++++++++++=================");
+
       // 退到后台
       if (introFileType == "video") {
         if (await _controller!.isPlaying()) {
@@ -612,6 +618,7 @@ class _InstructionalVideoDialoguePageState
         Log.e("AppLifecycleState.paused");
         timestamp = DateTime.now();
         isTimeBack = true;
+        // isback = true;
         setState(() {});
         // isback = true;
         // _startBackTimer();
@@ -620,6 +627,7 @@ class _InstructionalVideoDialoguePageState
         //回到前台
         // _cancelTimer();
         isTimeBack = false;
+        // isback = false;
         setState(() {});
         Log.e("AppLifecycleState.resumed");
         // int resumedTime = getCurrentTime();
@@ -866,7 +874,7 @@ class _InstructionalVideoDialoguePageState
             arguments: widget.stepDetailData);
       });
     } else {
-      endSocket();
+      // endSocket();
       setState(() {
         resourceSceneId =
             data[dataIdx].resource[resourceIdx].sceneId.toString();
@@ -884,7 +892,8 @@ class _InstructionalVideoDialoguePageState
           contentTop = _screenUtil.statusBarHeight +
               _screenUtil.screenWidth / 16 * 9 +
               80;
-
+          isback = true;
+          setState(() {});
           videoFlow();
         } else if (introFileType == "image") {
           isVideo = "0";
@@ -997,6 +1006,8 @@ class _InstructionalVideoDialoguePageState
         whenFinished: () {
           // setState(() {
           // isFrist = false;
+          isback = false;
+          setState(() {});
           _bottomBarControll.setDisabled(false);
           // });
         },
@@ -1135,6 +1146,8 @@ class _InstructionalVideoDialoguePageState
   }
 
   void _onPlaybackEnded() {
+    isback = true;
+    setState(() {});
     // if (isOnePlay == "1") {
     //   isOnePlay = "2";
     startNormaltwoChatRequestNetwork();
