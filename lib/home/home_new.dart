@@ -45,8 +45,8 @@ import 'widget/home_tabbar.dart';
 // import 'package:device_info_plus/device_info_plus.dart';
 
 class HomeNewPage extends StatefulWidget {
-  final int index;
-  const HomeNewPage({Key? key, this.index = 0}) : super(key: key);
+  final String characterId;
+  const HomeNewPage({Key? key, required this.characterId}) : super(key: key);
   // const ChatHomeItem({super.key, required this.datum});
 
   @override
@@ -191,18 +191,18 @@ class _HomePageState extends State<HomeNewPage>
           useSafeArea: false,
           builder: (_) => type == 'topic'
               ? TopicPage(onEnd: () {
-                  changeTab('chat');
-                  Future.delayed(const Duration(seconds: 1), () {
-                    EventBus().emit(NotificationUtils.resetChatTwo);
-                  });
+                  // changeTab('chat');
+                  // Future.delayed(const Duration(seconds: 1), () {
+                  EventBus().emit(NotificationUtils.newResetChat);
+                  // });
                 })
               : ScenePage(onEnd: () {
-                  if (value['page'] == "0") {
-                    changeTab('chat');
-                    Future.delayed(const Duration(seconds: 1), () {
-                      EventBus().emit(NotificationUtils.resetChatTwo);
-                    });
-                  }
+                  // if (value['page'] == "0") {
+                  //   changeTab('chat');
+                  //   Future.delayed(const Duration(seconds: 1), () {
+                  //     EventBus().emit(NotificationUtils.resetChatTwo);
+                  //   });
+                  // }
                 }),
         );
         // 重置tab
@@ -254,15 +254,15 @@ class _HomePageState extends State<HomeNewPage>
     return Material(
       child: Stack(
         children: <Widget>[
-          if (_currentTab == 'chat') ChatPage(index: widget.index),
+          if (_currentTab == 'chat') ChatPage(characterId: widget.characterId),
           // if (_currentTab == 'exam') const ExamPage(),
-          Positioned(
-            top: 60.0,
-            child: HomeTabbar(
-              currentTab: _currentTab,
-              changeTab: changeTab,
-            ),
-          ),
+          // Positioned(
+          //   top: 60.0,
+          //   child: HomeTabbar(
+          //     currentTab: _currentTab,
+          //     changeTab: changeTab,
+          //   ),
+          // ),
         ],
       ),
       // child: ChatPage(index: widget.index),

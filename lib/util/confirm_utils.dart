@@ -1,7 +1,50 @@
+import 'package:Bubble/res/colors.dart';
+import 'package:Bubble/res/gaps.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ConfirmUtils {
+  static void showNet({
+    required BuildContext context,
+    required String title,
+    bool isNetWork = true,
+    int invokeInt = 1,
+    String? buttonDirection,
+    String? confirmButtonText,
+    String? cancelButtonText,
+    required Function() onConfirm,
+    required Function() onCancel,
+    Widget? child,
+  }) {
+    if (invokeInt > 1) {
+      return;
+    }
+    showDialog(
+      context: context,
+      barrierColor: Colors.transparent,
+      barrierDismissible: false,
+      useSafeArea: false,
+      // ignore: deprecated_member_use
+      builder: (_) => WillPopScope(
+        onWillPop: () async {
+          //这里可以响应物理返回键
+          return false;
+        },
+        child: ConfirmThree(
+          title: title,
+          buttonDirection: buttonDirection,
+          confirmButtonText: confirmButtonText,
+          cancelButtonText: cancelButtonText,
+          onConfirm: onConfirm,
+          onCancel: onCancel,
+          child: child,
+        ),
+      ),
+    );
+  }
+
   static void show({
     required BuildContext context,
     required String title,
@@ -17,14 +60,21 @@ class ConfirmUtils {
       barrierColor: Colors.transparent,
       barrierDismissible: false,
       useSafeArea: false,
-      builder: (_) => Confirm(
-        title: title,
-        buttonDirection: buttonDirection,
-        confirmButtonText: confirmButtonText,
-        cancelButtonText: cancelButtonText,
-        onConfirm: onConfirm,
-        onCancel: onCancel,
-        child: child,
+      // ignore: deprecated_member_use
+      builder: (_) => WillPopScope(
+        onWillPop: () async {
+          //这里可以响应物理返回键
+          return false;
+        },
+        child: ConfirmTwo(
+          title: title,
+          buttonDirection: buttonDirection,
+          confirmButtonText: confirmButtonText,
+          cancelButtonText: cancelButtonText,
+          onConfirm: onConfirm,
+          onCancel: onCancel,
+          child: child,
+        ),
       ),
     );
   }
@@ -156,6 +206,252 @@ class SingleChoice extends StatelessWidget {
                 height: 17.0,
               ),
               bottomButton,
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ConfirmThree extends StatelessWidget {
+  const ConfirmThree({
+    Key? key,
+    required this.title,
+    this.buttonDirection = 'horizontal',
+    this.confirmButtonText,
+    this.cancelButtonText,
+    required this.onConfirm,
+    required this.onCancel,
+    this.child,
+  }) : super(key: key);
+
+  final String title;
+
+  final String? buttonDirection;
+  final String? confirmButtonText;
+  final String? cancelButtonText;
+  final Function() onConfirm;
+  final Function() onCancel;
+
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    ScreenUtil screenUtil = ScreenUtil();
+
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        width: screenUtil.screenWidth,
+        color: Colors.black.withOpacity(0.6),
+        alignment: Alignment.center,
+        child: Container(
+          margin:
+              // isIPad ? const EdgeInsets.all(100) : const EdgeInsets.all(30),
+              EdgeInsets.all(40.w),
+          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 20),
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+              color: Colors.white),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Gaps.vGap24,
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  height: 22.0 / 17.0,
+                ),
+              ),
+              if (child != null)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 16.0,
+                    left: 16.0,
+                    right: 16.0,
+                  ),
+                  child: child!,
+                ),
+              Gaps.vGap16,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      NavigatorUtils.goBack(context);
+                      onCancel();
+                    },
+                    child: Container(
+                      width: 105.w,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colours.color_F2F3F5,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Center(
+                        child: Text(
+                          cancelButtonText ?? '取消',
+                          style: const TextStyle(
+                              fontSize: 15, color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Gaps.hGap10,
+                  GestureDetector(
+                    onTap: () async {
+                      // NavigatorUtils.goBack(context);
+                      onConfirm();
+                    },
+                    child: Container(
+                      width: 105.w,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colours.color_8003FD,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Center(
+                        child: Text(
+                          confirmButtonText ?? '确定',
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ConfirmTwo extends StatelessWidget {
+  const ConfirmTwo({
+    Key? key,
+    required this.title,
+    this.buttonDirection = 'horizontal',
+    this.confirmButtonText,
+    this.cancelButtonText,
+    required this.onConfirm,
+    required this.onCancel,
+    this.child,
+  }) : super(key: key);
+
+  final String title;
+
+  final String? buttonDirection;
+  final String? confirmButtonText;
+  final String? cancelButtonText;
+  final Function() onConfirm;
+  final Function() onCancel;
+
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    ScreenUtil screenUtil = ScreenUtil();
+
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        width: screenUtil.screenWidth,
+        color: Colors.black.withOpacity(0.6),
+        alignment: Alignment.center,
+        child: Container(
+          margin:
+              // isIPad ? const EdgeInsets.all(100) : const EdgeInsets.all(30),
+              EdgeInsets.all(40.w),
+          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 20),
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+              color: Colors.white),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Gaps.vGap24,
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  height: 22.0 / 17.0,
+                ),
+              ),
+              if (child != null)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 16.0,
+                    left: 16.0,
+                    right: 16.0,
+                  ),
+                  child: child!,
+                ),
+              Gaps.vGap16,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      NavigatorUtils.goBack(context);
+                      onCancel();
+                    },
+                    child: Container(
+                      width: 105.w,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colours.color_F2F3F5,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Center(
+                        child: Text(
+                          cancelButtonText ?? '取消',
+                          style: const TextStyle(
+                              fontSize: 15, color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Gaps.hGap10,
+                  GestureDetector(
+                    onTap: () async {
+                      NavigatorUtils.goBack(context);
+                      onConfirm();
+                    },
+                    child: Container(
+                      width: 105.w,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colours.color_8003FD,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Center(
+                        child: Text(
+                          confirmButtonText ?? '确定',
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

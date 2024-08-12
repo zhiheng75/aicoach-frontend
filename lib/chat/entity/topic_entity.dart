@@ -1,9 +1,10 @@
 class TopicEntity {
-
   int id = 0;
   String title = '';
   String cover = '';
   String desc = '';
+  int count = 0;
+  String coverImage = '';
 
   TopicEntity();
 
@@ -19,8 +20,14 @@ class TopicEntity {
     if (json['detail_image'] != null) {
       entity.cover = json['detail_image'];
     }
+    if (json['cover_image'] != null) {
+      entity.coverImage = json['cover_image'];
+    }
     if (json['desc'] != null) {
       entity.desc = json['desc'];
+    }
+    if (json['i_count'] != null) {
+      entity.count = json['i_count'];
     }
     return entity;
   }
@@ -30,8 +37,9 @@ class TopicEntity {
       'id': id,
       'title': title,
       'detail_image': cover,
+      'cover_image': coverImage,
       'desc': desc,
+      'i_count': count,
     };
   }
-
 }

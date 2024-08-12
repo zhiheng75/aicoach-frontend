@@ -46,6 +46,7 @@ class CourseBottomBar extends StatefulWidget {
     this.isNormalChat = false,
     this.onScrollEnd,
     this.onFinshEnd,
+    this.onStartBool,
     this.onError,
     required this.lessonId,
     required this.stepId,
@@ -64,6 +65,8 @@ class CourseBottomBar extends StatefulWidget {
   final Function()? onError;
 
   final Function(bool isfinsh)? onFinshEnd;
+  final Function(bool isfinsh)? onStartBool;
+
   final String lessonId;
   final String stepId;
   final String sceneId;
@@ -393,7 +396,6 @@ class _CourseBottomBarState extends State<CourseBottomBar>
     if (phoneSate) {
       Toast.show("获取通话状态使用说明:用于对话过程中按住说话状态", duration: 5000);
     }
-
     var status = await Permission.phone.request();
 
 // await Permission.phone.isGranted
@@ -424,6 +426,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
 
     // 全局监听App状态
     SystemChannels.lifecycle.setMessageHandler((message) async {
+      EventBus().emit(
+        NotificationUtils.courseType,
+      );
       // 退到后台
       if (isUserOpen) {
         // ignore: unrelated_type_equality_checks
@@ -713,7 +718,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                     setState(() {
                       isUserOpen = true;
                     });
-
+                    if (widget.onStartBool != null) {
+                      widget.onStartBool!(true);
+                    }
                     _recognizeUtil = RecognizeUtil();
                     _recognizeUtil.setLanguage(widget.language ?? 'en');
                     // 开始录音

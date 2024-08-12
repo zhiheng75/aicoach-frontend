@@ -3,6 +3,7 @@ import 'package:Bubble/home/entity/lesson_detail_bean.dart';
 import 'package:Bubble/home/page/course_pays_page.dart';
 import 'package:Bubble/scene/instructional_video_dialogue_page.dart';
 import 'package:Bubble/scene/teaching_dialogue_page.dart';
+import 'package:Bubble/scene/topic.dart';
 import 'package:Bubble/tabmain/main_tabber.dart';
 import 'package:Bubble/home/page/course_purchase_page.dart';
 import 'package:Bubble/scene/scene.dart';
@@ -18,6 +19,8 @@ class HomeRouter implements IRouterProvider {
   static String homePage = '/home';
   static String tabberPage = '/tabber';
   static String scenePage = '/scenePage';
+  static String topicPage = '/TopicPage';
+
   // static String coursePurchasePage = '/CoursePurchasePage';
   static String coursePaysPage = '/CoursePaysPage';
   static String instructionalVideoDialoguePage =
@@ -42,9 +45,9 @@ class HomeRouter implements IRouterProvider {
 
     router.define(homePage, handler: Handler(handlerFunc: (_, params) {
       //人物
-      String index = params['index']!.first;
-      int idx = int.parse(index);
-      return HomeNewPage(index: idx);
+      String characterId = params['characterId']!.first;
+      // int idx = int.parse(index);
+      return HomeNewPage(characterId: characterId);
     }));
 
     router.define(tabberPage,
@@ -66,6 +69,12 @@ class HomeRouter implements IRouterProvider {
                   onEnd: () {},
                 )));
 
+    router.define(topicPage,
+        handler: Handler(
+            handlerFunc: (_, __) => TopicPage(
+                  onEnd: () {},
+                )));
+
     router.define(instructionalVideoDialoguePage,
         handler: Handler(handlerFunc: (context, params) {
       String index = params['index']!.first;
@@ -84,7 +93,7 @@ class HomeRouter implements IRouterProvider {
       return InstructionalVideoDialoguePage(
         stepDetailData: data,
         idx: idx,
-        onEnd: () {},
+        // onEnd: () {},
       );
     }));
 

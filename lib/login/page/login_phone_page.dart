@@ -57,16 +57,27 @@ class _LoginPhonePageState extends State<LoginPhonePage>
   late RegisterPresenter _registerPresenter;
   final ScreenUtil _screenUtil = ScreenUtil();
 
+  String isMessage = "0";
+
+  String phoneStr = "";
   @override
   void initState() {
     super.initState();
     EventUMStatistics.umengCommonOnPageStart("login_phone_page");
     // _nodeText1.unfocus();
+
+    EventBus().on(NotificationUtils.PhoneMessage, (idx) {
+      setState(() {
+        isMessage = idx;
+      });
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+    EventBus().off(NotificationUtils.PhoneMessage);
+
     EventUMStatistics.umengCommonOnPageEnd("login_phone_page");
   }
 
@@ -234,7 +245,21 @@ class _LoginPhonePageState extends State<LoginPhonePage>
                             if (_clickable == false) return;
 
                             if (_phoneController.text.length == 11) {
-                              intervalClick(2);
+                              if (phoneStr != _phoneController.text) {
+                                intervalClick(2);
+                              } else {
+                                if (isMessage == "0") {
+                                  intervalClick(2);
+                                } else {
+                                  NavigatorUtils.push(
+                                    context,
+                                    // replace: true,
+                                    "${LoginRouter.keyCheckCodePage}?PhoneNumber=${_phoneController.text.trim()}&typeLogin=${widget.typeLogin}&isMessage=$isMessage ",
+                                  );
+                                }
+                              }
+                              phoneStr = _phoneController.text;
+                              setState(() {});
                             } else {
                               Toast.show("手机号无效");
                             }
@@ -304,7 +329,7 @@ class _LoginPhonePageState extends State<LoginPhonePage>
     NavigatorUtils.push(
       context,
       // replace: true,
-      "${LoginRouter.keyCheckCodePage}?PhoneNumber=${_phoneController.text.trim()}&typeLogin=${widget.typeLogin}",
+      "${LoginRouter.keyCheckCodePage}?PhoneNumber=${_phoneController.text.trim()}&typeLogin=${widget.typeLogin}&isMessage=0",
     );
   }
 

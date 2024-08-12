@@ -9,6 +9,7 @@ import 'package:Bubble/login/entity/new_wx_entity.dart';
 import 'package:Bubble/login/presenter/register_presenter.dart';
 import 'package:Bubble/login/view/register_view.dart';
 import 'package:Bubble/login/view/verification_box.dart';
+import 'package:Bubble/main.dart';
 import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/dimens.dart';
@@ -35,10 +36,12 @@ class CheckCodePage extends StatefulWidget {
   final String phoneNumber;
   //1手机号登录
   final String typeLogin;
+  final String isMessage;
 
   const CheckCodePage({
     super.key,
     required this.phoneNumber,
+    required this.isMessage,
     required this.typeLogin,
   });
 
@@ -48,6 +51,8 @@ class CheckCodePage extends StatefulWidget {
 
 class _CheckCodePageState extends State<CheckCodePage>
     with
+        RouteAware,
+        WidgetsBindingObserver,
         BasePageMixin<CheckCodePage, RegisterPresenter>,
         AutomaticKeepAliveClientMixin<CheckCodePage>
     implements RegisterView {
@@ -90,13 +95,31 @@ class _CheckCodePageState extends State<CheckCodePage>
   void initState() {
     Log.e(widget.phoneNumber);
     // Log.e(widget.isKeyLogin as String);
+    WidgetsBinding.instance.addObserver(this);
 
     print(widget.typeLogin);
-    _startTimer();
+    if (widget.isMessage == "0") {
+      _startTimer();
+    } else {
+      canResend = true;
+    }
     super.initState();
     EventUMStatistics.umengCommonOnPageStart("check_code_page");
 
     // _registerPresenter.sendSms(widget.phoneNumber, true);
+  }
+
+  @override
+  void didChangeDependencies() {
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didPop() {
+    // TODO: implement didPop
+    super.didPop();
+    EventBus().emit(NotificationUtils.PhoneMessage, canResend ? "0" : "1");
   }
 
   void _cancelTimer() {
@@ -263,8 +286,6 @@ class _CheckCodePageState extends State<CheckCodePage>
                           child: GestureDetector(
                             onTap: () {
                               if (canResend) {
-                                resendCode();
-                                // RegisterPresenter.disHttpKeySendSms();
                                 _registerPresenter.sendSms(
                                     widget.phoneNumber, true);
                               }
@@ -372,6 +393,7 @@ class _CheckCodePageState extends State<CheckCodePage>
   @override
   void sendSmsSuccess() {
     // TODO: implement sendSmsSuccess
+    resendCode();
   }
 
   @override
@@ -617,8 +639,6 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
                         child: GestureDetector(
                           onTap: () {
                             if (canResend) {
-                              resendCode();
-                              // RegisterPresenter.disHttpKeySendSms();
                               _registerPresenter.sendSms(
                                   widget.phoneNumber, true);
                             }
@@ -719,6 +739,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   @override
   void sendSmsSuccess() {
     // TODO: implement sendSmsSuccess
+    resendCode();
   }
 
   @override

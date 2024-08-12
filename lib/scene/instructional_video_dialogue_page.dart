@@ -27,8 +27,10 @@ import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/image_utils.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
+import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -67,11 +69,11 @@ class InstructionalVideoDialoguePage extends StatefulWidget {
 
   const InstructionalVideoDialoguePage({
     super.key,
-    required this.onEnd,
+    // required this.onEnd,
     required this.stepDetailData,
     required this.idx,
   });
-  final Function() onEnd;
+  // final Function() onEnd;
 
   @override
   State<InstructionalVideoDialoguePage> createState() =>
@@ -149,6 +151,20 @@ class _InstructionalVideoDialoguePageState
   late bool isShowbottom = false;
   bool isLoding = true;
   late String sessionId;
+  late StreamSubscription<ConnectivityResult> subscription;
+  bool isUserOpen = false;
+
+  late bool isback = false;
+  late int _invokeInt = 0;
+
+  late bool isNetWork = true;
+  late bool isTimeBack = false;
+  late int timerInt = 0;
+  late DateTime timestamp;
+
+  late Timer _backTimer;
+  late int _backTimerInt = 120;
+
   Widget lodingView() {
     return const Center(
       child: CircularProgressIndicator(),
@@ -244,6 +260,7 @@ class _InstructionalVideoDialoguePageState
   }
 
   void endSocket() async {
+    await _mediaUtils.stopPlay();
     await _chatWebsocket.endChat(true);
   }
 
@@ -295,6 +312,7 @@ class _InstructionalVideoDialoguePageState
         return;
       }
       _answer!.text += answer;
+      Log.e("AI说的话" + _answer!.text);
 
       _homeProvider.notify();
       _listScrollController.scrollToEnd();
@@ -315,8 +333,14 @@ class _InstructionalVideoDialoguePageState
   }
 
   void onWebsocketEnd(String? reason, String endType) {
+    if (isback) {
+      return;
+    }
+    isback = true;
+    setState(() {
+      _invokeInt = _invokeInt + 1;
+    });
     _homeProvider.endUsageTimeCutdown();
-
     // 正常结束
     if (reason == 'Session End' && endType != 'force') {
       // insertTipMessage('Class finished！');
@@ -330,11 +354,46 @@ class _InstructionalVideoDialoguePageState
     } else if (reason == 'keepalive ping timeout') {
       //超时断开走这里
       onReold("离开太久了!");
-    } else if (reason == '') {
-      //超时断开走这里
-      onReold("您的网络不太顺畅，请检查网络情况。");
     } else {
-      onReold("离开太久了!");
+      // DateTime now = DateTime.now();
+      // Duration difference = now.difference(timestamp);
+      // int seconds = difference.inSeconds;
+      // if (seconds > 120) {
+      //   isTimeBack = true;
+      //   if (isNetWork) {
+      //     onReold("离开太久了!");
+      //   } else {
+      //     onReold("您的网络不太顺畅，请检查网络情况。");
+      //   }
+      // } else {
+      //   onReold("您的网络不太顺畅，请检查网络情况。");
+      // }
+
+      //如果切出时间太久了
+      if (isTimeBack) {
+        isTimeBack = false;
+        setState(() {});
+//去后台时间太长
+        if (isNetWork) {
+          onReold("离开太久了!");
+        } else {
+          onReold("您的网络不太顺畅，请检查网络情况。");
+        }
+      } else {
+        onReold("您的网络不太顺畅，请检查网络情况。");
+      }
+
+//       //如果切出时间太久了
+//       if (isTimeBack) {
+// //去后台时间太长
+//         if (isNetWork) {
+//           onReold("离开太久了!");
+//         } else {
+//           onReold("您的网络不太顺畅，请检查网络情况。");
+//         }
+//       } else {
+//         onReold("您的网络不太顺畅，请检查网络情况。");
+//       }
     }
   }
 
@@ -344,20 +403,36 @@ class _InstructionalVideoDialoguePageState
   }
 
   void onReold(String message) {
-    ConfirmUtils.show(
+    ConfirmUtils.showNet(
       context: context,
       title: '提示',
       // buttonDirection: 'vertical',
       confirmButtonText: '重新加载',
       cancelButtonText: '取消',
       onConfirm: () {
+        if (!isNetWork) {
+          Toast.showBottom("请检查网络");
+          return;
+        }
+        NavigatorUtils.goBack(context);
+        Future.delayed(const Duration(milliseconds: 300), () {
+          setState(() {
+            isback = false;
+            _invokeInt = 0;
+            isTimeBack = false;
+          });
+        });
+
         //刷新
         forstartFlow(newDataIdx, resourceIdx);
       },
       onCancel: () {
-        endSocket();
-        Navigator.of(context).pop();
-        widget.onEnd();
+        setState(() {
+          _invokeInt = 0;
+        });
+        // endSocket();
+        NavigatorUtils.goBack(context);
+        // widget.onEnd();
       },
       child: Text(
         message,
@@ -372,35 +447,42 @@ class _InstructionalVideoDialoguePageState
   }
 
   void onConversationEnd() {
-    if (!_isConversationEnd) {
-      ConfirmUtils.show(
-        context: context,
-        title: '结束上课',
-        buttonDirection: 'vertical',
-        confirmButtonText: '结束对话',
-        cancelButtonText: '留在对话中',
-        onConfirm: () {
-          endSocket();
-          Navigator.of(context).pop();
-          widget.onEnd();
-        },
-        onCancel: () {
-          //留在对话还是退出
-        },
-        child: const Text(
-          '对话进行中，确定要结束吗？',
-          style: TextStyle(
-            fontSize: 15.0,
-            fontWeight: FontWeight.w400,
-            color: Color(0xFF333333),
-            height: 18.0 / 15.0,
-          ),
+    // if (!_isConversationEnd) {
+    ConfirmUtils.show(
+      context: context,
+      title: '结束上课',
+      buttonDirection: 'vertical',
+      confirmButtonText: '结束对话',
+      cancelButtonText: '留在对话中',
+      onConfirm: () {
+        // endSocket();
+        NavigatorUtils.goBack(context);
+
+        // widget.onEnd();
+      },
+      onCancel: () {
+        //留在对话还是退出
+      },
+      child: const Text(
+        '对话进行中，确定要结束吗？',
+        style: TextStyle(
+          fontSize: 15.0,
+          fontWeight: FontWeight.w400,
+          color: Color(0xFF333333),
+          height: 18.0 / 15.0,
         ),
-      );
-      return;
-    }
-    Navigator.of(context).pop();
-    widget.onEnd();
+      ),
+    );
+    //   return;
+    // }
+    // NavigatorUtils.goBack(context);
+    // widget.onEnd();
+  }
+
+  void creatResetStatus() async {
+    await _mediaUtils.stopTwoPlay();
+    _bottomBarControll.setShowRecord(false);
+    _bottomBarControll.setDisabled(false);
   }
 
   @override
@@ -411,6 +493,32 @@ class _InstructionalVideoDialoguePageState
     newDataIdx = widget.idx;
     resourceIdx = 0;
     WidgetsBinding.instance.addObserver(this);
+
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) async {
+      // if (isUserOpen || _homeProvider.messageList.isNotEmpty) {
+      //   endSocket();
+      //   connectWebsocket();
+      //   creatResetStatus();
+      // }
+      if (result == ConnectivityResult.none) {
+        isNetWork = false;
+        // onReold("您的网络不太顺畅，请检查网络情况。");
+      } else {
+        isNetWork = true;
+      }
+      setState(() {});
+    });
+
+    EventBus().on(NotificationUtils.courseType, (_) {
+      if (ischatEndStr == "1") {
+        //在这里是播放完成
+        endSocket();
+        ischatEndStr = "0";
+        onNextSocketEnd();
+      }
+    });
 
     EventBus().on(NotificationUtils.nextClass, (idx) {
       newDataIdx = newDataIdx + 1;
@@ -467,39 +575,102 @@ class _InstructionalVideoDialoguePageState
         }
       }
 
+      if (message == 'AppLifecycleState.paused') {
+        //推到后台
+        Log.e("AppLifecycleState.paused");
+        timestamp = DateTime.now();
+        isTimeBack = true;
+        setState(() {});
+        // isback = true;
+        // _startBackTimer();
+      }
+      if (message == 'AppLifecycleState.resumed') {
+        //回到前台
+        // _cancelTimer();
+        isTimeBack = false;
+        setState(() {});
+        Log.e("AppLifecycleState.resumed");
+        // int resumedTime = getCurrentTime();
+        // DateTime now = DateTime.now();
+        // Duration difference = now.difference(timestamp);
+        // int seconds = difference.inSeconds;
+        // if (seconds > 120) {
+        //   isTimeBack = true;
+        //   if (isNetWork) {
+        //     onReold("离开太久了!");
+        //   } else {
+        //     onReold("您的网络不太顺畅，请检查网络情况。");
+        //   }
+        // } else {
+        //   isTimeBack = false;
+        //   isback = false;
+        // }
+        // setState(() {});
+      }
+
       return message;
     });
   }
 
-  @override
-  void didChangeDependencies() {
-    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
-    super.didChangeDependencies();
-  }
-
-  @override
-  void didPush() {
-    // TODO: implement didPush
-    super.didPush();
-    //从其他页面过来
-    isShowStr = "1";
-  }
-
-  @override
-  void didPushNext() {
-    // TODO: implement didPushNext
-    super.didPushNext();
-    isShowStr = "2";
-  }
-
-  @override
-  void didPopNext() {
-    // TODO: implement didPopNext
-    super.didPopNext();
-    setState(() {
-      isShowStr = "1";
+  ///启动倒计时器
+  void _startBackTimer() {
+    _backTimerInt = 120;
+    _backTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_backTimerInt == 0) {
+        _cancelTimer();
+        if (isNetWork) {
+          onReold("离开太久了!");
+        } else {
+          onReold("您的网络不太顺畅，请检查网络情况。");
+        }
+        isback = true;
+        setState(() {});
+        return;
+      }
+      _backTimerInt = _backTimerInt - 1;
+      Log.e("==========" + _backTimerInt.toString());
     });
   }
+
+  void _cancelTimer() {
+    _backTimer?.cancel();
+  }
+
+  // int getCurrentTime() {
+  //   // 获取当前时间
+  //   DateTime now = DateTime.now();
+  //   return now.minute;
+  // }
+
+  // @override
+  // void didChangeDependencies() {
+  //   routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  //   super.didChangeDependencies();
+  // }
+
+  // @override
+  // void didPush() {
+  //   // TODO: implement didPush
+  //   super.didPush();
+  //   //从其他页面过来
+  //   isShowStr = "1";
+  // }
+
+  // @override
+  // void didPushNext() {
+  //   // TODO: implement didPushNext
+  //   super.didPushNext();
+  //   isShowStr = "2";
+  // }
+
+  // @override
+  // void didPopNext() {
+  //   // TODO: implement didPopNext
+  //   super.didPopNext();
+  //   setState(() {
+  //     isShowStr = "1";
+  //   });
+  // }
 
   // showImageDialog() {
   //   showDialog(
@@ -547,12 +718,12 @@ class _InstructionalVideoDialoguePageState
                       _timer.cancel();
                       //重新开始
                       newDataIdx = newDataIdx - 1;
-                      setState(() {
-                        isOnePlay = "1";
-                        isShowDialog = false;
-                      });
-                      sessionId = const Uuid().v4().replaceAll('-', '');
 
+                      sessionId = const Uuid().v4().replaceAll('-', '');
+                      isOnePlay = "1";
+                      isShowDialog = false;
+                      isTimeBack = false;
+                      setState(() {});
                       forstartFlow(newDataIdx, resourceIdx);
                     },
                     child: Container(
@@ -588,11 +759,10 @@ class _InstructionalVideoDialoguePageState
                       _timer.cancel();
 
                       //下一关
-                      setState(() {
-                        isShowDialog = false;
-                      });
+                      isShowDialog = false;
+                      isTimeBack = false;
                       sessionId = const Uuid().v4().replaceAll('-', '');
-
+                      setState(() {});
                       forstartFlow(newDataIdx, resourceIdx);
                     },
                     child: Container(
@@ -649,7 +819,7 @@ class _InstructionalVideoDialoguePageState
         // showImageDialog();
       } else {
         //退出界面
-        Navigator.of(context).pop();
+        NavigatorUtils.goBack(context);
       }
     }
   }
@@ -754,6 +924,7 @@ class _InstructionalVideoDialoguePageState
   }
 
   void startNormaltwoChatRequestNetwork() {
+    init();
     DioUtils.instance.requestNetwork<ResultData>(
         Method.post, HttpApi.generateAudio,
         params: {
@@ -764,11 +935,11 @@ class _InstructionalVideoDialoguePageState
         Map<String, dynamic> data = result?.data as Map<String, dynamic>;
         startNormaltwoChat(data['text'], data['speech_url']);
       } else {
-        startNormalChat(data[newDataIdx].resource[resourceIdx].greetingText!,
+        startNormaltwoChat(data[newDataIdx].resource[resourceIdx].greetingText!,
             data[newDataIdx].resource[resourceIdx].greetingAudio!);
       }
     }, onError: (code, msg) {
-      startNormalChat(data[newDataIdx].resource[resourceIdx].greetingText!,
+      startNormaltwoChat(data[newDataIdx].resource[resourceIdx].greetingText!,
           data[newDataIdx].resource[resourceIdx].greetingAudio!);
     });
   }
@@ -797,7 +968,6 @@ class _InstructionalVideoDialoguePageState
         },
       );
     });
-    init();
   }
 
   //图片及其他顺序
@@ -846,11 +1016,22 @@ class _InstructionalVideoDialoguePageState
 
   bool isAutoplayEnabled = false;
   bool isPlaybackLoopEnabled = false;
+
+  @override
+  void didPop() {
+    // TODO: implement didPop
+    super.didPop();
+    setState(() {
+      isback = true;
+    });
+
+    endSocket();
+  }
+
   @override
   void dispose() {
     Wakelock.disable();
-    _mediaUtils.stopPlay();
-    endSocket();
+    subscription.cancel();
 
     EventBus().off(NotificationUtils.nextClass);
     EventBus().off(NotificationUtils.messageEnd);
@@ -915,10 +1096,10 @@ class _InstructionalVideoDialoguePageState
   }
 
   void _onPlaybackEnded() {
-    if (isOnePlay == "1") {
-      isOnePlay = "2";
-      startNormaltwoChatRequestNetwork();
-    }
+    // if (isOnePlay == "1") {
+    //   isOnePlay = "2";
+    startNormaltwoChatRequestNetwork();
+    // }
     if (isPlaybackLoopEnabled) {
       _controller?.play();
     }
@@ -1306,6 +1487,11 @@ class _InstructionalVideoDialoguePageState
                   recordController: _recordController,
                   onFinshEnd: (data) {
                     // if (data == true) {}
+                  },
+                  onStartBool: (isfinsh) {
+                    setState(() {
+                      isUserOpen = isfinsh;
+                    });
                   },
                   onScrollEnd: () {
                     _listScrollController.scrollToEnd();

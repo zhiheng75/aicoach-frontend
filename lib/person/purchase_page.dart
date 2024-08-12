@@ -560,7 +560,7 @@ class _PurchasePageState extends State<PurchasePage>
   void paySuccess() {
     DYUtil().evaluate("2");
 
-    NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
+    // NavigatorUtils.push(context, HomeRouter.homePage, clearStack: true);
   }
 
   @override

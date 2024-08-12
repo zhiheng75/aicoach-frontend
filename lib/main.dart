@@ -63,6 +63,9 @@ Future<void> main() async {
             message == 'AppLifecycleState.paused') {
           // await MediaUtils().stopPlayByAppPaused();
         }
+        // DateTime now = DateTime.now();
+        // Log.e(now.minute.toString());
+        // Log.e(now.hour);
 
         _appLifecycleState = message;
 
@@ -118,9 +121,9 @@ class MyApp extends StatelessWidget {
     interceptors.add(AdapterInterceptor());
     configDio(
       // 测试
-      // baseUrl: 'https://api.bubble.shenmo-ai.net/',
+      baseUrl: 'https://api.bubble.shenmo-ai.net/',
       // 正式
-      baseUrl: 'https://api.bubble.shenmo-ai.com/',
+      // baseUrl: 'https://api.bubble.shenmo-ai.com/',
       interceptors: interceptors,
     );
   }

@@ -1,3 +1,6 @@
+import 'package:Bubble/chat/entity/character_list_bean.dart';
+import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/scene/entity/category_entity.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
@@ -31,8 +34,8 @@ import 'widget/message_list.dart';
 import 'widget/record.dart';
 
 class ChatPage extends StatefulWidget {
-  final int index;
-  const ChatPage({Key? key, required this.index}) : super(key: key);
+  final String characterId;
+  const ChatPage({Key? key, required this.characterId}) : super(key: key);
 
   // const ChatPage({Key? key}) : super(key: key);
 
@@ -153,17 +156,11 @@ class _ChatState extends State<ChatPage>
       if (mounted) {
         setState(() {});
       }
-      Future.delayed(const Duration(milliseconds: 300), () {
-        if (cherid == "") {
-          confirmChangeCharacter(widget.index);
-        } else {
-          for (int i = 0; i < _characterList.length; i++) {
-            if (cherid == _characterList[i].characterId) {
-              confirmChangeCharacter(i);
-            }
-          }
+      for (int i = 0; i < _characterList.length; i++) {
+        if (widget.characterId == _characterList[i].characterId) {
+          confirmChangeCharacter(i);
         }
-      });
+      }
     }, onError: (code, msg) {
       Log.d('获取角色列表失败:[error]$msg', tag: '[Function]getCharacterList');
       _pageState = 'fail';
@@ -312,47 +309,55 @@ class _ChatState extends State<ChatPage>
   @override
   void initState() {
     super.initState();
-    // init();
 
-    EventBus().on(NotificationUtils.resetChat, (idx) {
-      if (idx != "2") {
-        _chatWebsocket.endChat(true);
-      }
-      setState(() {
-        isNew = idx;
-      });
-      if (idx == "2") {
-        init();
-      }
-    });
-    EventBus().on(NotificationUtils.loginIn, (_) {
-      if (isNew == "2") {
-        init();
-      }
-    });
-    EventBus().on(NotificationUtils.loginOut, (_) {
-      if (isNew == "2") {
-        init();
-      }
-    });
-
-    EventBus().on(NotificationUtils.taberThree, (idx) {
-      cherid = idx;
+    // EventBus().on(NotificationUtils.resetChat, (idx) {
+    //   if (idx != "2") {
+    //     _chatWebsocket.endChat(true);
+    //   }
+    //   setState(() {
+    //     isNew = idx;
+    //   });
+    //   if (idx == "2") {
+    //     init();
+    //   }
+    // });
+    // EventBus().on(NotificationUtils.loginIn, (_) {
+    //   if (isNew == "2") {
+    //     init();
+    //   }
+    // });
+    EventBus().on(NotificationUtils.newResetChat, (_) {
       init();
     });
 
-    EventBus().on(NotificationUtils.resetChatTwo, (_) {
-      init();
-    });
+    // EventBus().on(NotificationUtils.taberThree, (idx) {
+    //   setState(() {
+    //     cherid = idx;
+    //   });
+    //   // init();
+    // });
+
+    // EventBus().on(NotificationUtils.resetChatTwo, (_) {
+    //   init();
+    // });
 
     // EventBus().on('LEAVECHATPAGE', (_) async {
     //   await _mediaUtils.stopPlay();
     //   _bottomBarControll.setDisabled(false);
     // });
+
+    init();
+
     EventUMStatistics.umengCommonOnPageStart("chat_page");
     EventBus().on(NotificationUtils.messageEnd, (idx) {
       _listScrollController.scrollToEnd();
     });
+  }
+
+  endSocket() async {
+    await _mediaUtils.stopPlay();
+    await _chatWebsocket.endChat(true);
+    _homeProvider.resetChatParams();
   }
 
   @override
@@ -396,11 +401,8 @@ class _ChatState extends State<ChatPage>
         confirmButtonText: '结束对话',
         cancelButtonText: '留在对话中',
         onConfirm: () async {
-          await _mediaUtils.stopPlay();
-          await _chatWebsocket.endChat(true);
-          _homeProvider.resetChatParams();
-          // ignore: use_build_context_synchronously
-          Navigator.of(context).pop();
+          NavigatorUtils.goBack(context);
+
           // widget.onEnd();
         },
         onCancel: () {},
@@ -447,28 +449,28 @@ class _ChatState extends State<ChatPage>
           position: details.globalPosition,
         );
       },
-      onHorizontalDragUpdate: (details) {
-        if (_isCharacterChanging) {
-          return;
-        }
-        _backgroundController.slideMove(details.globalPosition);
-      },
-      onHorizontalDragEnd: (_) {
-        if (_isCharacterChanging) {
-          return;
-        }
-        _backgroundController.slideEnd((direction) {
-          bool isSlideLeft = direction == 'left';
-          int index = isSlideLeft ? _characterIndex + 1 : _characterIndex - 1;
-          if (index < 0) {
-            index = _characterList.length + index;
-          }
-          if (index == _characterList.length) {
-            index = 0;
-          }
-          changeCharacter(index);
-        });
-      },
+      // onHorizontalDragUpdate: (details) {
+      //   if (_isCharacterChanging) {
+      //     return;
+      //   }
+      //   _backgroundController.slideMove(details.globalPosition);
+      // },
+      // onHorizontalDragEnd: (_) {
+      //   if (_isCharacterChanging) {
+      //     return;
+      //   }
+      //   _backgroundController.slideEnd((direction) {
+      //     bool isSlideLeft = direction == 'left';
+      //     int index = isSlideLeft ? _characterIndex + 1 : _characterIndex - 1;
+      //     if (index < 0) {
+      //       index = _characterList.length + index;
+      //     }
+      //     if (index == _characterList.length) {
+      //       index = 0;
+      //     }
+      //     changeCharacter(index);
+      //   });
+      // },
       child: Stack(
         children: <Widget>[
           Background(controller: _backgroundController),
@@ -491,10 +493,10 @@ class _ChatState extends State<ChatPage>
               );
             },
           ),
-          // Positioned(
-          //   top: 50,
-          //   child: navbar,
-          // ),
+          Positioned(
+            top: 50,
+            child: navbar,
+          ),
           Positioned(
             top: 103.0,
             left: 16.0,
@@ -596,11 +598,12 @@ class _ChatState extends State<ChatPage>
   @override
   void dispose() {
     // EventBus().off('LEAVECHATPAGE');
+    endSocket();
     EventBus().off(NotificationUtils.resetChat);
     EventBus().off(NotificationUtils.resetChatTwo);
     EventBus().off(NotificationUtils.messageEnd);
 
-    EventBus().off(NotificationUtils.taberThree);
+    // EventBus().off(NotificationUtils.taberThree);
 
     EventBus().off(NotificationUtils.loginIn);
     EventBus().off(NotificationUtils.loginOut);
@@ -617,4 +620,19 @@ class _ChatState extends State<ChatPage>
 
   @override
   bool get wantKeepAlive => false;
+
+  @override
+  void sendCategoryEntitySuccess(List<CategoryEntity> list) {
+    // TODO: implement sendCategoryEntitySuccess
+  }
+
+  @override
+  void sendSuccess(CharacterListBean data) {
+    // TODO: implement sendSuccess
+  }
+
+  @override
+  void sendTopicEntitySuccess(List<TopicEntity> list) {
+    // TODO: implement sendTopicEntitySuccess
+  }
 }

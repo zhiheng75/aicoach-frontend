@@ -34,20 +34,17 @@ class _MainTabberState extends State<MainTabber> {
 
   List<BottomNavigationBarItem> items = [
     BottomBarItem("tab_home", "首页"),
+    BottomBarItem("tab_spoken", "伙伴"),
     BottomBarItem("tab_course", "课程"),
-    BottomBarItem("tab_spoken", "练口语"),
     BottomBarItem("tab_mine", "我的"),
   ];
   List<Widget> pages = [
-    // const CourseHomePage(),
-    // const CourseHomePage(),
-    // const CourseHomePage(),
+    const HomeTwoPage(),
+    const ChatHomePage(),
+    const CourseHomePage(),
     // const CourseHomePage(),
 
-    const HomeTwoPage(),
-    const CourseHomePage(),
-    // const ChatHomePage(),
-    const HomeNewPage(),
+    // const HomeNewPage(),
     const PersonPage(),
   ];
   //
@@ -128,26 +125,26 @@ class _MainTabberState extends State<MainTabber> {
     if (index == 0) {
       EventUMStatistics.umengCommonOnPageStart("home_two_page");
 
+      EventUMStatistics.umengCommonOnPageEnd("chat_home_page");
       EventUMStatistics.umengCommonOnPageEnd("course_home_page");
-      EventUMStatistics.umengCommonOnPageEnd("home_new_page");
       EventUMStatistics.umengCommonOnPageEnd("person_page");
     } else if (index == 1) {
       EventUMStatistics.umengCommonOnPageEnd("home_two_page");
 
-      EventUMStatistics.umengCommonOnPageStart("course_home_page");
-      EventUMStatistics.umengCommonOnPageEnd("home_new_page");
+      EventUMStatistics.umengCommonOnPageStart("chat_home_page");
+      EventUMStatistics.umengCommonOnPageEnd("course_home_page");
       EventUMStatistics.umengCommonOnPageEnd("person_page");
     } else if (index == 2) {
       EventUMStatistics.umengCommonOnPageEnd("home_two_page");
 
-      EventUMStatistics.umengCommonOnPageEnd("course_home_page");
-      EventUMStatistics.umengCommonOnPageStart("home_new_page");
+      EventUMStatistics.umengCommonOnPageEnd("chat_home_page");
+      EventUMStatistics.umengCommonOnPageStart("course_home_page");
       EventUMStatistics.umengCommonOnPageEnd("person_page");
     } else if (index == 3) {
       EventUMStatistics.umengCommonOnPageEnd("home_two_page");
 
+      EventUMStatistics.umengCommonOnPageEnd("chat_home_page");
       EventUMStatistics.umengCommonOnPageEnd("course_home_page");
-      EventUMStatistics.umengCommonOnPageEnd("home_new_page");
       EventUMStatistics.umengCommonOnPageStart("person_page");
     }
   }

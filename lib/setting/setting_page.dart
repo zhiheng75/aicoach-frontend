@@ -189,7 +189,7 @@ class _SettingPageState extends State<SettingPage>
                     GestureDetector(
                       onTap: () {
                         LoginManager.toLoginOut();
-                        NavigatorUtils.push(context, HomeRouter.homePage);
+                        // NavigatorUtils.push(context, HomeRouter.homePage);
                       },
                       child: Container(
                         width: 400,

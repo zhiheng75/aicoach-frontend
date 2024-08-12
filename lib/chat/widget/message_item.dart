@@ -557,6 +557,7 @@ class _MessageItemState extends State<MessageItem> {
           String? content = match.group(2); // 获取内容
           // Log.e('===============Tag: $tag, Content: $content');
           if (tag == "image") {
+            // coverUrl = "";
             //去出来图片content
             coverUrl = content!;
             return GestureDetector(
@@ -574,11 +575,33 @@ class _MessageItemState extends State<MessageItem> {
               },
               child: LoadImage(
                 coverUrl,
+                // width: 100,
+                // height: 100,
               ),
             );
           }
           if (tag == "word") {
+            // coverUrl = "";
             //取出来文字content
+            coverUrl = content!;
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                showDialog(
+                  context: context,
+                  barrierColor: Colors.transparent,
+                  barrierDismissible: false,
+                  useSafeArea: false,
+                  builder: (_) => PhotoViewSimpleScreen(
+                    imageProvider: NetworkImage(
+                        "https://statics.shenmo-ai.com/courses/word_img/$coverUrl.jpg"),
+                  ),
+                );
+              },
+              child: LoadImage(
+                "https://statics.shenmo-ai.com/courses/word_img/$coverUrl.jpg",
+              ),
+            );
           }
           String reStr = "<$tag>$content</$tag>";
           String replacedString = one.replaceAll(reStr, "");

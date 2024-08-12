@@ -4,11 +4,13 @@ import 'package:Bubble/chat/utils/recognize_util.dart';
 import 'package:Bubble/constant/constant.dart';
 import 'package:Bubble/course/entity/step_detail_bean.dart';
 import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/exam/entity/mock_message_entity.dart';
 import 'package:Bubble/home/home_router.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/scene/utils/class_evaluate_util.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
@@ -45,12 +47,14 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
   bool finished = false;
   final MediaUtils _mediaUtils = MediaUtils();
   List<Uint8List> _bufferList = [];
-  final RecognizeUtil _recognizeUtil = RecognizeUtil();
+  RecognizeUtil _recognizeUtil = RecognizeUtil();
   // bool isInSendButton = true;
   late bool isTalk = false;
 
   final ScreenUtil _screenUtil = ScreenUtil();
+  late String textStr = "";
 
+  late String numberStr = "";
   @override
   void initState() {
     super.initState();
@@ -65,11 +69,8 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
           onPageFinished: (url) {
             finished = true;
             double top = MediaQuery.of(context).padding.top;
-            _controller
-                .runJavaScriptReturningResult('callJStop($top)')
-                .then((result) {
-              print('----js回调----$result');
-            });
+            // _controller.runJavaScriptReturningResult('callJStop($top)');
+            _controller.runJavaScript('callJStop($top)');
             setState(() {});
           },
           onProgress: (int progress) {
@@ -134,9 +135,11 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         }
       })
       ..addJavaScriptChannel('startRecord', onMessageReceived: (message) {
-        startRecord();
+        textStr = "";
+        startRecord(message.message);
       })
       ..addJavaScriptChannel('finshRecord', onMessageReceived: (message) {
+        numberStr = message.message;
         finshRecord();
       })
       ..addJavaScriptChannel('cancelRecord', onMessageReceived: (message) {
@@ -149,6 +152,7 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
     setState(() {
       isTalk = true;
     });
+    await _recognizeUtil.cancelRecognize();
     await _mediaUtils.stopRecord();
   }
 
@@ -157,7 +161,7 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
     await _mediaUtils.stopRecord();
   }
 
-  void startRecord() async {
+  void startRecord(String params) async {
     try {
       bool hasAgree =
           SpUtil.getBool(Constant.mediaUtils, defValue: false) ?? false;
@@ -172,6 +176,8 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
         return;
       }
+      _recognizeUtil = RecognizeUtil();
+      _recognizeUtil.setLanguage('en');
       // 开始录音
       _bufferList = [];
       _mediaUtils.startRecord(onData: (buffer) {
@@ -189,10 +195,6 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
           if (result['success'] == false) {
             isTalk = false;
             await _mediaUtils.stopRecord();
-            // Toast.show(
-            //   result['message'],
-            //   duration: 1000,
-            // );
           }
           return;
         }
@@ -205,10 +207,13 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
           return;
         }
         Log.e("录音后识别的文字${result['text']}");
-        String textStr = result['text'];
+        textStr = result['text'];
         //检测出来的音频
-        // await _controller.
-        _postUploadText(textStr);
+        if (params.isNotEmpty) {
+          sendTwoMessage(result['text'], params);
+        } else {
+          _postUploadText(textStr);
+        }
       });
       isTalk = true;
     } catch (e) {
@@ -217,6 +222,33 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
         duration: 1000,
       );
     }
+  }
+
+  void sendTwoMessage(String msg, String word) {
+    insertTwoUserMessage(word, (message) {
+      ClassEvaluateUtil().evaluate(message, (Map<String, dynamic> map) {
+        try {
+          double value = double.parse(map["total_score"]);
+          if (value > 60) {
+            _postUploadText(word);
+          } else {
+            _postUploadText(msg);
+          }
+        } catch (e) {
+          _postUploadText(msg);
+        }
+        // evaluation['total_score']
+        Log.e("============");
+      });
+    });
+  }
+
+  void insertTwoUserMessage(
+      String text, Function(ClassMessageEntity) onSuccess) {
+    ClassMessageEntity message = ClassMessageEntity();
+    message.text = text;
+    message.audio = [..._bufferList];
+    onSuccess(message);
   }
 
   void _postUploadText(String textStr) {
@@ -231,13 +263,13 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
       params = {
         "text": textStr,
         "istextStr": istextStr,
+        "numberStr": numberStr,
       };
     }
     String str = json.encode(params);
 
-    _controller.runJavaScriptReturningResult('callJS($str)').then((result) {
-      print('----js回调----$result');
-    });
+    // _controller.runJavaScriptReturningResult('callJS($str)');
+    _controller.runJavaScript('callJS($str)');
   }
 
   void oneStartRecord() async {

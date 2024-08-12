@@ -119,7 +119,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   final JPush jpush = JPush();
   late StreamSubscription<ConnectivityResult> subscription;
-
+  bool isShowNetWork = true;
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Unknown',
     packageName: 'Unknown',
@@ -208,11 +208,15 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           itemBuilder: (c, i) {
             return GestureDetector(
               onTap: () {
+                NavigatorUtils.push(
+                  context,
+                  "${HomeRouter.homePage}?characterId=${characterList[i].characterId}",
+                );
                 SpUtil.putString(
                     Constant.avatarId, characterList[i].characterId);
 
-                EventBus().emit(
-                    NotificationUtils.taberThree, characterList[i].characterId);
+                // EventBus().emit(
+                //     NotificationUtils.taberThree, characterList[i].characterId);
 
                 String str = characterList[i].characterId;
                 if (str == "eggy") {
@@ -286,13 +290,23 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     super.initState();
     initDio();
     // initUM();
+    EventBus().on(NotificationUtils.resetChat, (idx) {
+      if (idx == "0") {
+        isShowNetWork = true;
+      } else {
+        isShowNetWork = false;
+      }
+      setState(() {});
+    });
     Future.delayed(const Duration(seconds: 1), () {
       subscription = Connectivity()
           .onConnectivityChanged
           .listen((ConnectivityResult result) {
         // Got a new connectivity status!
         if (result == ConnectivityResult.none) {
-          onNoNetwork();
+          if (isShowNetWork) {
+            onNoNetwork();
+          }
         }
       });
     });
@@ -353,9 +367,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       //   douyin = imei;
       // }
       // // 正式
-      String url = "https://statics.shenmo-ai.com/system_maintenance_prod.json";
+      // String url = "https://statics.shenmo-ai.com/system_maintenance_prod.json";
       // // 测试
-      // String url = "https://statics.shenmo-ai.com/system_maintenance_dev.json";
+      String url = "https://statics.shenmo-ai.com/system_maintenance_dev.json";
       var response = await dio.get(url);
       //转化为Json
       String jsonString = jsonEncode(response.data);
@@ -487,8 +501,9 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   void init() {
     pageState = 'loading';
-    setState(() {});
     _homeTwoPagePresenter.getBannerList();
+    _homeTwoPagePresenter.getCharacterList();
+    setState(() {});
   }
 
   void getBaseConfig() async {
@@ -900,7 +915,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                     itemBuilder: (ctx, index) {
                       return GestureDetector(
                         onTap: () {
-                          EventBus().emit(NotificationUtils.taberTwo,
+                          EventBus().emit(NotificationUtils.taberThree,
                               lessonList[index].param);
                           if (index == 0) {
                             EventUMStatistics.umengCommonMapEvent(
@@ -972,8 +987,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
     pageState = 'success';
 
-    setState(() {});
-
     String characterId = characterList[0].characterId;
     // _homeProvider.character.characterId = characterId;
     _homeProvider.character.characterId = characterId;
@@ -982,6 +995,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     if (phone != "17001234567") {
       _homeTwoPagePresenter.getBindTeacherStatus();
     }
+    setState(() {});
   }
 
   @override
@@ -1023,6 +1037,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   @override
   void sendError() {
     // TODO: implement sendError
-    onNoNetwork();
+    // onNoNetwork();
   }
 }
