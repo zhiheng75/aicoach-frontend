@@ -103,16 +103,14 @@ class _SplashPageState extends State<SplashPage> {
 
     await Device.initDeviceInfo();
 
-    // ignore: use_build_context_synchronously
-    // NavigatorUtils.push(context, HomeRouter.homePage, replace: true);
-
-    // ignore: use_build_context_synchronously
-    LoginManager.checkOneLogin(context, () {
-      NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
-    });
+    // // ignore: use_build_context_synchronously
+    // LoginManager.checkOneLogin(context, () {
+    //   NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
+    // });
     EventUMStatistics.umengCommonOnPageEnd("splash_page");
 
     // ignore: use_build_context_synchronously
+    NavigatorUtils.push(context, HomeRouter.tabberPage, replace: true);
   }
 
   void initUM() {
@@ -137,7 +135,7 @@ class _SplashPageState extends State<SplashPage> {
       // androidDeviceInfo.board;
       // androidDeviceInfo.model;
       // androidDeviceInfo.version.release;
-      platformStr = Channel.channelvivo;
+      platformStr = Channel.channelhuawei;
       final Map<String, String> params = <String, String>{};
       params["manufacturer"] = androidDeviceInfo.manufacturer;
       params["id"] = androidDeviceInfo.id;
