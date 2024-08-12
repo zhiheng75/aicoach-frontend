@@ -886,7 +886,7 @@ class _PersonPageState extends State<PersonPage>
             'vector_icon',
             '注销账号',
             '',
-            onPress: () => tapSignOUTMenu(),
+            onPress: () => tapMenu(PersonalRouter.cancelAccountPage),
           ),
           // menuItem(
           //   'shezhi',

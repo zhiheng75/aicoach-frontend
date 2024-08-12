@@ -1,4 +1,5 @@
 import 'package:Bubble/person/invitation_code_page.dart';
+import 'package:Bubble/person/page/cancel_account_page.dart';
 import 'package:Bubble/person/page/course_speaking_purchase_page.dart';
 import 'package:Bubble/person/page/error_correction_detail_page.dart';
 import 'package:Bubble/person/page/error_correction_page.dart';
@@ -23,6 +24,8 @@ class PersonalRouter implements IRouterProvider {
   static String person = '/person';
   static String order = '/order';
   static String about = '/about';
+  static String cancelAccountPage = '/CancelAccountPage';
+
   static String joinCommunityPage = '/JoinCommunityPage';
 
   static String errorCorrectionPage = '/ErrorCorrectionPage';
@@ -47,6 +50,8 @@ class PersonalRouter implements IRouterProvider {
         handler: Handler(handlerFunc: (_, __) => const InvitationCodePage()));
     router.define(about,
         handler: Handler(handlerFunc: (_, __) => const AboutPage()));
+    router.define(cancelAccountPage,
+        handler: Handler(handlerFunc: (_, __) => const CancelAccountPage()));
     router.define(joinCommunityPage,
         handler: Handler(handlerFunc: (_, __) => const JoinCommunityPage()));
     router.define(errorCorrectionPage,
