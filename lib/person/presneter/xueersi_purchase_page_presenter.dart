@@ -6,6 +6,7 @@ import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/person/entity/bind_teacher_bean.dart';
 import 'package:Bubble/person/entity/get_pay_code_bean.dart';
+import 'package:Bubble/person/entity/query_order_bean.dart';
 import 'package:Bubble/person/view/xueersi_purchase_page_view.dart';
 
 class XueersiPurchasePagePresenter
@@ -25,6 +26,25 @@ class XueersiPurchasePagePresenter
         view.sendSuccess(getPayCodeBean);
       } else {
         view.sendFail(getPayCodeBean.msg);
+      }
+    }, onError: (code, msg) {
+      view.sendFail("");
+    });
+  }
+
+  Future getQueryOrder(String orderNo) {
+    return requestNetwork<ResultData>(Method.get,
+        url: HttpApi.payCode,
+        queryParameters: {
+          'order_no': orderNo,
+          'payment_method': "WXJSPAY",
+        },
+        isShow: false, onSuccess: (result) {
+      Map<String, dynamic> queryOrderBeanMap = json.decode(result.toString());
+      QueryOrderBean queryOrderBean =
+          QueryOrderBean.fromJson(queryOrderBeanMap);
+      if (queryOrderBean.code == 200) {
+        view.sendQueryOrderSuccess(queryOrderBean.data.status);
       }
     }, onError: (code, msg) {
       view.sendFail("");

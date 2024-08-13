@@ -1,7 +1,14 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:ui';
 
+import 'package:Bubble/entity/result_entity.dart';
 import 'package:Bubble/mvp/base_page.dart';
+import 'package:Bubble/net/dio_utils.dart';
+import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/person/entity/get_pay_code_bean.dart';
+import 'package:Bubble/person/entity/query_order_bean.dart';
+import 'package:Bubble/person/person_router.dart';
 import 'package:Bubble/person/presneter/xueersi_purchase_page_presenter.dart';
 import 'package:Bubble/person/view/xueersi_purchase_page_view.dart';
 import 'package:Bubble/res/gaps.dart';
@@ -39,12 +46,26 @@ class _XueersiPurchasePageState extends State<XueersiPurchasePage>
   late XueersiPurchasePagePresenter _xueersiPurchasePagePresenter;
   late GetPayCodeBean data;
   bool isLoding = true;
+  late String orderNo = "";
+  late String payS = "0";
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _xueersiPurchasePagePresenter.getPayCode(widget.goodsId);
+    // 创建一个每隔三分钟（180000毫秒）触发一次的定时器
+    Timer.periodic(const Duration(minutes: 3), (timer) {
+      _xueersiPurchasePagePresenter.getPayCode(widget.goodsId);
+    });
+    Timer.periodic(const Duration(seconds: 6), (timer) {
+      if (!isLoding) {
+        _xueersiPurchasePagePresenter.getQueryOrder(orderNo);
+      }
+    });
   }
+
+  void creatQueryOrder() {}
 
   Widget lodingView() {
     return const Center(
@@ -135,7 +156,33 @@ class _XueersiPurchasePageState extends State<XueersiPurchasePage>
                               // color: Colors.red,
                               width: 246,
                               height: 230,
-                              child: Base64Image(data.data.img),
+                              child: Stack(
+                                children: [
+                                  Base64Image(data.data.img),
+                                  payS == "0"
+                                      ? Container()
+                                      : Positioned(
+                                          left: 0,
+                                          right: 0,
+                                          top: 0,
+                                          bottom: 0,
+
+                                          /// 必须clip，否则会对整个区域模糊。
+                                          child: ClipRect(
+                                            child: BackdropFilter(
+                                              filter: ImageFilter.blur(
+                                                  sigmaY: 5, sigmaX: 5),
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                color:
+                                                    Colors.black.withOpacity(0),
+                                                child: Text('支付中'),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                ],
+                              ),
                             ),
                             Gaps.vGap30,
                             Row(
@@ -191,7 +238,7 @@ class _XueersiPurchasePageState extends State<XueersiPurchasePage>
     // TODO: implement sendSuccess
     data = getPayCodeBean;
     isLoding = false;
-
+    orderNo = getPayCodeBean.data.orderNo;
     setState(() {});
   }
 
@@ -204,6 +251,23 @@ class _XueersiPurchasePageState extends State<XueersiPurchasePage>
     // TODO: implement createPresenter
     _xueersiPurchasePagePresenter = XueersiPurchasePagePresenter();
     return _xueersiPurchasePagePresenter;
+  }
+
+  @override
+  void sendQueryOrderSuccess(String status) {
+    // TODO: implement sendQueryOrderSuccess
+    if (status == "SUCCESS") {
+      //支付成功
+      NavigatorUtils.push(
+          // ignore: use_build_context_synchronously
+          context,
+          replace: true,
+          PersonalRouter.xueersiPurchaseSuccessPage);
+    } else if (status == "Failed”") {
+      //支付中
+      payS = "1";
+      setState(() {});
+    }
   }
 }
 
