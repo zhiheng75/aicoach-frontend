@@ -369,7 +369,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
       ClassEvaluateUtil().evaluate(message, (Map<String, dynamic> map) {
         try {
           double value = double.parse(map["total_score"]);
-          if (value > 60) {
+          if (value > 50) {
             sendMessage(word);
           } else {
             sendMessage(msg);
