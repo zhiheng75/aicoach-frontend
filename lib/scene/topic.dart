@@ -329,8 +329,10 @@ class _TopicState extends State<TopicPage>
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  bottom: _screenUtil.bottomBarHeight + 16.0,
-                ),
+                    bottom: _screenUtil.bottomBarHeight + 16.0,
+                    left: MediaQuery.of(context).size.width > 500 ? 40.w : 10.w,
+                    right:
+                        MediaQuery.of(context).size.width > 500 ? 40.w : 10.w),
                 child: BottomBar(
                   chatWebsocket: _chatWebsocket,
                   controller: _bottomBarControll,

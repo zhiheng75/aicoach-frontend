@@ -220,6 +220,9 @@ class _ReportDetailPageState extends State<ReportDetailPage>
                   height: 19.0 / 40.0,
                 ),
               ),
+              const SizedBox(
+                height: 10.0,
+              ),
               const Text(
                 '超过该年龄段用户\n满分为100分',
                 style: TextStyle(
@@ -283,13 +286,13 @@ class _ReportDetailPageState extends State<ReportDetailPage>
           image: AssetImage(
             'assets/images/radar_bg.png',
           ),
-          fit: BoxFit.fitHeight,
+          fit: BoxFit.fitWidth,
         ),
       ),
       alignment: Alignment.center,
       child: _detail.isNotEmpty
           ? Radar(
-              r: sqrt(5000),
+              r: sqrt(5000).r,
               top: RadarItem('流畅度', _detail['fluency_score']),
               bottom: RadarItem('完整度', _detail['integrity_score']),
               left: RadarItem('发音', _detail['standard_score']),

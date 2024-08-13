@@ -156,12 +156,12 @@ class _CourseReportPageState extends State<CourseReportPage>
 
   Widget radar() {
     return Container(
-      height: 240.0,
+      height: 200.h,
       color: Colors.white,
       child: Container(
           width: _screenUtil.screenWidth,
-          height: 240.0,
-          margin: const EdgeInsets.only(left: 16, right: 16),
+          height: 200.h,
+          margin: EdgeInsets.only(left: 16.w, right: 16.w),
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
@@ -330,7 +330,7 @@ class _CourseReportPageState extends State<CourseReportPage>
                         image: AssetImage(
                           'assets/images/person_bg.png',
                         ),
-                        fit: BoxFit.fitHeight,
+                        fit: BoxFit.fitWidth,
                       ),
                     ),
                     child: CustomScrollView(
@@ -464,10 +464,13 @@ class _CourseReportPageState extends State<CourseReportPage>
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Container(
-                                    width: _screenUtil.screenWidth / 2 - 20,
-                                    height: 150,
-                                    margin: const EdgeInsets.only(
-                                        left: 16, right: 4, top: 12, bottom: 8),
+                                    width: _screenUtil.screenWidth / 2 - 20.w,
+                                    height: 120.h,
+                                    margin: EdgeInsets.only(
+                                        left: 16.w,
+                                        right: 4.w,
+                                        top: 12.h,
+                                        bottom: 8.h),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20.0),
                                       color: Colours.color_FAF3FF,
@@ -513,10 +516,13 @@ class _CourseReportPageState extends State<CourseReportPage>
                                       ],
                                     )),
                                 Container(
-                                    width: _screenUtil.screenWidth / 2 - 20,
-                                    height: 150,
-                                    margin: const EdgeInsets.only(
-                                        left: 4, right: 16, top: 12, bottom: 8),
+                                    width: _screenUtil.screenWidth / 2 - 20.w,
+                                    height: 120.h,
+                                    margin: EdgeInsets.only(
+                                        left: 4.w,
+                                        right: 16.w,
+                                        top: 12.h,
+                                        bottom: 8.h),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20.0),
                                       color: Colours.color_EFF9FF,
@@ -605,7 +611,7 @@ class _CourseReportPageState extends State<CourseReportPage>
                         ),
                         SliverToBoxAdapter(
                           child: Container(
-                            height: 80,
+                            // height: 80.h,
                             color: Colors.white,
                             child: Column(
                               children: [
@@ -621,6 +627,7 @@ class _CourseReportPageState extends State<CourseReportPage>
                                     ),
                                   ],
                                 ),
+                                Gaps.vGap16,
                               ],
                             ),
                           ),

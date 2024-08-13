@@ -906,7 +906,7 @@ class _InstructionalVideoDialoguePageState
           imgFlowRequestNetwork();
           init();
         } else {
-          contentTop = _screenUtil.statusBarHeight + 240;
+          contentTop = _screenUtil.statusBarHeight + 240.h;
           isVideo = "0";
           introFileStr = _homeProvider.character.motionImageD;
           imgFlowRequestNetwork();
@@ -1352,7 +1352,7 @@ class _InstructionalVideoDialoguePageState
     } else {
       return Positioned(
         top: _screenUtil.statusBarHeight + 68,
-        left: (_screenUtil.screenWidth - 167) / 2,
+        left: (_screenUtil.screenWidth - 150.0.w) / 2,
         // width: 100,
         // height: 100,
         child: StreamBuilder(
@@ -1364,14 +1364,14 @@ class _InstructionalVideoDialoguePageState
                 ? LoadImage(
                     _homeProvider.character.motionImage,
                     format: ImageFormat.gif,
-                    // width: 180.0,
-                    height: 180.0,
+                    width: 150.0.w,
+                    // height: 180.0,
                   )
                 : LoadImage(
                     _homeProvider.character.stillImage,
                     format: ImageFormat.gif,
-                    // width: 150.0,
-                    height: 180.0,
+                    width: 150.0.w,
+                    // height: 180.0,
                   );
           },
         ),
@@ -1412,8 +1412,10 @@ class _InstructionalVideoDialoguePageState
             child: Center(
                 child: Text(
               titStr,
-              style: const TextStyle(
-                  color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17.sp),
             )),
           ),
           isUserBuy == 1
@@ -1527,8 +1529,10 @@ class _InstructionalVideoDialoguePageState
               Gaps.vGap10,
               Padding(
                 padding: EdgeInsets.only(
-                  bottom: _screenUtil.bottomBarHeight + 16.0,
-                ),
+                    bottom: _screenUtil.bottomBarHeight + 16.0,
+                    left: MediaQuery.of(context).size.width > 500 ? 40.w : 10.w,
+                    right:
+                        MediaQuery.of(context).size.width > 500 ? 40.w : 10.w),
                 child: CourseBottomBar(
                   repeatWord: repeatWord,
                   stepId: stepId,

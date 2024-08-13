@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:Bubble/res/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Radar extends StatefulWidget {
   Radar({
@@ -91,7 +92,7 @@ class _RadarState extends State<Radar> {
         legend(
           widget.right,
           bottom: widget.source == 'report' ? 0 : 0,
-          left: widget.r + 10,
+          left: widget.r + 10.w,
         ),
         legend(
           widget.bottom,

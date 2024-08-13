@@ -32,12 +32,12 @@ class _CourseShowViewState extends State<CourseShowView> {
         backgroundColor: Colors.transparent,
         body: Center(
           child: Container(
-            height: 220.h,
+            // height: 220.h,
             width: 270.w,
             decoration: BoxDecoration(
               image: DecorationImage(
                   image: ImageUtils.getAssetImage("course_show_img"),
-                  fit: BoxFit.fitWidth),
+                  fit: BoxFit.fill),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,6 +68,7 @@ class _CourseShowViewState extends State<CourseShowView> {
                     height: 42.0,
                   ),
                 ),
+                Gaps.vGap24,
               ],
             ),
           ),
