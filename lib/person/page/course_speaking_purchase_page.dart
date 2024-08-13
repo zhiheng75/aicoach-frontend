@@ -664,11 +664,27 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                         if (ProxyConfig.isxueersi) {
                           bool isInstalledWx = await fluwx.isWeChatInstalled;
                           if (!isInstalledWx) {
+                            int goodsId;
+                            String goodPrice;
+
+                            if (typeIdx == 0) {
+                              goodsId =
+                                  listData.data.packageList.list[spokenIdx].id;
+                              goodPrice = listData
+                                  .data.packageList.list[spokenIdx].price;
+                            } else {
+                              goodsId =
+                                  listData.data.lessonList.list[classIdx].id;
+                              goodPrice =
+                                  listData.data.lessonList.list[classIdx].price;
+                            }
                             //挑自己页面
                             NavigatorUtils.push(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                PersonalRouter.xueersiPurchasePage);
+                              // ignore: use_build_context_synchronously
+                              context,
+                              // PersonalRouter.xueersiPurchasePage
+                              "${PersonalRouter.xueersiPurchasePage}?goodsId=$goodsId&goodPrice=$goodPrice",
+                            );
                           } else {
                             pay();
                           }

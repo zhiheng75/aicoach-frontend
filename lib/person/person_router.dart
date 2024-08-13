@@ -44,8 +44,17 @@ class PersonalRouter implements IRouterProvider {
     router.define(xueersiPurchaseSuccessPage,
         handler: Handler(
             handlerFunc: (_, __) => const XueersiPurchaseSuccessPage()));
+
     router.define(xueersiPurchasePage,
-        handler: Handler(handlerFunc: (_, __) => const XueersiPurchasePage()));
+        handler: Handler(handlerFunc: (context, params) {
+      String goodPrice = params['goodPrice']!.first;
+      String goodsId = params['goodsId']!.first;
+      return XueersiPurchasePage(
+        goodPrice: goodPrice,
+        goodsId: goodsId,
+      );
+    }));
+
     router.define(person,
         handler: Handler(handlerFunc: (_, __) => const PersonPage()));
     router.define(setting,

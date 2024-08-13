@@ -80,6 +80,7 @@ class HttpApi {
   //一键登录
   static const String keyLogin = "jg_login";
   static const String bindTeacher = "bind_teacher";
+  static const String payCode = "get_pay_code";
 
   //学习报告的集合
   static const String studyReportList = "app/conversations";
