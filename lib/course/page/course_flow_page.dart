@@ -38,6 +38,7 @@ import 'package:Bubble/widgets/load_image.dart';
 import 'package:Bubble/widgets/my_scroll_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
@@ -386,53 +387,53 @@ class _CourseFlowPageState extends State<CourseFlowPage>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Stack(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      EventUMStatistics.umengCommonMapEvent(
-                          "click_index_go_to_study_report");
+              GestureDetector(
+                onTap: () {
+                  EventUMStatistics.umengCommonMapEvent(
+                      "click_index_go_to_study_report");
 
-                      LoginManager.checkLogin(context, () {
-                        if (stepDetailData.data.reportStatus == 0) {
-                          Toast.show("课程完成后才可查看学习报告");
-                        } else {
-                          NavigatorUtils.push(context,
-                              "${CourseRouter.courseReportPage}?lessonId=${widget.lessonId}");
-                        }
-                      });
-                    },
-                    child: Container(
-                      width: (_screenUtil.screenWidth - 60) / 3,
-                      height: (_screenUtil.screenWidth - 60) / 3,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                            'assets/images/baogao_flow.png',
-                          ),
-                          fit: BoxFit.fill,
+                  LoginManager.checkLogin(context, () {
+                    if (stepDetailData.data.reportStatus == 0) {
+                      Toast.show("课程完成后才可查看学习报告");
+                    } else {
+                      NavigatorUtils.push(context,
+                          "${CourseRouter.courseReportPage}?lessonId=${widget.lessonId}");
+                    }
+                  });
+                },
+                child: Container(
+                  height: 100.w,
+                  width: 100.w,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.r),
+                      gradient: const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colours.color_ECCDFF,
+                          Colours.color_F3E4FF,
+                        ],
+                      )),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LoadAssetImage(
+                        "baogao_flow",
+                        width: 28.w,
+                        // height: 12.0,
+                      ),
+                      Gaps.vGap4,
+                      Text(
+                        "学习报告",
+                        style: TextStyle(
+                          fontSize: 14.0.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
                         ),
                       ),
-                      // padding: const EdgeInsets.all(30),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            "学习报告",
-                            style: TextStyle(
-                              fontSize: 14.0.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Container(
-                            height: 20.h,
-                          ),
-                        ],
-                      ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
               Stack(
                 children: [
@@ -451,20 +452,27 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                       });
                     },
                     child: Container(
-                      width: (_screenUtil.screenWidth - 60) / 3,
-                      height: (_screenUtil.screenWidth - 60) / 3,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                            'assets/images/jiucuo_flow.png',
-                          ),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
+                      height: 100.w,
+                      width: 100.w,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.r),
+                          gradient: const LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colours.color_A8DFFF,
+                              Colours.color_D4EFFF,
+                            ],
+                          )),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // LottieBuilder.asset(name)
+                          LoadAssetImage(
+                            "jiucuo_flow",
+                            width: 28.w,
+                            // height: 12.0,
+                          ),
+                          Gaps.vGap4,
                           Text(
                             "纠错",
                             style: TextStyle(
@@ -473,16 +481,13 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                               color: Colors.black,
                             ),
                           ),
-                          Container(
-                            height: 20.h,
-                          ),
                         ],
                       ),
                     ),
                   ),
                   Positioned(
-                    right: 5,
-                    top: 1,
+                    right: 0,
+                    top: 0,
                     child: mistakeCountInt > 0
                         ? Container(
                             width: 26,
@@ -506,55 +511,225 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                   ),
                 ],
               ),
-              Stack(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      LoginManager.checkLogin(context, () {
-                        // selectScene(sceneList[index]);
-                        EventUMStatistics.umengCommonMapEvent(
-                            "click_index_go_to_curriculum_evaluation");
+              GestureDetector(
+                onTap: () {
+                  LoginManager.checkLogin(context, () {
+                    // selectScene(sceneList[index]);
+                    EventUMStatistics.umengCommonMapEvent(
+                        "click_index_go_to_curriculum_evaluation");
 
-                        if (stepDetailData.data.evaluationStatus == 0) {
-                          Toast.show("课程完成后才可评价");
-                        } else {
-                          NavigatorUtils.push(
-                              context, CourseRouter.curriculumEvaluationPage,
-                              arguments: stepDetailData);
-                        }
-                      });
-                    },
-                    child: Container(
-                      width: (_screenUtil.screenWidth - 60) / 3,
-                      height: (_screenUtil.screenWidth - 60) / 3,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                            'assets/images/pingjia_flow.png',
-                          ),
-                          fit: BoxFit.fill,
+                    if (stepDetailData.data.evaluationStatus == 0) {
+                      Toast.show("课程完成后才可评价");
+                    } else {
+                      NavigatorUtils.push(
+                          context, CourseRouter.curriculumEvaluationPage,
+                          arguments: stepDetailData);
+                    }
+                  });
+                },
+                child: Container(
+                  height: 100.w,
+                  width: 100.w,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.r),
+                      gradient: const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colours.color_CBF7B4,
+                          Colours.color_E2FFD4,
+                        ],
+                      )),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LoadAssetImage(
+                        "pingjia_flow",
+                        width: 28.w,
+                        // height: 12.0,
+                      ),
+                      Gaps.vGap4,
+                      Text(
+                        "课程评价",
+                        style: TextStyle(
+                          fontSize: 14.0.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
                         ),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            "课程评价",
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Container(
-                            height: 20.h,
-                          ),
-                        ],
-                      ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              )
+              // Stack(
+              //   children: [
+              //     GestureDetector(
+              // onTap: () {
+              //   EventUMStatistics.umengCommonMapEvent(
+              //       "click_index_go_to_study_report");
+
+              //   LoginManager.checkLogin(context, () {
+              //     if (stepDetailData.data.reportStatus == 0) {
+              //       Toast.show("课程完成后才可查看学习报告");
+              //     } else {
+              //       NavigatorUtils.push(context,
+              //           "${CourseRouter.courseReportPage}?lessonId=${widget.lessonId}");
+              //     }
+              //   });
+              // },
+              //       child: Container(
+              //         width: (_screenUtil.screenWidth - 60) / 3,
+              //         height: (_screenUtil.screenWidth - 60) / 3,
+              //         decoration: const BoxDecoration(
+              //           image: DecorationImage(
+              //             image: AssetImage(
+              //               'assets/images/baogao_flow.png',
+              //             ),
+              //             fit: BoxFit.fill,
+              //           ),
+              //         ),
+              //         // padding: const EdgeInsets.all(30),
+              //         child: Column(
+              //           mainAxisAlignment: MainAxisAlignment.end,
+              //           children: [
+              // Text(
+              //   "学习报告",
+              //   style: TextStyle(
+              //     fontSize: 14.0.sp,
+              //     fontWeight: FontWeight.w500,
+              //     color: Colors.black,
+              //   ),
+              // ),
+              //             Container(
+              //               height: 20.h,
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // Stack(
+              //   children: [
+              //     GestureDetector(
+              // onTap: () {
+              //   EventUMStatistics.umengCommonMapEvent(
+              //       "click_index_go_to_error_correction");
+
+              //   LoginManager.checkLogin(context, () {
+              //     if (stepDetailData.data.mistakeStatus == 0) {
+              //       Toast.show("课程完成后才可以纠错");
+              //     } else {
+              //       NavigatorUtils.push(context,
+              //           "${PersonalRouter.errorCorrectionDetailPage}?lessonId=${widget.lessonId}");
+              //     }
+              //   });
+              // },
+              //       child: Container(
+              //         width: (_screenUtil.screenWidth - 60) / 3,
+              //         height: (_screenUtil.screenWidth - 60) / 3,
+              //         decoration: const BoxDecoration(
+              //           image: DecorationImage(
+              //             image: AssetImage(
+              //               'assets/images/jiucuo_flow.png',
+              //             ),
+              //             fit: BoxFit.fill,
+              //           ),
+              //         ),
+              //         child: Column(
+              //           mainAxisAlignment: MainAxisAlignment.end,
+              //           children: [
+              //             // LottieBuilder.asset(name)
+              //             Text(
+              //               "纠错",
+              //               style: TextStyle(
+              //                 fontSize: 14.0.sp,
+              //                 fontWeight: FontWeight.w500,
+              //                 color: Colors.black,
+              //               ),
+              //             ),
+              //             Container(
+              //               height: 20.h,
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              // Positioned(
+              //   right: 5,
+              //   top: 1,
+              //   child: mistakeCountInt > 0
+              //       ? Container(
+              //           width: 26,
+              //           height: 26,
+              //           decoration: BoxDecoration(
+              //             borderRadius: BorderRadius.circular(100.0),
+              //             color: Colors.red,
+              //           ),
+              //           child: Center(
+              //             child: Text(
+              //               mistakeCountInt.toString(),
+              //               style: const TextStyle(
+              //                 fontSize: 14.0,
+              //                 fontWeight: FontWeight.bold,
+              //                 color: Colors.white,
+              //               ),
+              //             ),
+              //           ),
+              //         )
+              //       : Container(),
+              // ),
+              //   ],
+              // ),
+              // Stack(
+              //   children: [
+              //     GestureDetector(
+              // onTap: () {
+              //   LoginManager.checkLogin(context, () {
+              //     // selectScene(sceneList[index]);
+              //     EventUMStatistics.umengCommonMapEvent(
+              //         "click_index_go_to_curriculum_evaluation");
+
+              //     if (stepDetailData.data.evaluationStatus == 0) {
+              //       Toast.show("课程完成后才可评价");
+              //     } else {
+              //       NavigatorUtils.push(
+              //           context, CourseRouter.curriculumEvaluationPage,
+              //           arguments: stepDetailData);
+              //     }
+              //   });
+              // },
+              //       child: Container(
+              //         width: (_screenUtil.screenWidth - 60) / 3,
+              //         height: (_screenUtil.screenWidth - 60) / 3,
+              //         decoration: const BoxDecoration(
+              //           image: DecorationImage(
+              //             image: AssetImage(
+              //               'assets/images/pingjia_flow.png',
+              //             ),
+              //             fit: BoxFit.fill,
+              //           ),
+              //         ),
+              //         child: Column(
+              //           mainAxisAlignment: MainAxisAlignment.end,
+              //           children: [
+              //             Text(
+              //               "课程评价",
+              //               style: TextStyle(
+              //                 fontSize: 14.sp,
+              //                 fontWeight: FontWeight.w500,
+              //                 color: Colors.black,
+              //               ),
+              //             ),
+              //             Container(
+              //               height: 20.h,
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
