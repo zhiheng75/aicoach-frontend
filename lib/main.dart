@@ -57,7 +57,6 @@ Future<void> main() async {
 
       // 设置音频配置
       await AudioConfig.addAudioConfig();
-      initPlugin();
 
       // 全局监听App状态
       SystemChannels.lifecycle.setMessageHandler((message) async {
@@ -82,6 +81,8 @@ Future<void> main() async {
       initUM();
       runApp(MyApp());
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+      initPlugin();
+
       // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       //     overlays: [SystemUiOverlay.top]);
       // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

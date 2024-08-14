@@ -330,9 +330,11 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       SpUtil.putString(Constant.teacherId, "0");
     }
     WidgetsBinding.instance.addObserver(this);
-
-    // 初始化极光推送
-    initPlatformState();
+    if (Device.isAndroid) {
+      DYUtil().evaluate("0");
+    } else {
+      getidfa();
+    }
 
     // initPlatformPhoneState();
     // 获取体验时间
@@ -349,11 +351,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     });
     _initPackageInfo();
     userInfo();
-    if (Device.isAndroid) {
-      DYUtil().evaluate("0");
-    } else {
-      getidfa();
-    }
+
     Future.delayed(const Duration(seconds: 2), () {
       EventUMStatistics.umengCommonOnPageStart("home_two_page");
 
@@ -361,6 +359,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       // EventUMStatistics.umengCommonOnPageEnd("home_new_page");
       // EventUMStatistics.umengCommonOnPageEnd("person_page");
       getStandardAnswer();
+      // 初始化极光推送
+      initPlatformState();
     });
     Future.delayed(const Duration(milliseconds: 300), () {
       systemMaintenance();
