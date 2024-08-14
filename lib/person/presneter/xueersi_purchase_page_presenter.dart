@@ -34,7 +34,7 @@ class XueersiPurchasePagePresenter
 
   Future getQueryOrder(String orderNo) {
     return requestNetwork<ResultData>(Method.get,
-        url: HttpApi.payCode,
+        url: HttpApi.queryOrder,
         queryParameters: {
           'order_no': orderNo,
           'payment_method': "WXJSPAY",

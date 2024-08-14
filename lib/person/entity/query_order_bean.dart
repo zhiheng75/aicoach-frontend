@@ -41,7 +41,7 @@ class QueryOrdeData {
   });
 
   factory QueryOrdeData.fromJson(Map<String, dynamic> json) => QueryOrdeData(
-        status: json["status"],
+        status: json["status"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {

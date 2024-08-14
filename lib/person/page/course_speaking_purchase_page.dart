@@ -683,7 +683,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                               // ignore: use_build_context_synchronously
                               context,
                               // PersonalRouter.xueersiPurchasePage
-                              "${PersonalRouter.xueersiPurchasePage}?goodsId=$goodsId&goodPrice=$goodPrice",
+                              "${PersonalRouter.xueersiPurchasePage}?goodsId=$goodsId&goodPrice=$goodPrice&type=$typeIdx",
                             );
                           } else {
                             pay();

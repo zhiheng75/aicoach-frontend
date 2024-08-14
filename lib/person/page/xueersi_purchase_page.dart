@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:Bubble/entity/result_entity.dart';
+import 'package:Bubble/home/provider/home_provider.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/net/dio_utils.dart';
 import 'package:Bubble/net/http_api.dart';
@@ -13,6 +14,8 @@ import 'package:Bubble/person/presneter/xueersi_purchase_page_presenter.dart';
 import 'package:Bubble/person/view/xueersi_purchase_page_view.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,15 +23,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class XueersiPurchasePage extends StatefulWidget {
   final String goodPrice;
   final String goodsId;
+  final String type;
 
   const XueersiPurchasePage({
     super.key,
     required this.goodPrice,
     required this.goodsId,
+    required this.type,
   });
 
   @override
@@ -257,12 +263,16 @@ class _XueersiPurchasePageState extends State<XueersiPurchasePage>
   void sendQueryOrderSuccess(String status) {
     // TODO: implement sendQueryOrderSuccess
     if (status == "SUCCESS") {
-      //支付成功
-      NavigatorUtils.push(
-          // ignore: use_build_context_synchronously
-          context,
-          replace: true,
-          PersonalRouter.xueersiPurchaseSuccessPage);
+      if (widget.type == "1") {
+        //支付成功
+        NavigatorUtils.push(
+            // ignore: use_build_context_synchronously
+            context,
+            replace: true,
+            PersonalRouter.xueersiPurchaseSuccessPage);
+      }
+      Provider.of<HomeProvider>(context, listen: false).getUsageTime();
+      EventBus().emit(NotificationUtils.resetInFo);
     } else if (status == "Failed”") {
       //支付中
       payS = "1";

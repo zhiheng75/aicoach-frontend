@@ -81,6 +81,7 @@ class HttpApi {
   static const String keyLogin = "jg_login";
   static const String bindTeacher = "bind_teacher";
   static const String payCode = "get_pay_code";
+  static const String queryOrder = "query_order";
 
   //学习报告的集合
   static const String studyReportList = "app/conversations";

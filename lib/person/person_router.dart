@@ -49,10 +49,10 @@ class PersonalRouter implements IRouterProvider {
         handler: Handler(handlerFunc: (context, params) {
       String goodPrice = params['goodPrice']!.first;
       String goodsId = params['goodsId']!.first;
+      String type = params['type']!.first;
+
       return XueersiPurchasePage(
-        goodPrice: goodPrice,
-        goodsId: goodsId,
-      );
+          goodPrice: goodPrice, goodsId: goodsId, type: type);
     }));
 
     router.define(person,
