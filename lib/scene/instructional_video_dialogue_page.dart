@@ -34,6 +34,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:native_video_player/native_video_player.dart';
@@ -165,6 +166,9 @@ class _InstructionalVideoDialoguePageState
   late Timer _backTimer;
   late int _backTimerInt = 120;
 
+  bool isAutoplayEnabled = false;
+  bool isPlaybackLoopEnabled = false;
+  bool isIPad = false;
   Widget lodingView() {
     return const Center(
       child: CircularProgressIndicator(),
@@ -505,6 +509,7 @@ class _InstructionalVideoDialoguePageState
     Wakelock.enable();
     contentTop = _screenUtil.statusBarHeight + _screenUtil.screenWidth / 16 * 9;
     newDataIdx = widget.idx;
+
     resourceIdx = 0;
     WidgetsBinding.instance.addObserver(this);
 
@@ -889,9 +894,17 @@ class _InstructionalVideoDialoguePageState
           introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
           introVideoCoverStr =
               data[dataIdx].resource[resourceIdx].introVideoCover;
-          contentTop = _screenUtil.statusBarHeight +
-              _screenUtil.screenWidth / 16 * 9 +
-              80;
+          if (isIPad) {
+            contentTop = _screenUtil.statusBarHeight + 110.h + 70.h;
+          } else {
+            contentTop = _screenUtil.statusBarHeight +
+                (_screenUtil.screenWidth / 16 * 9) +
+                70.h;
+          }
+          // contentTop = _screenUtil.statusBarHeight +
+          //     110.h +
+          //     // ( _screenUtil.screenWidth / 16 * 9) +
+          //     70.h;
           isback = true;
           setState(() {});
           videoFlow();
@@ -899,14 +912,21 @@ class _InstructionalVideoDialoguePageState
           isVideo = "0";
 
           introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
-          contentTop = _screenUtil.statusBarHeight +
-              _screenUtil.screenWidth / 16 * 9 +
-              80;
+          if (isIPad) {
+            contentTop = _screenUtil.statusBarHeight + 110.h + 70.h;
+          } else {
+            contentTop = _screenUtil.statusBarHeight +
+                (_screenUtil.screenWidth / 16 * 9) +
+                70.h;
+          }
+          // contentTop = _screenUtil.statusBarHeight +
+          //     _screenUtil.screenWidth / 16 * 9 +
+          //     70.h;
 
           imgFlowRequestNetwork();
           init();
         } else {
-          contentTop = _screenUtil.statusBarHeight + 240.h;
+          contentTop = _screenUtil.statusBarHeight + 200.h;
           isVideo = "0";
           introFileStr = _homeProvider.character.motionImageD;
           imgFlowRequestNetwork();
@@ -1059,9 +1079,6 @@ class _InstructionalVideoDialoguePageState
     });
   }
 
-  bool isAutoplayEnabled = false;
-  bool isPlaybackLoopEnabled = false;
-
   @override
   void didPop() {
     // TODO: implement didPop
@@ -1212,146 +1229,165 @@ class _InstructionalVideoDialoguePageState
   Widget topWidget() {
     if (introFileType == "video") {
       return Positioned(
-        top: _screenUtil.statusBarHeight + 68,
+        top: _screenUtil.statusBarHeight + 55.h,
         width: _screenUtil.screenWidth,
-        height: _screenUtil.screenWidth / 16 * 9,
-        child: Stack(
-          children: [
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: NativeVideoPlayerView(
-                onViewReady: _initController,
+        // height: _screenUtil.screenWidth / 16 * 9,
+        child: Container(
+          color: Colors.black,
+          padding: isIPad
+              ? EdgeInsets.only(left: 60.w, right: 60.w)
+              : const EdgeInsets.all(0),
+          child: Stack(
+            children: [
+              AspectRatio(
+                aspectRatio: 16 / 9,
+                child: NativeVideoPlayerView(
+                  onViewReady: _initController,
+                ),
               ),
-            ),
-            Positioned(
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  setState(() {
-                    isShowbottom = !isShowbottom;
-                  });
-                  Future.delayed(const Duration(seconds: 5), () {
+              Positioned(
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
                     setState(() {
-                      isShowbottom = false;
+                      isShowbottom = !isShowbottom;
                     });
-                  });
-                },
-                child: Container(),
+                    Future.delayed(const Duration(seconds: 5), () {
+                      setState(() {
+                        isShowbottom = false;
+                      });
+                    });
+                  },
+                  child: Container(),
+                ),
               ),
-            ),
-            isShowbottom
-                ? Positioned(
-                    bottom: 0,
-                    left: 0,
-                    child: Container(
-                      width: _screenUtil.screenWidth,
-                      height: 40,
-                      color: Colors.black87,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 10,
-                          ),
-                          InkWell(
-                            onTap: _togglePlayback,
-                            child: Center(
-                              child: FutureBuilder(
-                                future: _isPlaying,
-                                initialData: false,
-                                builder: (
-                                  BuildContext context,
-                                  AsyncSnapshot<bool> snapshot,
-                                ) {
-                                  final isPlaying = snapshot.data ?? false;
-                                  return Icon(
-                                    isPlaying ? Icons.pause : Icons.play_arrow,
-                                    size: 30,
+              isShowbottom
+                  ? Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        width: _screenUtil.screenWidth,
+                        height: 40,
+                        color: Colors.black87,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 10,
+                            ),
+                            InkWell(
+                              onTap: _togglePlayback,
+                              child: Center(
+                                child: FutureBuilder(
+                                  future: _isPlaying,
+                                  initialData: false,
+                                  builder: (
+                                    BuildContext context,
+                                    AsyncSnapshot<bool> snapshot,
+                                  ) {
+                                    final isPlaying = snapshot.data ?? false;
+                                    return Icon(
+                                      isPlaying
+                                          ? Icons.pause
+                                          : Icons.play_arrow,
+                                      size: 30,
+                                      color: Colors.white,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Slider(
+                                // min: 0,
+                                activeColor: Colors.white,
+                                inactiveColor: Colors.white54,
+                                thumbColor: Colors.white,
+                                max: (_controller?.videoInfo?.duration ?? 0)
+                                    .toDouble(),
+                                value:
+                                    (_controller?.playbackInfo?.position ?? 0)
+                                        .toDouble(),
+                                onChanged: (value) =>
+                                    _controller?.seekTo(value.toInt()),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  formatDuration(
+                                    Duration(
+                                        seconds: _controller
+                                                ?.playbackInfo?.position ??
+                                            0),
+                                  ),
+                                  style: const TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400,
                                     color: Colors.white,
-                                  );
-                                },
-                              ),
+                                  ),
+                                ),
+                                const Text(
+                                  "/",
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  formatDuration(
+                                    Duration(
+                                        seconds:
+                                            _controller?.videoInfo?.duration ??
+                                                0),
+                                  ),
+                                  style: const TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          Expanded(
-                            child: Slider(
-                              // min: 0,
-                              activeColor: Colors.white,
-                              inactiveColor: Colors.white54,
-                              thumbColor: Colors.white,
-                              max: (_controller?.videoInfo?.duration ?? 0)
-                                  .toDouble(),
-                              value: (_controller?.playbackInfo?.position ?? 0)
-                                  .toDouble(),
-                              onChanged: (value) =>
-                                  _controller?.seekTo(value.toInt()),
+                            Container(
+                              width: 10,
                             ),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                formatDuration(
-                                  Duration(
-                                      seconds:
-                                          _controller?.playbackInfo?.position ??
-                                              0),
-                                ),
-                                style: const TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const Text(
-                                "/",
-                                style: TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                formatDuration(
-                                  Duration(
-                                      seconds:
-                                          _controller?.videoInfo?.duration ??
-                                              0),
-                                ),
-                                style: const TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                    ))
-                : Container(),
-          ],
+                          ],
+                        ),
+                      ))
+                  : Container(),
+            ],
+          ),
         ),
       );
     } else if (introFileType == "image") {
       return Positioned(
-        top: _screenUtil.statusBarHeight + 68,
+        top: _screenUtil.statusBarHeight + 55.h,
         width: _screenUtil.screenWidth,
-        height: _screenUtil.screenWidth / 16 * 9,
-        child: LoadImage(
-          introFileStr,
-          width: _screenUtil.screenWidth,
-          height: _screenUtil.screenWidth / 16 * 9,
+        // height: _screenUtil.screenWidth / 16 * 9,
+        child: Container(
+          color: Colors.black,
+          // height: 200.h,
+          padding: isIPad
+              ? EdgeInsets.only(left: 60.w, right: 60.w)
+              : const EdgeInsets.all(0),
+          child: LoadImage(
+            introFileStr,
+            fit: BoxFit.fitWidth,
+            // height: 200.h,
+            // width: _screenUtil.screenWidth,
+            // height: _screenUtil.screenWidth / 16 * 9,
+          ),
         ),
       );
     } else {
       return Positioned(
-        top: _screenUtil.statusBarHeight + 68,
+        top: _screenUtil.statusBarHeight + 55.h,
         left: (_screenUtil.screenWidth - 150.0.w) / 2,
         // width: 100,
         // height: 100,
@@ -1386,7 +1422,7 @@ class _InstructionalVideoDialoguePageState
 
   Widget navbar() {
     return SizedBox(
-      height: _screenUtil.statusBarHeight + 84,
+      height: _screenUtil.statusBarHeight + 80.h,
       width: _screenUtil.screenWidth,
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1399,11 +1435,11 @@ class _InstructionalVideoDialoguePageState
             },
             child: Container(
               padding: const EdgeInsets.all(5),
-              width: 30,
-              height: 30,
+              width: 30.w,
+              height: 30.w,
               child: Image.asset(
-                width: 20,
-                height: 26,
+                width: 20.w,
+                height: 26.w,
                 'assets/images/ic_back_icon.png',
               ),
             ),
@@ -1448,15 +1484,15 @@ class _InstructionalVideoDialoguePageState
 
   Widget topFlowWidget() {
     return Positioned(
-      top: _screenUtil.statusBarHeight + 40,
-      left: (_screenUtil.screenWidth - 130) / 2,
+      top: _screenUtil.statusBarHeight + 30.h,
+      left: (_screenUtil.screenWidth - 130.w) / 2,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
           color: const Color.fromRGBO(1, 1, 1, 0.1),
         ),
-        width: 130,
-        height: 20,
+        width: 130.w,
+        height: 15.h,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: _buildItems(),
@@ -1496,6 +1532,8 @@ class _InstructionalVideoDialoguePageState
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    isIPad = MediaQuery.of(context).size.width > 500 ? true : false;
+
     return Consumer<HomeProvider>(
       builder: (_, provider, __) {
         Widget background = SizedBox(
