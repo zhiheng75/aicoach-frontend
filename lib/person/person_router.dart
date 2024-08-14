@@ -7,6 +7,7 @@ import 'package:Bubble/person/page/join_community_page.dart';
 import 'package:Bubble/person/page/user_membership_upgrade_page.dart';
 import 'package:Bubble/person/page/xueersi_purchase_page.dart';
 import 'package:Bubble/person/page/xueersi_purchase_success_page.dart';
+import 'package:Bubble/person/page/xueersi_purchase_success_two_page.dart';
 import 'package:fluro/fluro.dart';
 
 import '../routers/i_router.dart';
@@ -38,6 +39,8 @@ class PersonalRouter implements IRouterProvider {
 
   static String xueersiPurchasePage = '/XueersiPurchasePage';
   static String xueersiPurchaseSuccessPage = '/XueersiPurchaseSuccessPage';
+  static String xueersiPurchaseSuccessTwoPage =
+      '/XueersiPurchaseSuccessTwoPage';
 
   @override
   void initRouter(FluroRouter router) {
@@ -45,6 +48,9 @@ class PersonalRouter implements IRouterProvider {
         handler: Handler(
             handlerFunc: (_, __) => const XueersiPurchaseSuccessPage()));
 
+    router.define(xueersiPurchaseSuccessTwoPage,
+        handler: Handler(
+            handlerFunc: (_, __) => const XueersiPurchaseSuccessTwoPage()));
     router.define(xueersiPurchasePage,
         handler: Handler(handlerFunc: (context, params) {
       String goodPrice = params['goodPrice']!.first;

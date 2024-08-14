@@ -183,7 +183,7 @@ class _XueersiPurchaseSuccessPageState extends State<XueersiPurchaseSuccessPage>
                   child: GestureDetector(
                       onTap: () {
                         NavigatorUtils.goBack(context);
-                        NavigatorUtils.goBack(context);
+                        // NavigatorUtils.goBack(context);
                       },
                       child: LoadAssetImage(
                         "ic_back_icon",

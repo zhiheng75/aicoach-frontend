@@ -107,9 +107,17 @@ class _WebviewNotNavPageState extends State<WebviewNotNavPage> {
           int next = widget.idx;
           next = next + 1;
           if (next < widget.stepDetailData.data.data.length) {
+            String isIPad;
+            if (MediaQuery.of(context).size.width > 500) {
+              isIPad = "1";
+            } else {
+              isIPad = "0";
+            }
+            // isIPad = MediaQuery.of(context).size.width > 500 ? true : false;
+
             //退出这一页去聊天
             NavigatorUtils.push(context,
-                "${HomeRouter.instructionalVideoDialoguePage}?index=$next",
+                "${HomeRouter.instructionalVideoDialoguePage}?index=$next&isIPad=$isIPad",
                 arguments: widget.stepDetailData);
           }
         } else {

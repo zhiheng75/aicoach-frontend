@@ -288,8 +288,14 @@ class _CourseFlowPageState extends State<CourseFlowPage>
           "${HomeRouter.webviewNotNavPage}?url=${Uri.encodeComponent(dataIdx.resource[0].gameUrl ?? "")}&index=$idx&type=1",
           arguments: stepDetailData);
     } else {
-      NavigatorUtils.push(
-          context, "${HomeRouter.instructionalVideoDialoguePage}?index=$idx",
+      String isIPad;
+      if (MediaQuery.of(context).size.width > 500) {
+        isIPad = "1";
+      } else {
+        isIPad = "0";
+      }
+      NavigatorUtils.push(context,
+          "${HomeRouter.instructionalVideoDialoguePage}?index=$idx&isIPad=$isIPad",
           arguments: stepDetailData);
     }
   }

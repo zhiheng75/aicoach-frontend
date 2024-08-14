@@ -576,22 +576,23 @@ class _CourseReportPageState extends State<CourseReportPage>
                         ),
                         SliverToBoxAdapter(
                           child: Container(
-                            height: 80,
+                            // height: 80,
                             color: Colors.white,
                             child: Column(
                               children: [
                                 Gaps.vGap16,
-                                const Row(
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     LoadAssetImage(
                                       "youxiubiaoda",
-                                      height: 55,
+                                      height: 55.h,
                                       // width: 45.0,
                                       // height: 50.0,
                                     ),
                                   ],
                                 ),
+                                Gaps.vGap16,
                               ],
                             ),
                           ),
@@ -616,12 +617,12 @@ class _CourseReportPageState extends State<CourseReportPage>
                             child: Column(
                               children: [
                                 Gaps.vGap16,
-                                const Row(
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     LoadAssetImage(
                                       "benkeshouhuo",
-                                      height: 56,
+                                      height: 55.h,
                                       // width: 45.0,
                                       // height: 50.0,
                                     ),

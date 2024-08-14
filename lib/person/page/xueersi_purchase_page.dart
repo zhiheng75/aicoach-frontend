@@ -270,10 +270,18 @@ class _XueersiPurchasePageState extends State<XueersiPurchasePage>
             context,
             replace: true,
             PersonalRouter.xueersiPurchaseSuccessPage);
+      } else {
+        NavigatorUtils.push(
+            // ignore: use_build_context_synchronously
+            context,
+            replace: true,
+            PersonalRouter.xueersiPurchaseSuccessTwoPage);
+
+        // NavigatorUtils.goBack(context);
       }
       Provider.of<HomeProvider>(context, listen: false).getUsageTime();
       EventBus().emit(NotificationUtils.resetInFo);
-    } else if (status == "Failed”") {
+    } else if (status == "Failed") {
       //支付中
       payS = "1";
       setState(() {});

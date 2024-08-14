@@ -67,12 +67,14 @@ class VolumeUtil {
 class InstructionalVideoDialoguePage extends StatefulWidget {
   final StepDetailBean stepDetailData;
   final int idx;
+  final String isIPad;
 
   const InstructionalVideoDialoguePage({
     super.key,
     // required this.onEnd,
     required this.stepDetailData,
     required this.idx,
+    required this.isIPad,
   });
   // final Function() onEnd;
 
@@ -168,7 +170,7 @@ class _InstructionalVideoDialoguePageState
 
   bool isAutoplayEnabled = false;
   bool isPlaybackLoopEnabled = false;
-  bool isIPad = false;
+  late bool isIPad;
   Widget lodingView() {
     return const Center(
       child: CircularProgressIndicator(),
@@ -509,7 +511,11 @@ class _InstructionalVideoDialoguePageState
     Wakelock.enable();
     contentTop = _screenUtil.statusBarHeight + _screenUtil.screenWidth / 16 * 9;
     newDataIdx = widget.idx;
-
+    if (widget.isIPad == "0") {
+      isIPad = false;
+    } else {
+      isIPad = true;
+    }
     resourceIdx = 0;
     WidgetsBinding.instance.addObserver(this);
 
@@ -895,7 +901,7 @@ class _InstructionalVideoDialoguePageState
           introVideoCoverStr =
               data[dataIdx].resource[resourceIdx].introVideoCover;
           if (isIPad) {
-            contentTop = _screenUtil.statusBarHeight + 110.h + 70.h;
+            contentTop = _screenUtil.statusBarHeight + 180.h + 70.h + 20.h;
           } else {
             contentTop = _screenUtil.statusBarHeight +
                 (_screenUtil.screenWidth / 16 * 9) +
@@ -913,7 +919,7 @@ class _InstructionalVideoDialoguePageState
 
           introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
           if (isIPad) {
-            contentTop = _screenUtil.statusBarHeight + 110.h + 70.h;
+            contentTop = _screenUtil.statusBarHeight + 180.h + 70.h + 20.h;
           } else {
             contentTop = _screenUtil.statusBarHeight +
                 (_screenUtil.screenWidth / 16 * 9) +
@@ -926,7 +932,8 @@ class _InstructionalVideoDialoguePageState
           imgFlowRequestNetwork();
           init();
         } else {
-          contentTop = _screenUtil.statusBarHeight + 200.h;
+          contentTop =
+              _screenUtil.statusBarHeight + 200.h + (isIPad ? 20.h : 0);
           isVideo = "0";
           introFileStr = _homeProvider.character.motionImageD;
           imgFlowRequestNetwork();
@@ -1229,7 +1236,7 @@ class _InstructionalVideoDialoguePageState
   Widget topWidget() {
     if (introFileType == "video") {
       return Positioned(
-        top: _screenUtil.statusBarHeight + 55.h,
+        top: _screenUtil.statusBarHeight + 55.h + (isIPad ? 20.h : 0),
         width: _screenUtil.screenWidth,
         // height: _screenUtil.screenWidth / 16 * 9,
         child: Container(
@@ -1237,6 +1244,7 @@ class _InstructionalVideoDialoguePageState
           padding: isIPad
               ? EdgeInsets.only(left: 60.w, right: 60.w)
               : const EdgeInsets.all(0),
+          // height: 180.h,
           child: Stack(
             children: [
               AspectRatio(
@@ -1367,7 +1375,7 @@ class _InstructionalVideoDialoguePageState
       );
     } else if (introFileType == "image") {
       return Positioned(
-        top: _screenUtil.statusBarHeight + 55.h,
+        top: _screenUtil.statusBarHeight + 55.h + (isIPad ? 20.h : 0),
         width: _screenUtil.screenWidth,
         // height: _screenUtil.screenWidth / 16 * 9,
         child: Container(
@@ -1387,8 +1395,10 @@ class _InstructionalVideoDialoguePageState
       );
     } else {
       return Positioned(
-        top: _screenUtil.statusBarHeight + 55.h,
-        left: (_screenUtil.screenWidth - 150.0.w) / 2,
+        top: _screenUtil.statusBarHeight + 55.h + (isIPad ? 20.h : 0),
+        left: isIPad
+            ? (_screenUtil.screenWidth - 100.0.w) / 2
+            : (_screenUtil.screenWidth - 150.0.w) / 2,
         // width: 100,
         // height: 100,
         child: StreamBuilder(
@@ -1400,13 +1410,13 @@ class _InstructionalVideoDialoguePageState
                 ? LoadImage(
                     _homeProvider.character.motionImage,
                     format: ImageFormat.gif,
-                    width: 150.0.w,
+                    width: isIPad ? 100.w : 150.0.w,
                     // height: 180.0,
                   )
                 : LoadImage(
                     _homeProvider.character.stillImage,
                     format: ImageFormat.gif,
-                    width: 150.0.w,
+                    width: isIPad ? 100.w : 150.0.w,
                     // height: 180.0,
                   );
           },
@@ -1451,7 +1461,7 @@ class _InstructionalVideoDialoguePageState
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 17.sp),
+                  fontSize: isIPad ? 15.sp : 17.sp),
             )),
           ),
           isUserBuy == 1
@@ -1484,7 +1494,7 @@ class _InstructionalVideoDialoguePageState
 
   Widget topFlowWidget() {
     return Positioned(
-      top: _screenUtil.statusBarHeight + 30.h,
+      top: _screenUtil.statusBarHeight + 30.h + (isIPad ? 20.h : 0),
       left: (_screenUtil.screenWidth - 130.w) / 2,
       child: Container(
         decoration: BoxDecoration(
@@ -1568,9 +1578,8 @@ class _InstructionalVideoDialoguePageState
               Padding(
                 padding: EdgeInsets.only(
                     bottom: _screenUtil.bottomBarHeight + 16.0,
-                    left: MediaQuery.of(context).size.width > 500 ? 40.w : 10.w,
-                    right:
-                        MediaQuery.of(context).size.width > 500 ? 40.w : 10.w),
+                    left: isIPad ? 50.w : 10.w,
+                    right: isIPad ? 50.w : 10.w),
                 child: CourseBottomBar(
                   repeatWord: repeatWord,
                   stepId: stepId,
