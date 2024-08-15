@@ -6,6 +6,7 @@ import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 typedef KeywordCallback = void Function(String keyword);
 
@@ -60,6 +61,9 @@ class _CourseReportVocabularyItemState
     Colours.color_C1E8F7,
     Colours.color_C8F5B1,
   ];
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,25 +84,25 @@ class _CourseReportVocabularyItemState
             Row(
               children: [
                 Gaps.hGap8,
-                const LoadAssetImage(
+                LoadAssetImage(
                   "head_cihui_icon",
-                  width: 24.0,
-                  height: 24.0,
+                  width: isIPad ? 18.w : 24.0.w,
+                  // height: 24.0,
                 ),
                 Gaps.hGap8,
                 RichText(
-                  text: const TextSpan(children: [
+                  text: TextSpan(children: [
                     TextSpan(
                         text: "词汇  ",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: isIPad ? 12.sp : 15.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         )),
                     TextSpan(
                         text: "Vocabulary",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: isIPad ? 13.sp : 16.sp,
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
                         )),
@@ -130,8 +134,7 @@ class _CourseReportVocabularyItemState
   search(String keyword) {}
 }
 
-///历史搜索词
-class KeywordWidget extends StatelessWidget {
+class KeywordWidget extends StatefulWidget {
   final String keyword;
   final Color colorStr;
   final KeywordCallback? callback;
@@ -140,24 +143,35 @@ class KeywordWidget extends StatelessWidget {
       required this.keyword,
       this.callback,
       required this.colorStr});
+
+  @override
+  State<KeywordWidget> createState() => _KeywordWidgetState();
+}
+
+class _KeywordWidgetState extends State<KeywordWidget> {
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget container = Container(
       decoration: BoxDecoration(
           // border: Border.all(color: const Color(0xFFD7D7D7), width: 0.5),
           borderRadius: const BorderRadius.all(Radius.circular(50)),
-          color: colorStr),
+          color: widget.colorStr),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Text(
-        keyword,
-        style: const TextStyle(fontSize: 15, color: Color(0xFF444444)),
+        widget.keyword,
+        style: TextStyle(
+            fontSize: isIPad ? 10.sp : 13.h, color: Color(0xFF444444)),
       ),
     );
     return GestureDetector(
       child: container,
       onTap: () {
-        if (callback != null) {
-          callback!(keyword);
+        if (widget.callback != null) {
+          widget.callback!(widget.keyword);
         }
       },
     );

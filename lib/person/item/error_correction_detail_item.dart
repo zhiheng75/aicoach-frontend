@@ -339,6 +339,10 @@ class _ErrorCorrectionDetailTwoItemState
     player = await FlutterSoundPlayer().openPlayer();
   }
 
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -360,8 +364,8 @@ class _ErrorCorrectionDetailTwoItemState
             Expanded(
               child: Text(
                 widget.excellentExpression.sentence,
-                style: const TextStyle(
-                  fontSize: 14.0,
+                style: TextStyle(
+                  fontSize: isIPad ? 10.sp : 14.0.sp,
                   color: Colors.black,
                 ),
               ),
@@ -373,16 +377,16 @@ class _ErrorCorrectionDetailTwoItemState
                   children: [
                     Text(
                       widget.excellentExpression.score.toString(),
-                      style: const TextStyle(
-                        fontSize: 14.0,
+                      style: TextStyle(
+                        fontSize: isIPad ? 10.sp : 14.0.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
                     ),
-                    const Text(
+                    Text(
                       "分",
                       style: TextStyle(
-                        fontSize: 10.0,
+                        fontSize: isIPad ? 6.sp : 14.0.sp,
                         fontWeight: FontWeight.w400,
                         color: Colors.black,
                       ),

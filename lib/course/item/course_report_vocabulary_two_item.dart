@@ -9,6 +9,7 @@ import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 typedef KeywordCallback = void Function(String keyword);
 
@@ -68,6 +69,10 @@ class _CourseReportVocabularyTwoItemState
     Colours.color_C1E8F7,
     Colours.color_E8CCFE,
   ];
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -87,26 +92,26 @@ class _CourseReportVocabularyTwoItemState
             Row(
               children: [
                 Gaps.hGap4,
-                const LoadAssetImage(
+                LoadAssetImage(
                   "head_cihui_icon",
-                  width: 24.0,
-                  height: 24.0,
+                  width: isIPad ? 18.w : 24.0.w,
+                  // height: 24.0.w,
                 ),
                 Gaps.hGap8,
                 Expanded(
                   child: RichText(
-                    text: const TextSpan(children: [
+                    text: TextSpan(children: [
                       TextSpan(
                           text: "词汇  ",
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: isIPad ? 12.sp : 15.sp,
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
                           )),
                       TextSpan(
-                          text: "vocabulary",
+                          text: "Vocabulary",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: isIPad ? 13.sp : 16.sp,
                             fontWeight: FontWeight.w500,
                             color: Colors.black,
                           )),
@@ -167,8 +172,7 @@ class _CourseReportVocabularyTwoItemState
   search(String keyword) {}
 }
 
-///历史搜索词
-class KeywordWidget extends StatelessWidget {
+class KeywordWidget extends StatefulWidget {
   final String keyword;
   final Color colorStr;
 
@@ -178,24 +182,35 @@ class KeywordWidget extends StatelessWidget {
       required this.keyword,
       this.callback,
       required this.colorStr});
+
+  @override
+  State<KeywordWidget> createState() => _KeywordWidgetState();
+}
+
+class _KeywordWidgetState extends State<KeywordWidget> {
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget container = Container(
       decoration: BoxDecoration(
           // border: Border.all(color: const Color(0xFFD7D7D7), width: 0.5),
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
-          color: colorStr),
+          borderRadius: const BorderRadius.all(Radius.circular(50)),
+          color: widget.colorStr),
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
       child: Text(
-        keyword,
-        style: const TextStyle(fontSize: 13, color: Color(0xFF444444)),
+        widget.keyword,
+        style: TextStyle(
+            fontSize: isIPad ? 10.sp : 13.h, color: Color(0xFF444444)),
       ),
     );
     return GestureDetector(
       child: container,
       onTap: () {
-        if (callback != null) {
-          callback!(keyword);
+        if (widget.callback != null) {
+          widget.callback!(widget.keyword);
         }
       },
     );

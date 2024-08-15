@@ -139,7 +139,7 @@ class _CheckCodePageState extends State<CheckCodePage>
   Widget navbar() {
     return Container(
       // color: Colors.amber,
-      height: _screenUtil.statusBarHeight + 60,
+      // height: _screenUtil.statusBarHeight + 60,
       width: _screenUtil.screenWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -505,7 +505,7 @@ class _CheckTwoCodePageState extends State<CheckTwoCodePage>
   Widget navbar() {
     return Container(
       // color: Colors.amber,
-      height: _screenUtil.statusBarHeight + 60,
+      // height: _screenUt1il.statusBarHeight + 60,
       width: _screenUtil.screenWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -901,7 +901,7 @@ class _InstructionalVideoDialoguePageState
           introVideoCoverStr =
               data[dataIdx].resource[resourceIdx].introVideoCover;
           if (isIPad) {
-            contentTop = _screenUtil.statusBarHeight + 180.h + 70.h + 20.h;
+            contentTop = _screenUtil.statusBarHeight + 180.h + 70.h + 30.h;
           } else {
             contentTop = _screenUtil.statusBarHeight +
                 (_screenUtil.screenWidth / 16 * 9) +
@@ -919,7 +919,7 @@ class _InstructionalVideoDialoguePageState
 
           introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
           if (isIPad) {
-            contentTop = _screenUtil.statusBarHeight + 180.h + 70.h + 20.h;
+            contentTop = _screenUtil.statusBarHeight + 180.h + 70.h + 30.h;
           } else {
             contentTop = _screenUtil.statusBarHeight +
                 (_screenUtil.screenWidth / 16 * 9) +
@@ -1093,7 +1093,7 @@ class _InstructionalVideoDialoguePageState
     setState(() {
       isback = true;
     });
-
+    _homeProvider.resetChatParams();
     endSocket();
   }
 
@@ -1242,7 +1242,7 @@ class _InstructionalVideoDialoguePageState
         child: Container(
           color: Colors.black,
           padding: isIPad
-              ? EdgeInsets.only(left: 60.w, right: 60.w)
+              ? EdgeInsets.only(left: 50.w, right: 50.w)
               : const EdgeInsets.all(0),
           // height: 180.h,
           child: Stack(
@@ -1382,7 +1382,7 @@ class _InstructionalVideoDialoguePageState
           color: Colors.black,
           // height: 200.h,
           padding: isIPad
-              ? EdgeInsets.only(left: 60.w, right: 60.w)
+              ? EdgeInsets.only(left: 50.w, right: 50.w)
               : const EdgeInsets.all(0),
           child: LoadImage(
             introFileStr,
@@ -1445,11 +1445,11 @@ class _InstructionalVideoDialoguePageState
             },
             child: Container(
               padding: const EdgeInsets.all(5),
-              width: 30.w,
-              height: 30.w,
+              width: isIPad ? 40 : 30,
+              height: isIPad ? 40 : 30,
               child: Image.asset(
-                width: 20.w,
-                height: 26.w,
+                // width: 20,
+                height: isIPad ? 30 : 26,
                 'assets/images/ic_back_icon.png',
               ),
             ),
@@ -1461,7 +1461,7 @@ class _InstructionalVideoDialoguePageState
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: isIPad ? 15.sp : 17.sp),
+                  fontSize: isIPad ? 10.sp : 17.sp),
             )),
           ),
           isUserBuy == 1
@@ -1495,13 +1495,13 @@ class _InstructionalVideoDialoguePageState
   Widget topFlowWidget() {
     return Positioned(
       top: _screenUtil.statusBarHeight + 30.h + (isIPad ? 20.h : 0),
-      left: (_screenUtil.screenWidth - 130.w) / 2,
+      left: (_screenUtil.screenWidth - (isIPad ? 100.w : 130.w)) / 2,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
           color: const Color.fromRGBO(1, 1, 1, 0.1),
         ),
-        width: 130.w,
+        width: isIPad ? 100.w : 130.w,
         height: 15.h,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1575,11 +1575,11 @@ class _InstructionalVideoDialoguePageState
                 ),
               ),
               Gaps.vGap10,
-              Padding(
+              Container(
                 padding: EdgeInsets.only(
                     bottom: _screenUtil.bottomBarHeight + 16.0,
-                    left: isIPad ? 50.w : 10.w,
-                    right: isIPad ? 50.w : 10.w),
+                    left: isIPad ? 60.w : 10.w,
+                    right: isIPad ? 60.w : 10.w),
                 child: CourseBottomBar(
                   repeatWord: repeatWord,
                   stepId: stepId,

@@ -280,7 +280,7 @@ class _ReportDetailPageState extends State<ReportDetailPage>
 
     Widget radar = Container(
       width: width,
-      height: 240.0,
+      height: 220.0.h,
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage(

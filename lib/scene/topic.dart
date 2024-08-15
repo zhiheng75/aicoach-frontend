@@ -88,12 +88,11 @@ class _TopicState extends State<TopicPage>
           _homeProvider.getUsageTime(() {
             // 倒计时
             _homeProvider.startUsageTimeCutdown(() {
-              showModalBottomSheet(
+              showDialog(
                 context: context,
-                backgroundColor: Colors.transparent,
                 barrierColor: Colors.transparent,
-                isScrollControlled: true,
-                isDismissible: false,
+                barrierDismissible: false,
+                useSafeArea: false,
                 builder: (_) => ExpirationReminder(),
               );
             });

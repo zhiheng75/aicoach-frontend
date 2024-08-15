@@ -4,6 +4,7 @@ import 'package:Bubble/person/presneter/xueersi_purchase_success_page_presnter.d
 import 'package:Bubble/person/view/xueersi_purchase_success_page_view.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -33,6 +34,21 @@ class _XueersiPurchaseSuccessPageState extends State<XueersiPurchaseSuccessPage>
   late BindTeacherBean data;
 
   bool isLoding = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    EventUMStatistics.umengCommonOnPageStart("xueersi_purchase_success_page");
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    EventUMStatistics.umengCommonOnPageEnd("xueersi_purchase_success_page");
+  }
 
   Widget bg() {
     return Container(
@@ -65,7 +81,7 @@ class _XueersiPurchaseSuccessPageState extends State<XueersiPurchaseSuccessPage>
               children: <Widget>[
                 bg(),
                 Positioned(
-                  top: 100.h,
+                  top: 80.h,
                   left: 20.w,
                   right: 20.w,
                   child: Column(
@@ -88,7 +104,7 @@ class _XueersiPurchaseSuccessPageState extends State<XueersiPurchaseSuccessPage>
                           ),
                         ],
                       ),
-                      Gaps.vGap30,
+                      Gaps.vGap10,
                       Stack(
                         children: [
                           Container(
@@ -105,8 +121,9 @@ class _XueersiPurchaseSuccessPageState extends State<XueersiPurchaseSuccessPage>
                             // height: 370.h,
                             child: Column(
                               children: [
-                                const LoadAssetImage(
+                                LoadAssetImage(
                                   'tianjia_img',
+                                  width: 180.w,
                                 ),
                                 Gaps.vGap24,
                                 Row(
@@ -116,8 +133,8 @@ class _XueersiPurchaseSuccessPageState extends State<XueersiPurchaseSuccessPage>
                                       borderRadius: BorderRadius.circular(40.0),
                                       child: LoadImage(
                                         data.data.teacherAvatar,
-                                        width: 40.0,
-                                        height: 40.0,
+                                        width: 30.0.w,
+                                        height: 30.0.w,
                                       ),
                                     ),
                                     Gaps.hGap10,
@@ -148,8 +165,8 @@ class _XueersiPurchaseSuccessPageState extends State<XueersiPurchaseSuccessPage>
                                 Gaps.vGap9,
                                 LoadImage(
                                   data.data.teacherQrCode,
-                                  width: 190.0.w,
-                                  height: 190.0.w,
+                                  width: 130.0.w,
+                                  height: 130.0.w,
                                 ),
                                 Gaps.vGap18,
                                 Text(
@@ -183,7 +200,6 @@ class _XueersiPurchaseSuccessPageState extends State<XueersiPurchaseSuccessPage>
                   child: GestureDetector(
                       onTap: () {
                         NavigatorUtils.goBack(context);
-                        // NavigatorUtils.goBack(context);
                       },
                       child: LoadAssetImage(
                         "ic_back_icon",

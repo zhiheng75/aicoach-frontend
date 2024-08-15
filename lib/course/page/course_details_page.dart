@@ -11,6 +11,7 @@ import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CourseDetailsPage extends StatefulWidget {
   final StepDetailBean stepDetailBean;
@@ -52,6 +53,10 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
           isPaly: false));
     }
     return list;
+  }
+
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
   }
 
   @override
@@ -96,25 +101,25 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
                         Row(
                           children: [
                             Gaps.hGap6,
-                            const LoadAssetImage(
+                            LoadAssetImage(
                               "head_juxing_icon",
-                              width: 24.0,
-                              height: 24.0,
+                              width: isIPad ? 18.w : 24.0.w,
+                              // height: 24.0,
                             ),
                             Gaps.hGap8,
                             RichText(
-                              text: const TextSpan(children: [
+                              text: TextSpan(children: [
                                 TextSpan(
                                     text: "句型  ",
                                     style: TextStyle(
-                                      fontSize: 15,
+                                      fontSize: isIPad ? 12.sp : 15.sp,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black,
                                     )),
                                 TextSpan(
                                     text: "Sentence pattern",
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: isIPad ? 13.sp : 16.sp,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.black,
                                     )),
@@ -150,25 +155,25 @@ class _CourseDetailsPageState extends State<CourseDetailsPage>
                         Row(
                           children: [
                             Gaps.hGap8,
-                            const LoadAssetImage(
+                            LoadAssetImage(
                               "head_nengli_icon",
-                              width: 24.0,
-                              height: 24.0,
+                              width: isIPad ? 18.w : 24.0.w,
+                              // height: 24.0,
                             ),
                             Gaps.hGap8,
                             RichText(
-                              text: const TextSpan(children: [
+                              text: TextSpan(children: [
                                 TextSpan(
                                     text: "能力  ",
                                     style: TextStyle(
-                                      fontSize: 15,
+                                      fontSize: isIPad ? 12.sp : 15.sp,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black,
                                     )),
                                 TextSpan(
                                     text: "Speaking skills",
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: isIPad ? 13.sp : 16.sp,
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black,
                                     )),

@@ -85,12 +85,11 @@ class _SceneState extends State<ScenePage>
           _homeProvider.getUsageTime(() {
             // 倒计时
             _homeProvider.startUsageTimeCutdown(() {
-              showModalBottomSheet(
+              showDialog(
                 context: context,
-                backgroundColor: Colors.transparent,
                 barrierColor: Colors.transparent,
-                isScrollControlled: true,
-                isDismissible: false,
+                barrierDismissible: false,
+                useSafeArea: false,
                 builder: (_) => ExpirationReminder(),
               );
             });

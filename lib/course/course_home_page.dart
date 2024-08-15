@@ -27,6 +27,7 @@ import 'package:flutter/services.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extended;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 
 class CourseHomePage extends StatefulWidget {
@@ -487,6 +488,47 @@ class _CourseHomePageState extends State<CourseHomePage>
     return list;
   }
 
+  List<Widget> _buildItemsxxx() {
+    List<Widget> listView = [];
+
+    for (int i = 0; i < listData[curTabIndex].list.length; i++) {
+      List<Datum> xxlistData = listData;
+      List<LevelList> xxlist = xxlistData[curTabIndex].list;
+      List<UnitList> list = xxlist[i].list;
+
+      listView.add(SliverStickyHeader(
+        header: Container(
+          // height: 60.0,
+          color: Colors.white,
+          // padding: EdgeInsets.symmetric(horizontal: 16.0),
+          // alignment: Alignment.centerLeft,
+          child: _headTitle(xxlist[i].unitName),
+        ),
+        sliver: SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (ctx, index) {
+              // return _buildItem(dataList[index]);
+              // List<DatumList> listData = listData[curTabIndex].list;
+              List<Datum> xxlistData = listData;
+              List<LevelList> xxlist = xxlistData[curTabIndex].list;
+              List<UnitList> list = xxlist[index].list;
+
+              return CourseHomeItem(
+                index: i + 1,
+                unitData: list[i],
+                backColor: colorBackData[i],
+                iconBackColor: colorIconBackData[i],
+              );
+            },
+            childCount: listData[curTabIndex].list.length,
+          ),
+        ),
+      ));
+    }
+
+    return listView;
+  }
+
   Widget _buildStickyHeader(List<UnitList> list, String tit, Color backColor,
       List<Color> iconBackColor) {
     return StickyHeader(
@@ -503,6 +545,7 @@ class _CourseHomePageState extends State<CourseHomePage>
     // Log.e(listData[curTabIndex].list.length as String);
 
     return CustomScrollView(
+      // slivers: _buildItemsxxx()
       slivers: <Widget>[
         SliverList(
           delegate: SliverChildBuilderDelegate(

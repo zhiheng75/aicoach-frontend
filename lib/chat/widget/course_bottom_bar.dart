@@ -117,14 +117,11 @@ class _CourseBottomBarState extends State<CourseBottomBar>
         );
         return;
       }
-      showModalBottomSheet(
+      showDialog(
         context: context,
-        backgroundColor: Colors.transparent,
         barrierColor: Colors.transparent,
-        isScrollControlled: true,
-        isDismissible: false,
-        clipBehavior: Clip.none,
-        enableDrag: false,
+        barrierDismissible: false,
+        useSafeArea: false,
         builder: (_) => Example(message: message),
       );
     });

@@ -1,5 +1,7 @@
 import 'package:Bubble/res/colors.dart';
+import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,22 @@ class XueersiPurchaseSuccessTwoPage extends StatefulWidget {
 class _XueersiPurchaseSuccessTwoPageState
     extends State<XueersiPurchaseSuccessTwoPage> {
   final ScreenUtil _screenUtil = ScreenUtil();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    EventUMStatistics.umengCommonOnPageStart(
+        "xueersi_purchase_success_two_page");
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    EventUMStatistics.umengCommonOnPageEnd("xueersi_purchase_success_two_page");
+  }
 
   Widget bg() {
     return Container(
@@ -39,46 +57,52 @@ class _XueersiPurchaseSuccessTwoPageState
         children: <Widget>[
           bg(),
           Positioned(
-            top: 100.h,
+            top: 200.h,
             left: 20,
             right: 20,
-            child: Column(
-              children: [
-                LoadAssetImage(
-                  'xueersi_success_icon',
-                  width: 42.0.w,
-                  height: 42.0.w,
-                ),
-                Text(
-                  "支付成功",
-                  style: TextStyle(
-                    fontSize: 18.0.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+            child: Center(
+              child: Column(
+                children: [
+                  LoadAssetImage(
+                    'xueersi_success_icon',
+                    width: 42.0.w,
+                    height: 42.0.w,
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    NavigatorUtils.goBack(context);
-                  },
-                  child: Container(
-                    width: 210,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40.0),
-                      color: Colours.color_8003FD,
+                  Gaps.vGap10,
+                  Text(
+                    "支付成功",
+                    style: TextStyle(
+                      fontSize: 18.0.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
-                    child: Text(
-                      "返回",
-                      style: TextStyle(
-                        fontSize: 15.0.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                  ),
+                  Gaps.vGap70,
+                  GestureDetector(
+                    onTap: () {
+                      NavigatorUtils.goBack(context);
+                    },
+                    child: Container(
+                      width: 210,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40.0),
+                        color: Colours.color_8003FD,
+                      ),
+                      child: Center(
+                        child: Text(
+                          "返回",
+                          style: TextStyle(
+                            fontSize: 15.0.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
           Positioned(

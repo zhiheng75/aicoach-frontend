@@ -96,14 +96,11 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
         );
         return;
       }
-      showModalBottomSheet(
+      showDialog(
         context: context,
-        backgroundColor: Colors.transparent,
         barrierColor: Colors.transparent,
-        isScrollControlled: true,
-        isDismissible: false,
-        clipBehavior: Clip.none,
-        enableDrag: false,
+        barrierDismissible: false,
+        useSafeArea: false,
         builder: (_) => Example(message: message),
       );
     });
@@ -128,12 +125,11 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
             isAvailable = false;
           }
           if (!isAvailable) {
-            showModalBottomSheet(
+            showDialog(
               context: context,
-              backgroundColor: Colors.transparent,
               barrierColor: Colors.transparent,
-              isScrollControlled: true,
-              isDismissible: false,
+              barrierDismissible: false,
+              useSafeArea: false,
               builder: (_) => ExpirationReminder(),
             );
           }
@@ -160,12 +156,11 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
         isAvailable = false;
       }
       if (!isAvailable) {
-        showModalBottomSheet(
+        showDialog(
           context: context,
-          backgroundColor: Colors.transparent,
           barrierColor: Colors.transparent,
-          isScrollControlled: true,
-          isDismissible: false,
+          barrierDismissible: false,
+          useSafeArea: false,
           builder: (_) => ExpirationReminder(),
         );
       }
@@ -195,12 +190,11 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           _homeProvider.getUsageTime(() {
             // 倒计时
             _homeProvider.startUsageTimeCutdown(() async {
-              showModalBottomSheet(
+              showDialog(
                 context: context,
-                backgroundColor: Colors.transparent,
                 barrierColor: Colors.transparent,
-                isScrollControlled: true,
-                isDismissible: false,
+                barrierDismissible: false,
+                useSafeArea: false,
                 builder: (_) => ExpirationReminder(),
               );
             });
@@ -250,12 +244,11 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           _homeProvider.getUsageTime(() {
             // 倒计时
             _homeProvider.startUsageTimeCutdown(() async {
-              showModalBottomSheet(
+              showDialog(
                 context: context,
-                backgroundColor: Colors.transparent,
                 barrierColor: Colors.transparent,
-                isScrollControlled: true,
-                isDismissible: false,
+                barrierDismissible: false,
+                useSafeArea: false,
                 builder: (_) => ExpirationReminder(),
               );
             });
@@ -513,6 +506,10 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
     super.dispose();
   }
 
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget iconButtom({
@@ -625,8 +622,8 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
 
     return Container(
       width: _screenUtil.screenWidth,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16.0,
+      padding: EdgeInsets.symmetric(
+        horizontal: isIPad ? 50.w : 16.0.w,
       ),
       child: Row(
         children: <Widget>[

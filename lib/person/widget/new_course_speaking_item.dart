@@ -15,6 +15,10 @@ class NewCourseSpeakingItem extends StatefulWidget {
 }
 
 class _NewCourseSpeakingItemState extends State<NewCourseSpeakingItem> {
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,14 +44,14 @@ class _NewCourseSpeakingItemState extends State<NewCourseSpeakingItem> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            height: 45.h,
+            height: isIPad ? 50.h : 45.h,
             child: Center(
               child: Text(
                 widget.data.name,
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 style: TextStyle(
-                  fontSize: 18.0.sp,
+                  fontSize: isIPad ? 14.0.sp : 18.0.sp,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
@@ -97,7 +101,7 @@ class _NewCourseSpeakingItemState extends State<NewCourseSpeakingItem> {
                       ),
                     ),
                     Positioned(
-                      top: 8,
+                      top: 8.w,
                       left: 0,
                       right: 0,
                       child: Center(
@@ -136,6 +140,10 @@ class NewCourseSpeakingTwoItem extends StatefulWidget {
 }
 
 class _NewCourseSpeakingTwoItemState extends State<NewCourseSpeakingTwoItem> {
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -161,14 +169,14 @@ class _NewCourseSpeakingTwoItemState extends State<NewCourseSpeakingTwoItem> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            height: 45.h,
+            height: isIPad ? 50.h : 45.h,
             child: Center(
               child: Text(
                 widget.data.name,
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 style: TextStyle(
-                  fontSize: 18.0.sp,
+                  fontSize: isIPad ? 14.0.sp : 18.0.sp,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
@@ -218,7 +226,7 @@ class _NewCourseSpeakingTwoItemState extends State<NewCourseSpeakingTwoItem> {
                       ),
                     ),
                     Positioned(
-                      top: 8,
+                      top: 8.w,
                       left: 0,
                       right: 0,
                       child: Center(

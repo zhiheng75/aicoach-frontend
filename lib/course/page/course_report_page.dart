@@ -89,6 +89,10 @@ class _CourseReportPageState extends State<CourseReportPage>
     isWX();
   }
 
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -172,20 +176,20 @@ class _CourseReportPageState extends State<CourseReportPage>
           ),
           alignment: Alignment.center,
           child: Radar(
-            r: sqrt(5000),
+            r: sqrt(isIPad ? 6000.r : 5000.r),
             top: RadarItem('流畅度', lessonReportDetailData.data.fluencyScore),
             bottom:
                 RadarItem('完整度', lessonReportDetailData.data.integrityScore),
             left: RadarItem('发音', lessonReportDetailData.data.standardScore),
             right: RadarItem('语法', lessonReportDetailData.data.accuracyScore),
-            scoreStyle: const TextStyle(
-              fontSize: 22.0,
+            scoreStyle: TextStyle(
+              fontSize: isIPad ? 12.sp : 22.0.sp,
               fontWeight: FontWeight.w700,
               color: Colors.black,
               height: 25.7 / 22.0,
             ),
-            labelStyle: const TextStyle(
-              fontSize: 12.0,
+            labelStyle: TextStyle(
+              fontSize: isIPad ? 9.sp : 12.0.sp,
               fontWeight: FontWeight.w400,
               color: Colors.black,
               height: 14.0 / 12.0,
@@ -201,11 +205,11 @@ class _CourseReportPageState extends State<CourseReportPage>
   }
 
   void shareView() {
-    showModalBottomSheet(
+    showDialog(
         context: context,
-        isScrollControlled: true,
-        isDismissible: true,
-        backgroundColor: Colors.transparent,
+        barrierColor: Colors.transparent,
+        barrierDismissible: false,
+        useSafeArea: false,
         builder: (BuildContext context) {
           return _shareWidget(
             context,
@@ -391,10 +395,11 @@ class _CourseReportPageState extends State<CourseReportPage>
                                 ),
                                 child: Column(
                                   children: [
+                                    Gaps.vGap10,
                                     Text(
                                       userName,
-                                      style: const TextStyle(
-                                        fontSize: 20.0,
+                                      style: TextStyle(
+                                        fontSize: isIPad ? 14.sp : 20.0.sp,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.black,
                                       ),
@@ -405,7 +410,7 @@ class _CourseReportPageState extends State<CourseReportPage>
                                       direction: Axis.horizontal,
                                       allowHalfRating: false,
                                       itemCount: 5,
-                                      itemSize: 20,
+                                      itemSize: isIPad ? 16.w : 20.w,
                                       ignoreGestures: true,
                                       ratingWidget: RatingWidget(
                                         full: const LoadAssetImage(
@@ -422,8 +427,8 @@ class _CourseReportPageState extends State<CourseReportPage>
                                     Gaps.vGap6,
                                     Text(
                                       "${lessonReportDetailData.data.levelName}  ${lessonReportDetailData.data.unitName}",
-                                      style: const TextStyle(
-                                        fontSize: 13.0,
+                                      style: TextStyle(
+                                        fontSize: isIPad ? 10.sp : 13.0.sp,
                                         color: Colours.color_666666,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -431,8 +436,8 @@ class _CourseReportPageState extends State<CourseReportPage>
                                     Gaps.vGap4,
                                     Text(
                                       lessonReportDetailData.data.lessonName,
-                                      style: const TextStyle(
-                                        fontSize: 17.0,
+                                      style: TextStyle(
+                                        fontSize: isIPad ? 12.sp : 17.0.sp,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                       ),
@@ -445,11 +450,11 @@ class _CourseReportPageState extends State<CourseReportPage>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   ClipRRect(
-                                    borderRadius: BorderRadius.circular(30.0),
+                                    borderRadius: BorderRadius.circular(40.0),
                                     child: LoadImage(
                                       headimgurl,
-                                      width: 60.0,
-                                      height: 60.0,
+                                      width: isIPad ? 80 : 60.0,
+                                      height: isIPad ? 80 : 60.0,
                                     ),
                                   ),
                                 ],
@@ -479,27 +484,29 @@ class _CourseReportPageState extends State<CourseReportPage>
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        const LoadAssetImage(
+                                        LoadAssetImage(
                                           "report_zan_icon",
-                                          width: 48.0,
-                                          height: 48.0,
+                                          width: isIPad ? 30.w : 48.0.w,
+                                          // height: 48.0.w,
                                         ),
-                                        Gaps.vGap10,
+                                        isIPad ? Gaps.vGap2 : Gaps.vGap10,
                                         RichText(
                                           text: TextSpan(children: [
                                             TextSpan(
                                                 text: lessonReportDetailData
                                                     .data.goodCount
                                                     .toString(),
-                                                style: const TextStyle(
-                                                  fontSize: 18,
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      isIPad ? 15.sp : 18.sp,
                                                   fontWeight: FontWeight.w400,
                                                   color: Colours.color_333333,
                                                 )),
-                                            const TextSpan(
+                                            TextSpan(
                                                 text: '个赞',
                                                 style: TextStyle(
-                                                  fontSize: 13,
+                                                  fontSize:
+                                                      isIPad ? 10.sp : 13.sp,
                                                   fontWeight: FontWeight.w400,
                                                   color: Colours.color_333333,
                                                 )),
@@ -508,8 +515,8 @@ class _CourseReportPageState extends State<CourseReportPage>
                                         Gaps.vGap4,
                                         Text(
                                           "超过${lessonReportDetailData.data.goodRank}的同学",
-                                          style: const TextStyle(
-                                            fontSize: 13.0,
+                                          style: TextStyle(
+                                            fontSize: isIPad ? 10.sp : 13.0.sp,
                                             color: Colours.color_906DA9,
                                           ),
                                         ),
@@ -531,27 +538,29 @@ class _CourseReportPageState extends State<CourseReportPage>
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        const LoadAssetImage(
+                                        LoadAssetImage(
                                           "report_sentence_icon",
-                                          width: 48.0,
-                                          height: 48.0,
+                                          width: isIPad ? 30.w : 48.0.w,
+                                          // height: 48.0.w,
                                         ),
-                                        Gaps.vGap10,
+                                        isIPad ? Gaps.hGap2 : Gaps.vGap10,
                                         RichText(
                                           text: TextSpan(children: [
                                             TextSpan(
                                                 text: lessonReportDetailData
                                                     .data.sentenceCount
                                                     .toString(),
-                                                style: const TextStyle(
-                                                  fontSize: 18,
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      isIPad ? 15.sp : 18.sp,
                                                   fontWeight: FontWeight.w400,
                                                   color: Colours.color_333333,
                                                 )),
-                                            const TextSpan(
+                                            TextSpan(
                                                 text: '次开口',
                                                 style: TextStyle(
-                                                  fontSize: 13,
+                                                  fontSize:
+                                                      isIPad ? 10.sp : 13.sp,
                                                   fontWeight: FontWeight.w400,
                                                   color: Colours.color_333333,
                                                 )),
@@ -560,8 +569,8 @@ class _CourseReportPageState extends State<CourseReportPage>
                                         Gaps.vGap4,
                                         Text(
                                           "超过${lessonReportDetailData.data.sentenceRank}的同学",
-                                          style: const TextStyle(
-                                            fontSize: 13.0,
+                                          style: TextStyle(
+                                            fontSize: isIPad ? 10.sp : 13.0.sp,
                                             color: Colours.color_3770C6,
                                           ),
                                         ),
@@ -586,7 +595,7 @@ class _CourseReportPageState extends State<CourseReportPage>
                                   children: [
                                     LoadAssetImage(
                                       "youxiubiaoda",
-                                      height: 55.h,
+                                      height: 45.h,
                                       // width: 45.0,
                                       // height: 50.0,
                                     ),
@@ -622,7 +631,7 @@ class _CourseReportPageState extends State<CourseReportPage>
                                   children: [
                                     LoadAssetImage(
                                       "benkeshouhuo",
-                                      height: 55.h,
+                                      height: 45.h,
                                       // width: 45.0,
                                       // height: 50.0,
                                     ),
@@ -661,18 +670,20 @@ class _CourseReportPageState extends State<CourseReportPage>
                                         Row(
                                           children: [
                                             Gaps.hGap6,
-                                            const LoadAssetImage(
+                                            LoadAssetImage(
                                               "head_juxing_icon",
-                                              width: 24.0,
-                                              height: 24.0,
+                                              width: isIPad ? 18.w : 24.0.w,
+                                              // height: 24.0.w,
                                             ),
                                             Gaps.hGap8,
                                             RichText(
-                                              text: const TextSpan(children: [
+                                              text: TextSpan(children: [
                                                 TextSpan(
                                                     text: "句型  ",
                                                     style: TextStyle(
-                                                      fontSize: 15,
+                                                      fontSize: isIPad
+                                                          ? 12.sp
+                                                          : 15.sp,
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       color: Colors.black,
@@ -680,7 +691,9 @@ class _CourseReportPageState extends State<CourseReportPage>
                                                 TextSpan(
                                                     text: "Sentence pattern",
                                                     style: TextStyle(
-                                                      fontSize: 16,
+                                                      fontSize: isIPad
+                                                          ? 13.sp
+                                                          : 16.sp,
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       color: Colors.black,
@@ -719,18 +732,20 @@ class _CourseReportPageState extends State<CourseReportPage>
                                         Row(
                                           children: [
                                             Gaps.hGap8,
-                                            const LoadAssetImage(
+                                            LoadAssetImage(
                                               "head_nengli_icon",
-                                              width: 24.0,
-                                              height: 24.0,
+                                              width: isIPad ? 18.w : 24.0.w,
+                                              // height: 24.0.w,
                                             ),
                                             Gaps.hGap8,
                                             RichText(
-                                              text: const TextSpan(children: [
+                                              text: TextSpan(children: [
                                                 TextSpan(
                                                     text: "能力  ",
                                                     style: TextStyle(
-                                                      fontSize: 15,
+                                                      fontSize: isIPad
+                                                          ? 12.sp
+                                                          : 15.sp,
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       color: Colors.black,
@@ -738,7 +753,9 @@ class _CourseReportPageState extends State<CourseReportPage>
                                                 TextSpan(
                                                     text: "Speaking skills",
                                                     style: TextStyle(
-                                                      fontSize: 16,
+                                                      fontSize: isIPad
+                                                          ? 13.sp
+                                                          : 16.sp,
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       color: Colors.black,

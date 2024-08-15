@@ -701,11 +701,17 @@ class _MessageItemState extends State<MessageItem> {
                   ))
               : const SizedBox(width: 0, height: 0),
         _homeProvider.ishread == ""
-            ? const SizedBox(width: 0, height: 0)
+            ? SizedBox(
+                width: _message.speaker == 'user'
+                    ? MediaQuery.of(context).size.width > 500
+                        ? 120.w
+                        : 0
+                    : 0,
+                height: 0)
             : SizedBox(
                 width: _message.speaker == 'user'
                     ? MediaQuery.of(context).size.width > 500
-                        ? 100.w
+                        ? 120.w
                         : 40.w
                     : 0,
                 height: 0),
@@ -749,11 +755,17 @@ class _MessageItemState extends State<MessageItem> {
           ),
         ),
         _homeProvider.ishread == ""
-            ? const SizedBox(width: 0, height: 0)
+            ? SizedBox(
+                width: _message.speaker == 'ai'
+                    ? MediaQuery.of(context).size.width > 500
+                        ? 120.w
+                        : 0
+                    : 0,
+                height: 0)
             : SizedBox(
                 width: _message.speaker == 'ai'
                     ? MediaQuery.of(context).size.width > 500
-                        ? 100.w
+                        ? 120.w
                         : 40.w
                     : 0,
                 height: 0),

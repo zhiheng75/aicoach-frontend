@@ -136,6 +136,12 @@ class _CourseFlowPageState extends State<CourseFlowPage>
       _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
     });
     intPermission();
+
+    // isIPad = MediaQuery.of(context).size.width > 500 ? true : false;
+  }
+
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
   }
 
   @override
@@ -336,7 +342,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                   ],
                 )),
             padding:
-                const EdgeInsets.only(left: 30, right: 20, top: 10, bottom: 10),
+                const EdgeInsets.only(left: 30, right: 20, top: 15, bottom: 15),
             child: const Row(
               children: [
                 Text("本课学习目标   ",
@@ -364,7 +370,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
         ),
         // Gaps.vGap8,
         SizedBox(
-          height: 400,
+          height: 100.0 * stepDetailData.data.data.length,
           child: ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (ctx, index) {
@@ -408,7 +414,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                   });
                 },
                 child: Container(
-                  height: 100.w,
+                  height: isIPad ? 55.w : 100.w,
                   width: 100.w,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.r),
@@ -425,14 +431,14 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     children: [
                       LoadAssetImage(
                         "baogao_flow",
-                        width: 28.w,
+                        height: isIPad ? 18.w : 28.w,
                         // height: 12.0,
                       ),
                       Gaps.vGap4,
                       Text(
                         "学习报告",
                         style: TextStyle(
-                          fontSize: 14.0.sp,
+                          fontSize: isIPad ? 9.sp : 14.0.sp,
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
                         ),
@@ -458,7 +464,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                       });
                     },
                     child: Container(
-                      height: 100.w,
+                      height: isIPad ? 55.w : 100.w,
                       width: 100.w,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20.r),
@@ -475,14 +481,14 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                         children: [
                           LoadAssetImage(
                             "jiucuo_flow",
-                            width: 28.w,
+                            height: isIPad ? 18.w : 28.w,
                             // height: 12.0,
                           ),
                           Gaps.vGap4,
                           Text(
                             "纠错",
                             style: TextStyle(
-                              fontSize: 14.0.sp,
+                              fontSize: isIPad ? 8.sp : 14.0.sp,
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
                             ),
@@ -534,7 +540,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                   });
                 },
                 child: Container(
-                  height: 100.w,
+                  height: isIPad ? 55.w : 100.w,
                   width: 100.w,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.r),
@@ -551,14 +557,14 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                     children: [
                       LoadAssetImage(
                         "pingjia_flow",
-                        width: 28.w,
+                        height: isIPad ? 18.w : 28.w,
                         // height: 12.0,
                       ),
                       Gaps.vGap4,
                       Text(
                         "课程评价",
                         style: TextStyle(
-                          fontSize: 14.0.sp,
+                          fontSize: isIPad ? 9.sp : 14.0.sp,
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
                         ),

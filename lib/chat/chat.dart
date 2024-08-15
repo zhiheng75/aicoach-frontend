@@ -551,11 +551,12 @@ class _ChatState extends State<ChatPage>
             bottom: _screenUtil.bottomBarHeight,
             // bottom: 16.0,
 
-            child: Padding(
-              padding: EdgeInsets.only(
-                  // bottom: _screenUtil.bottomBarHeight + 16.0,
-                  left: MediaQuery.of(context).size.width > 500 ? 40.w : 10.w,
-                  right: MediaQuery.of(context).size.width > 500 ? 40.w : 10.w),
+            child: Container(
+              // padding: EdgeInsets.only(right: 100),
+              // padding: EdgeInsets.only(
+              //     // bottom: _screenUtil.bottomBarHeight + 16.0,
+              //     left: MediaQuery.of(context).size.width > 500 ? 40.w : 10.w,
+              //     right: MediaQuery.of(context).size.width > 500 ? 40.w : 10.w),
               child: BottomBar(
                 chatWebsocket: _chatWebsocket,
                 controller: _bottomBarControll,

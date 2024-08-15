@@ -132,7 +132,7 @@ class _CourseOrderPageState extends State<CourseOrderPage>
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: ImageUtils.getAssetImage("btn_bg_img"),
-                            fit: BoxFit.fill)),
+                            fit: BoxFit.fitHeight)),
                     child: Center(
                       child: Text(
                         "升级会员",

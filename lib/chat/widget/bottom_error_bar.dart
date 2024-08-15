@@ -109,12 +109,11 @@ class _BottomErrorBarState extends State<BottomErrorBar>
             isAvailable = false;
           }
           if (!isAvailable) {
-            showModalBottomSheet(
+            showDialog(
               context: context,
-              backgroundColor: Colors.transparent,
               barrierColor: Colors.transparent,
-              isScrollControlled: true,
-              isDismissible: false,
+              barrierDismissible: false,
+              useSafeArea: false,
               builder: (_) => ExpirationReminder(),
             );
           }
@@ -141,12 +140,11 @@ class _BottomErrorBarState extends State<BottomErrorBar>
         isAvailable = false;
       }
       if (!isAvailable) {
-        showModalBottomSheet(
+        showDialog(
           context: context,
-          backgroundColor: Colors.transparent,
           barrierColor: Colors.transparent,
-          isScrollControlled: true,
-          isDismissible: false,
+          barrierDismissible: false,
+          useSafeArea: false,
           builder: (_) => ExpirationReminder(),
         );
       }

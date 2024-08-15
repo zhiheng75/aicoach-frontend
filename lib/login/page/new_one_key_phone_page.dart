@@ -216,16 +216,16 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   }
 
   Future<void> isWX() async {
-    if (Device.isAndroid) {
+    // if (Device.isAndroid) {
+    //   isWx = true;
+    // } else {
+    Fluwx fluwx = Fluwx();
+    if (await fluwx.isWeChatInstalled) {
       isWx = true;
     } else {
-      Fluwx fluwx = Fluwx();
-      if (await fluwx.isWeChatInstalled) {
-        isWx = true;
-      } else {
-        isWx = false;
-      }
+      isWx = false;
     }
+    // }
 
     setState(() {});
   }
@@ -244,7 +244,7 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
   Widget navbar() {
     return SizedBox(
       // color: Colors.amber,
-      height: _screenUtil.statusBarHeight + 60,
+      // height: _screenUtil.statusBarHeight + 60,
       width: _screenUtil.screenWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

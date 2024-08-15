@@ -235,7 +235,7 @@ class _CarouselState extends State<LoginBanner> with WidgetsBindingObserver {
 
   Widget getBannerTopImage() {
     return Positioned(
-      top: 80.h,
+      top: 60.h,
       left: 0,
       right: 0,
       child: LoadAssetImage(
@@ -249,7 +249,7 @@ class _CarouselState extends State<LoginBanner> with WidgetsBindingObserver {
   * */
   Widget getBannerIndicators() {
     return Positioned(
-      bottom: 190.h,
+      bottom: 200.h,
       left: 0,
       right: 0,
       child: _buildIndicators(MainAxisAlignment.center),

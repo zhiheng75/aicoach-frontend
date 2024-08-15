@@ -682,7 +682,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                             NavigatorUtils.push(
                               // ignore: use_build_context_synchronously
                               context,
-                              // PersonalRouter.xueersiPurchasePage
+                              // PersonalRouter.xueersiPurchaseSuccessTwoPage
                               "${PersonalRouter.xueersiPurchasePage}?goodsId=$goodsId&goodPrice=$goodPrice&type=$typeIdx",
                             );
                           } else {
@@ -1045,7 +1045,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                             margin:
                                                 EdgeInsets.only(right: 10.w),
                                             child: SizedBox(
-                                              width: 238.0.w,
+                                              // width: 238.0.w,
                                               child: ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(16.r),
@@ -1389,10 +1389,28 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
   void paySuccess() {
     // TODO: implement paySuccess
 
-    getVipStatus();
-    if (typeIdx == 1) {
-      showImageDialog();
+    if (ProxyConfig.isxueersi) {
+      if (typeIdx == 1) {
+        //支付成功
+        NavigatorUtils.push(
+            // ignore: use_build_context_synchronously
+            context,
+            PersonalRouter.xueersiPurchaseSuccessPage);
+      } else {
+        NavigatorUtils.push(
+            // ignore: use_build_context_synchronously
+            context,
+            PersonalRouter.xueersiPurchaseSuccessTwoPage);
+
+        // NavigatorUtils.goBack(context);
+      }
+    } else {
+      if (typeIdx == 1) {
+        showImageDialog();
+      }
     }
+
+    getVipStatus();
 
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
     EventBus().emit(NotificationUtils.resetInFo);

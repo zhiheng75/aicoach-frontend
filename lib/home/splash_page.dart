@@ -135,7 +135,7 @@ class _SplashPageState extends State<SplashPage> {
       // androidDeviceInfo.board;
       // androidDeviceInfo.model;
       // androidDeviceInfo.version.release;
-      platformStr = Channel.channelhuawei;
+      platformStr = Channel.channelxueersi;
       final Map<String, String> params = <String, String>{};
       params["manufacturer"] = androidDeviceInfo.manufacturer;
       params["id"] = androidDeviceInfo.id;
