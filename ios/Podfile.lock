@@ -1,6 +1,8 @@
 PODS:
   - advertising_info (0.0.1):
     - Flutter
+  - app_links (0.0.1):
+    - Flutter
   - app_tracking_transparency (0.0.1):
     - Flutter
   - audio_session (0.0.1):
@@ -104,6 +106,7 @@ PODS:
 
 DEPENDENCIES:
   - advertising_info (from `.symlinks/plugins/advertising_info/ios`)
+  - app_links (from `.symlinks/plugins/app_links/ios`)
   - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
@@ -154,6 +157,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   advertising_info:
     :path: ".symlinks/plugins/advertising_info/ios"
+  app_links:
+    :path: ".symlinks/plugins/app_links/ios"
   app_tracking_transparency:
     :path: ".symlinks/plugins/app_tracking_transparency/ios"
   audio_session:
@@ -223,6 +228,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   advertising_info: af1acd436a426e40321ca7f695cdf5e6bfd5e357
+  app_links: e70ca16b4b0f88253b3b3660200d4a10b4ea9795
   app_tracking_transparency: e169b653478da7bb15a6c61209015378ca73e375
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
   audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40

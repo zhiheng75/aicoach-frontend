@@ -48,7 +48,9 @@ import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/group_avatar_widget.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:advertising_info/advertising_info.dart';
+import 'package:app_links/app_links.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+// import 'package:appscheme/appscheme.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -128,6 +130,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     version: 'Unknown',
     buildNumber: 'Unknown',
   );
+  late String xxxStr = "没过来";
 
   Future<void> _initPackageInfo() async {
     final info = await PackageInfo.fromPlatform();
@@ -288,12 +291,40 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   //   );
   // }
 
+  late AppLinks _appLinks;
+  StreamSubscription<Uri>? _linkSubscription;
+
+  Future<void> initDeepLinks() async {
+    _appLinks = AppLinks();
+
+    // Handle links
+    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+      // debugPrint('onAppLink: $uri');
+      // openAppLink(uri);
+      // ignore: unnecessary_null_comparison
+      if (uri != null) {
+        String urilink = uri.toString();
+        xxxStr = urilink;
+        setState(() {});
+        var talDeviceSn = uri.queryParameters['talDeviceSn'];
+        if (talDeviceSn != null) {
+          DioUtils.instance.dio.options.headers['deviceSN'] = talDeviceSn;
+        }
+        var talId = uri.queryParameters['talId'];
+        if (talId != null) {
+          DioUtils.instance.dio.options.headers['talId'] = talId;
+        }
+      }
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     SpUtil.putString(Constant.netWorkTos, "0");
+    initDeepLinks();
 
     initDio();
     // initUM();
@@ -711,6 +742,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   @override
   void dispose() {
+    _linkSubscription?.cancel();
+
     EventBus().off(NotificationUtils.loginIn);
     EventBus().off(NotificationUtils.loginOut);
     EventUMStatistics.umengCommonOnPageEnd("home_two_page");
@@ -724,7 +757,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    // return const ConnectivityTest();
+    return Text(xxxStr);
 
     Widget bg = Container(
       width: _screenUtil.screenWidth,
@@ -958,7 +991,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                         ),
                       );
                     },
-                    itemCount: examList.length,
+                    itemCount: ProxyConfig.isxueersi ? 0 : examList.length,
                   ),
                 ],
               ),

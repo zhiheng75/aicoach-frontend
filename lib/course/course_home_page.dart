@@ -509,18 +509,56 @@ class _CourseHomePageState extends State<CourseHomePage>
             (ctx, index) {
               // return _buildItem(dataList[index]);
               // List<DatumList> listData = listData[curTabIndex].list;
-              List<Datum> xxlistData = listData;
-              List<LevelList> xxlist = xxlistData[curTabIndex].list;
-              List<UnitList> list = xxlist[index].list;
+              // List<Datum> xxlistData = listData;
+              // List<LevelList> xxlist = xxlistData[curTabIndex].list;
+              // List<UnitList> list = xxlist[index].list;
+              // return Text("data");
+              return GestureDetector(
+                onTap: () {
+                  // showView(xxlist[i].levelId);
+                  // return;
+                  if (list[i].isUserBuy == 1) {
+                    EventUMStatistics.umengCommonMapEvent(
+                        "click_index_go_to_class");
 
-              return CourseHomeItem(
-                index: i + 1,
-                unitData: list[i],
-                backColor: colorBackData[i],
-                iconBackColor: colorIconBackData[i],
+                    //去上课
+                    if (list[i].isLocked == 0) {
+                      NavigatorUtils.push(
+                          context,
+                          // CourseRouter.courseFlowPage,
+                          "${CourseRouter.courseFlowPage}?lessonId=${list[i].lessonId}");
+                    } else {
+                      // _courseHomePagePresenter.getLessonTime(
+                      //     xxlist[i].lessonId.toString(),
+                      //     xxlist[i].levelId.toString());
+                      intervalClick(2, list[i].lessonId.toString(),
+                          list[i].levelId.toString());
+                      // showImageDialog(xxlist[i].unlockDate);
+                      // Toast.show(
+                      //   '需要老师安排课才能上课',
+                      // );
+                    }
+                  } else {
+                    if (list[i].isLocked == 0) {
+                      NavigatorUtils.push(
+                          context,
+                          // CourseRouter.courseFlowPage,
+                          "${CourseRouter.courseFlowPage}?lessonId=${list[i].lessonId}");
+                    } else {
+                      //判断手机号再说获取证书还是免费学习
+                      showView(list[i].levelId, list[i].goodsLabel);
+                    }
+                  }
+                },
+                child: CourseHomeItem(
+                  index: i + 1,
+                  unitData: list[i],
+                  backColor: colorBackData[i],
+                  iconBackColor: colorIconBackData[i],
+                ),
               );
             },
-            childCount: listData[curTabIndex].list.length,
+            childCount: list.length,
           ),
         ),
       ));
@@ -544,26 +582,25 @@ class _CourseHomePageState extends State<CourseHomePage>
     // print(listData[curTabIndex].list.length);
     // Log.e(listData[curTabIndex].list.length as String);
 
-    return CustomScrollView(
-      // slivers: _buildItemsxxx()
-      slivers: <Widget>[
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (ctx, index) {
-              // return _buildItem(dataList[index]);
-              // List<DatumList> listData = listData[curTabIndex].list;
-              List<Datum> xxlistData = listData;
-              List<LevelList> xxlist = xxlistData[curTabIndex].list;
-              List<UnitList> list = xxlist[index].list;
+    return CustomScrollView(slivers: _buildItemsxxx()
+        // slivers: <Widget>[
+        //   SliverList(
+        //     delegate: SliverChildBuilderDelegate(
+        //       (ctx, index) {
+        //         // return _buildItem(dataList[index]);
+        //         // List<DatumList> listData = listData[curTabIndex].list;
+        //         List<Datum> xxlistData = listData;
+        //         List<LevelList> xxlist = xxlistData[curTabIndex].list;
+        //         List<UnitList> list = xxlist[index].list;
 
-              return _buildStickyHeader(list, xxlist[index].unitName,
-                  colorBackData[index], colorIconBackData[index]);
-            },
-            childCount: listData[curTabIndex].list.length,
-          ),
-        ),
-      ],
-    );
+        //         return _buildStickyHeader(list, xxlist[index].unitName,
+        //             colorBackData[index], colorIconBackData[index]);
+        //       },
+        //       childCount: listData[curTabIndex].list.length,
+        //     ),
+        //   ),
+        // ],
+        );
   }
 
   Widget lodingView() {

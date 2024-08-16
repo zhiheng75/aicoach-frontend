@@ -47,6 +47,10 @@ class _EvaluationState extends State<Evaluation> {
     getStandardAnswer();
   }
 
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
+  }
+
   void getStandardAnswer() {
     if (widget.message.question == '') {
       _standardAnswer = '暂无地道表达';
@@ -231,12 +235,12 @@ class _EvaluationState extends State<Evaluation> {
                       ),
                     ),
                     const SizedBox(
-                      width: 6.0,
+                      width: 2.0,
                     ),
                     Text(
                       item.label,
                       style: TextStyle(
-                        fontSize: 13.0.sp,
+                        fontSize: isIPad ? 9.0.sp : 13.sp,
                         fontWeight: FontWeight.w400,
                         color: Colors.black,
                         height: 22.0 / 13.0,

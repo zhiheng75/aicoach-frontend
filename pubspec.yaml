@@ -151,6 +151,8 @@ dependencies:
   connectivity_plus: ^5.0.2
   # flutter_phone_directed: ^0.1.0
   # screen_manager: ^1.1.0
+  # appscheme: ^1.0.8
+  app_links: ^6.2.0
 
 dev_dependencies:
   flutter_test:

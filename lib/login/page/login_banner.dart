@@ -249,7 +249,7 @@ class _CarouselState extends State<LoginBanner> with WidgetsBindingObserver {
   * */
   Widget getBannerIndicators() {
     return Positioned(
-      bottom: 200.h,
+      bottom: 210.h,
       left: 0,
       right: 0,
       child: _buildIndicators(MainAxisAlignment.center),
