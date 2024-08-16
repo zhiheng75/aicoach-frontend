@@ -541,7 +541,9 @@ class _InstructionalVideoDialoguePageState
         isback = true;
         setState(() {});
         if (_invokeInt == 1) {
-          intervalClick(180);
+          if (isPlayVideo == "0") {
+            intervalClick(180);
+          }
           Future.delayed(const Duration(seconds: 3), () {
             connectWebsocket();
             setState(() {
@@ -894,6 +896,8 @@ class _InstructionalVideoDialoguePageState
         stepId = data[dataIdx].stepId.toString();
         _homeProvider.scene!.id = int.parse(resourceSceneId);
         // connectWebsocket();
+        isPlayVideo = "0";
+
         if (introFileType == "video") {
           isVideo = "1";
           isPlayVideo = "0";
@@ -1171,6 +1175,8 @@ class _InstructionalVideoDialoguePageState
 
   void _onPlaybackEnded() {
     isback = true;
+    isPlayVideo = "0";
+
     setState(() {});
     // if (isOnePlay == "1") {
     //   isOnePlay = "2";

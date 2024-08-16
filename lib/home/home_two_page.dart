@@ -757,7 +757,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    return Text(xxxStr);
+    // return Text(xxxStr);
 
     Widget bg = Container(
       width: _screenUtil.screenWidth,
