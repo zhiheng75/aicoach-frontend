@@ -582,25 +582,26 @@ class _CourseHomePageState extends State<CourseHomePage>
     // print(listData[curTabIndex].list.length);
     // Log.e(listData[curTabIndex].list.length as String);
 
-    return CustomScrollView(slivers: _buildItemsxxx()
-        // slivers: <Widget>[
-        //   SliverList(
-        //     delegate: SliverChildBuilderDelegate(
-        //       (ctx, index) {
-        //         // return _buildItem(dataList[index]);
-        //         // List<DatumList> listData = listData[curTabIndex].list;
-        //         List<Datum> xxlistData = listData;
-        //         List<LevelList> xxlist = xxlistData[curTabIndex].list;
-        //         List<UnitList> list = xxlist[index].list;
+    return CustomScrollView(
+      // slivers: _buildItemsxxx()
+      slivers: <Widget>[
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (ctx, index) {
+              // return _buildItem(dataList[index]);
+              // List<DatumList> listData = listData[curTabIndex].list;
+              List<Datum> xxlistData = listData;
+              List<LevelList> xxlist = xxlistData[curTabIndex].list;
+              List<UnitList> list = xxlist[index].list;
 
-        //         return _buildStickyHeader(list, xxlist[index].unitName,
-        //             colorBackData[index], colorIconBackData[index]);
-        //       },
-        //       childCount: listData[curTabIndex].list.length,
-        //     ),
-        //   ),
-        // ],
-        );
+              return _buildStickyHeader(list, xxlist[index].unitName,
+                  colorBackData[index], colorIconBackData[index]);
+            },
+            childCount: listData[curTabIndex].list.length,
+          ),
+        ),
+      ],
+    );
   }
 
   Widget lodingView() {

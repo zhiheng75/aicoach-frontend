@@ -130,7 +130,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     version: 'Unknown',
     buildNumber: 'Unknown',
   );
-  late String xxxStr = "没过来";
+  // late String xxxStr = "没过来";
 
   Future<void> _initPackageInfo() async {
     final info = await PackageInfo.fromPlatform();
@@ -303,16 +303,20 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       // openAppLink(uri);
       // ignore: unnecessary_null_comparison
       if (uri != null) {
-        String urilink = uri.toString();
-        xxxStr = urilink;
-        setState(() {});
+        // String urilink = uri.toString();
+        // var productId = uri.queryParameters['productId'];
+
+        // xxxStr = productId.toString();
+        // setState(() {});
+        // DioUtils.instance.dio.options.headers['productId'] = xxxStr;
+
         var talDeviceSn = uri.queryParameters['talDeviceSn'];
         if (talDeviceSn != null) {
           DioUtils.instance.dio.options.headers['deviceSN'] = talDeviceSn;
         }
         var talId = uri.queryParameters['talId'];
         if (talId != null) {
-          DioUtils.instance.dio.options.headers['talId'] = talId;
+          DioUtils.instance.dio.options.headers['tId'] = talId;
         }
       }
     });

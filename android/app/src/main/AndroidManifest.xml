@@ -91,7 +91,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "example://gizmos” -->
                 <data
-                    android:path="home"
+                    android:path="/home"
                     android:host="shenmo"
                     android:scheme="kouyududu" />
             </intent-filter>
