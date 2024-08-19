@@ -423,6 +423,14 @@ class _MessageItemState extends State<MessageItem> {
       );
     }
 
+    String replaceMultipleNewLinesWithSingle(String text) {
+      // 使用正则表达式匹配两个或更多连续的换行符
+      final RegExp multipleNewLinesRegExp = RegExp(r'\n{2,}');
+
+      // 将匹配到的连续换行符替换为单个换行符
+      return text.replaceAll(multipleNewLinesRegExp, '\n');
+    }
+
     String titTwoMessage(String message) {
       String one = message;
       RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
@@ -448,6 +456,8 @@ class _MessageItemState extends State<MessageItem> {
         }
         // Log.e("================" + one);
       }
+      one = replaceMultipleNewLinesWithSingle(one);
+
       one = one.replaceAll("{[finish]}", "");
       return one;
     }
@@ -672,6 +682,8 @@ class _MessageItemState extends State<MessageItem> {
         }
         // Log.e("================" + one);
       }
+
+      one = replaceMultipleNewLinesWithSingle(one);
       one = one.replaceAll("{[finish]}", "");
       return one;
     }
