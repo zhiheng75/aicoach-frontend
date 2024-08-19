@@ -309,6 +309,10 @@ class _ChatState extends State<ChatPage>
     });
   }
 
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -548,12 +552,20 @@ class _ChatState extends State<ChatPage>
             ),
           ),
           Positioned(
-            bottom: _screenUtil.bottomBarHeight,
+            bottom: 0,
+            left: 0,
+            right: 0,
             // bottom: 16.0,
 
             child: Container(
-              padding:
-                  EdgeInsets.only(bottom: _screenUtil.bottomBarHeight + 16.0),
+              padding: EdgeInsets.only(
+                  bottom: _screenUtil.bottomBarHeight + 16.0,
+                  left: MediaQuery.of(context).size.width > 500 ? 60.w : 10.w,
+                  right: MediaQuery.of(context).size.width > 500 ? 60.w : 10.w),
+              // padding: EdgeInsets.only(
+              //     // bottom: _screenUtil.bottomBarHeight,
+              //     left: isIPad ? 60.w : 10.w,
+              //     right: isIPad ? 60.w : 10.w),
               // padding: EdgeInsets.only(
               //     // bottom: _screenUtil.bottomBarHeight + 16.0,
               //     left: MediaQuery.of(context).size.width > 500 ? 40.w : 10.w,
@@ -562,7 +574,7 @@ class _ChatState extends State<ChatPage>
                 chatWebsocket: _chatWebsocket,
                 controller: _bottomBarControll,
                 recordController: _recordController,
-                language: 'cn',
+                language: 'en',
                 isNormalChat: true,
                 onScrollEnd: () {
                   _listScrollController.scrollToEnd();

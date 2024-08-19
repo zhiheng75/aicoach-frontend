@@ -470,9 +470,13 @@ class _SettingPageState extends State<SettingPage>
                             title: '提示',
                             onConfirm: () {
                               LoginManager.toLoginOut();
-                              NavigatorUtils.goBack(context);
-                              //
                               EventBus().emit(NotificationUtils.loginOut);
+                              NavigatorUtils.goBack(context);
+                              // NavigatorUtils.push(
+                              //     context, HomeRouter.tabberPage,
+                              //     replace: true);
+
+                              //
                               JPush().setup(
                                 appKey:
                                     "0ce313d976a06a8f651f2252", //你自己应用的 AppKey

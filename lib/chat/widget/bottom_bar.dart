@@ -336,6 +336,11 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           tag: 'sendMessage');
     } finally {
       NormalMessage message = createUserNormalMessage(text);
+      insertUserMessage(message, () {
+        if (widget.onScrollEnd != null) {
+          widget.onScrollEnd!();
+        }
+      });
       _chatWebsocket.sendMessage(
         text: '[message_id=${message.id}]$text',
         onUninited: () {
@@ -345,13 +350,8 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           );
         },
         onSuccess: () {
-          insertUserMessage(message, () {
-            if (widget.onScrollEnd != null) {
-              widget.onScrollEnd!();
-            }
-            EvaluateUtil().evaluate(message, () {
-              _homeProvider.updateNormalMessage(message);
-            });
+          EvaluateUtil().evaluate(message, () {
+            _homeProvider.updateNormalMessage(message);
           });
         },
         onFail: () {
@@ -623,7 +623,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
     return Container(
       width: _screenUtil.screenWidth,
       padding: EdgeInsets.symmetric(
-        horizontal: isIPad ? 50.w : 16.0.w,
+        horizontal: 16.0,
       ),
       child: Row(
         children: <Widget>[

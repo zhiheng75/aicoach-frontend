@@ -312,6 +312,14 @@ class _CourseBottomBarState extends State<CourseBottomBar>
           tag: 'sendMessage');
     } finally {
       NormalMessage message = createUserNormalMessage(text);
+      insertUserMessage(message, () {
+        if (widget.onScrollEnd != null) {
+          widget.onScrollEnd!();
+        }
+        EvaluateUtil().evaluate(message, () {
+          _homeProvider.updateNormalMessage(message);
+        });
+      });
       _chatWebsocket.sendMessage(
         text: '[message_id=${message.id}]$text',
         onUninited: () {
@@ -320,16 +328,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
             duration: 1000,
           );
         },
-        onSuccess: () {
-          insertUserMessage(message, () {
-            if (widget.onScrollEnd != null) {
-              widget.onScrollEnd!();
-            }
-            EvaluateUtil().evaluate(message, () {
-              _homeProvider.updateNormalMessage(message);
-            });
-          });
-        },
+        onSuccess: () {},
         onFail: () {
           // insertTipMessage('Please switch to new roles, topics, or scene');
         },

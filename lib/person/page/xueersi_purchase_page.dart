@@ -364,6 +364,9 @@ class _XueersiPurchasePageState extends State<XueersiPurchasePage>
       EventBus().emit(NotificationUtils.resetInFo);
     } else if (status == "Failed") {
       //支付中
+      if (payS == "1") {
+        return;
+      }
       payS = "1";
       setState(() {});
     }

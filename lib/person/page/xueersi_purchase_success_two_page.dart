@@ -81,6 +81,7 @@ class _XueersiPurchaseSuccessTwoPageState
                   GestureDetector(
                     onTap: () {
                       NavigatorUtils.goBack(context);
+                      NavigatorUtils.goBack(context);
                     },
                     child: Container(
                       width: 210,
@@ -110,6 +111,7 @@ class _XueersiPurchaseSuccessTwoPageState
             left: 12,
             child: GestureDetector(
                 onTap: () {
+                  NavigatorUtils.goBack(context);
                   NavigatorUtils.goBack(context);
                 },
                 child: LoadAssetImage(
