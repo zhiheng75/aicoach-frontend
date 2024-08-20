@@ -1,6 +1,10 @@
 //通知
 class NotificationUtils {
   static String loginOut = "LoginOut"; //退出
+  static String loginOutThree = "loginOutThree"; //退出
+
+  static String loginOutTwo = "loginOutTwo"; //退出
+
   static String taberThree = "taberThree";
   static String taberTwo = "taberTwo";
   // static String taberThree = "taberThree";

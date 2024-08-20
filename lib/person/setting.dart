@@ -470,8 +470,11 @@ class _SettingPageState extends State<SettingPage>
                             title: '提示',
                             onConfirm: () {
                               LoginManager.toLoginOut();
-                              EventBus().emit(NotificationUtils.loginOut);
                               NavigatorUtils.goBack(context);
+                              EventBus().emit(NotificationUtils.loginOut);
+                              EventBus().emit(NotificationUtils.loginOutTwo);
+                              EventBus().emit(NotificationUtils.loginOutThree);
+
                               // NavigatorUtils.push(
                               //     context, HomeRouter.tabberPage,
                               //     replace: true);

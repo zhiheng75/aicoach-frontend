@@ -311,9 +311,9 @@ class _SceneState extends State<ScenePage>
               Padding(
                 padding: EdgeInsets.only(
                     bottom: _screenUtil.bottomBarHeight + 16.0,
-                    left: MediaQuery.of(context).size.width > 500 ? 40.w : 10.w,
+                    left: MediaQuery.of(context).size.width > 500 ? 60.w : 10.w,
                     right:
-                        MediaQuery.of(context).size.width > 500 ? 40.w : 10.w),
+                        MediaQuery.of(context).size.width > 500 ? 60.w : 10.w),
                 child: BottomBar(
                   chatWebsocket: _chatWebsocket,
                   controller: _bottomBarControll,

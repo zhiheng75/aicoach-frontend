@@ -380,7 +380,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       _homeTwoPagePresenter.getBannerList();
       _homeTwoPagePresenter.getCharacterList();
     });
-    EventBus().on(NotificationUtils.loginOut, (_) {
+    EventBus().on(NotificationUtils.loginOutThree, (_) {
       _homeTwoPagePresenter.getBannerList();
       _homeTwoPagePresenter.getCharacterList();
     });
@@ -749,7 +749,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     _linkSubscription?.cancel();
 
     EventBus().off(NotificationUtils.loginIn);
-    EventBus().off(NotificationUtils.loginOut);
+    EventBus().off(NotificationUtils.loginOutThree);
     EventUMStatistics.umengCommonOnPageEnd("home_two_page");
     WidgetsBinding.instance.removeObserver(this);
     subscription.cancel();
