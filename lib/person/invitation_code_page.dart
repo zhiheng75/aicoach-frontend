@@ -223,7 +223,7 @@ class _InvitationCodePageState extends State<InvitationCodePage>
                           ),
                           SizedBox(
                             width: 150.w,
-                            height: 40.h,
+                            height: 30.h,
                             child: BtnWidget("btn_bg_img", "提交",
                                 txtStyle: TextStyle(
                                     color: Colours.color_001652,

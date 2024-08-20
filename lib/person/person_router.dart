@@ -4,6 +4,7 @@ import 'package:Bubble/person/page/course_speaking_purchase_page.dart';
 import 'package:Bubble/person/page/error_correction_detail_page.dart';
 import 'package:Bubble/person/page/error_correction_page.dart';
 import 'package:Bubble/person/page/join_community_page.dart';
+import 'package:Bubble/person/page/redeem_code_page.dart';
 import 'package:Bubble/person/page/user_membership_upgrade_page.dart';
 import 'package:Bubble/person/page/xueersi_purchase_page.dart';
 import 'package:Bubble/person/page/xueersi_purchase_success_page.dart';
@@ -30,6 +31,7 @@ class PersonalRouter implements IRouterProvider {
   static String cancelAccountPage = '/CancelAccountPage';
 
   static String joinCommunityPage = '/JoinCommunityPage';
+  static String redeemCodePage = '/RedeemCodePage';
 
   static String errorCorrectionPage = '/ErrorCorrectionPage';
   static String errorCorrectionDetailPage = '/ErrorCorrectionDetailPage';
@@ -47,6 +49,9 @@ class PersonalRouter implements IRouterProvider {
     router.define(xueersiPurchaseSuccessPage,
         handler: Handler(
             handlerFunc: (_, __) => const XueersiPurchaseSuccessPage()));
+
+    router.define(redeemCodePage,
+        handler: Handler(handlerFunc: (_, __) => const RedeemCodePage()));
 
     router.define(xueersiPurchaseSuccessTwoPage,
         handler: Handler(
