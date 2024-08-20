@@ -57,6 +57,7 @@ class _XueersiPurchasePageState extends State<XueersiPurchasePage>
   bool isLoding = true;
   late String orderNo = "";
   late String payS = "0";
+  late String isFive = "0";
 
   @override
   void initState() {
@@ -204,10 +205,19 @@ class _XueersiPurchasePageState extends State<XueersiPurchasePage>
                                             Gaps.vGap20,
                                             GestureDetector(
                                               onTap: () {
+                                                payS = "0";
+                                                isFive = "1";
+                                                // _xueersiPurchasePagePresenter
+                                                //     .creatCancelToken();
+                                                Future.delayed(
+                                                    const Duration(seconds: 8),
+                                                    () {
+                                                  isFive = "0";
+                                                  setState(() {});
+                                                });
+                                                setState(() {});
                                                 _xueersiPurchasePagePresenter
                                                     .getPayCode(widget.goodsId);
-                                                payS = "0";
-                                                setState(() {});
                                               },
                                               child: Container(
                                                 padding: const EdgeInsets.only(
@@ -342,6 +352,9 @@ class _XueersiPurchasePageState extends State<XueersiPurchasePage>
 
   @override
   void sendQueryOrderSuccess(String status) {
+    if (isFive == "1") {
+      return;
+    }
     // TODO: implement sendQueryOrderSuccess
     if (status == "SUCCESS") {
       if (widget.type == "1") {
