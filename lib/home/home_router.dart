@@ -84,6 +84,7 @@ class HomeRouter implements IRouterProvider {
       // final String levelId = params['levelId']?.first ?? '';
 
       // final String lessonId = params['lessonId']?.first ?? '';
+      String isIPad = params['isIPad']!.first;
 
       StepDetailBean data =
           ModalRoute.of(context!)?.settings.arguments as StepDetailBean;
@@ -91,10 +92,9 @@ class HomeRouter implements IRouterProvider {
       //     ModalRoute.of(context!)?.settings.arguments as List<CourseDatum>;
 
       return InstructionalVideoDialoguePage(
-        stepDetailData: data,
-        idx: idx,
-        // onEnd: () {},
-      );
+          stepDetailData: data, idx: idx, isIPad: isIPad
+          // onEnd: () {},
+          );
     }));
 
     router.define(webviewNotNavPage,

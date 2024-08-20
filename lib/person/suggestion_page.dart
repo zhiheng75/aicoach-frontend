@@ -244,7 +244,8 @@ class _SuggestionPageState extends State<SuggestionPage>
                           Gaps.vGap30,
                           Center(
                             child: SizedBox(
-                              width: 200,
+                              width: 150.w,
+                              height: 40.h,
                               child: BtnWidget("btn_bg_img", "提交",
                                   txtStyle: TextStyle(
                                       color: Colours.color_001652,

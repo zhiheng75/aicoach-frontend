@@ -786,13 +786,11 @@ class _ExamPageState extends State<ExamPage>
           return;
         }
         // ignore: use_build_context_synchronously
-        showModalBottomSheet(
+        showDialog(
           context: context,
-          backgroundColor: Colors.transparent,
           barrierColor: Colors.transparent,
-          isScrollControlled: true,
-          isDismissible: false,
-          enableDrag: false,
+          barrierDismissible: false,
+          useSafeArea: false,
           builder: (_) => ExamPurchasePage(
             onPurchased: () {
               getStudyInfo();
@@ -996,12 +994,11 @@ class _ExamPageState extends State<ExamPage>
         "${ExamRouter.mockExaminationOnePage}?state=$state",
       );
     } else {
-      showModalBottomSheet(
+      showDialog(
         context: context,
-        backgroundColor: Colors.transparent,
         barrierColor: Colors.transparent,
-        isScrollControlled: true,
-        isDismissible: false,
+        barrierDismissible: false,
+        useSafeArea: false,
         builder: (_) => ExamPurchasePage(
           onPurchased: () {
             getStudyInfo();

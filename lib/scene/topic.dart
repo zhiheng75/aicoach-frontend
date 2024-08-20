@@ -88,12 +88,11 @@ class _TopicState extends State<TopicPage>
           _homeProvider.getUsageTime(() {
             // 倒计时
             _homeProvider.startUsageTimeCutdown(() {
-              showModalBottomSheet(
+              showDialog(
                 context: context,
-                backgroundColor: Colors.transparent,
                 barrierColor: Colors.transparent,
-                isScrollControlled: true,
-                isDismissible: false,
+                barrierDismissible: false,
+                useSafeArea: false,
                 builder: (_) => ExpirationReminder(),
               );
             });
@@ -329,8 +328,10 @@ class _TopicState extends State<TopicPage>
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  bottom: _screenUtil.bottomBarHeight + 16.0,
-                ),
+                    bottom: _screenUtil.bottomBarHeight + 16.0,
+                    left: MediaQuery.of(context).size.width > 500 ? 60.w : 10.w,
+                    right:
+                        MediaQuery.of(context).size.width > 500 ? 60.w : 10.w),
                 child: BottomBar(
                   chatWebsocket: _chatWebsocket,
                   controller: _bottomBarControll,

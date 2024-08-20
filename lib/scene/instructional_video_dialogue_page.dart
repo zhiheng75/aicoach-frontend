@@ -34,6 +34,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:native_video_player/native_video_player.dart';
@@ -66,12 +67,14 @@ class VolumeUtil {
 class InstructionalVideoDialoguePage extends StatefulWidget {
   final StepDetailBean stepDetailData;
   final int idx;
+  final String isIPad;
 
   const InstructionalVideoDialoguePage({
     super.key,
     // required this.onEnd,
     required this.stepDetailData,
     required this.idx,
+    required this.isIPad,
   });
   // final Function() onEnd;
 
@@ -165,6 +168,9 @@ class _InstructionalVideoDialoguePageState
   late Timer _backTimer;
   late int _backTimerInt = 120;
 
+  bool isAutoplayEnabled = false;
+  bool isPlaybackLoopEnabled = false;
+  late bool isIPad;
   Widget lodingView() {
     return const Center(
       child: CircularProgressIndicator(),
@@ -267,6 +273,13 @@ class _InstructionalVideoDialoguePageState
     forFlow();
   }
 
+  String getCurrentTimeAndMilliseconds() {
+    DateTime now = DateTime.now();
+    String timeAndMilliseconds =
+        "${now.hour}:${now.minute}:${now.second}.${now.millisecond}";
+    return timeAndMilliseconds;
+  }
+
   void onWebsocketAnswer(dynamic answer) {
     if (_answer == null) {
       // 结束标记
@@ -279,6 +292,7 @@ class _InstructionalVideoDialoguePageState
         _instructionalVideoDialoguePresenter.postStepUpdate(lessonId, stepId);
         // onNextSocketEnd();
         _listScrollController.scrollToEnd();
+        Log.e("AI说的话文字文成=====+++" + getCurrentTimeAndMilliseconds());
 
         return;
       }
@@ -312,6 +326,7 @@ class _InstructionalVideoDialoguePageState
       }
       _answer!.text += answer;
       Log.e("AI说的话" + _answer!.text);
+      Log.e("AI说的话文字=====+++" + getCurrentTimeAndMilliseconds());
 
       _homeProvider.notify();
       _listScrollController.scrollToEnd();
@@ -328,6 +343,7 @@ class _InstructionalVideoDialoguePageState
       if (_listPlayer != null) {
         _listPlayer!.play(answer);
       }
+      Log.e("AI说的话音频=====+++" + getCurrentTimeAndMilliseconds());
     }
   }
 
@@ -335,8 +351,8 @@ class _InstructionalVideoDialoguePageState
     if (isback) {
       return;
     }
-    isback = true;
     setState(() {
+      isback = true;
       _invokeInt = _invokeInt + 1;
     });
     _homeProvider.endUsageTimeCutdown();
@@ -484,28 +500,41 @@ class _InstructionalVideoDialoguePageState
     _bottomBarControll.setDisabled(false);
   }
 
+  var lastPopTime = DateTime.now();
+
+  void intervalClick(int needTime) {
+    // 防重复提交
+    if (lastPopTime == null ||
+        DateTime.now().difference(lastPopTime) > Duration(seconds: needTime)) {
+      Toast.show("您的网络状况不稳定！");
+      lastPopTime = DateTime.now();
+      print("允许点击");
+    } else {
+      // lastPopTime = DateTime.now(); //如果不注释这行,则强制用户一定要间隔2s后才能成功点击. 而不是以上一次点击成功的时间开始计算.
+      print("请勿重复点击！");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     Wakelock.enable();
     contentTop = _screenUtil.statusBarHeight + _screenUtil.screenWidth / 16 * 9;
     newDataIdx = widget.idx;
+    if (widget.isIPad == "0") {
+      isIPad = false;
+    } else {
+      isIPad = true;
+    }
     resourceIdx = 0;
     WidgetsBinding.instance.addObserver(this);
 
     subscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) async {
-      // if (isUserOpen || _homeProvider.messageList.isNotEmpty) {
-      //   endSocket();
-      //   connectWebsocket();
-      //   creatResetStatus();
-      // }
-// setState(() {
       _invokeInt = _invokeInt + 1;
       setState(() {});
-      // Log.e("++++++++++++" + result.toString());
-      // });
+      Log.e("===============" + result.toString() + "++++++++++++");
       if (result == ConnectivityResult.none) {
         isNetWork = false;
 
@@ -516,23 +545,21 @@ class _InstructionalVideoDialoguePageState
           endSocket();
           onReold("您的网络不太顺畅，请检查网络情况。");
         }
-      } else {
+      } else if (result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.wifi) {
         isNetWork = true;
         isback = true;
         setState(() {});
         if (_invokeInt == 1) {
-          // endSocket();
-          // _invokeInt = 0;
-          // Future.delayed(const Duration(milliseconds: 500), () {
-          Toast.show("您的网络状况不稳定！");
-          // });
-          Future.delayed(const Duration(milliseconds: 500), () {
+          if (isPlayVideo == "0") {
+            intervalClick(180);
+          }
+          Future.delayed(const Duration(seconds: 3), () {
             connectWebsocket();
             setState(() {
               _invokeInt = 0;
             });
           });
-          setState(() {});
           Future.delayed(const Duration(seconds: 3), () {
             setState(() {
               isback = false;
@@ -600,6 +627,8 @@ class _InstructionalVideoDialoguePageState
 
     // 全局监听App状态
     SystemChannels.lifecycle.setMessageHandler((message) async {
+      Log.e("++++++++++++++++++++=================");
+
       // 退到后台
       if (introFileType == "video") {
         if (await _controller!.isPlaying()) {
@@ -612,6 +641,7 @@ class _InstructionalVideoDialoguePageState
         Log.e("AppLifecycleState.paused");
         timestamp = DateTime.now();
         isTimeBack = true;
+        // isback = true;
         setState(() {});
         // isback = true;
         // _startBackTimer();
@@ -620,6 +650,7 @@ class _InstructionalVideoDialoguePageState
         //回到前台
         // _cancelTimer();
         isTimeBack = false;
+        // isback = false;
         setState(() {});
         Log.e("AppLifecycleState.resumed");
         // int resumedTime = getCurrentTime();
@@ -866,7 +897,7 @@ class _InstructionalVideoDialoguePageState
             arguments: widget.stepDetailData);
       });
     } else {
-      endSocket();
+      // endSocket();
       setState(() {
         resourceSceneId =
             data[dataIdx].resource[resourceIdx].sceneId.toString();
@@ -875,29 +906,48 @@ class _InstructionalVideoDialoguePageState
         stepId = data[dataIdx].stepId.toString();
         _homeProvider.scene!.id = int.parse(resourceSceneId);
         // connectWebsocket();
+        isPlayVideo = "0";
+
         if (introFileType == "video") {
           isVideo = "1";
           isPlayVideo = "0";
           introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
           introVideoCoverStr =
               data[dataIdx].resource[resourceIdx].introVideoCover;
-          contentTop = _screenUtil.statusBarHeight +
-              _screenUtil.screenWidth / 16 * 9 +
-              80;
-
+          if (isIPad) {
+            contentTop = _screenUtil.statusBarHeight + 180.h + 70.h + 30.h;
+          } else {
+            contentTop = _screenUtil.statusBarHeight +
+                (_screenUtil.screenWidth / 16 * 9) +
+                70.h;
+          }
+          // contentTop = _screenUtil.statusBarHeight +
+          //     110.h +
+          //     // ( _screenUtil.screenWidth / 16 * 9) +
+          //     70.h;
+          isback = true;
+          setState(() {});
           videoFlow();
         } else if (introFileType == "image") {
           isVideo = "0";
 
           introFileStr = data[dataIdx].resource[resourceIdx].introFile!;
-          contentTop = _screenUtil.statusBarHeight +
-              _screenUtil.screenWidth / 16 * 9 +
-              80;
+          if (isIPad) {
+            contentTop = _screenUtil.statusBarHeight + 180.h + 70.h + 30.h;
+          } else {
+            contentTop = _screenUtil.statusBarHeight +
+                (_screenUtil.screenWidth / 16 * 9) +
+                70.h;
+          }
+          // contentTop = _screenUtil.statusBarHeight +
+          //     _screenUtil.screenWidth / 16 * 9 +
+          //     70.h;
 
           imgFlowRequestNetwork();
           init();
         } else {
-          contentTop = _screenUtil.statusBarHeight + 240;
+          contentTop =
+              _screenUtil.statusBarHeight + 200.h + (isIPad ? 20.h : 0);
           isVideo = "0";
           introFileStr = _homeProvider.character.motionImageD;
           imgFlowRequestNetwork();
@@ -997,6 +1047,8 @@ class _InstructionalVideoDialoguePageState
         whenFinished: () {
           // setState(() {
           // isFrist = false;
+          isback = false;
+          setState(() {});
           _bottomBarControll.setDisabled(false);
           // });
         },
@@ -1048,9 +1100,6 @@ class _InstructionalVideoDialoguePageState
     });
   }
 
-  bool isAutoplayEnabled = false;
-  bool isPlaybackLoopEnabled = false;
-
   @override
   void didPop() {
     // TODO: implement didPop
@@ -1058,7 +1107,7 @@ class _InstructionalVideoDialoguePageState
     setState(() {
       isback = true;
     });
-
+    _homeProvider.resetChatParams();
     endSocket();
   }
 
@@ -1135,6 +1184,10 @@ class _InstructionalVideoDialoguePageState
   }
 
   void _onPlaybackEnded() {
+    isback = true;
+    isPlayVideo = "0";
+
+    setState(() {});
     // if (isOnePlay == "1") {
     //   isOnePlay = "2";
     startNormaltwoChatRequestNetwork();
@@ -1199,147 +1252,169 @@ class _InstructionalVideoDialoguePageState
   Widget topWidget() {
     if (introFileType == "video") {
       return Positioned(
-        top: _screenUtil.statusBarHeight + 68,
+        top: _screenUtil.statusBarHeight + 55.h + (isIPad ? 20.h : 0),
         width: _screenUtil.screenWidth,
-        height: _screenUtil.screenWidth / 16 * 9,
-        child: Stack(
-          children: [
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: NativeVideoPlayerView(
-                onViewReady: _initController,
+        // height: _screenUtil.screenWidth / 16 * 9,
+        child: Container(
+          color: Colors.black,
+          padding: isIPad
+              ? EdgeInsets.only(left: 50.w, right: 50.w)
+              : const EdgeInsets.all(0),
+          // height: 180.h,
+          child: Stack(
+            children: [
+              AspectRatio(
+                aspectRatio: 16 / 9,
+                child: NativeVideoPlayerView(
+                  onViewReady: _initController,
+                ),
               ),
-            ),
-            Positioned(
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  setState(() {
-                    isShowbottom = !isShowbottom;
-                  });
-                  Future.delayed(const Duration(seconds: 5), () {
+              Positioned(
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
                     setState(() {
-                      isShowbottom = false;
+                      isShowbottom = !isShowbottom;
                     });
-                  });
-                },
-                child: Container(),
+                    Future.delayed(const Duration(seconds: 5), () {
+                      setState(() {
+                        isShowbottom = false;
+                      });
+                    });
+                  },
+                  child: Container(),
+                ),
               ),
-            ),
-            isShowbottom
-                ? Positioned(
-                    bottom: 0,
-                    left: 0,
-                    child: Container(
-                      width: _screenUtil.screenWidth,
-                      height: 40,
-                      color: Colors.black87,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 10,
-                          ),
-                          InkWell(
-                            onTap: _togglePlayback,
-                            child: Center(
-                              child: FutureBuilder(
-                                future: _isPlaying,
-                                initialData: false,
-                                builder: (
-                                  BuildContext context,
-                                  AsyncSnapshot<bool> snapshot,
-                                ) {
-                                  final isPlaying = snapshot.data ?? false;
-                                  return Icon(
-                                    isPlaying ? Icons.pause : Icons.play_arrow,
-                                    size: 30,
+              isShowbottom
+                  ? Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        width: _screenUtil.screenWidth,
+                        height: 40,
+                        color: Colors.black87,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 10,
+                            ),
+                            InkWell(
+                              onTap: _togglePlayback,
+                              child: Center(
+                                child: FutureBuilder(
+                                  future: _isPlaying,
+                                  initialData: false,
+                                  builder: (
+                                    BuildContext context,
+                                    AsyncSnapshot<bool> snapshot,
+                                  ) {
+                                    final isPlaying = snapshot.data ?? false;
+                                    return Icon(
+                                      isPlaying
+                                          ? Icons.pause
+                                          : Icons.play_arrow,
+                                      size: 30,
+                                      color: Colors.white,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Slider(
+                                // min: 0,
+                                activeColor: Colors.white,
+                                inactiveColor: Colors.white54,
+                                thumbColor: Colors.white,
+                                max: (_controller?.videoInfo?.duration ?? 0)
+                                    .toDouble(),
+                                value:
+                                    (_controller?.playbackInfo?.position ?? 0)
+                                        .toDouble(),
+                                onChanged: (value) =>
+                                    _controller?.seekTo(value.toInt()),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  formatDuration(
+                                    Duration(
+                                        seconds: _controller
+                                                ?.playbackInfo?.position ??
+                                            0),
+                                  ),
+                                  style: const TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400,
                                     color: Colors.white,
-                                  );
-                                },
-                              ),
+                                  ),
+                                ),
+                                const Text(
+                                  "/",
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  formatDuration(
+                                    Duration(
+                                        seconds:
+                                            _controller?.videoInfo?.duration ??
+                                                0),
+                                  ),
+                                  style: const TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          Expanded(
-                            child: Slider(
-                              // min: 0,
-                              activeColor: Colors.white,
-                              inactiveColor: Colors.white54,
-                              thumbColor: Colors.white,
-                              max: (_controller?.videoInfo?.duration ?? 0)
-                                  .toDouble(),
-                              value: (_controller?.playbackInfo?.position ?? 0)
-                                  .toDouble(),
-                              onChanged: (value) =>
-                                  _controller?.seekTo(value.toInt()),
+                            Container(
+                              width: 10,
                             ),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                formatDuration(
-                                  Duration(
-                                      seconds:
-                                          _controller?.playbackInfo?.position ??
-                                              0),
-                                ),
-                                style: const TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const Text(
-                                "/",
-                                style: TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                formatDuration(
-                                  Duration(
-                                      seconds:
-                                          _controller?.videoInfo?.duration ??
-                                              0),
-                                ),
-                                style: const TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                    ))
-                : Container(),
-          ],
+                          ],
+                        ),
+                      ))
+                  : Container(),
+            ],
+          ),
         ),
       );
     } else if (introFileType == "image") {
       return Positioned(
-        top: _screenUtil.statusBarHeight + 68,
+        top: _screenUtil.statusBarHeight + 55.h + (isIPad ? 20.h : 0),
         width: _screenUtil.screenWidth,
-        height: _screenUtil.screenWidth / 16 * 9,
-        child: LoadImage(
-          introFileStr,
-          width: _screenUtil.screenWidth,
-          height: _screenUtil.screenWidth / 16 * 9,
+        // height: _screenUtil.screenWidth / 16 * 9,
+        child: Container(
+          color: Colors.black,
+          // height: 200.h,
+          padding: isIPad
+              ? EdgeInsets.only(left: 50.w, right: 50.w)
+              : const EdgeInsets.all(0),
+          child: LoadImage(
+            introFileStr,
+            fit: BoxFit.fitWidth,
+            // height: 200.h,
+            // width: _screenUtil.screenWidth,
+            // height: _screenUtil.screenWidth / 16 * 9,
+          ),
         ),
       );
     } else {
       return Positioned(
-        top: _screenUtil.statusBarHeight + 68,
-        left: (_screenUtil.screenWidth - 167) / 2,
+        top: _screenUtil.statusBarHeight + 55.h + (isIPad ? 20.h : 0),
+        left: isIPad
+            ? (_screenUtil.screenWidth - 100.0.w) / 2
+            : (_screenUtil.screenWidth - 150.0.w) / 2,
         // width: 100,
         // height: 100,
         child: StreamBuilder(
@@ -1351,14 +1426,14 @@ class _InstructionalVideoDialoguePageState
                 ? LoadImage(
                     _homeProvider.character.motionImage,
                     format: ImageFormat.gif,
-                    // width: 180.0,
-                    height: 180.0,
+                    width: isIPad ? 100.w : 150.0.w,
+                    // height: 180.0,
                   )
                 : LoadImage(
                     _homeProvider.character.stillImage,
                     format: ImageFormat.gif,
-                    // width: 150.0,
-                    height: 180.0,
+                    width: isIPad ? 100.w : 150.0.w,
+                    // height: 180.0,
                   );
           },
         ),
@@ -1373,7 +1448,7 @@ class _InstructionalVideoDialoguePageState
 
   Widget navbar() {
     return SizedBox(
-      height: _screenUtil.statusBarHeight + 84,
+      height: _screenUtil.statusBarHeight + 80.h,
       width: _screenUtil.screenWidth,
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1386,11 +1461,11 @@ class _InstructionalVideoDialoguePageState
             },
             child: Container(
               padding: const EdgeInsets.all(5),
-              width: 30,
-              height: 30,
+              width: isIPad ? 40 : 30,
+              height: isIPad ? 40 : 30,
               child: Image.asset(
-                width: 20,
-                height: 26,
+                // width: 20,
+                height: isIPad ? 30 : 26,
                 'assets/images/ic_back_icon.png',
               ),
             ),
@@ -1399,8 +1474,10 @@ class _InstructionalVideoDialoguePageState
             child: Center(
                 child: Text(
               titStr,
-              style: const TextStyle(
-                  color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: isIPad ? 10.sp : 17.sp),
             )),
           ),
           isUserBuy == 1
@@ -1433,15 +1510,15 @@ class _InstructionalVideoDialoguePageState
 
   Widget topFlowWidget() {
     return Positioned(
-      top: _screenUtil.statusBarHeight + 40,
-      left: (_screenUtil.screenWidth - 130) / 2,
+      top: _screenUtil.statusBarHeight + 30.h + (isIPad ? 20.h : 0),
+      left: (_screenUtil.screenWidth - (isIPad ? 100.w : 130.w)) / 2,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30.0),
           color: const Color.fromRGBO(1, 1, 1, 0.1),
         ),
-        width: 130,
-        height: 20,
+        width: isIPad ? 100.w : 130.w,
+        height: 15.h,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: _buildItems(),
@@ -1481,6 +1558,8 @@ class _InstructionalVideoDialoguePageState
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    isIPad = MediaQuery.of(context).size.width > 500 ? true : false;
+
     return Consumer<HomeProvider>(
       builder: (_, provider, __) {
         Widget background = SizedBox(
@@ -1512,10 +1591,11 @@ class _InstructionalVideoDialoguePageState
                 ),
               ),
               Gaps.vGap10,
-              Padding(
+              Container(
                 padding: EdgeInsets.only(
-                  bottom: _screenUtil.bottomBarHeight + 16.0,
-                ),
+                    bottom: _screenUtil.bottomBarHeight + 16.0,
+                    left: isIPad ? 60.w : 10.w,
+                    right: isIPad ? 60.w : 10.w),
                 child: CourseBottomBar(
                   repeatWord: repeatWord,
                   stepId: stepId,

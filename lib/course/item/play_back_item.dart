@@ -7,6 +7,7 @@ import 'package:Bubble/util/media_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PlayBackItem extends StatefulWidget {
   final String title;
@@ -18,6 +19,10 @@ class PlayBackItem extends StatefulWidget {
 }
 
 class _PlayBackItemState extends State<PlayBackItem> {
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,8 +40,8 @@ class _PlayBackItemState extends State<PlayBackItem> {
           Expanded(
             child: Text(
               widget.title,
-              style: const TextStyle(
-                fontSize: 16.0,
+              style: TextStyle(
+                fontSize: isIPad ? 10.0.sp : 13.sp,
                 fontWeight: FontWeight.w400,
                 color: Colors.black,
               ),

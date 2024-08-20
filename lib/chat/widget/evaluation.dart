@@ -47,6 +47,10 @@ class _EvaluationState extends State<Evaluation> {
     getStandardAnswer();
   }
 
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
+  }
+
   void getStandardAnswer() {
     if (widget.message.question == '') {
       _standardAnswer = '暂无地道表达';
@@ -166,20 +170,20 @@ class _EvaluationState extends State<Evaluation> {
           children: <Widget>[
             Text(
               label,
-              style: const TextStyle(
-                fontSize: 12.0,
+              style: TextStyle(
+                fontSize: 12.0.sp,
                 fontWeight: FontWeight.w400,
                 color: Colors.black,
                 letterSpacing: 0.05,
               ),
             ),
-            const SizedBox(
-              width: 16.0,
+            SizedBox(
+              width: 16.0.w,
             ),
-            const LoadAssetImage(
+            LoadAssetImage(
               'jiucuo_laba_icon',
-              width: 24,
-              height: 24,
+              width: 24.w,
+              height: 24.w,
             ),
           ],
         ),
@@ -205,8 +209,8 @@ class _EvaluationState extends State<Evaluation> {
       ];
       evaluate = Container(
         height: sqrt(5000) * 2.5,
-        padding: const EdgeInsets.symmetric(
-          vertical: 24.0,
+        padding: EdgeInsets.symmetric(
+          vertical: 24.0.w,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -218,8 +222,8 @@ class _EvaluationState extends State<Evaluation> {
                 return Row(
                   children: <Widget>[
                     Container(
-                      width: 9.0,
-                      height: 9.0,
+                      width: 9.0.w,
+                      height: 9.0.h,
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 1.0,
@@ -231,12 +235,12 @@ class _EvaluationState extends State<Evaluation> {
                       ),
                     ),
                     const SizedBox(
-                      width: 6.0,
+                      width: 2.0,
                     ),
                     Text(
                       item.label,
-                      style: const TextStyle(
-                        fontSize: 13.0,
+                      style: TextStyle(
+                        fontSize: isIPad ? 9.0.sp : 13.sp,
                         fontWeight: FontWeight.w400,
                         color: Colors.black,
                         height: 22.0 / 13.0,
@@ -250,19 +254,19 @@ class _EvaluationState extends State<Evaluation> {
               width: sqrt(5000) * 3,
               alignment: Alignment.center,
               child: Radar(
-                r: sqrt(5000),
+                r: sqrt(5000).r,
                 top: top,
                 bottom: bottom,
                 left: left,
                 right: right,
-                scoreStyle: const TextStyle(
-                  fontSize: 16.0,
+                scoreStyle: TextStyle(
+                  fontSize: 16.0.sp,
                   fontWeight: FontWeight.w500,
                   color: Colors.black,
                   height: 12.0 / 16.0,
                 ),
-                labelStyle: const TextStyle(
-                  fontSize: 12.0,
+                labelStyle: TextStyle(
+                  fontSize: 12.0.sp,
                   fontWeight: FontWeight.w500,
                   color: Colors.black,
                   height: 1.0,
@@ -298,10 +302,10 @@ class _EvaluationState extends State<Evaluation> {
                 }
                 Navigator.of(context).pop();
               },
-              child: const LoadAssetImage(
+              child: LoadAssetImage(
                 'reminder_close',
-                width: 32.0,
-                height: 32.0,
+                width: 32.0.w,
+                height: 32.0.w,
               ),
             ),
           ),
@@ -330,8 +334,8 @@ class _EvaluationState extends State<Evaluation> {
                 children: <Widget>[
                   Text(
                     message.text,
-                    style: const TextStyle(
-                      fontSize: 12.0,
+                    style: TextStyle(
+                      fontSize: 12.0.sp,
                       fontWeight: FontWeight.w400,
                       color: Colors.black,
                       height: 16.0 / 12.0,
@@ -361,10 +365,10 @@ class _EvaluationState extends State<Evaluation> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
+                      Text(
                         '地道表达',
                         style: TextStyle(
-                          fontSize: 15.0,
+                          fontSize: 15.0.sp,
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
                           height: 21.0 / 15.0,
@@ -373,8 +377,8 @@ class _EvaluationState extends State<Evaluation> {
                       ),
                       Text(
                         _isGetting ? '获取中...' : _standardAnswer,
-                        style: const TextStyle(
-                          fontSize: 14.0,
+                        style: TextStyle(
+                          fontSize: 14.0.sp,
                           fontWeight: FontWeight.w400,
                           color: Colors.black,
                           height: 21.0 / 14.0,

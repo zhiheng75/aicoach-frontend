@@ -475,7 +475,9 @@ class _ErrorCorrectionDetailPageState extends State<ErrorCorrectionDetailPage>
 
     setState(() {
       errorDetailData = data.data;
-      repeatTextStr(errorDetailData[idx].sentence);
+      if (errorDetailData.length > 0) {
+        repeatTextStr(errorDetailData[idx].sentence);
+      }
       // repeatTextStr(
       //     "Great! Let's start with the first word. One<word>one</word><image>https://statics.shenmo-ai.com/courses/level1/unit0/lesson1/Group%202.jpg</image>");
       // errorDetailData[idx].userPracticeAudio = "";

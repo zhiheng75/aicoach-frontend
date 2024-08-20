@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:Bubble/person/entity/good_entity.dart';
+import 'package:Bubble/person/view/purchase_view.dart';
 import 'package:dio/dio.dart';
 import 'package:fluwx/fluwx.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -18,7 +19,6 @@ import '../../util/log_utils.dart';
 import '../../util/toast_utils.dart';
 import '../entity/ali_pay_entity.dart';
 import '../entity/wx_pay_entity.dart';
-import '../view/purchase_view.dart';
 
 class PurchasePagePresenter extends BasePagePresenter<PurchaseView> {
   @override

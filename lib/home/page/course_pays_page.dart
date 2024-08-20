@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:Bubble/home/entity/base_config_entity.dart';
 import 'package:Bubble/home/entity/lesson_detail_bean.dart';
 import 'package:Bubble/home/widget/teacher_show_view.dart';
 import 'package:Bubble/mvp/base_page.dart';
 import 'package:Bubble/net/proxy_config.dart';
+import 'package:Bubble/person/entity/my_good_list_entity.dart';
+import 'package:Bubble/person/entity/wx_pay_entity.dart';
 import 'package:Bubble/person/presneter/purchase_page_presenter.dart';
 import 'package:Bubble/person/view/purchase_view.dart';
 import 'package:Bubble/res/colors.dart';
@@ -397,4 +400,19 @@ class _CoursePaysPageState extends State<CoursePaysPage>
 
   @override
   bool get wantKeepAlive => false;
+
+  @override
+  void getBaseConfig(BaseConfigDataData data) {
+    // TODO: implement getBaseConfig
+  }
+
+  @override
+  void getWXPayMsg(WxPayDataData bean) {
+    // TODO: implement getWXPayMsg
+  }
+
+  @override
+  void goodListData(List<MyGoodListEntity> bean) {
+    // TODO: implement goodListData
+  }
 }

@@ -54,7 +54,7 @@ class _NewBindPhonePageState extends State<NewBindPhonePage>
   Widget navbar() {
     return SizedBox(
       // color: Colors.amber,
-      height: _screenUtil.statusBarHeight + 60,
+      // height: _screenUtil.statusBarHeight + 60,
       width: _screenUtil.screenWidth,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

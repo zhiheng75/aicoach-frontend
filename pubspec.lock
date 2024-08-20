@@ -17,6 +17,38 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "6.2.0"
+  app_links:
+    dependency: "direct main"
+    description:
+      name: app_links
+      sha256: "4acba851087b25136e8f6e32a53bd4536eb3bec69947ddb66e7b9a5792ceb0c7"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "6.2.0"
+  app_links_linux:
+    dependency: transitive
+    description:
+      name: app_links_linux
+      sha256: f5f7173a78609f3dfd4c2ff2c95bd559ab43c80a87dc6a095921d96c05688c81
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.3"
+  app_links_platform_interface:
+    dependency: transitive
+    description:
+      name: app_links_platform_interface
+      sha256: "05f5379577c513b534a29ddea68176a4d4802c46180ee8e2e966257158772a3f"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.2"
+  app_links_web:
+    dependency: transitive
+    description:
+      name: app_links_web
+      sha256: af060ed76183f9e2b87510a9480e56a5352b6c249778d07bd2c95fc35632a555
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.4"
   app_tracking_transparency:
     dependency: "direct main"
     description:
@@ -571,6 +603,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "9.2.13"
+  flutter_sticky_header:
+    dependency: "direct main"
+    description:
+      name: flutter_sticky_header
+      sha256: "017f398fbb45a589e01491861ca20eb6570a763fd9f3888165a978e11248c709"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.6.5"
   flutter_swiper_null_safety_flutter3:
     dependency: "direct main"
     description:
@@ -605,6 +645,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.2"
+  gtk:
+    dependency: transitive
+    description:
+      name: gtk
+      sha256: e8ce9ca4b1df106e4d72dad201d345ea1a036cc12c360f1a7d5a758f78ffa42c
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.0"
   html:
     dependency: transitive
     description:
@@ -1506,6 +1554,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.7"
+  value_layout_builder:
+    dependency: transitive
+    description:
+      name: value_layout_builder
+      sha256: "98202ec1807e94ac72725b7f0d15027afde513c55c69ff3f41bcfccb950831bc"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.1"
   vector_math:
     dependency: transitive
     description:

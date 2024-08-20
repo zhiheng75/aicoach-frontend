@@ -55,13 +55,15 @@ class _MessageItemState extends State<MessageItem> {
   }
 
   void openEvaluation() {
-    showModalBottomSheet(
+    showDialog(
       context: context,
-      backgroundColor: Colors.transparent,
+      // backgroundColor: Colors.transparent,
       barrierColor: Colors.transparent,
-      isScrollControlled: true,
-      isDismissible: false,
-      enableDrag: false,
+      barrierDismissible: false,
+      useSafeArea: false,
+      // isScrollControlled: true,
+      // isDismissible: false,
+      // enableDrag: false,
       builder: (_) => Evaluation(message: widget.message as NormalMessage),
     );
   }
@@ -145,7 +147,7 @@ class _MessageItemState extends State<MessageItem> {
     MessageEntity _message = widget.message;
     String type = _message.type;
 
-    double width = _screenUtil.screenWidth - 32.0;
+    double width = _screenUtil.screenWidth - 32.0.w;
     Color blackBgColor = const Color(0xFF060B19).withOpacity(0.88);
 
     // 角色简介消息
@@ -421,6 +423,14 @@ class _MessageItemState extends State<MessageItem> {
       );
     }
 
+    String replaceMultipleNewLinesWithSingle(String text) {
+      // 使用正则表达式匹配两个或更多连续的换行符
+      final RegExp multipleNewLinesRegExp = RegExp(r'\n{2,}');
+
+      // 将匹配到的连续换行符替换为单个换行符
+      return text.replaceAll(multipleNewLinesRegExp, '\n');
+    }
+
     String titTwoMessage(String message) {
       String one = message;
       RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
@@ -446,6 +456,8 @@ class _MessageItemState extends State<MessageItem> {
         }
         // Log.e("================" + one);
       }
+      one = replaceMultipleNewLinesWithSingle(one);
+
       one = one.replaceAll("{[finish]}", "");
       return one;
     }
@@ -670,6 +682,8 @@ class _MessageItemState extends State<MessageItem> {
         }
         // Log.e("================" + one);
       }
+
+      one = replaceMultipleNewLinesWithSingle(one);
       one = one.replaceAll("{[finish]}", "");
       return one;
     }
@@ -699,8 +713,20 @@ class _MessageItemState extends State<MessageItem> {
                   ))
               : const SizedBox(width: 0, height: 0),
         _homeProvider.ishread == ""
-            ? const SizedBox(width: 0, height: 0)
-            : SizedBox(width: _message.speaker == 'user' ? 40 : 0, height: 0),
+            ? SizedBox(
+                width: _message.speaker == 'user'
+                    ? MediaQuery.of(context).size.width > 500
+                        ? 120.w
+                        : 0
+                    : 0,
+                height: 0)
+            : SizedBox(
+                width: _message.speaker == 'user'
+                    ? MediaQuery.of(context).size.width > 500
+                        ? 120.w
+                        : 40.w
+                    : 0,
+                height: 0),
         Expanded(
           child: ClipRRect(
             borderRadius: BorderRadius.only(
@@ -741,8 +767,20 @@ class _MessageItemState extends State<MessageItem> {
           ),
         ),
         _homeProvider.ishread == ""
-            ? const SizedBox(width: 0, height: 0)
-            : SizedBox(width: _message.speaker == 'ai' ? 40 : 0, height: 0),
+            ? SizedBox(
+                width: _message.speaker == 'ai'
+                    ? MediaQuery.of(context).size.width > 500
+                        ? 120.w
+                        : 0
+                    : 0,
+                height: 0)
+            : SizedBox(
+                width: _message.speaker == 'ai'
+                    ? MediaQuery.of(context).size.width > 500
+                        ? 120.w
+                        : 40.w
+                    : 0,
+                height: 0),
         if (_message.speaker == 'user')
           _homeProvider.ishread == ""
               ? Padding(

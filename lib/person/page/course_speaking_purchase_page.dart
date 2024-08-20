@@ -46,6 +46,8 @@ import 'package:fluwx/fluwx.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
 
+import '../person_router.dart';
+
 class CourseSpeakingPurchasePage extends StatefulWidget {
   final String levelId;
   final String goodsLabel;
@@ -546,113 +548,151 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                           },
                         )),
                     Gaps.vGap10,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () {
-                            setState(() {
-                              payIdx = 0;
-                              _pay = 'wxpay';
-                            });
-                            // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
-                          },
-                          child: Container(
-                            width: 122.w,
-                            decoration: payIdx == 0
-                                ? BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(
-                                      width: 2.0,
-                                      style: BorderStyle.solid,
-                                      color: Colours.color_8256FF,
-                                    ),
-                                    color: Colors.white,
-                                  )
-                                : BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    color: Colors.white,
+                    ProxyConfig.isxueersi
+                        ? Container()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  setState(() {
+                                    payIdx = 0;
+                                    _pay = 'wxpay';
+                                  });
+                                  // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
+                                },
+                                child: Container(
+                                  width: 122.w,
+                                  decoration: payIdx == 0
+                                      ? BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          border: Border.all(
+                                            width: 2.0,
+                                            style: BorderStyle.solid,
+                                            color: Colours.color_8256FF,
+                                          ),
+                                          color: Colors.white,
+                                        )
+                                      : BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          color: Colors.white,
+                                        ),
+                                  // margin: const EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      LoadAssetImage(
+                                        'wxpay_icon',
+                                        width: 24.0.w,
+                                        height: 24.0.w,
+                                      ),
+                                      Gaps.hGap4,
+                                      Text(
+                                        "微信支付",
+                                        style: TextStyle(
+                                          fontSize: 12.0.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                            // margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                LoadAssetImage(
-                                  'wxpay_icon',
-                                  width: 24.0.w,
-                                  height: 24.0.w,
                                 ),
-                                Gaps.hGap4,
-                                Text(
-                                  "微信支付",
-                                  style: TextStyle(
-                                    fontSize: 12.0.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                              ),
+                              Gaps.hGap16,
+                              GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  setState(() {
+                                    payIdx = 1;
+                                    _pay = 'alipay';
+                                  });
+                                  // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
+                                },
+                                child: Container(
+                                  width: 122.w,
+                                  decoration: payIdx == 1
+                                      ? BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          border: Border.all(
+                                            width: 2.0,
+                                            style: BorderStyle.solid,
+                                            color: Colours.color_8256FF,
+                                          ),
+                                          color: Colors.white,
+                                        )
+                                      : BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          color: Colors.white,
+                                        ),
+                                  // margin: const EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      LoadAssetImage(
+                                        'alipay_img',
+                                        width: 24.0.w,
+                                        height: 24.0.w,
+                                      ),
+                                      Gaps.hGap4,
+                                      Text(
+                                        "支付宝",
+                                        style: TextStyle(
+                                          fontSize: 12.0.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ),
-                        Gaps.hGap16,
-                        GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () {
-                            setState(() {
-                              payIdx = 1;
-                              _pay = 'alipay';
-                            });
-                            // NavigatorUtils.push(context, CourseRouter.certifiedLearningPage);
-                          },
-                          child: Container(
-                            width: 122.w,
-                            decoration: payIdx == 1
-                                ? BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(
-                                      width: 2.0,
-                                      style: BorderStyle.solid,
-                                      color: Colours.color_8256FF,
-                                    ),
-                                    color: Colors.white,
-                                  )
-                                : BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    color: Colors.white,
-                                  ),
-                            // margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                LoadAssetImage(
-                                  'alipay_img',
-                                  width: 24.0.w,
-                                  height: 24.0.w,
-                                ),
-                                Gaps.hGap4,
-                                Text(
-                                  "支付宝",
-                                  style: TextStyle(
-                                    fontSize: 12.0.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                     Gaps.vGap10,
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        pay();
+                      onTap: () async {
+                        EventUMStatistics.umengCommonMapEvent("click_pay");
+
+                        //判断有没有微信
+                        if (ProxyConfig.isxueersi) {
+                          bool isInstalledWx = await fluwx.isWeChatInstalled;
+                          if (!isInstalledWx) {
+                            int goodsId;
+                            String goodPrice;
+
+                            if (typeIdx == 0) {
+                              goodsId =
+                                  listData.data.packageList.list[spokenIdx].id;
+                              goodPrice = listData
+                                  .data.packageList.list[spokenIdx].price;
+                            } else {
+                              goodsId =
+                                  listData.data.lessonList.list[classIdx].id;
+                              goodPrice =
+                                  listData.data.lessonList.list[classIdx].price;
+                            }
+                            //挑自己页面
+                            NavigatorUtils.push(
+                              // ignore: use_build_context_synchronously
+                              context,
+                              // PersonalRouter.xueersiPurchaseSuccessTwoPage
+                              "${PersonalRouter.xueersiPurchasePage}?goodsId=$goodsId&goodPrice=$goodPrice&type=$typeIdx",
+                            );
+                          } else {
+                            pay();
+                          }
+                        } else {
+                          pay();
+                        }
                       },
                       child: Center(
                           key: keyTabOne,
@@ -1007,7 +1047,7 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                                             margin:
                                                 EdgeInsets.only(right: 10.w),
                                             child: SizedBox(
-                                              width: 238.0.w,
+                                              // width: 238.0.w,
                                               child: ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(16.r),
@@ -1351,10 +1391,28 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
   void paySuccess() {
     // TODO: implement paySuccess
 
-    getVipStatus();
-    if (typeIdx == 1) {
-      showImageDialog();
+    if (ProxyConfig.isxueersi) {
+      if (typeIdx == 1) {
+        //支付成功
+        NavigatorUtils.push(
+            // ignore: use_build_context_synchronously
+            context,
+            PersonalRouter.xueersiPurchaseSuccessPage);
+      } else {
+        NavigatorUtils.push(
+            // ignore: use_build_context_synchronously
+            context,
+            PersonalRouter.xueersiPurchaseSuccessTwoPage);
+
+        // NavigatorUtils.goBack(context);
+      }
+    } else {
+      if (typeIdx == 1) {
+        showImageDialog();
+      }
     }
+
+    getVipStatus();
 
     Provider.of<HomeProvider>(context, listen: false).getUsageTime();
     EventBus().emit(NotificationUtils.resetInFo);
@@ -1414,7 +1472,14 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
       }
       Future.delayed(const Duration(milliseconds: 100), () {
         // 这里是你想要延迟执行的代码
-        _scrollToIndex(spokenIdx);
+
+        if (spokenIdx == listData.data.packageList.list.length - 1) {
+          _scrollToIndex(spokenIdx - 1);
+        } else {
+          _scrollToIndex(spokenIdx);
+        }
+
+        // _scrollToIndex(spokenIdx);
       });
     } else {
       for (int i = 0; i < listData.data.lessonList.list.length; i++) {
@@ -1425,7 +1490,12 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
       }
       Future.delayed(const Duration(milliseconds: 100), () {
         // 这里是你想要延迟执行的代码
-        _scrollToIndex(classIdx);
+        if (classIdx == listData.data.lessonList.list.length - 1) {
+          _scrollToIndex(classIdx - 1);
+        } else {
+          _scrollToIndex(classIdx);
+        }
+        // _scrollToIndex(classIdx);
       });
     }
 

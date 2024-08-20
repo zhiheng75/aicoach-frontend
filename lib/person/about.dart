@@ -53,7 +53,7 @@ class _AboutPageState extends State<AboutPage> {
     String platformStr = "android";
 
     if (Device.isAndroid) {
-      platformStr = Channel.channelhuawei;
+      platformStr = Channel.channelxueersi;
     } else {
       platformStr = Channel.channelios;
     }
@@ -276,6 +276,26 @@ class _AboutPageState extends State<AboutPage> {
         ),
         Text(
           'ICP备案号：京ICP备2023024660号-1',
+          style: TextStyle(
+            fontSize: 11.0,
+            fontWeight: FontWeight.w400,
+            color: Colours.color_999999,
+            height: 13.0 / 11.0,
+            letterSpacing: 0.05,
+          ),
+        ),
+        Text(
+          '模型名称：文心一言 Beijing-WenXinYiYan-20230821',
+          style: TextStyle(
+            fontSize: 11.0,
+            fontWeight: FontWeight.w400,
+            color: Colours.color_999999,
+            height: 13.0 / 11.0,
+            letterSpacing: 0.05,
+          ),
+        ),
+        Text(
+          '禁止利用生成式人工智能服务从事违法活动',
           style: TextStyle(
             fontSize: 11.0,
             fontWeight: FontWeight.w400,

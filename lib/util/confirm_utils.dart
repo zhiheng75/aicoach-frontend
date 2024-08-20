@@ -249,8 +249,8 @@ class ConfirmThree extends StatelessWidget {
         child: Container(
           margin:
               // isIPad ? const EdgeInsets.all(100) : const EdgeInsets.all(30),
-              EdgeInsets.all(40.w),
-          padding: const EdgeInsets.only(left: 25, right: 25, bottom: 20),
+              EdgeInsets.all(30.w),
+          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
           decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(16)),
               color: Colors.white),

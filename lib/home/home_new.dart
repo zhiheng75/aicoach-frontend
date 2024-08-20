@@ -112,14 +112,11 @@ class _HomePageState extends State<HomeNewPage>
           return;
         }
         Map<String, dynamic> data = result.data as Map<String, dynamic>;
-        showModalBottomSheet(
+        showDialog(
           context: context,
-          backgroundColor: Colors.transparent,
           barrierColor: Colors.transparent,
-          isScrollControlled: true,
-          isDismissible: false,
-          clipBehavior: Clip.none,
-          enableDrag: false,
+          barrierDismissible: false,
+          useSafeArea: false,
           builder: (_) => CollectInformationPage(
             characterId: data['character_id'],
             sceneId: data['scene_id'],

@@ -17,6 +17,7 @@ import 'package:Bubble/widgets/my_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InvitationCodePage extends StatefulWidget {
   const InvitationCodePage({super.key});
@@ -221,7 +222,8 @@ class _InvitationCodePageState extends State<InvitationCodePage>
                             child: Gaps.vGap50,
                           ),
                           SizedBox(
-                            width: 260,
+                            width: 150.w,
+                            height: 40.h,
                             child: BtnWidget("btn_bg_img", "提交",
                                 txtStyle: TextStyle(
                                     color: Colours.color_001652,

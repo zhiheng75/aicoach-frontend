@@ -66,7 +66,9 @@ class _ChatHomeTwoItemState extends State<ChatHomeTwoItem> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontSize: 15.0.sp,
+                            fontSize: MediaQuery.of(context).size.width > 500
+                                ? 13.sp
+                                : 15.0.sp,
                             fontWeight: FontWeight.w600,
                             color: Colors.black,
                           ),

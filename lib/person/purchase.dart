@@ -3,8 +3,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Bubble/home/entity/base_config_entity.dart';
 import 'package:Bubble/loginManager/login_manager.dart';
 import 'package:Bubble/person/entity/basec_onfig_bean.dart';
+import 'package:Bubble/person/entity/my_good_list_entity.dart';
+import 'package:Bubble/person/entity/wx_pay_entity.dart';
+import 'package:Bubble/person/view/purchase_view.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
 import 'package:Bubble/util/douyin_util.dart';
 import 'package:Bubble/util/event_bus.dart';
@@ -30,7 +34,6 @@ import '../widgets/load_fail.dart';
 import '../widgets/load_image.dart';
 import 'entity/good_entity.dart';
 import 'presneter/purchase_page_presenter.dart';
-import 'view/purchase_view.dart';
 import 'widget/illustration.dart';
 import 'package:Bubble/widgets/my_alert.dart';
 
@@ -68,10 +71,10 @@ class _PurchasePageState extends State<PurchasePage>
       userPhone = user['phone'].toString();
     }
     setState(() {});
-    getBaseConfig();
+    getBaseConfigX();
   }
 
-  void getBaseConfig() {
+  void getBaseConfigX() {
     _purchasePagePresenter.requestNetwork<ResultData>(Method.get,
         url: HttpApi.baseConfig, isShow: false, onSuccess: (result) {
       Log.e(result.toString());
@@ -692,5 +695,20 @@ class _PurchasePageState extends State<PurchasePage>
     Future.delayed(const Duration(seconds: 1), () {
       Navigator.of(context).pop();
     });
+  }
+
+  @override
+  void getWXPayMsg(WxPayDataData bean) {
+    // TODO: implement getWXPayMsg
+  }
+
+  @override
+  void goodListData(List<MyGoodListEntity> bean) {
+    // TODO: implement goodListData
+  }
+
+  @override
+  void getBaseConfig(BaseConfigDataData data) {
+    // TODO: implement getBaseConfig
   }
 }

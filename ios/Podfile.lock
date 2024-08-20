@@ -1,4 +1,10 @@
 PODS:
+  - advertising_info (0.0.1):
+    - Flutter
+  - app_links (0.0.1):
+    - Flutter
+  - app_tracking_transparency (0.0.1):
+    - Flutter
   - audio_session (0.0.1):
     - Flutter
   - audioplayers_darwin (0.0.1):
@@ -99,6 +105,9 @@ PODS:
   - WechatOpenSDK-XCFramework (2.0.2)
 
 DEPENDENCIES:
+  - advertising_info (from `.symlinks/plugins/advertising_info/ios`)
+  - app_links (from `.symlinks/plugins/app_links/ios`)
+  - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
@@ -146,6 +155,12 @@ SPEC REPOS:
     - WechatOpenSDK-XCFramework
 
 EXTERNAL SOURCES:
+  advertising_info:
+    :path: ".symlinks/plugins/advertising_info/ios"
+  app_links:
+    :path: ".symlinks/plugins/app_links/ios"
+  app_tracking_transparency:
+    :path: ".symlinks/plugins/app_tracking_transparency/ios"
   audio_session:
     :path: ".symlinks/plugins/audio_session/ios"
   audioplayers_darwin:
@@ -212,11 +227,9 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
-<<<<<<< HEAD
-=======
   advertising_info: af1acd436a426e40321ca7f695cdf5e6bfd5e357
+  app_links: e70ca16b4b0f88253b3b3660200d4a10b4ea9795
   app_tracking_transparency: e169b653478da7bb15a6c61209015378ca73e375
->>>>>>> dev_kouyududu_230
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
   audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
   camera_avfoundation: 8b8d780bcfb6a4a02b0fbe2b4bd17b5b71946e68

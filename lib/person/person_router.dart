@@ -1,9 +1,13 @@
 import 'package:Bubble/person/invitation_code_page.dart';
+import 'package:Bubble/person/page/cancel_account_page.dart';
 import 'package:Bubble/person/page/course_speaking_purchase_page.dart';
 import 'package:Bubble/person/page/error_correction_detail_page.dart';
 import 'package:Bubble/person/page/error_correction_page.dart';
 import 'package:Bubble/person/page/join_community_page.dart';
 import 'package:Bubble/person/page/user_membership_upgrade_page.dart';
+import 'package:Bubble/person/page/xueersi_purchase_page.dart';
+import 'package:Bubble/person/page/xueersi_purchase_success_page.dart';
+import 'package:Bubble/person/page/xueersi_purchase_success_two_page.dart';
 import 'package:fluro/fluro.dart';
 
 import '../routers/i_router.dart';
@@ -23,6 +27,8 @@ class PersonalRouter implements IRouterProvider {
   static String person = '/person';
   static String order = '/order';
   static String about = '/about';
+  static String cancelAccountPage = '/CancelAccountPage';
+
   static String joinCommunityPage = '/JoinCommunityPage';
 
   static String errorCorrectionPage = '/ErrorCorrectionPage';
@@ -31,8 +37,30 @@ class PersonalRouter implements IRouterProvider {
 
   static String courseSpeakingPurchasePage = '/CourseSpeakingPurchasePage';
 
+  static String xueersiPurchasePage = '/XueersiPurchasePage';
+  static String xueersiPurchaseSuccessPage = '/XueersiPurchaseSuccessPage';
+  static String xueersiPurchaseSuccessTwoPage =
+      '/XueersiPurchaseSuccessTwoPage';
+
   @override
   void initRouter(FluroRouter router) {
+    router.define(xueersiPurchaseSuccessPage,
+        handler: Handler(
+            handlerFunc: (_, __) => const XueersiPurchaseSuccessPage()));
+
+    router.define(xueersiPurchaseSuccessTwoPage,
+        handler: Handler(
+            handlerFunc: (_, __) => const XueersiPurchaseSuccessTwoPage()));
+    router.define(xueersiPurchasePage,
+        handler: Handler(handlerFunc: (context, params) {
+      String goodPrice = params['goodPrice']!.first;
+      String goodsId = params['goodsId']!.first;
+      String type = params['type']!.first;
+
+      return XueersiPurchasePage(
+          goodPrice: goodPrice, goodsId: goodsId, type: type);
+    }));
+
     router.define(person,
         handler: Handler(handlerFunc: (_, __) => const PersonPage()));
     router.define(setting,
@@ -47,6 +75,8 @@ class PersonalRouter implements IRouterProvider {
         handler: Handler(handlerFunc: (_, __) => const InvitationCodePage()));
     router.define(about,
         handler: Handler(handlerFunc: (_, __) => const AboutPage()));
+    router.define(cancelAccountPage,
+        handler: Handler(handlerFunc: (_, __) => const CancelAccountPage()));
     router.define(joinCommunityPage,
         handler: Handler(handlerFunc: (_, __) => const JoinCommunityPage()));
     router.define(errorCorrectionPage,

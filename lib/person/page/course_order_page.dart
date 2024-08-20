@@ -125,14 +125,14 @@ class _CourseOrderPageState extends State<CourseOrderPage>
                     }
                   },
                   child: Container(
-                    width: 200.w,
+                    width: 150.w,
                     height: 40.h,
                     // height: ,
                     // height: Dimens.h_dp40,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: ImageUtils.getAssetImage("btn_bg_img"),
-                            fit: BoxFit.fill)),
+                            fit: BoxFit.fitHeight)),
                     child: Center(
                       child: Text(
                         "升级会员",

@@ -309,6 +309,10 @@ class _ChatState extends State<ChatPage>
     });
   }
 
+  bool get isIPad {
+    return MediaQuery.of(context).size.width > 500 ? true : false;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -488,7 +492,7 @@ class _ChatState extends State<ChatPage>
                 height: _screenUtil.screenHeight,
                 padding: EdgeInsets.only(
                   top: homeTabbarHeight,
-                  bottom: bottomBarHeight,
+                  bottom: _screenUtil.bottomBarHeight + 45.h,
                   left: 16.0,
                   right: 16.0,
                 ),
@@ -548,17 +552,34 @@ class _ChatState extends State<ChatPage>
             ),
           ),
           Positioned(
-            // bottom: _screenUtil.bottomBarHeight + 16.0,
-            bottom: 16.0,
-            child: BottomBar(
-              chatWebsocket: _chatWebsocket,
-              controller: _bottomBarControll,
-              recordController: _recordController,
-              language: 'cn',
-              isNormalChat: true,
-              onScrollEnd: () {
-                _listScrollController.scrollToEnd();
-              },
+            bottom: 0,
+            left: 0,
+            right: 0,
+            // bottom: 16.0,
+
+            child: Container(
+              padding: EdgeInsets.only(
+                  bottom: _screenUtil.bottomBarHeight + 16.0,
+                  left: MediaQuery.of(context).size.width > 500 ? 60.w : 10.w,
+                  right: MediaQuery.of(context).size.width > 500 ? 60.w : 10.w),
+              // padding: EdgeInsets.only(
+              //     // bottom: _screenUtil.bottomBarHeight,
+              //     left: isIPad ? 60.w : 10.w,
+              //     right: isIPad ? 60.w : 10.w),
+              // padding: EdgeInsets.only(
+              //     // bottom: _screenUtil.bottomBarHeight + 16.0,
+              //     left: MediaQuery.of(context).size.width > 500 ? 40.w : 10.w,
+              //     right: MediaQuery.of(context).size.width > 500 ? 40.w : 10.w),
+              child: BottomBar(
+                chatWebsocket: _chatWebsocket,
+                controller: _bottomBarControll,
+                recordController: _recordController,
+                language: 'en',
+                isNormalChat: true,
+                onScrollEnd: () {
+                  _listScrollController.scrollToEnd();
+                },
+              ),
             ),
           ),
           Positioned(
@@ -570,29 +591,46 @@ class _ChatState extends State<ChatPage>
                   Record(show: show, controller: _recordController),
             ),
           ),
+          // Positioned(
+          //   top: 50,
+          //   left: 10,
+          //   right: 10,
+          //   child: _character!.characterId == "eggy"
+          //       ? const Center(
+          //           child: Text(
+          //             "禁止利用生成式人工智能服务从事违法活动",
+          //             style: TextStyle(
+          //               fontSize: 14.0,
+          //               fontWeight: FontWeight.w400,
+          //               color: Colors.white,
+          //             ),
+          //           ),
+          //         )
+          //       : Container(),
+          // ),
           // 左右滑动提示
-          if (_showSlideTip)
-            Positioned(
-              top: 0,
-              left: 0,
-              child: Container(
-                width: _screenUtil.screenWidth,
-                height: _screenUtil.screenHeight,
-                color: Colors.black.withOpacity(0.6),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: _screenUtil.statusBarHeight + 113.0,
-                    ),
-                    const LoadAssetImage(
-                      'slide_tip',
-                      width: 229.0,
-                      height: 406.0,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          // if (_showSlideTip)
+          //   Positioned(
+          //     top: 0,
+          //     left: 0,
+          //     child: Container(
+          //       width: _screenUtil.screenWidth,
+          //       height: _screenUtil.screenHeight,
+          //       color: Colors.black.withOpacity(0.6),
+          //       child: Column(
+          //         children: <Widget>[
+          //           SizedBox(
+          //             height: _screenUtil.statusBarHeight + 113.0,
+          //           ),
+          //           const LoadAssetImage(
+          //             'slide_tip',
+          //             width: 229.0,
+          //             height: 406.0,
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
         ],
       ),
     );

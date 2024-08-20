@@ -47,8 +47,9 @@ import 'package:Bubble/util/other_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/group_avatar_widget.dart';
 import 'package:Bubble/widgets/load_image.dart';
-import 'package:advertising_info/advertising_info.dart';
+import 'package:app_links/app_links.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+// import 'package:appscheme/appscheme.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -128,6 +129,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     version: 'Unknown',
     buildNumber: 'Unknown',
   );
+  // late String xxxStr = "没过来";
 
   Future<void> _initPackageInfo() async {
     final info = await PackageInfo.fromPlatform();
@@ -288,15 +290,47 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   //   );
   // }
 
+  late AppLinks _appLinks;
+  StreamSubscription<Uri>? _linkSubscription;
+
+  Future<void> initDeepLinks() async {
+    _appLinks = AppLinks();
+
+    // Handle links
+    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+      // debugPrint('onAppLink: $uri');
+      // openAppLink(uri);
+      // ignore: unnecessary_null_comparison
+      if (uri != null) {
+        // String urilink = uri.toString();
+        // var productId = uri.queryParameters['productId'];
+
+        // xxxStr = productId.toString();
+        // setState(() {});
+        // DioUtils.instance.dio.options.headers['productId'] = xxxStr;
+
+        var talDeviceSn = uri.queryParameters['talDeviceSn'];
+        if (talDeviceSn != null) {
+          DioUtils.instance.dio.options.headers['deviceSN'] = talDeviceSn;
+        }
+        var talId = uri.queryParameters['talId'];
+        if (talId != null) {
+          DioUtils.instance.dio.options.headers['tId'] = talId;
+        }
+      }
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     SpUtil.putString(Constant.netWorkTos, "0");
+    initDeepLinks();
 
     initDio();
-    // initUM();
+    initUM();
     EventBus().on(NotificationUtils.resetChat, (idx) {
       if (idx == "0") {
         isShowNetWork = true;
@@ -330,9 +364,11 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       SpUtil.putString(Constant.teacherId, "0");
     }
     WidgetsBinding.instance.addObserver(this);
-
-    // 初始化极光推送
-    initPlatformState();
+    if (Device.isAndroid) {
+      DYUtil().evaluate("0");
+    } else {
+      getidfa();
+    }
 
     // initPlatformPhoneState();
     // 获取体验时间
@@ -343,7 +379,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       _homeTwoPagePresenter.getBannerList();
       _homeTwoPagePresenter.getCharacterList();
     });
-    EventBus().on(NotificationUtils.loginOut, (_) {
+    EventBus().on(NotificationUtils.loginOutThree, (_) {
       _homeTwoPagePresenter.getBannerList();
       _homeTwoPagePresenter.getCharacterList();
     });
@@ -361,6 +397,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       // EventUMStatistics.umengCommonOnPageEnd("home_new_page");
       // EventUMStatistics.umengCommonOnPageEnd("person_page");
       getStandardAnswer();
+      // 初始化极光推送
+      initPlatformState();
     });
     Future.delayed(const Duration(milliseconds: 300), () {
       systemMaintenance();
@@ -428,7 +466,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     String platformStr = "android";
 
     if (Device.isAndroid) {
-      platformStr = Channel.channelhuawei;
+      platformStr = Channel.channelxueersi;
     } else {
       platformStr = Channel.channelios;
     }
@@ -566,7 +604,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       AndroidDeviceInfo androidDeviceInfo =
           await DeviceInfoPlugin().androidInfo;
 
-      platformStr = Channel.channelhuawei;
+      platformStr = Channel.channelxueersi;
       final Map<String, String> params = <String, String>{};
       params["manufacturer"] = androidDeviceInfo.manufacturer;
       params["id"] = androidDeviceInfo.id;
@@ -711,8 +749,10 @@ class _HomeTwoPageState extends State<HomeTwoPage>
 
   @override
   void dispose() {
+    _linkSubscription?.cancel();
+
     EventBus().off(NotificationUtils.loginIn);
-    EventBus().off(NotificationUtils.loginOut);
+    EventBus().off(NotificationUtils.loginOutThree);
     EventUMStatistics.umengCommonOnPageEnd("home_two_page");
     WidgetsBinding.instance.removeObserver(this);
     subscription.cancel();
@@ -747,7 +787,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    // return const ConnectivityTest();
+    // return Text(xxxStr);
 
     Widget bg = Container(
       width: _screenUtil.screenWidth,
@@ -982,7 +1022,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
                         ),
                       );
                     },
-                    itemCount: examList.length,
+                    itemCount: ProxyConfig.isxueersi ? 0 : examList.length,
                   ),
                 ],
               ),
