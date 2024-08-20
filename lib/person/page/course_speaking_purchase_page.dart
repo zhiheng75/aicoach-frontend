@@ -660,6 +660,8 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () async {
+                        EventUMStatistics.umengCommonMapEvent("click_pay");
+
                         //判断有没有微信
                         if (ProxyConfig.isxueersi) {
                           bool isInstalledWx = await fluwx.isWeChatInstalled;

@@ -331,7 +331,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     initDeepLinks();
 
     initDio();
-    // initUM();
+    initUM();
     EventBus().on(NotificationUtils.resetChat, (idx) {
       if (idx == "0") {
         isShowNetWork = true;

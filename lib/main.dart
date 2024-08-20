@@ -79,7 +79,7 @@ Future<void> main() async {
         _reportError(details.exception, details.stack);
       };
       // initPlugin();
-      // initUM();
+      initUM();
       runApp(MyApp());
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
 
