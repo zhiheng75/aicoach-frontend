@@ -35,10 +35,10 @@ class _CancelAccountPageState extends State<CancelAccountPage> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          const Text(
+          Text(
             '重要提示',
             style: TextStyle(
-              fontSize: 15.0,
+              fontSize: 15.0.sp,
               fontWeight: FontWeight.bold,
               color: Color(0xFF333333),
               height: 24.0 / 15.0,
@@ -47,59 +47,64 @@ class _CancelAccountPageState extends State<CancelAccountPage> {
           const SizedBox(
             height: 16.0,
           ),
-          const Text(
-            '*  账号一旦注销，您将无法登录，同时与账号相关的任何产品与服务都将无法使用。',
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF333333),
-              height: 24.0 / 15.0,
-            ),
-          ),
-          const Text(
-            '*  注销后，无法恢复，即使您在注销后以同一手机号账号再次向我们申请注册平台账户，会生成一个全新用户账号。',
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF333333),
-              height: 24.0 / 15.0,
-            ),
-          ),
-          const Text(
-            '*  注销后，无法恢复，即使您在注销后以同一手机号注销后，您与我们曾经签订的关于此账号的相关用户协议，杈益义务性文件等相应终止。',
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF333333),
-              height: 24.0 / 15.0,
-            ),
-          ),
-          const Text(
-            '*  我们善意并郑重的提示您：账号谨慎注销，注销前请慎重查看账号下所有的内容是否都视为放弃。',
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF333333),
-              height: 24.0 / 15.0,
-            ),
-          ),
-          const Text(
-            '*  若您执意需要注销账号，请点击“申请注销”，为了您的账号安全，账号注销处理',
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF333333),
-              height: 24.0 / 15.0,
-            ),
-          ),
-          const Text(
-            '* 期限为15天。15天内我们将完成账号注销。',
-            style: TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF333333),
-              height: 24.0 / 15.0,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '*  账号一旦注销，您将无法登录，同时与账号相关的任何产品与服务都将无法使用。',
+                style: TextStyle(
+                  fontSize: 10.0.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF333333),
+                  height: 24.0 / 15.0,
+                ),
+              ),
+              Text(
+                '*  注销后，无法恢复，即使您在注销后以同一手机号账号再次向我们申请注册平台账户，会生成一个全新用户账号。',
+                style: TextStyle(
+                  fontSize: 10.0.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF333333),
+                  height: 24.0 / 15.0,
+                ),
+              ),
+              Text(
+                '*  注销后，无法恢复，即使您在注销后以同一手机号注销后，您与我们曾经签订的关于此账号的相关用户协议，杈益义务性文件等相应终止。',
+                style: TextStyle(
+                  fontSize: 10.0.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF333333),
+                  height: 24.0 / 15.0,
+                ),
+              ),
+              Text(
+                '*  我们善意并郑重的提示您：账号谨慎注销，注销前请慎重查看账号下所有的内容是否都视为放弃。',
+                style: TextStyle(
+                  fontSize: 10.0.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF333333),
+                  height: 24.0 / 15.0,
+                ),
+              ),
+              Text(
+                '*  若您执意需要注销账号，请点击“申请注销”，为了您的账号安全，账号注销处理',
+                style: TextStyle(
+                  fontSize: 10.0.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF333333),
+                  height: 24.0 / 15.0,
+                ),
+              ),
+              Text(
+                '* 期限为15天。15天内我们将完成账号注销。',
+                style: TextStyle(
+                  fontSize: 10.0.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF333333),
+                  height: 24.0 / 15.0,
+                ),
+              ),
+            ],
           ),
           const SizedBox(
             height: 16.0,
