@@ -273,6 +273,13 @@ class _InstructionalVideoDialoguePageState
     forFlow();
   }
 
+  String getCurrentTimeAndMilliseconds() {
+    DateTime now = DateTime.now();
+    String timeAndMilliseconds =
+        "${now.hour}:${now.minute}:${now.second}.${now.millisecond}";
+    return timeAndMilliseconds;
+  }
+
   void onWebsocketAnswer(dynamic answer) {
     if (_answer == null) {
       // 结束标记
@@ -285,6 +292,7 @@ class _InstructionalVideoDialoguePageState
         _instructionalVideoDialoguePresenter.postStepUpdate(lessonId, stepId);
         // onNextSocketEnd();
         _listScrollController.scrollToEnd();
+        Log.e("AI说的话文字文成=====+++" + getCurrentTimeAndMilliseconds());
 
         return;
       }
@@ -318,6 +326,7 @@ class _InstructionalVideoDialoguePageState
       }
       _answer!.text += answer;
       Log.e("AI说的话" + _answer!.text);
+      Log.e("AI说的话文字=====+++" + getCurrentTimeAndMilliseconds());
 
       _homeProvider.notify();
       _listScrollController.scrollToEnd();
@@ -334,6 +343,7 @@ class _InstructionalVideoDialoguePageState
       if (_listPlayer != null) {
         _listPlayer!.play(answer);
       }
+      Log.e("AI说的话音频=====+++" + getCurrentTimeAndMilliseconds());
     }
   }
 

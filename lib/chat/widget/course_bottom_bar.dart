@@ -317,6 +317,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
           widget.onScrollEnd!();
         }
         EvaluateUtil().evaluate(message, () {
+          Log.e("测评评分一系列成功异步=====+++" + getCurrentTimeAndMilliseconds());
           _homeProvider.updateNormalMessage(message);
         });
       });
@@ -328,7 +329,9 @@ class _CourseBottomBarState extends State<CourseBottomBar>
             duration: 1000,
           );
         },
-        onSuccess: () {},
+        onSuccess: () {
+          Log.e("socket给出发送成功=====+++" + getCurrentTimeAndMilliseconds());
+        },
         onFail: () {
           // insertTipMessage('Please switch to new roles, topics, or scene');
         },
@@ -363,6 +366,8 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   void sendTwoMessage(String msg, String word) {
     insertTwoUserMessage(word, (message) {
       ClassEvaluateUtil().evaluate(message, (Map<String, dynamic> map) {
+        Log.e("跟读测评完成=====+++" + getCurrentTimeAndMilliseconds());
+
         try {
           double value = double.parse(map["total_score"]);
           if (value > 50) {
@@ -506,6 +511,13 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  String getCurrentTimeAndMilliseconds() {
+    DateTime now = DateTime.now();
+    String timeAndMilliseconds =
+        "${now.hour}:${now.minute}:${now.second}.${now.millisecond}";
+    return timeAndMilliseconds;
   }
 
   @override
@@ -716,6 +728,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                     if (widget.onStartBool != null) {
                       widget.onStartBool!(true);
                     }
+                    Log.e("按住说话=====+++" + getCurrentTimeAndMilliseconds());
                     _recognizeUtil = RecognizeUtil();
                     _recognizeUtil.setLanguage(widget.language ?? 'en');
                     // 开始录音
@@ -767,6 +780,8 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                         widget.controller.setDisabled(false);
                         return;
                       }
+                      Log.e("识别完成=====+++" + getCurrentTimeAndMilliseconds());
+
                       if (widget.repeatWord != "") {
                         //这里先调评测,分高传tag分低穿别的
                         sendTwoMessage(result['text'], widget.repeatWord);
