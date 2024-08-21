@@ -321,6 +321,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
           _homeProvider.updateNormalMessage(message);
         });
       });
+      Log.e("显示成功=====+++" + getCurrentTimeAndMilliseconds());
       _chatWebsocket.sendMessage(
         text: '[message_id=${message.id}]$text',
         onUninited: () {
@@ -739,6 +740,8 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                     }, onComplete: (buffer) {
                       _recognizeUtil.pushAudioBuffer(2, buffer ?? Uint8List(0));
                       _bufferList.add(buffer ?? Uint8List(0));
+                      Log.e(
+                          "讯飞识别音频发送=====+++" + getCurrentTimeAndMilliseconds());
                     });
 
                     // 设置识别
@@ -799,6 +802,8 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                   }
                 },
                 onEnd: (_) async {
+                  Log.e("松开发送=====+++" + getCurrentTimeAndMilliseconds());
+
                   // 录音中因识别失败关闭录音操作后手指还未抬起
                   if (!widget.controller.showRecord.value) {
                     return;

@@ -59,6 +59,8 @@ class ChangeBindPhonePresenter extends BasePagePresenter<ChangeBindPhoneView> {
         if (data.code == 200) {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
+          // SpUtil.putString(Constant.accessToken,
+          //     "0tM8b0c=*h+llleDiR7pBMotCiIUuXA==*8T4dX3XqDcYAr+xIqGftaQ==*yiYU6/ndyH+CXLEUxvdZaA==");
           view.bindSuccess("登录成功");
           DYUtil().evaluate("1");
           EventUMStatistics.umengCommonMapEvent(

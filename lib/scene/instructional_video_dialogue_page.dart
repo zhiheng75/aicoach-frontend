@@ -292,7 +292,7 @@ class _InstructionalVideoDialoguePageState
         _instructionalVideoDialoguePresenter.postStepUpdate(lessonId, stepId);
         // onNextSocketEnd();
         _listScrollController.scrollToEnd();
-        Log.e("AI说的话文字文成=====+++" + getCurrentTimeAndMilliseconds());
+        Log.e("AI这阶段完成=====+++" + getCurrentTimeAndMilliseconds());
 
         return;
       }
@@ -321,6 +321,7 @@ class _InstructionalVideoDialoguePageState
         _homeProvider.notify();
         _answer = null;
         _listScrollController.scrollToEnd();
+        Log.e("AIend完成=====+++" + getCurrentTimeAndMilliseconds());
 
         return;
       }

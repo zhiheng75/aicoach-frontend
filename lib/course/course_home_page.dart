@@ -517,42 +517,42 @@ class _CourseHomePageState extends State<CourseHomePage>
                 onTap: () {
                   // showView(xxlist[i].levelId);
                   // return;
-                  if (list[i].isUserBuy == 1) {
+                  if (list[index].isUserBuy == 1) {
                     EventUMStatistics.umengCommonMapEvent(
                         "click_index_go_to_class");
 
                     //去上课
-                    if (list[i].isLocked == 0) {
+                    if (list[index].isLocked == 0) {
                       NavigatorUtils.push(
                           context,
                           // CourseRouter.courseFlowPage,
-                          "${CourseRouter.courseFlowPage}?lessonId=${list[i].lessonId}");
+                          "${CourseRouter.courseFlowPage}?lessonId=${list[index].lessonId}");
                     } else {
                       // _courseHomePagePresenter.getLessonTime(
                       //     xxlist[i].lessonId.toString(),
                       //     xxlist[i].levelId.toString());
-                      intervalClick(2, list[i].lessonId.toString(),
-                          list[i].levelId.toString());
+                      intervalClick(2, list[index].lessonId.toString(),
+                          list[index].levelId.toString());
                       // showImageDialog(xxlist[i].unlockDate);
                       // Toast.show(
                       //   '需要老师安排课才能上课',
                       // );
                     }
                   } else {
-                    if (list[i].isLocked == 0) {
+                    if (list[index].isLocked == 0) {
                       NavigatorUtils.push(
                           context,
                           // CourseRouter.courseFlowPage,
-                          "${CourseRouter.courseFlowPage}?lessonId=${list[i].lessonId}");
+                          "${CourseRouter.courseFlowPage}?lessonId=${list[index].lessonId}");
                     } else {
                       //判断手机号再说获取证书还是免费学习
-                      showView(list[i].levelId, list[i].goodsLabel);
+                      showView(list[index].levelId, list[index].goodsLabel);
                     }
                   }
                 },
                 child: CourseHomeItem(
-                  index: i + 1,
-                  unitData: list[i],
+                  index: index + 1,
+                  unitData: list[index],
                   backColor: colorBackData[i],
                   iconBackColor: colorIconBackData[i],
                 ),

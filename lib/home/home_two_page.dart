@@ -326,7 +326,8 @@ class _HomeTwoPageState extends State<HomeTwoPage>
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    // SpUtil.putString(Constant.accessToken,
+    //     "0tM8b0c=*h+llleDiR7pBMotCiIUuXA==*8T4dX3XqDcYAr+xIqGftaQ==*yiYU6/ndyH+CXLEUxvdZaA==");
     SpUtil.putString(Constant.netWorkTos, "0");
     initDeepLinks();
 
