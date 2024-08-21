@@ -155,9 +155,9 @@ class MyApp extends StatelessWidget {
       interceptors: interceptors,
     );
 
-    // if (ProxyConfig.isProxy) {
-    // DioUtils.instance.setProxy(ProxyConfig.proxyUri);
-    // }
+    if (ProxyConfig.isProxy) {
+      DioUtils.instance.setProxy(ProxyConfig.proxyUri);
+    }
   }
 
   @override

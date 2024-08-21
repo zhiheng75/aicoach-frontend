@@ -292,7 +292,7 @@ class _InstructionalVideoDialoguePageState
         _instructionalVideoDialoguePresenter.postStepUpdate(lessonId, stepId);
         // onNextSocketEnd();
         _listScrollController.scrollToEnd();
-        Log.e("AI这阶段完成=====+++" + getCurrentTimeAndMilliseconds());
+        Log.e("志恒,AI这阶段完成," + getCurrentTimeAndMilliseconds());
 
         return;
       }
@@ -321,13 +321,13 @@ class _InstructionalVideoDialoguePageState
         _homeProvider.notify();
         _answer = null;
         _listScrollController.scrollToEnd();
-        Log.e("AIend完成=====+++" + getCurrentTimeAndMilliseconds());
+        Log.e("志恒,AIend完成," + getCurrentTimeAndMilliseconds());
 
         return;
       }
       _answer!.text += answer;
       Log.e("AI说的话" + _answer!.text);
-      Log.e("AI说的话文字=====+++" + getCurrentTimeAndMilliseconds());
+      Log.e("志恒,AI说的话文字," + getCurrentTimeAndMilliseconds());
 
       _homeProvider.notify();
       _listScrollController.scrollToEnd();
@@ -344,7 +344,7 @@ class _InstructionalVideoDialoguePageState
       if (_listPlayer != null) {
         _listPlayer!.play(answer);
       }
-      Log.e("AI说的话音频=====+++" + getCurrentTimeAndMilliseconds());
+      Log.e("志恒,AI说的话音频," + getCurrentTimeAndMilliseconds());
     }
   }
 

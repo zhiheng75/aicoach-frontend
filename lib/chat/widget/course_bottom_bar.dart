@@ -317,11 +317,11 @@ class _CourseBottomBarState extends State<CourseBottomBar>
           widget.onScrollEnd!();
         }
         EvaluateUtil().evaluate(message, () {
-          Log.e("测评评分一系列成功异步=====+++" + getCurrentTimeAndMilliseconds());
+          Log.e("志恒,测评评分一系列成功异步," + getCurrentTimeAndMilliseconds());
           _homeProvider.updateNormalMessage(message);
         });
       });
-      Log.e("显示成功=====+++" + getCurrentTimeAndMilliseconds());
+      Log.e("志恒,显示成功," + getCurrentTimeAndMilliseconds());
       _chatWebsocket.sendMessage(
         text: '[message_id=${message.id}]$text',
         onUninited: () {
@@ -331,7 +331,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
           );
         },
         onSuccess: () {
-          Log.e("socket给出发送成功=====+++" + getCurrentTimeAndMilliseconds());
+          Log.e("志恒,socket给出发送成功," + getCurrentTimeAndMilliseconds());
         },
         onFail: () {
           // insertTipMessage('Please switch to new roles, topics, or scene');
@@ -367,7 +367,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
   void sendTwoMessage(String msg, String word) {
     insertTwoUserMessage(word, (message) {
       ClassEvaluateUtil().evaluate(message, (Map<String, dynamic> map) {
-        Log.e("跟读测评完成=====+++" + getCurrentTimeAndMilliseconds());
+        Log.e("志恒,跟读测评完成," + getCurrentTimeAndMilliseconds());
 
         try {
           double value = double.parse(map["total_score"]);
@@ -729,7 +729,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                     if (widget.onStartBool != null) {
                       widget.onStartBool!(true);
                     }
-                    Log.e("按住说话=====+++" + getCurrentTimeAndMilliseconds());
+                    Log.e("志恒,按住说话," + getCurrentTimeAndMilliseconds());
                     _recognizeUtil = RecognizeUtil();
                     _recognizeUtil.setLanguage(widget.language ?? 'en');
                     // 开始录音
@@ -740,8 +740,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                     }, onComplete: (buffer) {
                       _recognizeUtil.pushAudioBuffer(2, buffer ?? Uint8List(0));
                       _bufferList.add(buffer ?? Uint8List(0));
-                      Log.e(
-                          "讯飞识别音频发送=====+++" + getCurrentTimeAndMilliseconds());
+                      Log.e("志恒,讯飞识别音频发送," + getCurrentTimeAndMilliseconds());
                     });
 
                     // 设置识别
@@ -783,7 +782,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                         widget.controller.setDisabled(false);
                         return;
                       }
-                      Log.e("识别完成=====+++" + getCurrentTimeAndMilliseconds());
+                      Log.e("志恒,识别完成," + getCurrentTimeAndMilliseconds());
 
                       if (widget.repeatWord != "") {
                         //这里先调评测,分高传tag分低穿别的
@@ -802,7 +801,7 @@ class _CourseBottomBarState extends State<CourseBottomBar>
                   }
                 },
                 onEnd: (_) async {
-                  Log.e("松开发送=====+++" + getCurrentTimeAndMilliseconds());
+                  Log.e("志恒,松开发送," + getCurrentTimeAndMilliseconds());
 
                   // 录音中因识别失败关闭录音操作后手指还未抬起
                   if (!widget.controller.showRecord.value) {
