@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // This code is also used in the example.md. Please keep it up to date.
 class PlayerWidget extends StatefulWidget {
@@ -151,8 +154,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   Widget build(BuildContext context) {
     return Container(
       // padding: const EdgeInsets.all(10),
-      width: 290,
-      height: 90,
+      // width: 290,
+      // height: 190,
       // color: Colors.amber,
       child: Stack(
         children: [
@@ -164,15 +167,17 @@ class _PlayerWidgetState extends State<PlayerWidget> {
               child: LoadImage(
                 imgUrl,
                 fit: BoxFit.fitWidth,
-                width: 290,
-                height: 90,
+                // width: 290,
+                // height: 190,
               ),
             ),
           ),
           Container(
-            margin: const EdgeInsets.all(10),
+            margin: EdgeInsets.only(
+                right: 10.w, left: 10.w, bottom: 15.w, top: 15.w),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
                   children: <Widget>[
@@ -180,41 +185,43 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                         ? GestureDetector(
                             behavior: HitTestBehavior.opaque,
                             onTap: _isPlaying ? null : _play,
-                            child: const LoadAssetImage(
+                            child: LoadAssetImage(
                               "audio_play",
-                              width: 24.0,
-                              height: 24.0,
+                              width: 24.0.w,
+                              height: 24.0.w,
                             ),
                           )
                         : GestureDetector(
                             behavior: HitTestBehavior.opaque,
                             onTap: _isPlaying ? _pause : null,
-                            child: const LoadAssetImage(
+                            child: LoadAssetImage(
                               "audio_paused",
-                              width: 24.0,
-                              height: 24.0,
+                              width: 24.0.w,
+                              height: 24.0.w,
                             ),
                           ),
-                    Slider(
-                      activeColor: Colors.white,
-                      inactiveColor: Colors.white54,
-                      thumbColor: Colors.white,
-                      onChanged: (value) {
-                        final duration = _duration;
-                        if (duration == null) {
-                          return;
-                        }
-                        final position = value * duration.inMilliseconds;
-                        player.seek(Duration(milliseconds: position.round()));
-                      },
-                      value: (_position != null &&
-                              _duration != null &&
-                              _position!.inMilliseconds > 0 &&
-                              _position!.inMilliseconds <
-                                  _duration!.inMilliseconds)
-                          ? _position!.inMilliseconds /
-                              _duration!.inMilliseconds
-                          : 0.0,
+                    Expanded(
+                      child: Slider(
+                        activeColor: Colors.white,
+                        inactiveColor: Colors.white54,
+                        thumbColor: Colors.white,
+                        onChanged: (value) {
+                          final duration = _duration;
+                          if (duration == null) {
+                            return;
+                          }
+                          final position = value * duration.inMilliseconds;
+                          player.seek(Duration(milliseconds: position.round()));
+                        },
+                        value: (_position != null &&
+                                _duration != null &&
+                                _position!.inMilliseconds > 0 &&
+                                _position!.inMilliseconds <
+                                    _duration!.inMilliseconds)
+                            ? _position!.inMilliseconds /
+                                _duration!.inMilliseconds
+                            : 0.0,
+                      ),
                     ),
                     Text(
                       _position != null
@@ -227,21 +234,25 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                       //     : _duration != null
                       //         ? _durationText
                       //         : '',
-                      style: const TextStyle(
-                        fontSize: 15,
+                      style: TextStyle(
+                        fontSize: 15.sp,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
                     ),
                   ],
                 ),
-                Text(
-                  nameText,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      nameText,
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

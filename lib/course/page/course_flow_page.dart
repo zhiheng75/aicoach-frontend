@@ -379,7 +379,6 @@ class _CourseFlowPageState extends State<CourseFlowPage>
                   LoginManager.checkLogin(context, () {
                     if (stepDetailData.data.data[index].isLocked == 0) {
                       gotoCourse(index);
-                      // showImageDialog();
                     } else {
                       Toast.show(
                         '请按顺序完成',
@@ -777,7 +776,7 @@ class _CourseFlowPageState extends State<CourseFlowPage>
         ),
         middle: Text(
           titleStr,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp),
         ),
       ),
       child: Scaffold(

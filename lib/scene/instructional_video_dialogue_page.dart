@@ -1478,7 +1478,7 @@ class _InstructionalVideoDialoguePageState
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: isIPad ? 10.sp : 17.sp),
+                  fontSize: isIPad ? 10.sp : 15.sp),
             )),
           ),
           isUserBuy == 1

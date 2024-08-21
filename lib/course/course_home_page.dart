@@ -524,8 +524,6 @@ class _CourseHomePageState extends State<CourseHomePage>
               // return Text("data");
               return GestureDetector(
                 onTap: () {
-                  // showView(xxlist[i].levelId);
-                  // return;
                   if (list[index].isUserBuy == 1) {
                     EventUMStatistics.umengCommonMapEvent(
                         "click_index_go_to_class");
@@ -537,15 +535,8 @@ class _CourseHomePageState extends State<CourseHomePage>
                           // CourseRouter.courseFlowPage,
                           "${CourseRouter.courseFlowPage}?lessonId=${list[index].lessonId}");
                     } else {
-                      // _courseHomePagePresenter.getLessonTime(
-                      //     xxlist[i].lessonId.toString(),
-                      //     xxlist[i].levelId.toString());
                       intervalClick(2, list[index].lessonId.toString(),
                           list[index].levelId.toString());
-                      // showImageDialog(xxlist[i].unlockDate);
-                      // Toast.show(
-                      //   '需要老师安排课才能上课',
-                      // );
                     }
                   } else {
                     if (list[index].isLocked == 0) {
