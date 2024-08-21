@@ -21,6 +21,7 @@ import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/util/toast_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
+import 'package:Bubble/widgets/load_fail.dart';
 import 'package:Bubble/widgets/navigation_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,9 +49,10 @@ class _CourseHomePageState extends State<CourseHomePage>
   final ScreenUtil _screenUtil = ScreenUtil();
   late CourseHomePagePresenter _courseHomePagePresenter;
   late List<Datum> listData = [];
-  bool isLoding = true;
+  // bool isLoding = true;
   late String levelNameStr = "";
   late String levelidStr = "";
+  late String pageState = 'loading';
 
   List<Color> colorBackData = [
     Colours.color_F9F8FF,
@@ -253,6 +255,13 @@ class _CourseHomePageState extends State<CourseHomePage>
       // EventUMStatistics.umengCommonOnPageEnd("home_new_page");
       // EventUMStatistics.umengCommonOnPageEnd("person_page");
     });
+  }
+
+  void init() {
+    pageState = 'loading';
+    _courseHomePagePresenter.getLessonList();
+
+    setState(() {});
   }
 
   @override
@@ -619,50 +628,81 @@ class _CourseHomePageState extends State<CourseHomePage>
     //     ),
     //   );
     // }
+
+    if (pageState == 'loading') {
+      // ignore: deprecated_member_use
+      return WillPopScope(
+        onWillPop: () async {
+          //这里可以响应物理返回键
+          return false;
+        },
+        child: Container(
+          color: const Color(0xFFEBEDF0),
+          alignment: Alignment.center,
+          child: lodingView(),
+        ),
+      );
+    }
+
+    if (pageState == 'fail') {
+      // ignore: deprecated_member_use
+      return WillPopScope(
+        onWillPop: () async {
+          //这里可以响应物理返回键
+          return false;
+        },
+        child: Container(
+          color: const Color(0xFFEBEDF0),
+          alignment: Alignment.center,
+          child: LoadFail(
+            reload: init,
+          ),
+        ),
+      );
+    }
+
     return AnnotatedRegion(
         value: SystemUiOverlayStyle.dark,
         child: Scaffold(
             body: SafeArea(
-          child: isLoding
-              ? lodingView()
-              : Column(
-                  children: [
-                    listData.length > 1
-                        ? listData.length == 2
-                            ? tabbar()
-                            : tabbarTwo()
-                        : listData.isNotEmpty
-                            ? Container(
-                                height: 30,
-                                color: Colors.white,
-                                child: Text(
-                                  levelNameStr,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              )
-                            // XTCupertinoNavigationBar(
-                            //     backgroundColor: const Color(0xFFFFFFFF),
-                            //     border: null,
-                            //     padding: EdgeInsetsDirectional.zero,
-                            // middle: Text(
-                            //   levelNameStr,
-                            //   style: const TextStyle(
-                            //       fontWeight: FontWeight.bold),
-                            // ),
-                            //   )
-                            : Container(),
-                    // NavigationBaView(
-                    //     title: levelNameStr,
-                    //   ),
-                    // Center(child: SizedBox(width: 300, child: tabbar())),
-                    listData.isNotEmpty
-                        ? Expanded(child: _refreshListView())
-                        : Container(),
-                  ],
-                ),
+          child: Column(
+            children: [
+              listData.length > 1
+                  ? listData.length == 2
+                      ? tabbar()
+                      : tabbarTwo()
+                  : listData.isNotEmpty
+                      ? Container(
+                          height: 30,
+                          color: Colors.white,
+                          child: Text(
+                            levelNameStr,
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      // XTCupertinoNavigationBar(
+                      //     backgroundColor: const Color(0xFFFFFFFF),
+                      //     border: null,
+                      //     padding: EdgeInsetsDirectional.zero,
+                      // middle: Text(
+                      //   levelNameStr,
+                      //   style: const TextStyle(
+                      //       fontWeight: FontWeight.bold),
+                      // ),
+                      //   )
+                      : Container(),
+              // NavigationBaView(
+              //     title: levelNameStr,
+              //   ),
+              // Center(child: SizedBox(width: 300, child: tabbar())),
+              listData.isNotEmpty
+                  ? Expanded(child: _refreshListView())
+                  : Container(),
+            ],
+          ),
         )));
 
     //      extended.ExtendedNestedScrollView(
@@ -742,13 +782,15 @@ class _CourseHomePageState extends State<CourseHomePage>
   @override
   void sendFail(String msg) {
     // TODO: implement sendFail
+    pageState = 'fail';
+    setState(() {});
   }
 
   @override
   void sendSuccess(LessonListBean data) {
     listData = [];
 
-    isLoding = false;
+    // isLoding = false;
     if (data.data.isNotEmpty) {
       levelNameStr = data.data[0].levelName;
     }
@@ -763,6 +805,8 @@ class _CourseHomePageState extends State<CourseHomePage>
       List<UnitList> list1 = listData[0].list[0].list;
       if (list1.isNotEmpty) {}
     }
+    pageState = 'success';
+
     setState(() {});
   }
 

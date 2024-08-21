@@ -678,4 +678,9 @@ class _ChatState extends State<ChatPage>
   void sendTopicEntitySuccess(List<TopicEntity> list) {
     // TODO: implement sendTopicEntitySuccess
   }
+
+  @override
+  void sendFail(String msg) {
+    // TODO: implement sendFail
+  }
 }
