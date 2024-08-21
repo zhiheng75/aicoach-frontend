@@ -179,7 +179,10 @@ class _PlayerWidgetState extends State<PlayerWidget> {
             right: 0,
             child: Container(
               margin: EdgeInsets.only(
-                  right: 10.w, left: 10.w, bottom: 15.w, top: 15.w),
+                right: 10.w,
+                left: 10.w,
+                bottom: 10.w,
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
