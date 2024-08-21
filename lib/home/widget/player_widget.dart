@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -172,89 +173,95 @@ class _PlayerWidgetState extends State<PlayerWidget> {
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(
-                right: 10.w, left: 10.w, bottom: 15.w, top: 15.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  children: <Widget>[
-                    !_isPlaying
-                        ? GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: _isPlaying ? null : _play,
-                            child: LoadAssetImage(
-                              "audio_play",
-                              width: 24.0.w,
-                              height: 24.0.w,
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              margin: EdgeInsets.only(
+                  right: 10.w, left: 10.w, bottom: 15.w, top: 15.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    children: <Widget>[
+                      !_isPlaying
+                          ? GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: _isPlaying ? null : _play,
+                              child: LoadAssetImage(
+                                "audio_play",
+                                width: 24.0.w,
+                                height: 24.0.w,
+                              ),
+                            )
+                          : GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: _isPlaying ? _pause : null,
+                              child: LoadAssetImage(
+                                "audio_paused",
+                                width: 24.0.w,
+                                height: 24.0.w,
+                              ),
                             ),
-                          )
-                        : GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: _isPlaying ? _pause : null,
-                            child: LoadAssetImage(
-                              "audio_paused",
-                              width: 24.0.w,
-                              height: 24.0.w,
-                            ),
-                          ),
-                    Expanded(
-                      child: Slider(
-                        activeColor: Colors.white,
-                        inactiveColor: Colors.white54,
-                        thumbColor: Colors.white,
-                        onChanged: (value) {
-                          final duration = _duration;
-                          if (duration == null) {
-                            return;
-                          }
-                          final position = value * duration.inMilliseconds;
-                          player.seek(Duration(milliseconds: position.round()));
-                        },
-                        value: (_position != null &&
-                                _duration != null &&
-                                _position!.inMilliseconds > 0 &&
-                                _position!.inMilliseconds <
-                                    _duration!.inMilliseconds)
-                            ? _position!.inMilliseconds /
-                                _duration!.inMilliseconds
-                            : 0.0,
+                      Expanded(
+                        child: Slider(
+                          activeColor: Colors.white,
+                          inactiveColor: Colors.white54,
+                          thumbColor: Colors.white,
+                          onChanged: (value) {
+                            final duration = _duration;
+                            if (duration == null) {
+                              return;
+                            }
+                            final position = value * duration.inMilliseconds;
+                            player
+                                .seek(Duration(milliseconds: position.round()));
+                          },
+                          value: (_position != null &&
+                                  _duration != null &&
+                                  _position!.inMilliseconds > 0 &&
+                                  _position!.inMilliseconds <
+                                      _duration!.inMilliseconds)
+                              ? _position!.inMilliseconds /
+                                  _duration!.inMilliseconds
+                              : 0.0,
+                        ),
                       ),
-                    ),
-                    Text(
-                      _position != null
-                          ? _positionText
-                          : _duration != null
-                              ? _durationText
-                              : '0',
-                      // _position != null
-                      //     ? '$_positionText/$_durationText'
-                      //     : _duration != null
-                      //         ? _durationText
-                      //         : '',
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                      Text(
+                        _position != null
+                            ? _positionText
+                            : _duration != null
+                                ? _durationText
+                                : '0',
+                        // _position != null
+                        //     ? '$_positionText/$_durationText'
+                        //     : _duration != null
+                        //         ? _durationText
+                        //         : '',
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      nameText,
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        nameText,
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

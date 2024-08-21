@@ -106,8 +106,9 @@ class _CourseFlowPageState extends State<CourseFlowPage>
 
     _homeProvider = Provider.of<HomeProvider>(context, listen: false);
     init();
-    _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
-
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _courseDetailsPagePresenter.getStepDetail(widget.lessonId);
+    });
     EventBus().on(NotificationUtils.teachIdx, (idx) {
       teacherId = idx.toString();
       SpUtil.putString(Constant.teacherId, idx.toString());
