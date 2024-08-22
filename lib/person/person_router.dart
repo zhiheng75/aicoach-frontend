@@ -1,15 +1,18 @@
+import 'package:Bubble/person/entity/redeem_code_bean.dart';
 import 'package:Bubble/person/invitation_code_page.dart';
 import 'package:Bubble/person/page/cancel_account_page.dart';
 import 'package:Bubble/person/page/course_speaking_purchase_page.dart';
 import 'package:Bubble/person/page/error_correction_detail_page.dart';
 import 'package:Bubble/person/page/error_correction_page.dart';
 import 'package:Bubble/person/page/join_community_page.dart';
+import 'package:Bubble/person/page/redeem_code_finsh_page.dart';
 import 'package:Bubble/person/page/redeem_code_page.dart';
 import 'package:Bubble/person/page/user_membership_upgrade_page.dart';
 import 'package:Bubble/person/page/xueersi_purchase_page.dart';
 import 'package:Bubble/person/page/xueersi_purchase_success_page.dart';
 import 'package:Bubble/person/page/xueersi_purchase_success_two_page.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../routers/i_router.dart';
 import 'about.dart';
@@ -32,6 +35,7 @@ class PersonalRouter implements IRouterProvider {
 
   static String joinCommunityPage = '/JoinCommunityPage';
   static String redeemCodePage = '/RedeemCodePage';
+  static String redeemCodeFinshPage = '/RedeemCodeFinshPage';
 
   static String errorCorrectionPage = '/ErrorCorrectionPage';
   static String errorCorrectionDetailPage = '/ErrorCorrectionDetailPage';
@@ -46,6 +50,29 @@ class PersonalRouter implements IRouterProvider {
 
   @override
   void initRouter(FluroRouter router) {
+    router.define(redeemCodeFinshPage,
+        handler: Handler(handlerFunc: (context, params) {
+      // ExamStepBean examStepBean
+
+      // if (context != null) {
+      // String state = params['state']!.first;
+
+      DataCode stepDetailBean =
+          ModalRoute.of(context!)?.settings.arguments as DataCode;
+      // }
+      return RedeemCodeFinshPage(
+        data: stepDetailBean,
+      );
+    }));
+
+    // router.define(redeemCodeFinshPage,
+    //     handler: Handler(handlerFunc: (context, params) {
+    //   String type = params['type']!.first;
+    //   String name = params['name']!.first;
+
+    //   return RedeemCodeFinshPage(type: type, name: name);
+    // }));
+
     router.define(xueersiPurchaseSuccessPage,
         handler: Handler(
             handlerFunc: (_, __) => const XueersiPurchaseSuccessPage()));

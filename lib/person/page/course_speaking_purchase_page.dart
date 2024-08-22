@@ -383,7 +383,9 @@ class _CourseSpeakingPurchasePageState extends State<CourseSpeakingPurchasePage>
               Container(
                 height: isIPad
                     ? _screenUtil.statusBarHeight + 50.h
-                    : _screenUtil.statusBarHeight + 30.h,
+                    : Device.isAndroid
+                        ? _screenUtil.statusBarHeight + 40.h
+                        : _screenUtil.statusBarHeight + 30.h,
               ),
               Row(
                 children: [

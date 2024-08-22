@@ -602,6 +602,11 @@ class _MessageItemState extends State<MessageItem> {
             // coverUrl = "";
             //取出来文字content
             coverUrl = content!;
+            coverUrl = Uri.encodeComponent(coverUrl);
+            // Uri.encodeComponent(component)
+            coverUrl =
+                "https://statics.shenmo-ai.com/courses/word_img/$coverUrl.jpg";
+            Log.e("拼接的图片" + coverUrl);
             return Column(
               children: [
                 Gaps.vGap8,
@@ -614,13 +619,12 @@ class _MessageItemState extends State<MessageItem> {
                       barrierDismissible: false,
                       useSafeArea: false,
                       builder: (_) => PhotoViewSimpleScreen(
-                        imageProvider: NetworkImage(
-                            "https://statics.shenmo-ai.com/courses/word_img/$coverUrl.jpg"),
+                        imageProvider: NetworkImage(coverUrl),
                       ),
                     );
                   },
                   child: LoadImage(
-                    "https://statics.shenmo-ai.com/courses/word_img/$coverUrl.jpg",
+                    coverUrl,
                   ),
                 ),
               ],

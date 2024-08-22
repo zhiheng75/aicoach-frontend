@@ -22,6 +22,7 @@ import 'package:Bubble/scene/presenter/teaching_dialogue_presenter.dart';
 import 'package:Bubble/scene/view/instructional_video_dialogue_view.dart';
 // import 'package:Bubble/scene/widget/top_head_background.dart';
 import 'package:Bubble/util/confirm_utils.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/image_utils.dart';
@@ -1511,7 +1512,10 @@ class _InstructionalVideoDialoguePageState
 
   Widget topFlowWidget() {
     return Positioned(
-      top: _screenUtil.statusBarHeight + 30.h + (isIPad ? 20.h : 0),
+      top: _screenUtil.statusBarHeight +
+          30.h +
+          (isIPad ? 20.h : 0) +
+          (Device.isAndroid ? 5.h : 0),
       left: (_screenUtil.screenWidth - (isIPad ? 100.w : 130.w)) / 2,
       child: Container(
         decoration: BoxDecoration(
