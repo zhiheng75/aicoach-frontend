@@ -301,7 +301,7 @@ class _CourseHomePageState extends State<CourseHomePage>
     super.dispose();
     EventUMStatistics.umengCommonOnPageEnd("course_home_page");
     EventBus().off(NotificationUtils.paySuccess);
-    EventBus().off(NotificationUtils.taberTwo);
+    // EventBus().off(NotificationUtils.taberTwo);
 
     EventBus().off(NotificationUtils.loginIn);
     EventBus().off(NotificationUtils.loginOut);

@@ -9,5 +9,7 @@ abstract class RedeemCodeView implements IMvpView {
   void sendCodeSuccess(DataCode data);
 
   void sendFail(String msg);
+  void sendTwoFail(String msg);
+
   void sendCodeFail(String msg);
 }

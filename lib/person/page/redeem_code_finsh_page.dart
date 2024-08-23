@@ -4,6 +4,8 @@ import 'package:Bubble/person/entity/redeem_code_bean.dart';
 import 'package:Bubble/res/colors.dart';
 import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/routers/fluro_navigator.dart';
+import 'package:Bubble/util/event_bus.dart';
+import 'package:Bubble/util/notification_utils.dart';
 import 'package:Bubble/widgets/bx_cupertino_navigation_bar.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -101,7 +103,7 @@ class _RedeemCodeFinshPageState extends State<RedeemCodeFinshPage> {
               ),
               child: widget.data.goodsType == 1
                   ? Text(
-                      "您已成功兑换口语畅聊卡:${widget.data.goodsName}现在开始和虚拟伙伴一起联系吧",
+                      "您已成功兑换口语畅聊卡《${widget.data.goodsName}》现在开始和虚拟伙伴一起联系吧",
                       style: TextStyle(
                         fontSize: 16.0.sp,
                         fontWeight: FontWeight.bold,
@@ -134,6 +136,7 @@ class _RedeemCodeFinshPageState extends State<RedeemCodeFinshPage> {
                 if (widget.data.goodsType == 1) {
                   NavigatorUtils.goBack(context);
                   NavigatorUtils.goBack(context);
+                  EventBus().emit(NotificationUtils.taberTwo);
                 } else {
                   String accessToken =
                       SpUtil.getString(Constant.accessToken) ?? "";

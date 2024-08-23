@@ -7,6 +7,7 @@ import 'package:Bubble/net/http_api.dart';
 import 'package:Bubble/person/entity/redeem_code_bean.dart';
 import 'package:Bubble/person/entity/redeem_list_bean.dart';
 import 'package:Bubble/person/view/redeem_code_view.dart';
+import 'package:Bubble/util/toast_utils.dart';
 
 class RedeemCodePagePresenter extends BasePagePresenter<RedeemCodeView> {
   @override
@@ -33,7 +34,7 @@ class RedeemCodePagePresenter extends BasePagePresenter<RedeemCodeView> {
         }
       },
       onError: (code, msg) {
-        view.sendFail(msg);
+        view.sendTwoFail(msg);
       },
     );
   }
@@ -58,7 +59,8 @@ class RedeemCodePagePresenter extends BasePagePresenter<RedeemCodeView> {
         // view.sendCodeSuccess(resultData);
       },
       onError: (code, msg) {
-        view.sendFail(msg);
+        // view.sendFail(msg);
+        Toast.show("网络连接异常，请稍后重试");
       },
     );
   }

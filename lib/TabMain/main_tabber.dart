@@ -90,6 +90,8 @@ class _MainTabberState extends State<MainTabber> {
       setState(() {
         currentIndex = 1;
         _controller!.index = 1;
+        tabSelect(currentIndex);
+        tabUMSelect(currentIndex);
       });
     });
   }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,6 +52,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
   String nameText = "";
   String imgUrl = "";
+  String textStr = "";
 
   @override
   void initState() {
@@ -62,9 +64,26 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     // Set the release mode to keep the source after playback has completed.
     player.setReleaseMode(ReleaseMode.stop);
 
+    playerUrlStr = widget.playerUrl;
+    List<String> fruits = playerUrlStr.split('/'); // 使用逗号作为分隔符
+    nameText = fruits.last;
+    textStr = fruits.last;
+    nameText = nameText.substring(0, nameText.indexOf('.'));
+
+    imgUrl = widget.playerUrl.replaceAll(textStr, Uri.encodeComponent(textStr));
+    imgUrl = imgUrl.substring(0, imgUrl.length - 4);
+    imgUrl = "$imgUrl.jpg";
+    Log.e("图片====" + imgUrl);
+
+    playerUrlStr =
+        widget.playerUrl.replaceAll(textStr, Uri.encodeComponent(textStr));
+    Log.e("歌曲地址====" + playerUrlStr);
+    setState(() {});
+
     // Start the player as soon as the app is displayed.
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await player.setSourceUrl(widget.playerUrl);
+      await player.setSourceUrl(playerUrlStr);
+
       // await player.setSourceUrl(
       //     'https://statics.shenmo-ai.com/audio/20240304-131948-bf9c44b4.mp3');
       // await player.setSourceUrl(
@@ -75,17 +94,6 @@ class _PlayerWidgetState extends State<PlayerWidget> {
       // await player.play(UrlSource(
       //     'https://statics.shenmo-ai.com/audio/20240304-131948-bf9c44b4.mp3'));
     });
-
-    playerUrlStr = widget.playerUrl;
-    List<String> fruits = playerUrlStr.split('/'); // 使用逗号作为分隔符
-    nameText = fruits.last;
-    nameText = nameText.substring(0, nameText.indexOf('.'));
-    nameText = Uri.decodeComponent(nameText);
-
-    // imgUrl = playerUrlStr.substring(0, playerUrlStr.indexOf('.'));
-    imgUrl = playerUrlStr.substring(0, playerUrlStr.length - 4);
-    imgUrl = "$imgUrl.jpg";
-    setState(() {});
 
     _playerState = player.state;
     player.getDuration().then(
