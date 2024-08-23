@@ -125,9 +125,8 @@ class _CourseOrderPageState extends State<CourseOrderPage>
                     }
                   },
                   child: Container(
-                    width: 150.w,
-                    height: 40.h,
-                    // height: ,
+                    // width: 150.w,
+                    height: 30.h,
                     // height: Dimens.h_dp40,
                     decoration: BoxDecoration(
                         image: DecorationImage(

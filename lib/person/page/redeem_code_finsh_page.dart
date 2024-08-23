@@ -153,7 +153,7 @@ class _RedeemCodeFinshPageState extends State<RedeemCodeFinshPage> {
                 }
               },
               child: Container(
-                width: 270.w,
+                width: 240.w,
                 height: 45.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(40.0),

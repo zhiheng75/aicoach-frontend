@@ -137,23 +137,6 @@ class _RedeemCodePageState extends State<RedeemCodePage>
       );
     }
 
-    if (pageState == 'fail') {
-      // ignore: deprecated_member_use
-      return WillPopScope(
-        onWillPop: () async {
-          //这里可以响应物理返回键
-          return false;
-        },
-        child: Container(
-          color: const Color(0xFFEBEDF0),
-          alignment: Alignment.center,
-          child: LoadFail(
-            reload: init,
-          ),
-        ),
-      );
-    }
-
     return CupertinoPageScaffold(
       navigationBar: XTCupertinoNavigationBar(
         backgroundColor: const Color(0xFFFFFFFF),
@@ -169,198 +152,217 @@ class _RedeemCodePageState extends State<RedeemCodePage>
         body: CustomPaint(
           painter: TopOriginPainter(),
           size: Size.infinite,
-          child: Container(
-            width: double.infinity,
-            color: Colours.color_E8E4FF,
-            child: CustomScrollView(slivers: [
-              SliverToBoxAdapter(
-                child: Stack(
-                  children: [
-                    Column(
-                      children: [
-                        const LoadAssetImage(
-                          'redeem_code_bg',
-                          fit: BoxFit.fitWidth,
-                          width: double.infinity,
-                        ),
-                        Gaps.vGap20
-                      ],
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 00,
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 30, right: 30),
-                        width: double.infinity,
-                        height: Dimens.h_dp45,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(Dimens.h_dp40),
-                          border: Border.all(width: 1, color: Colors.black),
-                        ),
-                        child: MyTextField(
-                          key: const Key('phone'),
-                          textAlign: TextAlign.center,
-                          isDelete: false,
-                          autoFocus: true,
-                          textMessage: (message) {},
-                          txtStyle: TextStyle(
-                            fontSize: Dimens.font_sp14,
-                            color: Colours.color_001652,
+          child: pageState == 'fail'
+              ? Container(
+                  color: const Color(0xFFEBEDF0),
+                  alignment: Alignment.center,
+                  child: LoadFail(
+                    reload: init,
+                  ),
+                )
+              : Container(
+                  width: double.infinity,
+                  color: Colours.color_E8E4FF,
+                  child: CustomScrollView(slivers: [
+                    SliverToBoxAdapter(
+                      child: Stack(
+                        children: [
+                          Column(
+                            children: [
+                              const LoadAssetImage(
+                                'redeem_code_bg',
+                                fit: BoxFit.fitWidth,
+                                width: double.infinity,
+                              ),
+                              Gaps.vGap20
+                            ],
                           ),
-                          hintStyle: TextStyle(
-                              fontSize: Dimens.font_sp14,
-                              color: Colours.color_001652),
-                          focusNode: _nodeText1,
-                          controller: _phoneController,
-                          // maxLength: 11,
-                          // keyboardType: TextInputType.phone,
-                          hintText: "请输入兑换码",
-                          underLineColor: Colours.color_00,
-                          countDownColor: Colours.color_001652,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    Gaps.vGap16,
-                    GestureDetector(
-                      onTap: () {
-                        if (_phoneController.text.isNotEmpty) {
-                          intervalClick(1);
-                        } else {
-                          Toast.show("未输入兑换码，请填写后重试");
-                        }
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: Dimens.h_dp45,
-                        decoration: BoxDecoration(
-                            // color: Colors.amber,
-                            image: DecorationImage(
-                                image:
-                                    ImageUtils.getAssetImage("redeem_code_btn"),
-                                fit: BoxFit.fitHeight)),
-                        child: Center(
-                          child: Text(
-                            '立即兑换',
-                            style: TextStyle(
-                              fontSize: 14.0.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              // height: 3.5,
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 00,
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.only(left: 30, right: 30),
+                              width: double.infinity,
+                              height: Dimens.h_dp45,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.circular(Dimens.h_dp40),
+                                border: Border.all(
+                                    width: 1, color: Colours.color_666666),
+                              ),
+                              child: MyTextField(
+                                key: const Key('phone'),
+                                textAlign: TextAlign.center,
+                                isDelete: false,
+                                autoFocus: true,
+                                textMessage: (message) {},
+                                txtStyle: TextStyle(
+                                  fontSize: Dimens.font_sp15,
+                                  color: Colours.color_001652,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                hintStyle: TextStyle(
+                                  fontSize: Dimens.font_sp15,
+                                  color: Colours.color_001652,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                focusNode: _nodeText1,
+                                controller: _phoneController,
+                                // maxLength: 11,
+                                // keyboardType: TextInputType.phone,
+                                hintText: "请输入兑换码",
+                                underLineColor: Colours.color_00,
+                                countDownColor: Colours.color_001652,
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                    redeemListBean.data.desc.isEmpty
-                        ? Container()
-                        : Container(
-                            margin: EdgeInsets.only(
-                                left: 16.w, right: 16.w, top: 20.w),
-                            padding: EdgeInsets.only(
-                                left: 10.w,
-                                right: 10.w,
-                                top: 5.h,
-                                bottom: 10.h),
-                            decoration: BoxDecoration(
-                              color: Colours.color_FFD67F,
-                              borderRadius: BorderRadius.circular(10.0),
-                              // border: Border.all(
-                              //   width: 1.0,
-                              //   style: BorderStyle.solid,
-                              //   color: Colours.color_001652,
-                              // ),
-                              // gradient: const LinearGradient(
-                              //   begin: Alignment.topRight,
-                              //   end: Alignment.bottomLeft,
-                              //   colors: [
-                              //     Colours.color_F8F3F5,
-                              //     Colours.color_8256FF,
-                              //     Colours.color_FF5CDB
-                              //   ],
-                              // ),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                LoadAssetImage(
-                                  "tishi_icon",
-                                  width: 24.w,
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          Gaps.vGap16,
+                          GestureDetector(
+                            onTap: () {
+                              if (_phoneController.text.isNotEmpty) {
+                                intervalClick(1);
+                              } else {
+                                Toast.show("未输入兑换码，请填写后重试");
+                              }
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: Dimens.h_dp45,
+                              decoration: BoxDecoration(
+                                  // color: Colors.amber,
+                                  image: DecorationImage(
+                                      image: ImageUtils.getAssetImage(
+                                          "redeem_code_btn"),
+                                      fit: BoxFit.fitHeight)),
+                              child: Center(
+                                child: Text(
+                                  '立即兑换',
+                                  style: TextStyle(
+                                    fontSize: 14.0.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    // height: 3.5,
+                                  ),
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("温情提示:",
-                                        style: TextStyle(
-                                          fontSize: 17.0.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                          // height: 3.5,
-                                        )),
-                                    Column(
-                                      children: _buildTSItems(),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                              ),
                             ),
-                          )
-                  ],
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: redeemListBean.data.list.isEmpty
-                    ? Container()
-                    : Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        margin:
-                            EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h),
-                        padding:
-                            EdgeInsets.only(top: 10.h, left: 5.w, right: 5.w),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Gaps.hGap16,
-                                LoadAssetImage(
-                                  "ticket_icon",
-                                  width: 24.w,
-                                ),
-                                Text("兑换记录",
-                                    style: TextStyle(
-                                      fontSize: 17.0.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                      // height: 3.5,
-                                    )),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              // mainAxisSize: MainAxisSize.min,
-                              children: _buildItems(),
-                            ),
-                            Gaps.vGap10
-                          ],
-                        ),
+                          ),
+                          redeemListBean.data.desc.length > 0
+                              ? Container(
+                                  margin: EdgeInsets.only(
+                                      left: 16.w, right: 16.w, top: 20.w),
+                                  padding: EdgeInsets.only(
+                                      left: 10.w,
+                                      right: 10.w,
+                                      top: 5.h,
+                                      bottom: 10.h),
+                                  decoration: BoxDecoration(
+                                    color: Colours.color_FFD67F,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    // border: Border.all(
+                                    //   width: 1.0,
+                                    //   style: BorderStyle.solid,
+                                    //   color: Colours.color_001652,
+                                    // ),
+                                    // gradient: const LinearGradient(
+                                    //   begin: Alignment.topRight,
+                                    //   end: Alignment.bottomLeft,
+                                    //   colors: [
+                                    //     Colours.color_F8F3F5,
+                                    //     Colours.color_8256FF,
+                                    //     Colours.color_FF5CDB
+                                    //   ],
+                                    // ),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      LoadAssetImage(
+                                        "tishi_icon",
+                                        width: 35.w,
+                                      ),
+                                      Gaps.hGap2,
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text("温馨提示:",
+                                              style: TextStyle(
+                                                fontSize: 17.0.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                                // height: 3.5,
+                                              )),
+                                          Column(
+                                            children: _buildTSItems(),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container()
+                        ],
                       ),
-              ),
-              SliverToBoxAdapter(
-                child: Gaps.vGap35,
-              )
-            ]),
-          ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: redeemListBean.data.list.length > 0
+                          ? Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              margin: EdgeInsets.only(
+                                  left: 16.w, right: 16.w, top: 16.h),
+                              padding: EdgeInsets.only(
+                                  top: 10.h, left: 5.w, right: 5.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Gaps.hGap16,
+                                      LoadAssetImage(
+                                        "ticket_icon",
+                                        width: 24.w,
+                                      ),
+                                      Gaps.hGap4,
+                                      Text("兑换记录",
+                                          style: TextStyle(
+                                            fontSize: 17.0.sp,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            // height: 3.5,
+                                          )),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    // mainAxisSize: MainAxisSize.min,
+                                    children: _buildItems(),
+                                  ),
+                                  Gaps.vGap10
+                                ],
+                              ),
+                            )
+                          : Container(),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Gaps.vGap35,
+                    )
+                  ]),
+                ),
         ),
       ),
     );

@@ -53,14 +53,21 @@ class RedeemCodePagePresenter extends BasePagePresenter<RedeemCodeView> {
         RedeemCodeBean resultData = RedeemCodeBean.fromJson(resultDataMap);
         if (resultData.code == 200) {
           view.sendCodeSuccess(resultData.data);
+        } else if (resultData.code == 502) {
+          Toast.show("服务器暂时无法处理您的请求，请稍后再试");
         } else {
           view.sendCodeFail(resultData.msg);
         }
         // view.sendCodeSuccess(resultData);
       },
       onError: (code, msg) {
+        if (code == 502) {
+          Toast.show("服务器暂时无法处理您的请求，请稍后再试");
+        } else {
+          Toast.show("网络连接异常，请稍后重试");
+        }
+
         // view.sendFail(msg);
-        Toast.show("网络连接异常，请稍后重试");
       },
     );
   }

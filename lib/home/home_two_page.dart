@@ -398,7 +398,12 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       // 初始化极光推送
       initPlatformState();
     });
+
     Future.delayed(const Duration(milliseconds: 300), () {
+      _homeTwoPagePresenter.getBannerList();
+      _homeTwoPagePresenter.getCharacterList();
+    });
+    Future.delayed(const Duration(milliseconds: 500), () {
       systemMaintenance();
     });
   }
@@ -790,23 +795,6 @@ class _HomeTwoPageState extends State<HomeTwoPage>
       );
     }
 
-    if (pageState == 'fail') {
-      // ignore: deprecated_member_use
-      return WillPopScope(
-        onWillPop: () async {
-          //这里可以响应物理返回键
-          return false;
-        },
-        child: Container(
-          color: const Color(0xFFEBEDF0),
-          alignment: Alignment.center,
-          child: LoadFail(
-            reload: init,
-          ),
-        ),
-      );
-    }
-
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,
@@ -819,188 +807,207 @@ class _HomeTwoPageState extends State<HomeTwoPage>
           return false;
         },
         child: SafeArea(
-            child: Stack(
-          children: [
-            bg,
-            Container(
-              margin: EdgeInsets.only(left: 12.w, right: 12.w),
-              width: _screenUtil.screenWidth,
-              height: _screenUtil.screenHeight,
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: _screenUtil.statusBarHeight,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: Device.isAndroid ? 8 : 0,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      // height: 40,
-                      child: Row(
-                        children: [
-                          Gaps.hGap12,
-                          Text("随时都在的口语伙伴",
-                              style: TextStyle(
-                                fontSize: 17.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              )),
-                          // Text(generateMd5(omuids),
-                          //     style: const TextStyle(
-                          //       fontSize: 16,
-                          //       fontWeight: FontWeight.bold,
-                          //       color: Colors.black,
-                          //     )),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: characterList.isNotEmpty
-                        ? barWidget(context)
-                        : Container(),
-                  ),
-                  SliverToBoxAdapter(
+            // ignore: deprecated_member_use
+            child: pageState == 'fail'
+                ? WillPopScope(
+                    onWillPop: () async {
+                      //这里可以响应物理返回键
+                      return false;
+                    },
                     child: Container(
-                      margin: EdgeInsets.only(top: 8.h, bottom: 10.h),
-                      child: Row(
-                        children: [
-                          Gaps.hGap12,
-                          Text("场景练习",
-                              style: TextStyle(
-                                fontSize: 17.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              )),
-                          Gaps.hGap10,
-                          Text("超真实情景 练了就会用",
-                              style: TextStyle(
-                                  fontSize: 13.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  height: 2)),
-                        ],
+                      color: const Color(0xFFEBEDF0),
+                      alignment: Alignment.center,
+                      child: LoadFail(
+                        reload: init,
                       ),
                     ),
-                  ),
-                  SliverGrid.builder(
-                      itemCount: sceneList.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              //设置列数
-                              crossAxisCount: 2,
-                              //设置横向间距
-                              crossAxisSpacing: 10,
-                              //设置主轴间距
-                              mainAxisSpacing: 10,
-                              childAspectRatio: 168 / 100
-                              // mainAxisExtent: 120,
+                  )
+                : Stack(
+                    children: [
+                      bg,
+                      Container(
+                        margin: EdgeInsets.only(left: 12.w, right: 12.w),
+                        width: _screenUtil.screenWidth,
+                        height: _screenUtil.screenHeight,
+                        child: CustomScrollView(
+                          slivers: [
+                            SliverToBoxAdapter(
+                              child: SizedBox(
+                                height: _screenUtil.statusBarHeight,
                               ),
-                      itemBuilder: (BuildContext ctx, int index) {
-                        return GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                barrierColor: Colors.transparent,
-                                barrierDismissible: false,
-                                useSafeArea: false,
-                                builder: (_) => SelectScene(
-                                    cagegoryId: sceneList[index].cagegoryId,
-                                    homePage: "1"),
-                              );
+                            ),
+                            SliverToBoxAdapter(
+                              child: SizedBox(
+                                height: Device.isAndroid ? 8 : 0,
+                              ),
+                            ),
+                            SliverToBoxAdapter(
+                              child: SizedBox(
+                                // height: 40,
+                                child: Row(
+                                  children: [
+                                    Gaps.hGap12,
+                                    Text("随时都在的口语伙伴",
+                                        style: TextStyle(
+                                          fontSize: 17.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        )),
+                                    // Text(generateMd5(omuids),
+                                    //     style: const TextStyle(
+                                    //       fontSize: 16,
+                                    //       fontWeight: FontWeight.bold,
+                                    //       color: Colors.black,
+                                    //     )),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SliverToBoxAdapter(
+                              child: characterList.isNotEmpty
+                                  ? barWidget(context)
+                                  : Container(),
+                            ),
+                            SliverToBoxAdapter(
+                              child: Container(
+                                margin: EdgeInsets.only(top: 8.h, bottom: 10.h),
+                                child: Row(
+                                  children: [
+                                    Gaps.hGap12,
+                                    Text("场景练习",
+                                        style: TextStyle(
+                                          fontSize: 17.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        )),
+                                    Gaps.hGap10,
+                                    Text("超真实情景 练了就会用",
+                                        style: TextStyle(
+                                            fontSize: 13.sp,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            height: 2)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SliverGrid.builder(
+                                itemCount: sceneList.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        //设置列数
+                                        crossAxisCount: 2,
+                                        //设置横向间距
+                                        crossAxisSpacing: 10,
+                                        //设置主轴间距
+                                        mainAxisSpacing: 10,
+                                        childAspectRatio: 168 / 100
+                                        // mainAxisExtent: 120,
+                                        ),
+                                itemBuilder: (BuildContext ctx, int index) {
+                                  return GestureDetector(
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          barrierColor: Colors.transparent,
+                                          barrierDismissible: false,
+                                          useSafeArea: false,
+                                          builder: (_) => SelectScene(
+                                              cagegoryId:
+                                                  sceneList[index].cagegoryId,
+                                              homePage: "1"),
+                                        );
 
-                              // showModalBottomSheet(
-                              //   context: context,
-                              //   backgroundColor: Colors.transparent,
-                              //   barrierColor: Colors.transparent,
-                              //   isScrollControlled: true,
-                              //   isDismissible: false,
-                              //   enableDrag: false,
-                              //   builder: (_) => SelectScene(
-                              //       cagegoryId: sceneList[index].cagegoryId,
-                              //       homePage: "1"),
-                              // );
+                                        // showModalBottomSheet(
+                                        //   context: context,
+                                        //   backgroundColor: Colors.transparent,
+                                        //   barrierColor: Colors.transparent,
+                                        //   isScrollControlled: true,
+                                        //   isDismissible: false,
+                                        //   enableDrag: false,
+                                        //   builder: (_) => SelectScene(
+                                        //       cagegoryId: sceneList[index].cagegoryId,
+                                        //       homePage: "1"),
+                                        // );
 
-                              if (index == 0) {
-                                EventUMStatistics.umengCommonMapEvent(
-                                    "click_index_scene_1");
-                              } else if (index == 1) {
-                                EventUMStatistics.umengCommonMapEvent(
-                                    "click_index_scene_2");
-                              } else if (index == 2) {
-                                EventUMStatistics.umengCommonMapEvent(
-                                    "click_index_scene_3");
-                              } else if (index == 3) {
-                                EventUMStatistics.umengCommonMapEvent(
-                                    "click_index_scene_4");
-                              }
-                            },
-                            child: HomeMapItem(data: sceneList[index]));
-                      }),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      height: 16.h,
-                    ),
-                  ),
-                  SliverList.builder(
-                    itemBuilder: (ctx, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          EventBus().emit(NotificationUtils.taberThree,
-                              lessonList[index].param);
-                          if (index == 0) {
-                            EventUMStatistics.umengCommonMapEvent(
-                                "click_index_coursesEx_button");
-                          } else if (index == 1) {
-                            EventUMStatistics.umengCommonMapEvent(
-                                "click_index_coursesL1_button");
-                          }
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(bottom: 16.h),
-                          child: LoadImage(
-                            lessonList[index].imageUrl,
-                            fit: BoxFit.cover,
-                          ),
+                                        if (index == 0) {
+                                          EventUMStatistics.umengCommonMapEvent(
+                                              "click_index_scene_1");
+                                        } else if (index == 1) {
+                                          EventUMStatistics.umengCommonMapEvent(
+                                              "click_index_scene_2");
+                                        } else if (index == 2) {
+                                          EventUMStatistics.umengCommonMapEvent(
+                                              "click_index_scene_3");
+                                        } else if (index == 3) {
+                                          EventUMStatistics.umengCommonMapEvent(
+                                              "click_index_scene_4");
+                                        }
+                                      },
+                                      child:
+                                          HomeMapItem(data: sceneList[index]));
+                                }),
+                            SliverToBoxAdapter(
+                              child: Container(
+                                height: 16.h,
+                              ),
+                            ),
+                            SliverList.builder(
+                              itemBuilder: (ctx, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    EventBus().emit(
+                                        NotificationUtils.taberThree,
+                                        lessonList[index].param);
+                                    if (index == 0) {
+                                      EventUMStatistics.umengCommonMapEvent(
+                                          "click_index_coursesEx_button");
+                                    } else if (index == 1) {
+                                      EventUMStatistics.umengCommonMapEvent(
+                                          "click_index_coursesL1_button");
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(bottom: 16.h),
+                                    child: LoadImage(
+                                      lessonList[index].imageUrl,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                );
+                              },
+                              itemCount: lessonList.length,
+                            ),
+                            SliverList.builder(
+                              itemBuilder: (ctx, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    NavigatorUtils.push(
+                                      context,
+                                      ExamRouter.examPage,
+                                    );
+                                    EventUMStatistics.umengCommonMapEvent(
+                                        "click_index_examKET_button");
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                      bottom: 16.h,
+                                    ),
+                                    child: LoadImage(
+                                      examList[index].imageUrl,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                );
+                              },
+                              itemCount:
+                                  ProxyConfig.isxueersi ? 0 : examList.length,
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                    itemCount: lessonList.length,
-                  ),
-                  SliverList.builder(
-                    itemBuilder: (ctx, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          NavigatorUtils.push(
-                            context,
-                            ExamRouter.examPage,
-                          );
-                          EventUMStatistics.umengCommonMapEvent(
-                              "click_index_examKET_button");
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(
-                            bottom: 16.h,
-                          ),
-                          child: LoadImage(
-                            examList[index].imageUrl,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      );
-                    },
-                    itemCount: ProxyConfig.isxueersi ? 0 : examList.length,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        )),
+                      ),
+                    ],
+                  )),
       )),
     );
   }

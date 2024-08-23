@@ -635,65 +635,63 @@ class _CourseHomePageState extends State<CourseHomePage>
       );
     }
 
-    if (pageState == 'fail') {
-      // ignore: deprecated_member_use
-      return WillPopScope(
-        onWillPop: () async {
-          //这里可以响应物理返回键
-          return false;
-        },
-        child: Container(
-          color: const Color(0xFFEBEDF0),
-          alignment: Alignment.center,
-          child: LoadFail(
-            reload: init,
-          ),
-        ),
-      );
-    }
-
     return AnnotatedRegion(
         value: SystemUiOverlayStyle.dark,
         child: Scaffold(
             body: SafeArea(
-          child: Column(
-            children: [
-              listData.length > 1
-                  ? listData.length == 2
-                      ? tabbar()
-                      : tabbarTwo()
-                  : listData.isNotEmpty
-                      ? Container(
-                          height: 30,
-                          color: Colors.white,
-                          child: Text(
-                            levelNameStr,
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        )
-                      // XTCupertinoNavigationBar(
-                      //     backgroundColor: const Color(0xFFFFFFFF),
-                      //     border: null,
-                      //     padding: EdgeInsetsDirectional.zero,
-                      // middle: Text(
-                      //   levelNameStr,
-                      //   style: const TextStyle(
-                      //       fontWeight: FontWeight.bold),
-                      // ),
-                      //   )
-                      : Container(),
-              // NavigationBaView(
-              //     title: levelNameStr,
-              //   ),
-              // Center(child: SizedBox(width: 300, child: tabbar())),
-              listData.isNotEmpty
-                  ? Expanded(child: _refreshListView())
-                  : Container(),
-            ],
-          ),
+          child: pageState == 'fail'
+              // ignore: deprecated_member_use
+              ? WillPopScope(
+                  onWillPop: () async {
+                    //这里可以响应物理返回键
+                    return false;
+                  },
+                  child: Container(
+                    color: const Color(0xFFEBEDF0),
+                    alignment: Alignment.center,
+                    child: LoadFail(
+                      reload: init,
+                    ),
+                  ),
+                )
+              : Column(
+                  children: [
+                    listData.length > 1
+                        ? listData.length == 2
+                            ? tabbar()
+                            : tabbarTwo()
+                        : listData.isNotEmpty
+                            ? Container(
+                                height: 30,
+                                color: Colors.white,
+                                child: Text(
+                                  levelNameStr,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            // XTCupertinoNavigationBar(
+                            //     backgroundColor: const Color(0xFFFFFFFF),
+                            //     border: null,
+                            //     padding: EdgeInsetsDirectional.zero,
+                            // middle: Text(
+                            //   levelNameStr,
+                            //   style: const TextStyle(
+                            //       fontWeight: FontWeight.bold),
+                            // ),
+                            //   )
+                            : Container(),
+                    // NavigationBaView(
+                    //     title: levelNameStr,
+                    //   ),
+                    // Center(child: SizedBox(width: 300, child: tabbar())),
+                    listData.isNotEmpty
+                        ? Expanded(child: _refreshListView())
+                        : Container(),
+                  ],
+                ),
         )));
 
     //      extended.ExtendedNestedScrollView(
