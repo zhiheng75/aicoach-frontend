@@ -51,7 +51,7 @@ class _JoinCommunityPageState extends State<JoinCommunityPage> {
     String platformStr = "android";
 
     if (Device.isAndroid) {
-      platformStr = Channel.channelxueersi;
+      platformStr = Channel.channelhuawei;
     } else {
       platformStr = Channel.channelios;
     }

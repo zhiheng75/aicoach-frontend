@@ -4,7 +4,7 @@ import 'package:umeng_common_sdk/umeng_common_sdk.dart';
 
 class EventUMStatistics {
   static void umengCommonInit() {
-    String platformStr = Channel.channelios;
+    String platformStr = Channel.channelhuawei;
     // if (Device.isAndroid) {
     //   platformStr = Channel.channeloppo;
     // } else {
