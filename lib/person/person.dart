@@ -845,12 +845,14 @@ class _PersonPageState extends State<PersonPage>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          menuItem(
-            'p_ticket_icon',
-            '兑换码',
-            '',
-            onPress: () => tapMenu(PersonalRouter.redeemCodePage),
-          ),
+          phone == "17001234567"
+              ? Container()
+              : menuItem(
+                  'p_ticket_icon',
+                  '兑换码',
+                  '',
+                  onPress: () => tapMenu(PersonalRouter.redeemCodePage),
+                ),
           menuItem('customer_service_icon', '联系客服', '', onPress: () {
             if (phone == "17001234567") {
               // NavigatorUtils.push(context, PersonalRouter.about);

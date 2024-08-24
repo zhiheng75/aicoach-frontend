@@ -593,23 +593,23 @@ class _ChatState extends State<ChatPage>
                   Record(show: show, controller: _recordController),
             ),
           ),
-          // Positioned(
-          //   top: 50,
-          //   left: 10,
-          //   right: 10,
-          //   child: _character!.characterId == "eggy"
-          //       ? const Center(
-          //           child: Text(
-          //             "禁止利用生成式人工智能服务从事违法活动",
-          //             style: TextStyle(
-          //               fontSize: 14.0,
-          //               fontWeight: FontWeight.w400,
-          //               color: Colors.white,
-          //             ),
-          //           ),
-          //         )
-          //       : Container(),
-          // ),
+          Positioned(
+            top: 50,
+            left: 10,
+            right: 10,
+            child: _character!.characterId == "eggy"
+                ? const Center(
+                    child: Text(
+                      "禁止利用生成式人工智能服务从事违法活动",
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                : Container(),
+          ),
           // 左右滑动提示
           // if (_showSlideTip)
           //   Positioned(
