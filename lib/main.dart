@@ -78,8 +78,8 @@ Future<void> main() async {
       FlutterError.onError = (FlutterErrorDetails details) {
         _reportError(details.exception, details.stack);
       };
-      // initPlugin();
-      // initUM();
+      initPlugin();
+      initUM();
       runApp(MyApp());
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
 
