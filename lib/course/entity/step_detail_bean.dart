@@ -180,6 +180,7 @@ class Resource {
   String? introFile;
   String? introAudio;
   String? introText;
+  int? autoNext;
   String characterAvatar;
   String introVideoCover;
 
@@ -195,6 +196,7 @@ class Resource {
     required this.introFile,
     required this.introAudio,
     required this.introText,
+    required this.autoNext,
     required this.characterAvatar,
     required this.introVideoCover,
   });
@@ -212,6 +214,7 @@ class Resource {
         introFile: json["intro_file"] ?? "",
         introAudio: json["intro_audio"] ?? "",
         introText: json["intro_text"] ?? "",
+        autoNext: json["auto_next"] ?? 0,
         characterAvatar: json["character_avatar"] ?? "",
       );
 
@@ -227,6 +230,7 @@ class Resource {
         "intro_file": introFile,
         "intro_audio": introAudio,
         "intro_text": introText,
+        "auto_next": autoNext,
         "intro_video_cover": introVideoCover,
         "character_avatar": characterAvatar,
       };

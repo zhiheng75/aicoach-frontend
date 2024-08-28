@@ -1073,7 +1073,7 @@ class _HomeTwoPageState extends State<HomeTwoPage>
     // TODO: implement sendBindTeacherStatusSuccess
     if (data > 0) {
       //弹窗
-      showImageDialog();
+      // showImageDialog();
     }
   }
 

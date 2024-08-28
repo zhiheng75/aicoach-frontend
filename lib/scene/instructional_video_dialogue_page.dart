@@ -172,6 +172,12 @@ class _InstructionalVideoDialoguePageState
   bool isAutoplayEnabled = false;
   bool isPlaybackLoopEnabled = false;
   late bool isIPad;
+
+  late String videoStr = "";
+  late int _autoNextInt = 0;
+
+  late String isChatPlayVideo = "0";
+
   Widget lodingView() {
     return const Center(
       child: CircularProgressIndicator(),
@@ -194,7 +200,7 @@ class _InstructionalVideoDialoguePageState
         _secondsRemaining = 0;
         // newDataIdx = newDataIdx + 1;
         sessionId = const Uuid().v4().replaceAll('-', '');
-
+        videoStr = "";
         forstartFlow(newDataIdx, resourceIdx);
         setState(() {});
       } else {
@@ -205,8 +211,9 @@ class _InstructionalVideoDialoguePageState
     });
   }
 
-  void repeatTextStr(String str) {
+  void repeatTextStr(String str) async {
     String one = str;
+    isChatPlayVideo = "0";
     RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
     for (int i = 0; i < 6; i++) {
       RegExpMatch? match = pattern.firstMatch(one);
@@ -214,9 +221,21 @@ class _InstructionalVideoDialoguePageState
       if (match != null) {
         String? tag = match.group(1); // 获取标签名
         String? content = match.group(2); // 获取内容
-        if (tag == "image") {
-          //去出来图片content
-          // coverUrl = content!;
+        if (tag == "video") {
+          videoStr = content!;
+          isVideo = "1";
+          isPlayVideo = "0";
+          if (isIPad) {
+            contentTop = _screenUtil.statusBarHeight + 180.h + 70.h + 30.h;
+          } else {
+            contentTop = _screenUtil.statusBarHeight +
+                (_screenUtil.screenWidth / 16 * 9) +
+                70.h;
+          }
+          isback = true;
+          isPlayVideo = "1";
+          isChatPlayVideo = "1";
+          setState(() {});
         }
         if (tag == "word") {
           //取出来文字content
@@ -227,7 +246,51 @@ class _InstructionalVideoDialoguePageState
         one = replacedString;
       }
     }
+    setState(() {});
   }
+
+  //  void repeatEndTextStr(String str) async {
+  //   String one = str;
+  //   RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+  //   for (int i = 0; i < 6; i++) {
+  //     RegExpMatch? match = pattern.firstMatch(one);
+
+  //     if (match != null) {
+  //       String? tag = match.group(1); // 获取标签名
+  //       String? content = match.group(2); // 获取内容
+  //       if (tag == "video") {
+  //         videoStr = content!;
+  //         isVideo = "1";
+  //         isPlayVideo = "0";
+  //         if (isIPad) {
+  //           contentTop = _screenUtil.statusBarHeight + 180.h + 70.h + 30.h;
+  //         } else {
+  //           contentTop = _screenUtil.statusBarHeight +
+  //               (_screenUtil.screenWidth / 16 * 9) +
+  //               70.h;
+  //         }
+  //         isback = true;
+  //         setState(() {
+  //           isPlayVideo = "1";
+  //         });
+  //         //通知播放视频
+  //         _controller?.play();
+  //         double volume = await VolumeUtil.getVolume();
+  //         _controller?.setVolume(volume);
+  //         _bottomBarControll.setDisabled(true);
+
+  //         setState(() {});
+  //       }
+  //       if (tag == "word") {
+  //         //取出来文字content
+  //         repeatWord = content!;
+  //       }
+  //       String reStr = "<$tag>$content</$tag>";
+  //       String replacedString = one.replaceAll(reStr, "");
+  //       one = replacedString;
+  //     }
+  //   }
+  // }
 
   void connectWebsocket() async {
     try {
@@ -302,6 +365,15 @@ class _InstructionalVideoDialoguePageState
       // 创建播放列表
       _listPlayer = _mediaUtils.createListPlay(() {
         _bottomBarControll.setDisabled(false);
+        Future.delayed(const Duration(seconds: 1), () async {
+          if (isChatPlayVideo == "1") {
+//通知播放视频
+            _controller?.play();
+            double volume = await VolumeUtil.getVolume();
+            _controller?.setVolume(volume);
+          }
+        });
+        // _initController(controller);
         if (ischatEndStr == "1") {
           //在这里是播放完成
           endSocket();
@@ -320,8 +392,9 @@ class _InstructionalVideoDialoguePageState
         }
         repeatTextStr(_answer!.text);
         _homeProvider.notify();
-        _answer = null;
         _listScrollController.scrollToEnd();
+        _answer = null;
+
         Log.e("志恒,AIend完成," + getCurrentTimeAndMilliseconds());
 
         return;
@@ -585,6 +658,8 @@ class _InstructionalVideoDialoguePageState
       newDataIdx = newDataIdx + 1;
       resourceIdx = 0;
       sessionId = const Uuid().v4().replaceAll('-', '');
+      videoStr = "";
+      setState(() {});
 
       forstartFlow(newDataIdx, resourceIdx);
       // forFlow();
@@ -783,7 +858,7 @@ class _InstructionalVideoDialoguePageState
                       _timer.cancel();
                       //重新开始
                       newDataIdx = newDataIdx - 1;
-
+                      videoStr = "";
                       sessionId = const Uuid().v4().replaceAll('-', '');
                       isOnePlay = "1";
                       isShowDialog = false;
@@ -822,7 +897,7 @@ class _InstructionalVideoDialoguePageState
                   GestureDetector(
                     onTap: () async {
                       _timer.cancel();
-
+                      videoStr = "";
                       //下一关
                       isShowDialog = false;
                       isTimeBack = false;
@@ -923,6 +998,8 @@ class _InstructionalVideoDialoguePageState
                 (_screenUtil.screenWidth / 16 * 9) +
                 70.h;
           }
+          _autoNextInt = data[dataIdx].resource[resourceIdx].autoNext!;
+
           // contentTop = _screenUtil.statusBarHeight +
           //     110.h +
           //     // ( _screenUtil.screenWidth / 16 * 9) +
@@ -1010,7 +1087,9 @@ class _InstructionalVideoDialoguePageState
   }
 
   void startNormaltwoChatRequestNetwork() {
-    init();
+    if (_autoNextInt == 0) {
+      init();
+    }
     DioUtils.instance.requestNetwork<ResultData>(
         Method.post, HttpApi.generateAudio,
         params: {
@@ -1050,8 +1129,13 @@ class _InstructionalVideoDialoguePageState
           // setState(() {
           // isFrist = false;
           isback = false;
-          setState(() {});
+
           _bottomBarControll.setDisabled(false);
+          if (_autoNextInt == 1) {
+            onNextSocketEnd();
+          }
+          setState(() {});
+
           // });
         },
       );
@@ -1166,6 +1250,8 @@ class _InstructionalVideoDialoguePageState
   }
 
   void _onPlaybackPositionChanged() {
+    // _bottomBarControll.setDisabled(true);
+
     isPlayVideo = "1";
     if (_controller?.playbackInfo?.position ==
         _controller?.videoInfo?.duration) {
@@ -1192,7 +1278,11 @@ class _InstructionalVideoDialoguePageState
     setState(() {});
     // if (isOnePlay == "1") {
     //   isOnePlay = "2";
-    startNormaltwoChatRequestNetwork();
+    if (videoStr.isEmpty) {
+      startNormaltwoChatRequestNetwork();
+    } else {
+      _bottomBarControll.setDisabled(false);
+    }
     // }
     if (isPlaybackLoopEnabled) {
       _controller?.play();
@@ -1233,7 +1323,7 @@ class _InstructionalVideoDialoguePageState
 
   Future<VideoSource> _createVideoSource() async {
     return await VideoSource.init(
-      path: introFileStr,
+      path: videoStr.isNotEmpty ? videoStr : introFileStr,
       type: VideoSourceType.network,
     );
   }
@@ -1657,6 +1747,164 @@ class _InstructionalVideoDialoguePageState
                     Positioned(top: 0, left: 0, right: 0, child: navbar()),
                     topWidget(),
                     topFlowWidget(),
+                    videoStr != "" && introFileType != "video"
+                        ? Positioned(
+                            top: _screenUtil.statusBarHeight +
+                                55.h +
+                                (isIPad ? 20.h : 0),
+                            width: _screenUtil.screenWidth,
+                            // height: _screenUtil.screenWidth / 16 * 9,
+                            child: Container(
+                              color: Colors.black,
+                              padding: isIPad
+                                  ? EdgeInsets.only(left: 50.w, right: 50.w)
+                                  : const EdgeInsets.all(0),
+                              // height: 180.h,
+                              child: Stack(
+                                children: [
+                                  AspectRatio(
+                                    aspectRatio: 16 / 9,
+                                    child: NativeVideoPlayerView(
+                                      onViewReady: _initController,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 0,
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    child: GestureDetector(
+                                      behavior: HitTestBehavior.opaque,
+                                      onTap: () {
+                                        setState(() {
+                                          isShowbottom = !isShowbottom;
+                                        });
+                                        Future.delayed(
+                                            const Duration(seconds: 5), () {
+                                          setState(() {
+                                            isShowbottom = false;
+                                          });
+                                        });
+                                      },
+                                      child: Container(),
+                                    ),
+                                  ),
+                                  isShowbottom
+                                      ? Positioned(
+                                          bottom: 0,
+                                          left: 0,
+                                          right: 0,
+                                          child: Container(
+                                            width: _screenUtil.screenWidth,
+                                            height: 40,
+                                            color: Colors.black87,
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 10,
+                                                ),
+                                                InkWell(
+                                                  onTap: _togglePlayback,
+                                                  child: Center(
+                                                    child: FutureBuilder(
+                                                      future: _isPlaying,
+                                                      initialData: false,
+                                                      builder: (
+                                                        BuildContext context,
+                                                        AsyncSnapshot<bool>
+                                                            snapshot,
+                                                      ) {
+                                                        final isPlaying =
+                                                            snapshot.data ??
+                                                                false;
+                                                        return Icon(
+                                                          isPlaying
+                                                              ? Icons.pause
+                                                              : Icons
+                                                                  .play_arrow,
+                                                          size: 30,
+                                                          color: Colors.white,
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Slider(
+                                                    // min: 0,
+                                                    activeColor: Colors.white,
+                                                    inactiveColor:
+                                                        Colors.white54,
+                                                    thumbColor: Colors.white,
+                                                    max: (_controller?.videoInfo
+                                                                ?.duration ??
+                                                            0)
+                                                        .toDouble(),
+                                                    value: (_controller
+                                                                ?.playbackInfo
+                                                                ?.position ??
+                                                            0)
+                                                        .toDouble(),
+                                                    onChanged: (value) =>
+                                                        _controller?.seekTo(
+                                                            value.toInt()),
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      formatDuration(
+                                                        Duration(
+                                                            seconds: _controller
+                                                                    ?.playbackInfo
+                                                                    ?.position ??
+                                                                0),
+                                                      ),
+                                                      style: const TextStyle(
+                                                        fontSize: 15.0,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    const Text(
+                                                      "/",
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      formatDuration(
+                                                        Duration(
+                                                            seconds: _controller
+                                                                    ?.videoInfo
+                                                                    ?.duration ??
+                                                                0),
+                                                      ),
+                                                      style: const TextStyle(
+                                                        fontSize: 15.0,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Container(
+                                                  width: 10,
+                                                ),
+                                              ],
+                                            ),
+                                          ))
+                                      : Container(),
+                                ],
+                              ),
+                            ),
+                          )
+                        : Container(),
                     Positioned(
                       top: 0,
                       left: 0,
