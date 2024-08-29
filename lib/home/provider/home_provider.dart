@@ -112,6 +112,10 @@ class HomeProvider extends ChangeNotifier {
     _ishread = ishread;
   }
 
+  set usageTime(int usageTime) {
+    _usageTime = usageTime;
+  }
+
   set heardcover(String heardcover) {
     _heardcover = heardcover;
   }
@@ -170,8 +174,9 @@ class HomeProvider extends ChangeNotifier {
       return;
     }
     _usageTimeCutdown = Timer.periodic(const Duration(seconds: 1), (_) {
+      Log.e("倒计时");
       if (_usageTime == 0) {
-        // onTimeEnd();
+        onTimeEnd();
         endUsageTimeCutdown();
         return;
       }

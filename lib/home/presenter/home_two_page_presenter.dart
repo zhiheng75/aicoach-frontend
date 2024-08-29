@@ -17,10 +17,10 @@ class HomeTwoPagePresenter extends BasePagePresenter<HomeTwoPageView> {
   void afterInit() {
     // TODO: implement afterInit
     super.afterInit();
-    Future.delayed(const Duration(milliseconds: 500), () {
-      getBannerList();
-      getCharacterList();
-    });
+    // Future.delayed(const Duration(milliseconds: 500), () {
+    //   getBannerList();
+    //   getCharacterList();
+    // });
     // getCharacterList();
   }
 

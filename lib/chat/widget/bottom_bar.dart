@@ -197,6 +197,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           _homeProvider.getUsageTime(() {
             // 倒计时
             _homeProvider.startUsageTimeCutdown(() async {
+              _homeProvider.usageTime = 0;
               showDialog(
                 context: context,
                 barrierColor: Colors.transparent,
@@ -247,6 +248,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
         characterId: characterId,
         sceneId: sceneId,
         onConnected: () {
+          Log.e("用户是否发送成功");
           // 刷新使用时间
           _homeProvider.getUsageTime(() {
             // 倒计时
