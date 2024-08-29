@@ -246,6 +246,7 @@ class _CourseHomePageState extends State<CourseHomePage>
 
     EventBus().on(NotificationUtils.taberThree, (idx) {
       levelidStr = idx;
+      setState(() {});
       _courseHomePagePresenter.getLessonList();
     });
     Future.delayed(const Duration(seconds: 1), () {
@@ -287,6 +288,9 @@ class _CourseHomePageState extends State<CourseHomePage>
   void didPopNext() {
     // TODO: implement didPopNext
     super.didPopNext();
+    setState(() {
+      levelidStr = "";
+    });
     _courseHomePagePresenter.getLessonList();
   }
 
@@ -786,8 +790,10 @@ class _CourseHomePageState extends State<CourseHomePage>
     listData.addAll(data.data);
     for (int i = 0; i < data.data.length; i++) {
       Datum datum = data.data[i];
-      if (datum.levelId.toString() == levelidStr) {
-        curTabIndex = i;
+      if (levelidStr.isNotEmpty) {
+        if (datum.levelId.toString() == levelidStr) {
+          curTabIndex = i;
+        }
       }
     }
     if (listData.isNotEmpty) {
