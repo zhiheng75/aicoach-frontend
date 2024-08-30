@@ -8,6 +8,7 @@ import 'package:Bubble/person/entity/bind_teacher_bean.dart';
 import 'package:Bubble/person/entity/get_pay_code_bean.dart';
 import 'package:Bubble/person/entity/query_order_bean.dart';
 import 'package:Bubble/person/view/xueersi_purchase_page_view.dart';
+import 'package:dio/dio.dart';
 
 class XueersiPurchasePagePresenter
     extends BasePagePresenter<XueersiPurchasePageView> {
@@ -32,9 +33,16 @@ class XueersiPurchasePagePresenter
     });
   }
 
+  final cancelToken = CancelToken();
+
+  void creatCancelToken() {
+    cancelToken.cancel();
+  }
+
   Future getQueryOrder(String orderNo) {
     return requestNetwork<ResultData>(Method.get,
         url: HttpApi.queryOrder,
+        // cancelToken: cancelToken,
         queryParameters: {
           'order_no': orderNo,
           'payment_method': "WXJSPAY",
