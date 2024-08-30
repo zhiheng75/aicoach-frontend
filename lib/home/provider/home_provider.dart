@@ -112,6 +112,10 @@ class HomeProvider extends ChangeNotifier {
     _ishread = ishread;
   }
 
+  set usageTime(int usageTime) {
+    _usageTime = usageTime;
+  }
+
   set heardcover(String heardcover) {
     _heardcover = heardcover;
   }
@@ -169,9 +173,10 @@ class HomeProvider extends ChangeNotifier {
     if (_usageTime == 0) {
       return;
     }
-    _usageTimeCutdown = Timer.periodic(const Duration(seconds: 1), (_) {
+    _usageTimeCutdown = Timer.periodic(const Duration(seconds: 5), (_) {
+      Log.e("倒计时");
       if (_usageTime == 0) {
-        // onTimeEnd();
+        onTimeEnd();
         endUsageTimeCutdown();
         return;
       }
@@ -334,6 +339,36 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
+  String titMessage(NormalMessage message) {
+    String one = message.text;
+    RegExp pattern = RegExp(r'<([^>]*)>([^<]*)</\1>');
+    // if (one.contains("<image>") && one.contains("<word>")) {
+    for (int i = 0; i < 6; i++) {
+      RegExpMatch? match = pattern.firstMatch(one);
+      late String coverUrl = "";
+
+      if (match != null) {
+        String? tag = match.group(1); // 获取标签名
+        String? content = match.group(2); // 获取内容
+        // Log.e('===============Tag: $tag, Content: $content');
+        coverUrl = content!;
+        if (tag == "image") {
+          //去出来图片content
+        }
+        if (tag == "word") {
+          //取出来文字content
+        }
+        String reStr = "<$tag>$coverUrl</$tag>";
+        String replacedString = one.replaceAll(reStr, "");
+        one = replacedString;
+      }
+      // Log.e("================" + one);
+    }
+
+    one = one.replaceAll("{[finish]}", "");
+    return one;
+  }
+
   // 翻译
   void openTranslate(NormalMessage normalMessage) {
     if (normalMessage.showTranslation) {
@@ -348,7 +383,7 @@ class HomeProvider extends ChangeNotifier {
       return;
     }
 
-    TranslateUtil.translate(normalMessage.text).then((result) {
+    TranslateUtil.translate(titMessage(normalMessage)).then((result) {
       if (result['success']) {
         normalMessage.translateState = 2;
         normalMessage.translation = result['data'];

@@ -444,18 +444,18 @@ class _MessageItemState extends State<MessageItem> {
           String? tag = match.group(1); // 获取标签名
           String? content = match.group(2); // 获取内容
           // Log.e('===============Tag: $tag, Content: $content');
-          coverUrl = content!;
-          if (tag == "image") {
-            //去出来图片content
-          }
-          if (tag == "word") {
-            //取出来文字content
-          }
-          String reStr = "<$tag>$coverUrl</$tag>";
+          // coverUrl = content!;
+          // if (tag == "image") {
+          //   //去出来图片content
+          // }
+          // if (tag == "word") {
+          //   //取出来文字content
+          // }
+          String reStr = "<$tag>$content</$tag>";
           String replacedString = one.replaceAll(reStr, "");
           one = replacedString;
         }
-        // Log.e("================" + one);
+        Log.e("================" + one);
       }
       one = replaceMultipleNewLinesWithSingle(one);
 

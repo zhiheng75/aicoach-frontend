@@ -41,9 +41,9 @@ class _EvaluationState extends State<Evaluation> {
   String _audioType = '';
 
   void init() {
-    EvaluateUtil().evaluate(widget.message, () {
-      _homeProvider.updateNormalMessage(widget.message);
-    });
+    // EvaluateUtil().evaluate(widget.message, () {
+    //   _homeProvider.updateNormalMessage(widget.message);
+    // });
     getStandardAnswer();
   }
 
