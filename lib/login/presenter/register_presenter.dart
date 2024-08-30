@@ -81,6 +81,8 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
           if (data.code == 200) {
             SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
             SpUtil.putString(Constant.accessToken, data.data.token);
+            // SpUtil.putString(Constant.accessToken,
+            //     "0tM8b0c=*h+llleDiR7pBMotCiIUuXA==*8T4dX3XqDcYAr+xIqGftaQ==*yiYU6/ndyH+CXLEUxvdZaA==");
             SpUtil.putString(Constant.phone, phoneNum);
             DYUtil().evaluate("1");
             EventUMStatistics.umengCommonMapEvent(
@@ -150,6 +152,8 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
 
             SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
             SpUtil.putString(Constant.accessToken, data.data.token);
+            // SpUtil.putString(Constant.accessToken,
+            //     "0tM8b0c=*h+llleDiR7pBMotCiIUuXA==*8T4dX3XqDcYAr+xIqGftaQ==*yiYU6/ndyH+CXLEUxvdZaA==");
             SpUtil.putString(Constant.phone, phoneNum);
 
             DYUtil().evaluate("1");
@@ -200,6 +204,8 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         if (data.code == 200) {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
+          // SpUtil.putString(Constant.accessToken,
+          //     "0tM8b0c=*h+llleDiR7pBMotCiIUuXA==*8T4dX3XqDcYAr+xIqGftaQ==*yiYU6/ndyH+CXLEUxvdZaA==");
           DYUtil().evaluate("1");
           EventUMStatistics.umengCommonMapEvent(
             "click_index_login",
@@ -255,6 +261,8 @@ class RegisterPresenter extends BasePagePresenter<RegisterView> {
         if (validateInput(newWxInfoBean.data.token)) {
           SpUtil.putObject(Constant.userInfoKey, newWxInfoBean.data.toJson());
           SpUtil.putString(Constant.accessToken, newWxInfoBean.data.token);
+          // SpUtil.putString(Constant.accessToken,
+          //     "0tM8b0c=*h+llleDiR7pBMotCiIUuXA==*8T4dX3XqDcYAr+xIqGftaQ==*yiYU6/ndyH+CXLEUxvdZaA==");
           // SpUtil.putString(Constant.phone, newWxInfoBean.data.);
           DYUtil().evaluate("1");
           EventUMStatistics.umengCommonMapEvent(

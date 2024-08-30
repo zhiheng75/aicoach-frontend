@@ -80,35 +80,37 @@ class CourseOrderItem extends StatelessWidget {
             ),
           ),
           Gaps.vGap5,
-          Row(
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.only(left: 8, right: 8, top: 5, bottom: 5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6.0),
-                  color: Colours.color_FFD076,
+          datum.giftDesc.isEmpty
+              ? Container()
+              : Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(
+                          left: 8, right: 8, top: 5, bottom: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6.0),
+                        color: Colours.color_FFD076,
+                      ),
+                      child: const Text(
+                        "赠品",
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w600,
+                          color: Colours.color_333333,
+                        ),
+                      ),
+                    ),
+                    Gaps.hGap5,
+                    Text(
+                      datum.giftDesc,
+                      style: const TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w600,
+                        color: Colours.color_333333,
+                      ),
+                    ),
+                  ],
                 ),
-                child: const Text(
-                  "赠品",
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w600,
-                    color: Colours.color_333333,
-                  ),
-                ),
-              ),
-              Gaps.hGap5,
-              Text(
-                datum.giftDesc,
-                style: const TextStyle(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w600,
-                  color: Colours.color_333333,
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );

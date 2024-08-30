@@ -153,6 +153,8 @@ class _ChatState extends State<ChatPage>
         return;
       }
       _homeProvider = Provider.of<HomeProvider>(context, listen: false);
+      _homeProvider.resetChatParams();
+
       _characterList =
           list.map((item) => CharacterEntity.fromJson(item)).toList();
       _pageState = 'success';
@@ -286,7 +288,6 @@ class _ChatState extends State<ChatPage>
 
   void startNormalChat(CharacterEntity character) async {
     await _mediaUtils.stopPlay();
-    await _chatWebsocket.endChat(true);
     _homeProvider.resetChatParams();
     _homeProvider.character = character;
     Future.delayed(Duration.zero, () {
@@ -307,6 +308,7 @@ class _ChatState extends State<ChatPage>
         },
       );
     });
+    await _chatWebsocket.endChat(true);
   }
 
   bool get isIPad {
@@ -492,7 +494,7 @@ class _ChatState extends State<ChatPage>
                 height: _screenUtil.screenHeight,
                 padding: EdgeInsets.only(
                   top: homeTabbarHeight,
-                  bottom: _screenUtil.bottomBarHeight + 45.h,
+                  bottom: _screenUtil.bottomBarHeight + 45.h + 16,
                   left: 16.0,
                   right: 16.0,
                 ),
@@ -518,7 +520,7 @@ class _ChatState extends State<ChatPage>
             ),
           ),
           Positioned(
-            top: 225.0,
+            top: 200.0,
             right: 0,
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,

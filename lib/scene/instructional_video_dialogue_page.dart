@@ -22,6 +22,7 @@ import 'package:Bubble/scene/presenter/teaching_dialogue_presenter.dart';
 import 'package:Bubble/scene/view/instructional_video_dialogue_view.dart';
 // import 'package:Bubble/scene/widget/top_head_background.dart';
 import 'package:Bubble/util/confirm_utils.dart';
+import 'package:Bubble/util/device_utils.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/event_um_statistics.dart';
 import 'package:Bubble/util/image_utils.dart';
@@ -292,7 +293,7 @@ class _InstructionalVideoDialoguePageState
         _instructionalVideoDialoguePresenter.postStepUpdate(lessonId, stepId);
         // onNextSocketEnd();
         _listScrollController.scrollToEnd();
-        Log.e("AI说的话文字文成=====+++" + getCurrentTimeAndMilliseconds());
+        Log.e("志恒,AI这阶段完成," + getCurrentTimeAndMilliseconds());
 
         return;
       }
@@ -321,12 +322,13 @@ class _InstructionalVideoDialoguePageState
         _homeProvider.notify();
         _answer = null;
         _listScrollController.scrollToEnd();
+        Log.e("志恒,AIend完成," + getCurrentTimeAndMilliseconds());
 
         return;
       }
       _answer!.text += answer;
       Log.e("AI说的话" + _answer!.text);
-      Log.e("AI说的话文字=====+++" + getCurrentTimeAndMilliseconds());
+      Log.e("志恒,AI说的话文字," + getCurrentTimeAndMilliseconds());
 
       _homeProvider.notify();
       _listScrollController.scrollToEnd();
@@ -343,7 +345,7 @@ class _InstructionalVideoDialoguePageState
       if (_listPlayer != null) {
         _listPlayer!.play(answer);
       }
-      Log.e("AI说的话音频=====+++" + getCurrentTimeAndMilliseconds());
+      Log.e("志恒,AI说的话音频," + getCurrentTimeAndMilliseconds());
     }
   }
 
@@ -1477,7 +1479,7 @@ class _InstructionalVideoDialoguePageState
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: isIPad ? 10.sp : 17.sp),
+                  fontSize: isIPad ? 10.sp : 15.sp),
             )),
           ),
           isUserBuy == 1
@@ -1510,7 +1512,10 @@ class _InstructionalVideoDialoguePageState
 
   Widget topFlowWidget() {
     return Positioned(
-      top: _screenUtil.statusBarHeight + 30.h + (isIPad ? 20.h : 0),
+      top: _screenUtil.statusBarHeight +
+          30.h +
+          (isIPad ? 20.h : 0) +
+          (Device.isAndroid ? 5.h : 0),
       left: (_screenUtil.screenWidth - (isIPad ? 100.w : 130.w)) / 2,
       child: Container(
         decoration: BoxDecoration(

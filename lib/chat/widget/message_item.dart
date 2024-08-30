@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:Bubble/home/widget/player_widget.dart';
+import 'package:Bubble/res/gaps.dart';
 import 'package:Bubble/util/event_bus.dart';
 import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/util/media_utils.dart';
@@ -572,47 +573,61 @@ class _MessageItemState extends State<MessageItem> {
             // coverUrl = "";
             //去出来图片content
             coverUrl = content!;
-            return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                showDialog(
-                  context: context,
-                  barrierColor: Colors.transparent,
-                  barrierDismissible: false,
-                  useSafeArea: false,
-                  builder: (_) => PhotoViewSimpleScreen(
-                    imageProvider: NetworkImage(coverUrl),
+            return Column(
+              children: [
+                Gaps.vGap8,
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierColor: Colors.transparent,
+                      barrierDismissible: false,
+                      useSafeArea: false,
+                      builder: (_) => PhotoViewSimpleScreen(
+                        imageProvider: NetworkImage(coverUrl),
+                      ),
+                    );
+                  },
+                  child: LoadImage(
+                    coverUrl,
+                    // width: 100,
+                    // height: 100,
                   ),
-                );
-              },
-              child: LoadImage(
-                coverUrl,
-                // width: 100,
-                // height: 100,
-              ),
+                ),
+              ],
             );
           }
           if (tag == "word") {
             // coverUrl = "";
             //取出来文字content
             coverUrl = content!;
-            return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                showDialog(
-                  context: context,
-                  barrierColor: Colors.transparent,
-                  barrierDismissible: false,
-                  useSafeArea: false,
-                  builder: (_) => PhotoViewSimpleScreen(
-                    imageProvider: NetworkImage(
-                        "https://statics.shenmo-ai.com/courses/word_img/$coverUrl.jpg"),
+            coverUrl = Uri.encodeComponent(coverUrl);
+            // Uri.encodeComponent(component)
+            coverUrl =
+                "https://statics.shenmo-ai.com/courses/word_img/$coverUrl.jpg";
+            Log.e("拼接的图片" + coverUrl);
+            return Column(
+              children: [
+                Gaps.vGap8,
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierColor: Colors.transparent,
+                      barrierDismissible: false,
+                      useSafeArea: false,
+                      builder: (_) => PhotoViewSimpleScreen(
+                        imageProvider: NetworkImage(coverUrl),
+                      ),
+                    );
+                  },
+                  child: LoadImage(
+                    coverUrl,
                   ),
-                );
-              },
-              child: LoadImage(
-                "https://statics.shenmo-ai.com/courses/word_img/$coverUrl.jpg",
-              ),
+                ),
+              ],
             );
           }
           String reStr = "<$tag>$content</$tag>";
@@ -641,8 +656,13 @@ class _MessageItemState extends State<MessageItem> {
           if (tag == "audio") {
             //去出来图片content
             audioUrl = content!;
-            return PlayerWidget(
-              playerUrl: audioUrl,
+            return Column(
+              children: [
+                Gaps.vGap8,
+                PlayerWidget(
+                  playerUrl: audioUrl,
+                ),
+              ],
             );
           }
           if (tag == "word") {

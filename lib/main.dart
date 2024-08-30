@@ -78,7 +78,7 @@ Future<void> main() async {
       FlutterError.onError = (FlutterErrorDetails details) {
         _reportError(details.exception, details.stack);
       };
-      // initPlugin();
+      initPlugin();
       initUM();
       runApp(MyApp());
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
@@ -155,9 +155,9 @@ class MyApp extends StatelessWidget {
       interceptors: interceptors,
     );
 
-    // if (ProxyConfig.isProxy) {
-    // DioUtils.instance.setProxy(ProxyConfig.proxyUri);
-    // }
+    if (ProxyConfig.isProxy) {
+      DioUtils.instance.setProxy(ProxyConfig.proxyUri);
+    }
   }
 
   @override

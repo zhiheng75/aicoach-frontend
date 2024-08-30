@@ -500,6 +500,7 @@
 				CODE_SIGN_STYLE = Automatic;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 301;
 =======
 				CURRENT_PROJECT_VERSION = 320;
@@ -507,6 +508,9 @@
 =======
 				CURRENT_PROJECT_VERSION = 332;
 >>>>>>> dev_kouyududu_pad240
+=======
+				CURRENT_PROJECT_VERSION = 362;
+>>>>>>> dev_kouyududu_240
 				DEVELOPMENT_TEAM = PLC58VVP4Z;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -517,7 +521,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3.2;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shenmo.spokid.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -699,6 +703,7 @@
 				CODE_SIGN_STYLE = Automatic;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 301;
 =======
 				CURRENT_PROJECT_VERSION = 320;
@@ -706,6 +711,9 @@
 =======
 				CURRENT_PROJECT_VERSION = 332;
 >>>>>>> dev_kouyududu_pad240
+=======
+				CURRENT_PROJECT_VERSION = 362;
+>>>>>>> dev_kouyududu_240
 				DEVELOPMENT_TEAM = PLC58VVP4Z;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -716,7 +724,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3.2;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shenmo.spokid.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -742,6 +750,7 @@
 				CODE_SIGN_STYLE = Automatic;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 301;
 =======
 				CURRENT_PROJECT_VERSION = 320;
@@ -749,6 +758,9 @@
 =======
 				CURRENT_PROJECT_VERSION = 332;
 >>>>>>> dev_kouyududu_pad240
+=======
+				CURRENT_PROJECT_VERSION = 362;
+>>>>>>> dev_kouyududu_240
 				DEVELOPMENT_TEAM = PLC58VVP4Z;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -759,7 +771,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3.2;
+				MARKETING_VERSION = 2.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shenmo.spokid.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

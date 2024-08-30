@@ -78,6 +78,13 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
   late StreamSubscription<ConnectivityResult> subscription;
   late ConnectivityResult resultType;
 
+  String getCurrentTimeAndMilliseconds() {
+    DateTime now = DateTime.now();
+    String timeAndMilliseconds =
+        "${now.hour}:${now.minute}:${now.second}.${now.millisecond}";
+    return timeAndMilliseconds;
+  }
+
   void getExample() {
     LoginManager.checkLogin(context, () {
       if (widget.controller.disabled.value) {
@@ -291,16 +298,22 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           _listPlayer!.setReturnEnd();
         }
         _homeProvider.notify();
+        Log.e("志恒,AIend完成," + getCurrentTimeAndMilliseconds());
+
         return;
       }
       _answer!.text += answer;
       _homeProvider.notify();
+      Log.e("志恒,AI说的话文字," + getCurrentTimeAndMilliseconds());
+
       if (widget.onScrollEnd != null) {
         widget.onScrollEnd!();
       }
       return;
     }
     if (answer is Uint8List) {
+      Log.e("志恒,AI说的话音频," + getCurrentTimeAndMilliseconds());
+
       _answer!.audio.add(answer);
       if (_appLifecycleState == AppLifecycleState.paused) {
         return;
@@ -340,7 +353,14 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
         if (widget.onScrollEnd != null) {
           widget.onScrollEnd!();
         }
+        EvaluateUtil().evaluate(message, () {
+          Log.e("志恒,测评评分一系列成功异步," + getCurrentTimeAndMilliseconds());
+
+          _homeProvider.updateNormalMessage(message);
+        });
       });
+      Log.e("志恒,显示成功," + getCurrentTimeAndMilliseconds());
+
       _chatWebsocket.sendMessage(
         text: '[message_id=${message.id}]$text',
         onUninited: () {
@@ -350,9 +370,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
           );
         },
         onSuccess: () {
-          EvaluateUtil().evaluate(message, () {
-            _homeProvider.updateNormalMessage(message);
-          });
+          Log.e("志恒,socket给出发送成功," + getCurrentTimeAndMilliseconds());
         },
         onFail: () {
           insertTipMessage('Please switch to new roles, topics, or scene');
@@ -679,6 +697,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                       Toast.show("录音音频使用说明:用于对话场景", duration: 5000);
                       return;
                     }
+                    Log.e("志恒,按住说话," + getCurrentTimeAndMilliseconds());
 
                     _recognizeUtil = RecognizeUtil();
                     _recognizeUtil.setLanguage(widget.language ?? 'en');
@@ -689,6 +708,7 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                       _recognizeUtil.pushAudioBuffer(1, buffer);
                     }, onComplete: (buffer) {
                       _recognizeUtil.pushAudioBuffer(2, buffer ?? Uint8List(0));
+                      Log.e("志恒,讯飞识别音频发送," + getCurrentTimeAndMilliseconds());
                     });
                     // 设置识别
                     _recognizeUtil.recognize((result) async {
@@ -730,6 +750,8 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                           '抱歉，没听到您的声音，请您重复一遍，谢谢！',
                         );
                       }
+                      Log.e("志恒,识别完成," + getCurrentTimeAndMilliseconds());
+
                       sendMessage(result['text']);
                     });
                     widget.controller.setShowRecord(true);
@@ -741,6 +763,8 @@ class _BottomBarState extends State<BottomBar> with WidgetsBindingObserver {
                   }
                 },
                 onEnd: (_) async {
+                  Log.e("志恒,松开发送," + getCurrentTimeAndMilliseconds());
+
                   // 录音中因识别失败关闭录音操作后手指还未抬起
                   if (!widget.controller.showRecord.value) {
                     return;

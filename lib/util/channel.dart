@@ -10,8 +10,8 @@ class Channel {
   static String channelvivo = "vivo";
   static String channelhonor = "honor";
   static String channelali = "ali";
-  static String channelxueersi = "xueersi";
   static String channelmeizu = "meizu";
+  static String channelxueersi = "xueersi";
 
   static String channelsanxing = "sanxing";
   static String dytoufang = "dytoufang";

@@ -341,16 +341,19 @@ class _NewOneKeyPhonePageState extends State<NewOneKeyPhonePage>
               children: [
                 isLoading
                     ? Container()
-                    : LoginBanner(
-                        imageList: imageList,
-                        topImageList: topImageList,
-                        height: _screenUtil.screenHeight,
-                        indicatorType: IndicatorType.rectangle,
-                        indicatorRadius: 5,
-                        indicatorWidth: 20,
-                        indicatorUnWidth: 5,
-                        indicatorHeight: 5,
-                        bannerClick: (position) {}),
+                    : Container(
+                        margin: EdgeInsets.only(top: 10.h),
+                        child: LoginBanner(
+                            imageList: imageList,
+                            topImageList: topImageList,
+                            height: _screenUtil.screenHeight,
+                            indicatorType: IndicatorType.rectangle,
+                            indicatorRadius: 5,
+                            indicatorWidth: 20,
+                            indicatorUnWidth: 5,
+                            indicatorHeight: 5,
+                            bannerClick: (position) {}),
+                      ),
                 navbar(),
                 // Lottie.asset('assets/introduction_two_page/yd2.json',
                 //     repeat: false),

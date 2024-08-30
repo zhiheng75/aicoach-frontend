@@ -89,6 +89,8 @@ class HttpApi {
   static const String goodsV = "goods_v2";
 
   static const String memberState = "member_state";
+  static const String redeemList = "redeem_list";
+  static const String redeemCode = "redeem_code";
 
 //课程报告列表
   static const String lessonReports = "lesson_reports";

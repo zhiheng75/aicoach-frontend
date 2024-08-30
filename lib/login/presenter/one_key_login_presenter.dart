@@ -20,6 +20,8 @@ class OneKeyLoginPresenter extends BasePagePresenter<OneKeyLoginView> {
         if (data.code == 200) {
           SpUtil.putObject(Constant.userInfoKey, data.data.toJson());
           SpUtil.putString(Constant.accessToken, data.data.token);
+          // SpUtil.putString(Constant.accessToken,
+          //     "0tM8b0c=*h+llleDiR7pBMotCiIUuXA==*8T4dX3XqDcYAr+xIqGftaQ==*yiYU6/ndyH+CXLEUxvdZaA==");
           DYUtil().evaluate("1");
           EventUMStatistics.umengCommonMapEvent(
             "click_index_login",

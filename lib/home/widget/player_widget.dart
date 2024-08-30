@@ -1,8 +1,13 @@
 import 'dart:async';
 
+import 'package:Bubble/util/log_utils.dart';
 import 'package:Bubble/widgets/load_image.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // This code is also used in the example.md. Please keep it up to date.
 class PlayerWidget extends StatefulWidget {
@@ -47,6 +52,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
   String nameText = "";
   String imgUrl = "";
+  String textStr = "";
 
   @override
   void initState() {
@@ -58,9 +64,26 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     // Set the release mode to keep the source after playback has completed.
     player.setReleaseMode(ReleaseMode.stop);
 
+    playerUrlStr = widget.playerUrl;
+    List<String> fruits = playerUrlStr.split('/'); // 使用逗号作为分隔符
+    nameText = fruits.last;
+    textStr = fruits.last;
+    nameText = nameText.substring(0, nameText.indexOf('.'));
+
+    imgUrl = widget.playerUrl.replaceAll(textStr, Uri.encodeComponent(textStr));
+    imgUrl = imgUrl.substring(0, imgUrl.length - 4);
+    imgUrl = "$imgUrl.jpg";
+    Log.e("图片====" + imgUrl);
+
+    playerUrlStr =
+        widget.playerUrl.replaceAll(textStr, Uri.encodeComponent(textStr));
+    Log.e("歌曲地址====" + playerUrlStr);
+    setState(() {});
+
     // Start the player as soon as the app is displayed.
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await player.setSourceUrl(widget.playerUrl);
+      await player.setSourceUrl(playerUrlStr);
+
       // await player.setSourceUrl(
       //     'https://statics.shenmo-ai.com/audio/20240304-131948-bf9c44b4.mp3');
       // await player.setSourceUrl(
@@ -71,17 +94,6 @@ class _PlayerWidgetState extends State<PlayerWidget> {
       // await player.play(UrlSource(
       //     'https://statics.shenmo-ai.com/audio/20240304-131948-bf9c44b4.mp3'));
     });
-
-    playerUrlStr = widget.playerUrl;
-    List<String> fruits = playerUrlStr.split('/'); // 使用逗号作为分隔符
-    nameText = fruits.last;
-    nameText = nameText.substring(0, nameText.indexOf('.'));
-    nameText = Uri.decodeComponent(nameText);
-
-    // imgUrl = playerUrlStr.substring(0, playerUrlStr.indexOf('.'));
-    imgUrl = playerUrlStr.substring(0, playerUrlStr.length - 4);
-    imgUrl = "$imgUrl.jpg";
-    setState(() {});
 
     _playerState = player.state;
     player.getDuration().then(
@@ -151,8 +163,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   Widget build(BuildContext context) {
     return Container(
       // padding: const EdgeInsets.all(10),
-      width: 290,
-      height: 90,
+      // width: 290,
+      // height: 190,
       // color: Colors.amber,
       child: Stack(
         children: [
@@ -164,86 +176,103 @@ class _PlayerWidgetState extends State<PlayerWidget> {
               child: LoadImage(
                 imgUrl,
                 fit: BoxFit.fitWidth,
-                width: 290,
-                height: 90,
+                // width: 290,
+                // height: 190,
               ),
             ),
           ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: <Widget>[
-                    !_isPlaying
-                        ? GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: _isPlaying ? null : _play,
-                            child: const LoadAssetImage(
-                              "audio_play",
-                              width: 24.0,
-                              height: 24.0,
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              margin: EdgeInsets.only(
+                right: 10.w,
+                left: 10.w,
+                bottom: 10.w,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    children: <Widget>[
+                      !_isPlaying
+                          ? GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: _isPlaying ? null : _play,
+                              child: LoadAssetImage(
+                                "audio_play",
+                                width: 24.0.w,
+                                height: 24.0.w,
+                              ),
+                            )
+                          : GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: _isPlaying ? _pause : null,
+                              child: LoadAssetImage(
+                                "audio_paused",
+                                width: 24.0.w,
+                                height: 24.0.w,
+                              ),
                             ),
-                          )
-                        : GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: _isPlaying ? _pause : null,
-                            child: const LoadAssetImage(
-                              "audio_paused",
-                              width: 24.0,
-                              height: 24.0,
-                            ),
-                          ),
-                    Slider(
-                      activeColor: Colors.white,
-                      inactiveColor: Colors.white54,
-                      thumbColor: Colors.white,
-                      onChanged: (value) {
-                        final duration = _duration;
-                        if (duration == null) {
-                          return;
-                        }
-                        final position = value * duration.inMilliseconds;
-                        player.seek(Duration(milliseconds: position.round()));
-                      },
-                      value: (_position != null &&
-                              _duration != null &&
-                              _position!.inMilliseconds > 0 &&
-                              _position!.inMilliseconds <
-                                  _duration!.inMilliseconds)
-                          ? _position!.inMilliseconds /
-                              _duration!.inMilliseconds
-                          : 0.0,
-                    ),
-                    Text(
-                      _position != null
-                          ? _positionText
-                          : _duration != null
-                              ? _durationText
-                              : '0',
-                      // _position != null
-                      //     ? '$_positionText/$_durationText'
-                      //     : _duration != null
-                      //         ? _durationText
-                      //         : '',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                      Expanded(
+                        child: Slider(
+                          activeColor: Colors.white,
+                          inactiveColor: Colors.white54,
+                          thumbColor: Colors.white,
+                          onChanged: (value) {
+                            final duration = _duration;
+                            if (duration == null) {
+                              return;
+                            }
+                            final position = value * duration.inMilliseconds;
+                            player
+                                .seek(Duration(milliseconds: position.round()));
+                          },
+                          value: (_position != null &&
+                                  _duration != null &&
+                                  _position!.inMilliseconds > 0 &&
+                                  _position!.inMilliseconds <
+                                      _duration!.inMilliseconds)
+                              ? _position!.inMilliseconds /
+                                  _duration!.inMilliseconds
+                              : 0.0,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Text(
-                  nameText,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
+                      Text(
+                        _position != null
+                            ? _positionText
+                            : _duration != null
+                                ? _durationText
+                                : '0',
+                        // _position != null
+                        //     ? '$_positionText/$_durationText'
+                        //     : _duration != null
+                        //         ? _durationText
+                        //         : '',
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  Row(
+                    children: [
+                      Text(
+                        nameText,
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
