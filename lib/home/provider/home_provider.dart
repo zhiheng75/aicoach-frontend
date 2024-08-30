@@ -173,7 +173,7 @@ class HomeProvider extends ChangeNotifier {
     if (_usageTime == 0) {
       return;
     }
-    _usageTimeCutdown = Timer.periodic(const Duration(seconds: 1), (_) {
+    _usageTimeCutdown = Timer.periodic(const Duration(seconds: 5), (_) {
       Log.e("倒计时");
       if (_usageTime == 0) {
         onTimeEnd();

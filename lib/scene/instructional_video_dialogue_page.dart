@@ -235,6 +235,7 @@ class _InstructionalVideoDialoguePageState
           isback = true;
           isPlayVideo = "1";
           isChatPlayVideo = "1";
+          _loadVideoSource();
           setState(() {});
         }
         if (tag == "word") {
@@ -367,7 +368,8 @@ class _InstructionalVideoDialoguePageState
         _bottomBarControll.setDisabled(false);
         Future.delayed(const Duration(seconds: 1), () async {
           if (isChatPlayVideo == "1") {
-//通知播放视频
+            _bottomBarControll.setDisabled(true);
+            //通知播放视频
             _controller?.play();
             double volume = await VolumeUtil.getVolume();
             _controller?.setVolume(volume);
