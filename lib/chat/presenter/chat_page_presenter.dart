@@ -34,8 +34,12 @@ class ChatPagePresenter extends BasePagePresenter<ChatView> {
         getCategoryList(characterId);
         getCategoryTopicList(characterId);
         // setState(() {});
-      } else {}
-    }, onError: (code, msg) {});
+      } else {
+        view.sendFail(goodsListBean.msg);
+      }
+    }, onError: (code, msg) {
+      view.sendFail(msg);
+    });
   }
 
   Future getCategoryTopicList(String characterId) {

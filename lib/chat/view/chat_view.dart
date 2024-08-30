@@ -10,5 +10,5 @@ abstract class ChatView implements IMvpView {
   void sendTopicEntitySuccess(List<TopicEntity> list);
   void sendCategoryEntitySuccess(List<CategoryEntity> list);
 
-  // void sendFail(String msg);
+  void sendFail(String msg);
 }
